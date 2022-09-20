@@ -108,19 +108,56 @@ N.B. scrivere {a, b, c} è paragonabile ad un insieme quindi si utilizzano i sim
 ## Operazioni tra insiemi
 
 ### Unione
+
+![](https://i.ibb.co/LnTsd9w/unione.png)
+
 L'unione di due insiemi è formato dagli elementi del primo insieme, dagli elementi del secondo insieme e gli elementi in comune.
 Si rappresenta con: $A \cup B$
 Se $A,B \subseteq E$
-$E$ = insieme universo
+$E$ = insieme universo (insieme che contiene tutti gli altri insiemi presenti)
 $A \cup B = \{ x \in E | (x \in A) \lor (x \in B)\}$
 L'unione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga o all'insieme A o all'insieme B.
 
 ### Intersezione
 
+![](https://i.ibb.co/rQMtp0b/insertion.png)
+
+L'intersezione di due insiemi è formato dagli elementi comuni tra i due insiemi
+Si rappresenta con: $A \cap B$
+Se $A,B \subseteq E$
+$E$ = insieme universo
+$A \cap B = \{ x \in E | (x \in A) \land (x \in B)\}$
+L'intersezione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga sia all'insieme A che all'insieme B.
+- Se l'intersezione è vuota si dice che i due insiemi sono **disgiunti**
+
 ### Complementare
 
+![](https://i.ibb.co/1b2mDyF/complementare.png)
+
+Il complementare di un insieme è formato dagli elementi che non sono contenuti in quel insieme.
+Si rappresenta con: $A^c$
+Se $A \subseteq E$
+$E$ = insieme universo
+$A^c = \{ x \in E | x \notin A\}$
+Il complementare è dato da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x non appartenga sia all'insieme A.
+
 ### Differenza
+![](https://i.ibb.co/SdqNndw/differenza.png)
+
+La differenza tra il primo insieme e il secondo è formato dagli elementi che sono contenuti nel primo insieme ma non sono presenti nel secondo.
+Si rappresenta con: $A \setminus B$
+Se $A,B \subseteq E$
+$E$ = insieme universo
+$A \setminus B = \{ x \in E | (x \in A) \land (x \notin B)\}$
+La differenza è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga all'insieme A ma non all'insieme B.
 
 ### Prodotto cartesiano
 
+![](https://i.ibb.co/HtH225X/cartesiano.png)
 
+Il prodotto cartesiano è formato dalle coppie in cui il primo elemento appartiene al primo insieme e il secondo elemento appartiene al secondo insieme.
+Si rappresenta con: $A \times B$
+$A \times B = \{(x,y) | (x \in A) \land (y \in B)\}$
+Il prodotto cartesiano è dato da tutte le coppie formate da x e y che soddisfano la seguente proprietà: cioè che la x appartenga all'insieme A e che la y appartenga all'insieme B.
+- Il prodotto cartesiano si rappresenta graficamente con il piano cartesiano.
+- $A \times B \neq B \times A$
