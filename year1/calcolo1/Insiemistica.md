@@ -34,7 +34,7 @@ $\exists$ **esiste**
 
 $\nexists$ **non esiste**
 
-$/$ oppure $:$ **tale che**
+$|$ oppure $:$ **tale che / con la proprietà che**
 
 $\iff$ **se e solo se / condizione necessaria e sufficiente**
 
@@ -54,7 +54,7 @@ $\R$ **numeri reali o irrazionali**
 Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito).
 Come convenzione:
 Gli insiemi vengono indicati con lettere maiuscole, es. A, B, X.
-Gli elementi vengono indicati conlettere minuscole, es. a, b, a<sub>1</sub>, a<sub>2</sub>.
+Gli elementi vengono indicati con lettere minuscole, es. a, b, a<sub>1</sub>, a<sub>2</sub>.
 
 A = {a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>}
 Rappresentazione dell'insieme A con 3 elementi al suo interno
@@ -100,9 +100,27 @@ $A \subseteq B \iff \forall x \in A \implies x \in B$
 
 <hr>
 
-- Generalmente si utilizza $\subseteq$ perche comprende entrambi i casi (sia che gli insiemi siano diversi sia che siano uguali).
+- Generalmente si utilizza $\subseteq$ perché comprende entrambi i casi (sia che gli insiemi siano diversi sia che siano uguali).
 - $\in e \notin$ si utilizzano tra un elemento ed un insieme, mentre $\subset , \subseteq , \supset , \supseteq$ si utilizzano tra insiemi.
 N.B. scrivere {a, b, c} è paragonabile ad un insieme quindi si utilizzano i simboli per gli insiemi.
 - Le scritture $A \subseteq B$ e $B \supseteq A$ rappresentano la stessa cosa (anche mettendo $\subset$ e $\supset$).
 
-https://www.andreaminini.org/matematica/teoria-degli-insiemi/sottoinsieme
+## Operazioni tra insiemi
+
+### Unione
+L'unione di due insiemi è formato dagli elementi del primo insieme, dagli elementi del secondo insieme e gli elementi in comune.
+Si rappresenta con: $A \cup B$
+Se $A,B \subseteq E$
+$E$ = insieme universo
+$A \cup B = \{ x \in E | (x \in A) \lor (x \in B)\}$
+L'unione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga o all'insieme A o all'insieme B.
+
+### Intersezione
+
+### Complementare
+
+### Differenza
+
+### Prodotto cartesiano
+
+
