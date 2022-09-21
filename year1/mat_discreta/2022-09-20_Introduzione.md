@@ -8,14 +8,22 @@ Il significato di discreto deriva da discernere cioè separare, vengono appunto 
 
 - **Enunciati**: Sono espressioni scritte in linguaggio naturale che esprimono le proprietà di oggetti matematici che devono essere dimostrati.
 Possono essere di tre tipi:
-	- Gli **enunciati esistenziali** sono enunciati che contengono la parola chiave "esiste" o "esistono". 
-Es. "Esiste un numero naturale n tale che n 2 = 441"
-Per dimostrare che è vero basta fare un esempio.
-Per dimostrare che è falso bisogna dimostrare che è falso per ogni valore nell'insieme di riferimento.
+	- Gli **enunciati esistenziali** sono enunciati che contengono la parola chiave "esiste" o "esistono".
+	
+		Es. "Esiste un numero naturale n tale che n 2 = 441"
+		
+		Per dimostrare che è vero basta fare un esempio.
+		
+		Per dimostrare che è falso bisogna dimostrare che è falso per ogni valore nell'insieme di riferimento.
+	
 	- Gli **enunciati universali** sono enunciati che contengono la parola chiave "per ogni".
-	Es. "Per ogni numero naturale n, n 2 + n `e un numero pari"
-	Per dimostrare che è vero bisogna dimostrare che è vero per ogni valore nell'insieme di riferimento.
-	Per dimostrare che è falso è sufficiente fare un contro-esempio.
+	
+		Es. "Per ogni numero naturale n, n 2 + n `e un numero pari"
+		
+		Per dimostrare che è vero bisogna dimostrare che è vero per ogni valore nell'insieme di riferimento.
+	
+		Per dimostrare che è falso è sufficiente fare un contro-esempio.
+	
 	- Gli **enunciati composti** sono una sequenza di enunciati più semplici collegati tra loro da dei connettivi (and, or, not, if then).
 	
 - **Oggetti matematici**: Sono degli oggetti astratti che possono venire coinvolti in formule o essere assegnati ad una variabile. Degli esempi sono: numeri, insiemi, matrici, sequenze, funzioni, oggetti geometrici ecc...
