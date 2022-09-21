@@ -250,17 +250,25 @@ $\mathbb{N}$: Insieme dei **numeri naturali**, numeri interi positivi partendo d
 
 $N = \{0,1,2,3,...\}$
 
+<hr>
+
 $\mathbb{Z}$: Insieme dei **numeri Interi o relativi**, numeri interi con segno.
 
 $Z = \{...-3,-2,-1,0,1,2,3,...\}$
+
+<hr>
 
 $\mathbb{Q}$: Insieme dei **numeri razionali**, numeri che possono essere rappresentati come una frazione.
 
 $Q = \{\frac{p}{q}:p \in \mathbb{Z} \land q \in \mathbb{N} \setminus \{0\}\}$
 
+<hr>
+
 $\mathbb{I}$: Insieme dei **numeri irrazionali**, numeri con parte decimale infinita non periodica.
 
 $I = \{\sqrt{2},\sqrt{3}, \pi, e,...\}$
+
+<hr>
 
 $\mathbb{R}$: Insieme dei **numeri reali**, insieme composto dai numeri appartenenti agli insiemi $\mathbb{Q}$ e $\mathbb{I}$ .
 
