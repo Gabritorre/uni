@@ -28,7 +28,7 @@ $\cup$ **unione**
 
 $\setminus$ **differenza**
 
- $A^{c}$ **complementare di un insieme**
+ $A^C$ **complementare di un insieme**
  
 $\exists$ **esiste**
 
@@ -42,16 +42,19 @@ $\implies$ **allora / quindi / implica**
 
 $\emptyset$ **insieme vuoto**
 
-$\N$ **numeri naturali**
+$\mathbb{N}$ **numeri naturali**
 
-$\Z$ **numeri relativi o interi**
+$\mathbb{Z}$ **numeri relativi o interi**
 
 $\mathbb{Q}$ **numeri frazionari o razionali**
 
-$\R$ **numeri reali o irrazionali**
+$\mathbb{I}$ **numeri irrazionali**
+
+$\mathbb{R}$ **numeri reali**
+
 
 ## Insieme
-Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito).
+Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito), può essere poi rappresentato l'insieme vuoto: $\{\emptyset\}$.
 Come convenzione:
 Gli insiemi vengono indicati con lettere maiuscole, es. A, B, X.
 Gli elementi vengono indicati con lettere minuscole, es. a, b, a<sub>1</sub>, a<sub>2</sub>.
@@ -71,9 +74,9 @@ l'elemento<sub>1</sub> non appartiene all'insieme A
 
 <hr>
 
+### $A = B$ se $A \subseteq B \land B \subseteq A$
 ![](https://i.ibb.co/r5RYcXR/insiemi-impropri.png)
 
-$A = B$ se $A \subseteq B \land B \subseteq A$
 Due insiemi sono uguali se e solo se hanno gli stessi elementi (si dice che A è sottoinsieme improprio di B e vice versa).
 Si può riscrivere:
 $A = B \iff [\forall x \in A \implies x \in B] \land [\forall x \in B \implies x \in A]$
@@ -81,9 +84,9 @@ $A = B \iff [\forall x \in A \implies x \in B] \land [\forall x \in B \implies x
 
 <hr>
 
+### $A \subseteq B$
 ![](https://i.ibb.co/qjp74YR/insiemi-contenuti.png)
 
-$A \subseteq B$
 L'insieme A è contenuto nell'insieme B se gli elementi di A sono compresi in B (chiamata **inclusione**).
 Quel simbolo comprende anche la possibilità che i due insiemi siano uguali.
 si riscrive in:
@@ -91,10 +94,10 @@ $A \subseteq B \iff \forall x \in A \implies x \in B$
 
 <hr>
 
+### $A \subset B$
 ![](https://i.ibb.co/qYPxKsp/insiemi-contenuti2.png)
 
-$A \subset B$
-l'insieme A è parte di / è contenuto in B ma è presente almeno un elemento in B che non è presente in A (chiamata **inclusione stretta**).
+l'insieme A è parte di / è contenuto in B ma è presente almeno un elemento in B che non è presente in A (chiamata **inclusione stretta o propria**).
 si riscrive in 
 $A \subseteq B \iff \forall x \in A \implies x \in B$
 
@@ -161,3 +164,61 @@ $A \times B = \{(x,y) | (x \in A) \land (y \in B)\}$
 Il prodotto cartesiano è dato da tutte le coppie formate da x e y che soddisfano la seguente proprietà: cioè che la x appartenga all'insieme A e che la y appartenga all'insieme B.
 - Il prodotto cartesiano si rappresenta graficamente con il piano cartesiano.
 - $A \times B \neq B \times A$
+
+## Proprietà delle operazioni tra insiemi
+
+- $A \cup A = A$
+- $A \cap A = A$
+- Unione e intersezione sono commutative: 
+	$A \cup B = B \cup A$
+	$A \cap B = B \cap A$
+- $A \cup \emptyset = A$ $A \cap \emptyset = \emptyset$
+- 
+### Proprietà distributiva
+
+$A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
+
+## Dimostrazioni
+
+Dimostrazione della seguente scrittura:
+$A \cup B = A \iff B \subseteq A$
+![](https://i.ibb.co/qJR6KfM/unione-contenuta.png)
+Quando è presente il simbolo "se e solo se" ($\iff$) bisogna dimostrare l'affermazione in entrambe i versi:
+1. $A \cup B = A \implies B \subseteq A$
+2. $B \subseteq A \implies B \cup A = A$
+<hr>
+
+1. Sappiamo che $A \cup B = A$ è verificata.
+Prendiamo un $b \in B$ e supponiamo per assurdo che $b \notin A$. Questo non è possibile perché $b$ deve appartenere all'unione di $A$ e $B$ che sappiano essere uguale ad $A$.
+Quindi $\forall b \in B \implies b \in A$, cioè ogni elemento di B deve essere anche elemento di A perciò $B \subseteq A$
+
+2. Sappiamo che $B \subseteq A$ è verificata.
+$A \cup B = A$ significa che $A \cup B \subseteq A$ e $A \subseteq A \cup B$ cioè l'unione di $A$ e $B$ è contenuta in $A$ e $A$ contiene l'unione di $A$ e $B$.
+Prendiamo un $x$ appartenente all'unione di $A$ e $B$ quindi $x \in A \lor x \in B$ ma dato che $B$ è contenuto in A allora $x \in A$. Dato che tutti gli elementi di $B$ sono contenuti in $A$ allora $A \cup B = A$.
+
+## Formule di Morgan
+- $(A \cup B)^C = A^C \cap B^C$
+- $(A \cap B)^C = A^C \cup B^C$
+
+
+## Insiemi numerici
+Gli insiemi numerici sono particolari tipi di insiemi formati da infiniti elementi che hanno delle caratteristiche comuni. Gli insiemi numerici sono:
+
+$\mathbb{N}$: Insieme dei **numeri naturali**, numeri interi positivi partendo da 0.
+$N = \{0,1,2,3,...\}$
+
+$\mathbb{Z}$: Insieme dei **numeri Interi o relativi**, numeri interi con segno.
+$Z = \{...-3,-2,-1,0,1,2,3,...\}$
+
+$\mathbb{Q}$: Insieme dei **numeri razionali**, numeri che possono essere rappresentati come una frazione.
+$Q = \{\frac{p}{q}:p \in \mathbb{Z} \land q \in \mathbb{N} \setminus \{0\}\}$
+
+$\mathbb{I}$: Insieme dei **numeri irrazionali**, numeri con parte decimale infinita non periodica.
+$I = \{\sqrt{2},\sqrt{3}, \pi, e,...\}$
+
+$\mathbb{R}$: Insieme dei **numeri reali**, insieme composto dai numeri appartenenti agli insiemi $\mathbb{Q}$ e $\mathbb{I}$ .
+
+Questi insiemi sono relazionati tra loro:
+$\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$
+$\mathbb{I} \subset \mathbb{R}$
+![](https://i.ibb.co/28sGGkV/insiemi-numerici.png)
