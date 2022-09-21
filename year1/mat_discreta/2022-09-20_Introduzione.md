@@ -19,9 +19,12 @@ Possono essere di tre tipi:
 		
 	- Gli **enunciati universali** sono enunciati che contengono la parola
 	  chiave "per ogni".
+	  
 		Es. "Per ogni numero naturale n, n 2 + n `e un numero pari"
+		
 		Per dimostrare che è vero bisogna dimostrare che è vero per ogni valore
 		nell'insieme di riferimento.
+		
 		Per dimostrare che è falso è sufficiente fare un contro-esempio.
 	
 	- Gli **enunciati composti** sono una sequenza di enunciati più semplici collegati tra loro da dei connettivi (and, or, not, if then).
