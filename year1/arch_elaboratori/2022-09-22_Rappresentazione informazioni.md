@@ -55,7 +55,9 @@ Prendendo un numero $abcde_B$ ogni lettera rappresenta una cifra e risiede in un
 
 Per convertire in base 10 è sufficiente moltiplicare la cifra per la base elavata alla sua posizione, sommando poi i risultati:
 
-$a*B^4 + b*B^3 + c*B^2 + d*B^1 + e*B^0$
+
+$a * B^4 + b * B^3 + c * B^2 + d * B^1 + e * B^0$
+
 
 #### Esempio Base 2
 
@@ -80,7 +82,7 @@ Convertire $10011_2$ in base 10
 </tr>
 </table>
 
-$1*2^4 + 0*2^3 + 0*2^2 + 1*2^1 + 1*2^0 = 19$
+$1 * 2^4 + 0 * 2^3 + 0 * 2^2 + 1 * 2^1 + 1 * 2^0 = 19$
 
 
 #### Esempio Base 7
@@ -102,4 +104,4 @@ Convertire $122_7$ in base 10
 </tr>
 </table>
 
-$1*7^2 + 2*7^1 + 2*7^0 = 65$
+$1 * 7^2 + 2 * 7^1 + 2 * 7^0 = 65$
