@@ -132,8 +132,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo (insieme che contiene tutti gli altri insiemi presenti)
 
-$A \cup B = 
-x \in E | (x \in A) \lor (x \in B)\}$
+$A \cup B = \lbrace x \in E | (x \in A) \lor (x \in B)\rbrace$
 
 L'unione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga o all'insieme A o all'insieme B.
 
