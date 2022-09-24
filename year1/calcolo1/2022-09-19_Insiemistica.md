@@ -1,4 +1,4 @@
-﻿# Insiemistica
+# Insiemistica
 
 ## Simbologia
 
@@ -54,7 +54,7 @@ $\mathbb{R}$ **numeri reali**
 
 
 ## Insieme
-Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito), può essere poi rappresentato l'insieme vuoto: $\{\emptyset\}$.
+Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito), può essere poi rappresentato l'insieme vuoto: $\lbrace \emptyset \rbrace$.
 
 Come convenzione:
 Gli insiemi vengono indicati con lettere maiuscole, es. A, B, X.
@@ -132,7 +132,8 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo (insieme che contiene tutti gli altri insiemi presenti)
 
-$A \cup B = \{ x \in E | (x \in A) \lor (x \in B)\}$
+$A \cup B = 
+x \in E | (x \in A) \lor (x \in B)\}$
 
 L'unione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga o all'insieme A o all'insieme B.
 
@@ -147,7 +148,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo
 
-$A \cap B = \{ x \in E | (x \in A) \land (x \in B)\}$
+$A \cap B = \lbrace x \in E | (x \in A) \land (x \in B)\rbrace$
 
 L'intersezione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga sia all'insieme A che all'insieme B.
 - Se l'intersezione è vuota si dice che i due insiemi sono **disgiunti**
@@ -164,7 +165,7 @@ Se $A \subseteq E$
 
 $E$ = insieme universo
 
-$A^c = \{ x \in E | x \notin A\}$
+$A^c = \lbrace x \in E | x \notin A\rbrace$
 
 Il complementare è dato da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x non appartenga sia all'insieme A.
 
@@ -179,7 +180,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo
 
-$A \setminus B = \{ x \in E | (x \in A) \land (x \notin B)\}$
+$A \setminus B = \lbrace x \in E | (x \in A) \land (x \notin B)\rbrace$
 
 La differenza è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga all'insieme A ma non all'insieme B.
 
@@ -191,7 +192,7 @@ Il prodotto cartesiano è formato dalle coppie in cui il primo elemento appartie
 
 Si rappresenta con: $A \times B$
 
-$A \times B = \{(x,y) | (x \in A) \land (y \in B)\}$
+$A \times B = \lbrace (x,y) | (x \in A) \land (y \in B)\rbrace$
 
 Il prodotto cartesiano è dato da tutte le coppie formate da x e y che soddisfano la seguente proprietà: cioè che la x appartenga all'insieme A e che la y appartenga all'insieme B.
 
@@ -218,20 +219,20 @@ Dimostrazione della seguente scrittura:
 
 $A \cup B = A \iff B \subseteq A$
 ![](https://i.ibb.co/qJR6KfM/unione-contenuta.png)
-Quando è presente il simbolo "se e solo se" ($\iff$) bisogna dimostrare l'affermazione in entrambe i versi:
+Quando è presente il simbolo "se e solo se" $( \iff )$ bisogna dimostrare l'affermazione in entrambe i versi:
 1. $A \cup B = A \implies B \subseteq A$
 2. $B \subseteq A \implies B \cup A = A$
 
 <hr>
 
 1. Sappiamo che $A \cup B = A$ è verificata.
-2. 
+
 Prendiamo un $b \in B$ e supponiamo per assurdo che $b \notin A$. Questo non è possibile perché $b$ deve appartenere all'unione di $A$ e $B$ che sappiano essere uguale ad $A$.
 
 Quindi $\forall b \in B \implies b \in A$, cioè ogni elemento di B deve essere anche elemento di A perciò $B \subseteq A$
 
-3. Sappiamo che $B \subseteq A$ è verificata.
-4. 
+2. Sappiamo che $B \subseteq A$ è verificata.
+
 $A \cup B = A$ significa che $A \cup B \subseteq A$ e $A \subseteq A \cup B$ cioè l'unione di $A$ e $B$ è contenuta in $A$ e $A$ contiene l'unione di $A$ e $B$.
 
 Prendiamo un $x$ appartenente all'unione di $A$ e $B$ quindi $x \in A \lor x \in B$ ma dato che $B$ è contenuto in A allora $x \in A$.
@@ -248,25 +249,25 @@ Gli insiemi numerici sono particolari tipi di insiemi formati da infiniti elemen
 
 $\mathbb{N}$: Insieme dei **numeri naturali**, numeri interi positivi partendo da 0.
 
-$N = \{0,1,2,3,...\}$
+$$N = \lbrace 0,1,2,3,...\rbrace$$
 
 <hr>
 
 $\mathbb{Z}$: Insieme dei **numeri Interi o relativi**, numeri interi con segno.
 
-$Z = \{...-3,-2,-1,0,1,2,3,...\}$
+$$Z = \lbrace...-3,-2,-1,0,1,2,3,...\rbrace$$
 
 <hr>
 
 $\mathbb{Q}$: Insieme dei **numeri razionali**, numeri che possono essere rappresentati come una frazione.
 
-$Q = \{\frac{p}{q}:p \in \mathbb{Z} \land q \in \mathbb{N} \setminus \{0\}\}$
+$$Q = \lbrace \frac{p}{q}: (p \in \mathbb{Z}) \land (q \in \mathbb{N} \setminus \lbrace 0 \rbrace ) \rbrace$$
 
 <hr>
 
 $\mathbb{I}$: Insieme dei **numeri irrazionali**, numeri con parte decimale infinita non periodica.
 
-$I = \{\sqrt{2},\sqrt{3}, \pi, e,...\}$
+$$I = \lbrace \sqrt{2},\sqrt{3}, \pi, e,... \rbrace$$
 
 <hr>
 
@@ -279,5 +280,4 @@ $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$
 $\mathbb{I} \subset \mathbb{R}$
 
 ![](https://i.ibb.co/28sGGkV/insiemi-numerici.png)
-
 
