@@ -56,10 +56,10 @@ a = 5;
 | unsigned short (int) | 16 | da 0 a 65535|
 | int | 32 | da ~-2 miliardi a ~2 miliardi|
 | unsigned (int) | 32 | da 0 a ~4 miliardi|
-| long | 64 | da -2$^{63}$ a 2$^{63}$|
-| unsigned long | 64 | da 0 a 2$^{64}$-1|
-| float | 32 | da -3.40 $*$ 10$^{-38}$ a 3.40 $*$ 10$^{38}$|
-| double | 64 | da -1.7 $*$ 10$^{-308}$ a 1.7 $*$ 10$^{308}$|
+| long | 64 | da $-2^{63}$ a $2 ^{63}$|
+| unsigned long | 64 | da 0 a $2^{64}$-1|
+| float | 32 | da -3.40 $\cdot 10^{-38}$ a 3.40 $\cdot 10^{38}$|
+| double | 64 | da -1.7 $\cdot 10^{-308}$ a 1.7 $\cdot 10^{308}$|
 
 ## Operatori
 
@@ -106,7 +106,7 @@ a = 5;
 	```c
 	x /= y // equivalente a x = x / y
 	```
-- %$=$
+- % $=$
 	```c
 	x %= y // equivalente a x = x % y
 	```
@@ -120,7 +120,7 @@ Operazioni che restituiscono vero o falso
 - $>=$ maggiore uguale a
 - $<$ minore di
 - $<=$ minore uguale a
-- !$=$ diverso da
+- ! $=$ diverso da
 
 
 ### Operatori logici:
