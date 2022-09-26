@@ -1,20 +1,20 @@
 ﻿# Potenze e Radici
 
- ## Potenze
+## Potenze
 
 La potenza è formata da una **base** $a$ e da un **esponente** $x$ scritto nel seguente modo $a^x$ e rappresenta il prodotto di $x$ fattori uguali ad $a$
 
-$$2^5 = 2*2*2*2*2$$
+$$2^5 = 2 \cdot 2 \cdot 2 \cdot 2 \cdot 2$$
 
 ### Proprietà
 
 #### Prodotto di potenze con stessa base
 
-$$a^x*a^y = a^{x+y}$$
+$$a^x \cdot a^y = a^{x+y}$$
 
 #### Potenza di potenza
 
-$$(a^x)^y = a^{x*y}$$
+$$(a^x)^y = a^{x \cdot y}$$
 
 #### Divisione di potenze con stessa base
 
@@ -26,7 +26,7 @@ $$a^{-x} = \frac{1}{a^x}$$
 
 #### Prodotto di potenze con stesso esponente e base diversa
 
-$$a^x*b^x = (a*b)^x$$
+$$a^x \cdot b^x = (a \cdot b)^x$$
 
 #### Casi particolari
 
@@ -78,7 +78,7 @@ $\sqrt{3}$ si lascia scritto in questo modo
 
 #### Prodotto di radicali con stesso indice
 
-$$\sqrt[n]{a} * \sqrt[n]{b} = \sqrt[n]{a*b}$$
+$$\sqrt[n]{a} \cdot \sqrt[n]{b} = \sqrt[n]{a \cdot b}$$
 
 #### Divisione di radicali con stesso indice
 
@@ -92,7 +92,7 @@ $$(\sqrt[n]{a})^m = \sqrt[n]{a^m}$$
 
 $$\sqrt[n]{\sqrt[m]{a}} = \sqrt[nm]{a}$$
 
-$$\sqrt[n]{x\sqrt[m]{a}} = \sqrt[n]{\sqrt[m]{x^m*a}} = \sqrt[nm]{x^m*a}$$
+$$\sqrt[n]{x\sqrt[m]{a}} = \sqrt[n]{\sqrt[m]{x^m \cdot a}} = \sqrt[nm]{x^m \cdot a}$$
 
 #### Proprietà invariantiva
 
@@ -101,17 +101,17 @@ Moltiplicando per uno stesso valore l'indice della radice e l'esponente del radi
 $$\sqrt[n]{a^x} = \sqrt[nq]{a^{xq}}$$
 
 Es.
-- $\sqrt[4]{2} = \sqrt[4*3]{2^{1*3}}= \sqrt[12]{8}$
+- $\sqrt[4]{2} = \sqrt[4 \cdot 3]{2^{1 \cdot 3}}= \sqrt[12]{8}$
 - $\sqrt[8]{16} = \sqrt[8]{2^{4}} \text{ moltiplico per }\frac{1}{4} = \sqrt{2}$
-- $\sqrt{16} = \sqrt[2*\frac{1}{2}]{2^{4*\frac{1}{2}}}= 2^2 = 4$
+- $\sqrt{16} = \sqrt[2 \cdot \frac{1}{2}]{2^{4 \cdot \frac{1}{2}}}= 2^2 = 4$
 
 ### Portare fuori dalla radice
 
 I fattori che sono argomento di una radice si possono portare fuori se il loro esponente è uguale all'indice della radice.
 
 Es.
-- $\sqrt{45} = \sqrt{9*5} = \sqrt{3^2*5}\text{ l'esponente del 3 è = dell'indice della radice, quindi } 3\sqrt{5}$
-- $\sqrt[3]{81} = \sqrt[3]{3^4} \text{ l'esponente del 3 è > dell'indice della radice, quindi } \sqrt[3]{3^3*3} = 3\sqrt[3]{3}$
+- $\sqrt{45} = \sqrt{9 \cdot 5} = \sqrt{3^2 \cdot 5}\text{ l'esponente del 3 è = dell'indice della radice, quindi } 3\sqrt{5}$
+- $\sqrt[3]{81} = \sqrt[3]{3^4} \text{ l'esponente del 3 è > dell'indice della radice, quindi } \sqrt[3]{3^3 \cdot 3} = 3\sqrt[3]{3}$
 
 
 ### Portare dentro alla radice
@@ -119,8 +119,8 @@ Es.
 È il contrario di portare fuori un fattore, quindi quando si porta dentro si eleva il numero per il valore dell'indice.
 
 Es.
-- $2\sqrt{3} = \sqrt{2^2*3} = \sqrt{12}$
-- $2\sqrt[3]{2} = \sqrt[3]{2^3*2} = \sqrt[3]{16}$
+- $2\sqrt{3} = \sqrt{2^2 \cdot 3} = \sqrt{12}$
+- $2\sqrt[3]{2} = \sqrt[3]{2^3 \cdot 2} = \sqrt[3]{16}$
 
 
 ### Razionalizzazione
@@ -129,10 +129,9 @@ Razionalizzare significa eliminare la radice dal denominatore ma mantenendo il r
 
 Es.
 
-- $\frac{2}{\sqrt{7}} = \frac{2}{\sqrt{7}}*\frac{\sqrt{7}}{\sqrt{7}} = \frac{2\sqrt{7}}{7}$
-- $\frac{4}{\sqrt{2}} = \frac{4}{\sqrt{2}}*\frac{\sqrt{2}}{\sqrt{2}} = \frac{\cancel{4}\sqrt{2}}{\cancel{2}} = 2\sqrt{2}$
-- $\frac{3}{\sqrt{8}} = \frac{3}{2\sqrt{2}}*\frac{\sqrt{2}}{\sqrt{2}} = \frac{3\sqrt{2}}{4}$
-- $\frac{2}{\sqrt[4]{3}} = \frac{2}{\sqrt[4]{3}}*\frac{\sqrt[4]{3^3}}{\sqrt[4]{3^3}} = \frac{2\sqrt[4]{27}}{3}$
-- $\frac{8}{\sqrt{6}+\sqrt{2}} = \frac{8}{\sqrt{6}+\sqrt{2}}*\frac{\sqrt{6}-\sqrt{2}}{\sqrt{6}-\sqrt{2}} = \frac{8(\sqrt{6}-\sqrt{2})}{6-2} = \frac{\cancel{8}(\sqrt{6}-\sqrt{2})}{\cancel{4}} = 2(\sqrt{6}-\sqrt{2})$
-- $\frac{8}{\sqrt{6}-2} = \frac{8}{\sqrt{6}-2}*\frac{\sqrt{6}+2}{\sqrt{6}+2} = \frac{8(\sqrt{6}+2)}{6-4} = \frac{\cancel{8}(\sqrt{6}+2)}{\cancel{2}} = 4(\sqrt{6}+2)$
-
+- $\frac{2}{\sqrt{7}} = \frac{2}{\sqrt{7}} \cdot \frac{\sqrt{7}}{\sqrt{7}} = \frac{2\sqrt{7}}{7}$
+- $\frac{4}{\sqrt{2}} = \frac{4}{\sqrt{2}} \cdot \frac{\sqrt{2}}{\sqrt{2}} = \frac{\cancel{4}\sqrt{2}}{\cancel{2}} = 2\sqrt{2}$
+- $\frac{3}{\sqrt{8}} = \frac{3}{2\sqrt{2}} \cdot \frac{\sqrt{2}}{\sqrt{2}} = \frac{3\sqrt{2}}{4}$
+- $\frac{2}{\sqrt[4]{3}} = \frac{2}{\sqrt[4]{3}} \cdot \frac{\sqrt[4]{3^3}}{\sqrt[4]{3^3}} = \frac{2\sqrt[4]{27}}{3}$
+- $\frac{8}{\sqrt{6}+\sqrt{2}} = \frac{8}{\sqrt{6}+\sqrt{2}} \cdot \frac{\sqrt{6}-\sqrt{2}}{\sqrt{6}-\sqrt{2}} = \frac{8(\sqrt{6}-\sqrt{2})}{6-2} = \frac{\cancel{8}(\sqrt{6}-\sqrt{2})}{\cancel{4}} = 2(\sqrt{6}-\sqrt{2})$
+- $\frac{8}{\sqrt{6}-2} = \frac{8}{\sqrt{6}-2} \cdot \frac{\sqrt{6}+2}{\sqrt{6}+2} = \frac{8(\sqrt{6}+2)}{6-4} = \frac{\cancel{8}(\sqrt{6}+2)}{\cancel{2}} = 4(\sqrt{6}+2)$

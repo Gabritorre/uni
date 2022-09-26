@@ -20,8 +20,7 @@ L'ultima rimane con una solo scelta $(p-14)$
 
 quindi:
 
-$p!= p*(p-1)*(p-2)*...*(p-13)*(p-14) = 1307$miliardi
+$p!= p \cdot (p-1) \cdot (p-2) \cdot ... \cdot (p-13) \cdot (p-14) = 1307$ miliardi
 
 operazione chiamata **fattoriale**
 
- 

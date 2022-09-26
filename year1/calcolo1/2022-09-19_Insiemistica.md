@@ -28,7 +28,7 @@ $\cup$ **unione**
 
 $\setminus$ **differenza**
 
- $A^C$ **complementare di un insieme**
+$A^C$ **complementare di un insieme**
  
 $\exists$ **esiste**
 

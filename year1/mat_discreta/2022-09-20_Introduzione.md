@@ -74,7 +74,7 @@ Suddividiamo la prova in due casi:
 
 **Enunciato**: dimostra che "per ogni $n \in \mathbb{N}, 4n - 1$ è un numero primo" è falso.
 
-**Dimostrazione**: è sufficiente trovare un contro-esempio: come $n = 4$ perché $4 * 4 - 1 = 15$ il numero $15$ non è un numero primo.
+**Dimostrazione**: è sufficiente trovare un contro-esempio: come $n = 4$ perché $4 \cdot 4 - 1 = 15$ il numero $15$ non è un numero primo.
 
 ### Dimostrazione per assurdo
 **Teorema**: "non esiste un numero primo massimo".
@@ -83,7 +83,7 @@ Suddividiamo la prova in due casi:
 
 $2,3,5,7,11,...,X$
 
-consideriamo $Y = (2*3*5*7*11*...*X)+1$
+consideriamo $Y = (2 \cdot 3 \cdot 5 \cdot 7 \cdot 11 \cdot ... \cdot X)+1$
 
 poiché $Y>X$, $Y$ non è un numero primo, ma se dividiamo $Y$ per qualsiasi numero primo della lista otteniamo sempre resto di 1 pertanto $Y$ non è divisibile per nessun numero se non 1 e se stesso, il che significa che è un numero primo più grande di $X$, quindi il teorema è vero.
 
