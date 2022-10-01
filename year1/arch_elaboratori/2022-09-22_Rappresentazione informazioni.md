@@ -1,4 +1,5 @@
-﻿# Rappresentazione informazioni
+﻿
+# Rappresentazione informazioni
 
 Nelle informazione c'è una sostanziale differenza fra simbolo e significato:
 - Il simbolo è un modo di rappresentare quella informazione.
@@ -266,9 +267,121 @@ Con 3 bit si ha la tabella:
 
 011 ( $+3_{10}$ ) invertito è 100 e sommando 1 si ottiene 101 ( $-3_{10}$ )
 
-(In questo modo si risolve la ripetizione dello 0 nella versione positiva e negativa).
+(In questo metodo si risolve la ripetizione dello 0 nella versione positiva e negativa).
 
 Il complemento a due è il meccanismo più utilizzato nei calcolatori.
 
 Avendo n bit possiamo rappresentare $2^{n-1}-1$ valori positivi e $2^{n-1}$ valori negativi.
+
+
+N.B. In tutti questi tre meccanismi il bit più a sinistra corrisponde al segno (0 = positivo; 1 = negativo).
+
+
+### Da decimale negativo a complemento a due
+
+Per rappresentare $-2$ su 3 bit in binario complemento a 2
+
+è possibile usare la formula: $2^{n\_bit}-|N_{10}|$ (2 elevato al numero di bit - il valore decimale da convertire in valore assoluto) e convertire in binario il risultato:
+
+$-2_{10} = 2^3-2 = 8-2 = 6 \text{ che in binario diventa } 110$
+
+quindi $-2_{10} = 110_2$
+
+### Da binario in complemento a 2 in decimale
+
+Per rappresentare $110_2$ scritto in complemento a 2 in decimale:
+
+Si converte nel solito modo ma se il bit più a sinistra è $1$ allora sarà negativo il risultato ($-2^i$):
+
+<table>
+<tr>
+    <th>Posizione</th>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+</tr>
+<tr>
+    <th>Cifra</th>
+    <td>1</td>
+    <td>1</td>
+    <td>0</td>
+</tr>
+</table>
+
+$1 * (-2^2) + 1 * 2^1 + 0 * 2^0 = -4+2 = -2$
+
+## Cambio di segno
+
+Avendo un numero in binario per invertire il segno basta invertire tutti i bit a sinistra della cifra ad 1 meno significativa (a destra).
+
+$01100_2 = 12_{10}$
+
+Invertendo i bit a sinistra del 1 meno significativo ottengo:
+
+$10100_2 = -12_{10}$
+
+Questa regola non funziona per il numero negativo più piccolo rappresentabile con quel numero di bit:
+
+$10000000 = -128$
+
+invertendo ottengo lo stesso numero
+
+$10000000 = -128$
+
+## Estensione dei bit
+
+Avendo un numero rappresentato in 4 bit per esempio e vogliamo rappresentarlo in 8 bit basta ripetere il bit più a sinistra.
+
+- $0010 = 0000|0010$
+- $1010 = 1111|1010$
+
+## Addizione e Sottrazione in complemento a 2
+
+La sottrazione è una somma in cui il secondo addendo è negativo:
+
+$7-6 = 7+(-6)$
+
+$7_{10} = 0111$
+
+$-6_{10} = 1010$
+
+|   |   |   |   |   |   |
+|---|---|---|---|---|---|
+|   | 1 | 1 | 1 | 1 | + |
+|   | 1 | 0 | 1 | 0 | = |
+| 1 | 0 | 0 | 0 | 1 |   |
+
+Il risultato su 4 bit è $0001$ che è corretto, il resto di 1 sul 5 bit non vale come overflow.
+
+## Riconoscere l'overflow
+
+È possibile vedere la presenza di overflow secondo la seguente tabella:
+
+| |   SOMMA   | SOTTRAZIONE  |
+|-------------|----------|-----------------|
+|  pos. pos.  |   overflow  |  no overflow    |
+|  neg. neg.  |   overflow  |  no overflow    |
+|  pos. neg.  | no overflow |    overflow     |
+|  neg. pos.  | no overflow |    overflow     |
+
+### Esempio particolare di overflow
+
+sommando $01111$ (15) e $00001$ (1) (somma di due numeri positivi)
+
+|   |   |   |   |   |   |   |
+|---|---|---|---|---|---|---|
+|   | 0 | 1 | 1 | 1 | 1 | + |
+|   | 0 | 0 | 0 | 0 | 1 | = |
+|   | 1 | 0 | 0 | 0 | 0 |   |
+
+In questo caso è presente overflow perché la somma di due positivi non può restituire un numero negativo: $10000$ (-16)
+
+Lo stesso vale per la somma di due numeri negativi: $10100$ (-12) e $10101$ (-11)
+
+$10100 + 10101 = 01001$ (9)
+
+(la somma di due negativi non può dare un numero positivo).
+
+**È possibile riconoscere facilmente l'overflow guardando gli ultimi due riporti, se sono uguali non è presente overflow**.
+
 
