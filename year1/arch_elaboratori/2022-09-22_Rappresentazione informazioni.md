@@ -288,6 +288,19 @@ $-2_{10} = 2^3-2 = 8-2 = 6 \text{ che in binario diventa } 110$
 
 quindi $-2_{10} = 110_2$
 
+#### Trucchetto bello
+
+Se il numero negativo è piccolo è più facile rappresentare in binario il numero positivo e poi fare cambio di segno (invertire ciò che sta a sinistra del 1 meno significativo). 
+
+Es. $-15_{10}$ su 8 bit
+
+Rappresento il 15: $00001111$
+
+Faccio il cambio di segno:
+
+$11110001$
+
+
 ### Da binario in complemento a 2 in decimale
 
 Per rappresentare $110_2$ scritto in complemento a 2 in decimale:
