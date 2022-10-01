@@ -1,4 +1,5 @@
 ﻿
+  
 # Rappresentazione informazioni
 
 Nelle informazione c'è una sostanziale differenza fra simbolo e significato:
@@ -185,13 +186,13 @@ $13_{10} = 01101$
 
 $11_{10} = 01011$
 
-$$01101 +$$
+|   | 1 | 1 | 1 | 1 |   |   |
+|---|---|---|---|---|---|---|
+|   | 0 | 1 | 1 | 0 | 1 | + |
+|   | 0 | 1 | 0 | 1 | 1 | = |
+|   | 1 | 1 | 0 | 0 | 0 |   |
 
-$$01011 =$$
-
-$$11000= $$
-
-$$= 24_{10}$$
+$11000= 24_{10}$
 
 
 ### Overflow
@@ -345,9 +346,9 @@ $7_{10} = 0111$
 
 $-6_{10} = 1010$
 
-|   |   |   |   |   |   |
+| 1 | 1 | 1 | 0 |   |   |
 |---|---|---|---|---|---|
-|   | 1 | 1 | 1 | 1 | + |
+|   | 0 | 1 | 1 | 1 | + |
 |   | 1 | 0 | 1 | 0 | = |
 | 1 | 0 | 0 | 0 | 1 |   |
 
@@ -368,7 +369,7 @@ Il risultato su 4 bit è $0001$ che è corretto, il resto di 1 sul 5 bit non val
 
 sommando $01111$ (15) e $00001$ (1) (somma di due numeri positivi)
 
-|   |   |   |   |   |   |   |
+|   | 1 | 1 | 1 | 1 |   |   |
 |---|---|---|---|---|---|---|
 |   | 0 | 1 | 1 | 1 | 1 | + |
 |   | 0 | 0 | 0 | 0 | 1 | = |
@@ -383,5 +384,3 @@ $10100 + 10101 = 01001$ (9)
 (la somma di due negativi non può dare un numero positivo).
 
 **È possibile riconoscere facilmente l'overflow guardando gli ultimi due riporti, se sono uguali non è presente overflow**.
-
-
