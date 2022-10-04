@@ -1,5 +1,4 @@
 ﻿
-  
 # Rappresentazione informazioni
 
 Nelle informazione c'è una sostanziale differenza fra simbolo e significato:
@@ -290,7 +289,7 @@ quindi $-2_{10} = 110_2$
 
 #### Trucchetto bello
 
-Se il numero negativo è piccolo è più facile rappresentare in binario il numero positivo e poi fare cambio di segno (invertire ciò che sta a sinistra del 1 meno significativo). 
+Se il numero negativo è piccolo è più facile rappresentare in binario il numero positivo e poi fare cambio di segno (invertire ciò che sta a sinistra del 1 meno significativo).
 
 Es. $-15_{10}$ su 8 bit
 
@@ -397,3 +396,118 @@ $10100 + 10101 = 01001$ (9)
 (la somma di due negativi non può dare un numero positivo).
 
 **È possibile riconoscere facilmente l'overflow guardando gli ultimi due riporti, se sono uguali non è presente overflow**.
+
+## Numeri razionali
+
+Esistono due modi per rappresentare i numeri con la virgola: quello in virgola fissa e in virgola mobile.
+
+### Virgola fissa
+
+In questo metodo viene presa una quantità fissa di bit per la parte intera e per la parte frazionaria.
+
+Utilizzando sempre il sistema posizionale gli esponenti della parte frazionaria saranno negativi:
+
+Prendendo come esempio $15.75_{10}$
+ 
+ <table>
+<tr>
+    <th>Posizione</th>
+    <td>1</td>
+    <td>0</td>
+    <td>-1</td>
+    <td>-2</td>
+</tr>
+<tr>
+    <th>Cifra</th>
+    <td>1</td>
+    <td>5.</td>
+    <td>7</td>
+    <td>5</td>
+</tr>
+</table>
+
+
+#### Da base 10 a base 2
+Utilizziamo 8 bit per la parte intera e 8bit per la parte frazionaria.
+
+Convertiamo $25.125_{10}$ in base 2.
+
+La parte intera viene convertita normalmente tramite divisioni successive:
+
+$25_{10} = 00011001$
+
+Per la parte frazionaria si lavora per moltiplicazioni successive prendendo la parte intera ad ogni iterazione:
+
+![](https://i.ibb.co/1rbdN1f/frazionibin.png)
+
+I valori binari si leggono dall'alto verso il basso qundi il risultato finale è: $00011001.00100000$
+
+Per convertire un numero in base qualsiasi in una base B basta moltiplicare per la base B e prendere sempre la parte intera.
+
+### Da base 2 base 10
+
+$1010.1_{10}$
+
+ <table>
+<tr>
+    <th>Posizione</th>
+    <td>3</td>
+    <td>2</td>
+    <td>1</td>
+    <td>0</td>
+    <td>-1</td>
+</tr>
+<tr>
+    <th>Cifra</th>
+    <td>1</td>
+    <td>0</td>
+    <td>1</td>
+    <td>0.</td>
+     <td>1</td>
+</tr>
+</table>
+
+$1 \cdot 2^3 +1 \cdot 2^1.1 \cdot 2^{-1} = 8+2.\frac{1}{2} =10.5$
+
+Utilizzare la virgola fissa crea delle difficoltà nel rappresentare numeri molto grandi o molto piccoli, per questo viene utilizzata la **virgola mobile**
+
+### Virgola mobile
+In questo metodo la virgola non ha una posizione fissa, e per rappresentare un numero in virgola mobile (floating point) si utilizza **segno, esponente e mantissa**. I numeri in binario sono composti in questo modo:
+
+$$(-1)^S \cdot 2^E \cdot M$$
+
+Se il segno ($S$) è 0 allora il segno è **positivo** se è 1 allora il segno è negativo.
+Quindi viene utilizzato un bit per il segno, un gruppo di bit per l'esponente e un gruppo di bit per la mantissa:
+- maggiori sono i bit assegnati alla mantissa significano una maggiore precisione
+- maggiori sono i bit assegnati all'esponente significano un aumento dell'intervallo dei numeri rappresentabili.
+
+Per quanto riguarda **l'esponente** ci possono essere casi di:
+- *overflow*: se l'esponente è troppo grande per essere rappresentato con il numero di bit assegnati.
+- *underflow*: se l'esponente (negativo) è troppo piccolo per essere rappresentato con il numero di bit assegnati.
+
+La mantissa rappresenta la parte frazionaria, e possiede il **bit nascosto** che vale 1 e sta a sinistra della virgola:
+
+$M = 1,01010...$
+
+poi quel bit a 1 viene omesso quando si scrive il numero per esteso
+
+Degli intervalli tipici sono:
+- a singola precisione (32 bit): 1bit segno; 8bit esponente; 23bit mantissa
+- a doppia precisione (64 bit): 1bit segno; 11bit esponente; 52bit mantissa
+
+Esempio:
+convertiamo $-118.5_{10}$ in binario utilizzando la singola precisione
+
+Il numero è negativo quindi S = 1
+
+convertiamo il numero ( $118.5$ ) in binario: $1110110.1$
+
+ora spostiamo la vergola a sinistra fino a lasciare solo l'ultimo 1 a sinistra della virgola: $1.1101101$ dato che ci siamo spostati di 6 posizioni allora: $1.1101101 \cdot 2^6$
+
+La mantissa è quindi la parte a destra della virgola riempita di zero fino a raggiungere i 23 bit: $1101101 \text{ } 0000000000000000$
+
+L'esponente è 6 ma prima di trasformarlo in binario bisogna sommarlo a 127: $133 = 10000101$
+
+componendo il tutto abbiamo:
+$1 \text{ } 1000101 \text{ } 1101101000000000000000$
+
