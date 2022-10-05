@@ -1,80 +1,58 @@
+﻿
 # Insiemistica
 
 ## Simbologia
 
-$\in$ **appartiene**
-
-$\notin$ **non appartiene**
-
-$\subset$ **contenuto**
-
-$\subseteq$ **contenuto e uguale**
-
-$\supset$ **contiene**
-
-$\supseteq$ **contiene uguale**
-
-$\land$ **e / and logico**
-
-$\lor$ **o / oppure / or logico**
-
-$\forall$ **per ogni**
-
-$\times$ **prodotto cartesiano**
-
-$\cap$ **intersezione**
-
-$\cup$ **unione**
-
-$\setminus$ **differenza**
-
-$A^C$ **complementare di un insieme**
- 
-$\exists$ **esiste**
-
-$\nexists$ **non esiste**
-
-$|$ oppure $:$ **tale che / con la proprietà che**
-
-$\iff$ **se e solo se / condizione necessaria e sufficiente**
-
-$\implies$ **allora / quindi / implica**
-
-$\emptyset$ **insieme vuoto**
-
-$\mathbb{N}$ **numeri naturali**
-
-$\mathbb{Z}$ **numeri relativi o interi**
-
-$\mathbb{Q}$ **numeri frazionari o razionali**
-
-$\mathbb{I}$ **numeri irrazionali**
-
-$\mathbb{R}$ **numeri reali**
-
+| Simbolo | significato |
+|--|--|
+| $\in$ | **appartiene** |
+| $\notin$ |  **non appartiene** |
+| $\subset$ |  **contenuto** |
+| $\subseteq$ | **contenuto e uguale** |
+| $\supset$ |  **contiene**  | 
+| $\supseteq$ |  **contiene uguale** |
+| $\land$ |  **e / and logico** |
+| $\lor$  | **o / oppure / or logico** |
+| $\forall$ |  **per ogni** |
+| $\times$ |  **prodotto cartesiano** |
+| $\cap$ |  **intersezione** |
+| $\cup$ |  **unione** |
+| $\setminus$ |  **differenza** |
+| $A^C$ |  **complementare di un insieme** |
+| $\exists$ |  **esiste** |
+| $\nexists$ |  **non esiste** |
+| $\vert$ oppure $:$ |  **tale che / con la proprietà che** |
+| $\iff$ | **se e solo se / condizione necessaria e sufficiente** |
+| $\implies$ |  **allora / quindi / implica** |
+| $\emptyset$ |  **insieme vuoto** |
+| $\mathbb{N}$ |  **numeri naturali** |
+| $\mathbb{Z}$ |  **numeri relativi o interi** |
+| $\mathbb{Q}$ |  **numeri frazionari o razionali** |
+| $\mathbb{I}$ |  **numeri irrazionali** |
+| $\mathbb{R}$ |  **numeri reali** |
 
 ## Insieme
 Un **insieme** è una collezione di **elementi**, la quantità di elementi può essere finita (insieme finito) oppure infinita (insieme infinito), può essere poi rappresentato l'insieme vuoto: $\lbrace \emptyset \rbrace$.
 
 Come convenzione:
-Gli insiemi vengono indicati con lettere maiuscole, es. A, B, X.
-Gli elementi vengono indicati con lettere minuscole, es. a, b, a<sub>1</sub>, a<sub>2</sub>.
+Gli insiemi vengono indicati con lettere maiuscole, es. $A, B, X$ .
+Gli elementi vengono indicati con lettere minuscole, es. $a, b, a_1, a_2$ .
 
-A = {a<sub>1</sub>, a<sub>2</sub>, a<sub>3</sub>}
+$A = \lbrace a_1, a_2, a_3\rbrace$
 
 Rappresentazione dell'insieme A con 3 elementi al suo interno
 
 <hr>
 
-a<sub>1</sub> $\in A$ 
+$a_1 \in A$ 
 
-l'elemento a<sub>1</sub> appartiene all'insieme A
+l'elemento $a_1$ appartiene all'insieme $A$
 
 <hr>
 
-a<sub>4</sub> $\notin A$
+$a_4 \notin A$
 
-l'elemento<sub>1</sub> non appartiene all'insieme A
+l'elemento $a_4$ non appartiene all'insieme $A$
 
 <hr>
 
@@ -132,7 +110,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo (insieme che contiene tutti gli altri insiemi presenti)
 
-$A \cup B = \lbrace x \in E | (x \in A) \lor (x \in B)\rbrace$
+$A \cup B = \lbrace x \in E : (x \in A) \lor (x \in B)\rbrace$
 
 L'unione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga o all'insieme A o all'insieme B.
 
@@ -147,7 +125,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo
 
-$A \cap B = \lbrace x \in E | (x \in A) \land (x \in B)\rbrace$
+$A \cap B = \lbrace x \in E : (x \in A) \land (x \in B)\rbrace$
 
 L'intersezione è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga sia all'insieme A che all'insieme B.
 - Se l'intersezione è vuota si dice che i due insiemi sono **disgiunti**
@@ -164,7 +142,7 @@ Se $A \subseteq E$
 
 $E$ = insieme universo
 
-$A^c = \lbrace x \in E | x \notin A\rbrace$
+$A^c = \lbrace x \in E : x \notin A\rbrace$
 
 Il complementare è dato da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x non appartenga sia all'insieme A.
 
@@ -179,7 +157,7 @@ Se $A,B \subseteq E$
 
 $E$ = insieme universo
 
-$A \setminus B = \lbrace x \in E | (x \in A) \land (x \notin B)\rbrace$
+$A \setminus B = \lbrace x \in E : (x \in A) \land (x \notin B)\rbrace$
 
 La differenza è data da tutte le x dell'insieme universo che soddisfa la seguente proprietà: cioè che la x appartenga all'insieme A ma non all'insieme B.
 
@@ -191,7 +169,7 @@ Il prodotto cartesiano è formato dalle coppie in cui il primo elemento appartie
 
 Si rappresenta con: $A \times B$
 
-$A \times B = \lbrace (x,y) | (x \in A) \land (y \in B)\rbrace$
+$A \times B = \lbrace (x,y) : (x \in A) \land (y \in B)\rbrace$
 
 Il prodotto cartesiano è dato da tutte le coppie formate da x e y che soddisfano la seguente proprietà: cioè che la x appartenga all'insieme A e che la y appartenga all'insieme B.
 
@@ -279,4 +257,3 @@ $\mathbb{N} \subset \mathbb{Z} \subset \mathbb{Q} \subset \mathbb{R}$
 $\mathbb{I} \subset \mathbb{R}$
 
 ![](https://i.ibb.co/28sGGkV/insiemi-numerici.png)
-
