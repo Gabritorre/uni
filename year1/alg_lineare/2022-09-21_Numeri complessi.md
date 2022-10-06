@@ -92,6 +92,8 @@ $$a+bi = (a,b)$$
 
 $$\lvert z \rvert = \sqrt{a^2 + b^2}$$
 
+$$\lvert z \rvert^2 = a^2 + b^2$$
+
 ### Inverso
 
 $$z^{-1} = \frac{1}{z} = \frac{\overline{z}}{\lvert z \rvert^2}$$
@@ -138,6 +140,14 @@ La diagonale che va dall'origine degli assi fino al punto genera un angolo $\alp
 
 $$z = |z| \cdot (\cos \alpha  + i \cdot \sin \alpha)$$
 
+inoltre con $z=a+bi$ :
+
+$$|z| = r = \sqrt{a^2+b^2}$$
+
+$$a = r \cdot \cos(\alpha)$$
+
+$$b = r \cdot \sin(\alpha)$$
+
 ### Moltiplicazione di due numeri con coordinate polari
 
 $z = |z| (\cos \alpha + i \sin \alpha)$
@@ -146,21 +156,41 @@ $w= |w| (\cos \beta + i \sin \beta)$
 
 $$z \cdot w = |z \cdot w| \cdot (\cos(\alpha + \beta) + i \sin(\alpha + \beta))$$
 
-### Trovare l'angolo di un numero complesso
+### Da forma standard a forma trigonometrica (polare)
 
-Avendo $z = 2-3i$
+Avendo $z = 1-i$
 
-1. troviamo la lunghezza della diagonale: $|z| = \sqrt{2^2 + (-3)^2} = \sqrt{13}$
-2. Ora troviamo l'angolo mettendo z nella forma polare:
-	$$z = |z| \cdot \frac{z}{|z|} = $$
+Quindi abbiamo che:
 
-	$$= \sqrt{13} \cdot (\frac{2-3i}{\sqrt{13}}) = \sqrt{13} \cdot (\frac{2}{\sqrt{13}} - \frac{3i}{\sqrt{13}})$$
+$a = 1$
 
-$\cos \alpha = \frac{2}{\sqrt{13}}$ quindi $\alpha = 56° + 2k\pi \text{ oppure } 303° + 2k\pi$
+$b = -1$
 
-$\sin \alpha = -\frac{3}{ \sqrt{13}}$ quindi $\alpha = 303° + 2k\pi \text{ oppure } 236 + 2k\pi$
+1. troviamo la lunghezza della diagonale (o raggio): $r = \sqrt{1^2 + (-1)^2} = \sqrt{2}$
+2. Ora troviamo l'angolo:
 
-L'angolo che dobbiamo considerare è quello in comune quindi $303°$
+$\cos \alpha = \frac{1}{\sqrt{2}}$ razionalizzando: $\frac{\sqrt{2}}{2}$. Quindi risolvendo $\cos(\alpha) = \frac{\sqrt{2}}{2}$ otteniamo $\pm 45°$cioè $\pm\frac{\pi}{4}$ .
+
+$\sin \alpha = - \frac{1}{\sqrt{2}}$ razionalizzando: $-\frac{\sqrt{2}}{2}$. Quindi risolvendo $\sin(\alpha) = - \frac{\sqrt{2}}{2}$ otteniamo $-45°$ o $225°$ cioè $- \frac{\pi}{4}$ o $\frac{5}{4}\pi$ .
+
+Il valore di $\alpha$ che combacia sia per il seno che per il coseno è $-\frac{\pi}{4}$.
+
+Quindi abbiamo $z$ scritto in forma polare come $z = \sqrt{2}(\cos(-\frac{\pi}{4}) + i \sin(-\frac{\pi}{4}))$
+
+### Da forma polare a forma standard
+
+Avendo $z = 8 (\cos (-\frac{\pi}{3}) + i \sin (-\frac{\pi}{3}))$
+
+$\cos(-\frac{\pi}{3}) = \frac{1}{2}$
+
+$\sin(-\frac{\pi}{3}) = -\frac{\sqrt{3}}{2}$
+
+$a = 8 \cdot \frac{1}{2} = 4$
+
+$b = 8 \cdot (-\frac{\sqrt{3}}{2}) = 4\sqrt{3}$
+
+Quindi $z = 4 + i4\sqrt{3}$
+
 
 ## Forma esponenziale
 
@@ -182,6 +212,20 @@ $w = r_2e^{i \beta}$
 
 $$z \cdot w = r_1 \cdot r_2 \cdot e^{i( \alpha + \beta)}$$
 
+### Da forma trigonometrica ad esponenziale
+
+$z = -1-i$
+
+$r = \sqrt{2}$
+
+$\cos \alpha = \frac{a}{r} = -\frac{1}{\sqrt{2}}$
+
+$\sin \alpha = \frac{b}{r} = -\frac{1}{\sqrt{2}}$ 
+
+$\alpha = \frac{5}{4}\pi$
+
+Quindi $z = \sqrt{2} \cdot e^{i\frac{5}{4}\pi}$
+
 ## Trovare il valore di $i^x$
 
 - Se x pari
@@ -190,7 +234,85 @@ $$z \cdot w = r_1 \cdot r_2 \cdot e^{i( \alpha + \beta)}$$
 	- Se $\frac{x}{2}$ è dispari
 		- $-1$
 - Se x dispari
-	- $\frac{x-1}{2}$ è pari 
+	- Se $\frac{x-1}{2}$ è pari 
 		- $i$
-	- $\frac{x-1}{2}$ è dispari
+	- Se $\frac{x-1}{2}$ è dispari
 		- $-i$
+
+## Trovare la radice quadrata di un n. complesso
+
+Avendo il numero complesso $5+12i$
+
+La radice quadrata è quel numero complesso che elevato alla seconda ci restituisce il numero complesso iniziale.
+
+$(x+yi)^2 = 5+12i$
+
+In questo caso $x+yi$ è la nostra radice quadrata.
+
+$x^2-y^2+2xyi = 5+12i$
+
+Ora facciamo un sistema in cui dividiamo le parti reali da quelle immaginarie
+
+$$ \begin{cases} x^2-y^2 = 5 \\
+2xy = 12  \end{cases} \begin{cases} x^2-y^2 = 5 \\
+x =  \frac{6}{y}  \end{cases} \begin{cases} \frac{36}{y^2}-y^2 = 5 \\
+x =  \frac{6}{y}  \end{cases}$$
+
+concentrandoci sulla prima equazione:
+$$\frac{36}{y^2}-y^2 = 5$$
+
+moltiplichiamo per y^2 in entrambi i membri:
+
+$$y^4 + 5y^2-36 = 0$$
+
+calcoliamo $y^2_{1,2}$ trovando il suo delta:
+
+$$\Delta = 25-4 \cdot-36 = 169 = 13^2$$
+
+$$y^2_{1,2} = \frac{-5 \pm 13}{2}$$
+
+I due risultati che escono sono:
+
+- $-\frac{18}{2} = -9$ risultato non valido perché negativo
+- $\frac{8}{2} = 4$ risultato valido
+
+Quindi $y^2 = 4$
+
+Tornando al sistema di partenza:
+
+$$ \begin{cases} x^2-y^2 = 5 \\
+//  \end{cases} \begin{cases} x^2-4 = 5 \\
+//  \end{cases} \begin{cases} x^2 = 9 \\
+//  \end{cases}$$
+
+Quindi abbiamo che:
+$y^2 = 4$ quindi $y = \pm 2$
+
+$x^2 = 9$ quindi $x = \pm 3$
+
+Quindi il risultato scritto nella forma $x+yi$ è $\pm(3+2i)$
+
+## Divisione tra numeri complessi
+
+Avendo due numeri complessi:
+
+$z = a+bi$
+
+$w = c+di$
+
+la divisione non è altro che $\frac{z}{w} = x+yi$ (una divisione che restituisce un numero complesso).
+
+Ma la frazione può essere vista come $z*w^{-1}$, sapendo che l'inverso di $w$ è $\frac{\overline{w}}{|w|^2}$ otteniamo la formula:
+
+$$\frac{z}{w} = \frac{z \cdot \overline{w}}{|w|^2}$$
+
+Esempio:
+
+$\frac{1}{1+i}$
+
+In questo caso $z = 1+0i$ e $w = 1+i$
+
+$\frac{(1+0i)\cdot(1-i)}{1^2+1^2}=  \frac{1-i}{2} = \frac{1}{2}-\frac{1}{2}i$
+
+
+
