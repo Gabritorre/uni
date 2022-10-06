@@ -169,7 +169,7 @@ $b = -1$
 1. troviamo la lunghezza della diagonale (o raggio): $r = \sqrt{1^2 + (-1)^2} = \sqrt{2}$
 2. Ora troviamo l'angolo:
 
-$\cos \alpha = \frac{1}{\sqrt{2}}$ razionalizzando: $\frac{\sqrt{2}}{2}$. Quindi risolvendo $\cos(\alpha) = \frac{\sqrt{2}}{2}$ otteniamo $\pm 45°$cioè $\pm\frac{\pi}{4}$ .
+$\cos \alpha = \frac{1}{\sqrt{2}}$ razionalizzando: $\frac{\sqrt{2}}{2}$. Quindi risolvendo $\cos(\alpha) = \frac{\sqrt{2}}{2}$ otteniamo $\pm 45°$ cioè $\pm\frac{\pi}{4}$ .
 
 $\sin \alpha = - \frac{1}{\sqrt{2}}$ razionalizzando: $-\frac{\sqrt{2}}{2}$. Quindi risolvendo $\sin(\alpha) = - \frac{\sqrt{2}}{2}$ otteniamo $-45°$ o $225°$ cioè $- \frac{\pi}{4}$ o $\frac{5}{4}\pi$ .
 
