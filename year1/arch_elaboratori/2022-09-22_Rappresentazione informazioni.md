@@ -408,7 +408,7 @@ In questo metodo viene presa una quantità fissa di bit per la parte intera e pe
 Utilizzando sempre il sistema posizionale gli esponenti della parte frazionaria saranno negativi:
 
 Prendendo come esempio $15.75_{10}$
- 
+
  <table>
 <tr>
     <th>Posizione</th>
@@ -495,7 +495,25 @@ Degli intervalli tipici sono:
 - a singola precisione (32 bit): 1bit segno; 8bit esponente; 23bit mantissa
 - a doppia precisione (64 bit): 1bit segno; 11bit esponente; 52bit mantissa
 
-Esempio:
+### notazione polarizzata
+
+Per una facilitazione nel riconoscere la grandezza del numero binario l'IEEE754 ha introdotto un metodo per avere il numero più negativo come una serie di $0$ e il numero più positivo come una serie di $1$.
+
+Per fare ciò in singola precisione si aggiunge $127$ all'esponente mentre in doppia precisione si aggiunge 1023 all'esponente.
+
+Il valore dell'esponente in notazione polarizzata varia:
+- da -126 a 127 in singola precisione
+- da 1022 a 1023 in doppia precisione
+
+N.B. il valore totalmente composto da 0 rappresenta lo 0 e quello composto totalmente da 1 è riservato a casi speciali (infinito o NaN).
+
+La notazione polare è composta quindi:
+- Da decimale a binario
+$$(-1)^S \cdot (1+m) \cdot 2^{e+polarizzazione}$$
+- Da binario a decimale
+$$(-1)^S \cdot (1+m) \cdot 2^{e-polarizzazione}$$
+
+#### Esempio 1:
 convertiamo $-118.5_{10}$ in binario utilizzando la singola precisione
 
 Il numero è negativo quindi S = 1
@@ -511,3 +529,44 @@ L'esponente è 6 ma prima di trasformarlo in binario bisogna sommarlo a 127: $13
 componendo il tutto abbiamo:
 $1 \text{ } 1000101 \text{ } 1101101000000000000000$
 
+#### Esempio 2:
+
+Convertire $1\text{ }00001011 \text{ }01000000000000000000000$ in decimale
+
+segno: negativo = 1
+
+esponente: $00001011_2 = 11_{10}$
+
+mantissa: $0.01_2 = 0.25_{10}$
+
+quindi: $(-1)^1 \cdot (1+0.25) \cdot 2^{(11-127)} =-1.25\cdot2^{-116}$
+
+### Sommare numeri in floating point
+
+Per eseguire la somma di $5_{10} + 3.625_{10}$ con una precisione di 4 bit
+
+convertiamo in binario i numeri:
+
+$5_{10} = 101_2 = 1.01 \cdot 2^2$
+
+$3.625_{10} = 11.101_2 \cdot 2^0 = 1.1101*2^1$
+
+Ora bisogna prendere il numero più piccolo e far diventare l'esponente uguale a quello del numero maggiore, in questo caso 2 (shifting).
+
+$1.1101 \cdot 2^1= 0.11101 \cdot 2^2$
+
+Eseguire la somma:
+
+| 1 | 1 | 1 | 0 | 0 | 0 |   |   |
+|---|---|---|---|---|---|---|---|
+|   | 1.| 0 | 1 | 0 | 0 | 0 | + |
+|   | 0.| 1 | 1 | 1 | 0 | 1 | = |
+| 1 | 0.| 0 | 0 | 1 | 0 | 1 | $\cdot 2^2$|
+
+$10.00101 \cdot 2^2 = 1.000101 \cdot 2^3$
+
+Se non si presenta overflow o underflow si può proseguire.
+
+Per farlo diventare con una precisione a 4 bit dobbiamo arrotondare la virgola a 4 bit:
+
+$1.000101 \cdot 2^3 = 1.0001 \cdot 2^3$
