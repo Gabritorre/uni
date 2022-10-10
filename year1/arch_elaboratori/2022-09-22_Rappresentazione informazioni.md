@@ -1,4 +1,5 @@
 ﻿
+  
 # Rappresentazione informazioni
 
 Nelle informazione c'è una sostanziale differenza fra simbolo e significato:
@@ -304,7 +305,7 @@ $11110001$
 
 Per rappresentare $110_2$ scritto in complemento a 2 in decimale:
 
-Si converte nel solito modo ma se il bit più a sinistra è $1$ allora sarà negativo il risultato ($-2^i$):
+Si converte nel solito modo ma se il bit più a sinistra è $1$ allora sarà negativo il risultato ( $-2^i$ ):
 
 <table>
 <tr>
@@ -476,7 +477,7 @@ In questo metodo la virgola non ha una posizione fissa, e per rappresentare un n
 
 $$(-1)^S \cdot 2^E \cdot M$$
 
-Se il segno ($S$) è 0 allora il segno è **positivo** se è 1 allora il segno è negativo.
+Se il segno ( $S$ ) è 0 allora il segno è **positivo** se è 1 allora il segno è negativo.
 Quindi viene utilizzato un bit per il segno, un gruppo di bit per l'esponente e un gruppo di bit per la mantissa:
 - maggiori sono i bit assegnati alla mantissa significano una maggiore precisione
 - maggiori sono i bit assegnati all'esponente significano un aumento dell'intervallo dei numeri rappresentabili.
