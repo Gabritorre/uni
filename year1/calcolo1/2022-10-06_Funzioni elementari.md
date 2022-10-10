@@ -130,7 +130,7 @@ $$|x| = \begin{cases}x & \text{ se } x \geq 0 \\
 ### Proprietà
 
 - $|x| \geq 0$ e $x \leq |x|$ per ogni $x \in \mathbb{R}$
-- dato $a > 0$ allora di disequazione $|x| < a \iff -a <x<a$ [vedi figura sottostante]
+- dato $a > 0$ allora di disequazione $|x| < a \iff -a < x < a$ [vedi figura sottostante]
 - dato $a > 0$ allora di disequazione $|x| > a \iff (x  < -a \land x > a)$ [vedi figura sottostante]
 
 ![](https://i.ibb.co/kJtHzxs/prop-val-ass.png)
