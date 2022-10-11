@@ -571,3 +571,23 @@ Se non si presenta overflow o underflow si può proseguire.
 Per farlo diventare con una precisione a 4 bit dobbiamo arrotondare la virgola a 4 bit:
 
 $1.000101 \cdot 2^3 = 1.0001 \cdot 2^3$
+
+
+## Introduzione scoprire errori di lettura
+
+Le informazioni vengono salvati nelle celle della memoria RAM, le celle sono lunghe 8bit e i gruppi di celle sono word (lunghe 32 bit o 64 bit in base alla CPU)
+
+Per riconoscere un errore di lettura una tecnica è quella di calcolare la distanza di Hamming, cioè quanti bit di differenza ci sono tra la stringa corretta e quella letta:
+
+$H(c, c') = 0$ stringa corretta
+$H(c, c') > 0$ stringa non corretta
+
+Es. 
+
+1011101
+
+10**0**1**0**01
+
+$H(c, c') = 2$ (le due stringhe differiscono di 2 bit)
+
+Per correggere **singoli errori** si può utilizzare un bit di parità, cioè un bit messo a destra che è 1 se il numero di bit a 1 è dispari mentre è 0 se il numero di bit a 1 è pari.

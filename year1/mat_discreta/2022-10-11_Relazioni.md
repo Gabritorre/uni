@@ -15,7 +15,7 @@ Per rappresentare una relazione tra $a$ e $b$: $a \mathcal{R} b$
 
 mette in relazione $x$ con se stesso
 
-$$(x,x) \in \mathcal{R}, \forall x \in A$$
+$$(x , x) \in \mathcal{R}, \forall x \in A$$
 
 Es. 
 
@@ -27,13 +27,13 @@ $x \leq x$
 
 $x$ non può essere messo a confronto con se stesso.
 
-$$(x,x) \notin \mathcal{R}, \forall x \in A$$
+$$(x , x) \notin \mathcal{R}, \forall x \in A$$
 
 Es.
 
-$x<x$
+$x < x$
 
-$x>x$
+$x > x$
 
 ### Proprietà simmetrica
 
@@ -43,9 +43,9 @@ $$\text{se }(x,y) \in \mathcal{R} \text{ allora } (y,x) \in \mathcal{R}, \forall
 
 Es.
 
-$x=y \implies y=x$
+$x = y \implies y = x$
 
-$x+y = k \implies y+x = k$
+$x + y = k \implies y + x = k$
 
 
 ### Proprietà antisimmetrica
@@ -56,9 +56,9 @@ $$\text{se }(x,y) \in \mathcal{R} \text{ allora } (y,x) \notin \mathcal{R}, \for
 
 Es.
 
-$x>y$, $x \geq y$
+$x > y$ , $x \geq y$
 
-$x<y$, $x \leq y$
+$x < y$ , $x \leq y$
 
 ### Proprietà transitiva
 
@@ -89,7 +89,7 @@ Una relazione di dice d'ordine parziale stretta se soddisfa le seguenti propriet
 - Antisimmetrica
 - Transitiva
 
-Es. $<,>, \subset, \supset$
+Es. $<, >, \subset, \supset$
 
 
 ## Relazione di equivalenza
