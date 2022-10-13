@@ -174,3 +174,151 @@ $$180:\pi=\alpha(°):x(rad)$$
 - $\sin -\alpha = - \sin \alpha$
 - $\sin (\alpha +\beta) = \sin \alpha \cdot \cos \beta + \sin \beta \cdot \cos \alpha$
 - $\cos (\alpha +\beta) = \cos \alpha \cdot \cos \beta - \sin \alpha \cdot \sin \beta$
+
+Formule di duplicazione
+
+- $\sin (2\alpha) = 2\sin \alpha \cdot \cos \alpha$
+- $\cos (2\alpha) = \cos^2 \alpha - \sin^2 \alpha$
+
+Formule riduzione potenza
+
+- $\sin^2 \alpha = \frac{1-\cos 2\alpha}{2}$
+- $\cos^2 \alpha = \frac{1+\cos 2\alpha}{2}$
+
+### Seno
+
+Restringendo il dominio e codominio otteniamo una funzione biettiva:
+
+$\sin : [-\frac{\pi}{2}, \frac{\pi}{2}] \longrightarrow [-1, 1]$
+
+$x \longmapsto y = \sin (x)$
+
+Possiamo così ottenere la funzione inversa:
+
+$$\sin^{-1} (x) = \arcsin (x)$$
+
+$\arcsin : [-1, 1] \longrightarrow  [-\frac{\pi}{2}, \frac{\pi}{2}]$
+
+$x \longmapsto y = \arcsin (x)$
+
+cioè il valore tale che $\sin(y) = x$
+
+| $\sin$ | $\arcsin$ |
+|--|--|
+| ![](https://i.ibb.co/bFVWwG0/sin.png) | ![](https://i.ibb.co/W6ZGj3x/arcsin.png) |
+
+### Coseno
+
+Restringendo il dominio e codominio otteniamo una funzione biettiva:
+
+$\cos : [0, \pi] \longrightarrow [-1, 1]$
+
+$x \longmapsto y = \cos (x)$
+
+Possiamo così ottenere la funzione inversa:
+
+$$\cos^{-1} (x) = \arccos (x)$$
+
+$\arccos : [-1, 1] \longrightarrow  [0, \pi]$
+
+$x \longmapsto y = \arccos (x)$
+
+cioè il valore tale che $\cos(y) = x$
+
+| $\cos$ | $\arccos$ |
+|--|--|
+| ![](https://i.ibb.co/q7sfBfk/coseno.png) | ![](https://i.ibb.co/fMK0v8s/arccos.png) |
+
+### Funzione tangente
+
+![](https://i.ibb.co/NZtp4kt/tangente.png)
+
+La tangente è il componente $y$ del punto $Q$ nell'immagine, cioè dell'intersezione tra la diagonale e la retta $x = 1$ .
+
+$$\tan(\alpha) = \frac{\sin (\alpha)}{\cos(\alpha)}$$
+
+tenendo conto di $\forall \alpha \neq \frac{\pi}{2} + k\pi$ con $k \in \mathbb{Z}$
+
+Dato che $\tan(-\alpha) = -\tan(\alpha)$ la funzione tangente è **dispari**
+
+Restringendo il dominio otteniamo una funzione biettiva:
+
+$\tan: ]-\frac{\pi}{2}, \frac{\pi}{2}[ \longrightarrow \mathbb{R}$
+
+$x \longmapsto y = \tan(x)$
+
+Possiamo così ottenere la funzione inversa:
+
+$$\tan^{-1} = \arctan(x)$$
+
+$\arctan : \mathbb{R} \longrightarrow ]-\frac{\pi}{2}, \frac{\pi}{2}[$
+
+$x \longmapsto y = \arctan(x)$
+
+cioè quel valore tale che $\tan(y) = x$
+
+| $\tan$ | $\arctan$ |
+|--|--|
+| ![](https://i.ibb.co/5jzLpWz/tan.png) | ![](https://i.ibb.co/kMCRvLD/arctan.png) |
+
+### Angoli notevoli
+
+![](https://i.ibb.co/TcYFpGc/corr-gradi-rad.png)
+
+### Funzione cotangente
+
+![](https://i.ibb.co/QQTH21Y/cot.png)
+
+La cotangente è il componente $x$ del punto $E$ nell'immagine, cioè dell'intersezione tra la diagonale e la retta $y = 1$ .
+
+$$\cot(\alpha) = \frac{\cos (\alpha)}{\sin(\alpha)}$$
+
+tenendo conto di $\forall \alpha \neq k\pi$ con $k \in \mathbb{Z}$
+
+### Funzione secante e cosecante
+
+![](https://i.ibb.co/9qRJdvS/sec.png)
+
+La funzione **secante** rappresenta la componente $x$ del punto $G$ nell'immagine, cioè dell'intersezione tra la tangente della circonferenza e l'asse $x$ .
+
+La funzione **cosecante** rappresenta la componente $y$ del punto $H$ nell'immagine, cioè dell'intersezione tra la tangente della circonferenza e l'asse $y$ .
+
+$$\sec(\alpha) = \frac{1}{\cos(\alpha)}$$
+
+$$\cosec(\alpha) = \frac{1}{\sin(\alpha)}$$
+
+
+## Funzioni iperboliche
+
+### Seno iperbolico
+
+$$\sinh (x) = \frac{e^x-e^{-x}}{2}$$
+
+
+Dato che $\sinh (-x) = -\sinh(x)$ è una funzione **dispari**.
+
+È una funzione biettiva per cui possiede una funzione inversa:
+
+$$y = \ln(x+\sqrt{x^2+1})$$
+
+
+### Coseno iperbolico
+
+$$\cosh (x) = \frac{e^x-e^{-x}}{2}$$
+
+
+Dato che $\cosh (-x) = \cosh(x)$ è una funzione **pari**.
+
+Restringendo dominio e codominio si ottiene una funzione biettiva:
+
+$\cosh : [0, +\infty[ \longrightarrow [1, +\infty[$
+
+$x \longmapsto y=\cosh(x)$
+
+Quindi possiede una funzione inversa:
+
+$$y = \ln(x+\sqrt{x^2-1})$$
+
+![](https://i.ibb.co/HF2Z5zm/iperb.png)
+
+
