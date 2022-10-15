@@ -17,7 +17,7 @@ mette in relazione $x$ con se stesso
 
 $$(x , x) \in \mathcal{R}, \forall x \in A$$
 
-Es. 
+Es.
 
 $x = x$
 
@@ -110,4 +110,40 @@ cioè la classe di equivalenza è l'insieme degli elementi di x che soddisfano l
 - La classe di equivalenza non può essere vuota.
 - L'unione di tutte le classi restituisce l'insieme $A$ .
 - Tutte le classi sono disgiunte tra loro (non hanno intersezioni).
+
+
+## Catene e anticatene
+
+Una **catena** è un sottoinsieme si un insieme parzialmente ordinato, in cui gli elementi sono **confrontabili** a due a due:
+
+Prendendo l'insieme dei Naturali con la relazione di minore che si scrive $(\mathbb{N}, <)$
+
+Abbiamo una catena perché prendendo due numeri sono confrontabili tra loro:
+
+$$0<1<2<3<4...$$
+
+Una **anticatena** è un sottoinsieme si un insieme parzialmente ordinato, in cui gli elementi sono **inconfrontabili** a due a due:
+
+Prendendo l'insieme dei Naturali con la relazione $r = "n_1 < n_2$ se $n_1$ è divisore di $n_2"$ che si scrive $(\mathbb{N}, r)$
+
+Il sottoinsieme dei numeri primi maggiori di 3 forma una anticatena perché prendendo due elementi da questo sottoinsieme sono inconfrontabili dato che i numeri primi sono divisibili solo per 1 e per se stessi:
+
+$$X = \lbrace3,5,7,11,..\rbrace$$
+
+### Ordinamento ben fondato
+
+Un ordinamento parziale si dice ben fondato se non ammette catene discendenti infinite, cioè nella forma
+
+$$a_0 > a_1 > a_2 > ... > a_n > ...$$
+
+l'ordinamento $(\mathbb{N}, \leq)$ è un ordinamento ben fondato perché ha un valore iniziale, cioè lo $0$ :
+
+$$0\leq1\leq2\leq3...$$
+
+Quindi prendendo una qualsiasi catana discendente non sarà mai infinita prima o poi raggiungerà lo $0$
+
+$$...>5>4>3>2>1>0$$
+
+La stessa cosa in $\mathbb{Z}$ non sarebbe ben fondato perché possiede valori negativi e quindi non è presente un valore minimo.
+
 
