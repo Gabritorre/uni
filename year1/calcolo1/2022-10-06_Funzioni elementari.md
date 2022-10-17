@@ -285,7 +285,7 @@ La funzione **cosecante** rappresenta la componente $y$ del punto $H$ nell'immag
 
 $$\sec(\alpha) = \frac{1}{\cos(\alpha)}$$
 
-$$\cosec(\alpha) = \frac{1}{\sin(\alpha)}$$
+$$\text{cosec}(\alpha) = \frac{1}{\sin(\alpha)}$$
 
 
 ## Funzioni iperboliche
