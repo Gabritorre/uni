@@ -382,11 +382,13 @@ Troviamo un output E che:
 
 2. Scelgo quale forma canonica utilizzare: utilizziamo la somma di prodotti (anche il prodotto di somme sarebbe andato bene), quindi prendo in considerazione li righe che hanno come output 1.
 3. Realizzo la mappa di Karnaugh:
+
 ![](https://i.ibb.co/qMr4J8V/mappa-es.png)
 
 4. Devo decidere che valore dare alle singole X In questo caso conviene metterle tutte a 1 così posso raccogliere, in caso contrario non avrei potuto raccogliere tutti gli 1.
 
 5. raggruppo gli 1 per gruppi grandi potenze di 2:
+
 ![](https://i.ibb.co/vBBcJqg/mappa-es2.png)
 
 6. Scrivo l'equazione rispettando la forma canonica scelta (ogni addendo deve essere composto da tutti 1). Prendendo le parti singolarmente abbiamo che:
@@ -396,5 +398,6 @@ Troviamo un output E che:
 $E = (\overline{A}\cdot \overline{B} \cdot \overline{C}) + (\overline{A}\cdot \overline{C} \cdot \overline{D}) + (\overline{A}\cdot \overline{B} \cdot \overline{D}) + (\overline{B}\cdot \overline{C} \cdot \overline{D}) + (B \cdot C \cdot D) + (A \cdot C \cdot D) + (A \cdot B \cdot D) + (A \cdot B \cdot C)$
 
 7. Costruiamo il circuito associato a questa equazione:
-![](https://i.ibb.co/k443zfB/circuito-bello.png)
+
+![circuito](https://i.ibb.co/f8tKgm0/circuito2.png)
 
