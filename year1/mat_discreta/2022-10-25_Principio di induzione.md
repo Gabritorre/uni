@@ -13,7 +13,7 @@ Dovendo dimostrare una proprietà $P(x)$ la dimostrazione si basa su due casi:
 ### Es 1
 Traccia: dimostrare che per ogni numero naturale $n, n^3+5n$ è sempre un multiplo di $6$ .
 
-La nostra proprietà è: $P(n): "n^3+5n \text{ è sempre multiplo di 6 }"$
+La nostra proprietà è: $P(n): \text{"}n^3+5n \text{ è sempre multiplo di 6 }\text{"}$
 
 Dimostrazione per induzione su $n$:
 
@@ -21,9 +21,11 @@ Dimostrazione per induzione su $n$:
 - passo induttivo:
 	Sia $n \geq 0$, ipotizziamo che $P(n)$ sia vera (**ipotesi induttiva**) dimostriamo che anche $P(n+1)$ sia vera:
 	Quindi dimostriamo che $(n+1)^3 + 5(n+1)$ sia un multiplo di 6
-	$$(n+1)^3 + 5(n+1) \\
-	(n^3+3n^2+3n+1)+5n+5 \\
-	n^3+5n+3n^2+3n+6$$ 
+	$$(n + 1)^{3} + 5(n + 1)$$
+	
+	$$(n^{3} + 3n^{2} + 3n + 1) + 5n + 5$$
+	
+	$$n^{3} + 5n + 3n^{2} + 3n + 6$$
 A questo punto sappiamo che $n^3+5n$ è un multiplo di $6$ per l'ipotesi induttiva: quindi scriviamo $n^3+5n$ come $6m$
 	$$6m+3n^2+3n+6$$
 Sappiamo inoltre che $6$ è un multiplo di $6$ . ci rimane solo da dimostrare che $3n^2+3n$ sia un multiplo di 6
