@@ -46,8 +46,8 @@ Casi particolari
 
 ### Teorema di Bolzano o degli zeri di una funzione continua
 
-Una Funzione continua definita in un intervallo $[a,b]$ con $a<b$
-Se supponiamo che $f(a)$ e $f(b)$ siano di segno opposto allora esiste **almeno** un punto $c$ per cui $f(c) = 0$, Quindi la funzione passa per forza per $y = 0$ .
+Una Funzione continua definita in un intervallo $[a , b]$ con $a < b$ .
+Se supponiamo che $f(a)$ e $f(b)$ siano di segno opposto allora esiste **almeno** un punto $c$ per cui $f(c) = 0$ , Quindi la funzione passa per forza per $y = 0$ .
 
 ![](https://i.ibb.co/d5yY5yH/bolzano.png)
 
