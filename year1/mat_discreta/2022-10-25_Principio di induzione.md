@@ -1,4 +1,5 @@
-﻿# Principio di induzione
+﻿
+# Principio di induzione
 
 Il principio di induzione è una tecnica di dimostrazione di una proprietà sui numeri naturali $\mathbb{N}$ .
 Questa tecnica utilizza le leggi e le caratteristiche dei numeri naturali per dimostrare una proprietà per gli infiniti valori naturali.
@@ -22,9 +23,9 @@ Dimostrazione per induzione su $n$:
 	Sia $n \geq 0$, ipotizziamo che $P(n)$ sia vera (**ipotesi induttiva**) dimostriamo che anche $P(n+1)$ sia vera:
 	Quindi dimostriamo che $(n+1)^3 + 5(n+1)$ sia un multiplo di 6
 	$$(n + 1)^{3} + 5(n + 1)$$
-	
+
 	$$(n^{3} + 3n^{2} + 3n + 1) + 5n + 5$$
-	
+
 	$$n^{3} + 5n + 3n^{2} + 3n + 6$$
 A questo punto sappiamo che $n^3+5n$ è un multiplo di $6$ per l'ipotesi induttiva: quindi scriviamo $n^3+5n$ come $6m$
 	$$6m+3n^2+3n+6$$
@@ -71,7 +72,7 @@ come (nota il cambio sopra la sommatoria):
 
 $$= \sum_{k=0}^{n}(2k+1) + (2(n+1)+1)$$
 
-il primo pezzo: 
+il primo pezzo:
 
 $$\sum_{k=0}^{n}(2k+1)$$
 
@@ -79,8 +80,42 @@ sarà uguale a $(n+1)^2$ per ipotesi induttiva:
 
 $$(n+1)^2 + 2(n+1)+1$$
 
-È un quadrato perfetto che si può scrivere come: 
+È un quadrato perfetto che si può scrivere come:
 
 $$((n+1)+1)^2$$
 
 Quindi abbiamo dimostrato che è vera anche per $(n+1)$
+
+
+## Principio di induzione completa
+
+In alcune dimostrazione è più conveniente utilizzare il principio di induzione completa.
+Rappresenta sempre una tecnica per dimostrare una proprietà dei numeri naturali ma con una differenza, la dimostrazione vuole che:
+
+- Il caso base sia verificato
+- Se la proprietà è vera **per ogni numero minore** $n$ allora deve valere anche per $n+1$.
+
+Esempio
+
+Dimostrare che per ogni $n \in \mathbb{N}$ con $n \geq 2$ è scomponibile in fattori primi.
+
+Dimostrazione per induzione completa su $n$:
+
+**caso base**: $n = 2$
+
+$2 = 2$ dato che 2 è già un numero primo, il caso base è verificato.
+
+**passo induttivo**:
+
+supponiamo che tutti i valori compresi tra 2 e n siano scomponibili in fattori primi
+
+Quindi scriviamo **l'ipotesi induttiva** come $\forall x : 2 \leq x \leq n,$ è scomponibile in fattori primi.
+
+Vogliamo quindi dimostrare che anche $n+1$ è scomponibile in fattori primi
+
+Ci sono due casi possibili:
+
+1. $n+1$ è un numero primo, quindi la scomposizione è data dal numero stesso.
+2. $n+1$ non è un numero primo, ma in questo caso esistono due numeri il cui prodotto restituisce $n+1$ : $n+1 = y \cdot z$
+Ma $y$ e $z$ saranno compresi tra 2 e $n$ e di conseguenza per l'ipotesi induttiva sono scomponibili in fattori primi. Quindi anche il prodotto tra di loro restituirà un numero scomponibile in fattori primi, cioè $n+1$ .
+
