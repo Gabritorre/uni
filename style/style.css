@@ -6,8 +6,7 @@ body {
 	margin: 0px;
 	background-color:rgb(22, 27, 46);
 	color: rgb(184, 190, 197);
-	font-family: 'Work Sans', sans-serif;
-
+	font-family: 'Dosis', sans-serif;
 }
 
 .head {
@@ -26,16 +25,16 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin-bottom: 15px;
+	padding: 15px 0px;
 }
 
 #arguments-sep {
-	width: 95%;
+	width: 90%;
 	margin: auto;
 }
 
 .change-subject {
-	font-size: 16px;
+	font-size: 18px;
 	color: rgb(184, 190, 197);
 	padding: 0px 10px;
 }
@@ -71,19 +70,43 @@ button a {
 	color: rgb(184, 190, 197);
 	display:block;
 	padding: 10px;
+	font-family: 'Dosis', sans-serif;
+	font-weight: bold;
 }
 
 ul {
 	padding:0px;
 }
 
-li a {
-	color: red;
-	text-decoration: none;
+li {
+	margin: 5px;
+	font-size: 19px;
 }
 
-li a:hover {
-	color: green;
+li a {
+	text-decoration: none;
+	font-size: 19px;
+	font-weight: bold;
+	display: inline-block;
+	position: relative;
+	color: #1f8ec5;
+}
+
+li a:after {
+	content: '';
+	position: absolute;
+	width: 100%;
+	transform: scaleX(0);
+	height: 2px;
+	bottom: 0;
+	left: 0;
+	background-color: #25a4e4;
+	transform-origin: bottom right;
+	transition: transform 0.25s ease-out;
+}
+li a:hover:after {
+	transform: scaleX(1);
+	transform-origin: bottom left;
 }
 
 .subject-list {
@@ -93,6 +116,8 @@ li a:hover {
 }
 
 button {
+	font-family: 'Dosis', sans-serif;
+	font-weight: bold;
 	margin: 5px;
 	padding:1px;
 	background-color: rgb(40, 48, 80);
@@ -108,7 +133,7 @@ button {
 }
 
 
-button:hover {
+button:hover, button:focus {
 	box-shadow: inset 0 0 20px rgba(255, 255, 255, .5), 0 0 20px rgba(255, 255, 255, .2);
 	outline-color: rgba(255, 255, 255, 0);
 	outline-offset: 10px;
