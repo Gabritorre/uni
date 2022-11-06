@@ -5,12 +5,12 @@ let int_program = ["Introduzione a C"];
 let mat_base = ["Potenze e radici", "Grafici delle funzioni"];
 let mat_discreta = ["Introduzione", "Calcolo combinatorio", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione"];
 
-function prova(variable) {
-	console.log(variable);
+function show_arguments(subj) {
+	console.log(subj);
 	let argument_list = document.getElementById("arguments");
 	console.log(argument_list);
 	let selected_subject;
-	switch (variable) {
+	switch (subj) {
 		case "alg_lineare":
 			selected_subject = alg_lineare;
 			break;
@@ -32,10 +32,18 @@ function prova(variable) {
 		default:
 			break
 	}
-	
+
+
 	for (let i = 0; i < selected_subject.length; i++){
-		let el = document.createElement("li");
-		argument_list.append(el);
-		el.innerHTML = el.innerHTML + selected_subject[i];
+		let arg_link = document.createElement("a");
+		var link_text = document.createTextNode(selected_subject[i]);
+		let elem = document.createElement("li");
+		arg_link.appendChild(link_text);
+		arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
+		arg_link.target = "_blank";
+
+		
+		elem.appendChild(arg_link);
+		argument_list.append(elem);
 	}
 }

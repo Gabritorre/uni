@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-10-27_MIPS</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#mips">MIPS</a>
+<ul>
+<li><a href="#load-e-store">Load e Store</a></li>
+<li><a href="#istruzioni-di-controllo">Istruzioni di controllo</a></li>
+<li><a href="#formato-delle-istruzioni">Formato delle istruzioni</a></li>
+<li><a href="#operazioni-con-costanti">Operazioni con costanti</a></li>
+<li><a href="#operatori-logici">Operatori logici</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="mips">MIPS</h1>
+<p>MIPS è un processore il cui IS (instruction set) è risicato e permette di fare solo operazioni elementari (somma, differenza, prodotto, divisione) tra coppie di operandi (<strong>i registri</strong>) a 32 bit = 4byte = 1 word.</p>
+<p>I registri vengono riconosciuti dal $ che li precede, sono in totale 32 registri e sono contenuti nel <strong>Register File</strong> all’interno del processore.</p>
+<p>Le istruzioni sono composte da 3 operandi, es:</p>
+<pre><code>add $8, $9, $10
+</code></pre>
+<p>che corrisponde a:</p>
+<pre><code>A = B + C
+</code></pre>
+<p>A = $8<br>
+B = $9<br>
+C = $10</p>
+<p>In caso di somme tra più di due addendi vengono spezzate in più somme fatte da due addendi.</p>
+<h2 id="load-e-store">Load e Store</h2>
+<p>Sono istruzioni che permettono di passare da memoria principale a registri e vice versa:</p>
+<pre><code>- sw (store) serve per passare da registro a memoria principale
+- lw (load) serve per passare da memoria principale a registro
+</code></pre>
+<p><img src="https://i.ibb.co/zn4BbtM/array-sum.png" alt=""></p>
+<p>NOTA: lw è scritto come: “lw reg_destinazione, cella_partenza” mentre sw è scritto come “sw reg_partenza, cella_destinazione”.</p>
+<p>Se bisogna fare delle operazioni su degli array bisogna prima caricare (load) l’elemento interessato e poi rimetterlo in memoria (store) una volta fatta l’operazione.</p>
+<p>Avendo un array A[n] e parte dal registro $4 possiamo ottenere i suoi valori facendo:</p>
+<ul>
+<li>A[0] = 4*0($4) = 0($4) = $4</li>
+<li>A[1] = 4*1($4) = 4($4) = $4 + 4</li>
+<li>A[2] = 4*2($4) = 8($4) = $4 + 8</li>
+</ul>
+<p>In generale quindi</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi><mo stretchy="false">[</mo><mi>i</mi><mo stretchy="false">]</mo><mo>=</mo><mn>4</mn><mo>∗</mo><mi>i</mi><mo stretchy="false">(</mo><mi mathvariant="normal">$</mi><mn>4</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">A[i] = 4*i(\$4)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">A</span><span class="mopen">[</span><span class="mord mathnormal">i</span><span class="mclose">]</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">i</span><span class="mopen">(</span><span class="mord">$4</span><span class="mclose">)</span></span></span></span></span></span></p>
+<h2 id="istruzioni-di-controllo">Istruzioni di controllo</h2>
+<p>Sono istruzioni per che servono a prendere delle decisioni.</p>
+<h3 id="salto-condizionato">Salto condizionato</h3>
+<pre><code>beq $4, $5, &lt;Label_name&gt; (branch if equal)
+bne $4, $5, &lt;Label_name&gt;(branch if not equal)
+</code></pre>
+<p>Questi due comandi comparano i contenuti di due registri e nel caso la condizione sia vera “saltano” ad una parte di codice riconosciuta da una <strong>Label</strong></p>
+<h3 id="salto-non-condizionato">Salto non condizionato</h3>
+<pre><code>j &lt;Label_name&gt;
+</code></pre>
+<p>“Salta” alla Label in ogni caso, senza fare nessun confronto.</p>
+<h3 id="confronto-di-minore">Confronto di minore</h3>
+<pre><code>slt $10, $4, $5(set if less than)
+</code></pre>
+<p>vengono comparati i contenuti dei registri $4 e $5 e se il primo è minore del secondo allora nel registro $10 verrà messo 1 altrimenti verrà messo 0.</p>
+<h2 id="formato-delle-istruzioni">Formato delle istruzioni</h2>
+<p>Le istruzioni del MIPS sono formate da 32bit:<br>
+le istruzioni aritmetico-logiche (tra cui “slt”) utilizzano il formato <strong>R-type</strong>, mentre le istruzioni come lw, sw, neq e bnq utilizzano il formato <strong>I-type</strong>.</p>
+<h3 id="r-type">R-Type</h3>
+<p><img src="https://i.ibb.co/rtpK2Xd/r-type.png" alt=""></p>
+<h3 id="i-type">I-Type</h3>
+<p><img src="https://i.ibb.co/dDbR05V/i-type.png" alt=""></p>
+<h3 id="j-type">J-Type</h3>
+<p>Usato dal comando “j”, viene inserito l’indirizzo di memoria di 26 bit dove saltare.</p>
+<p><img src="https://i.ibb.co/fMNjzHz/jtype.png" alt=""></p>
+<h2 id="operazioni-con-costanti">Operazioni con costanti</h2>
+<p>basta scrivere i comandi seguiti da una “i” alla fine. es:</p>
+<pre><code>addi $29, $29, 4 	(sommare al reg. $29 la costante 4)
+</code></pre>
+<h2 id="operatori-logici">Operatori logici</h2>
+<p>é possibile svolgere anche operazioni logiche base:</p>
+<pre><code>and $5, $1, $2
+or $6, $3, $4
+</code></pre>
+<p>viene fatto l’and o l’or logico tra i bit del contenuto dei registri.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

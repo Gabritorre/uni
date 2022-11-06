@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Introduzione a C</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione-a-c">Introduzione a C</a>
+<ul>
+<li><a href="#variabili">Variabili</a></li>
+<li><a href="#tipi-di-dato">Tipi di dato</a></li>
+<li><a href="#operatori">Operatori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione-a-c">Introduzione a C</h1>
+<p><strong>Programmare</strong> significa scrivere dei programmi in un linguaggio di programmazione, i programmi sono una sequenza di istruzioni utili a raggiungere un determinato obiettivo.</p>
+<p>I linguaggi di programmazione si dividono in:</p>
+<ul>
+<li>
+<p>Linguaggi Imperativi: i quali definiscono esplicitamente un algoritmo per conseguire uno scopo (i classici linguaggi: C, Java, Python).</p>
+</li>
+<li>
+<p>Linguaggi Dichiarativi: i quali definiscono solo lo scopo da raggiungere (SQL: un select restituisce un risultato ma non il come ha fatto a ottenere quel risultato).</p>
+</li>
+</ul>
+<p>In C sono presenti 6 tipi di <strong>token</strong>, cioè degli elementi fondamentali per costruire dei programmi che il compilatore riesce a riconoscere.</p>
+<ol>
+<li>Keywords (parole chiave): for, while, if, …</li>
+<li>Identifier (identificatore): nomi di variabili, di funzioni, …</li>
+<li>Operators (operatori): +, ++, -, *, …</li>
+<li>Special symbols (separatori): ‘;’, ', ', ‘:’, (), [] …</li>
+<li>Strings (stringhe): vettori di caratteri</li>
+<li>Constants (costanti): numeri, double, float, char, …</li>
+</ol>
+<h2 id="variabili">Variabili</h2>
+<p>I valori in memoria vengono memorizzati in binario, e in base al tipo di variabile che vogliamo possiamo allocare una determinata quantità di bit in memoria per la nostra variabile.</p>
+<p>Una variabile è un’informazione salvata in memoria e possiede:</p>
+<ul>
+<li>Un tipo: che stabilisce quanta memoria allocare, le operazioni che si possono fare e la codifica utilizzata per salvare la variabile. Es. int, long, char, …</li>
+<li>Un identificatore: un nome che serve a riconoscere la variabile dalle altre e che attraverso esso possiamo accedere al suo valore in memoria.</li>
+<li>Un valore</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Quando si creano le variabili è possibile eseguire diverse azioni:</p>
+<ul>
+<li>Dichiarazione: si intende creare lo spazio in memoria per una variabile.</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Inizializzazione: si intende creare lo spazio in memoria e assegnare il primo valore alla variabile.</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Assegnamento: si intende assegnare un valore ad una variabile creata in precedenza.</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+a <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="tipi-di-dato">Tipi di dato</h2>
+
+<table>
+<thead>
+<tr>
+<th>nome</th>
+<th>bit</th>
+<th>range</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>char</td>
+<td>8</td>
+<td>da -128 a 127</td>
+</tr>
+<tr>
+<td>signed char</td>
+<td>8</td>
+<td>da -128 a 127</td>
+</tr>
+<tr>
+<td>unsigned char</td>
+<td>8</td>
+<td>da 0 a 255</td>
+</tr>
+<tr>
+<td>short (int)</td>
+<td>16</td>
+<td>da -32768 a 32767</td>
+</tr>
+<tr>
+<td>unsigned short (int)</td>
+<td>16</td>
+<td>da 0 a 65535</td>
+</tr>
+<tr>
+<td>int</td>
+<td>32</td>
+<td>da ~-2 miliardi a ~2 miliardi</td>
+</tr>
+<tr>
+<td>unsigned (int)</td>
+<td>32</td>
+<td>da 0 a ~4 miliardi</td>
+</tr>
+<tr>
+<td>long</td>
+<td>64</td>
+<td>da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><msup><mn>2</mn><mn>63</mn></msup></mrow><annotation encoding="application/x-tex">-2^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.897438em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">63</span></span></span></span></span></span></span></span></span></span></span></span></span> a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>63</mn></msup></mrow><annotation encoding="application/x-tex">2 ^{63}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">63</span></span></span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+<tr>
+<td>unsigned long</td>
+<td>64</td>
+<td>da 0 a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>64</mn></msup></mrow><annotation encoding="application/x-tex">2^{64}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">64</span></span></span></span></span></span></span></span></span></span></span></span></span>-1</td>
+</tr>
+<tr>
+<td>float</td>
+<td>32</td>
+<td>da -3.40 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>38</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\cdot 10^{-38}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">⋅</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">38</span></span></span></span></span></span></span></span></span></span></span></span></span> a 3.40 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>38</mn></msup></mrow><annotation encoding="application/x-tex">\cdot 10^{38}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">⋅</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">38</span></span></span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+<tr>
+<td>double</td>
+<td>64</td>
+<td>da -1.7 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mrow><mo>−</mo><mn>308</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\cdot 10^{-308}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">⋅</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mtight">308</span></span></span></span></span></span></span></span></span></span></span></span></span> a 1.7 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mn>308</mn></msup></mrow><annotation encoding="application/x-tex">\cdot 10^{308}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">⋅</span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">308</span></span></span></span></span></span></span></span></span></span></span></span></span></td>
+</tr>
+</tbody>
+</table><h2 id="operatori">Operatori</h2>
+<h3 id="operatori-aritmetici">Operatori aritmetici:</h3>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo></mrow><annotation encoding="application/x-tex">+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">+</span></span></span></span></span> Addizione</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo></mrow><annotation encoding="application/x-tex">-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">−</span></span></span></span></span> Sottrazione</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∗</mo></mrow><annotation encoding="application/x-tex">*</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord">∗</span></span></span></span></span> Moltiplicazione</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">/</mi></mrow><annotation encoding="application/x-tex">/</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">/</span></span></span></span></span> Divisione</li>
+<li>% Modulo (resto della divisione)</li>
+</ul>
+<h3 id="operatori-incremento-e-decremento">Operatori incremento e decremento:</h3>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mo>+</mo></mrow><annotation encoding="application/x-tex">++</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">+</span><span class="mord">+</span></span></span></span></span> Incremento<pre class=" language-c"><code class="prism  language-c">a<span class="token operator">++</span> <span class="token comment">//post-increment</span>
+<span class="token operator">++</span>a <span class="token comment">//pre-increment</span>
+</code></pre>
+</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mo>−</mo></mrow><annotation encoding="application/x-tex">--</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord">−</span></span></span></span></span> Decremento<pre class=" language-c"><code class="prism  language-c">a<span class="token operator">--</span> <span class="token comment">//post-decrement</span>
+<span class="token operator">--</span>a <span class="token comment">//pre-decrement</span>
+</code></pre>
+</li>
+</ul>
+<h3 id="operatori-di-assegnamento">Operatori di assegnamento:</h3>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo></mrow><annotation encoding="application/x-tex">=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">=</span> y
+</code></pre>
+</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>+</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">+=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">+</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">+</span><span class="token operator">=</span> y <span class="token comment">// equivalente a x = x + y</span>
+</code></pre>
+</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">-=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">-</span><span class="token operator">=</span> y <span class="token comment">// equivalente a x = x - y</span>
+</code></pre>
+</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∗</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">*=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord">∗</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">*</span><span class="token operator">=</span> y <span class="token comment">// equivalente a x = x * y</span>
+</code></pre>
+</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">/</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">/=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">/</span><span class="token operator">=</span> y <span class="token comment">// equivalente a x = x / y</span>
+</code></pre>
+</li>
+<li>% <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo></mrow><annotation encoding="application/x-tex">=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">=</span></span></span></span></span><pre class=" language-c"><code class="prism  language-c">x <span class="token operator">%</span><span class="token operator">=</span> y <span class="token comment">// equivalente a x = x % y</span>
+</code></pre>
+</li>
+</ul>
+<h3 id="operatori-di-relazione">Operatori di relazione:</h3>
+<p>Operazioni che restituiscono vero o falso</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">==</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">==</span></span></span></span></span> uguale a</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">&gt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">&gt;</span></span></span></span></span> maggiore di</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&gt;</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">&gt;=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">&gt;=</span></span></span></span></span> maggiore uguale a</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo></mrow><annotation encoding="application/x-tex">&lt;</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">&lt;</span></span></span></span></span> minore di</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>&lt;</mo><mo>=</mo></mrow><annotation encoding="application/x-tex">&lt;=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mrel">&lt;=</span></span></span></span></span> minore uguale a</li>
+<li>! <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo></mrow><annotation encoding="application/x-tex">=</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">=</span></span></span></span></span> diverso da</li>
+</ul>
+<h3 id="operatori-logici">Operatori logici:</h3>
+<ul>
+<li>&amp;&amp; ‘e’ logico, vero se tutti gli operandi sono veri</li>
+<li>|| ‘o’ logico, vero se almeno uno degli operandi è vero</li>
+<li>! ‘non’ logico, vero se l’operando è falso</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

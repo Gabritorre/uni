@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-09-20_Il computer</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#il-computer">Il computer</a>
+<ul>
+<li><a href="#astrazione">Astrazione</a></li>
+<li><a href="#software">Software</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="il-computer">Il computer</h1>
+<p>Le macchine moderne sono basate sulla macchina di Von Neumann formata da:<br>
+<img src="https://i.ibb.co/wLSs9J6/von-neamann.png" alt=""></p>
+<ul>
+<li>
+<p><strong>CPU</strong>: è la parte elaborativi divisa in più parti:</p>
+<ul>
+<li>
+<p>La CU (control unit): coordina tutte le operazioni che deve svolgere la CPU.</p>
+</li>
+<li>
+<p>La ALU (Arithmetic Logic Unit): è la parte che svolge effettivamente le operazioni.</p>
+<p>Il processore esegue le operazione che sono scritte in modo a lui comprensibile: possiede quindi un ISA (Instruction Set Architecture) cioè un insieme di istruzione povere che il processore è in grado di comprendere.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Memoria</strong>: Indica la memoria RAM, cioè quel posto dove sono presenti i dati che il processore sta lavorando.<br>
+Si tratta di una memoria volatile, per cui una volta tolta l’alimentazione tutti i dati al suo interno vengono persi.</p>
+</li>
+<li>
+<p><strong>Intput / Output</strong>: periferiche e dispositivi che possono interagire con l’esterno e che quindi possono ottenere o inserire dei dati: tastiera, dischi fissi, rete, stampante, CD, ecc…</p>
+</li>
+<li>
+<p><strong>Bus</strong>: canale di comunicazione che permette di trasferire i dati fra i diversi componenti dell’elaboratore. Sono di tre tipi: address bus, control bus e data bus.</p>
+</li>
+</ul>
+<p>Oltre a CPU, RAM, periferiche di I/O un computer è formato da:</p>
+<ul>
+<li>Motherboard (con i relativi bus e porte per la connettività (ethernet, USB, ecc…))</li>
+<li>Alimentatore</li>
+<li>Disco di archiviazione (HDD o SSD). A differenza della memoria RAM questi non sono volatili per cui mantengono i dati nel tempo anche senza alimentazione, d’altra parte sono molto più lenti di una memoria RAM.</li>
+</ul>
+<p>Ed altre componenti opzionali:</p>
+<ul>
+<li>Scheda video</li>
+<li>Scheda di rete</li>
+<li>Scheda audio</li>
+<li>Case</li>
+<li>Lettore disco</li>
+</ul>
+<h2 id="astrazione">Astrazione</h2>
+<p>l’Astrazione è un concetto che serve a semplificare l’utilizzo del computer agli utenti: cioè dato che un computer è formato e funziona attraverso meccanismi molto complessi, una persona per poter utilizzare il computer non deve per forza conoscere questi complessi meccanismi.</p>
+<p>L’utente deve vedere il computer come una entità unica rispetto a vederlo come un insieme di componenti connessi tra loro.</p>
+<p>L’interfaccia grafica è il livello di astrazione più esterno.</p>
+<p>L’astrazione ha lo svantaggio di omettere alcuni dettagli nella fase di semplificazione.</p>
+<h3 id="livelli-di-astrazione">Livelli di astrazione</h3>
+
+<table>
+<thead>
+<tr>
+<th>lv.</th>
+<th>nome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>4</td>
+<td>Linguaggi ad alto livello</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Assembler</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Sistema operativo</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Linguaggio macchina</td>
+</tr>
+<tr>
+<td>0</td>
+<td>hardware / firmware</td>
+</tr>
+</tbody>
+</table><p>Le istruzione scritte in un linguaggio ad alto livello possono essere tradotti in linguaggio assembler il quale ha un corrispettivo diretto con il linguaggio macchina (i bit).</p>
+<p>Quando un codice viene compilato da un compilatore si passa subito da linguaggio ad alto livello a linguaggio macchina (il codice eseguibile).</p>
+<h4 id="il-livello-hardware-e-firmware">Il livello hardware e firmware</h4>
+<p>Le sequenze di bit vengono interpretate dai dispositivi hardware come impulsi elettrici (1 = acceso, corrente passa, 0 = spento, corrente non passa), attraverso questo meccanismo è possibile fare operazioni e salvare dati in memoria.</p>
+<p>Il firmware si occupa di interpretare ed eseguire le sequenze del l’ISA (livello superiore)</p>
+<h4 id="il-livello-linguaggio-macchina">Il livello linguaggio macchina</h4>
+<p>Sono un insieme di istruzioni facilmente interpretabili per il processore e spesso sono diverse da processore a processore.<br>
+Sono sostanzialmente stringhe di bit ben organizzate in <strong>codici</strong> e <strong>operandi</strong>:</p>
+<ul>
+<li>I codici sono le operazioni base da eseguire.</li>
+<li>Gli operandi sono le zone di memoria su cui le operazione lavorano.</li>
+</ul>
+<h4 id="il-livello-assembler">Il livello assembler</h4>
+<p>Offre una visione più comprensibile all’uomo del linguaggio macchina: le stringhe di bit vengono convertite in istruzioni scritte in modo comprensibile e sensato.</p>
+<p>L’assemblatore è un software che si occupa di tradurre da linguaggio macchina (binario) ad un linguaggio più comprensibile.</p>
+<h4 id="il-livello-linguaggi-ad-alto-livello">Il livello linguaggi ad alto livello</h4>
+<p>Sono l’insieme di tutti i linguaggi più utilizzati ad oggi per produrre software, con istruzioni più intuitive e semplici per l’uomo.</p>
+<p>É necessario un compilatore o un interprete per convertire il codice in linguaggio macchina.</p>
+<h2 id="software">Software</h2>
+<p>Il software è tutto ciò che fa parte del computer e che non è tangibile.<br>
+Esistono <strong>software di sistema</strong> che permettono il funzionamento base del computer, ma la maggior parte sono <strong>software applicativi</strong> che permettono al computer di fare le più svariate operazioni.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
