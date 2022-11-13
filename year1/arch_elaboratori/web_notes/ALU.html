@@ -19,6 +19,7 @@
 <li><a href="#circuito-somma-di-una-alu-ad-1-bit">circuito somma di una ALU ad 1-bit</a></li>
 <li><a href="#sottrazione">Sottrazione</a></li>
 <li><a href="#nor">NOR</a></li>
+<li><a href="#istruzioni-di-confronto">Istruzioni di confronto</a></li>
 </ul>
 </li>
 </ul>
@@ -100,13 +101,14 @@
 </tbody>
 </table><p>Lo xor viene rappresentato con la seguente porta logica:</p>
 <p><img src="https://i.ibb.co/LZVLPX2/xor.png" alt=""></p>
+<p>NB: Le somme vengono fatte da destra verso sinistra (come le somme fatte su carta)</p>
 <h2 id="circuito-somma-di-una-alu-ad-1-bit">circuito somma di una ALU ad 1-bit</h2>
 <p><img src="https://i.ibb.co/PWsQSZT/1bitalu.png" alt=""></p>
 <p>Si hanno 3 valori in input: il bit A, il bit B e il bit Rip, il bit Rip è il riporto che in questo caso sarà ad 0 dato che il riporto ha senso di esistere sono in somme tra più di un bit.</p>
 <p>Si hanno 2 valori in output. il bit Sum, derivato dallo somma e il riporto in uscita.</p>
 <p>La ALU però può fare contemporaneamente anche l’AND e l’OR tra i due input e quindi è necessario un multiplexer per decidere quale operazione mandare in output</p>
 <p><img src="https://i.ibb.co/NsP7N8r/alugrande.png" alt=""></p>
-<p>Una ALU più reale a 32-bit è composta quest’ultimo circuito affiancato ad altri:</p>
+<p>Una ALU più reale a 32-bit è composta quest’ultimo circuito affiancato ad altri. La prima 1-bit ALU lavora sul bit più a destra e man mano si arriva alla 1-bit ALU che lavora sui bit più a sinistra (Quelli più significativi).</p>
 <p><img src="https://i.ibb.co/KyCwcL3/32alu.png" alt=""></p>
 <p>Qui si nota l’importanza del riporto in output che corrisponde al riporto in input per il bit successivo.</p>
 <h2 id="sottrazione">Sottrazione</h2>
@@ -116,6 +118,124 @@
 <p>é possibile implementare anche una porta NOR senza inserire una nuova porta.</p>
 <p>per fare ciò dobbiamo poter avere sia a che b negati, ma dato che b potevamo già averlo negato per la sottrazione basta fare lo stesso con a:</p>
 <p><img src="https://i.ibb.co/4Z8CWtF/noralu.png" alt=""></p>
+<h2 id="istruzioni-di-confronto">Istruzioni di confronto</h2>
+<p><strong>slt</strong> (<em>set less than</em>): per fare questa operazione è necessario aggiungere un ingresso in più nell’ALU, In questo ingresso verrà dato 0 o 1 in base al risultato dell’istruzione <strong>slt</strong> (1 se è vero, 0 se è falso).</p>
+<p>Per effettuare il confronto si fa la <strong>sottrazione</strong>, e dopo aver verificato che non è presente overflow, si mette il <strong>bit di segno</strong> (quello più a sinistra) nella posizione meno significativa (quella più a destra) e tutti gli altri bit vanno a 0.</p>
+<p>Quindi la nostra ALU risulterà così:</p>
+<p><img src="https://i.ibb.co/5F2KCvq/alugrande.png" alt=""></p>
+<p>l’<strong>Overflow detection</strong> prende in input <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">a</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">-b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77777em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord mathnormal">b</span></span></span></span></span> (di cui gli interessa il segno), prende il Binvert per sapere di star facendo una sottrazione, il resto della somma e il risultato della somma (di cui gli interessa il segno).</p>
+<p>Restituisce in output la presenza o meno di overflow e restituisce anche <em>Set</em> cioè il bit di segno della sottrazione, Questo output (<em>Set</em>) andrà ridiretto verso la 1-bit ALU che lavora sui bit meno significativi (cioè la prima 1-bit ALU).</p>
+<p>Quindi avremo che l’ultima 1-bit ALU ridirige il <em>Set</em> sulla prima 1-bit ALU.</p>
+<p><img src="https://i.ibb.co/BzvTvY4/alucomplessiva.png" alt=""></p>
+<p>Possiamo riassumere le combinazione dei vari input nelle relative istruzioni in questa tabella:</p>
+
+<table>
+<thead>
+<tr>
+<th>Ainvert</th>
+<th>Binvert</th>
+<th>CarryIn</th>
+<th>Operation</th>
+<th>Istruzione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>00</td>
+<td><strong>and</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>01</td>
+<td><strong>or</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+<td><strong>sum</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>10</td>
+<td><strong>sub</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td>11</td>
+<td><strong>slt</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>X</td>
+<td>00</td>
+<td><strong>nor</strong></td>
+</tr>
+</tbody>
+</table><p>Notiamo però che <em>Binvert</em> e <em>CarryIn</em> hanno gli stessi valori e quindi possiamo metterli insieme in un campo chiamato <strong>Bnegate</strong></p>
+
+<table>
+<thead>
+<tr>
+<th>Ainvert</th>
+<th>Bnegate</th>
+<th>Operation</th>
+<th>Istruzione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>00</td>
+<td><strong>and</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>01</td>
+<td><strong>or</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>10</td>
+<td><strong>sum</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>10</td>
+<td><strong>sub</strong></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>11</td>
+<td><strong>slt</strong></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>00</td>
+<td><strong>nor</strong></td>
+</tr>
+</tbody>
+</table><p>Possiamo aggiungere anche i salti condizionati <em>beq</em> e <em>bne</em> controllando se <em>a=b</em> oppure se sono diversi: Zero = 1 quando sono uguali, altrimenti Zero = 0.</p>
+<p><img src="https://i.ibb.co/84gQ8CS/alufinale.png" alt=""></p>
+<p>La ALU viene rappresentata con il seguente modo:</p>
+<p><img src="https://i.ibb.co/RBhKJmL/alu-normale.png" alt=""></p>
 
     </div>
   </div>
