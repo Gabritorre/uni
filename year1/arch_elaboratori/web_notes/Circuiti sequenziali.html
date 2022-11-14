@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-11-08_Circuiti sequenziali</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#circuiti-sequenziali">Circuiti sequenziali</a>
+<ul>
+<li><a href="#s-r-latch">S-R latch</a></li>
+<li><a href="#clock">Clock</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="circuiti-sequenziali">Circuiti sequenziali</h1>
+<p>I circuiti sequenziali a differenza di quelli combinatori sono in grado di calcolare funzioni che dipendono anche dallo stato della memoria.</p>
+<p>Questi circuiti fanno uso di <strong>latch</strong> cioè un elemento (composto da porte logiche) in grado di memorizzare un singolo bit</p>
+<h2 id="s-r-latch">S-R latch</h2>
+<p>S-R latch è un circuito composto da due porte NOR concatenate.</p>
+<ul>
+<li>S sta per <em>set</em> e serve a settare l’uscita su 1</li>
+<li>R sta per <em>reset</em> e serve per settare l’uscita su 0</li>
+</ul>
+<p>l’output cambia anche ricevendo in input gli stessi valori:</p>
+<p><img src="https://i.ibb.co/MNdKvBp/srlatch.png" alt=""></p>
+<p>il latch di sinistra memorizza il valore 0 mentre quello di destra memorizza il valore 1.</p>
+<h2 id="clock">Clock</h2>
+<p>Non bisogna abilitare sia il set che il reset insieme.</p>
+<p>per questo viene introdotto il <strong>clock</strong> cioè un intervallo di tempo che i circuiti utilizzano per sincronizzarsi. Il clock determina quindi il ritmo dei calcoli e delle operazioni di memorizzazione.</p>
+<p>Il clock si misura in Hz (cicli al secondo)</p>
+<p>Circuito con l’utilizzo del clock</p>
+<p><img src="https://i.ibb.co/Kr1Scxj/dlatch.png" alt=""></p>
+<p>C corrisponde al <em>clock</em></p>
+<p>D=1 corrisponde al <em>set</em></p>
+<p>D=0 corrisponde al <em>reset</em></p>
+<p>Grazie alle due porte AND i segnali di <em>set</em> o <em>reset</em> solo quando il clock è acceso.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
