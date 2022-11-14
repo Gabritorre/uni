@@ -1,0 +1,79 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-11-08_Moltiplicazione e divisione tra interi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#moltiplicazione-e-divisione-tra-interi">Moltiplicazione e divisione tra interi</a>
+<ul>
+<li><a href="#moltiplicazione-in-binario">moltiplicazione in binario</a></li>
+<li><a href="#divisione">Divisione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="moltiplicazione-e-divisione-tra-interi">Moltiplicazione e divisione tra interi</h1>
+<h2 id="moltiplicazione-in-binario">moltiplicazione in binario</h2>
+<p>Utilizzando il metodo “carta e penna” abbiamo che la moltiplicazione in binario si svolge nel seguente modo:</p>
+<p><img src="https://i.ibb.co/Zcxz8HY/molt-bin.png" alt=""></p>
+<p>Abbiamo quindi che per rappresentare la moltiplicazione di n bit ci servono il doppio dei bit (4 bit del moltiplicando, 3 (4 mettendo uno zero a sinistra) bit del moltiplicatore) <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> 8 bit per rappresentare il risultato.</p>
+<h3 id="metodo-1">Metodo 1</h3>
+<p>È possibile implementare in circuito che svolge la moltiplicazione utilizzando una ALU a 64bit e shiftando il <strong>moltiplicando a sinistra</strong> e il <strong>moltiplicatore a destra</strong>, per poi sommare il prodotto e il moltiplicando ad ogni passaggio.</p>
+<h3 id="metodo-2">Metodo 2</h3>
+<p>È possibile implementare in circuito che svolge la moltiplicazione utilizzando una ALU a 32bit shiftando il <strong>moltiplicatore e il prodotto a destra</strong>, per poi sommare il prodotto e il moltiplicando ad ogni passaggio.</p>
+<h3 id="metodo-3">Metodo 3</h3>
+<p>In questo metodo viene memorizzato il moltiplicatore nella parte più a sinistra del prodotto, 	il <strong>prodotto</strong> viene <strong>shiftato a destra</strong> e viene sommato il moltiplicando con i bit della metà di sinistra del prodotto.</p>
+<h3 id="segno-della-moltiplicazione">Segno della moltiplicazione</h3>
+<p>Per gestire il segno della moltiplicazione conviene:</p>
+<ol>
+<li>Convertire moltiplicando e moltiplicatore in numeri positivi</li>
+<li>Eseguire la moltiplicazione</li>
+<li>Decidere il segno del risultato utilizzando la regola dei segni (negativo se il segno di moltiplicando e moltiplicatore sono discordi) (fare il complemento a 2 se il risultato è negativo)</li>
+</ol>
+<h2 id="divisione">Divisione</h2>
+<p>Utilizzando il metodo “carta e penna” abbiamo che la divisione in binario si svolge nel seguente modo:</p>
+<p><img src="https://i.ibb.co/QYh40sj/div-bin.png" alt=""></p>
+<p>supponendo di dividere interi su 4 bit.<br>
+L’algoritmo memorizza</p>
+<ul>
+<li>Il <strong>quoziente</strong> su un registro a 4 bit</li>
+<li>Il <strong>divisore</strong> nella metà sinistra di un registro ad 8 bit</li>
+<li>Il <strong>resto</strong> su un registro ad 8 bit che viene inizializzato con il valore del <strong>dividendo</strong></li>
+</ul>
+<p>Ad ogni passo si effettua la sottrazione tra dividendo e divisore e si controlla il segno del risultato. Poiché il dividendo è memorizzato nel registro del resto la sottrazione da effettuare è in realtà <strong>resto – divisore</strong> e il risultato viene messo in <strong>resto</strong>.</p>
+<p>Ad ogni passo si esegue lo shift a dx di una posizione del divisore</p>
+<p>Questo viene fatto per capire quando il divisore è più piccolo della parte considerata del dividendo.</p>
+<ul>
+<li>Se il segno della sottrazione è positivo viene <strong>shiftato a sinistra il quoziente</strong> e viene inserito 1</li>
+<li>Se il segno della sottrazione è negativo viene <strong>shiftato a sinistra il quoziente</strong> e viene inserito 0, inoltre ripristino il valore precedente del resto</li>
+</ul>
+<h3 id="altro-metodo">altro metodo</h3>
+<p>Esiste un metodo che semplifica il circuito e che utilizza una ALU a 32 bit (rispetto a 64 bit del precedente metodo), in cui il resto viene shiftato a sinistra e il divisore viene sottratto solo dalla metà sinistra del registro del resto</p>
+<h3 id="segno-della-divisione">Segno della divisione</h3>
+<p>Anche in questo caso conviene:</p>
+<ol>
+<li>convertire dividendo e divisore in numeri positivi</li>
+<li>eseguire la divisione lasciando fuori i bit di segno</li>
+<li>utilizzare la regola dei segni per stabilire il segno del risultato (negativo se il segno di dividendo e divisore sono discordi)</li>
+</ol>
+<h3 id="segno-del-resto">Segno del resto</h3>
+<p>In breve il <strong>segno del resto</strong> deve essere <strong>uguale</strong> al <strong>segno del dividendo</strong></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
