@@ -3,7 +3,7 @@ let arch_elaboratori = ["Il computer", "Rappresentazione informazioni", "Algebra
 let calcolo1 = ["Insiemistica", "Insieme R", "Funzioni", "Funzioni elementari", "Limiti", "Funzioni continue", "Derivate"];
 let int_program = ["Introduzione a C"];
 let mat_base = ["Potenze e radici", "Grafici delle funzioni"];
-let mat_discreta = ["Introduzione", "Calcolo combinatorio", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione"];
+let mat_discreta = ["Introduzione", "Calcolo combinatorio", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Aritmetica modulare"];
 
 function show_arguments(subj) {
 	console.log(subj);
