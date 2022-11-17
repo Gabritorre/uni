@@ -1,4 +1,4 @@
-let alg_lineare = ["Numeri complessi", "Vettori", "Sistemi lineari", "Matrici", "Grafi"];
+let alg_lineare = ["Numeri complessi", "Vettori", "Sistemi lineari", "Matrici", "Grafi", "Spazi vettoriali"];
 let arch_elaboratori = ["Il computer", "Rappresentazione informazioni", "Algebra booleana", "Circuiti logici", "MIPS", "ALU", "Moltiplicazione e divisione tra interi", "Circuiti sequenziali"];
 let calcolo1 = ["Insiemistica", "Insieme R", "Funzioni", "Funzioni elementari", "Limiti", "Funzioni continue", "Derivate"];
 let int_program = ["Introduzione a C"];
