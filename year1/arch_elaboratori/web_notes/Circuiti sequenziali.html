@@ -17,6 +17,10 @@
 <ul>
 <li><a href="#s-r-latch">S-R latch</a></li>
 <li><a href="#clock">Clock</a></li>
+<li><a href="#flip-flop-semplice-con-generatore-di-impulsi">Flip-flop semplice con generatore di impulsi</a></li>
+<li><a href="#circuito-sequenziale-sincrono">Circuito sequenziale sincrono</a></li>
+<li><a href="#register-file">Register file</a></li>
+<li><a href="#memoria-principale-ram">Memoria principale (RAM)</a></li>
 </ul>
 </li>
 </ul>
@@ -41,12 +45,90 @@
 <p>Non bisogna abilitare sia il set che il reset insieme.</p>
 <p>per questo viene introdotto il <strong>clock</strong> cioè un intervallo di tempo che i circuiti utilizzano per sincronizzarsi. Il clock determina quindi il ritmo dei calcoli e delle operazioni di memorizzazione.</p>
 <p>Il clock si misura in Hz (cicli al secondo)</p>
-<p>Circuito con l’utilizzo del clock</p>
+<p>Circuito con l’utilizzo del clock (<strong>D-latch</strong>)</p>
 <p><img src="https://i.ibb.co/Kr1Scxj/dlatch.png" alt=""></p>
-<p>C corrisponde al <em>clock</em></p>
-<p>D=1 corrisponde al <em>set</em></p>
-<p>D=0 corrisponde al <em>reset</em></p>
+<ul>
+<li>C corrisponde al <em>clock</em></li>
+<li>D=1 corrisponde al <em>set</em></li>
+<li>D=0 corrisponde al <em>reset</em></li>
+</ul>
 <p>Grazie alle due porte AND i segnali di <em>set</em> o <em>reset</em> solo quando il clock è acceso.</p>
+<p>Utilizzando questo metodo però è possibile che si verifichino dei <em>glitch</em> (valori che cambiano durante il clock alto) dati dai vari ritardi dei segnali che devono attraversare le porte.</p>
+<h3 id="timing">Timing</h3>
+<p>Si possono progettare diversi circuiti di memoria in base a quando si vuole memorizzare il dato:</p>
+<ul>
+<li><strong>level-triggered methodology</strong>: la memorizzazione avviene su livello alto o basso del clock (D-latch)</li>
+<li><strong>edge-triggered methodology</strong>: la memorizzazione avviene durante la salita o discesa del clock (flip-flop)</li>
+</ul>
+<h2 id="flip-flop-semplice-con-generatore-di-impulsi">Flip-flop semplice con generatore di impulsi</h2>
+<h3 id="generatore-di-impulsi">Generatore di impulsi</h3>
+<p>Come dice il nome stesso si tratta di un circuito che genera degli impulsi in corrispondenza della salita del segnale di interesse.</p>
+<p><img src="https://i.ibb.co/2sFg4Mw/gen-imp.png" alt=""></p>
+<p>Questo svolgerà il ruolo del clock nel flip-flop.</p>
+<h3 id="flip-flop-semplice">Flip-flop semplice</h3>
+<p><img src="https://i.ibb.co/2YS1MHH/flip-flop-semp.png" alt=""></p>
+<p>problema: la brevità del segnale non permette di percorrere tutti il circuito combinatorio per poi ritornare al flip-flop</p>
+<h3 id="flip-flop-complesso-d-flip-flop">Flip-flop complesso (D flip-flop)</h3>
+<p>Questo tipo di flip-flop viene realizzato mettendo il serie due D-latch (<em>master</em> e <em>slave</em>). Rispetto al flip-flop semplice questo memorizza quando il clock “scende” e non quando “sale”</p>
+<p><img src="https://i.ibb.co/ZhLB8H8/dflip-flop.png" alt=""></p>
+<p>Quindi quando il clock diventa alto il primo D-latch memorizza il valore di Q’ e solo quando il clock scende il secondo D-latch può ricevere in input Q’ e far uscire Q.</p>
+<h2 id="circuito-sequenziale-sincrono">Circuito sequenziale sincrono</h2>
+<p>Si tratta di un <strong>blocco logico</strong> composto da circuiti combinatori (che si occupano di calcolare l’output e i valori da memorizzare) e elementi di memoria (flip-flop)</p>
+<p><img src="https://i.ibb.co/QNbLs7x/circ-seq-sinc.png" alt=""></p>
+<h3 id="tipi-di-circuito">Tipi di circuito</h3>
+<ul>
+<li>
+<p>Ciruito sequenziale di <strong>Mealy</strong></p>
+<p>In cui l’ouput dipende da: input e stato</p>
+</li>
+<li>
+<p>Circuito sequenziale di <strong>Moore</strong></p>
+<p>In cui l’output dipende solo dallo stato.</p>
+</li>
+</ul>
+<h2 id="register-file">Register file</h2>
+<p>Il <strong>Register File</strong> è un componente della CPU in cui sono presenti i registri che il processore utilizza per svolgere le sue operazioni</p>
+<p>ogni registro è costituito da più flip-flop (32 nel caso del MIPS)</p>
+<p>Il Register File del MIPS contiene in totale 32 registri</p>
+<p><img src="https://i.ibb.co/hc0GLSn/register-file.png" alt=""></p>
+<ul>
+<li>Read register number 1: identifica quale è il primo registro da leggere</li>
+<li>Read register number 2: identifica quale è il secondo registro da leggere</li>
+<li>Write register: identifica quale è il registro in cui scrivere</li>
+<li>Write data: valore da scrivere nel registro identificato da “Write register”</li>
+<li>Read data 1: valore del primo registro da leggere</li>
+<li>Read data 2: valore del secondo registro da leggere</li>
+<li>Write: è un segnale che lavora assieme al <strong>clock</strong>, serve a dire si vuole abilitare la modalità scrittura</li>
+</ul>
+<h3 id="lettura">Lettura</h3>
+<p>Per la lettura dei due registri sono necessari due multiplexer</p>
+<h3 id="scrittura">Scrittura</h3>
+<p>Per la scrittura è necessario un decoder</p>
+<h2 id="memoria-principale-ram">Memoria principale (RAM)</h2>
+<p>Dato che la dimensione e la quantità dei registri è troppo piccola per memorizzare strutture dati complesse viene introdotta la <strong>RAM</strong> (Random Access Memory), una memoria molto più capiente dei registri ma anche più lenta di essi. È una memoria volatile come i registri.</p>
+<p>Le RAM si suddividono principalmente in due sottogruppi</p>
+<h3 id="sram">SRAM</h3>
+<p>Le Static RAM, che sono molto veloci ma poco capienti (come le memorie cache). Viene realizzata con i <em>latch</em>.</p>
+<p>Ha una dimensione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>×</mo><mi>W</mi></mrow><annotation encoding="application/x-tex">H \times W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">W</span></span></span></span></span> in cui:</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi></mrow><annotation encoding="application/x-tex">H</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.08125em;">H</span></span></span></span></span> numero di celle indirizzabili (tutte le celle hanno la stessa lunghezza)</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi></mrow><annotation encoding="application/x-tex">W</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">W</span></span></span></span></span> numero di latch per ogni cella</li>
+</ul>
+<p>Non è possibile scrivere e leggere contemporaneamente</p>
+<p>Non è possibile realizzare SRAM nello stesso modo dei registri:</p>
+<p>Date le più grandi dimensioni delle SRAM rispetto ai registri, utilizzare <strong>multiplexer e decoder</strong> con moltissime linee di input risulta una grossa perdita di performance.</p>
+<p>Per rimpiazzare i multiplexer vengono utilizzati i <strong>buffer a tre stati</strong> che possiedono due input (il <em>dato</em> e il segnale <em>enable</em> che lascia o meno passare il <em>dato</em>) e un output: se <em>enable</em> è attivo allora l’output sarà il dato altrimenti l’output viene impedito.</p>
+<p><img src="https://i.ibb.co/Pt2ynrJ/buffer-tre-stati.png" alt=""></p>
+<p>Per risolvere il problema del grande decoder viene utilizzato un decoder più piccolo e una batteria di piccoli multiplexer. Così facendo gli indirizzi vengono “spezzati” in due parti (<strong>SRAM a due livelli</strong>).</p>
+<h3 id="dram">DRAM</h3>
+<p>Le Dynamic RAM, che sono più capienti delle static ma hanno tempi di accesso più lenti. inoltre utilizzano <strong>condensatori</strong> per memorizzare i bit, che sono componenti che hanno bisogno di essere <em>refreshati</em> per non perdere il dato che stanno memorizzando.</p>
+<p>Viene utilizzato un <strong>transistor</strong> per ogni bit per andare a trasferire il bit nel condensatore.</p>
+<p>Il <em>refresh</em> consiste nel riscrivere a intervalli fissi i valori appena letti.</p>
+<p>Anche in questo caso gli indirizzi vengono “spezzati” in due parti, la parte sinistra viene considerato <strong>indirizzo di riga</strong> (che passa per un decoder) mentre la parte destra viene considerata <strong>indirizzo colonna</strong> (che passa per un multiplexer)</p>
+<h3 id="synchronous-sram-e-dram">Synchronous SRAM e DRAM</h3>
+<p>Queste memorie permettono di aumentare la banda di trasferimento della memoria sfruttando il fatto che:<br>
+le celle consecutive differiscono solo nella parte destra dell’indirizzo.</p>
+<p>Quindi è possibile trasferire un blocco di indirizzi che condividono tutti la parte sinistra dell’indirizzo, al posto di passarli uno alla volta.</p>
 
     </div>
   </div>
