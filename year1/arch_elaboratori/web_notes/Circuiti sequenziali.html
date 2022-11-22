@@ -21,6 +21,7 @@
 <li><a href="#circuito-sequenziale-sincrono">Circuito sequenziale sincrono</a></li>
 <li><a href="#register-file">Register file</a></li>
 <li><a href="#memoria-principale-ram">Memoria principale (RAM)</a></li>
+<li><a href="#circuito-di-moore">Circuito di Moore</a></li>
 </ul>
 </li>
 </ul>
@@ -129,6 +130,180 @@
 <p>Queste memorie permettono di aumentare la banda di trasferimento della memoria sfruttando il fatto che:<br>
 le celle consecutive differiscono solo nella parte destra dell’indirizzo.</p>
 <p>Quindi è possibile trasferire un blocco di indirizzi che condividono tutti la parte sinistra dell’indirizzo, al posto di passarli uno alla volta.</p>
+<h2 id="circuito-di-moore">Circuito di Moore</h2>
+<p>Nei circuiti di moore abbiamo che l’output dipende dallo stato mentre lo stato successivo dipende dall’input e dallo stato.</p>
+<p>La successione di operazioni da fare per realizzare un circuito di Moore è:</p>
+<ol>
+<li>specifica testuale</li>
+<li>specifica utilizzando gli automi a stati finiti</li>
+<li>realizzare la tabella di verità dell’output</li>
+<li>realizzare la tabella di verità dello stato successivo</li>
+<li>semplificare le tabelle di verità con le mappe di Karnaugh</li>
+<li>Realizzare il circuito con le porte logiche</li>
+</ol>
+<p>Nella specifica con gli automi abbiamo che i <strong>nodi</strong> rappresentano **gli stati, gli output	** mentre gli <strong>archi</strong> sono gli <strong>input</strong>.</p>
+<h3 id="esempio">Esempio</h3>
+<p>Creiamo un circuito per gestire i semafori di un incrocio.</p>
+<p>input: sensori che dicono se sono presenti macchine in attese. NScar (per le macchine in attese sulla strada Nord-Sud), EWcar (per le macchine in attesa sulla strada Est-West)<br>
+output: accensione (rosso/verde) dei semafori. NSlite (semaforo sulla strada Nord-Sud in cui 1 = verde), EWlite (semaforo sulla strada Est-West in cui 1 = verde)</p>
+<p>Ipotizziamo inoltre che NSlite e EWlite non possono mai essere entrambi accesi o entrambi spenti</p>
+<p><img src="https://i.ibb.co/92CMnbS/esempio-moore.png" alt=""></p>
+<p>Automa:<br>
+Partiamo realizzando i due stati possibili: quello in cui è verde per la strada NS e quello in cui è verde per la strada EW.<br>
+<img src="https://i.ibb.co/P981DwH/automa1.png" alt=""></p>
+<p>Implementiamo il fatto che se nell’altra strada non ci sono macchine in attesa rimaniamo nello stesso stato<br>
+<img src="https://i.ibb.co/B2GqP33/automa2.png" alt="enter image description here"></p>
+<p>Quando sono presenti delle macchine in attesa nell’altra strada allora cambiamo stato facendo diventare verde l’altra strada<br>
+<img src="https://i.ibb.co/3vGvfyS/automa3.png" alt="enter image description here"></p>
+<p>Do una rappresentazione binaria per rappresentare tutti gli stati, Dato che ho 2 stati posso rappresentarli con 1 bit</p>
+
+<table>
+<thead>
+<tr>
+<th>Stato</th>
+<th>s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NSgreen</td>
+<td>0</td>
+</tr>
+<tr>
+<td>EWgreen</td>
+<td>1</td>
+</tr>
+</tbody>
+</table><p>Tabella di verità <strong>output</strong>:<br>
+mettere per ogni stato le varie combinazioni all’interno del nodo</p>
+
+<table>
+<thead>
+<tr>
+<th>s</th>
+<th>NSlite</th>
+<th>EWlite</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td><em>1</em></td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td><em>0</em></td>
+<td><em>1</em></td>
+</tr>
+</tbody>
+</table><p>Minimizzando otteniamo:</p>
+<p>NSlite = ~s<br>
+EWlite = s</p>
+<p>Tabella di verità <strong>next state</strong>:<br>
+mettere per ogni stato le varie combinazioni di input (archi)</p>
+
+<table>
+<thead>
+<tr>
+<th>s</th>
+<th>NScar</th>
+<th>EWcar</th>
+<th>new_s</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>X</td>
+<td>0</td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td>0</td>
+<td>X</td>
+<td>1</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>X</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>X</td>
+<td><em>0</em></td>
+</tr>
+</tbody>
+</table><p>Estendendo la tabella otteniamo:</p>
+
+<table>
+<thead>
+<tr>
+<th>s</th>
+<th>NScar</th>
+<th>EWcar</th>
+<th>s’</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>0</td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>1</td>
+<td><em>1</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td><em>0</em></td>
+</tr>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td><em>0</em></td>
+</tr>
+</tbody>
+</table><p>Minimizzando usando la mappa di Karnaugh:</p>
+<p><img src="https://i.ibb.co/KDQmtgn/karn-moore.png" alt=""></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>s</mi><mo mathvariant="normal" lspace="0em" rspace="0em">′</mo></msup><mo>=</mo><mover accent="true"><mi>s</mi><mo stretchy="true">‾</mo></mover><mo>⋅</mo><mtext>EWcar</mtext><mo>+</mo><mi>s</mi><mo>⋅</mo><mover accent="true"><mtext>NScar</mtext><mo stretchy="true">‾</mo></mover></mrow><annotation encoding="application/x-tex">s' = \overline{s} \cdot \text{EWcar} + s \cdot \overline{\text{NScar}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.751892em; vertical-align: 0em;"></span><span class="mord"><span class="mord mathnormal">s</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.751892em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">′</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.63056em; vertical-align: 0em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.63056em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord mathnormal">s</span></span></span><span class="" style="top: -3.55056em;"><span class="pstrut" style="height: 3em;"></span><span class="overline-line" style="border-bottom-width: 0.04em;"></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">EWcar</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.44445em; vertical-align: 0em;"></span><span class="mord mathnormal">s</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88333em; vertical-align: 0em;"></span><span class="mord overline"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.88333em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">NScar</span></span></span></span><span class="" style="top: -3.80333em;"><span class="pstrut" style="height: 3em;"></span><span class="overline-line" style="border-bottom-width: 0.04em;"></span></span></span></span></span></span></span></span></span></span></p>
+<p>Realizziamo il circuito</p>
+<p><img src="https://i.ibb.co/3fkvW65/circuito-finale.png" alt=""></p>
 
     </div>
   </div>

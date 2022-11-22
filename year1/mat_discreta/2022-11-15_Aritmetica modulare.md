@@ -107,3 +107,47 @@ Es. classi di equivalenza di $\equiv_3$
 - $[0]_3 = \lbrace..., 3, 6, 9 ,... \rbrace$
 - $[1]_3 = \lbrace..., 4, 7, 10 ,... \rbrace$
 - $[2]_3 = \lbrace..., 5, 8, 11 ,... \rbrace$
+
+
+## Criteri di divisibilità
+
+### Divisibilità per 2
+
+Un numero è divisibile per 2 se il numero è pari
+
+### Divisibilità per 3
+
+Un numero è divisibile per 3 se la somma delle cifre del numero è anch'essa divisibile per 3
+
+### Divisibilità per 4
+
+Un numero è divisibile per 4 se le ultime due cifre sono un multiplo di 4 oppure sono 00
+
+### Divisibilità per 5
+
+Un numero è divisibile per 5 se l'ultima cifra è 0 oppure 5
+
+### Divisibilità per 6
+
+Un numero è divisibile per 6 se il numero è sia divisibile per 2 che per 3
+
+### Divisibilità per 8
+
+Un numero è divisibile per 8 se le ultime tre cifre del numero sono divisibile per 8 oppure sono 000
+
+### Divisibilità per 9
+
+Un numero è divisibile per 9 se la somma delle cifre del numero è anch'essa divisibile per 9
+
+### Divisibilità per 10
+
+Un numero è divisibile per 10 se l'ultima cifra è 0
+
+
+### Regola generale
+
+Avendo due numeri naturali $a,b$ in cui $b\leq a$ possiamo dire che b è un divisore di a se e solo se:
+
+$$c_0  + \sum_{i=0}^{n} c_i (10^i \mod b) \equiv_b 0$$
+
+

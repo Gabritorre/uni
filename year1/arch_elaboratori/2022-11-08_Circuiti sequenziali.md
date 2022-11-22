@@ -154,4 +154,95 @@ le celle consecutive differiscono solo nella parte destra dell'indirizzo.
 
 Quindi è possibile trasferire un blocco di indirizzi che condividono tutti la parte sinistra dell'indirizzo, al posto di passarli uno alla volta.
 
+## Circuito di Moore
+
+Nei circuiti di moore abbiamo che l'output dipende dallo stato mentre lo stato successivo dipende dall'input e dallo stato.
+
+La successione di operazioni da fare per realizzare un circuito di Moore è:
+
+1. specifica testuale
+2. specifica utilizzando gli automi a stati finiti
+3. realizzare la tabella di verità dell'output
+4. realizzare la tabella di verità dello stato successivo
+5. semplificare le tabelle di verità con le mappe di Karnaugh
+6. Realizzare il circuito con le porte logiche
+
+
+Nella specifica con gli automi abbiamo che i **nodi** rappresentano **gli stati, gli output	** mentre gli **archi** sono gli **input**.
+
+### Esempio
+
+Creiamo un circuito per gestire i semafori di un incrocio.
+
+input: sensori che dicono se sono presenti macchine in attese. NScar (per le macchine in attese sulla strada Nord-Sud), EWcar (per le macchine in attesa sulla strada Est-West)
+output: accensione (rosso/verde) dei semafori. NSlite (semaforo sulla strada Nord-Sud in cui 1 = verde), EWlite (semaforo sulla strada Est-West in cui 1 = verde)
+
+Ipotizziamo inoltre che NSlite e EWlite non possono mai essere entrambi accesi o entrambi spenti
+
+![](https://i.ibb.co/92CMnbS/esempio-moore.png)
+
+Automa:
+Partiamo realizzando i due stati possibili: quello in cui è verde per la strada NS e quello in cui è verde per la strada EW.
+![](https://i.ibb.co/P981DwH/automa1.png)
+
+Implementiamo il fatto che se nell'altra strada non ci sono macchine in attesa rimaniamo nello stesso stato
+![enter image description here](https://i.ibb.co/B2GqP33/automa2.png)
+
+Quando sono presenti delle macchine in attesa nell'altra strada allora cambiamo stato facendo diventare verde l'altra strada
+![enter image description here](https://i.ibb.co/3vGvfyS/automa3.png)
+
+Do una rappresentazione binaria per rappresentare tutti gli stati, Dato che ho 2 stati posso rappresentarli con 1 bit
+
+|Stato| s |
+|--|--|
+| NSgreen | 0 |
+| EWgreen | 1 |
+
+Tabella di verità **output**:
+mettere per ogni stato le varie combinazioni all'interno del nodo
+
+| s | NSlite | EWlite |
+|---|--|--|
+| 0 | *1* | *0* |
+| 1 | *0* | *1* | 
+
+Minimizzando otteniamo:
+
+NSlite = ~s
+EWlite = s
+
+Tabella di verità **next state**:
+mettere per ogni stato le varie combinazioni di input (archi)
+
+| s | NScar | EWcar | new_s |
+|---|--|--|--|
+| 0 | X | 0 | *0* |
+| 0 | X | 1 | *1* | 
+| 1 | 0 | X | *1* |
+| 1 | 1 | X | *0* |
+
+Estendendo la tabella otteniamo:
+
+| s | NScar | EWcar | s' |
+|---|--|--|--|
+| 0 | 0 | 0 | *0* |
+| 0 | 0 | 1 | *1* | 
+| 0 | 1 | 0 | *0* |
+| 0 | 1 | 1 | *1* |
+| 1 | 0 | 0 | *1* |
+| 1 | 0 | 1 | *1* |
+| 1 | 1 | 0 | *0* |
+| 1 | 1 | 1 | *0* |
+
+
+Minimizzando usando la mappa di Karnaugh:
+
+![](https://i.ibb.co/KDQmtgn/karn-moore.png)
+
+$s' = \overline{s} \cdot \text{EWcar} + s \cdot \overline{\text{NScar}}$
+
+Realizziamo il circuito
+
+![](https://i.ibb.co/3fkvW65/circuito-finale.png)
+
 
