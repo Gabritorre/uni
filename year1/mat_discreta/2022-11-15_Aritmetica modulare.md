@@ -150,4 +150,44 @@ Avendo due numeri naturali $a,b$ in cui $b\leq a$ possiamo dire che b è un divi
 
 $$c_0  + \sum_{i=0}^{n} c_i (10^i \mod b) \equiv_b 0$$
 
+### Teorema
 
+Siano $a, b, c,r \in Z$ . Sia $r$ il resto della divisione di $b$ per $a$ , cioè $b = aq + r$ per qualche $q \in Z$ . Se Supponiamo che $c|a$ e $c|b$ allora anche $c|r$
+
+**dimostrazione**:
+
+Se  $c|a$ allora esiste un numero $n$ tale che $a = cn$
+
+Se $c|b$ allora esiste un numero $m$ tale che $b = cm$
+
+Quindi da $b = aq + r$ ricaviamo $cm = cnq + r$
+
+Quindi abbiamo che $r = c(m-nq)$ per cui abbiamo che $c|r$
+
+## Minimo comune multiplo
+
+Avendo due numeri $a$ e $b$ il minimo dei multipli comuni di $a$ e $b$ è detto minimo comune multiplo (MCM), si scrive: mcm(a,b)
+
+Es. 
+- mcm(1,6) = 6
+- mcm(4,6) = 12
+
+
+## Massimo comune divisore
+
+Avendo due numeri $a$ e $b$ il massimo dei divisori comuni di $a$ e $b$ è detto massimo comune divisore (MCD), si scrive: mcd(a,b)
+
+Es. 
+- mcd(1,6) = 1
+- mcd(4,6) = 2
+
+### Algoritmo 
+
+Avendo due numeri $a$ e $b$ in cui $a \geq b$
+
+1. fare la divisione intera di $a$ per $b$
+2. mettere il valore di $b$ in $a$
+3. mettere il valore del resto della divisone in $b$
+4. ripetere i passaggi fino a che il resto risulta $0$
+
+il valore dell'MCD sarà il valore di $a$ quando il resto ha raggiunto lo $0$
