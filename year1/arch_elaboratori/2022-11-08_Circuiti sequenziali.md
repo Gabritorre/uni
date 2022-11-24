@@ -156,7 +156,7 @@ Quindi è possibile trasferire un blocco di indirizzi che condividono tutti la p
 
 ## Circuito di Moore
 
-Nei circuiti di moore abbiamo che l'output dipende dallo stato mentre lo stato successivo dipende dall'input e dallo stato.
+Nei circuiti di Moore abbiamo che l'output dipende dallo stato mentre lo stato successivo dipende dall'input e dallo stato.
 
 La successione di operazioni da fare per realizzare un circuito di Moore è:
 
@@ -246,3 +246,150 @@ Realizziamo il circuito
 ![](https://i.ibb.co/3fkvW65/circuito-finale.png)
 
 
+
+## Circuito di Mealy
+
+Nei circuiti di mealy abbiamo che sia l'output che lo stato successivo dipendono dallo stato e dall'input.
+
+La successione di operazioni da fare per realizzare un circuito di Mealy è:
+
+1. specifica testuale
+2. specifica utilizzando gli automi a stati finiti
+3. realizzare la tabella di verità dell'output
+4. realizzare la tabella di verità dello stato successivo
+5. semplificare le tabelle di verità con le mappe di Karnaugh
+6. Realizzare il circuito con le porte logiche
+
+Le differenze sostanziali da un circuito di Moore sono:
+
+- Gli output che venivano messi dentro i nodi dell'automa vanno rimossi 
+- Negli archi ora abbiamo una notazione: INP/OUT
+
+### Esempio
+
+vogliamo realizzare un circuito di Mealy che riceve in ingresso una sequenza di bit, all’interno della quale deve riconoscere se le varie sotto-sequenze di 3 bit hanno un numero pari o dispari di bit uguali ad 1.
+
+Le sotto-sequenze considerate non si sovrappongono.
+
+Ogni qualvolta il circuito arriva a leggere il terzo bit di ogni sotto-sequenza deve restituire il valore $P$ o $D$ ( $P$ per pari, $D$ per dispari).
+
+L’output in corrispondenza di tutte le altre posizioni della sequenza deve essere $N$ .
+
+Quindi per una sequenza di input come:
+
+Input: $011\hspace{1 mm}010\hspace{1 mm}101...$
+
+Avremo un output:
+
+Output: $NNP\hspace{1 mm}NNS\hspace{1 mm}NNP...$
+
+Automa:
+Partiamo da uno stato iniziale $I$, da cui si riparte ogni volta che si termina una sotto-sequenza di 3bit
+
+Poi gestiamo tutte le varie combinazione utilizzando altri 4 stati:
+
+- $P_1$ e $D_1$ per la lettura del primo bit
+- $P_2$ e $D_2$ per la lettura del secondo bit
+
+Per il terzo bit si tornerà allo stato iniziale $I$
+
+![](https://i.ibb.co/T0QJr0d/automa-mealy.png)
+
+Do una rappresentazione binaria per rappresentare tutti gli stati, Dato che ho 5 stati ho bisogno di 3 bit per rappresentarli tutti
+
+|Stato| $s_2$ $s_2$ $s_2$|
+|--|--|
+| $I$ | $0\hspace{2mm}0\hspace{2mm}0$ |
+| $P_1$ | $0\hspace{2mm}0\hspace{2mm}1$ |
+| $P_2$ | $0\hspace{2mm}1\hspace{2mm}0$ |
+| $D_1$ | $0\hspace{2mm}1\hspace{2mm}1$ |
+| $D_2$ | $1\hspace{2mm}0\hspace{2mm}0$ |
+| $-$ | $1\hspace{2mm}0\hspace{2mm}1$ |
+| $-$ | $1\hspace{2mm}1\hspace{2mm}0$ |
+| $-$ | $1\hspace{2mm}1\hspace{2mm}1$ |
+
+Do una rappresentazione binaria per rappresentare anche agli output, Dato che ho 3 output possibili ho bisogno di 2 bit per rappresentarli tutti
+
+| Output| $O_1$ $O_2$ |
+|---|--|
+| $N$ | $0\hspace{4mm}0$ |
+| $D$ | $0\hspace{4mm}1$ |
+| $P$ | $1\hspace{4mm}0$ |
+| $-$ | $1\hspace{4mm}1$ |
+
+
+Ora dobbiamo realizzare le tabelle di verità per lo stato successivo ( $s_2', s_2', s_2'$ ) e per l'output ( $O_1, O_2$ ), dato che abbiamo 3 stati e un input avremo una tabella con 16 righe
+
+|$s_2$ $s_1$ $s_0$ $I$| $s_2'$ $s_2'$ $s_2'$| $O_1$ $O_2$|
+|--|--|--|
+| $0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0$ | $\hspace{4mm}0\hspace{2mm}0\hspace{2mm}1$ $(P_1)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $0\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1$ | $\hspace{4mm}0\hspace{2mm}1\hspace{2mm}1$ $(D_1)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $0\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0$ | $\hspace{4mm}0\hspace{2mm}1\hspace{2mm}0$ $(P_2)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $0\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1$ | $\hspace{4mm}1\hspace{2mm}0\hspace{2mm}0$ $(D_2)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0$ | $\hspace{4mm}0\hspace{2mm}0\hspace{2mm}0$ $(I)$ |$\hspace{4mm}1\hspace{4mm}0$ $(P)$
+| $0\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1$ | $\hspace{4mm}0\hspace{2mm}0\hspace{2mm}0$ $(I)$ |$\hspace{4mm}0\hspace{4mm}1$ $(D)$
+| $0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0$ | $\hspace{4mm}1\hspace{2mm}0\hspace{2mm}0$ $(D_2)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $0\hspace{2mm}1\hspace{2mm}1\hspace{2mm}1$ | $\hspace{4mm}0\hspace{2mm}1\hspace{2mm}0$ $(P_2)$ |$\hspace{4mm}0\hspace{4mm}0$ $(N)$
+| $1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}0$ | $\hspace{4mm}0\hspace{2mm}0\hspace{2mm}0$ $(I)$ |$\hspace{4mm}0\hspace{4mm}1$ $(D)$
+| $1\hspace{2mm}0\hspace{2mm}0\hspace{2mm}1$ | $\hspace{4mm}0\hspace{2mm}0\hspace{2mm}0$ $(I)$ |$\hspace{4mm}1\hspace{4mm}0$ $(P)$
+| $1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}0$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$  |$\hspace{4mm}X\hspace{4mm}X$ 
+| $1\hspace{2mm}0\hspace{2mm}1\hspace{2mm}1$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$  |$\hspace{4mm}X\hspace{4mm}X$ 
+| $1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}0$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$ |$\hspace{4mm}X\hspace{4mm}X$ 
+| $1\hspace{2mm}1\hspace{2mm}0\hspace{2mm}1$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$ |$\hspace{4mm}X\hspace{4mm}X$ 
+| $1\hspace{2mm}1\hspace{2mm}1\hspace{2mm}0$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$  |$\hspace{4mm}X\hspace{4mm}X$ 
+| $1\hspace{2mm}1\hspace{2mm}1\hspace{2mm}1$ | $\hspace{4mm}X\hspace{2mm}X\hspace{2mm}X$  |$\hspace{4mm}X\hspace{4mm}X$ 
+
+
+Minimizzando usando la mappa di Karnaugh per ogni stato successivo e per ogni output:
+
+Mappa di $s_2'$
+
+![](https://i.ibb.co/SdwF06C/s2.png)
+
+$s_2' = (\overline{s_1} \cdot s_0 \cdot \overline{I}) + (s_1 \cdot s_0 \cdot \overline{I})$
+
+Mappa di $s_1'$
+
+![](https://i.ibb.co/wCHZTDD/s1.png)
+
+$s_1' = (\overline{s_2} \cdot \overline{s_1}\cdot \overline{s_0} \cdot I) + (\overline{s_1} \cdot s_0 \cdot I) + (s_1 \cdot s_0 \cdot I)$
+
+Mappa di $s_0'$
+
+![](https://i.ibb.co/ZL5s8cS/s0.png)
+
+$s_0' = (\overline{s_2} \cdot \overline{s_1}\cdot \overline{s_0})$
+
+Mappa di $O_1$
+
+![](https://i.ibb.co/0G7RKtq/o1.png)
+
+$O_1 = (s_1 \cdot \overline{s_0} \cdot \overline{I}) + (s_2 \cdot I)$
+
+Mappa di $O_2$
+
+![](https://i.ibb.co/YtT6yfv/o2.png)
+
+$O_2 = (s_1 \cdot \overline{s_0} \cdot I) + (s_2 \cdot \overline{I})$
+
+
+Realizziamo il circuito
+
+![](https://i.ibb.co/gFVzPsz/circuito-mealy.png)
+
+## Microistruzioni
+
+Quando gli stati in un automa sono molti diventa difficile disegnarlo, in alternativa si possono usare delle microistruzioni per descrivere il circuito.
+
+Esempio di sintassi in un circuito di Moore:
+
+$S_i: O_i (c_{i1}) \text{Next}_{i1}; (c_{i2}) \text{Next}_{i2};... (c_{im}) \text{Next}_{im}$
+
+Abbiamo quindi:
+
+- $S_i$ individua lo stato corrente
+- $O_i$ output in base allo stato corrente
+- $c_{im}$ condizione sui valori di input
+- $\text{Next}_{im}$ stato in cui saltare
+
+Le microistruzioni vengono memorizzate in ROM.
