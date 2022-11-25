@@ -191,3 +191,34 @@ Avendo due numeri $a$ e $b$ in cui $a \geq b$
 4. ripetere i passaggi fino a che il resto risulta $0$
 
 il valore dell'MCD sarà il valore di $a$ quando il resto ha raggiunto lo $0$
+
+## Teorema di Bezout
+
+Avendo $a,b \in \mathbb{N}^+$ e $d = \text{MCD}(a,b)$ allora esistono due numeri interi $x,y$ tali che 
+
+$$d = ax + by$$
+
+Quest'ultima viene detta **identità di Bezout**
+
+Es. $a = 12$ e $b = 8$ abbiamo che $\text{MCD}(12,8) = 4$ Quindi:
+
+$4 = 12 \cdot 1 + 8 \cdot (-1)$
+
+con $x = 1$ e $y = -1$ (ci sono potenzialmente infinite combinazioni)
+
+
+### Lemma
+
+Se abbiamo $a,b,d \in \mathbb{N}^+$ e supponiamo che $d|a$ e $d|b$ e supponiamo che esistono $x,y \in \mathbb{Z}$ tali che $d = ax + by$ allora
+
+$$d = \text{MCD}(a,b)$$
+
+### Corollario
+
+Due numeri $a,b \in \mathbb{N}^+$ sono numeri coprimi (unico divisore comune è 1) se e solo se esistono $x,y \in \mathbb{Z}$ tali che $ax+by = 1$
+
+### Teorema di Bezout generalizzato
+
+Siano $a,b,c \in \mathbb{Z}$ e sia $d = \text{MCD}(a,b)$ allora l'equazione $ax+by = c$ ammette soluzioni intere se e solo se $d|c$
+
+
