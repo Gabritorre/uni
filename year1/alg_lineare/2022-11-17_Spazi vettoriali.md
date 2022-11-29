@@ -75,3 +75,84 @@ Possiamo avere $U$ che è un sottoinsieme non vuoto di $V$, tale che
 
 - $v,w \in U \to v+w \in U$
 - $v \in U \land r \in K \to r\cdot v \in U$
+
+Ogni retta passante per l'origine è sottospazio di $\mathbb{R}^2$
+
+Mentre quelle non passanti per l'origine non sono sottospazi vettoriali
+
+## Combinazioni Lineari
+
+Le combinazioni lineari sono espressioni in cui compaiono somme di vettori e moltiplicazioni di vettori per uno scalare
+
+Abbiamo:
+
+- $x_1, x_2, ..., x_n \in V$ vettori
+- $\alpha_1, \alpha_2, ..., \alpha_n \in \mathbb{R}$ numeri
+
+una combinazione lineare è del tipo:
+
+$v = \alpha_1x_1 + \alpha_2x_2 +...+ \alpha_nx_n$
+
+Scritto in sommatoria diventa
+
+$$\sum_{i = 1}^{n}(\alpha_i\cdot x_i)$$
+
+### Combinazione lineare banale
+
+Si dice combinazione lineare banale se è una combinazione costituita da un unico vettore nullo
+
+## Vettori linearmente dipendenti e indipendenti
+
+### Vettori linearmente indipendenti
+
+Avendo i vettori $v_1,...,v_n$ in uno spazio vettoriale $V$  se consideriamo dei coefficienti $\alpha_1,...,\alpha_n$ e imponiamo l'uguaglianza:
+
+$$\alpha_1v_1 + ... + \alpha_nv_n = 0$$
+
+Si dicono **linearmente indipendenti** se otteniamo che l'uguaglianza è soddisfatta se e solo se **tutti i coefficienti sono uguali a 0**.
+
+Si dicono **linearmente dipendente** se esiste almeno una combinazione di **coefficienti non nulli** che rendono vera l'uguaglianza.
+
+## Base di uno spazio vettoriale
+
+Si tratta di un insieme di vettori (linearmente indipendenti) in con cui si possono generare tutti i vettori dello spazio lineare, attraverso delle combinazioni lineari.
+
+Supponendo di avere dei vettori base $x_1,...,x_n$
+
+Ogni vettore dello spazio vettoriale si scrive in maniera unica come combinazione lineare della base.
+
+Nella scrittura $V = \alpha_1v_1 + ... + \alpha_nv_n$
+
+Abbiamo che $\alpha_1,...\alpha_n$ sono le coordinate di v rispetto alla base, quindi
+
+$\Alpha = (\alpha_1,...,\alpha_n)$ vettore di coordinate di $V$ rispetto alla base.
+
+### Esercizio
+
+Determinare le coordinate di $(1,0)$ rispetto ai vettori $(1,1)$ e $(-1,2)$
+
+$$a \cdot \begin{pmatrix} 
+1 \\
+1 \end{pmatrix} + b\begin{pmatrix} 
+-1 \\
+2 \end{pmatrix} = \begin{pmatrix} 
+1 \\
+0 \end{pmatrix}$$
+
+Da cui deriviamo il sistema lineare:
+
+$$\begin{cases}
+a-b = 1 \\
+a-2b = 0
+\end{cases}$$
+
+Risolvendo il sistema si ottiene $a = \frac{2}{3}, b = -\frac{1}{3}$
+
+
+### Base ortogonale
+
+Una base $v_1,...v_n$ è ortogonale se $v_i \cdot v_j = 0$ (prodotto di vettori) con $i \neq j$
+
+### Base ortonormale
+
+Una base ortonormale è una base ortogonale la cui norma di ogni vettore è 1.
