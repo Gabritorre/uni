@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-11-29_Progetto CPU Mips-like</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#progetto-cpu-mips-like">Progetto CPU Mips-like</a>
+<ul>
+<li><a href="#implementazione-generica-di-una-istruzione">Implementazione generica di una istruzione</a></li>
+<li><a href="#sommatori-aggiuntivi">Sommatori aggiuntivi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="progetto-cpu-mips-like">Progetto CPU Mips-like</h1>
+<p>Realizzazione teorica di una CPU Mips-like semplificata in grado di fare:</p>
+<ul>
+<li><strong>memory reference</strong>: lw, sw (I-type format)</li>
+<li><strong>arithmetic-logic</strong>: add, sub, and, or, slt (R-type format)</li>
+<li><strong>control-flow</strong>: beq (I-type format), j (J-type format)</li>
+</ul>
+<p>La CPU che vogliamo progettare eseguirà per ogni istruzione in un singolo ciclo di clock.</p>
+<p>Dobbiamo poter accedere sia alla memoria principale (M[x]) sia ai registri (R[y])</p>
+<p>È necessario avere anche un registro speciale, il <strong>program counter</strong> (PC) che conterrà l’indirizzo di memoria dell’istruzione corrente da eseguire.</p>
+<h2 id="implementazione-generica-di-una-istruzione">Implementazione generica di una istruzione</h2>
+<ul>
+<li>Uso il Program Counter (PC) per ottenere l’indirizzo dell’istruzione da eseguire</li>
+<li>Leggo l’istruzione dalla memoria (<strong>fetch</strong>)</li>
+<li>Interpreta i campi necessari per eseguire l’istruzione (<strong>decode</strong>)</li>
+<li>Utilizzo l’ALU per l’esecuzione (<strong>execute</strong>)<br>
+tutte le istruzioni che vogliamo implementare necessitano di fare dei calcoli e operazioni. <em>lw,sw</em> la utilizzano per calcolare gli indirizzi; <em>beq</em> perché esegue una sottrazione per controllare se i valori sono uguali</li>
+<li>Il Program Counter viene aggiornato e vengono ripetuti tuttii passaggi.</li>
+</ul>
+<p><img src="https://i.ibb.co/YXTyqjD/isa.png" alt=""></p>
+<p><strong>sign_ext(x)</strong>: significa che l’indirizzo x composto da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> bit viene esteso a 32 bit (che è la dimensione degli indirizzi di memoria) mantenendo sempre il suo valore.</p>
+<p><strong>BEQ</strong> l’istruzione beq adotto un indirizzamento di tipo <em>Program Counter relative</em> significa che calcola l’indirizzo in cui saltare partendo dall’indirizzo dell’istruzione beq.</p>
+<p>Se l’istruzione beq si avvera abbiamo che l’indirizzo su cui saltare è dato da:<br>
+<em>PC + 4 + (sign_ext(Imm16) &lt;&lt; 2)</em></p>
+<ul>
+<li><em>PC + 4</em>: punta alla istruzione successiva alla beq (4 perche le istruzioni sono lunghe 4 byte)</li>
+<li><em>sign_ext(Imm16)</em>: Abbiamo che l’indirizzo di 16 bit (Imm16) viene esteso in 32 bit, il valore rappresentato da questo indirizzo dice quante istruzioni deve saltare per arrivare alla label.</li>
+<li><em>(sign_ext(Imm16) &lt;&lt; 2)</em> Il numero di quante istruzioni sono da saltare viene shiftato di 2, cioè il valore viene moltiplicato per 4 (sempre perché ogni istruzione è formata da 4 byte)</li>
+</ul>
+<h3 id="memoria-istruzioni-e-memoria-dati">Memoria istruzioni e memoria dati</h3>
+<p>Abbiamo bisogno di due memorie perché essendo limitati ad una istruzione per ciclo di clock non possiamo sia leggere un dato che scrivere il risultato dell’istruzione nello stesso ciclo di clock.</p>
+<p>Quindi abbiamo la memoria di istruzioni che leggerà le istruzioni ad ogni ciclo di clock.</p>
+<p>Mentre abbiamo la memoria dati per quando dobbiamo scrivere  in memoria il risultato di una istruzione.</p>
+<h2 id="sommatori-aggiuntivi">Sommatori aggiuntivi</h2>
+<p>Dato che l’ALU è impegnata a svolgere i calcoli delle istruzioni</p>
+<ul>
+<li>Abbiamo bisogno di un sommatore che (durante lo stesso ciclo di clock dell’istruzione corrente), incrementi il PC per l’istruzione successiva</li>
+<li>Abbiamo bisogno di un sommatore calcoli l’indirizzo della beq</li>
+<li>Sono necessari anche vari mux la dove ci possono essere delle scelte nelle istruzioni (es: incrementare normalmente il PC oppure aumentare il PC secondo la beq; eseguire una istruzione I-type oppure una r-type; eseguire una load oppure una istruzione aritmetico-logico; ecc…)</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
