@@ -82,4 +82,108 @@ $$2(\frac{t^3}{3}+t) $$
 
 $$\frac{2}{3}\sqrt{(x-1)^3} + 2\sqrt{x-1} + c$$
 
+## Integrazione di funzioni fratte
+
+Risoluzione di integrali nella forma:
+
+$$\int \frac{N(x)}{D(x)}$$
+
+integrali di base
+
+- $\int \frac{1}{x-a}dx = \ln|x-a| + c$
+- $\int \frac{1}{(x-a)^k}dx = \frac{1}{-K+1}\cdot (x-a)^{-k+1} + c$
+- $\int \frac{1}{x^2-a^2}dx = \frac{1}{a}\arctan(\frac{x}{a}) + c$
+
+### grado(N(x)) < grado(D(x))
+
+Caso in cui il grado del numeratore sia **minore** del grado del  denominatore, si utilizza il metodo con A e B:
+
+Es.
+
+$$\int \frac{3x+11}{x^2-x-6}dx$$
+
+Si fattorizza il denominatore:
+
+$x^2-x-6 = (x-3)(x+2)$
+
+$$\frac{A}{x-3} + \frac{B}{x+2}$$
+
+faccio il denominatore comune:
+
+$$\frac{Ax+2A+Bx-3B}{(x-3)(x+2)}$$
+
+raccolgo i coefficienti che hanno le x dello stesso grado
+
+$$\frac{x(A+B)2A-3B}{(x-3)(x+2)}$$
+
+$$\begin{cases}
+A+B = 3 \\
+2A-3B = 11
+\end{cases}$$
+
+risolvendo il sistema ottengo
+$$\begin{cases}
+A = 4 \\
+B = -1
+\end{cases}$$
+
+$$\int\frac{4}{x-3} + \frac{-1}{x+2}dx =$$
+
+$$= 4\ln|x-3|-\ln|x+2| + c$$
+
+### grado(N(x)) > grado(D(x))
+
+Caso in cui il grado del numeratore sia **maggiore** del grado del  denominatore, si svolge la divisione tra polinomi
+
+Es.
+
+$$\int \frac{x^3+2x^2+x+1}{x^2+1}$$
+
+La divisione tra polinomi si svolge ripentendo i seguenti tre step fino a che il grado del dividendo non diventa minore di quello del divisore
+
+![](https://i.ibb.co/hgrtKnf/div-polinomi.png)
+
+ottenendo infine:
+
+![](https://i.ibb.co/P6cXCH9/div-finale.png)
+
+Quindi abbiamo:
+
+$$\int \frac{x^3+2x^2+x+1}{x^2+1} = \int \frac{(x^2+1)(x+2) + (-1)}{x^2+1}$$
+
+$$= \int (x+2) + \frac{-1}{x^2+1} = \frac{x^2}{2} + 2x - arctan(x) + c$$
+
+
+## Integrali definiti
+
+Gli integrali definiti calcolano l'integrale in un intervallo definito.
+
+Si indica:
+
+$$\int_{a}^{b}f(x)$$
+
+Dove $a$ è l'estremo inferiore e $b$ è l'estremo superiore
+
+Il significato geometrica dell'integrale definito è quello di trovare **l'area con segno** del trapezoide definito dalla funzione con l'asse x
+
+### Integrale di una funzione positiva nell'intervallo
+
+![](https://i.ibb.co/h9ZNzQT/posiv.png)
+
+$T = \int_A^Bf(x)$
+
+### Integrale di una funzione negativa nell'intervallo
+
+![](https://i.ibb.co/pZjg8d3/nega.png)
+
+$T = -\int_A^Bf(x)$
+
+
+### Integrale di una funzione sia positiva che negativa nell'intervallo
+
+![](https://i.ibb.co/MNBqMcM/mixed.png)
+
+$T = T_1 + T_2 + T_3$
+
+$T = \int_A^Bf(x) + (-\int_B^Cf(x)) + \int_C^Df(x)$
 
