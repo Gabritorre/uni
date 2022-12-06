@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-11-29_CPU Mips-like singolo ciclo</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#progetto-cpu-mips-like-singolo-ciclo">Progetto CPU Mips-like singolo ciclo</a>
+<ul>
+<li><a href="#implementazione-generica-di-una-istruzione">Implementazione generica di una istruzione</a></li>
+<li><a href="#sommatori-aggiuntivi">Sommatori aggiuntivi</a></li>
+<li><a href="#controllo-alu">Controllo ALU</a></li>
+<li><a href="#componente-controllo">Componente controllo</a></li>
+<li><a href="#problematiche-cpu-a-singolo-ciclo">Problematiche CPU a singolo ciclo</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="progetto-cpu-mips-like-singolo-ciclo">Progetto CPU Mips-like singolo ciclo</h1>
+<p>Realizzazione teorica di una CPU Mips-like semplificata in grado di fare:</p>
+<ul>
+<li><strong>memory reference</strong>: lw, sw (I-type format)</li>
+<li><strong>arithmetic-logic</strong>: add, sub, and, or, slt (R-type format)</li>
+<li><strong>control-flow</strong>: beq (I-type format), j (J-type format)</li>
+</ul>
+<p>La CPU che vogliamo progettare eseguirà per ogni istruzione in un <strong>singolo ciclo di clock</strong>.</p>
+<p>Dobbiamo poter accedere sia alla memoria principale (M[x]) sia ai registri (R[y])</p>
+<p>È necessario avere anche un registro speciale, il <strong>program counter</strong> (PC) che conterrà l’indirizzo di memoria dell’istruzione corrente da eseguire.</p>
+<h2 id="implementazione-generica-di-una-istruzione">Implementazione generica di una istruzione</h2>
+<ul>
+<li>Uso il Program Counter (PC) per ottenere l’indirizzo dell’istruzione da eseguire</li>
+<li>Leggo l’istruzione dalla memoria (<strong>fetch</strong>)</li>
+<li>Interpreta i campi necessari per eseguire l’istruzione (<strong>decode</strong>)</li>
+<li>Utilizzo l’ALU per l’esecuzione (<strong>execute</strong>)<br>
+tutte le istruzioni che vogliamo implementare necessitano di fare dei calcoli e operazioni. <em>lw,sw</em> la utilizzano per calcolare gli indirizzi; <em>beq</em> perché esegue una sottrazione per controllare se i valori sono uguali</li>
+<li>Il Program Counter viene aggiornato e vengono ripetuti tuttii passaggi.</li>
+</ul>
+<p><img src="https://i.ibb.co/YXTyqjD/isa.png" alt=""></p>
+<p><strong>sign_ext(x)</strong>: significa che l’indirizzo x composto da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> bit viene esteso a 32 bit (che è la dimensione degli indirizzi di memoria) mantenendo sempre il suo valore.</p>
+<p><strong>BEQ</strong> l’istruzione beq adotto un indirizzamento di tipo <em>Program Counter relative</em> significa che calcola l’indirizzo in cui saltare partendo dall’indirizzo dell’istruzione beq.</p>
+<p>Se l’istruzione beq si avvera abbiamo che l’indirizzo su cui saltare è dato da:<br>
+<em>PC + 4 + (sign_ext(Imm16) &lt;&lt; 2)</em></p>
+<ul>
+<li><em>PC + 4</em>: punta alla istruzione successiva alla beq (4 perche le istruzioni sono lunghe 4 byte)</li>
+<li><em>sign_ext(Imm16)</em>: Abbiamo che l’indirizzo di 16 bit (Imm16) viene esteso in 32 bit, il valore rappresentato da questo indirizzo dice quante istruzioni deve saltare per arrivare alla label.</li>
+<li><em>(sign_ext(Imm16) &lt;&lt; 2)</em> Il numero di quante istruzioni sono da saltare viene shiftato di 2, cioè il valore viene moltiplicato per 4 (sempre perché ogni istruzione è formata da 4 byte)</li>
+</ul>
+<h3 id="memoria-istruzioni-e-memoria-dati">Memoria istruzioni e memoria dati</h3>
+<p>Abbiamo bisogno di due memorie perché essendo limitati ad una istruzione per ciclo di clock non possiamo sia leggere un dato che scrivere il risultato dell’istruzione nello stesso ciclo di clock.</p>
+<p>Quindi abbiamo la memoria di istruzioni che leggerà le istruzioni ad ogni ciclo di clock.</p>
+<p>Mentre abbiamo la memoria dati per quando dobbiamo scrivere  in memoria il risultato di una istruzione.</p>
+<h2 id="sommatori-aggiuntivi">Sommatori aggiuntivi</h2>
+<p>Dato che l’ALU è impegnata a svolgere i calcoli delle istruzioni</p>
+<ul>
+<li>Abbiamo bisogno di un sommatore che (durante lo stesso ciclo di clock dell’istruzione corrente), incrementi il PC per l’istruzione successiva</li>
+<li>Abbiamo bisogno di un sommatore calcoli l’indirizzo della beq</li>
+<li>Sono necessari anche vari mux la dove ci possono essere delle scelte nelle istruzioni (es: incrementare normalmente il PC oppure aumentare il PC secondo la beq; eseguire una istruzione I-type oppure una R-type; eseguire una load oppure una istruzione aritmetico-logico; ecc…)</li>
+</ul>
+<h2 id="controllo-alu">Controllo ALU</h2>
+<p>Dobbiamo creare un circuito in grado ci calcolare l’ALU operation che soddisfi la specifica seguente</p>
+<p><img src="https://i.ibb.co/rQcJ3Kw/alu-operation.png" alt=""></p>
+<p>Questa scelta viene fatta utilizzando due campi: <em><strong>op</strong></em> e <em><strong>funct</strong></em></p>
+<p>Il circuito da creare sarà composto da due livelli</p>
+<ol>
+<li>il primo calcolerà <em><strong>ALUop</strong></em> (2 bit) utilizzando il campo <em>op</em></li>
+</ol>
+
+<table>
+<thead>
+<tr>
+<th>ALUop configuration</th>
+<th>Operation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>00</td>
+<td>lw e sw</td>
+</tr>
+<tr>
+<td>01</td>
+<td>beq</td>
+</tr>
+<tr>
+<td>10</td>
+<td>arithmetic/logic (sum, sub, AND, OR, slt)</td>
+</tr>
+</tbody>
+</table><ol start="2">
+<li>
+<p>Il secondo livello utilizzerà il campo ALUop calcolato e il campo <em>funct</em> (6 bit)</p>
+<p>Il campo <em>funct</em> torna utile solo nelle istruzioni aritmetico-logiche (le R-type), mentre per lw, sw e beq è sufficiente il campo <em>op</em>.</p>
+</li>
+</ol>
+<p>Per determinare i bit di operation si svolgono delle operazioni tra i bit di <em>op</em> e i bit di <em>funct</em> nel seguente modo (i pedici rappresenta il bit):</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Operation</mtext><mn>0</mn></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mtext>Funct</mtext><mn>0</mn></msub><mtext>&nbsp;OR&nbsp;</mtext><msub><mtext>Funct</mtext><mn>3</mn></msub><mo stretchy="false">)</mo><mtext>&nbsp;AND&nbsp;</mtext><msub><mtext>ALUop</mtext><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\text{Operation}_0 =  (\text{Funct}_0 \text{ OR } \text{Funct}_3) \text{ AND } \text{ALUop}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.92747em; vertical-align: -0.24414em;"></span><span class="mord"><span class="mord text"><span class="mord">Operation</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord text"><span class="mord">Funct</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord text"><span class="mord">&nbsp;OR&nbsp;</span></span><span class="mord"><span class="mord text"><span class="mord">Funct</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mord text"><span class="mord">&nbsp;AND&nbsp;</span></span><span class="mord"><span class="mord text"><span class="mord">ALUop</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Operation</mtext><mn>1</mn></msub><mo>=</mo><msub><mtext>NOT&nbsp;Funct</mtext><mn>2</mn></msub><mtext>&nbsp;OR&nbsp;</mtext><msub><mtext>NOT&nbsp;ALUop</mtext><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\text{Operation}_1 =  \text{NOT Funct}_2 \text{ OR } \text{NOT ALUop}_1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.92747em; vertical-align: -0.24414em;"></span><span class="mord"><span class="mord text"><span class="mord">Operation</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.92747em; vertical-align: -0.24414em;"></span><span class="mord"><span class="mord text"><span class="mord">NOT&nbsp;Funct</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord text"><span class="mord">&nbsp;OR&nbsp;</span></span><span class="mord"><span class="mord text"><span class="mord">NOT&nbsp;ALUop</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Operation</mtext><mn>2</mn></msub><mo>=</mo><mo stretchy="false">(</mo><msub><mtext>Funct</mtext><mn>1</mn></msub><mtext>&nbsp;AND&nbsp;</mtext><msub><mtext>ALUop</mtext><mn>1</mn></msub><mo stretchy="false">)</mo><mtext>&nbsp;OR&nbsp;</mtext><msub><mtext>ALUop</mtext><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">\text{Operation}_2 =  (\text{Funct}_1 \text{ AND } \text{ALUop}_1) \text{ OR } \text{ALUop}_0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.92747em; vertical-align: -0.24414em;"></span><span class="mord"><span class="mord text"><span class="mord">Operation</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord text"><span class="mord">Funct</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord text"><span class="mord">&nbsp;AND&nbsp;</span></span><span class="mord"><span class="mord text"><span class="mord">ALUop</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">1</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mclose">)</span><span class="mord text"><span class="mord">&nbsp;OR&nbsp;</span></span><span class="mord"><span class="mord text"><span class="mord">ALUop</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>Operation</mtext><mn>3</mn></msub><mo>=</mo><mtext>sempre&nbsp;a&nbsp;0</mtext></mrow><annotation encoding="application/x-tex">\text{Operation}_3 =  \text{sempre a 0}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.92747em; vertical-align: -0.24414em;"></span><span class="mord"><span class="mord text"><span class="mord">Operation</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">sempre&nbsp;a&nbsp;0</span></span></span></span></span></span></li>
+</ul>
+<p><img src="https://i.ibb.co/SVF7QGg/op-funct.png" alt=""></p>
+<h3 id="jump">Jump</h3>
+<p>Anche per implementare la jump è necessario aggiungere un multiplexer per decidere tra beq e jump.</p>
+<p>per calcolare il salto:</p>
+<p>Il PC mantiene i 4 bit più significativi inalterati mentre gli altri 28 vengono sostituiti dall’indirizzo di destinazione (sono 26 bit shiftati di 2, quindi diventano 28)</p>
+<p>Si dice che la jump è PC-relative solo per i 4 bit più significativi del PC</p>
+<h2 id="componente-controllo">Componente controllo</h2>
+<p>Fino ad ora abbiamo visto la parta di <strong>datapath</strong> che si occupa di svolgere effettivamente le istruzione</p>
+<p>Per quanto riguarda la parte di <strong>controllo</strong> si occupa della decodifica delle istruzioni, dell’invio delle istruzione al datapath e invio dei segnali di controllo necessari alla ALU, sommatori, multiplexer, ecc…</p>
+<p>Il circuito della parte controllo è un <strong>circuito combinatorio</strong> e si basa su una coppia di tabella: una per l’input che riceve (l’istruzione da decodificare) e una per l’output (segnali di controllo da mandare al datapath)</p>
+<h2 id="problematiche-cpu-a-singolo-ciclo">Problematiche CPU a singolo ciclo</h2>
+<ul>
+<li>Per poter stabilizzare tutti i componenti bisogna tarare il clock nell’istruzione che richiede più tempo, quindi si avrà un tempo di clock molto lungo.</li>
+<li>Come conseguenza del punto precedente abbiamo che nelle istruzione che richiedono meno tempo per essere eseguito abbiamo un grosso spreco di tempo prima di arrivare al ciclo successivo.</li>
+<li>Abbiamo molte risorse duplicate: sommatori, multiplexer, 2 memorie</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
