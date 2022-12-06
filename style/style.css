@@ -16,6 +16,10 @@ body {
 	justify-content: space-between;
 }
 
+.head img{
+	padding-top:15px;
+}
+
 .img {
 	margin: 10px;
 }
