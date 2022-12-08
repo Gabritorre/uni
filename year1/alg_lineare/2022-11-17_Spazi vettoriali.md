@@ -103,7 +103,6 @@ Si dice combinazione lineare banale se è una combinazione costituita da un unic
 
 ## Vettori linearmente dipendenti e indipendenti
 
-### Vettori linearmente indipendenti
 
 Avendo i vettori $v_1,...,v_n$ in uno spazio vettoriale $V$  se consideriamo dei coefficienti $\alpha_1,...,\alpha_n$ e imponiamo l'uguaglianza:
 
@@ -127,6 +126,8 @@ Abbiamo che $\alpha_1,...\alpha_n$ sono le coordinate di v rispetto alla base, q
 
 $\Alpha = (\alpha_1,...,\alpha_n)$ vettore di coordinate di $V$ rispetto alla base.
 
+**Le basi contengono il numero minimo di vettori necessari per generare lo spazio vettoriale**
+
 ### Esercizio
 
 Determinare le coordinate di $(1,0)$ rispetto ai vettori $(1,1)$ e $(-1,2)$
@@ -148,6 +149,18 @@ a-2b = 0
 
 Risolvendo il sistema si ottiene $a = \frac{2}{3}, b = -\frac{1}{3}$
 
+### Base canonica
+Una base canonica è composta da vettori in cui in ogni vettore è presente solo un elemento non nullo
+
+Base canonica $= e_1, e_2,...e_n$
+
+$$e_1 = (1, 0,...0)$$
+
+$$e_2 = (0, 1,...0)$$
+
+$$...$$
+
+$$e_n = (0, 0,...1)$$
 
 ### Base ortogonale
 
@@ -155,4 +168,10 @@ Una base $v_1,...v_n$ è ortogonale se $v_i \cdot v_j = 0$ (prodotto di vettori)
 
 ### Base ortonormale
 
-Una base ortonormale è una base ortogonale la cui norma di ogni vettore è 1.
+Una base ortonormale è una **base ortogonale** la cui norma di ogni vettore è 1.
+
+
+
+
+
+

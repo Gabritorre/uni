@@ -129,3 +129,24 @@ x + y \\
 2x \\
 x-y
 \end{bmatrix}$$
+
+## Span
+
+Lo **Span** o **sottospazio generato** rappresenta tutte le possibili combinazioni lineari di un insieme di vettori.
+
+Es.
+
+$$v_1 = \begin{pmatrix} 1\\1\end{pmatrix} v_2 = \begin{pmatrix} 2\\2\end{pmatrix}$$
+
+$$\text{span}(v_1,v_2) = \lbrace a_1v_1 + a_2v_2\rbrace \text{ con } a_1,a_2 \in \mathbb{R}$$
+
+
+## Sistema di generatori
+
+Uno spazio vettoriale $V$ è un sistema di generatori di $V$ se e solo se ogni vettore di $V$ si può scrivere come combinazione lineare
+
+### Differenza tra sistema di generatori e sottospazio generato
+
+- **Sistema di generatori**: insieme di vettori che genera lo spazio vettoriale $V$
+- **Sottospazio generato da un insieme di vettori di $V$**: sottospazio vettoriale di $V$
+- Se $\lbrace v_1,...,v_n\rbrace$ è un sistema di generatori di $V$ allora $V$ coincide con il sottospazio generato dai vettori. Di conseguenza i vettori che definiscono un *sottospazio generato* sono anche un sistema di generatori del sottospazio che generano.
