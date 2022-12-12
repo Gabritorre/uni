@@ -81,3 +81,14 @@ Una permutazione indica i possibili modi di ordinare gli elementi di un multi-in
 $$\frac{n!}{n_1! \cdot n_2! \cdot...\cdot n_k!}$$
 
 Sostanzialmente tutti gli elementi fratto il fattoriale di quanti elementi sono ripetuti
+
+| tipo | formula | significato |
+|--|--|--|
+| Permutazioni semplici | $P_n=n!$ | ordinare $n$ elementi distinti |
+| Permutazioni con rip. | $P_n'=\frac{n!}{n_1!...n_k!}$ | ordinare $n$ elementi eventualmente ripetuti suddivisi in k classi |
+| Disposizioni semplici | $D_{n,k}=\frac{n!}{(n-k)!}$ | raggruppo in modo ordinato k elementi distinti su n elementi |
+| Disposizioni con rip. | $D_{n,k}'=n^k$ | raggruppo in modo ordinato k elementi eventualmente ripetuti su n elementi |
+| Combinazioni semplici | $C_{n,k}=\frac{n!}{k!(n-k)!}$ | raggruppo k elementi distinti su n elementi (ordine non importante) |
+
+
+![](https://i.ibb.co/xSxMfH0/albero-calc-comb.png)
