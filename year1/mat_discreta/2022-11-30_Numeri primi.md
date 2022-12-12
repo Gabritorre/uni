@@ -43,3 +43,28 @@ Se $n$ intero positivo e $a$ per cui $\text{MCD}(a,n) = 1$ allora:
 
 $$a^{\phi(n)}\equiv_n1$$
 
+
+## Calcolo dell'inverso
+
+L’inverso di un numero  $x \mod n$ è quel numero $y$ tale che $x\cdot y \mod n = 1$
+
+- Se $MCD(x, n) = 1$ allora per il teorema di *Eulero-Fermat* avremo che $x ^{\phi(n)} \mod n = 1$ e dunque l’inverso risulta 
+	$$y = x^{φ(N)–1} \mod n$$
+
+- Data l’identità di Bezout $ax + by = MCD(a, b)$ quando $MCD(a, b) = 1$ avremo che $x$ è l’inverso di $a \mod b$ e che $y$ è l’inverso di $b \mod a$
+
+## Teorema cinese del resto
+
+Avendo un sistema di congruenze lineari:
+
+$$x \equiv_{n_1}a_1$$
+
+$$...$$
+
+$$x \equiv_{n_k}a_k$$
+
+Se gli $n$ sono coprimi tra loro a due a due $(MCD(n_i, n_j) = 1 \forall i \neq j)$ allora il sistema ammette una unica soluzione modulo $N = n_1 \cdot ... \cdot n_k$
+
+Il numero che risolve il sistema è formato da:
+
+$$x = a_1b_1x_1 + ... + a_kb_kx_k \mod N$$
