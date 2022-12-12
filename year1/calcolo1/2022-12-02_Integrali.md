@@ -166,6 +166,12 @@ Dove $a$ è l'estremo inferiore e $b$ è l'estremo superiore
 
 Il significato geometrica dell'integrale definito è quello di trovare **l'area con segno** del trapezoide definito dalla funzione con l'asse x
 
+### Teoremi
+
+- Se $f$ è limitata e monotona allora è anche integrabile
+- Se $f$ è continua allora è anche integrabile
+
+
 ### Integrale di una funzione positiva nell'intervallo
 
 ![](https://i.ibb.co/h9ZNzQT/posiv.png)
@@ -187,3 +193,28 @@ $T = T_1 + T_2 + T_3$
 
 $T = \int_A^Bf(x) + (-\int_B^Cf(x)) + \int_C^Df(x)$
 
+### Valore medio
+
+Si può trovare il valore medio di una funzione:
+
+$$f(z) = \frac{\int_a^b f(x)dx}{b-a}$$
+
+![](https://i.ibb.co/gytW11R/image.png)
+
+Il teorema della media dice che esiste un punto $z$ tale che l'area sottesa a  $f(x)$ è uguale all'area del rettangolo che ha per base $b−a$ e altezza $f(z)$ (chiamato _valore medio_)
+
+### Teorema fondamentale del calcolo integrale
+
+formula di *Leibniz-Newton*:
+
+$$\int_a^b f(x) dx = F(b) - F(a)$$
+
+Quindi il valore dell'integrale definito in un intervallo $[a,b]$ è dato da l'integrale indefinito in cui sostituisco al posto della $x$ l'estremo superiore $F(b)$ meno l'integrale indefinito in cui sostituisco l'estremo inferiore $F(a)$ .
+
+Nota:
+
+$$\int_a^b k dx = (b-a)k \hspace{5mm}\text{ con k costante}$$
+
+Es.
+
+$\int_0^2 x^2dx = \left[\frac{x^3}{3}\right]_0^2 =\frac{8}{3} - 0 = \frac{8}{3}$
