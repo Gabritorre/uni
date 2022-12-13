@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2022-12-6_CPU Mips-like multi ciclo</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#progetto-cpu-mips-like-multi-ciclo">Progetto CPU Mips-like multi ciclo</a>
+<ul>
+<li><a href="#sequenza-di-esecuzione">Sequenza di esecuzione</a></li>
+<li><a href="#controllo">Controllo</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="progetto-cpu-mips-like-multi-ciclo">Progetto CPU Mips-like multi ciclo</h1>
+<p>Per risolvere le problematiche della CPU a singolo ciclo Adottiamo una CPU multi ciclo in cui le istruzioni vengono eseguite in più di un ciclo. Così facendo abbiamo che</p>
+<ul>
+<li>Possiamo impostare un tempo di <strong>clock più corto</strong></li>
+<li>Le <strong>istruzioni più brevi</strong> ci metteranno <strong>meno tempo</strong> ad essere eseguite (nel singolo ciclo tutte le istruzioni ci mettevano lo stesso tempo)</li>
+<li><strong>Minore replicazione di risorse</strong> dato che possono essere impiegate in cicli diversi per la stessa istruzione.</li>
+<li>Abbiamo dei <strong>registri aggiuntivi</strong> che servono a memorizzare i risultati parziali tra un ciclo e l’altro.</li>
+</ul>
+<p>Questa volta non abbiamo bisogno di due memorie perché la fase di <strong>lettura</strong> e la fase di <strong>scrittura</strong> avvengono in <strong>cicli diversi</strong></p>
+<p>Inoltre ora l’ALU viene utilizzata sia aggiornare il Program Counter sia per calcolare l’indirizzo dei salti</p>
+<h2 id="sequenza-di-esecuzione">Sequenza di esecuzione</h2>
+<p>L’obiettivo generale è quello di far lavorare più componenti contemporaneamente e di anticipare del lavoro che eventualmente verrebbe richiesto nei cicli futuri, quindi ci saranno diverse operazioni che verranno fatte in contemporanea.</p>
+<ol>
+<li>
+<p><em>fetch</em> dell’istruzione <strong>e</strong> incremento del PC</p>
+<p>l’incremento del PC viene fatto per far lavorare l’ALU che altrimenti avrebbe fatto un ciclo senza lavorare. Nonostante questo, l’utilizzo del nuovo PC potrebbe entrare in gioco diversi cicli dopo perché bisogna completare tutti i cicli necessari per completare l’istruzione corrente prima di passare alla prossima.</p>
+</li>
+<li>
+<p>Decodifica dell’istruzione <strong>e</strong> lettura dei registri <strong>e</strong> calcolo del branch address</p>
+<ul>
+<li>viene decodificata l’istruzione mandando il campo <em>op</em> al controllo che si occuperà di organizzare i segnali di controllo per quella specifica istruzione</li>
+<li>Vengono letti i valori dei registri interessati dall’istruzione (<em>rs</em> e <em>rt</em> per le R-type per esempio)</li>
+<li>Il calcolo del <em>branch address</em> viene sempre fatto per impegnare l’ALU, grazie a questo calcolo nel caso l’istruzione decodificato fosse una <em>beq</em> nel ciclo successivo l’indirizzo a cui saltare sarebbe già stato calcolato.</li>
+</ul>
+</li>
+<li>
+<p>Esecuzione di R-type <strong>o</strong> Calcolo indirizzo di memoria <strong>o</strong> Completa <em>beq</em> <strong>o</strong> completa <em>jump</em></p>
+<p>In questa fase può:</p>
+<ul>
+<li>essere eseguita una R-type (sum, sub, and, or, slt)</li>
+<li>venir calcolato l’indirizzo di memoria (ram) sul quale poi andare a scrivere il risultato (per una sw) oppure sul quale andare a leggere (per una lw)</li>
+<li>venir completata la <em>beq</em> aggiornando il PC con l’indirizzo calcolato nel ciclo precedente</li>
+<li>venir completata una jump aggiornando il PC con l’indirizzo letto nel ciclo precedente</li>
+</ul>
+</li>
+<li>
+<p>Accesso alla memoria <strong>o</strong> completa R-type</p>
+<p>In questa fase abbiamo che:</p>
+<ul>
+<li>l’accesso alla memoria il cui indirizzo è stato calcolato nel ciclo precedente. Serve sia per <em>lw</em> che per  <em>sw</em>, quest’ultima però viene completata in questo ciclo dato che scriverà in quel indirizzo e non deve fare altro.</li>
+<li>può venir completata una R-type: se nel precedente ciclo veniva svolto il calcolo effettivo in questo viene scritto il risultato in un registro.</li>
+</ul>
+</li>
+<li>
+<p>Write back</p>
+<p>Questo passaggio serve solo per la <em>lw</em>: dopo che ha letto il contenuto in memoria nel ciclo precedente, ora deve scrivere in un registro quel contenuto</p>
+</li>
+</ol>
+<h3 id="quantità-cicli-per-istruzione">Quantità cicli per istruzione</h3>
+<p>Abbiamo quindi che ogni istruzione per essere eseguita completamente necessita dai 3 ai 5 cicli, in particolare:</p>
+
+<table>
+<thead>
+<tr>
+<th>n. cicli</th>
+<th>istruzione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>3</td>
+<td>beq - jump</td>
+</tr>
+<tr>
+<td>4</td>
+<td>R-type (sum, sub, and, or, slt) - sw</td>
+</tr>
+<tr>
+<td>5</td>
+<td>lw</td>
+</tr>
+</tbody>
+</table><h2 id="controllo">Controllo</h2>
+<p>Tutti i segnali di controllo questa volta dipendono non solo dal tipo di istruzione da eseguire ma anche dal passo specifico in cui siamo di quella istruzione.</p>
+<p>Quindi i segnali di controllo cambieranno ad ogni ciclo di clock, sarà quindi un <strong>circuito sequenziali</strong></p>
+<p>Particolare attenzione necessita i segnali di controllo sul PC che devono gestire il suo aggiornamento in caso di:</p>
+<ul>
+<li>PC = PC + 4</li>
+<li>beq</li>
+<li>jump</li>
+</ul>
+<p>tenendo conto che PC = PC + 4 va fatto quando si presenta una nuova istruzione e non ad ogni ciclo</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
