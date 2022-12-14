@@ -218,3 +218,73 @@ $$\int_a^b k dx = (b-a)k \hspace{5mm}\text{ con k costante}$$
 Es.
 
 $\int_0^2 x^2dx = \left[\frac{x^3}{3}\right]_0^2 =\frac{8}{3} - 0 = \frac{8}{3}$
+
+
+### Area compresa tra due funzioni
+
+Per trovare l'area compresa tra due funzioni $f$ e $g$ avendo $f>g$ :
+
+$$\int_a^bf(x) - g(x) dx$$
+
+
+## Integrali impropri
+
+Si hanno degli integrali impropri quando negli estremi (o anche all'interno di essi) si presentano dei punti di non continuità (asintoti) oppure sono illimitati
+
+- l'estremo $a$:
+
+	$$\int_a^b f(x) dx = \lim_{z \to a^+}\int_z^b f(x) dx$$
+- l'estremo $b$:
+	
+	$$\int_a^b f(x) dx = \lim_{z \to b^-}\int_a^z f(x) dx$$
+
+- quando uno degli estremi è illimitato:
+
+	$$\int_a^{+\infty} f(x) dx = \lim_{z \to +\infty} \int_a^z f(x) dx$$
+
+	che **converge** quando il risultato è finito, **diverge** quando è infinito ed è **indeterminato** quando non è risolvibile.
+
+- quando entrambi gli estremi sono illimitati:
+
+	$$\int_{-\infty}^{+\infty} f(x) dx = \lim_{t \to -\infty} \int_t^0 f(x) dx +   \lim_{t \to +\infty} \int_0^t f(x) dx$$
+
+	devono esistere entrambi i limiti finiti per essere integrabile la funzione.
+
+
+### Capire quando una funzione è integrabile
+
+#### asintoti orizzontali
+
+Se si presentano funzioni del tipo:
+
+$$\int_a^{+\infty}\frac{1}{x^p}$$
+
+Abbiamo che:
+
+- diverge se $p\leq 1$
+- converge se $p>1$
+
+è possibile utilizzare anche il **teorema del confronto**:
+
+Avendo $0 \leq g(x) \leq f(x)$ con un estremo che va a $+\infty$
+
+- Se $\int_a^{+\infty}f(x)dx$ converge $\implies$ $\int_a^{+\infty}f(x)dx$ converge
+- Se $\int_a^{+\infty}g(x)dx$ diverge $\implies$ $\int_a^{+\infty}g(x)dx$ diverge
+
+#### asintoti verticali
+
+Se si presentano funzioni del tipo:
+
+$$\int_0^{a}\frac{1}{x^p}$$
+
+Abbiamo che:
+
+- diverge se $p\geq 1$
+- converge se $<1$
+
+è possibile utilizzare anche il **teorema del confronto**:
+
+Avendo $0 \leq g(x) \leq f(x)$ con un estremo che è punto di discontinuità
+
+- Se $\int_{x_0}^{a}f(x)dx$ converge $\implies$ $\int_{x_0}^{a}f(x)dx$ converge
+- Se $\int_{x_0}^{a}g(x)dx$ diverge $\implies$ $\int_{x_0}^{a}g(x)dx$ diverge
