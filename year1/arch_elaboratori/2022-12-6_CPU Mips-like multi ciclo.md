@@ -67,4 +67,13 @@ Particolare attenzione necessita i segnali di controllo sul PC che devono gestir
 - beq
 - jump
 
-tenendo conto che PC = PC + 4 va fatto quando si presenta una nuova istruzione e non ad ogni ciclo 
+tenendo conto che PC = PC + 4 va fatto quando si presenta una nuova istruzione e non ad ogni ciclo
+
+
+## Resoconto finale
+
+Se proviamo a confrontare i millisecondi impiegati per le istruzioni nel caso della nostra CPU a singolo ciclo contro quella a multi ciclo notiamo che i tempi non sono completamente migliori nel caso della multi ciclo (beq e jump più veloci, R-type stesso tempo, lw più lenta).
+
+Questa comparazione però non è comparabile con una CPU reale, una CPU reale ha un set di istruzione molti più vasto di quello considerato da noi e soprattutto sono presenti istruzioni molti più lunghe della *lw*. Quindi nella realtà la CPU multi ciclo porta un notevole miglioramento dei tempi di esecuzione rispetto alla CPU a singolo ciclo.
+
+Ulteriori miglioramenti sono data dalla CPU pipeline.
