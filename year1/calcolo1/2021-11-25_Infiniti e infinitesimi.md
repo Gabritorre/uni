@@ -43,9 +43,9 @@ due funzioni $f$ e $g$ sono **infiniti simultanei** in $x_0$ se:
 
 Avendo $f$ e $g$ infiniti simultanei in $x_0$ allora:
 
-- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = \ell > 0$ allora $f$ e $g$ hanno lo **stesso ordine di infinito**, si scrive $f=O(g)$ " $f$ è o grande di $g$ "
-- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = +\infty$ allora $f$ ha ordine di infinito superiore a $g$, si scrive $f=o(g)$ " $f$ è o piccolo di $g$ "
-- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = 0$ allora $f$ ha ordine di infinito inferiore a $g$, si scrive $g=o(f)$ " $g$ è o piccolo di $f$ "
+- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = \ell > 0$ allora $f$ e $g$ hanno lo **stesso ordine di infinito**
+- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = +\infty$ allora $f$ ha ordine di infinito superiore a $g$
+- Se $\lim_{x \to x_0}\left| \frac{f(x)}{g(x)}\right| = 0$ allora $f$ ha ordine di infinito inferiore a $g$
 - Se il limite non esiste allora le due funzioni sono **infiniti non confrontabili**
 
 ### Principio di sostituzione degli infiniti

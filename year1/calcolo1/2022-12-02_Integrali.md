@@ -1,6 +1,6 @@
 ﻿# Integrali
 
-L'integrali è l'operazione inversa della derivata
+L'integrale è l'operazione inversa della derivata
 
 ![](https://i.ibb.co/8dNqMMc/int-der.png)
 
@@ -114,7 +114,7 @@ $$\frac{Ax+2A+Bx-3B}{(x-3)(x+2)}$$
 
 raccolgo i coefficienti che hanno le x dello stesso grado
 
-$$\frac{x(A+B)2A-3B}{(x-3)(x+2)}$$
+$$\frac{x(A+B) +2A-3B}{(x-3)(x+2)}$$
 
 $$\begin{cases}
 A+B = 3 \\
@@ -131,9 +131,9 @@ $$\int\frac{4}{x-3} + \frac{-1}{x+2}dx =$$
 
 $$= 4\ln|x-3|-\ln|x+2| + c$$
 
-### grado(N(x)) > grado(D(x))
+### grado(N(x)) >= grado(D(x))
 
-Caso in cui il grado del numeratore sia **maggiore** del grado del  denominatore, si svolge la divisione tra polinomi
+Caso in cui il grado del numeratore sia **maggiore o uguale** del grado del  denominatore, si svolge la divisione tra polinomi
 
 Es.
 
@@ -176,13 +176,13 @@ Il significato geometrica dell'integrale definito è quello di trovare **l'area 
 
 ![](https://i.ibb.co/h9ZNzQT/posiv.png)
 
-$T = \int_A^Bf(x)$
+$T = \int_A^Bf(x)dx$
 
 ### Integrale di una funzione negativa nell'intervallo
 
 ![](https://i.ibb.co/pZjg8d3/nega.png)
 
-$T = -\int_A^Bf(x)$
+$T = -\int_A^Bf(x)dx$
 
 
 ### Integrale di una funzione sia positiva che negativa nell'intervallo
@@ -191,7 +191,7 @@ $T = -\int_A^Bf(x)$
 
 $T = T_1 + T_2 + T_3$
 
-$T = \int_A^Bf(x) + (-\int_B^Cf(x)) + \int_C^Df(x)$
+$T = \int_A^Bf(x)dx + (-\int_B^Cf(x)dx) + \int_C^Df(x)dx$
 
 ### Valore medio
 
@@ -286,5 +286,5 @@ Abbiamo che:
 
 Avendo $0 \leq g(x) \leq f(x)$ con un estremo che è punto di discontinuità
 
-- Se $\int_{x_0}^{a}f(x)dx$ converge $\implies$ $\int_{x_0}^{a}f(x)dx$ converge
-- Se $\int_{x_0}^{a}g(x)dx$ diverge $\implies$ $\int_{x_0}^{a}g(x)dx$ diverge
+- Se $\int_{x_0}^{a}f(x)dx$ converge $\implies$ $\int_{x_0}^{a}g(x)dx$ converge
+- Se $\int_{x_0}^{a}g(x)dx$ diverge $\implies$ $\int_{x_0}^{a}f(x)dx$ diverge
