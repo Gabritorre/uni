@@ -1,4 +1,5 @@
-﻿# Sistemi lineari
+﻿
+# Sistemi lineari
 
 Un sistema lineare è un insieme di equazioni lineari (di primo grado).
 
@@ -107,7 +108,7 @@ $C \to(1,1,1)$
 In generale **sono possibili tre risultati**:
 
 - l'intersezione è **un piano**, se  i tre vettori (A, B, C) sono collineari (giacciono sulla stessa retta).
-- l'intersezione è **una retta**, se se i tre vettori non sono collineari ma si trovano sullo stesso piano che passa per l'origine.
+- l'intersezione è **una retta**, se i tre vettori non sono collineari ma si trovano sullo stesso piano che passa per l'origine.
 - l'intersezione è **un punto**, se A e B non collineari e C non si trova nel piano generato da A e B.
 
 1. controlliamo se A e B sono collineari:
@@ -195,3 +196,73 @@ x = \frac{1}{2} \\
 y  = 4 \\
 z = -\frac{9}{2}
 \end{cases}$$
+
+
+## Metodo di Cramer
+
+Il metodo di Cramer prevede una risoluzione per i sistemi lineari quadrati (cioè che hanno lo stesso numero di equazione e di incognite)
+
+$$a_{11}x_1 + a_{12}x_2 + ... + a_{1m}x_m = b_1 \\
+a_{21}x_1 + a_{22}x_2 + ... + a_{2m}x_m = b_2 \\
+... \\
+a_{m1}x_1 + a_{m2}x_2 + ... + a_{mm}x_m = b_m$$
+
+Il metodo di Cramer è applicabile solo se il **determinate è diverso da** $0$
+
+Avendo il sistema lineare:
+
+$\begin{cases}
+2x + y + z = 3 \\
+x - y - z = 0 \\
+x + 2y + z = 0
+\end{cases}$
+
+Vettore dei termini noti: $b = \begin{pmatrix}
+3 \\
+0 \\
+0 \\
+\end{pmatrix}$
+
+Otteniamo la matrice dei coefficienti:
+
+$A = \begin{bmatrix}
+2 & 1 & 1 \\
+1 & -1 & -1 \\
+1 & 2 & 1
+\end{bmatrix}$
+
+Con Sarrus abbiamo che $\det(A) = 3$
+
+
+Ottengo $D_x$ sostituendo $b$ nella prima colonna (la colonna delle $x$ ):
+
+$D_x = \begin{vmatrix}
+3 & 1 & 1 \\
+0 & -1 & -1 \\
+0 & 2 & 1
+\end{vmatrix} \text{tramite Sarrus (o con i complementi algebrici) ottengo } D_x = 3$ 
+
+Ottengo $D_y$ sostituendo $b$ nella seconda colonna (la colonna delle $y$ ):
+
+$D_y = \begin{vmatrix}
+2 & 3 & 1 \\
+1 & 0 & -1 \\
+1 & 0 & 1
+\end{vmatrix} \text{tramite Sarrus (o con i complementi algebrici) ottengo } D_y = -6$ 
+
+Ottengo $D_z$ sostituendo $b$ nella terza colonna (la colonna delle $z$ ):
+
+$D_z = \begin{vmatrix}
+2 & 1 & 3 \\
+1 & -1 & 0 \\
+1 & 2 & 0
+\end{vmatrix} \text{tramite Sarrus (o con i complementi algebrici) ottengo } D_z = 9$ 
+
+
+Infine otteniamo le soluzione facendo:
+
+$$x = \frac{D_x}{D} \hspace{5mm} y = \frac{D_y}{D} \hspace{5mm} z = \frac{D_z}{D}$$
+
+$$x = \frac{3}{3} \hspace{5mm} y = \frac{-6}{3} \hspace{5mm} z = \frac{9}{3}$$
+
+$$x = 1 \hspace{5mm} y = -2 \hspace{5mm} z = 3$$
