@@ -266,3 +266,17 @@ $$x = \frac{D_x}{D} \hspace{5mm} y = \frac{D_y}{D} \hspace{5mm} z = \frac{D_z}{D
 $$x = \frac{3}{3} \hspace{5mm} y = \frac{-6}{3} \hspace{5mm} z = \frac{9}{3}$$
 
 $$x = 1 \hspace{5mm} y = -2 \hspace{5mm} z = 3$$
+
+
+## Teorema di Rouchè-Capelli
+
+Questo teorema permette di stabilire se un sistema lineare ammette soluzione e in caso affermativo permette di trovarle mediante lo studio del rango di due matrici.
+
+Dato un sistema lineare $Ax = b$ otteniamo la matrice dei coefficienti $A$ e il vettore dei termini noti $b$, otteniamo la **matrice completa** $(A|b)$ accostando il vettore alla matrice dei coefficienti
+
+Il teorema stabilisce che:
+
+- $\text{rank}(A) < \text{rank}(A|b)$ allora **non ci sono soluzioni**
+- $\text{rank}(A) = \text{rank}(A|b)$ allora **ammette soluzioni**
+	- $\text{rank}(A) = \text{rank}(A|b) = n$ allora c'è **una sola soluzione** $(n = \text{numero di incognite})$
+	- $\text{rank}(A) = \text{rank}(A|b) < n$ allora ci sono **infinite soluzioni** $(n = \text{numero di incognite})$
