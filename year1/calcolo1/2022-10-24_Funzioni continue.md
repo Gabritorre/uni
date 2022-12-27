@@ -17,7 +17,7 @@ In generale $f$ è una funzione continua se è continua in **ogni punto del suo 
 Date due funzioni continue $f$ e $g$ allora:
 
 - $f + g =$ funzione continua
-- $f * g =$ funzione continua
+- $f \cdot g =$ funzione continua
 - $\frac{f}{g} =$ funzione continua
 - $\vert f\vert =$ funzione continua
 - $f \circ g =$ funzione continua
@@ -26,7 +26,7 @@ Date due funzioni continue $f$ e $g$ allora:
 
 		Es.
 
-	$$\lim_{x \to 0}log(\frac{1}{x}) = \lim_{t \to +\infty}\log(t)$$
+	$$\lim_{x \to 0}\log(\frac{1}{x}) = \lim_{t \to +\infty}\log(t)$$
 
 - $f^{-1}$ è continua se $f$ è strettamente monotona e definita in un intervallo $I$
 
@@ -34,7 +34,7 @@ Date due funzioni continue $f$ e $g$ allora:
 
 - Potenza: $x^\alpha$ continua
 - Esponenziale: $a^x$ continua
-- Logaritmo: $log_a(x)$ continua
+- Logaritmo: $\log_a(x)$ continua
 - Trigonometriche: $\cos(x)$ continua
 - Trigonometriche inverse: $\arctan(x)$ continua
 
@@ -79,7 +79,7 @@ Per il teorema degli zeri di una funzioni continua allora abbiamo sicuramente ch
 
 ## Limiti notevoli
 
-- $\lim_{x \to 0} \frac{\sin(x)}{x} = 1$ (x espresso in radianti)
+- $\lim_{x \to 0} \frac{\sin(x)}{x} = 1 \hspace{5mm}$ ( $x$ espresso in radianti)
 
 - $\lim_{x \to 0} \frac{1 - \cos(x)}{x^2} = \frac{1}{2}$
 
@@ -89,7 +89,7 @@ Per il teorema degli zeri di una funzioni continua allora abbiamo sicuramente ch
 
 - $\lim_{x \to +\infty} \frac{log(x)}{x} = 0$
 
-- $\lim_{x \to + \infty} \frac{log_a x^\beta}{x^p} = 0$ con $a >0 \land a \neq 1, \beta \in \mathbb{R}, p > 0$
+- $\lim_{x \to + \infty} \frac{log_a x^\beta}{x^p} = 0 \hspace{5mm}$ con $a >0 \land a \neq 1, \beta \in \mathbb{R}, p > 0$
 
 - $\lim_{x \to 0^+} =x^p log_ax^\beta = 0$
 
