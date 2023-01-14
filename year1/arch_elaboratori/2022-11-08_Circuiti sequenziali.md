@@ -168,7 +168,7 @@ La successione di operazioni da fare per realizzare un circuito di Moore è:
 6. Realizzare il circuito con le porte logiche
 
 
-Nella specifica con gli automi abbiamo che i **nodi** rappresentano **gli stati, gli output	** mentre gli **archi** sono gli **input**.
+Nella specifica con gli automi abbiamo che i **nodi** rappresentano **gli stati** che hanno al loro interno **gli output** mentre gli **archi** sono gli **input**.
 
 ### Esempio
 
@@ -243,7 +243,7 @@ $s' = \overline{s} \cdot \text{EWcar} + s \cdot \overline{\text{NScar}}$
 
 Realizziamo il circuito
 
-![](https://i.ibb.co/3fkvW65/circuito-finale.png)
+![](https://i.ibb.co/bHgBr8k/circuito-finale.png)
 
 
 
