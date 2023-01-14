@@ -1,7 +1,7 @@
 let alg_lineare = ["Numeri complessi", "Vettori", "Sistemi lineari", "Matrici", "Grafi", "Spazi vettoriali", "Trasformazioni lineari", "Autovalori e autovettori"];
 let arch_elaboratori = ["Il computer", "Rappresentazione informazioni", "Algebra booleana", "Circuiti logici", "MIPS", "ALU", "Moltiplicazione e divisione tra interi", "Circuiti sequenziali", "CPU Mips-like singolo ciclo", "CPU Mips-like multi ciclo", "Valutazione prestazioni"];
 let calcolo1 = ["Insiemistica", "Insieme R", "Funzioni", "Funzioni elementari", "Limiti", "Funzioni continue", "Derivate", "Infiniti e infinitesimi", "Serie", "Integrali"];
-let int_program = ["Introduzione a C"];
+let int_program = ["Progetto Snake Labyrinth"];
 let mat_base = ["Potenze radici", "Grafici delle funzioni"];
 let mat_discreta = ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Ricorsione e sommatorie", "Aritmetica modulare", "Numeri primi", "Calcolo combinatorio"];
 
@@ -39,9 +39,14 @@ function show_arguments(subj) {
 		var link_text = document.createTextNode(selected_subject[i]);
 		let elem = document.createElement("li");
 		arg_link.appendChild(link_text);
-		arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
-		arg_link.target = "_blank";
-
+		if(selected_subject[i] == "Progetto Snake Labyrinth") {
+			arg_link.href = "https://github.com/Gabritorre/labyrinth";
+			arg_link.target = "_blank";
+		}
+		else{
+			arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
+			arg_link.target = "_blank";
+		}
 		
 		elem.appendChild(arg_link);
 		argument_list.append(elem);
