@@ -73,14 +73,17 @@ bne $4, $5, &lt;Label_name&gt;(branch if not equal)
 </code></pre>
 <p>vengono comparati i contenuti dei registri $4 e $5 e se il primo è minore del secondo allora nel registro $10 verrà messo 1 altrimenti verrà messo 0.</p>
 <h2 id="formato-delle-istruzioni">Formato delle istruzioni</h2>
-<p>Le istruzioni del MIPS sono formate da 32bit:<br>
-le istruzioni aritmetico-logiche (tra cui “slt”) utilizzano il formato <strong>R-type</strong>, mentre le istruzioni come lw, sw, neq e bnq utilizzano il formato <strong>I-type</strong>.</p>
+<p>Le istruzioni del MIPS sono formate da 32bit:</p>
+<ul>
+<li>le istruzioni aritmetico-logiche (tra cui <em>slt</em>) utilizzano il formato <strong>R-type</strong>.</li>
+<li>Le istruzioni come <em>lw</em>, <em>sw</em>, <em>beq</em> e <em>bne</em> utilizzano il formato <strong>I-type</strong>.</li>
+<li>Il comando <em>j</em> utilizza il formato <strong>j-type</strong> dove viene inserito l’indirizzo di memoria di 26 bit dove saltare.</li>
+</ul>
 <h3 id="r-type">R-Type</h3>
 <p><img src="https://i.ibb.co/rtpK2Xd/r-type.png" alt=""></p>
 <h3 id="i-type">I-Type</h3>
 <p><img src="https://i.ibb.co/dDbR05V/i-type.png" alt=""></p>
 <h3 id="j-type">J-Type</h3>
-<p>Usato dal comando “j”, viene inserito l’indirizzo di memoria di 26 bit dove saltare.</p>
 <p><img src="https://i.ibb.co/fMNjzHz/jtype.png" alt=""></p>
 <h2 id="operazioni-con-costanti">Operazioni con costanti</h2>
 <p>basta scrivere i comandi seguiti da una “i” alla fine. es:</p>
