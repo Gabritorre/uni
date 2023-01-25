@@ -191,7 +191,7 @@ t \\
 
 ### cerchiamo gli autovettori relativi a $\lambda_2$ :
 
-Risolvo $(A-\lambda_1I)v = 0$ :
+Risolvo $(A-\lambda_2I)v = 0$ :
 
 $\begin{bmatrix}
 1 & -2 \\
@@ -275,4 +275,44 @@ t \\
 t \\
 \end{pmatrix}$
 
+## Diagonalizzabilità e triangolarizzabilità
 
+### Molteplicità algebrica e molteplicità geometrica
+
+- Si dice **molteplicità algebrica** il numero di volte in cui l'autovalore $\lambda$ è risultato dell'operazione $\det(A-\lambda I) = 0$
+	
+	se abbiamo $(1-\lambda)(\lambda^2-1)\longrightarrow (1 - \lambda)(\lambda - 1)(\lambda + 1)$
+	
+	otteniamo $\lambda_0 = 1, \lambda_1 = 1, \lambda_2 = -1$
+
+	quindi la molteplicità algebrica è 3.
+	(possimo dire che  la molteplicità algebrica di $\lambda_0$ è 2 ($\lambda_0 = \lambda_1$) mentre la molteplicità di $\lambda_2$ è 1)
+	
+	In conclusione possiamo dire che:
+	- In $\mathbb{R}$ la molteplicità algebrica è $\leq$ del numero di righe (o colonne, perché lavoriamo con matrice quadrate) della matrice.
+	- In $\mathbb{C}$ la molteplicità algebrica è $=$ al numero di righe (o colonne, perché lavoriamo con matrice quadrate) della matrice.
+
+- Si dice **molteplicità geometrica** la dimensione dell'autospazio di un autovalore, calcolato con la formula:
+	
+	$$n - rango(A-\lambda \cdot Id)$$
+	
+	dove:
+	- $n =$ numero di righe (o colonne)
+	- $A =$ la matrice di partenza
+	- $\lambda =$ autovalore
+	-  $Id =$ matrice identità
+
+$$1 \leq m_g \leq m_a \leq n$$
+
+Quindi se la molteplicità algebrica di un autovalore è 1 anche la molteplicità geometrica è 1
+
+### Diagonalizzabilità
+
+Una trasformazione lineare è diagonalizzabile se e solo se:
+- La la molteplicità algebrica della trasformazione è uguale alla molteplicità geometrica della trasformazione
+- Per ogni autovalore la molteplicità algebrica e geometrica sono uguali
+
+### Triangolarizzabilità
+
+Una trasformazione lineare è triangolizzabile se e solo se:
+- Gli autovalori appartengono allo stesso campo (Tutti Reali o tutti complessi)

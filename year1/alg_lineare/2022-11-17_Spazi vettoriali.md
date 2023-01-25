@@ -48,12 +48,12 @@ Gli elementi di $K$ sono degli scalari
 
 Uno spazio vettoriale su $K$ è costituito da un insieme di vettori $V$ dotati di:
 - Somma vettoriale
-- Prodotto scalare
+- Prodotto per uno scalare
 
 Devono inoltre valere i seguenti **assiomi**:
 
-$a,b,c,d \in V$ vettori 
-$m,s \in K$
+$a, b, c \in V$ vettori 
+$r, s \in K$ scalari
 
 |numero ass.| proprietà  | nome proprietà |
 |--|--|--|
@@ -64,7 +64,7 @@ $m,s \in K$
 |5| $$(r+s)a = ar + as$$ |prop. distributiva
 |6| $$(r\cdot s)a = r(sa)$$ | prop. distributiva
 |7| $$r(a+b) = ra+rb$$ | prop. distributiva
-|8| $$O \cdot a = O$$ |O = vettore nullo
+|8| $$O \cdot a = O$$ | $O$ = vettore nullo
 
 
 ## Sottospazi
