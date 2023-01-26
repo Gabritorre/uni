@@ -1,6 +1,6 @@
 ﻿# Trasformazioni lineari
 
-Le Trasformazioni lineari o applicazioni lineari sono sono funzioni tra due spazi vettoriali che conserva le combinazioni lineari, cioè somma di vettori e moltiplicazione di vettori per scalari
+Le Trasformazioni lineari o applicazioni lineari sono sono funzioni tra due spazi vettoriali che conservano le combinazioni lineari, cioè somma di vettori e moltiplicazione di vettori per scalari.
 
 Siano $V, W$ spazi vettoriali sullo stesso campo,
 
@@ -67,6 +67,9 @@ Il nucleo è un sottoinsieme del dominio composto da tutti i vettori che hanno c
 
 serve a studiare l'inettività della trasformazione
 
+possiamo trovare il valore del nucleo seguendo questa formula:
+
+
 ### Immagine (detto "rango" nelle matrici)
 
 L'immagine è un sottoinsieme del codominio formato da vettori che sono immagine dei vettori del dominio
@@ -95,14 +98,25 @@ $f: V \longrightarrow W$
 $$\dim(V) = \dim(ker(f)) + \dim(\text{Im}(f))$$
 
 ### Biiettività
+$V = \mathbb{R}^3$
+
+$W = \mathbb{R}^3$
 
 $f: V \longrightarrow W$
 
 - Una applicazione è **iniettiva** se $\dim(\ker(f)) =0$
-- Una applicazione è **suriettiva** se $\dim(\text{Im}(f)) = \dim(W)$ quindi se $\text{Im}(f)) = W$
+	- è possibile determinarlo utilizzando il teorema della dimensione:
+		$\dim(ker(f)) = \dim(V) - \dim(\text{Im}(f))$
+		la dimensione di V viene data dal testo, in questo caso $\mathbb{R}^3$ quindi 3.
+
+		la dimensione dell'immagine la troviamo con lo studio della suriettività.
+		
+		Se la dimensione del nucleo vale $0$ allora la funzione è iniettiva
+- Una applicazione è **suriettiva** se $\dim(\text{Im}(f)) = \dim(W)$ quindi se $\text{Im}(f)) = W$ (immagine coincide con il codominio)
+	- é possibile determinarlo scrivendo la trasformazione come matrice e calcolare il suo rango, se quest'ultimo è uguale alla dimensione del codominio allora è suriettiva (rango = 3 e codominio = $\mathbb{R}^3$ allora è suriettiva)
 - Una applicazione è **biiettiva** se è iniettiva e suriettiva, se è biiettiva allora è anche invertibile
 
-## Da trasformazione a matrice
+## Da trasformazione lineare a matrice
 
 $T: \mathbb{R}^2\longrightarrow\mathbb{R}^3$
 

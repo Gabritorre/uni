@@ -85,7 +85,7 @@ x + 4y = 3
 
 Nelle matrici è possibile:
 - Scambiare le righe
-- Moltiplicare una riga per una scalare
+- Moltiplicare una riga per uno scalare
 - Sottrarre ad una riga un'altra
 - Semplificare i componenti di della riga
 
@@ -234,7 +234,7 @@ $A = \begin{bmatrix}
 Con Sarrus abbiamo che $\det(A) = 3$
 
 
-Ottengo $D_x$ sostituendo $b$ nella prima colonna (la colonna delle $x$ ):
+Ottengo $D_x$ sostituendo $b$ al posto della prima colonna (la colonna delle $x$ ):
 
 $D_x = \begin{vmatrix}
 3 & 1 & 1 \\
@@ -242,7 +242,7 @@ $D_x = \begin{vmatrix}
 0 & 2 & 1
 \end{vmatrix} \text{tramite Sarrus (o con i complementi algebrici) ottengo } D_x = 3$ 
 
-Ottengo $D_y$ sostituendo $b$ nella seconda colonna (la colonna delle $y$ ):
+Ottengo $D_y$ sostituendo $b$ al posto della seconda colonna (la colonna delle $y$ ):
 
 $D_y = \begin{vmatrix}
 2 & 3 & 1 \\
@@ -250,7 +250,7 @@ $D_y = \begin{vmatrix}
 1 & 0 & 1
 \end{vmatrix} \text{tramite Sarrus (o con i complementi algebrici) ottengo } D_y = -6$ 
 
-Ottengo $D_z$ sostituendo $b$ nella terza colonna (la colonna delle $z$ ):
+Ottengo $D_z$ sostituendo $b$ al posto della terza colonna (la colonna delle $z$ ):
 
 $D_z = \begin{vmatrix}
 2 & 1 & 3 \\
