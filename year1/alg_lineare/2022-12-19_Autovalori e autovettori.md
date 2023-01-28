@@ -312,7 +312,25 @@ Una trasformazione lineare è diagonalizzabile se e solo se:
 - La la molteplicità algebrica della trasformazione è uguale alla molteplicità geometrica della trasformazione
 - Per ogni autovalore la molteplicità algebrica e geometrica sono uguali
 
-La matrice diagonale è una matrice composta dalla diagonale principale contenente gli autovalori, ripetuti nel caso in cui abbiano molteplicità maggiore di 1.
+La matrice diagonale D è una matrice composta dalla diagonale principale contenente gli autovalori, ripetuti nel caso in cui abbiano molteplicità maggiore di 1.
+
+$$D =  P^{-1}\cdot A \cdot P$$
+
+La matrice diagonalizzante P è una matrice che ha per colonne le basi degli autovettori
+
+nell'esercizio precedente avremo
+
+$D =\begin{bmatrix}
+3 & 0 \\
+0 & 2 \\
+\end{bmatrix}$
+
+$P =\begin{bmatrix}
+-1 & -2 \\
+1 & 1 \\
+\end{bmatrix}$
+
+NB ogni colonna di P deve essere riferita al corrispettivo autovalore nella matrice D.
 
 ### Triangolarizzabilità
 
