@@ -316,6 +316,8 @@ La matrice diagonale D è una matrice composta dalla diagonale principale conten
 
 $$D =  P^{-1}\cdot A \cdot P$$
 
+$$A =  P\cdot A \cdot P^{-1}$$
+
 La matrice diagonalizzante P è una matrice che ha per colonne le basi degli autovettori
 
 nell'esercizio precedente avremo
