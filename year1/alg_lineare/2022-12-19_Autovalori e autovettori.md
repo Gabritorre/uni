@@ -332,6 +332,10 @@ $P =\begin{bmatrix}
 
 NB ogni colonna di P deve essere riferita al corrispettivo autovalore nella matrice D.
 
+È possibile trovare l'inversa di $P$ con la formula
+
+$P^{-1} = \frac{1}{\det(P)}\cdot (\text{Cof(P)})^T$
+
 ### Triangolarizzabilità
 
 Una trasformazione lineare è triangolizzabile se e solo se:
