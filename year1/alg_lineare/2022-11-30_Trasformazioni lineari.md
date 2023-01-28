@@ -1,6 +1,6 @@
 ﻿# Trasformazioni lineari
 
-Le Trasformazioni lineari o applicazioni lineari sono sono funzioni tra due spazi vettoriali che conservano le combinazioni lineari, cioè somma di vettori e moltiplicazione di vettori per scalari.
+Le Trasformazioni lineari o applicazioni lineari sono funzioni tra due spazi vettoriali che conservano le combinazioni lineari, cioè somma di vettori e moltiplicazione di vettori per scalari.
 
 Siano $V, W$ spazi vettoriali sullo stesso campo,
 
@@ -106,7 +106,9 @@ $f: V \longrightarrow W$
 
 - Una applicazione è **iniettiva** se $\dim(\ker(f)) =0$
 	- è possibile determinarlo utilizzando il teorema della dimensione:
-		$\dim(ker(f)) = \dim(V) - \dim(\text{Im}(f))$
+	
+		$$\dim(ker(f)) = \dim(V) - \dim(\text{Im}(f))$$
+		
 		la dimensione di V viene data dal testo, in questo caso $\mathbb{R}^3$ quindi 3.
 
 		la dimensione dell'immagine la troviamo con lo studio della suriettività.
@@ -125,8 +127,6 @@ $T((x,y)) = (x+y, 2x, x-y)$
 Otterremo una matrice dei coefficienti per matrice delle incognite
 
 La matrice dei coefficienti avrà 2 colonne e 3 righe (dominio = colonne, codominio = righe)
-
-
 
 $$\begin{bmatrix}
 1 & 1 \\

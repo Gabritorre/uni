@@ -294,12 +294,12 @@ t \\
 
 - Si dice **molteplicità geometrica** la dimensione dell'autospazio di un autovalore, calcolato con la formula:
 	
-	$$n - rango(A-\lambda \cdot Id)$$
+	$$n - rango(A-\lambda_i \cdot Id)$$
 	
 	dove:
 	- $n =$ numero di righe (o colonne)
 	- $A =$ la matrice di partenza
-	- $\lambda =$ autovalore
+	- $\lambda_i =$ autovalore
 	-  $Id =$ matrice identità
 
 $$1 \leq m_g \leq m_a \leq n$$
@@ -311,6 +311,8 @@ Quindi se la molteplicità algebrica di un autovalore è 1 anche la molteplicit�
 Una trasformazione lineare è diagonalizzabile se e solo se:
 - La la molteplicità algebrica della trasformazione è uguale alla molteplicità geometrica della trasformazione
 - Per ogni autovalore la molteplicità algebrica e geometrica sono uguali
+
+La matrice diagonale è una matrice composta dalla diagonale principale contenente gli autovalori, ripetuti nel caso in cui abbiano molteplicità maggiore di 1.
 
 ### Triangolarizzabilità
 
