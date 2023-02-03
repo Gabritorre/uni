@@ -154,6 +154,7 @@ $$v_1 = \begin{pmatrix} 1\\1\end{pmatrix} v_2 = \begin{pmatrix} 2\\2\end{pmatrix
 
 $$\text{span}(v_1,v_2) = \lbrace a_1v_1 + a_2v_2\rbrace \text{ con } a_1,a_2 \in \mathbb{R}$$
 
+La dimensione del sottospazio generato da dai vettori è dato dal numero dei vettori che sono linearmente indipendenti.
 
 ## Sistema di generatori
 

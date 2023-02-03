@@ -298,10 +298,9 @@ $Q(1,2,1)$
 
 $R(5,0,7)$
 
-1. trovo due vettore applicati: $\overrightarrow{PQ}$ e $\overrightarrow{PR}$
-2. Li riporto all'origine: $Q-P$ e $R-P$
-3. Calcolo il piano passante per l'origine e che contiene i due vettori:
-$t(Q-P) + r(R-P)$
+1. trovo due vettore applicati: $\overrightarrow{PQ}$ (facendo $Q-P$ ) e $\overrightarrow{PR}$ (facendo $R-P$ )
+2. Calcolo il piano passante per l'origine e che contiene i due vettori con la formula:
+$$P + t(Q-P) + r(R-P)$$
 
 Quindi:
 
@@ -309,16 +308,17 @@ $Q-P = (0,1,0)$
 
 $R-P = (4,-1,6)$
 
-Faccio l'equazione parametrica mettendo sulla prima colonna il punto con i numeri più semplici, sulla seconda $Q-P$ e sulla terza $R-P$.
+Faccio l'equazione parametrica mettendo sulla prima colonna un punto $P$ , sulla seconda $t(Q-P)$ e sulla terza $r(R-P)$.
 
 $$\pi: \begin{cases} x = 1 + 0 \cdot t +4 \cdot r  \\
 y = 1 + 1 \cdot t  + (-1) \cdot r  \\
 z = 1 + 0 \cdot t + 6 \cdot r  \end{cases}
-\begin{cases} x = 1 +  +4r  \\
+\begin{cases} x = 1 +  4r  \\
 y = 1 +  t  -r \\
 z = 1 + 6 r  \end{cases}$$
 
-5. Mi ricavo $r$ da una delle righe del sistema
+Per trovare l'equazione cartesiana mi ricavo $r$ da una delle righe del sistema, in questo caso la prima:
+
 $r = \frac{(x-1)}{4}$
 
 e la sostituisco in un'altra riga:
