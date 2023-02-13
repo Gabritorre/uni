@@ -5,6 +5,10 @@ let int_program = ["Progetto Snake Labyrinth"];
 let mat_base = ["Potenze radici", "Grafici delle funzioni"];
 let mat_discreta = ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Ricorsione e sommatorie", "Aritmetica modulare", "Numeri primi", "Calcolo combinatorio"];
 
+let arch_elaboratori2 = [];
+let calcolo2 = [];
+let prog_lab = ["Note varie"];
+
 function show_arguments(subj) {
 	clear_output();
 	// console.log(subj);
@@ -29,6 +33,9 @@ function show_arguments(subj) {
 			break;
 		case "mat_discreta":
 			selected_subject = mat_discreta;
+			break;
+		case "prog_lab":
+			selected_subject = prog_lab;
 			break;
 		default:
 			break

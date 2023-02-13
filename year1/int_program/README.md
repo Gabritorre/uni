@@ -1,4 +1,4 @@
-# INTRODUZIONE ALLA PROGRAMMAZIONE-1
+# INTRODUZIONE ALLA PROGRAMMAZIONE
 
 Il corso si propone di introdurre gli elementi base della programmazione imperativa per formulare soluzioni algoritmiche a problemi di complessità limitata.
 
@@ -15,12 +15,12 @@ Al termine del corso lo studente dovrà essere in grado di utilizzare un ambient
 
 ## Contenuti
 
-- Introduzione al linguaggio di programmazione C
+- Introduzione al linguaggio di programmazione C.
 - Variabili e tipi fondamentali.
-- Flusso del controllo
-- Funzioni
-- Array, puntatori e stringhe
-- Computazione Iterativa e Computazione Ricorsiva
-- Memoria Dinamica
-- Abstract Data Types
-- Strategie di problem solving
+- Flusso del controllo.
+- Funzioni.
+- Array, puntatori e stringhe.
+- Computazione Iterativa e Computazione Ricorsiva.
+- Memoria Dinamica.
+- Abstract Data Types.
+- Strategie di problem solving.

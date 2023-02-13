@@ -29,7 +29,21 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	padding: 15px 0px;
+	padding: 10px 0px;
+	align-items: center;
+}
+
+.curses{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+	padding: 10px 0px;
+	align-items: center;
+}
+
+.head-subject h2 {
+	margin:0;
 }
 
 #arguments-sep {
@@ -40,7 +54,7 @@ body {
 .change-subject {
 	font-size: 18px;
 	color: rgb(184, 190, 197);
-	padding: 0px 10px;
+	padding: 15px 10px;
 }
 
 .main {
@@ -63,6 +77,12 @@ h2 {
 	margin-bottom: 20px;
 }
 
+h3 {
+	margin-top: 0px;
+	padding-top: 15px;
+	font-size: 26px;
+}
+
 hr {
 	width: 80%;
 	margin: 20px 0px 25px 0px;
@@ -70,6 +90,7 @@ hr {
 
 ul {
 	padding:0px;
+	margin-bottom: 5px;
 }
 
 li {
