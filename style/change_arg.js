@@ -34,9 +34,16 @@ function show_arguments(subj) {
 		case "mat_discreta":
 			selected_subject = mat_discreta;
 			break;
+		case "arch_elaboratori2":
+			selected_subject = arch_elaboratori2;
+			break;
+		case "calcolo2":
+			selected_subject = calcolo2;
+			break;
 		case "prog_lab":
 			selected_subject = prog_lab;
 			break;
+
 		default:
 			break
 	}
