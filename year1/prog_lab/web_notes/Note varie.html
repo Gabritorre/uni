@@ -19,6 +19,8 @@
 <li><a href="#tipo-di-dato-variabile-e-oggetto">Tipo di dato, variabile e oggetto</a></li>
 <li><a href="#dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</a></li>
 <li><a href="#linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#invariante-di-un-ciclo">Invariante di un ciclo</a></li>
 </ul>
 </li>
 </ul>
@@ -99,6 +101,36 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 <p>es. scheme, scala, Prolog</p>
 </li>
 </ul>
+<h2 id="references">References</h2>
+<p>Una variabile dichiarata come reference di un’altra variabile è in sostanza un <em>alias</em> di quella variabile.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+<span class="token keyword">int</span><span class="token operator">&amp;</span> b <span class="token operator">=</span> a<span class="token punctuation">;</span>
+</code></pre>
+<p>In questo caso <code>b</code> è una reference alla variabile <code>a</code>, quindi le variabili <code>a</code> e <code>b</code> sono la stessa cosa.</p>
+<p>Quando una funzione richiede come parametri delle references si ha una chiamata a funzione con passaggio dei parametri per inidirizzo, per cui vengono utilizzate effettivamente le variabili passate alla funzione e non una loro copia</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">void</span> <span class="token function">function</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;</span> var1<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	var1 <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token function">function</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	cout<span class="token operator">&lt;&lt;</span>a<span class="token punctuation">;</span>	<span class="token comment">//a vale 10</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="differenze-con-i-puntatori">Differenze con i puntatori</h3>
+<ul>
+<li>Una reference non può essere di tipo void, mentre un puntatore sì.</li>
+<li>Una reference non può essere aggiornata dopo la sua inizializzazione, mentre un puntatore sì.</li>
+<li>Una reference può riferirsi ad una altra reference ma rappresenterà sempre un alias della variabile originale, mentre un puntatore può puntare ad un altro puntatore ma ogni puntatore avrà un contenuto diverso (i vari indirizzi).</li>
+</ul>
+<h2 id="invariante-di-un-ciclo">Invariante di un ciclo</h2>
+<p>L’invariante di un ciclo è una proprietà che deve essere vera prima e durante le iterazioni del ciclo.</p>
+<p>L’utilità dell’invariante sta nel fatto che permette di verificare se il ciclo funziona correttamente. Se l’invariante è vera all’inizio del ciclo e rimane vera ad ogni iterazione, allora possiamo essere certi che il ciclo terminerà correttamente.</p>
+<h3 id="esempio">Esempio</h3>
+<p>Ad esempio in un programma che calcola il l’elemento maggiore  presente in una matrice.</p>
+<p>All’inizio di ogni iterazione del ciclo,  una variabile, <code>max</code> contiene il valore massimo tra tutti gli elementi della matrice che abbiamo finora esaminato.</p>
+<p>Alla fine di ogni iterazione del ciclo, l’invariante deve rimanere vero. In particolare, se abbiamo esaminato tutti gli elementi della matrice, allora <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
+<p>Quindi, l’invariante in questo caso è che la variabile <code>max</code> contenga sempre il valore massimo tra gli elementi della matrice che abbiamo finora esaminato. Alla fine del ciclo, <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
 
     </div>
   </div>

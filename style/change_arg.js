@@ -6,7 +6,7 @@ let mat_base = ["Potenze radici", "Grafici delle funzioni"];
 let mat_discreta = ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Ricorsione e sommatorie", "Aritmetica modulare", "Numeri primi", "Calcolo combinatorio"];
 
 let arch_elaboratori2 = [];
-let calcolo2 = [];
+let calcolo2 = ["Equazioni differenziali"];
 let prog_lab = ["Note varie"];
 
 function show_arguments(subj) {
