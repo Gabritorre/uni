@@ -20,7 +20,9 @@
 <li><a href="#dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</a></li>
 <li><a href="#linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</a></li>
 <li><a href="#references">References</a></li>
+<li><a href="#cicli">Cicli</a></li>
 <li><a href="#invariante-di-un-ciclo">Invariante di un ciclo</a></li>
+<li><a href="#vector">Vector</a></li>
 </ul>
 </li>
 </ul>
@@ -57,8 +59,8 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 <h2 id="tipo-di-dato-variabile-e-oggetto">Tipo di dato, variabile e oggetto</h2>
 <ul>
 <li>Tipo di variabile: insieme di valori su cui vengono definite delle operazioni.</li>
-<li>Oggetto: area di memoria dotata di tipo.</li>
-<li>Variabile: oggetto (quindi un’area di memoria) a cui è assegnato un identificatore</li>
+<li>Oggetto: area di memoria alla quale è associato un tipo.</li>
+<li>Variabile: oggetto (quindi un’area di memoria) a cui è assegnato un identificatore (il nome della variabile)</li>
 </ul>
 <h2 id="dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</h2>
 <ul>
@@ -78,9 +80,17 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 </code></pre>
 </li>
 <li>
-<p><strong>Definizione</strong>: significa in sostanza allocare dell’area di memoria</p>
+<p><strong>Definizione</strong>: Una dichiarazione è anche una definizione quando specifica completamente il nome introdotto.<br>
+Per esempio:</p>
+<pre><code>  int a;
+</code></pre>
+<p>è una definizione (e quindi anche una dichiarazione).<br>
+Invece la dichiarazione</p>
+<pre><code>  extern int a;
+</code></pre>
 </li>
 </ul>
+<p>introduce il nome a che però è allocato altrove. In questo caso parliamo di dichiarazione ma non di definizione.</p>
 <h2 id="linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</h2>
 <ul>
 <li>
@@ -123,6 +133,21 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 <li>Una reference non può essere aggiornata dopo la sua inizializzazione, mentre un puntatore sì.</li>
 <li>Una reference può riferirsi ad una altra reference ma rappresenterà sempre un alias della variabile originale, mentre un puntatore può puntare ad un altro puntatore ma ogni puntatore avrà un contenuto diverso (i vari indirizzi).</li>
 </ul>
+<h2 id="cicli">Cicli</h2>
+<h3 id="ciclo-for">Ciclo for</h3>
+<p>Il ciclo for consiste di tre clausole: l’inizializzazione, la condizione di permanenza, l’espressione di iterazione.</p>
+<pre><code>for(inizializzazione;condizione;iterazione){}
+</code></pre>
+<p>Un buon uso del ciclo for prevede che nel corpo del for non vengano modificate le variabili che sono soggette alla condizione del ciclo.</p>
+<h3 id="ciclo-while">ciclo while</h3>
+<pre><code>while(condizione){}
+</code></pre>
+<p>la scelta del ciclo while entra in gioco quando non è possibile esprimere un’iterazione con il ciclo for e quando il ciclo verrà eseguito zero o più volte.</p>
+<h3 id="ciclo-do-while">ciclo do-while</h3>
+<pre><code>do{
+}while();
+</code></pre>
+<p>la scelta del ciclo do-while entra in gioco quando non è possibile esprimere un’iterazione con il ciclo for e quando il ciclo verrà eseguito una o più volte.</p>
 <h2 id="invariante-di-un-ciclo">Invariante di un ciclo</h2>
 <p>L’invariante di un ciclo è una proprietà che deve essere vera prima e durante le iterazioni del ciclo.</p>
 <p>L’utilità dell’invariante sta nel fatto che permette di verificare se il ciclo funziona correttamente. Se l’invariante è vera all’inizio del ciclo e rimane vera ad ogni iterazione, allora possiamo essere certi che il ciclo terminerà correttamente.</p>
@@ -131,6 +156,24 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 <p>All’inizio di ogni iterazione del ciclo,  una variabile, <code>max</code> contiene il valore massimo tra tutti gli elementi della matrice che abbiamo finora esaminato.</p>
 <p>Alla fine di ogni iterazione del ciclo, l’invariante deve rimanere vero. In particolare, se abbiamo esaminato tutti gli elementi della matrice, allora <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
 <p>Quindi, l’invariante in questo caso è che la variabile <code>max</code> contenga sempre il valore massimo tra gli elementi della matrice che abbiamo finora esaminato. Alla fine del ciclo, <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
+<h2 id="vector">Vector</h2>
+<p>Uno dei motivi principali per cui utilizzeremo vector al posto degli array C-like è che in C non è possibile passare un array ad una funzione per copia ma solo per parametro, essendo sì più efficiente ma ciò ci costringe a portarci sempre una variabile in più per indicare la dimensione dell’array.</p>
+<p>In più se vogliamo volutamente lavorare su una copia dell’array non è possibile farlo (in realtà utilizzando gli struct sarebbe possibile, ma è scomodo e poco chiaro).</p>
+<p>Utilizzando la classe vector è possibile decidere se effettuare un passaggio per indirizzo o per valore. In più porta con se molti metodi che facilitano di molto l’utilizzo degli array.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> arr<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// passaggio per copia</span>
+<span class="token keyword">void</span> <span class="token function">foo2</span><span class="token punctuation">(</span>vecotr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token operator">&amp;</span> arr<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// passaggio per riferimento</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> a<span class="token punctuation">;</span> <span class="token comment">// non è necessario specificare la dimensione</span>
+vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">// è possibile utilizzare entrambi i seguenti modi, l'importante differenza sta nel fatto che utilizzare il metodo at è più sicuro perche fa un controllo sull'esistenza dell'indice</span>
+a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+b<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">1.5</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>La classe vector è implementata come un <strong>template</strong> cioè una classe generica che può agire su un tipo di dato passato per parametro, e viene indicato tra le parentisi angolari.</p>
 
     </div>
   </div>

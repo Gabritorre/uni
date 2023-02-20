@@ -23,8 +23,8 @@ Sono un r-value le costanti e tutto quello che può restituire una costante
 
 ## Tipo di dato, variabile e oggetto
 - Tipo di variabile: insieme di valori su cui vengono definite delle operazioni.
-- Oggetto: area di memoria dotata di tipo.
-- Variabile: oggetto (quindi un'area di memoria) a cui è assegnato un identificatore
+- Oggetto: area di memoria alla quale è associato un tipo.
+- Variabile: oggetto (quindi un'area di memoria) a cui è assegnato un identificatore (il nome della variabile)
 
 
 ## Dichiarazione, assegnamento, inizializzazione e definizione
@@ -40,7 +40,17 @@ Sono un r-value le costanti e tutto quello che può restituire una costante
 
 		int b = 5;
 
-- **Definizione**: significa in sostanza allocare dell'area di memoria
+- **Definizione**: Una dichiarazione è anche una definizione quando specifica completamente il nome introdotto.
+Per esempio:
+
+		int a;
+
+	è una definizione (e quindi anche una dichiarazione). 
+Invece la dichiarazione
+
+		extern int a;
+
+introduce il nome a che però è allocato altrove. In questo caso parliamo di dichiarazione ma non di definizione.
 
 
 ## Linguaggi imperativi e funzionali
@@ -86,6 +96,27 @@ int main() {
 - Una reference non può essere aggiornata dopo la sua inizializzazione, mentre un puntatore sì.
 - Una reference può riferirsi ad una altra reference ma rappresenterà sempre un alias della variabile originale, mentre un puntatore può puntare ad un altro puntatore ma ogni puntatore avrà un contenuto diverso (i vari indirizzi).
 
+## Cicli
+
+### Ciclo for
+Il ciclo for consiste di tre clausole: l’inizializzazione, la condizione di permanenza, l’espressione di iterazione.
+
+	for(inizializzazione;condizione;iterazione){}
+
+Un buon uso del ciclo for prevede che nel corpo del for non vengano modificate le variabili che sono soggette alla condizione del ciclo.
+
+### ciclo while
+
+	while(condizione){}
+
+la scelta del ciclo while entra in gioco quando non è possibile esprimere un'iterazione con il ciclo for e quando il ciclo verrà eseguito zero o più volte.
+
+### ciclo do-while
+
+	do{
+	}while();
+
+la scelta del ciclo do-while entra in gioco quando non è possibile esprimere un'iterazione con il ciclo for e quando il ciclo verrà eseguito una o più volte.
 
 ## Invariante di un ciclo
 
@@ -102,3 +133,28 @@ All'inizio di ogni iterazione del ciclo,  una variabile, `max` contiene il valor
 Alla fine di ogni iterazione del ciclo, l'invariante deve rimanere vero. In particolare, se abbiamo esaminato tutti gli elementi della matrice, allora `max` conterrà il valore massimo tra tutti gli elementi della matrice.
 
 Quindi, l'invariante in questo caso è che la variabile `max` contenga sempre il valore massimo tra gli elementi della matrice che abbiamo finora esaminato. Alla fine del ciclo, `max` conterrà il valore massimo tra tutti gli elementi della matrice.
+
+## Vector
+
+Uno dei motivi principali per cui utilizzeremo vector al posto degli array C-like è che in C non è possibile passare un array ad una funzione per copia ma solo per parametro, essendo sì più efficiente ma ciò ci costringe a portarci sempre una variabile in più per indicare la dimensione dell'array. 
+
+In più se vogliamo volutamente lavorare su una copia dell'array non è possibile farlo (in realtà utilizzando gli struct sarebbe possibile, ma è scomodo e poco chiaro).
+
+Utilizzando la classe vector è possibile decidere se effettuare un passaggio per indirizzo o per valore. In più porta con se molti metodi che facilitano di molto l'utilizzo degli array.
+
+```c++
+#include <vector>
+
+void foo(vector<int> arr){} // passaggio per copia
+void foo2(vecotr<int>& arr){} // passaggio per riferimento
+
+int main() {
+vector<int> a; // non è necessario specificare la dimensione
+vector<double> b(10);
+// è possibile utilizzare entrambi i seguenti modi, l'importante differenza sta nel fatto che utilizzare il metodo at è più sicuro perche fa un controllo sull'esistenza dell'indice
+a[0] = 1;
+b.at(0) = 1.5;
+}
+```
+
+La classe vector è implementata come un **template** cioè una classe generica che può agire su un tipo di dato passato per parametro, e viene indicato tra le parentisi angolari.

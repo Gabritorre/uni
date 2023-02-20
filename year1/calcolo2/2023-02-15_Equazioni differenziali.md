@@ -18,7 +18,7 @@ $$F(x;y;y') = 0$$
 
 Tratteremo le equazione differenziali di tipo:
 1. Quelle di tipo $y'=f(x)$
-2. Le equazioni lineari di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
+2. Le equazioni di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
 3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
 4. Le equazioni lineari di secondo ordine $ay'' + by' + c = g(x)$
 
@@ -37,7 +37,7 @@ ottenendo così l'integrale generale:
 $y = 2 \sin x + c$
 
 
-###  Le equazioni lineari di primo ordine a variabili separabili
+###  Le equazioni di primo ordine a variabili separabili
 
 Una equazione è detta a variabili separabili quando può essere scritta nella forma $y' = g(x) \cdot h(y)$ quindi come prodotto di due funzioni, una sulla variabile x e l'altra sulla variabile y.
 
@@ -78,7 +78,7 @@ Questo tipo di equazioni sono scritte nella forma
 
 $$y' = a(x)\cdot y + b(x)$$
 
-y e y' devono essere di primo grado, altrimenti l'equazione non è lineare
+Per essere lineare l'equazione deve avere $y$ e $y'$ al primo grado e non devono essere moltiplicate tra loro.
 
 - Se $b(x) = 0$  l'equazione è detta **omogenea**.
 - Se $b(x) \neq 0$  l'equazione è detta **completa**.
