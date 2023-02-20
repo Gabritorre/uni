@@ -19,7 +19,7 @@ $$F(x;y;y') = 0$$
 Tratteremo le equazione differenziali di tipo:
 1. Quelle di tipo $y'=f(x)$
 2. Le equazioni lineari di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
-3. Le equazioni lineari di primo ordine $y' = a(x) \cdot y + b(x)$
+3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
 4. Le equazioni lineari di secondo ordine $ay'' + by' + c = g(x)$
 
 ### Equazioni tipo $y' = f(x)$
@@ -71,6 +71,25 @@ Il caso $y = 0$ spesso può essere già compreso nella soluzione generale perch�
 In questo caso però, nessun valore di $c$ ci restituisce $y = 0$ quindi va aggiunto alle soluzioni:
 
 $S: y = -\frac{1}{2x^2+c} \lor y = 0$
+
+###  Le equazioni lineari omogenee
+
+Questo tipo di equazioni sono scritte nella forma
+
+$$y' = a(x)\cdot y + b(x)$$
+
+y e y' devono essere di primo grado, altrimenti l'equazione non è lineare
+
+- Se $b(x) = 0$  l'equazione è detta **omogenea**.
+- Se $b(x) \neq 0$  l'equazione è detta **completa**.
+
+#### formula risolutiva per le omogenee
+
+$$y = ke^{\int a(x)\,dx}$$
+
+#### formula risolutiva per le complete
+
+$$y = ke^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
 
 ## Problema di Cauchy
 
