@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Compilatore</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#compilatore">Compilatore</a>
+<ul>
+<li><a href="#header">header</a></li>
+<li><a href="#link-dei-file-oggetto">link dei file oggetto</a></li>
+<li><a href="#librerie-statiche-e-dinamiche">Librerie statiche e dinamiche</a></li>
+<li><a href="#opzioni-comuni-di-g">Opzioni comuni di g++</a></li>
+<li><a href="#ottimizzazioni">Ottimizzazioni</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="compilatore">Compilatore</h1>
+<p>Il compilatore per i programmi scritti in c++ è <strong>g++</strong>.</p>
+<p>il comando g++ è  una chiamata a gcc con l’aggiunta di particolari parametri</p>
+<p>Compilazione:</p>
+<pre><code>g++ program.cpp -o program
+./program
+</code></pre>
+<h2 id="header">header</h2>
+<p>Per una migliore organizzazione del codice è possibile avere gli header in una cartella diversa da quella del file eseguibile. Inoltre mettere in testa al file il percorso relativo o assoluto di ogni header è scomodo e poco elegante.</p>
+<p>È possibile indicare la cartella contenente gli header in fase di compilazione (con l’opzione -I ) e in testa al file che utilizza quelle librerie basta mettere il nome degli header.</p>
+<pre><code>g++ program.cpp -o program -I header-dir/
+</code></pre>
+<h2 id="link-dei-file-oggetto">link dei file oggetto</h2>
+<p>In grandi progetti dove sono presenti più file che fanno dei riferimenti a funzioni tra di loro è più conveniente compilare i vari file singolarmente, attraverso il parametro -c dice al compilatore di creare dei file oggetto e non degli eseguibili (quindi non si avranno errori per dei riferimenti mancanti) e una volta compilati tutti i file .cpp (tra cui deve essere presente il main) si linkano tutti i file oggetto</p>
+<pre><code>//creazione dei file oggetto
+g++ -c -o foo.o foo.cpp
+g++ -c -o main.o main.cpp
+g++ -c -o bar.o bar.cpp
+
+//link dei file oggetto
+g++ -o fubar foo.o main.o bar.o
+</code></pre>
+<p>Questo torna utile in fase di aggiornamento di uno specifico file, per cui non dobbiamo ricompilare tutti i file ma solo il file modificato e poi rifare il linking.</p>
+<h2 id="librerie-statiche-e-dinamiche">Librerie statiche e dinamiche</h2>
+<h3 id="librerie-statiche">Librerie statiche</h3>
+<p>Le librerie statiche sono pezzi di codice già compilati che vengono legati al programma che le ha chiamata in <strong>fase di compilazione</strong>. Viene effettivamente copiato il codice della libreria all’interno del file chiamante</p>
+<h3 id="librerie-dinamiche">Librerie dinamiche</h3>
+<p>Le libreri dinamiche sono sempre dei pezzi di codice già compilati ma vengono caricate in memoria in fase di esecuzione (run-time).</p>
+<h3 id="differenze">Differenze</h3>
+<ul>
+<li>Le librerie dinamiche vengono caricate in memoria solo una volta e possono essere usate da più programmi. Mentre con le statiche ogni eseguibile ha una copia caricata in memoria di quella libreria.</li>
+<li>L’utilizzo di librerie statiche implica una maggiore grandezza degli eseguibili.</li>
+<li>La modifica della libreria statica implica che bisogna ricompilare anche tutti i file che la utilizzavano.</li>
+<li>L’utilizzo delle librerie dinamiche può portare a problemi di compatibilità, e di indirizzamento.</li>
+<li>L’utilizzo delle librerie statiche è generalmente più veloce perché non ci sono chiamate esterne.</li>
+</ul>
+<h2 id="opzioni-comuni-di-g">Opzioni comuni di g++</h2>
+
+<table>
+<thead>
+<tr>
+<th>opzione</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-g</td>
+<td>aggiunge informazione aggiuntive all’eseguibile utili per il debug</td>
+</tr>
+<tr>
+<td>-Wall</td>
+<td>abilita tutti i possibili warning della compilazione</td>
+</tr>
+<tr>
+<td>-O</td>
+<td>ottimizzazioni</td>
+</tr>
+<tr>
+<td>-o &lt;name&gt;</td>
+<td>permette di specificare il nome del file eseguibile</td>
+</tr>
+<tr>
+<td>-I &lt;path&gt;</td>
+<td>specifica il percorso per la cartella dei file header</td>
+</tr>
+<tr>
+<td>-L &lt;path&gt;</td>
+<td>specifica il percorso per la cartella contenente le librerie</td>
+</tr>
+</tbody>
+</table><h2 id="ottimizzazioni">Ottimizzazioni</h2>
+<p>è possibile applicare delle ottimizzazioni in fase di compilazione utilizzando il parametro -O secondo la seguente tabella:</p>
+<p><img src="https://i.ibb.co/zZfh9WT/optimization.png" alt=""></p>
+
+    </div>
+  </div>
+</body>
+
+</html>

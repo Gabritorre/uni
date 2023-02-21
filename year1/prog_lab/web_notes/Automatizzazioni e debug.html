@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Automatizzazioni e debug</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#automatizzazioni-e-debug">Automatizzazioni e debug</a>
+<ul>
+<li><a href="#struttura-di-un-progetto">Struttura di un progetto</a></li>
+<li><a href="#makefile">Makefile</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="automatizzazioni-e-debug">Automatizzazioni e debug</h1>
+<h2 id="struttura-di-un-progetto">Struttura di un progetto</h2>
+<p>La struttura delle cartelle di un progetto (medio-piccolo) fatto in c++ dovrebbe seguire la seguente gerarchia:</p>
+<pre><code>parent-foulder
+|--include/
+|--src/
+|--build/
+|--tools/
+</code></pre>
+<ul>
+<li>In <em>include</em> vanno messi i file header (.h o .hpp) contenenti le firme di classi e funzioni</li>
+<li>in <em>src</em> vanno messi i file cpp che definiscono le funzioni e le classi nei file header</li>
+<li>in <em>build</em> vanno messi i file oggetto generati dalla compilazione con il parametro -c</li>
+<li>in <em>tools</em> ci vanno gli script che servono per lo sviluppo del progetto</li>
+</ul>
+<h2 id="makefile">Makefile</h2>
+<p>Il comando <strong>make</strong> torna molto utile quando bisogna automatizzare alcune azioni (come la compilazione). Si basa su un file chiamato <strong>Makefile</strong> nel quale sono scritte le sequenze di operazioni da fare.</p>
+<p>Il Makefile è formato da regole che seguono la seguente sintassi:</p>
+<pre><code>&lt;target&gt;:&lt;prerequisiti&gt;
+	&lt;operazioni&gt;
+</code></pre>
+<ul>
+<li><strong>target</strong>: nome del file che vogliamo generare oppure nome di una azione</li>
+<li><strong>prerequisiti</strong>: lista dei file necessari per eseguire quel target</li>
+<li><strong>operazioni</strong>: istruzioni da eseguire</li>
+</ul>
+<p>N.B. le operazioni vanno tabulate nel file</p>
+<p>Quando viene chiamato il comando “make” esso esegue il primo target presente nel Makefile, se ci sono dei prerequisiti allora prima esegue i prerequisiti.</p>
+<p>In alternativa è possibile chiamare il comando “make” seguito dal nome del target per eseguirne uno specifico.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
