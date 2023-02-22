@@ -62,6 +62,7 @@ Infatti una operazione come “&amp;15” non è ammessa</p>
 <li>Oggetto: area di memoria alla quale è associato un tipo.</li>
 <li>Variabile: oggetto (quindi un’area di memoria) a cui è assegnato un identificatore (il nome della variabile)</li>
 </ul>
+<p>Il controllo dei tipi di dato è statico, cioè è determinato in fase di compilazione. In generale tutto quello che fatto staticamente avviene in fase di compilazione.</p>
 <h2 id="dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</h2>
 <ul>
 <li>
@@ -139,6 +140,15 @@ Invece la dichiarazione</p>
 <pre><code>for(inizializzazione;condizione;iterazione){}
 </code></pre>
 <p>Un buon uso del ciclo for prevede che nel corpo del for non vengano modificate le variabili che sono soggette alla condizione del ciclo.</p>
+<h3 id="ciclo-for-each">Ciclo for each</h3>
+<p>Scritto con la seguente sintassi</p>
+<pre><code>for(type var: vect){}
+</code></pre>
+<p>si tratti di un ciclo che ad ogni iterazione <strong>copia</strong> uno ad uno i valori di <code>vect</code> in <code>var</code>. Torna molto utile per lavorare con le stringhe e per fare alcune operazioni con gli array.</p>
+<p>Per evitare di avere una copia è possibile utilizzare le references per lavorare direttamente sui valori dell’array.</p>
+<h4 id="keyword-auto">keyword “auto”</h4>
+<p>La keyword auto viene molto utilizzata nei for-each e va al posto del tipo di dato per lasciare al compilatore il compito di decidere il tipo di dato della variabile in cui copiare i vari valori.</p>
+<p>È possibile utilizzarla anche nelle normali inizializzazioni (ma non nelle dichiarazioni)</p>
 <h3 id="ciclo-while">ciclo while</h3>
 <pre><code>while(condizione){}
 </code></pre>
@@ -168,12 +178,41 @@ Invece la dichiarazione</p>
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> a<span class="token punctuation">;</span> <span class="token comment">// non è necessario specificare la dimensione</span>
 vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token comment">// è possibile utilizzare entrambi i seguenti modi, l'importante differenza sta nel fatto che utilizzare il metodo at è più sicuro perche fa un controllo sull'esistenza dell'indice</span>
+<span class="token comment">/* è possibile utilizzare entrambi i seguenti modi,
+* l'importante differenza sta nel fatto che utilizzare
+* il metodo at è più sicuro perche fa un controllo
+* sull'esistenza dell'indice*/</span>
 a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 b<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">1.5</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>La classe vector è implementata come un <strong>template</strong> cioè una classe generica che può agire su un tipo di dato passato per parametro, e viene indicato tra le parentisi angolari.</p>
+<h3 id="matrici">Matrici</h3>
+<p>Possiamo dichiarare una matrice (vector di vector) facendo:</p>
+<pre class=" language-c"><code class="prism ++ language-c">vector<span class="token operator">&lt;</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;&gt;</span> matrix<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> righe <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span> colonne <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+matrix<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span>righe<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// imposto il numero di righe</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> e<span class="token punctuation">:</span> matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// imposto il numero di colonne per ogni riga</span>
+	e<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span>colonne<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// riempio la matrice</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> r<span class="token punctuation">:</span>matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> elem<span class="token punctuation">:</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		elem <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// stampa della matrice</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> r<span class="token punctuation">:</span>matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> elem<span class="token punctuation">:</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout<span class="token operator">&lt;&lt;</span>elem <span class="token operator">&lt;&lt;</span> <span class="token string">" "</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	cout<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>è possibile anche creare una <strong>matrice frastagliata</strong> cioè in cui le righe possono avere un numero di colonne diverso.</p>
 
     </div>
   </div>

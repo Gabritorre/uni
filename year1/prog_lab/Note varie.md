@@ -26,6 +26,7 @@ Sono un r-value le costanti e tutto quello che può restituire una costante
 - Oggetto: area di memoria alla quale è associato un tipo.
 - Variabile: oggetto (quindi un'area di memoria) a cui è assegnato un identificatore (il nome della variabile)
 
+Il controllo dei tipi di dato è statico, cioè è determinato in fase di compilazione. In generale tutto quello che fatto staticamente avviene in fase di compilazione.
 
 ## Dichiarazione, assegnamento, inizializzazione e definizione
 
@@ -105,6 +106,22 @@ Il ciclo for consiste di tre clausole: l’inizializzazione, la condizione di pe
 
 Un buon uso del ciclo for prevede che nel corpo del for non vengano modificate le variabili che sono soggette alla condizione del ciclo.
 
+### Ciclo for each
+
+Scritto con la seguente sintassi
+
+	for(type var: vect){}
+
+si tratti di un ciclo che ad ogni iterazione **copia** uno ad uno i valori di `vect` in `var`. Torna molto utile per lavorare con le stringhe e per fare alcune operazioni con gli array.
+
+Per evitare di avere una copia è possibile utilizzare le references per lavorare direttamente sui valori dell'array.
+
+#### keyword "auto"
+
+La keyword auto viene molto utilizzata nei for-each e va al posto del tipo di dato per lasciare al compilatore il compito di decidere il tipo di dato della variabile in cui copiare i vari valori.
+
+È possibile utilizzarla anche nelle normali inizializzazioni (ma non nelle dichiarazioni)
+
 ### ciclo while
 
 	while(condizione){}
@@ -151,10 +168,44 @@ void foo2(vecotr<int>& arr){} // passaggio per riferimento
 int main() {
 vector<int> a; // non è necessario specificare la dimensione
 vector<double> b(10);
-// è possibile utilizzare entrambi i seguenti modi, l'importante differenza sta nel fatto che utilizzare il metodo at è più sicuro perche fa un controllo sull'esistenza dell'indice
+/* è possibile utilizzare entrambi i seguenti modi,
+* l'importante differenza sta nel fatto che utilizzare
+* il metodo at è più sicuro perche fa un controllo
+* sull'esistenza dell'indice*/
 a[0] = 1;
 b.at(0) = 1.5;
 }
 ```
 
 La classe vector è implementata come un **template** cioè una classe generica che può agire su un tipo di dato passato per parametro, e viene indicato tra le parentisi angolari.
+
+### Matrici
+
+Possiamo dichiarare una matrice (vector di vector) facendo:
+
+```c++
+vector<vector<int>> matrix;
+
+int righe = 3, colonne = 4;
+
+matrix.resize(righe); // imposto il numero di righe
+
+for (auto& e: matrix) { // imposto il numero di colonne per ogni riga
+	e.resize(colonne)
+}
+// riempio la matrice
+for (auto& r:matrix) {
+	for(auto& elem:r) {
+		elem = 0;
+	}
+}
+// stampa della matrice
+for (auto& r:matrix) {
+	for(auto& elem:r) {
+		cout<<elem << " ";
+	}
+	cout<<endl;
+}
+```
+
+è possibile anche creare una **matrice frastagliata** cioè in cui le righe possono avere un numero di colonne diverso.

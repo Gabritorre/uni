@@ -20,7 +20,7 @@ Tratteremo le equazione differenziali di tipo:
 1. Quelle di tipo $y'=f(x)$
 2. Le equazioni di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
 3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
-4. Le equazioni lineari di secondo ordine $ay'' + by' + c = g(x)$
+4. Le equazioni lineari del secondo ordine $ay'' + by' + c = g(x)$
 
 ### Equazioni tipo $y' = f(x)$
 
@@ -91,9 +91,61 @@ $$y = ke^{\int a(x)\,dx}$$
 
 $$y = ke^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
 
+### Le equazioni lineari differenziali del secondo ordine
+
+Queste tipo di equazioni si presentano nella forma
+
+$$a_2(x)y'' + a_1(x)y' + a_0(x)y = g(x)$$
+
+Scritta in **forma normale** diventa:
+
+$$y'' + a(x)y' + b(x)y = f(x)$$
+
+si parla di **equazione a coefficienti costanti** quando $a(x), b(x)$ sono numeri reali e $f(x)$ è una funzione continua.
+
+#### eq. a coefficienti costanti omogenee
+Sono omogenee quando $f(x) = 0$
+
+$$y'' + ay' + by = 0$$
+
+per risolvere questo tipo di equazioni:
+
+1. si scrive l'equazione caratteristica dell'equazione differenziale che si presenta come:
+
+$$z^2+az+b = 0$$
+
+2. si calcola il $\Delta$ e si distinguono 3 casi:
+	-  $\Delta > 0$: si hanno due soluzioni distinte ($z_1, z_2$)
+		$$y = c_1e^{z_1x} + c_2e^{z_2x}$$
+	- $\Delta = 0$: si hanno due soluzioni coincidenti ($z_1 = z_2$)
+		$$y = e^{z_1x}(c_1 + c_2x)$$
+	- $\Delta < 0$: si hanno due soluzioni complesse coniugate ($z_{1, 2} = \alpha \pm i\beta$)
+		$$y = e^{\alpha x}(c_1 \cos \beta x + c_2 \sin \beta x)$$
+
+Es.
+
+$y''-5y'+6y = 0$
+
+eq. caratteristica: $z^2-5z + 6 = 0$
+
+discriminante: $\Delta = (-5)^2 - 4 \cdot 6 = 25-24 = 1$
+
+(discriminante maggiore di 0)
+
+$z_{1,2} = \frac{5 \pm \sqrt{1}}{2}$
+
+$z_1 = 2$
+
+$z_2 = 3$
+
+Soluzione: 
+
+$y = c_1e^{2x} + c_2e^{3x}$
+
+
 ## Problema di Cauchy
 
-Si parla di problema di Cauchy quando viene chiesto di trovare una soluzione specifica specificando un punto $(x_0, y_0)$ . Un problema di Cauchy avra la seguente forma:
+Si parla di problema di Cauchy quando viene chiesto di trovare una soluzione specifica specificando un punto $(x_0, y_0)$ . Un problema di Cauchy avrà la seguente forma:
 
 $$\begin{cases}
 F(x;y;y') = 0 & \text{equazione differenziale}\\
@@ -121,4 +173,72 @@ $y = x^2 + x -1$
 
 
 
+## Dominio delle soluzioni
 
+Quando troviamo le soluzioni generiche (l'integrale generale) di una equazione differenziale che presenta un valore assoluto, un $\pm$, o più in generale un sistema di soluzioni può essere richiesto di trovare il dominio delle funzione data una condizione iniziale.
+
+il dominio è dato dal dominio del pezzo della funzione con contiene la condizione iniziale nel suo intervallo.
+
+### Es 1
+
+$y' = \frac{1}{x}$
+
+l'integrale generale è $y = \ln|x| + c$
+
+Se dovessimo calcolare il dominio della soluzione trovata sarebbe $D:x\neq0$
+
+possiamo però scrivere la soluzione come un sistema:
+
+$\begin{cases} 
+\ln(-x) +c & \text{se } x < 0 \\
+\ln(x) +c & \text{se } x > 0
+\end{cases}$
+
+Se mettiamo come condizione iniziale:
+
+$y(1) = 0$
+
+dato che il valore della $x$ che ci viene dato è maggiore di $0$ allora prendiamo in considerazione la seconda righa del sistema
+
+otteniamo:
+
+$0 = \ln(1) + c \longrightarrow c = 0$
+
+quindi la soluzione è $y = \ln(x)$ e il dominio è dato dal dominio della seconda riga del sistema (e non il dominio che avevamo trovato sul valore assoluto prima)
+
+$D: x > 0$
+
+Es 2
+
+$x^2y' = -(x^2-4) \cdot (y-2)^3$
+
+isolando $y'$ :
+
+$y' = -	\frac{(x^2-4)}{x^2}\cdot (y-2)^3$
+
+otteniamo come soluzioni (applicando variabili separabili per $y\neq2$ e calcolando la soluzione costante $y = 2$)
+
+$\begin{cases}
+y(x) = 2 & \text{se } y = 2 \\
+y(x) = 2 + \sqrt{\frac{x}{2x^2-2cx+8}} & \text{se } y > 2 \\
+y(x) = 2 - \sqrt{\frac{x}{2x^2-2cx+8}} & \text{se } y < 2 \\
+\end{cases}$
+
+se abbiamo la condizione iniziale $y(0) = 2$
+la soluzione è data dalla soluzione costante $y(x) = 2$ il cui dominio è $\mathbb{R}$
+
+se abbiamo la condizione iniziale $y(1) = \frac{5}{3}$
+dato che $\frac{5}{3} < 2$ scelgo il ramo corrispettivo (il terzo)
+
+andando a sostituire e risolvendo l'equazione trovo che $c = \frac{1}{2}$
+
+quindi la soluzione particolare è 
+
+$y = 2 - \sqrt{\frac{x}{2x^2-x+8}}$ e calcolando il domino:
+
+$\frac{x}{2x^2 - x +8}> 0$
+
+N: $x > 0$
+D: $\Delta < 0 \longrightarrow$ sempre positivo
+
+Quindi il dominio è $D: x > 0$
