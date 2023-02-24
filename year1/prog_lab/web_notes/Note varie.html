@@ -92,6 +92,17 @@ Invece la dichiarazione</p>
 </li>
 </ul>
 <p>introduce il nome a che però è allocato altrove. In questo caso parliamo di dichiarazione ma non di definizione.</p>
+<h3 id="const-e-constexpr">Const e constexpr</h3>
+<p>sono due keyword che vengono servono entrambe a rendere una variabile non modificabile, la differenza sta nel fatto che con <code>constexpr</code> si può usare solo per inizializzare una variabile in compile-time, mentre <code>const</code> può essere usato per inizializzare sia in run-time che in compile-time.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// errore</span>
+<span class="token keyword">int</span> var <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+constexpr <span class="token keyword">int</span> a <span class="token operator">=</span> var<span class="token punctuation">;</span>
+
+<span class="token comment">// valido</span>
+<span class="token keyword">int</span> var <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> a <span class="token operator">=</span> var<span class="token punctuation">;</span>
+</code></pre>
+<p>per quanto riguarda l’inizializzazione di costanti sarebbe meglio l’utilizzo di <code>constexpr</code>.</p>
 <h2 id="linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</h2>
 <ul>
 <li>

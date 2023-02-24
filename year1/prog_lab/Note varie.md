@@ -53,6 +53,21 @@ Invece la dichiarazione
 
 introduce il nome a che però è allocato altrove. In questo caso parliamo di dichiarazione ma non di definizione.
 
+### Const e constexpr
+
+sono due keyword che vengono servono entrambe a rendere una variabile non modificabile, la differenza sta nel fatto che con `constexpr` si può usare solo per inizializzare una variabile in compile-time, mentre `const` può essere usato per inizializzare sia in run-time che in compile-time.
+
+```c++
+// errore
+int var = 5;
+constexpr int a = var;
+
+// valido
+int var = 5;
+const int a = var;
+```
+
+per quanto riguarda l'inizializzazione di costanti sarebbe meglio l'utilizzo di `constexpr`.
 
 ## Linguaggi imperativi e funzionali
 
