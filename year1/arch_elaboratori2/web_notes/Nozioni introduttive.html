@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-02-14_Nozioni introduttive</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#nozioni-introduttive">Nozioni introduttive</a>
+<ul>
+<li><a href="#isa">ISA</a></li>
+<li><a href="#mips-e-arm">MIPS e ARM</a></li>
+<li><a href="#cisc-e-risc">CISC e RISC</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="nozioni-introduttive">Nozioni introduttive</h1>
+<h2 id="isa">ISA</h2>
+<p><strong>l’Istruction Set Architecture</strong> si occupa principalmente di definire il formato e le istruzioni disponibili nel linguaggio macchina. Descrive inoltre:</p>
+<ul>
+<li>i registri disponibili</li>
+<li>i tipi di dato</li>
+<li>input e output</li>
+<li>gestione della memoria</li>
+</ul>
+<p>la realizzazione hardware di un ISA viene detta <strong>implementazione</strong>, ogni implementazione di ISA può variare in costi, performance e dimensioni.</p>
+<h3 id="assembly">Assembly</h3>
+<p>Il linguaggio assembly è un linguaggio a basso livello che associa alle sequenze di bit le relative istruzioni in un formato più  comprensibile per il programmatore.</p>
+<p>Il codice assembly dipende dall’ISA implementato dal processore.</p>
+<h2 id="mips-e-arm">MIPS e ARM</h2>
+<p>MIPS e ARM sono due architetture diverse, nella prima ci soffermeremo a livello teorico mentre nella secondo la affronteremo a livello più pratico.</p>
+<h3 id="mips">MIPS</h3>
+<ul>
+<li>Presenta 32 registri lunghi una <em>word</em> (4byte = 32bit)</li>
+<li>Tutte le istruzioni sono anche lunghe una <em>word</em> e seguono i seguenti formati:
+<ul>
+<li>R-type (istruzioni aritmetico logiche)<br>
+<img src="https://i.ibb.co/pLnQYk4/rtype.png" alt=""></li>
+<li>I-type (load word, store word e salto condizionato)<br>
+<img src="https://i.ibb.co/sq3qGc4/itype.png" alt=""></li>
+<li>J-type (salto non condizionato)<br>
+<img src="https://i.ibb.co/k6kFS5v/jtype.png" alt=""></li>
+</ul>
+</li>
+<li>Ogni registro del MIPS ha un nominativo associato e ha un utilizzo specifico:<br>
+<img src="https://i.ibb.co/6RtjHqL/registers.png" alt=""></li>
+<li><strong>Modi di indirizzamento</strong> rappresentano l’utilizzo degli operatori di una istruzione.<br>
+<img src="https://i.ibb.co/nQjt4Qz/add-mode.png" alt=""></li>
+</ul>
+<h2 id="cisc-e-risc">CISC e RISC</h2>
+<p>CSIC e RISC sono due tipologie di architettura che differiscono molto tra loro.</p>
+<p>L’architettura RISC (Reduced Instruction Set Computer) è utilizzata sia dai processori ARM che MIPS e come dice il nome presenta un ridotto numero di istruzioni ma molti registri, è più semplice da implementare, ha consumi minori e quindi più efficiente</p>
+<p>d’altra parte l’architettura CISC (Complex Instruction Set computer) è utilizzata dai processori Intel con la loro versione x86 e si tratta di un’architettura più completta, che presenta un numero maggiore di istruzioni e pochi registri, le istruzioni hanno formato variabile e le istruzioni possono avere più operandi del normale. In sintesi è molto più complesso implementare questo tipo di architettura.<br>
+È però più flessibile perché puoi fare la stesso cosa in molti modi diversi e supporta meglio i sistemi legacy</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
