@@ -69,6 +69,8 @@ const int a = var;
 
 per quanto riguarda l'inizializzazione di costanti sarebbe meglio l'utilizzo di `constexpr`.
 
+Mentre viene spesso utilizzato il `const` nei parametri delle funzioni in quelle variabili che vogliamo assicurare non vengano lette durante il corpo della funzione
+
 ## Linguaggi imperativi e funzionali
 
 - I linguaggi imperativi rappresentano la classica idea di programmazione con le caratteristiche principali come:
@@ -224,3 +226,22 @@ for (auto& r:matrix) {
 ```
 
 è possibile anche creare una **matrice frastagliata** cioè in cui le righe possono avere un numero di colonne diverso.
+
+
+## Memoria dinamica
+
+le *keyword* **new** e **delete** di C++ possono in qualche modo essere comparate al `malloc` e il `free` di C:
+
+l'utilizzo della memoria dinamica è supportata nativamente senza l'utilizzo di altre librerie (come stdlib)
+
+
+```c++
+// Allocazione in memoria dinamica in C++:
+int *a = new int; // restituisce l'indirizzo della memoria creata
+// Deallocazione della memoria
+delete a;
+
+// Allocazione di array
+int *p = new int[]; // ritorna l'indirizzo del primo elemento
+delete[] p;
+```

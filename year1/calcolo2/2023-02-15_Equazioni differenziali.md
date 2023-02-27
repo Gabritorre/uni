@@ -20,7 +20,7 @@ Tratteremo le equazione differenziali di tipo:
 1. Quelle di tipo $y'=f(x)$
 2. Le equazioni di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
 3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
-4. Le equazioni lineari del secondo ordine $ay'' + by' + c = g(x)$
+4. Le equazioni lineari del secondo ordine a coefficienti costanti omogenee $ay'' + by' + c = g(x)$
 
 ### Equazioni tipo $y' = f(x)$
 
@@ -91,9 +91,9 @@ $$y = ke^{\int a(x)\,dx}$$
 
 $$y = ke^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
 
-### Le equazioni lineari differenziali del secondo ordine
+###  Le equazioni lineari del secondo ordine a coefficienti costanti omogenee 
 
-Queste tipo di equazioni si presentano nella forma
+Le equzioni lineari del socondo ordine si presentano come:
 
 $$a_2(x)y'' + a_1(x)y' + a_0(x)y = g(x)$$
 
@@ -103,8 +103,7 @@ $$y'' + a(x)y' + b(x)y = f(x)$$
 
 si parla di **equazione a coefficienti costanti** quando $a(x), b(x)$ sono numeri reali e $f(x)$ è una funzione continua.
 
-#### eq. a coefficienti costanti omogenee
-Sono omogenee quando $f(x) = 0$
+Queste equazioni sono omogenee quando $f(x) = 0$
 
 $$y'' + ay' + by = 0$$
 
@@ -119,18 +118,16 @@ $$z^2+az+b = 0$$
 		$$y = c_1e^{z_1x} + c_2e^{z_2x}$$
 	- $\Delta = 0$: si hanno due soluzioni coincidenti ($z_1 = z_2$)
 		$$y = e^{z_1x}(c_1 + c_2x)$$
-	- $\Delta < 0$: si hanno due soluzioni complesse coniugate ($z_{1, 2} = \alpha \pm i\beta$)
+	- $\Delta < 0$: si hanno due soluzioni complesse coniugate (uguali ma con la parte immaginaria cambiata di segno) ($z_{1, 2} = \alpha \pm i\beta$)
 		$$y = e^{\alpha x}(c_1 \cos \beta x + c_2 \sin \beta x)$$
 
-Es.
+- Esempio con  $\Delta > 0$
 
 $y''-5y'+6y = 0$
 
 eq. caratteristica: $z^2-5z + 6 = 0$
 
 discriminante: $\Delta = (-5)^2 - 4 \cdot 6 = 25-24 = 1$
-
-(discriminante maggiore di 0)
 
 $z_{1,2} = \frac{5 \pm \sqrt{1}}{2}$
 
@@ -141,6 +138,35 @@ $z_2 = 3$
 Soluzione: 
 
 $y = c_1e^{2x} + c_2e^{3x}$
+
+- Esempio con  $\Delta = 0$
+
+$y''-2y'+y = 0$
+
+eq. caratteristica: $z^2-2z + 1 = 0$
+
+discriminante: $\Delta = 4 - 4 = 0$
+
+$z_{1,2} = \frac{2}{2} = 1$
+
+Soluzione: 
+
+$y = e^{1\cdot x}(c_1 + c_2x)$
+
+- Esempio con  $\Delta < 0$
+
+$y''-4y'+13y = 0$
+
+eq. caratteristica: $z^2-4z + 13 = 0$
+
+discriminante: $\Delta = 16-4\cdot 13 = - 36$
+
+$z_{1,2} = \frac{4 \pm i\sqrt{|-36|}}{2} = \frac{4 \pm i6}{2} = 2 \pm i3$
+
+Soluzione:
+abbiamo che $\alpha = 2, \beta = 3$ 
+
+$y = e^{2x}(c_1\cos3x + c_2 \sin 3x)$
 
 
 ## Problema di Cauchy
@@ -171,6 +197,59 @@ Quindi la soluzione al problema di Cauchy è:
 
 $y = x^2 + x -1$ 
 
+### Cauchy con equazioni di secondo ordine
+
+si presentano come
+
+$\begin{cases}
+y'' + ay' + by = f(x) \\
+y(x) = y_1 \\
+y'(x) = y_2
+\end{cases}$
+
+Es.
+
+$\begin{cases}
+y'' - 6y' + 10y = 0 \\
+y(0) = 1 \\
+y'(0) = 0
+\end{cases}$
+
+$\Delta < 0$ e ottengo
+
+$y = e^{3x}(c_1 \cos(x) + c_2 \sin(x))$
+
+Per trovare il valore di $c_1$
+
+sostituisco nella soluzione trovata x e y:
+
+$1 = e^{3\cdot 0}(c_1 \cos(0) + c_2 \sin(0))$
+
+$1 = 1\cdot (c_1 \cdot 1 + c_2 \cdot 0)$
+
+$c_1 = 1$
+
+Per trovare il valore di $c_2$
+
+derivo la soluzione (posso già sostituire $c_1$ con $1$ ):
+
+$y' = 3e^{3x}\cdot (\cos(x) + c_2 \sin(x)) + e^{3x} \cdot ((-\sin x) + c_2 \cos x)$
+
+$y' = e^{3x}\cdot (3\cos x + 3c_2 \sin x -\sin x + c_2 \cos x)$
+
+sostituisco x e y
+
+$0 = e^{3\cdot 0}\cdot (3\cos 0 + 3c_2 \sin 0 -\sin 0 + c_2 \cos 0)$
+
+$0 =1\cdot (3\cdot 1 + 3c_2 \cdot 0 -0 + c_2 \cdot 1)$
+
+$0 = 3 + c_2$
+
+$c_2 = -3$
+
+Quindi la soluzioine al problema di Cauchy è:
+
+$y = e^{3x}(\cos(x) -3 \sin(x))$
 
 
 ## Dominio delle soluzioni
