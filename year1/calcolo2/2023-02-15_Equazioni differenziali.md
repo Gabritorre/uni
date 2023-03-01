@@ -20,7 +20,8 @@ Tratteremo le equazione differenziali di tipo:
 1. Quelle di tipo $y'=f(x)$
 2. Le equazioni di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
 3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
-4. Le equazioni lineari del secondo ordine a coefficienti costanti omogenee $ay'' + by' + c = g(x)$
+4. Le equazioni lineari del secondo ordine a coefficienti costanti omogenee $ay'' + by' + c = 0$
+5. Le equazioni lineari del secondo ordine a coefficienti costanti complete $ay'' + by' + c = g(x)$
 
 ### Equazioni tipo $y' = f(x)$
 
@@ -168,6 +169,140 @@ abbiamo che $\alpha = 2, \beta = 3$
 
 $y = e^{2x}(c_1\cos3x + c_2 \sin 3x)$
 
+### Le equazioni lineari del secondo ordine a coefficienti costanti complete
+
+Si presentano come 
+
+$$y'' + ay' + by = g(x)$$
+
+la soluzione a queste è quazioni è data dalla somma tra la **soluzione dell'equazione omogenea associata** e la **soluzione particolare**
+
+####  1 Caso con a = 0, b = 0
+
+$$y'' = g(x)$$
+
+per risolvere questo tipo di equazione è sufficiente **integrare due volte** g(x)
+
+ES.
+
+$y'' = 12x^2 + 4$
+
+integriamo una volta:
+
+$y' = 4x^3 + 4x + c_1$
+
+integro una seconda volta
+
+$y = x^4 + 2x^2 + c_1x + c_2$
+
+#### 2 Caso b $\neq$ 0, c $= 0$
+
+In questo caso la soluzione particolare deve essere di un grado maggiore a quello di $g(x)$, e va risolta utilizzando il metodo della somiglianza.
+
+ES.
+
+$y'' + y' = 2x$ 
+
+Troviamo la soluzione particolare
+
+abbiamo che $g(x)$ è al grado 1 quindi la nostra soluzione particolare sarà di grado 2, quindi avrà una forma del tipo $ax^2 + bx + c$ dobbiamo quindi trovare i coefficienti.
+
+Calcoliamo le derivate prima e seconda della nostra equazione generica
+
+$y_0 = ax^2 + bx + c$ 
+
+$y_0' = 2ax + b$
+
+$y_0'' = 2a$
+
+Sostituendo in $y'' + y' = 2x$ otteniamo
+
+$2a + 2ax + b = 2x$
+
+Ora facciamo un sistema in cui mettiamo a confronto i coefficienti del primo membro con quelli del secondo membro
+
+$\begin{cases} 
+2a = 2 & \text{coefficienti in x} \\
+2a + b = 0 & \text{coefficienti termini noti}
+\end{cases} \begin{cases} 
+a = 1 \\
+b = -2
+\end{cases} (\text{c sarà un parametro libero, assumiamo 0})$
+
+soluzione particolare: $y_0 = x^2 -2x$
+
+ovviamente per trovare l'integrale generale bisogna sommare la soluzione particolare trovata per la soluzione dell'equazione omogenea associata.
+
+#### 3 Caso b $\neq$ 0, c $\neq 0$
+
+In questo caso la soluzione particolare deve avere lo stesso grado di $g(x)$, e va risolta utilizzando il metodo della somiglianza.
+
+ES.
+
+$y'' - 2y' - 3y = 3x + 7$
+
+la nostra soluzione particolare sarà di primo grado proprio come $g(x)$ e avrà una forma $ax + b$
+
+Calcoliamo le derivate prima e seconda della nostra equazione generica
+
+$y_0 = ax + b$ 
+
+$y_0' = a$
+
+$y_0'' = 0$
+
+Sostituendo in $y'' - 2y' - 3y = 3x + 7$ otteniamo
+
+$0 - 2(a) - 3(ax + b) = 3x + 7$
+
+$-3ax - 2a - 3b = 3x + 7$
+
+Ora facciamo un sistema in cui mettiamo a confronto i coefficienti del primo membro con quelli del secondo membro
+
+$\begin{cases} 
+-3a = 3 & \text{coefficienti in x} \\
+-2a - 3b = 7 & \text{coefficienti termini noti}
+\end{cases} \begin{cases} 
+a = -1 \\
+b = -\frac{5}{3}
+\end{cases}$
+
+soluzione particolare: $y_0 = -x-\frac{5}{3}$
+
+ovviamente per trovare l'integrale generale bisogna sommare la soluzione particolare trovata per la soluzione dell'equazione omogenea associata.
+
+#### 4 Caso con $g(x) = s(x)e^{\alpha x}$
+
+$$y'' + ay' + by=s(x)e^{\alpha x}$$
+
+In questo caso dobbiamo calcolare l'equazione omogenea associata come prima cosa, questo perché la soluzione particolare dipende da essa:
+
+- se $\alpha$ **non** è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = p(x)e^{\alpha x}$
+- se $\alpha$ **è solo una delle soluzioni distinte** dell'omogenea allora la soluzione ha forma $y_0 = xp(x)e^{\alpha x}$
+- se $\alpha$ **è uguale alle soluzioni coincidenti** dell'omogenea allora la soluzione ha forma $y_0 = x^2p(x)e^{\alpha x}$
+
+dove $p(x)$ è un polinomio generico dello stesso grado di $s(x)$
+
+#### 5 Caso con $g(x) = k_1 \sin(\beta x) + k_2 \cos(\beta x)$
+
+la soluzione particolare è della forma
+
+$$y_0 = x(a \cos(\beta x) + b \sin(\beta x))$$
+
+#### 6 Caso sovrapposizione degli effetti
+
+Le equazione che si presentano nella forma
+
+$$y'' + ay' + by = g_1(x) + g_2(x)$$
+
+la soluzione può essere trovata studiando separatamente le due funzioni:
+
+risolvere separatamente:
+
+- $y'' + ay' + by = g_1(x)$
+- $y'' + ay' + by = g_2(x)$
+
+La soluzione particolare è data dalla somma delle due precedenti soluzioni.
 
 ## Problema di Cauchy
 
