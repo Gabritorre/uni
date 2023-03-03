@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2023-02-23_Cpu pipeline</title>
+  <title>2023-02-23_CPU pipeline</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#funzionamento">Funzionamento</a></li>
 <li><a href="#hazard">Hazard</a></li>
+<li><a href="#schema-riassuntivo">Schema riassuntivo</a></li>
 </ul>
 </li>
 </ul>
@@ -37,7 +38,7 @@
 lettura dell’istruzione e incremento del PC</li>
 <li>Instruction decode (<strong>ID</strong>)<br>
 decodifica dell’istruzione e lettura registri coinvolti</li>
-<li>Execute (<strong>EX</strong>)<br>
+<li>Execute (<strong>EX/EXE</strong>)<br>
 calcolo opearzione aritmetica / calcolo indirizzi di memoria ram/ calcolo indirizzo branch</li>
 <li>Memory access (<strong>MEM</strong>)<br>
 accesso alla memoria ram per lettura o scrittura</li>
@@ -47,7 +48,7 @@ scrittura nei registri</li>
 <p><img src="https://i.ibb.co/41gjSF4/5steps.png" alt=""></p>
 <p>L’idea sarebbe che queste 5 istruzioni vengono fatte contemporaneamente ma su istruzioni diverse.</p>
 <p><img src="https://i.ibb.co/L924VjJ/example.png" alt=""></p>
-<p>Dato che ciascuna istruzione ha bisogno del risultato della fase precedente abbiamo bisogno di inserire dei registri intermedi per memorizzarmi i vari risultati tra i cicli di clock.</p>
+<p>Dato che ciascuna istruzione ha bisogno del risultato della fase precedente abbiamo bisogno di inserire dei <strong>registri intermedi</strong> per memorizzarmi i vari risultati tra i cicli di clock.</p>
 <p><img src="https://i.ibb.co/KDDdDH8/reg-interm.png" alt=""></p>
 <p>Infine vanno aggiunti i segnali di controllo.</p>
 <h2 id="hazard">Hazard</h2>
@@ -82,7 +83,60 @@ sub $s1, $s2, $t3 // write $s1
 </code></pre>
 <p>la dipendenza che capita più spesso e anche più importante è quella di tipo RAW.</p>
 <p><img src="https://i.ibb.co/2sXVrWx/esempio-dipendenze.png" alt=""></p>
-<p>La gestione degli stalli viene fatta dalla <em>Hazard detection unit</em> che è contenuta nella fase ID e quello che fa è semplicemente confrontare i registri coinvolti nell’istruzione corrette con quegli delle istruzioni precedenti.</p>
+<p>La gestione degli stalli viene fatta dalla <em>Hazard detection unit</em> che è contenuta nella fase ID e quello che fa è semplicemente confrontare i registri coinvolti nell’istruzione corrente con quegli delle istruzioni precedenti.</p>
+<h3 id="register-file-ottimizzato">Register file ottimizzato</h3>
+<p>Il register file ottimizzato è un register file che permette la lettura e la scrittura nello stesso ciclo di clock, più precisamente nella fase di salita del clock avviene la scrittura mentre nella fase di discesa avviene la lettura.</p>
+<p>Questo permette di allineare la fase WB con quella ID di due istruzioni diverse.</p>
+<h3 id="forwarding">Forwarding</h3>
+<p>Per ottimizzare le dipendenze di tipo RAW che sono le più frequenti possiamo utilizzare il fatto che il dato precedente di cui abbiamo bisogno viene prodotto nello stato EXE e quindi non serve aspettare la fase WB. Questa tecnica viene chiamata <strong>forwarding</strong>.</p>
+<p>Esempio con register file ottimizzato e forwarding.</p>
+<p><img src="https://i.ibb.co/bWDZ3dQ/rfott-forwarding.png" alt=""></p>
+<p>il forwarding non risolve però le istruzioni che dipendono da una <code>lw</code> dato che producono il dato nella fase MEM e non EXE. in questo caso si è costretti a mettere una <code>nop</code> dopo l’istruzione lw.</p>
+<h3 id="gestire-i-salti">Gestire i salti</h3>
+<p>Una <code>beq</code> impiega 4 cicli ad aggiornare il valore del PC e fino a che il PC non viene aggiornato non si sa se bisogna saltare oppure eseguire normalmente le istruzioni successive.<br>
+In quei 4 cicli l’istruzione subito successiva alla <code>beq</code> è arrivata allo stadio EXE e quindi non ha ancora modificato alcun registro, quindi nel caso la <code>beq</code> dovesse saltare sostituiamo le istruzioni che sono entrate nella pipeline con delle nop e ripartiamo dal salto, mentre nel caso la <code>beq</code> non salti non abbiamo perso nessun ciclo di clock.</p>
+<p>In caso di salto però perdiamo 3 cicli di clock inutilmente, possiamo ottimizzare la nostra CPU facendo fare il confronto tra i registri nella fase ID al posto della EXE, perdendo così solo un ciclo e non tre. Questa tecnica viene chiamata <strong>delayed branch</strong></p>
+<p>Si noti che questo implica che l’istruzione subito dopo la <code>beq</code> <strong>viene sempre completata</strong> quindi sta al programmatore decidere come gestire il comportamento, esplicitando una <code>nop</code> oppure inserendo una istruzione che non modifica la semantica del programma.</p>
+<p>Il fatto di aver spostare il confronto nella fase ID ci porta un problema: il forwarding mandava i dati alla fase EXE e non alla fase ID, per poter mandare i valori corretti nella fase ID abbiamo bisogna di mettere una nop.<br>
+<img src="https://i.ibb.co/jVZ2FtK/exebeq.png" alt=""></p>
+<p>Mentre se abbiamo una dipendenza tra <code>beq</code> e <code>lw</code> abbiamo bisogno di 2 nop</p>
+<p><img src="https://i.ibb.co/rfW2yJ1/exelwbeq.png" alt=""></p>
+<h2 id="schema-riassuntivo">Schema riassuntivo</h2>
+<h3 id="tabella-con-forwarding">Tabella Con forwarding</h3>
+
+<table>
+<thead>
+<tr>
+<th>Istruzione</th>
+<th>produce alla fase</th>
+<th>riceve alla fase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aritmetiche</td>
+<td>EXE</td>
+<td>EXE</td>
+</tr>
+<tr>
+<td>branch</td>
+<td>ID</td>
+<td>ID</td>
+</tr>
+<tr>
+<td>lw*</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+</tr>
+<tr>
+<td>sw*</td>
+<td>EXE (per l’indirizzo)</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+</tr>
+</tbody>
+</table><p>*Nel caso di <code>lw</code> per esempio se l’istruzione è fatta in questo modo <code>lw $3, 32($5)</code> dobbiamo ricevere il $5 nella fase EXE mentre dobbiamo ricevere $3 nella fase MEM.<br>
+Per quanto riguarda <code>sw</code> funziona allo stesso modo.</p>
+<p><strong>NB solo in caso di register file ottimizzato è possibile allineare le fasi ID e WB</strong></p>
 
     </div>
   </div>

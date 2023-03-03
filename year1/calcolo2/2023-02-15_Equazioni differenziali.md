@@ -285,9 +285,11 @@ dove $p(x)$ è un polinomio generico dello stesso grado di $s(x)$
 
 #### 5 Caso con $g(x) = k_1 \sin(\beta x) + k_2 \cos(\beta x)$
 
-la soluzione particolare è della forma
+Calcoliamo l'equazione omogenea associata come prima cosa, questo perché la soluzione particolare dipende da essa:
 
-$$y_0 = x(a \cos(\beta x) + b \sin(\beta x))$$
+- se $\Delta < 0$ e abbiamo che $\alpha = 0$ e $\beta$ è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = a \cos(\beta x) + b \sin(\beta x)$
+- in tutti gli altri casi la soluzione particolare ha forma $y_0 = x(a \cos(\beta x) + b \sin(\beta x))$
+
 
 #### 6 Caso sovrapposizione degli effetti
 
