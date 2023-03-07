@@ -18,6 +18,9 @@
 <li><a href="#funzionamento">Funzionamento</a></li>
 <li><a href="#hazard">Hazard</a></li>
 <li><a href="#schema-riassuntivo">Schema riassuntivo</a></li>
+<li><a href="#branch-prediction">Branch prediction</a></li>
+<li><a href="#eccezioni-ed-interruzioni">Eccezioni ed interruzioni</a></li>
+<li><a href="#ottimizzazione-istruzioni">Ottimizzazione istruzioni</a></li>
 </ul>
 </li>
 </ul>
@@ -137,6 +140,155 @@ In quei 4 cicli l’istruzione subito successiva alla <code>beq</code> è arriva
 </table><p>*Nel caso di <code>lw</code> per esempio se l’istruzione è fatta in questo modo <code>lw $3, 32($5)</code> dobbiamo ricevere il $5 nella fase EXE mentre dobbiamo ricevere $3 nella fase MEM.<br>
 Per quanto riguarda <code>sw</code> funziona allo stesso modo.</p>
 <p><strong>NB solo in caso di register file ottimizzato è possibile allineare le fasi ID e WB</strong></p>
+<h2 id="branch-prediction">Branch prediction</h2>
+<p>il branch prediction è una tecnica che consiste nel prevedere quale sarà il risultato di una branch in modo da mettere anticipatamente la prossima istruzione in pipeline.</p>
+<ul>
+<li>Se indovina allora non abbiamo perso nessun ciclo di clock</li>
+<li>Se sbaglia bisogna annullare l’istruzione e inserire in pipeline quella corretta (se ne occupa l’hazard detection unit).</li>
+</ul>
+<p>Una prima versione molto semplice sarebbe quella di assumere sempre che la branche non salti, ma non è una soluzione ottimale.</p>
+<p>Si opta invece per una <strong>previsione dinamica</strong> che si basa nel guardare il comportamento delle branch precedentemente eseguite.</p>
+<p>Viene fatto attraverso una tabella contenente:</p>
+<ul>
+<li><strong>Indirizzo</strong> stesso della istruzione <strong>branch</strong></li>
+<li><strong>L’indirizzo</strong> del <strong>salto</strong> nel caso in cui la branch sia vera</li>
+<li>Uno <strong>stato</strong> che rappresenta se nell’ultima esecuzione di quella branch abbia saltato o meno.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>branch addr.</th>
+<th>branch target addr.</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x001000</td>
+<td>0x0010F4</td>
+<td>01</td>
+</tr>
+<tr>
+<td>0x001020</td>
+<td>0x001040</td>
+<td>00</td>
+</tr>
+<tr>
+<td>0x001034</td>
+<td>0x001300</td>
+<td>10</td>
+</tr>
+<tr>
+<td>0x001208</td>
+<td>0x001008</td>
+<td>01</td>
+</tr>
+</tbody>
+</table><p>Quello che viene fatto in sostanza è:</p>
+<ol>
+<li>fetch dell’istruzione</li>
+<li>controlliamo se l’idirizzo dell’istruzione è dentro la tabella</li>
+<li>se è presente allora l’istruzione che stiamo guardando è una branch che è già stata eseguita in passato</li>
+<li>guardiamo lo stato per decidere se assumere il salto oppure no</li>
+</ol>
+<h3 id="codifica-dello-stato">Codifica dello stato</h3>
+<p>Come detto lo stato nella tabella rappresenta il precedente risultato di una specifica branch, immaginando lo stato ad 1 bit possiamo codificare lo stato come:</p>
+<p>1 = salto<br>
+0 = non salto</p>
+<p>Avere solo un bit però non è ottimale nei casi in cui si hanno due cicli innestati (cosa che può capitare molto spesso), infatti i casi reali e i casi predetti non coincidono completamente</p>
+<pre><code>outer:
+	inner:
+	beq -,-,inner
+beq -,-,outer
+</code></pre>
+<p>guardando la <code>beq</code> del ciclo <code>inner</code> immaginiamo i risultati della beq.</p>
+<p>reali: 111110111110111110…<br>
+pred: 11111<strong>10</strong>1111<strong>10</strong>11110…</p>
+<p>È possibile migliorare questa situazione utilizzando uno stato a due bit, possiamo pensarla come questa automa:</p>
+<p><img src="https://i.ibb.co/XxPyytY/Screenshot-1.png" alt=""></p>
+<h2 id="eccezioni-ed-interruzioni">Eccezioni ed interruzioni</h2>
+<p>Ci sono dei casi particolari in cui il normale flusso del codice può essere cambiato, questi casi particolari sono <strong>le eccezioni e le interruzioni</strong></p>
+<ul>
+<li>Si parla di <strong>eccezioni</strong> quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefiniti o altre sviste di programmazione (sono tendenzialmente software)</li>
+<li>Si parla di <strong>interruzioni</strong> quando la causa è esterna al processore come l’interazione con dei dispositivi IO (sono tendenzialmente hardware)</li>
+</ul>
+<p>Quando si verifica una eccezione o una interruzione la CPU deve:</p>
+<ul>
+<li>Interrompere l’esecuzione del programma utente</li>
+<li>Salvare lo stato di esecuzione del programma, nel MIPS solo il PC viene salvato in un registro chiamato <em>Exception program counter</em> (EPC)</li>
+<li>Trasferire il controllo al sistema operativo modificando opportunamente il PC, quando il sistema operativo ha gestito l’eccezione l’esecuzione riprende.</li>
+</ul>
+<p>Esistono due approcci per permettere al sistema operativo di gestire le eccezioni:</p>
+<ol>
+<li>l’utilizzo di un registro speciale <em>CAUSE register</em> (nel MIPS) che può assumere dei valori diversi, ognuno dei quali rappresenta un tipo di eccezione</li>
+<li>la tecnica <em>Vectorized interrupts</em> in cui ogni eccezione ha un corrispettivo indirizzo a cui saltare nel caso si verifichi</li>
+</ol>
+<h2 id="ottimizzazione-istruzioni">Ottimizzazione istruzioni</h2>
+<p>Dato il seguente codice:<br>
+(Assumiamo di avere il forwarding e il register file ottimizzato)</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $t0, $t0, 20
+4| sw $t0, 0($s1)
+5| addi $s0, $s0, 4
+6| addi $s1, $s1, 4
+7| bne $s0, $a0, Loop
+8| nop
+</code></pre>
+<p>è possibile effettuare alcune ottimizzazioni.</p>
+<ol>
+<li>individuiamo le dipendenze di tipo RAW
+<ul>
+<li>la riga 3 dipende dalla 2</li>
+<li>la riga 4 dipende dalla 3</li>
+<li>la riga 7 dipende dalla 5</li>
+</ul>
+</li>
+<li>individuiamo le dipendenze di tipo WAR
+<ul>
+<li>la riga 5 dipende dalla 2</li>
+<li>la riga 6 dipende dalla 4</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://i.ibb.co/2MLV7TM/ottimizzaz.png" alt=""></p>
+<p><strong>Le ottimizzazioni consistono nel modificare l’ordine delle istruzioni in modo che la semantica del codice rimanga la stessa  e anche le dipendenze devono sempre andare dall’alto al basso</strong></p>
+<p>La prima ottimizzazione che possiamo fare è rimpiazzare la nop con un istruzione precedente.</p>
+<p>possiamo spostare la riga 6 al posto della <code>nop</code> ottenendo così</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $t0, $t0, 20
+4| sw $t0, 0($s1)
+5| addi $s0, $s0, 4
+6| bne $s0, $a0, Loop
+7| addi $s1, $s1, 4
+</code></pre>
+<p>Ricordiamo che indipendentemente dal risultato della <code>bne</code> l’istruzione che sta subito sotto viene sempre eseguita, quindi la semantica del programma non viene cambiata in questo caso.</p>
+<p>Nel codice sono presenti degli stalli per cui vanno messe delle <code>nop</code> aggiuntive che esplicitino gli stalli</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| nop
+4| addi $t0, $t0, 20
+5| sw $t0, 0($s1)
+6| addi $s0, $s0, 4
+7| nop
+8| bne $s0, $a0, Loop
+9| addi $s1, $s1, 4
+</code></pre>
+<p>tenendo sempre presente le dipendenze possiamo anche in questo caso rimpiazzare le <code>nop</code></p>
+<p><img src="https://i.ibb.co/z649wRx/ottimizzaz.png" alt=""></p>
+<p>Possiamo infatti spostare la riga 6 al posto della prima <code>nop</code>, facendo questo risolviamo anche la seconda <code>nop</code> dato che passano sufficienti istruzioni tra la dipendenza tra <code>addi</code> e la <code>bne</code></p>
+<p>Dopo le ottimizzazioni il codice sarà</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $s0, $s0, 4
+4| addi $t0, $t0, 20
+5| sw $t0, 0($s1)
+6| bne $s0, $a0, Loop
+7| addi $s1, $s1, 4
+</code></pre>
+<p><img src="https://i.ibb.co/BVR7sDJ/ottimizzaz.png" alt=""></p>
 
     </div>
   </div>
