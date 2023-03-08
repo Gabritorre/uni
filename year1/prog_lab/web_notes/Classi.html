@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#classi">Classi</a>
+<ul>
+<li><a href="#costruttori">Costruttori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="classi">Classi</h1>
+<p>In c++ è possibile sia fare uso delle struct per costruire degli oggetti propri sia usare le classi.</p>
+<p>La differenza sostanziale è che usare esplicitamente le classi ti offre la possibilità di decidere quali parti della tua classe sono accessibili dall’esterno e quali no, mediante l’utilizzo di <code>public</code> e <code>private</code></p>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token keyword">void</span> <span class="token function">set_var1</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">void</span> <span class="token function">set_var2</span><span class="token punctuation">(</span><span class="token keyword">double</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">int</span> <span class="token function">get_var1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">double</span> <span class="token function">get_var2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		<span class="token keyword">int</span> var1<span class="token punctuation">;</span>
+		<span class="token keyword">double</span> var2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	myclass a<span class="token punctuation">;</span>
+	a<span class="token punctuation">.</span><span class="token function">set_var1</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	a<span class="token punctuation">.</span><span class="token function">get_var1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Un grande utilizzo che può essere fatto è quello rendere le variabile non accessibili direttamente ma solo tramite dei metodi che possono modificarle oppure restituire il valore, questo permette di aver maggior controllo sul come vengono modificate le variabili.</p>
+<p>Le parti della classe che sono private possono essere modificate/lette solo dagli oggetti appartenenti a quella classe.</p>
+<h2 id="costruttori">Costruttori</h2>
+<p>I costruttori sono dei metodi speciali che vengono chiamati ogni volta che viene istanziato un nuovo oggetto della classe.<br>
+Sono molto utili per inizializzare le variabili di una classe.</p>
+<ul>
+<li><strong>Costruttore di default</strong> Questo tipo di costruttore è un metodo che non prende parametri in input. È obbligatorio nel caso si creino degli altri costruttori, mentre se non vengono creati altri costruttore aggiungere quello di default non è strettamente necessario</li>
+<li><strong>Costruttore non default</strong> Questo costruttore prende dei parametri in input. che viene chiamato quando si istanzia un oggetto con i relativi parametri</li>
+<li><strong>Costruttore per copia</strong> Questo costruttore ha come parametro la stessa classe e viene chiamato:
+<ul>
+<li>Ogni qual volta che si passa un oggetto della classe ad una funzione come parametro per copia</li>
+<li>Quando viene fatto il return dell’oggetto che viene passato per riferimento</li>
+<li>Quando si inizializza un nuovo oggetto con uno già esistente</li>
+</ul>
+</li>
+</ul>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore di default</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore normale</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token keyword">const</span> myclass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore per copia</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	private<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>myclass a<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	myclass obj1<span class="token punctuation">;</span>	<span class="token comment">//utilizzo del costruttore di default</span>
+	myclass <span class="token function">obj2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment">// utilizzo del costruttore normale</span>
+	<span class="token function">foo</span><span class="token punctuation">(</span>obj1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// utilizzo del costruttore per copia</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
