@@ -1,0 +1,88 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-03-09_Memoria cache</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#memoria-cache">Memoria cache</a>
+<ul>
+<li><a href="#memorie-sram">Memorie SRAM</a></li>
+<li><a href="#memorie-dram">Memorie DRAM</a></li>
+<li><a href="#memoria-flash">Memoria flash</a></li>
+<li><a href="#hard-disk">Hard disk</a></li>
+<li><a href="#gerarchia-delle-memoria">Gerarchia delle memoria</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="memoria-cache">Memoria cache</h1>
+<p>Nel mondo della tecnologia le memorie presentano dei limiti tecnici</p>
+<ul>
+<li>Le memoria lente sono capienti ed economiche</li>
+<li>Le memorie veloci sono piccole e costose</li>
+</ul>
+<p>Esistono principalmente due tipologie di memorie: le SRAM e le DRAM</p>
+<h2 id="memorie-sram">Memorie SRAM</h2>
+<p>SRAM sta per Static Random Access Memory.</p>
+<ul>
+<li>Sono realizzate con molti componenti</li>
+<li>Sono molto veloci</li>
+<li>Sono relativamente grandi a livello di dimensioni</li>
+<li>Consumano molta energia</li>
+<li>Non hanno bisogno di un refresh periodico dei dati memorizzati</li>
+</ul>
+<p>Le memorie <strong>cache</strong> utilizzano questo di memoria</p>
+<h2 id="memorie-dram">Memorie DRAM</h2>
+<p>DRAM sta per Dynamic Random Access Memory.</p>
+<ul>
+<li>Sono realizzate con pochi componenti</li>
+<li>Sono più lente delle SRAM</li>
+<li>Occupano meno spazio</li>
+<li>Consumano meno energia</li>
+<li>Necessitano di un refresh periodico dei dati memorizzati (motivo per cui si chiamano Dynamic)</li>
+</ul>
+<p>Esistono altre versioni delle DRAM come le Syncrhonize DRAM (SDRAM) che utilizzano un clock sincronizzato con la CPU e le Double Data Rate SDRAM (DDR SDRAM) che possono trasferire dati sia sul fronte di salita sia su quello di discesa, raddoppiando la banda</p>
+<p>Le classiche memorie RAM utilizzano questa tipologia di memoria</p>
+<h2 id="memoria-flash">Memoria flash</h2>
+<p>Un altro tipo di memoria sono le <strong>Memorie flash</strong> che sono di tipo EEPROM (Electrically Erasable Programmable Read Only Memory),</p>
+<p>Una memoria flash molto utilizzata sono gli SSD (Solid state disk) i quali sono più lenti delle memoria DRAM però riescono a mantenere il dato anche se non alimentate, questo grazie alla tecnologia NAND flash.</p>
+<p>Il problema principale di questi tipo di memoria è l’usura nel tempo. Per ridurre questo problema è presente un controller (wear leveling) che permette di distribuire le scritture dei dati in modo uniforme in tutto il disco, così che non si usurino maggiormente alcune parti rispetto ad altre.</p>
+<p>Dato che il tempo di accesso è uguale in tutte le parti del disco, avere i dati sparsi a caso nel disco non rappresenta un problema di prestazioni. Per questo la deframmentazione (processo per il quale si cerca di mettere i dati relativi allo stesso file tutti molto vicini nelle celle del disco) è inutile e anzi riduce la vita dell’ssd.</p>
+<h2 id="hard-disk">Hard disk</h2>
+<p>Questo tipo di memoria sempre meno utilizzato a favore degli ssd sono:</p>
+<ul>
+<li>molto capienti</li>
+<li>economici</li>
+<li>è composto da dischi magnetici in movimento e una testina che ha il compito di scrivere e leggere i dati</li>
+<li>decisamente più lento degli ssd</li>
+<li>sensibile a vibrazioni</li>
+</ul>
+<p>In questo caso la deframmentazione ha senso dato che riordinare i dati aiuta la testina a leggere consecutivamente i dati che gli interessano migliorando le prestazioni.</p>
+<h2 id="gerarchia-delle-memoria">Gerarchia delle memoria</h2>
+<p>In un sistema completo vengono utilizzate tutte le tipologie di memoria, ognuna in un ambito diverso:</p>
+<p>Le memorie più veloci vanno messe più vicine possibile al processore, perche saranno quelle più utilizzate, le altre memorie più capienti ma più lente vanno messe a cascata come ulteriore supporto per memorizzare i dati necessari al processore</p>
+<h3 id="principio-di-località">Principio di località</h3>
+<p>Il principio di località afferma che non tutte le parti del codice hanno la stessa probabilità di essere eseguite, alcune istruzioni vengono eseguite molto spesso e altre molto meno (pensa ai cicli per esempio)</p>
+<ul>
+<li><strong>Località temporale</strong> la località temporale dice che quando si fa riferimento ad un dato c’è la tendenza a fare riferimento allo stesso dato in breve tempo (istruzioni di un ciclo).</li>
+<li><strong>Località spaziale</strong> la località spaziale dice che quando si fa riferimento ad un dato c’è la tendenza a fare riferimento ai dati adiacenti (scorrere gli array).</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

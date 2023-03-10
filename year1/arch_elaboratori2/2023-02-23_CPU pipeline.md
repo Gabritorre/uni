@@ -295,3 +295,32 @@ Dopo le ottimizzazioni il codice sarà
 
 ![](https://i.ibb.co/BVR7sDJ/ottimizzaz.png)
 
+## Processori superscalari
+
+Per aumentare il parallelismo della nostra CPU con lo scopo di aumentare le prestazioni possiamo replicare dei componenti per permettere alla CPU di far entrare più istruzioni contemporaneamente nella pipeline, questa tecnica è chiamata **multiple issue**
+
+Questo ci permette in alcuni casi di completare più di una istruzione in un solo ciclo di clock
+
+Esistono due approcci per implementare il *multiple issue*:
+
+### Multiple issue statico
+
+Questo metodo sfrutta il compilatore per raggruppare le istruzione da inserire in pipeline, il compilatore deve ovviamente fare attenzione alle dipendenze.
+
+Nonostante i suoi vantaggi (come la rimozione del branch prediction e il fatto che in fase di esecuzione risulta fluida e prestante perché il grosso lo ha già fatto il compilatore) questo metodo non è più utilizzato al giorno d'oggi perché:
+
+- Non tutti gli stalli sono predicibili in fase di compilazione (come i cache miss)
+- Il compilatore non può speculare sul risultato dei branch (il dynamic branch prediction non è possibile)
+- Il codice prodotto dipende anche dalla singola versione della CPU, ciò non lo rende molto versatile e portabile.
+
+
+### Multiple issue dinamico
+
+L'approccio usato nei processori odierni è quello dinamico, in cui la CPU decide **quante**, e in un caso anche **quali**, istruzioni mettere in pipeline ad ogni ciclo di clock. I processori che utilizzano questo approccio vengono chiamati **superscalari**.
+
+Esistono due tipi di versione:
+
+- **in-order** la CPU decide solo quante istruzioni mandare in pipeline, ma l'ordine delle istruzioni rimane quello sequenziale del codice (ad esempio utilizzato dai processori ARM nei Raspberry PI)
+- **out-of-order** la CPU decide quante e anche quali istruzioni mandare in pipeline, facendo ovviamente attenzione a non cambiare la semantica del codice (ad esempio utilizzato dai processori Intel e AMD odierni)
+
+Le uniche dipendenze che la CPU deve gestire attentamente nella versione dinamica sono quelle di tipo RAW, le dipendenze WAW e WAR possono essere risolte eseguendo in parallelo tutti gli step delle istruzione avendo cura di eseguire nel corretto ordine solo lo step WB.

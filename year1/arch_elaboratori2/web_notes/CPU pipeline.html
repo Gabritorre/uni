@@ -21,6 +21,7 @@
 <li><a href="#branch-prediction">Branch prediction</a></li>
 <li><a href="#eccezioni-ed-interruzioni">Eccezioni ed interruzioni</a></li>
 <li><a href="#ottimizzazione-istruzioni">Ottimizzazione istruzioni</a></li>
+<li><a href="#processori-superscalari">Processori superscalari</a></li>
 </ul>
 </li>
 </ul>
@@ -289,6 +290,26 @@ pred: 11111<strong>10</strong>1111<strong>10</strong>11110…</p>
 7| addi $s1, $s1, 4
 </code></pre>
 <p><img src="https://i.ibb.co/BVR7sDJ/ottimizzaz.png" alt=""></p>
+<h2 id="processori-superscalari">Processori superscalari</h2>
+<p>Per aumentare il parallelismo della nostra CPU con lo scopo di aumentare le prestazioni possiamo replicare dei componenti per permettere alla CPU di far entrare più istruzioni contemporaneamente nella pipeline, questa tecnica è chiamata <strong>multiple issue</strong></p>
+<p>Questo ci permette in alcuni casi di completare più di una istruzione in un solo ciclo di clock</p>
+<p>Esistono due approcci per implementare il <em>multiple issue</em>:</p>
+<h3 id="multiple-issue-statico">Multiple issue statico</h3>
+<p>Questo metodo sfrutta il compilatore per raggruppare le istruzione da inserire in pipeline, il compilatore deve ovviamente fare attenzione alle dipendenze.</p>
+<p>Nonostante i suoi vantaggi (come la rimozione del branch prediction e il fatto che in fase di esecuzione risulta fluida e prestante perché il grosso lo ha già fatto il compilatore) questo metodo non è più utilizzato al giorno d’oggi perché:</p>
+<ul>
+<li>Non tutti gli stalli sono predicibili in fase di compilazione (come i cache miss)</li>
+<li>Il compilatore non può speculare sul risultato dei branch (il dynamic branch prediction non è possibile)</li>
+<li>Il codice prodotto dipende anche dalla singola versione della CPU, ciò non lo rende molto versatile e portabile.</li>
+</ul>
+<h3 id="multiple-issue-dinamico">Multiple issue dinamico</h3>
+<p>L’approccio usato nei processori odierni è quello dinamico, in cui la CPU decide <strong>quante</strong>, e in un caso anche <strong>quali</strong>, istruzioni mettere in pipeline ad ogni ciclo di clock. I processori che utilizzano questo approccio vengono chiamati <strong>superscalari</strong>.</p>
+<p>Esistono due tipi di versione:</p>
+<ul>
+<li><strong>in-order</strong> la CPU decide solo quante istruzioni mandare in pipeline, ma l’ordine delle istruzioni rimane quello sequenziale del codice (ad esempio utilizzato dai processori ARM nei Raspberry PI)</li>
+<li><strong>out-of-order</strong> la CPU decide quante e anche quali istruzioni mandare in pipeline, facendo ovviamente attenzione a non cambiare la semantica del codice (ad esempio utilizzato dai processori Intel e AMD odierni)</li>
+</ul>
+<p>Le uniche dipendenze che la CPU deve gestire attentamente nella versione dinamica sono quelle di tipo RAW, le dipendenze WAW e WAR possono essere risolte eseguendo in parallelo tutti gli step delle istruzione avendo cura di eseguire nel corretto ordine solo lo step WB.</p>
 
     </div>
   </div>
