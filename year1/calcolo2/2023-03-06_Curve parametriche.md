@@ -183,3 +183,74 @@ y = 1 + \frac{x-1}{2}
 \end{cases}$
 
 l'equazione cartesiana è $y = \frac{x-1}{2} + 1$
+
+
+## Coordinate polari
+
+Dato un punto $P$ di coordinate $(x, y)$ è possibile identificare univocamente il punto con le coordinate polari.
+
+Le coordinate polari sono composte da:
+- La distanza tra il punto e l'origine $\overline{OP}$
+- L'angolo tra il semiasse positivo delle $x$ e $\overline{OP}$
+
+![](https://i.ibb.co/PZjtbKS/cordpol.png)
+
+In determinati casi può essere più conveniente rappresentare le curve utilizzando le coordinate polari.
+
+### Curve in forma polare
+
+Le curve in forma polare hanno la forma
+
+$$r(\alpha) = (x(\alpha), y(\alpha))$$
+
+con 
+
+$\begin{cases}
+x(\alpha) = f(\alpha) \cos(\alpha) \\
+y(\alpha) = f(\alpha) \sin(\alpha)
+\end{cases}$
+
+rappresentano un punto che ruota in senso antiorario con angolo $\alpha$ e raggio $f(\alpha)$
+
+Calcolo del vettore tangente:
+
+$$r'(\alpha) = (f' \cos\alpha-f\sin\alpha, f'\sin\alpha + f\cos\alpha)$$
+
+Calcolo della norma del vettore tangente:
+
+$$||r'(\alpha)||^2 = (f')^2 + f^2$$
+
+### Proprietà delle curve in forma polare
+
+- $r(\alpha)$ è continua se e solo se $f$ è continua in $[a,b]$
+- $r(\alpha)$ è chiusa se e solo se $f(a) = f(b)$ e $b-a = 2k\pi$
+- $r(\alpha)$ è semplice se non esistono $\alpha_1 \in [a,b]$ e $\alpha_2 \in ]a,b[$ tali che $f(\alpha_1) = f(\alpha_2)$ con $\alpha_1-\alpha2 = 2k\pi$
+- $r(\alpha)$ è regolare se $f$ è derivabile e $f, f'$ non si annullano contemporaneamente in $[a,b]$
+
+
+## Lunghezza di un arco di curva
+
+immaginiamo una curva e segniamo dei punti appartenenti a questa curva (partizione del dominio) e colleghiamo questi punti con dei segmenti. 
+
+La lunghezza dell'arco di curva (chiamato anche cammino poligonale) è dato dalla somma di tutti i segmenti.
+
+![](https://i.ibb.co/XkgbVHj/lungh-arco.png)
+
+Se la lunghezza dell'arco di curva **non è infinita** allora la curva si dice **rettificabile**.
+
+### Teorema
+
+Sia $r: [a,b]\longrightarrow \mathbb{R}^m$ una parametrizzazione regolare di una curva $\gamma$ allora $\gamma$ è rettificabile e la lunghezza è data da
+
+$$l(\gamma) = \int_{a}^{b}||r'(t)||\,dt$$
+
+Es.
+
+$r(t) = (\cos t, \sin t, t) \hspace{5mm} \text{con }  0\leq t\leq 2\pi$
+
+troviamo la lunghezza:
+
+$l(\gamma) = \int_{0}^{2\pi}||(-\sin t, \cos t, 1)||\,dt$
+$= \int_{0}^{2\pi} \sqrt{\sin^2 t + \cos^2 t + 1^2}\,dt$
+$= \int_{0}^{2\pi} \sqrt{2}\,dt$
+$\left[\sqrt{2}t\right]_{0}^{2\pi} = 2\pi\sqrt{2}$
