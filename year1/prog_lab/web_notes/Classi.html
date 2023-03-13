@@ -16,6 +16,7 @@
 <li><a href="#classi">Classi</a>
 <ul>
 <li><a href="#costruttori">Costruttori</a></li>
+<li><a href="#distruttori">Distruttori</a></li>
 </ul>
 </li>
 </ul>
@@ -78,6 +79,25 @@ Sono molto utili per inizializzare le variabili di una classe.</p>
 	myclass <span class="token function">obj2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment">// utilizzo del costruttore normale</span>
 	<span class="token function">foo</span><span class="token punctuation">(</span>obj1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// utilizzo del costruttore per copia</span>
 <span class="token punctuation">}</span>
+</code></pre>
+<h2 id="distruttori">Distruttori</h2>
+<p>Similmente ai costruttori esistono anche i distruttori cioè dei metodi speciali che vengono chiamati ogni volta che un oggetto  termina la sua esistenza, ciò può essere causato da:</p>
+<ul>
+<li>Lo scope in cui è stato creato l’oggetto termina la sua esecuzione</li>
+<li>Viene chiamato manualmente con una <code>delete</code> (nel caso si trovi in memoria dinamica allocato con <code>new</code>)</li>
+<li>Chiamando esplicitamente il nome della funzione del distruttore</li>
+</ul>
+<p>Non è obbligatorio creare un distruttore in quanto il compilatore ne fornisce uno di default.<br>
+Inoltre non presenta alcun parametro e non ritorna nulla.<br>
+Per definirne uno è necessario chiamarlo con lo stesso nome della classe preceduto da una tilde.</p>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token operator">~</span><span class="token function">myclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">//definizione di un distruttore</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	private<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
 
     </div>

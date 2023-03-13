@@ -61,3 +61,27 @@ int main() {
 	foo(obj1); // utilizzo del costruttore per copia
 }
 ```
+
+
+## Distruttori
+
+Similmente ai costruttori esistono anche i distruttori cioè dei metodi speciali che vengono chiamati ogni volta che un oggetto  termina la sua esistenza, ciò può essere causato da:
+
+- Lo scope in cui è stato creato l'oggetto termina la sua esecuzione
+- Viene chiamato manualmente con una `delete` (nel caso si trovi in memoria dinamica allocato con `new`)
+- Chiamando esplicitamente il nome della funzione del distruttore
+
+Non è obbligatorio creare un distruttore in quanto il compilatore ne fornisce uno di default. 
+Inoltre non presenta alcun parametro e non ritorna nulla.
+Per definirne uno è necessario chiamarlo con lo stesso nome della classe preceduto da una tilde.
+
+```c++
+class myclass {
+	public:
+		...
+		~myclass() {...} //definizione di un distruttore
+		...
+	private:
+		...
+};
+```
