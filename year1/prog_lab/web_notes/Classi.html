@@ -80,6 +80,26 @@ Sono molto utili per inizializzare le variabili di una classe.</p>
 	<span class="token function">foo</span><span class="token punctuation">(</span>obj1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// utilizzo del costruttore per copia</span>
 <span class="token punctuation">}</span>
 </code></pre>
+<h3 id="liste-di-inizializzazione">Liste di inizializzazione</h3>
+<p>Per ottimizzare il codice è possibile utilizzare le liste di inizializzazione nei costruttori.</p>
+<p>Servono per inizializzare i valori delle classe in maniere più diretta:</p>
+<pre class=" language-c"><code class="prism ++ language-c">class class_def<span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">class_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+			b <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token function">class_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		<span class="token keyword">int</span> a<span class="token punctuation">;</span>
+		<span class="token keyword">int</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>entrambi i “class_def()” sono dei costruttori di default che fanno la stessa cosa, il secondo però fa utilizzo delle liste di inizializzazione.</p>
+<p>È più ottimizzato il secondo caso perchè nel primo caso quando viene chiamato il costruttore prima vengono create le variabile ed inizializzate con il loro valore di default e successivamente gli vengono assegnati i valori da noi decisi.<br>
+Nel secondo caso però le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi.</p>
+<p>Servono anche ad inizializzare i valori delle variabili constanti: se nel codice di prima al posto di <code>int a</code> fosse stato <code>const int a</code> in quel caso solo il secondo metodo funzionerebbe.</p>
 <h2 id="distruttori">Distruttori</h2>
 <p>Similmente ai costruttori esistono anche i distruttori cioè dei metodi speciali che vengono chiamati ogni volta che un oggetto  termina la sua esistenza, ciò può essere causato da:</p>
 <ul>

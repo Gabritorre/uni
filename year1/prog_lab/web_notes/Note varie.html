@@ -24,6 +24,7 @@
 <li><a href="#invariante-di-un-ciclo">Invariante di un ciclo</a></li>
 <li><a href="#vector">Vector</a></li>
 <li><a href="#memoria-dinamica">Memoria dinamica</a></li>
+<li><a href="#eccezioni">Eccezioni</a></li>
 </ul>
 </li>
 </ul>
@@ -237,6 +238,29 @@ delete a<span class="token punctuation">;</span>
 <span class="token comment">// Allocazione di array</span>
 <span class="token keyword">int</span> <span class="token operator">*</span>p <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// ritorna l'indirizzo del primo elemento</span>
 delete<span class="token punctuation">[</span><span class="token punctuation">]</span> p<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="eccezioni">Eccezioni</h2>
+<p>In c++ è possibile lanciare e catturare delle eccezioni, cioè un segnale che indica che è stato rilevato un errore.</p>
+<p>l’istruzione <code>throw</code> serve per lanciare l’eccezione, in pratica viene “lanciato” un oggetto al chiamante della funzione il quale potrà gestire l’eccezione.</p>
+<p>Quando viene eseguito il throw l’esecizione viene bloccata e viene passata al chiamante, se il chiamante ha catturato l’eccezione con un <code>try{} ... catch(){}</code>allora viene gestita l’eccezione altrimenti il programma abortisce</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> my_exception <span class="token punctuation">{</span>
+	string info<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		throw my_exception<span class="token punctuation">{</span><span class="token string">"valore non valido"</span><span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	try<span class="token punctuation">{</span>	
+		<span class="token function">f</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token function">catch</span><span class="token punctuation">(</span>my_exception<span class="token operator">&amp;</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//gestione eccezione</span>
+	cerr<span class="token operator">&lt;&lt;</span>e<span class="token punctuation">.</span>info<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 </code></pre>
 
     </div>

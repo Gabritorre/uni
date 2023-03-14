@@ -245,3 +245,32 @@ delete a;
 int *p = new int[]; // ritorna l'indirizzo del primo elemento
 delete[] p;
 ```
+
+## Eccezioni
+
+In c++ è possibile lanciare e catturare delle eccezioni, cioè un segnale che indica che è stato rilevato un errore.
+
+l'istruzione `throw` serve per lanciare l'eccezione, in pratica viene "lanciato" un oggetto al chiamante della funzione il quale potrà gestire l'eccezione.
+
+Quando viene eseguito il throw l'esecizione viene bloccata e viene passata al chiamante, se il chiamante ha catturato l'eccezione con un `try{} ... catch(){}`allora viene gestita l'eccezione altrimenti il programma abortisce
+
+```c++
+struct my_exception {
+	string info;
+};
+
+void f(int a) {
+	if (a < 0) {
+		throw my_exception{"valore non valido"}
+	}
+}
+
+int main() {
+	try{	
+		f(-1);
+	}catch(my_exception& e) {
+	//gestione eccezione
+	cerr<<e.info<<endl;
+	}
+}
+```

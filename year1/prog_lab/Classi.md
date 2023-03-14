@@ -62,6 +62,33 @@ int main() {
 }
 ```
 
+### Liste di inizializzazione 
+
+Per ottimizzare il codice è possibile utilizzare le liste di inizializzazione nei costruttori.
+
+Servono per inizializzare i valori delle classe in maniere più diretta:
+
+```c++
+class class_def{
+	public:
+		class_def() {
+			a = 10;
+			b = 0;
+		}
+
+		class_def():a(10), b(0) {}
+	private:
+		int a;
+		int b;
+}
+```
+
+entrambi i "class_def()" sono dei costruttori di default che fanno la stessa cosa, il secondo però fa utilizzo delle liste di inizializzazione.
+
+È più ottimizzato il secondo caso perchè nel primo caso quando viene chiamato il costruttore prima vengono create le variabile ed inizializzate con il loro valore di default e successivamente gli vengono assegnati i valori da noi decisi.
+Nel secondo caso però le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi.
+
+Servono anche ad inizializzare i valori delle variabili constanti: se nel codice di prima al posto di `int a` fosse stato `const int a` in quel caso solo il secondo metodo funzionerebbe.
 
 ## Distruttori
 
