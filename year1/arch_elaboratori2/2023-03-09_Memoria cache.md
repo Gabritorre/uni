@@ -60,7 +60,9 @@ In questo caso la deframmentazione ha senso dato che riordinare i dati aiuta la 
 
 In un sistema completo vengono utilizzate tutte le tipologie di memoria, ognuna in un ambito diverso:
 
-Le memorie più veloci vanno messe più vicine possibile al processore, perche saranno quelle più utilizzate, le altre memorie più capienti ma più lente vanno messe a cascata come ulteriore supporto per memorizzare i dati necessari al processore
+Le memorie più veloci vanno messe più vicine possibile al processore dato che i dati che cerca la CPU vengono cercate a cascata prima nelle memoria più veloci e poi, se il dato non viene trovato, cerca nelle altre memorie.
+
+Le memorie più vicine alla CPU (cache) contengono delle copie dei dati che si trovano nei livelli più lontani. Il livello più lontano di tutti contiene tutti dati.
 
 ### Principio di località
 
@@ -68,3 +70,86 @@ Il principio di località afferma che non tutte le parti del codice hanno la ste
 
 - **Località temporale** la località temporale dice che quando si fa riferimento ad un dato c'è la tendenza a fare riferimento allo stesso dato in breve tempo (istruzioni di un ciclo).
 - **Località spaziale** la località spaziale dice che quando si fa riferimento ad un dato c'è la tendenza a fare riferimento ai dati adiacenti (scorrere gli array).
+
+### Terminologia
+L'unità di informazione minima è detta **blocco** Quando il dato viene trovato nel livello di memoria si dice **hit** mentre se nel livello non si trova il dato si dice **miss**.
+
+é possibile calcolare il rapporto tra gli accessi e la quantità di hit, lo stesso vale per i miss, questi vengono chiamati **hit-rate** $(\frac{\text{hit}}{\text{accessi}})$ e **miss-rate** $(\frac{\text{mis}}{\text{accessi}})$
+
+Viene chiamato **hit time** il tempo impiegato per trovare il dato nella prima memoria in cui guarda il processore.
+Viene chiamato **miss penalty** il tempo necessario per trovare il dato nelle memoria inferiori + il tempo a passare tali dati alla CPU.
+
+## Memorie cache
+
+
+Le memorie cache sono delle memorie che nascono con lo scopo di aumentare l'hit-rate e minimizzare i tempi di accesso per i dati utilizzati più frequentemente.
+
+Nei processori moderni esistono 3 livelli di memoria cache che si differenziano per dimensione, velocità e posizionamento relativo al processore:
+- L1: la più veloce, la più vicina alla CPU (una per ogni core della CPU), la più piccola
+- L2: meno veloce di L1, più lontana alla CPU rispetto a L1 (singola condivisa da ogni core della CPU), più grande di L1
+- L3  La meno veloce, la più lontana alla CPU rispetto le altre due (singola condivisa da ogni core della CPU), più grande rispetto alle altre 2
+
+Tutti e tre i livelli sono comunque notevolmente più veloci della memoria RAM
+
+### Cache ad accesso diretto
+
+Per progettare una cache bisogna decidere:
+- La dimensione di un blocco e la quantità di blocchi da utilizzare
+- Come accedere/trovare/scrivere un blocco
+
+Bisogna creare una funziona che fa un *mappinig* tra gli indirizzi di memoria e i blocchi.
+
+l'indice della memoria principale viene mappato con il relativo indice in memoria cache con formula:
+
+$$\text{indice-blocco} = \text{indice-memoria} \,\% \,\text{numero-blocchi}$$
+
+Per agevolare le operazioni il numero di blocchi è solitamente una potenza di 2, in questo modo l'operazione di modulo equivale a prendere i primi $\log_2(\text{numero-blocchi})$ dell'indirizzo (meno significativi).
+
+Ad esempio
+avendo 8 blocchi $(2^3)$
+come indice di memoria abbiamo: 01101
+$\log_2 2^3 = 3$
+Quindi l'indice del blocco associato al nostro indirizzo di memoria equivale ai primi 3 bit meno significativi dell'indirizzo, cioè 101.
+
+![](https://i.ibb.co/vZX90yC/cache.png)
+
+Questo assumendo che la dimensione del blocco sia 1Byte, ma non è molto utile perché ad esempio le singole istruzioni sono lunghe 4 Byte e andare a copiare 1 byte alla volta sarebbe troppo dispendioso.
+
+Ipotizzando di avere un blocco grande $n$ byte allora gli indirizzi consecutivi che differiscono di $n$ bit finiranno nello stesso blocco.
+
+Il mapping in questo caso si fa con:
+
+$$\text{indice-blocco} = (\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-blocchi}$$
+
+Esempio
+avendo 8 blocchi $(2^3)$
+la dimensione di un blocco è 2
+come indice di memoria abbiamo: 01101
+
+$(\text{indice-memoria} \,/ \,\text{grandezza-blocco})$
+
+$(01101 \,/ \, 2)$ equivale a fare uno shift di 1 $(\log_22)$ a destra
+
+Quindi il nostro indirizzo diventa $0110$
+
+$(\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-blocchi}$
+
+$0110 \,\% \,8$ equivale a prendere in considerazione i primi 3 ($log_28$) bit meno significativi, quindi l'indice del blocco sarà $110$
+
+![](https://i.ibb.co/VNXSXBX/cache2.png)
+
+Come si vede dall'immagine andando a ignorare l'ultimo bit ci sono due istruzioni che vanno contemporaneamente nello stesso blocco
+
+### Tag
+
+Dato che durante l'esecuzione del codice più istruzioni utilizzeranno le stesse locuzione, come faccio a riconoscere l'istruzione che c'è all'interno di una locuzione in un determinato momento.
+
+Per risolvere questo problema andiamo a memorizzare oltre al dato anche l'indice della memoria:
+
+Nell'ultimo esempio fatto avevamo come indice 01101 che viene salvato assieme all'indice 01100 Quindi oltre ai dati contenuti in questi indici dovremmo salvarci anche gli indici stessi, ma in realtà basta salvarsi solo i bit più significativi (in questo caso '0') perché i meno significativi (110*) rappresentano già l'indice del blocco della cache.
+
+Questi bit più significativi vengono chiamati **tag**
+
+$$\text{tag} = \text{indice-blocco}/ \text{numero-blocchi}$$
+
+
