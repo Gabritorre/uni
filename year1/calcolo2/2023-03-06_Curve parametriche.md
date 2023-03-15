@@ -244,6 +244,8 @@ Sia $r: [a,b]\longrightarrow \mathbb{R}^m$ una parametrizzazione regolare di una
 
 $$l(\gamma) = \int_{a}^{b}||r'(t)||\,dt$$
 
+$l(\gamma)$ rappresenta la lunghezza della curva $\gamma$ tra $r(a)$ e $r(b)$
+
 Es.
 
 $r(t) = (\cos t, \sin t, t) \hspace{5mm} \text{con }  0\leq t\leq 2\pi$
@@ -254,3 +256,35 @@ $l(\gamma) = \int_{0}^{2\pi}||(-\sin t, \cos t, 1)||\,dt$
 $= \int_{0}^{2\pi} \sqrt{\sin^2 t + \cos^2 t + 1^2}\,dt$
 $= \int_{0}^{2\pi} \sqrt{2}\,dt$
 $\left[\sqrt{2}t\right]_{0}^{2\pi} = 2\pi\sqrt{2}$
+
+### Parametro d'arco
+data una parametrizzazione regolare con $t\in[a,b]$ il parametro d'arco si definisce come
+
+$$s(t) = \int_{a}^{t}||r'(\tau)||\,d\tau$$
+
+da cui si può ottenere
+
+$$t'(s) = \frac{1}{||r'||}$$
+
+
+## Integrale di linea di prima specie
+
+Sia $r:[a,b] \longrightarrow \mathbb{R}^m$ una parametrizzazione regolare e sia $f$ una funzione reale $A\subset \mathbb{R}^m \longrightarrow \mathbb{R}$, in cui la curva sta nel dominio di $f$. si dice integrale di linea di $f$ lungo la curva $\gamma$
+
+$$\int_{a}^{b}f(r(t)) \cdot ||r'(t)|| dt$$
+
+Esempio
+funzione: $f(x,y,z) = 3x - y + z$
+curva: $r(t) = (3t, 4t - 1, t + 5)$ per $t\in[0,1]$
+
+Calcoliamo l'integrale di linea:
+
+$$\int_{0}^{1}[3\cdot(3t)] + [-1\cdot(4t-1)] + [1\cdot(t+5)]]\, \cdot \,||(3,4,1)|| \, dt$$
+
+$$\int_{0}^{1}9t -4t + 1 + t+5\, \cdot \,\sqrt{9 + 16 + 1} \,dt$$
+
+$$\int_{0}^{1}(6t + 6)\, \cdot \,\sqrt{26}\,dt$$
+
+$$6\sqrt{26}\int_{0}^{1}(t + 1)\,dt$$
+
+$$6\sqrt{26} \cdot \left[\frac{t^2}{2}+t\right]_0^1 = 9\sqrt{26}$$

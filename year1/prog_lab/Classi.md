@@ -40,6 +40,9 @@ Sono molto utili per inizializzare le variabili di una classe.
 	- Quando viene fatto il return dell'oggetto che viene passato per riferimento 
 	- Quando si inizializza un nuovo oggetto con uno già esistente
 
+	Creare il costruttore per copia è molto importante: Quando vengono utilizzati puntatori come variabili di classe e si va ad utilizzare il costruttore per copia di default viene fatta una copia del riferimento ma non fa una copia del dato puntato, questo può causare dei problemi perché abbiamo due oggetti che puntano alla stessa area di memoria e quando viene eseguito il distruttore di uno dei due l'altro avrà perso l'area che puntava (e quando verrà distrutto anche l'altro oggetto de allocherà una memoria che è già stata deallocata, generando un errore)
+
+È una buona pratica quindi definire sempre un proprio costruttore per copia che si occupa di fare una copia del dato puntato e non del riferimento.
 
 ```c++
 class myclass {
@@ -112,3 +115,4 @@ class myclass {
 		...
 };
 ```
+

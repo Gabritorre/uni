@@ -51,16 +51,23 @@
 <p>I costruttori sono dei metodi speciali che vengono chiamati ogni volta che viene istanziato un nuovo oggetto della classe.<br>
 Sono molto utili per inizializzare le variabili di una classe.</p>
 <ul>
-<li><strong>Costruttore di default</strong> Questo tipo di costruttore è un metodo che non prende parametri in input. È obbligatorio nel caso si creino degli altri costruttori, mentre se non vengono creati altri costruttore aggiungere quello di default non è strettamente necessario</li>
-<li><strong>Costruttore non default</strong> Questo costruttore prende dei parametri in input. che viene chiamato quando si istanzia un oggetto con i relativi parametri</li>
-<li><strong>Costruttore per copia</strong> Questo costruttore ha come parametro la stessa classe e viene chiamato:
+<li>
+<p><strong>Costruttore di default</strong> Questo tipo di costruttore è un metodo che non prende parametri in input. È obbligatorio nel caso si creino degli altri costruttori, mentre se non vengono creati altri costruttore aggiungere quello di default non è strettamente necessario</p>
+</li>
+<li>
+<p><strong>Costruttore non default</strong> Questo costruttore prende dei parametri in input. che viene chiamato quando si istanzia un oggetto con i relativi parametri</p>
+</li>
+<li>
+<p><strong>Costruttore per copia</strong> Questo costruttore ha come parametro la stessa classe e viene chiamato:</p>
 <ul>
 <li>Ogni qual volta che si passa un oggetto della classe ad una funzione come parametro per copia</li>
 <li>Quando viene fatto il return dell’oggetto che viene passato per riferimento</li>
 <li>Quando si inizializza un nuovo oggetto con uno già esistente</li>
 </ul>
+<p>Creare il costruttore per copia è molto importante: Quando vengono utilizzati puntatori come variabili di classe e si va ad utilizzare il costruttore per copia di default viene fatta una copia del riferimento ma non fa una copia del dato puntato, questo può causare dei problemi perché abbiamo due oggetti che puntano alla stessa area di memoria e quando viene eseguito il distruttore di uno dei due l’altro avrà perso l’area che puntava (e quando verrà distrutto anche l’altro oggetto de allocherà una memoria che è già stata deallocata, generando un errore)</p>
 </li>
 </ul>
+<p>È una buona pratica quindi definire sempre un proprio costruttore per copia che si occupa di fare una copia del dato puntato e non del riferimento.</p>
 <pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
 	public<span class="token punctuation">:</span>
 		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore di default</span>
