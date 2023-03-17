@@ -152,4 +152,51 @@ Questi bit più significativi vengono chiamati **tag**
 
 $$\text{tag} = \text{indice-blocco}/ \text{numero-blocchi}$$
 
+### Valid bit
+
+Viene utilizzato un ulteriore bit per identificare se il dato attuale contenuto in un blocco della cache è valido oppure no. Appena acceso il PC tutti i valori nella cache non hanno significato e ci serve un bit per indicare che sono non significativi, cioè il **valid bit** che è inizializzato a 0.
+- 0: dati non validi
+- 1: dati validi
+
+Man mano che la cache viene riempita, i valid bit dei blocchi passano da 0 a 1 
+
+
+### Esempio lettura cache
+
+![](https://i.ibb.co/w7x4D3J/read-cache.png)
+
+1. viene utilizzato l'index per trovare la riga corrispondente in cache
+2. vengono confrontati i due tag e il risultato viene messo in `and` con il valid bit, questo per accertarsi che il dato sia valido e sia quello che effettivamente stiamo cercando
+3. in base al byte offset otteniamo i dati che ci interessano
+
+
+## Conflitti
+
+Quando dobbiamo portare un blocco in cache nella stessa posizione dove risiedono altri dati, cosa ne facciamo di questi dati già presenti?
+
+- Se i quei dati dopo essere stati portati in cache sono stati solo letti, possiamo rimpiazzarli senza problemi (tanto in RAM ci sarà già una copia di essi)
+- Se quei dati dopo essere stati portati in cache sono stati modificati, prima di andare a rimpiazzarli dobbiamo aggiornare i dati anche ai livelli di memoria inferiori per mantenere una coerenza di dati. Occorre stabilire delle **politiche di coerenza tra livelli di memoria**
+
+### Politica write through
+
+In questa politica ogni scrittura in cache implica che la scrittura avvenga anche ai livelli di memoria inferiori.
+In questo caso abbiamo **dati sempre coerenti** però a **livello prestazionale non è ottimale**.
+
+### Politica write back
+
+In questa politica solo quando un dato in cache deve venire rimpiazzato allora viene prima scritto ai livelli di memoria sottostanti.
+In questo caso abbiamo **ottime prestazioni nelle normali scritture** però la **sostituzione del blocco è più lenta del normale**
+
+### Cosa accade in caso di miss e hit
+
+- **Read-hit**: Avviene in caso di `lw` oppure *fetch* dell'istruzione e rappresenta l'accesso alla memoria con il massimo della velocità
+- **Read-miss**: la CPU va messa in stallo finche la lettura non viene completata, quando il dato viene copiato il cache:
+	- in caso di *fetch* viene ripetuto
+	- in caso di `lw` viene completato l'accesso al dato
+- **Write-hit**: Avviene in caso di `sw`
+	- Write through: i dati vengono scritti sia in cache sia in RAM
+	- Write back: i dati vengono scritti soltanto in cache, viene segnalato che il blocco è stato modificato (attraverso un *dirty bit* associato al blocco)
+- **Write-miss**: Avviene in caso di `sw`
+	- Write through: la CPU viene messa in stallo $\to$ il dato viene scritto direttamente in memoria RAM (senza passare per la cache).
+	- Write back: la CPU viene messa in stallo $\to$ il blocco mancante in cache viene preso dalla memoria RAM e messo in cache $\to$ viene completata la `sw`.
 

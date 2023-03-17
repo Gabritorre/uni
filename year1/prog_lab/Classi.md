@@ -1,8 +1,8 @@
 ﻿# Classi
 
-In c++ è possibile sia fare uso delle struct per costruire degli oggetti propri sia usare le classi.
+In c++ è possibile sia fare uso delle **struct** per costruire degli oggetti propri sia usare le **classi**.
 
-La differenza sostanziale è che usare esplicitamente le classi ti offre la possibilità di decidere quali parti della tua classe sono accessibili dall'esterno e quali no, mediante l'utilizzo di `public` e `private`
+Entrambi i metodo hanno le stesse funzionalità, la differenza sta nel fatto che nelle classi i membri sono privati di default mentre nelle struct i membri sono pubblici di default. è possibile decidere cosa mettere pubblico e privato tramite le keyword `private` e `public`
 
 ```c++
 class myclass {
@@ -116,3 +116,38 @@ class myclass {
 };
 ```
 
+## Friend
+
+La parola chiave `friend` in c++ viene utilizzata principalmente nella dichiarazione delle funzioni **non appartenenti alla classe** e che tramite la keyword `friend` diamo accesso a tale funzione di gestire le variabili private che altrimenti non potrebbe vedere.
+
+```c++
+class MyClass {
+private:
+  int x;
+	// dichiarazione delle funzione friend
+  friend void myFriendFunction(MyClass& obj);
+
+public:
+  MyClass(int x) : x(x) {}
+
+  void printX() {
+    std::cout << "x = " << x << std::endl;
+  }
+};
+
+//definizione della funzione friend
+void myFriendFunction(MyClass& obj) {
+  obj.x = 42;	// riesce ad accedere alla variabile privata x
+}
+
+int main() {
+  MyClass obj(10);
+  obj.printX(); // Output: x = 10
+
+  myFriendFunction(obj); // non è una fuzione appartenente alla classe infatti non viene chiamata sull'oggetto
+  obj.printX(); // Output: x = 42
+
+  return 0;
+}
+
+```

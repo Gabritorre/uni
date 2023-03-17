@@ -19,18 +19,9 @@
 <li><a href="#memorie-dram">Memorie DRAM</a></li>
 <li><a href="#memoria-flash">Memoria flash</a></li>
 <li><a href="#hard-disk">Hard disk</a></li>
-<li><a href="#gerarchia-delle-memoria">Gerarchia delle memoria</a>
-<ul>
-<li><a href="#principio-di-località">Principio di località</a></li>
-<li><a href="#terminologia">Terminologia</a></li>
-</ul>
-</li>
-<li><a href="#memorie-cache">Memorie cache</a>
-<ul>
-<li><a href="#cache-ad-accesso-diretto">Cache ad accesso diretto</a></li>
-<li><a href="#tag">Tag</a></li>
-</ul>
-</li>
+<li><a href="#gerarchia-delle-memoria">Gerarchia delle memoria</a></li>
+<li><a href="#memorie-cache">Memorie cache</a></li>
+<li><a href="#conflitti">Conflitti</a></li>
 </ul>
 </li>
 </ul>
@@ -143,6 +134,54 @@ come indice di memoria abbiamo: 01101</p>
 <p>Nell’ultimo esempio fatto avevamo come indice 01101 che viene salvato assieme all’indice 01100 Quindi oltre ai dati contenuti in questi indici dovremmo salvarci anche gli indici stessi, ma in realtà basta salvarsi solo i bit più significativi (in questo caso ‘0’) perché i meno significativi (110*) rappresentano già l’indice del blocco della cache.</p>
 <p>Questi bit più significativi vengono chiamati <strong>tag</strong></p>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>tag</mtext><mo>=</mo><mtext>indice-blocco</mtext><mi mathvariant="normal">/</mi><mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">\text{tag} = \text{indice-blocco}/ \text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80952em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">tag</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">indice-blocco</span></span><span class="mord">/</span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></span></p>
+<h3 id="valid-bit">Valid bit</h3>
+<p>Viene utilizzato un ulteriore bit per identificare se il dato attuale contenuto in un blocco della cache è valido oppure no. Appena acceso il PC tutti i valori nella cache non hanno significato e ci serve un bit per indicare che sono non significativi, cioè il <strong>valid bit</strong> che è inizializzato a 0.</p>
+<ul>
+<li>0: dati non validi</li>
+<li>1: dati validi</li>
+</ul>
+<p>Man mano che la cache viene riempita, i valid bit dei blocchi passano da 0 a 1</p>
+<h3 id="esempio-lettura-cache">Esempio lettura cache</h3>
+<p><img src="https://i.ibb.co/w7x4D3J/read-cache.png" alt=""></p>
+<ol>
+<li>viene utilizzato l’index per trovare la riga corrispondente in cache</li>
+<li>vengono confrontati i due tag e il risultato viene messo in <code>and</code> con il valid bit, questo per accertarsi che il dato sia valido e sia quello che effettivamente stiamo cercando</li>
+<li>in base al byte offset otteniamo i dati che ci interessano</li>
+</ol>
+<h2 id="conflitti">Conflitti</h2>
+<p>Quando dobbiamo portare un blocco in cache nella stessa posizione dove risiedono altri dati, cosa ne facciamo di questi dati già presenti?</p>
+<ul>
+<li>Se i quei dati dopo essere stati portati in cache sono stati solo letti, possiamo rimpiazzarli senza problemi (tanto in RAM ci sarà già una copia di essi)</li>
+<li>Se quei dati dopo essere stati portati in cache sono stati modificati, prima di andare a rimpiazzarli dobbiamo aggiornare i dati anche ai livelli di memoria inferiori per mantenere una coerenza di dati. Occorre stabilire delle <strong>politiche di coerenza tra livelli di memoria</strong></li>
+</ul>
+<h3 id="politica-write-through">Politica write through</h3>
+<p>In questa politica ogni scrittura in cache implica che la scrittura avvenga anche ai livelli di memoria inferiori.<br>
+In questo caso abbiamo <strong>dati sempre coerenti</strong> però a <strong>livello prestazionale non è ottimale</strong>.</p>
+<h3 id="politica-write-back">Politica write back</h3>
+<p>In questa politica solo quando un dato in cache deve venire rimpiazzato allora viene prima scritto ai livelli di memoria sottostanti.<br>
+In questo caso abbiamo <strong>ottime prestazioni nelle normali scritture</strong> però la <strong>sostituzione del blocco è più lenta del normale</strong></p>
+<h3 id="cosa-accade-in-caso-di-miss-e-hit">Cosa accade in caso di miss e hit</h3>
+<ul>
+<li><strong>Read-hit</strong>: Avviene in caso di <code>lw</code> oppure <em>fetch</em> dell’istruzione e rappresenta l’accesso alla memoria con il massimo della velocità</li>
+<li><strong>Read-miss</strong>: la CPU va messa in stallo finche la lettura non viene completata, quando il dato viene copiato il cache:
+<ul>
+<li>in caso di <em>fetch</em> viene ripetuto</li>
+<li>in caso di <code>lw</code> viene completato l’accesso al dato</li>
+</ul>
+</li>
+<li><strong>Write-hit</strong>: Avviene in caso di <code>sw</code>
+<ul>
+<li>Write through: i dati vengono scritti sia in cache sia in RAM</li>
+<li>Write back: i dati vengono scritti soltanto in cache, viene segnalato che il blocco è stato modificato (attraverso un <em>dirty bit</em> associato al blocco)</li>
+</ul>
+</li>
+<li><strong>Write-miss</strong>: Avviene in caso di <code>sw</code>
+<ul>
+<li>Write through: la CPU viene messa in stallo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> il dato viene scritto direttamente in memoria RAM (senza passare per la cache).</li>
+<li>Write back: la CPU viene messa in stallo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> il blocco mancante in cache viene preso dalla memoria RAM e messo in cache <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> viene completata la <code>sw</code>.</li>
+</ul>
+</li>
+</ul>
 
     </div>
   </div>

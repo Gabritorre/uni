@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#costruttori">Costruttori</a></li>
 <li><a href="#distruttori">Distruttori</a></li>
+<li><a href="#friend">Friend</a></li>
 </ul>
 </li>
 </ul>
@@ -26,8 +27,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="classi">Classi</h1>
-<p>In c++ è possibile sia fare uso delle struct per costruire degli oggetti propri sia usare le classi.</p>
-<p>La differenza sostanziale è che usare esplicitamente le classi ti offre la possibilità di decidere quali parti della tua classe sono accessibili dall’esterno e quali no, mediante l’utilizzo di <code>public</code> e <code>private</code></p>
+<p>In c++ è possibile sia fare uso delle <strong>struct</strong> per costruire degli oggetti propri sia usare le <strong>classi</strong>.</p>
+<p>Entrambi i metodo hanno le stesse funzionalità, la differenza sta nel fatto che nelle classi i membri sono privati di default mentre nelle struct i membri sono pubblici di default. è possibile decidere cosa mettere pubblico e privato tramite le keyword <code>private</code> e <code>public</code></p>
 <pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
 	public<span class="token punctuation">:</span>
 		<span class="token keyword">void</span> <span class="token function">set_var1</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
@@ -125,6 +126,38 @@ Per definirne uno è necessario chiamarlo con lo stesso nome della classe preced
 	private<span class="token punctuation">:</span>
 		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="friend">Friend</h2>
+<p>La parola chiave <code>friend</code> in c++ viene utilizzata principalmente nella dichiarazione delle funzioni <strong>non appartenenti alla classe</strong> e che tramite la keyword <code>friend</code> diamo accesso a tale funzione di gestire le variabili private che altrimenti non potrebbe vedere.</p>
+<pre class=" language-c"><code class="prism ++ language-c">class MyClass <span class="token punctuation">{</span>
+private<span class="token punctuation">:</span>
+  <span class="token keyword">int</span> x<span class="token punctuation">;</span>
+	<span class="token comment">// dichiarazione delle funzione friend</span>
+  friend <span class="token keyword">void</span> <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>MyClass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+public<span class="token punctuation">:</span>
+  <span class="token function">MyClass</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">x</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"x = "</span> <span class="token operator">&lt;&lt;</span> x <span class="token operator">&lt;&lt;</span> std<span class="token punctuation">:</span><span class="token punctuation">:</span>endl<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//definizione della funzione friend</span>
+<span class="token keyword">void</span> <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>MyClass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  obj<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span>	<span class="token comment">// riesce ad accedere alla variabile privata x</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  MyClass <span class="token function">obj</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  obj<span class="token punctuation">.</span><span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Output: x = 10</span>
+
+  <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// non è una fuzione appartenente alla classe infatti non viene chiamata sull'oggetto</span>
+  obj<span class="token punctuation">.</span><span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Output: x = 42</span>
+
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
 </code></pre>
 
     </div>
