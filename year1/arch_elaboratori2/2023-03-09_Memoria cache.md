@@ -84,13 +84,6 @@ Viene chiamato **miss penalty** il tempo necessario per trovare il dato nelle me
 
 Le memorie cache sono delle memorie che nascono con lo scopo di aumentare l'hit-rate e minimizzare i tempi di accesso per i dati utilizzati più frequentemente.
 
-Nei processori moderni esistono 3 livelli di memoria cache che si differenziano per dimensione, velocità e posizionamento relativo al processore:
-- L1: la più veloce, la più vicina alla CPU (una per ogni core della CPU), la più piccola
-- L2: meno veloce di L1, più lontana alla CPU rispetto a L1 (singola condivisa da ogni core della CPU), più grande di L1
-- L3  La meno veloce, la più lontana alla CPU rispetto le altre due (singola condivisa da ogni core della CPU), più grande rispetto alle altre 2
-
-Tutti e tre i livelli sono comunque notevolmente più veloci della memoria RAM
-
 ### Cache ad accesso diretto
 
 Per progettare una cache bisogna decidere:
@@ -200,3 +193,172 @@ In questo caso abbiamo **ottime prestazioni nelle normali scritture** però la *
 	- Write through: la CPU viene messa in stallo $\to$ il dato viene scritto direttamente in memoria RAM (senza passare per la cache).
 	- Write back: la CPU viene messa in stallo $\to$ il blocco mancante in cache viene preso dalla memoria RAM e messo in cache $\to$ viene completata la `sw`.
 
+
+## Prestazioni
+
+La misurazione delle prestazioni quando utilizziamo la memoria cache cambiano nel seguente modo:
+
+$T_{exe} = (\text{cicli} + \text{cicli di stallo}) \cdot \text{periodo di clock}$
+
+Dove
+
+$$\text{cicli di stallo} = \text{IC} \cdot \text{miss-ratio} \cdot \text{miss-penalty}$$
+- $\text{IC} \cdot \text{miss-ratio}:$  rappresenta il numero di istruzioni che provocano il miss
+- per semplicità consideriamo un miss-penalty unico per scrittura e lettura
+- il $\text{miss-ratio}$ si suddivide in **instruction miss-ratio** (per i miss dei fetch) e **data miss-ratio** (per i miss di `sw` e `lw`)
+
+
+Esempio:
+Assumiamo di avere un programma che ha:
+- Instruction miss-ratio: $2\%$ (2% riferito alle istruzioni totali)
+- Data miss-ratio: $4\%$ (4% riferito alle istruzioni `sw`/`lw`)
+- Istruzioni `sw`/`lw`: $36\% \cdot  IC$
+- $\text{CPI}_{\text{ideale}} = 2$
+- miss-penalty: 40 cicli (quando si verifica un miss sono necessari 40 cicli di clock per recuperare il dato)
+
+#### Troviamo i cicli di stallo per le istruzioni:
+
+formula: $\text{cicli di stallo} = \text{IC} \cdot \text{instruction miss-ratio} \cdot \text{miss-penalty}$
+
+$\text{IC} \cdot 0.02 \cdot 40 = 0.8 \cdot \text{IC}$
+
+#### Troviamo i cicli di stallo per i dati:
+
+formula: $\text{cicli di stallo} = \text{IC}_{dati} \cdot \text{data miss-ratio} \cdot \text{miss-penalty}$
+
+$(0.36\cdot \text{IC}) \cdot 0.04 \cdot 40 = 0.58 \cdot \text{IC}$
+
+#### Troviamo i cicli di stallo totali
+sarà dato dalla somma dei due tipi di stalli:
+
+$0.8 \text{IC} + 0.58 \text{IC} = 1.38\text{IC}$
+
+#### Troviamo i cicli di stallo medi per istruzione
+
+$\frac{1.38\text{IC}}{\text{IC}} = 1.38$
+
+#### Troviamo il CPI reale
+
+dato dalla somma tra  $\text{CPI}_{ideale}$ e i cicli di stallo medi
+
+$2 + 1.38 = 3.38$
+
+#### Troviamo lo speedup
+
+$\frac{3.38}{2} = 1.69$
+
+Rispetto al nostro $\text{CPI}_{\text{ideale}}$ , quello reale risulta essere 1.69 volte peggiore
+
+
+### Cache associative
+
+Nella cache ad accesso diretto ogni blocco di memoria veniva associato ad un blocco di cache (tramite la funzione di mapping)
+
+Nelle **cache associative** i blocchi vengono raggruppati in **insiemi** (set) e ogni insieme ha delle **vie o blocchi** (way), ogni via appartenente ad un insieme possiede il tag e il dato.
+
+cache con 4 insiemi e due vie
+![enter image description here](https://i.ibb.co/QvTc2VZ/cache-ass.png)
+
+In queste cache la funzione di mapping lavora solo sulla decisione degli insiemi mentre per decidere in quale via andare a salvare il dato viene scelto il primo posto libero che viene trovato.
+
+Quindi ogni indirizzo in memoria avrò associato un relativo insieme in cache, e può andare in qualsiasi via in quel insieme.
+
+In base alle esigenze è possibile decidere quanti insiemi e quanti vie utilizzare, ad esempio avendo un totale di 8 blocchi da gestire, posso organizzare la cache come nell'immagine:
+
+![](https://i.ibb.co/Khw0smN/caches.png)
+
+Per andare a leggere un dato in cache ora sappiamo solo che un dato appartiene ad un determinato insieme, per trovare la posizione specifica bisogna scorrere tutto l'insieme. Nella **cache completamente associativa** ogni volta che ci serve un dato in cache bisogna scorrere tutta la cache (non molto efficiente)
+
+Solitamente il numero di blocchi e il numero di insieme è un multiplo di 2.
+
+#### Funzione di mapping
+
+Ottengo l'insieme (set) della cache facendo: 
+
+$$\text{indice-blocco} = (\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-insiemi}$$
+
+![](https://i.ibb.co/pnKtdSx/mapping.png)
+
+Nel caso dell'immagine abbiamo 4 insiemi e 2 vie
+
+dato che la dimensione del blocco è 2 allora per trovare l'indice del blocco dobbiamo prima ignorare 1 bit meno significativo $(\log_2\text{dimensione\_blocco})$ poi dobbiamo fare il modulo di quello che rimane per $\log_2\text{numero\_insiemi}$ , in questo caso 2. Fare l'operazione di modulo corrisponde a prendere i $\log_2\text{numero\_insiemi}$ bit meno significativi.
+
+Ad esempio 
+Prendendo in considerazione l'indice in memoria 01010
+- ignoro il 1 bit meno significativo
+	sarebbe l'operazione $\text{indice-memoria} \,/ \,\text{grandezza-blocco}$ che nel nostro caso è $01010 / 2$ che corrisponde ad uno shift a destra di $\log_22 = 1$
+	mi rimane 0101
+- prendo i due bit meno significativi di quello che mi rimane
+	sarebbe l'operazione $(\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-insiemi}$
+	che nel nostro caso è  $0101 \% 4$ che corrisponde a prendere i $\log_24 = 2$ bit meno significativi.
+	Quindi l'indice in memoria cache di 01010 è 01
+
+### Gestione dei miss nelle cache associative
+
+Nel caso in cui si verifica un miss e tutte le vie di un insieme associato all'istruzione "missata" sono occupate bisogna decidere quale blocco andare a sostituire.
+
+- Viene sostituito un blocco casuale
+- Viene sostituito il blocco usato meno di recente (Least recently used). Questa tecnica utilizza dei bit extra per memorizzare da quanto tempo non viene acceduto un blocco
+
+
+### Esempio di confronto tra tipi cache
+
+Compariamo: cache ad accesso diretto, cache associativa a 2 vie, cache completamente associativa.
+
+tutte le cache composte da 4 blocchi
+ipotizziamo di avere i seguenti indirizzi a cui accedere (a cui abbiamo già tolto l'offset, quindi va solo fatto il modulo) [0,8,0,6,8]
+
+#### Cache ad accesso diretto
+
+$\text{indirizzo} \% \text{numero-blocchi}$ 
+
+$[0\%4=0\hspace{3mm} 8\%4=0 \hspace{3mm} 0\%4=0 \hspace{3mm}6\%4=2 \hspace{3mm} 8\%4=0]$
+
+In questo caso abbiamo che tutti gli indirizzi di memoria sono mappati per andare all'indice di cache 0 tranne l'indirizzo 6
+
+![](https://i.ibb.co/LQtqDRn/cache-diretta.png)
+
+Otteniamo tutti *miss*
+- 1° riga: prima apparizione del dato 0 quindi sicuramente non è presente in cache $\to$ *miss* e inserimento del dato 0 in cache nel blocco 0
+- 2° riga: prima apparizione del dato 8 quindi sicuramente non è presente in cache $\to$ *miss* e inserimento del dato 8 in cache nel blocco 0 (il dato precedente viene perso)
+- 3° riga: viene cercato il dato 0 ma non è presente nella sua posizione $\to$ miss e inserimento del dato 0 in cache nel blocco 0 (il dato precedente viene perso)
+- 4° riga: prima apparizione del dato 6 quindi sicuramente non è presente in cache $\to$ *miss* e inserimento del dato 6 in cache nel blocco 2
+- 5° riga: viene cercato il dato 8 ma non è presente nella sua posizione $\to$ miss e inserimento del dato 8 in cache nel blocco 0 (il dato precedente viene perso)
+
+#### Cache associativa a 2 vie
+
+$\text{indirizzo} \% \text{numero-insiemi}$ 
+
+$[0\%2=0\hspace{3mm} 8\%2=0 \hspace{3mm} 0\%2=0 \hspace{3mm}6\%2=0 \hspace{3mm} 8\%2=0]$
+
+In questo caso abbiamo che tutti gli indirizzi di memoria sono mappati per andare all'insieme della cache 0
+
+![](https://i.ibb.co/9y5n3v0/2way.png)
+
+- 1° riga: prima apparizione del dato 0 $\to$ *miss* e inserimento del dato 0 in cache nell'insieme 0 nella prima posizione libera
+- 2° riga: prima apparizione del dato 8  $\to$ *miss* e inserimento del dato 8 in cache nell'insieme 0 nella prima posizione libera 
+- 3° riga: viene cercato il dato 0 e viene trovato $\to$ *hit* 
+- 4° riga: prima apparizione del dato 6 $\to$ *miss* e inserimento del dato 6 al posto del dato utilizzato meno di recente (cioè 8, perché 0 è stato letto nell'accesso precedente)
+- 5° riga: viene cercato il dato 8 ma non è presente nel suo insieme$\to$ miss e inserimento del dato 8 al posto del dato utilizzato meno di recente (cioè 0)
+
+#### Cache completamente associativa
+
+i dati vanno nel primo blocco che trovano libero
+
+![](https://i.ibb.co/pnDVRhR/compl-ass.png)
+
+- 1° riga: prima apparizione del dato 0 $\to$ *miss* e inserimento del dato 0 in cache nella prima posizione libera
+- 2° riga: prima apparizione del dato 8  $\to$ *miss* e inserimento del dato 8 in cache nella prima posizione libera 
+- 3° riga: viene cercato il dato 0 e viene trovato $\to$ *hit* 
+- 4° riga: prima apparizione del dato 6 $\to$ *miss* e inserimento del dato 6 nella prima posizione libera 
+- 5° riga: viene cercato il dato 8 e viene trovato $\to$ *hit* 
+
+
+## Cache a più livelli
+
+Nei processori moderni esistono 3 livelli di memoria cache che si differenziano per dimensione, velocità e posizionamento relativo al processore:
+- L1: la più veloce, la più vicina alla CPU (una per ogni core della CPU), la più piccola
+- L2: meno veloce di L1, più lontana alla CPU rispetto a L1 (singola condivisa da ogni core della CPU), più grande di L1
+- L3  La meno veloce, la più lontana alla CPU rispetto le altre due (singola condivisa da ogni core della CPU), più grande rispetto alle altre 2
+
+Tutti e tre i livelli sono comunque notevolmente più veloci della memoria RAM
