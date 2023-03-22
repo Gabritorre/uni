@@ -36,4 +36,85 @@ $\Lambda_k = \{x\in\mathbb{R}^n: x \in A \,\land f(x_1,...x_n) = k\}$
 
 ![](https://i.ibb.co/ryNfprc/insieme-livello.png)
 
+## Sezioni verticali
 
+Una sezione verticale è data dall'intersezione tra il grafico di una funzione $f$ e un piano verticale. la curva risultante dall'intersezione è il grafico di una funzione in una variabile
+
+- piani ortogonali all'asse $x$ : la sezione ha funzione $z=f(c, y) \text{ con } c \in \mathbb{R}$
+- piani ortogonali all'asse $y$ : la sezione ha funzione $z=f(x, c) \text{ con } c \in \mathbb{R}$
+
+### Paraboloide ellittico
+
+Equazione generale: $z = a(x - x_0)^2 + b(y-y_0)^2+c$
+
+Disegno di un paraboloide semplice $(x_0 = 0, y_0 = 0, c =0, a = 1, b = 1)$ :
+
+$f(x,y) = x^2 + y^2$
+![enter image description here](https://i.ibb.co/zbXs1fv/parab-ellitico.png)
+
+- $a$ e $b$ devono avere lo stesso segno
+- vertice in $(x_0, y_0)$
+- curve di livello:
+	- se $a=b$ circonferenze
+	- se $a\neq b$ ellissi
+- sezioni verticali: parabole
+	- $f(0,y) = y^2$
+	- $f(x,0) = x^2$
+
+### Cono
+
+Equazione generale: $z = \sqrt{a(x - x_0)^2 + b(y-y_0)^2}+c$
+
+Disegno di un paraboloide semplice $(x_0 = 0, y_0 = 0, c =0, a = 1, b = 1)$ :
+
+$f(x,y) =\sqrt{x^2 + y^2}$
+
+![](https://i.ibb.co/jW7Qq6Y/cono.png)
+
+- $a$ e $b$ devono essere positivi
+- vertice in $(x_0, y_0)$
+- curve di livello: circonferenze di raggio k (altezza del piano che usiamo per "tagliare" il grafico)
+- sezioni verticali: valore assoluto
+	- $f(0,y) = |y|$
+	- $f(x,0) = |x|$
+
+### Paraboloide iperbolico
+
+Equazione generale: $z = a(x - x_0)^2 + b(y-y_0)^2+c$
+
+Disegno di un paraboloide semplice $(x_0 = 0, y_0 = 0, c =0, a = 1, b = 1)$ :
+
+$f(x,y) =x^2 - y^2$
+
+![](https://i.ibb.co/tQmSZPC/parab-iper.png)
+
+- $a$ e $b$ devono avere segni diversi
+- sella in $(x_0, y_0)$
+- curve di livello:
+	- iperboli
+- sezioni verticali: parabole
+	- $f(0,y) = -y^2$
+	- $f(x,0) = x^2$
+
+
+## Dominio
+
+Il dominio rappresenta una porzione del piano definito dalle condizioni delle variabili x e y.
+
+Tutte le regole del dominio delle funzioni più note rimangono uguali.
+
+Generalmente per trovare il dominio si presentano delle disequazioni, per trovare il domino:
+1. risolvere l'equazione associata e disegnarla
+2. per capire dove è il dominio rispetto al disegno possiamo sostituire x e y per vedere se soddisfa la disequazione.
+
+
+Es.
+Trovare il dominio della funzione $z = \sqrt{4-x^2-y^2}$
+
+Il dominio è dato da tutte le coppie (x,y) tali che $4-x^2-y^2\geq0$
+
+disegno l'equazione associata (trovo i punti di frontiera)
+
+$x^2+ y^2 = 4$ è una circonferenza di centro $(0,0)$ e raggio $2$
+
+per capire se il domino della funzione è interno o esterno alla circonferenza sostituisco al posto di x e y lo 0 (che è un punto interno), la disequazione restituisce $4-0-0\geq0$ che è vera quindi la funzione è interna alla circonferenza
