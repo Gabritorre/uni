@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-03-23_Memoria virtuale</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#memoria-virtuale">Memoria virtuale</a>
+<ul>
+<li><a href="#vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</a></li>
+<li><a href="#traduzione-da-virtuale-a-fisico">Traduzione da virtuale a fisico</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="memoria-virtuale">Memoria virtuale</h1>
+<p>Vogliamo realizzare un meccanismo che:</p>
+<ul>
+<li>Permetta alla memoria RAM di essere condivisa tra più programmi in esecuzione, senza però che un programma possa accedere senza permesso all’area di memoria riservata ad un altro programma.</li>
+<li>Permetta ad un programma di utilizzare più memoria RAM di quella realmente disponibile nel sistema</li>
+</ul>
+<p>Per permettere queste due cose entra in gioco la <strong>memoria virtuale</strong></p>
+<p>I programmi (più in generale il processore) utilizzano uno spazio di indirizzamento virtuale che non coincide con l’indirizzamento fisico della memoria RAM.</p>
+<p>I blocchi di memoria (chiamate pagine) virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.</p>
+<h2 id="vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</h2>
+<ol>
+<li>Illusione di avere più memoria disponibile di quella che è in realtà<br>
+solo le parti attive del programma sono mappate in memoria RAM, le parti inattive sono mappate nella memoria secondaria (HDD, SSD) in una area specifica chiamata <strong>spazio di swap</strong> oppure <strong>file di paging</strong>.<br>
+Grazie a questo è possibile che più programmi che richiedano oltre la memoria fisicamente installata girino contemporaneamente nel sistema</li>
+<li>Protezione: avendo questa memoria virtuale che viene mappata in RAM senza che sia il programmatore a farlo assicura che gli indirizzi virtuali siano effettivamente mappati su indirizzi fisici diversi che non vanno a modificare o leggere dati di altri programmi</li>
+<li>Semplificazione del caricamento del programma: i dati del programma vengono assegnati a degli indirizzi virtuale che possono anche essere mappati casualmente ovunque in memoria RAM senza causare problemi, e senza necessità di scrivere il programma per utilizzare una specifica area di memoria.</li>
+</ol>
+<h2 id="traduzione-da-virtuale-a-fisico">Traduzione da virtuale a fisico</h2>
+<p>Gli indirizzi virtuali sono divisi in <strong>virtual page number</strong> e <strong>page offset</strong></p>
+<p>Gli indirizzi fisici sono divisi in <strong>phisical page number</strong> e <strong>page offset</strong></p>
+<p>Il <em>page offset</em> è lo stesso sia per gli indirizzi virtuali sia per quelli fisici</p>
+<p>Un meccanismo riesce ad associare i <em>virtual page number</em> in <em>phisical page number</em>, ma non si può fare il contrario dato che è possibile avere più indirizzi virtuali associati ad un indirizzo fisico (programmi differenti che utilizzano gli stessi dati).</p>
+<p>Il numero di bit del page offset determina la dimensione della pagina (blocco di memoria)</p>
+<p>La traduzione avviene mediante una tabella <strong>page table</strong> che risiede in RAM e ogni programma ha una propria <em>page table</em> che è raggiungibile tramite un registro speciale chiamato <em>page table register</em></p>
+<p>Questa tabella associa gli indirizzi virtuali a quelli fisici.</p>
+<p>Quando un programma vuole accedere ad un’area in memoria virtuale:</p>
+<ol>
+<li>l’indirizzo viene diviso nelle due parti (<em>number</em> e <em>offset</em>)</li>
+<li>il <em>number</em> viene utilizzato come indice della tabella</li>
+<li>dopo aver trovato la riga della tabella viene utilizzato l’offset insieme al contenuto della riga nella tabella per ottenere l’indirizzo fisico della RAM</li>
+</ol>
+<p><img src="https://i.ibb.co/5cnqdr1/mapping-virt-mem.png" alt=""></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
