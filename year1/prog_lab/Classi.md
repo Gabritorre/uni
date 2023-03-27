@@ -151,3 +151,32 @@ int main() {
 }
 
 ```
+
+
+## Tecnica pimpl
+
+Pimpl (*pointer to implementation*) è una tecnica che rimuove dalla dichiarazione di una classe i dettagli le variabili/oggetti che essa utilizza, dichiarando solo un puntatore che punterà alla definizione della classe.
+
+```c++
+//header.hpp
+ class MyClass {
+private:
+	struct impl;
+	impl* pimpl;
+public:
+	...
+
+//implementation.cpp
+#inlcude "header.hpp"
+struct MyClass::impl{ // definisco gli oggetti utilizzati dalla classe
+	std::vector<int> vec;
+	int var;
+};
+
+//definizione dei vari metodi..
+```
+
+Utilizzare questa tecnica porta il grande vantaggio di non dover ricompilare i file che utilizzano questa classe se magari dovessimo cambiare la definizione degli oggetti che utilizza la classe. Accade questo perché il compilatore in fase di compilazione deve sapere quanto spazio allocare quando si istanza un oggetto di una classe, quindi se dovessimo cambiare le variabili della classe, essa andrebbe ricompilata.
+Andando però ad utilizzare sempre un puntatore che punta alla nostra implementazione la dimensione del puntatore rimane sempre la stessa e quindi non è necessario ricompilare.
+
+

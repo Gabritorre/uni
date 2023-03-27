@@ -118,3 +118,43 @@ disegno l'equazione associata (trovo i punti di frontiera)
 $x^2+ y^2 = 4$ è una circonferenza di centro $(0,0)$ e raggio $2$
 
 per capire se il domino della funzione è interno o esterno alla circonferenza sostituisco al posto di x e y lo 0 (che è un punto interno), la disequazione restituisce $4-0-0\geq0$ che è vera quindi la funzione è interna alla circonferenza
+
+## Topologia in $\mathbb{R}^n$
+
+Per le successive definizioni è necessario considerare un intorno sferico in $\mathbb{R}^n$ $U_r$ di centro $P_0$ e raggio $r$
+
+In $\mathbb{R}^2$ ad esempio:
+![](https://i.ibb.co/mJVFqQY/intorno-circ.png)
+
+Dato un insieme $E$ e un punto $P$, esso si dice:
+- **Interno** ad $E$ se esiste un intorno di $P$ composto solo da punti che sono appartenenti ad $E$
+- **esterno** ad $E$ se esiste un intorno di $P$ che non possiede punti appartenenti ad $E$
+- **punto di frontiera** per $E$ se ogni intorno di $P$ possiede sia punti di $E$ sia punti non appartenenti ad $E$
+
+![](https://i.ibb.co/hKy07zx/punti.png)
+
+- $\mathring{E}$ :**parte interna** è l'insieme dei punti interi di $E$
+- $\partial E$ : **bordo** è l'insieme dei punti di frontiera di $E$
+- $\overline{E}$ :**chiusura** è l'insieme dei punti di $E$ compreso il bordo $(\overline{E}) = \mathring{E} \, \cup \, \partial E$
+
+
+Sempre considerando l'insieme $E\subseteq \mathbb{R}^n$ , $E$ si dice:
+- **aperto** se ogni suo punto è un punto interno (non contiene i punti di frontiera)
+- **chiuso** se l'insieme contiene la sua frontiera
+- **né aperto né chiuso** se alcuni intervalli sono aperti e altri chiusi
+
+Definiamo anche i concetti di insieme:
+- **Limitato**: se esiste un intorno circolare di centro l'origine contiene l'insieme.
+- **Connesso**: se presi due punti qualsiasi all'interno dell'insieme posso congiungerli tramite una curva continua.
+
+## Limite 
+
+La definizione di limite utilizzando gli intorni è:
+
+data una funzione $f: A \subset \mathbb{R}^n \longrightarrow \mathbb{R}$ e un punto $P_0$ definito dalle coordinate $(x_0, x_1,...,x_n)$ diremo che 
+
+$$\lim_{P\to P_0} f(x) = L \in \mathbb{R}$$
+
+se e solo se per ogni $\epsilon>0$ esiste $\delta>0$ tale che:
+
+$$0<||P-P_0||<\delta \implies |f(x) - L| < \epsilon$$
