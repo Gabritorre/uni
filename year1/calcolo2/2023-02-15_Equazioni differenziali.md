@@ -17,7 +17,7 @@ In generale le soluzione di un'equazione differenziale sono infinite:
 $$F(x;y;y') = 0$$
 
 Tratteremo le equazione differenziali di tipo:
-1. Quelle di tipo $y'=f(x)$
+1.  $y'=f(x)$
 2. Le equazioni di primo ordine a variabili separabili $y' = g(x) \cdot h(y)$
 3. Le equazioni lineari di primo ordine (omogenee e complete) $y' = a(x) \cdot y + b(x)$
 4. Le equazioni lineari del secondo ordine a coefficienti costanti omogenee $ay'' + by' + c = 0$
@@ -90,7 +90,7 @@ $$y = ke^{\int a(x)\,dx}$$
 
 #### formula risolutiva per le complete
 
-$$y = ke^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
+$$y = e^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
 
 ###  Le equazioni lineari del secondo ordine a coefficienti costanti omogenee 
 
@@ -283,13 +283,19 @@ In questo caso dobbiamo calcolare l'equazione omogenea associata come prima cosa
 
 dove $p(x)$ è un polinomio generico dello stesso grado di $s(x)$
 
-#### 5 Caso con $g(x) = k_1 \sin(\beta x) + k_2 \cos(\beta x)$
+Si calcola la derivata prima e seconda del polinomio generico e si sostituiscono nell'equazione originale.
+Si risolve il sistema relazionando i membri con la x e i termini noti e si trovano $a,b$ che vanno sostituiti in $y_0$ trovando così la soluzione particolare.
+Infine va sommato alla soluzione dell'omogenea
+
+#### 5 Caso con $g(x) = e^{\alpha x} (k_1 \sin(\beta x) + k_2 \cos(\beta x))$
 
 Calcoliamo l'equazione omogenea associata come prima cosa, questo perché la soluzione particolare dipende da essa:
 
-- se $\Delta < 0$ e abbiamo che $\alpha = 0$ e $\beta$ è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = a \cos(\beta x) + b \sin(\beta x)$
-- in tutti gli altri casi la soluzione particolare ha forma $y_0 = x(a \cos(\beta x) + b \sin(\beta x))$
+- se $\alpha + i\beta$ è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = e^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
+- se $\alpha + i\beta$ è nella soluzione omogenea allora la soluzione particolare ha forma $y_0 = xe^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
 
+si calcola derivata prima e seconda e si sostituiscono nell'equazione originale.
+si risolve il sistema dove si relazionano i membri con la x e i termini noti, si trovano $a,b$ e si sostituiscono in $y_0$ trovando così la soluzione particolare, che va infine sommata alla soluzione omogenea.
 
 #### 6 Caso sovrapposizione degli effetti
 
