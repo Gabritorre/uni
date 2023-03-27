@@ -283,16 +283,21 @@ In questo caso dobbiamo calcolare l'equazione omogenea associata come prima cosa
 
 dove $p(x)$ è un polinomio generico dello stesso grado di $s(x)$
 
+(si prosegue come nel caso 3)
+
 Si calcola la derivata prima e seconda del polinomio generico e si sostituiscono nell'equazione originale.
 Si risolve il sistema relazionando i membri con la x e i termini noti e si trovano $a,b$ che vanno sostituiti in $y_0$ trovando così la soluzione particolare.
-Infine va sommato alla soluzione dell'omogenea
+Infine va sommato alla soluzione dell'omogenea.
 
-#### 5 Caso con $g(x) = e^{\alpha x} (k_1 \sin(\beta x) + k_2 \cos(\beta x))$
+#### 5 Caso con $g(x) = e^{\alpha x} (k_1 \cos(\beta x) + k_2 \sin(\beta x))$
 
 Calcoliamo l'equazione omogenea associata come prima cosa, questo perché la soluzione particolare dipende da essa:
 
 - se $\alpha + i\beta$ è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = e^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
-- se $\alpha + i\beta$ è nella soluzione omogenea allora la soluzione particolare ha forma $y_0 = xe^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
+- se $\alpha + i\beta$ è nella soluzione omogenea allora la soluzione particolare ha forma $y_0 = xe^{\alpha x}(a 
+\cos(\beta x) + b \sin(\beta x))$
+
+(si prosegue come nel caso 3)
 
 si calcola derivata prima e seconda e si sostituiscono nell'equazione originale.
 si risolve il sistema dove si relazionano i membri con la x e i termini noti, si trovano $a,b$ e si sostituiscono in $y_0$ trovando così la soluzione particolare, che va infine sommata alla soluzione omogenea.
