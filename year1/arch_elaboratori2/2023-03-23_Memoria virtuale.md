@@ -8,7 +8,7 @@ Per permettere queste due cose entra in gioco la **memoria virtuale**
 
 I programmi (più in generale il processore) utilizzano uno spazio di indirizzamento virtuale che non coincide con l'indirizzamento fisico della memoria RAM.
 
-I blocchi di memoria (chiamate pagine) virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.
+I blocchi di memoria (chiamate **pagine**), cioè degli insiemi di indirizzi di memoria virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.
 
 ## Vantaggi della memoria virtuale
 
@@ -42,3 +42,63 @@ Quando un programma vuole accedere ad un'area in memoria virtuale:
 
 ![](https://i.ibb.co/5cnqdr1/mapping-virt-mem.png)
 
+## Page fault
+
+Se una pagina non viene trovata in RAM, allora significa che si trova solo nel disco, questo viene definito **page fault**
+
+Il miss-penalty per recuperare il dato dal disco è enorme, quindi ridurre il numero di page fault è molto importante.
+
+Caratteristiche
+- il mapping tra pagine virtuali e fisiche è di tipo **completamente associativo**
+- Viene utilizzata la politica **LRU** (*least recent used*) per il rimpiazzo delle pagine
+- il page fault sono gestiti dal sistema operativo
+- viene utilizzata la politica **write-back** per la scrittura
+
+### Bit di stato
+
+- **valid bit**: quando posto a 1 indica che il dato è presente in RAM, mentre è 0 quando il dato è presente solo sul disco.
+- **dirty bit**: quando posto a 1 indica che la pagina è stata modificata e quindi quando verrà sostituita deve venir aggiornato il suo valore nelle memorie secondarie
+- **reference bit**: viene settato a 1 ogni volta che la pagina viene riferita e periodicamente viene posto a 0. Serve per l'implementazione della politica LRU
+
+### Translation lookaside buffer
+
+*Translation lookaside buffer* (TLB) è un'altra memoria cache utilizzata per memorizzare delle porzioni di *page table* (quelli utilizzate più recentemente). Essa presenta tempi di accesso molti più veloci della ram e sfrutta la località spaziale.
+
+Nel caso si verifichi un miss nella TLB si va prima a cercare nella *page table* e se si verifica un *page fault* si cerca nel disco.
+
+## Integrazione della memoria cache
+
+In questo sistema di memoria virtuale si può integrare la memoria cache in tre modi differenti:
+
+- **Physically addressed cache**: la cache utilizza indirizzi fisici, quindi prima di ogni accesso in cache si deve passare per TLB e nel caso di TLB-miss si passa per la page table. processi diversi che utilizzano gli stessi indirizzi virtuali non creano problemi.
+- **Virtually addressed cache**: la cache utilizza indirizzi virtuali, ogni cache-hit non richiede accesso a TLB (evitando di provocare TBL miss e paga fault). Processi che utilizzano gli stessi indirizzi virtuali possono creare dei problemi di letture e scritture senza permesso.
+- **Virtually indexed but physically tagged**: l'index viene calcolato sull'indirizzo virtuale mentre il tag viene ottenuto dall'indirizzo fisico. non presenta il problemi di processi che utilizzano gli stessi indirizzi virtuali. comportamente simile alla physically addressed.
+
+### Tipologie di miss
+
+- **compulsory**: sono i miss certi, si verificano quando i blocchi vengono acceduti per la prima volta.
+- **capacity**: si verificano quando la cache non è in grado di contenere tutti i blocchi necessari al processo, un blocco utile viene espulso e successivamente riammesso.
+- **collisions**: si verifica con le cache completamente associative e accade quando due blocchi competono per una certa posizione.
+
+## Gestione della memoria virtuale del SO
+
+Il sistema operativo deve intervenire in caso di  *TBL miss* e *page fault*.
+
+la CPU possiede almeno due modalità di esecuzione: **user mode** e **supervisor mode** (kernel mode).
+
+Alcune operazioni (le più importanti) possono essere fatte solo in kernel mode. I normali programmi vengono eseguiti in user mode.
+
+Un programma eseguito in user mode:
+- non può modificare il page table register
+- non può modificare le entry del TLB
+- non può cambiare autonomamente in supervisor mode
+
+In supervisor mode non ci sono limitazioni.
+
+### System call
+
+Un programma in user mode può passare alla supervisor mode solo attraverso una **system call** che:
+
+- Entra in supervisor mode
+- Trasferisce il controllo ad una locazione che si occupa di gestire l'interruzione.
+- Salva il PC in un registro chiamato *Exception Link Register* (ELR)

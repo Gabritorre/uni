@@ -17,6 +17,9 @@
 <ul>
 <li><a href="#vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</a></li>
 <li><a href="#traduzione-da-virtuale-a-fisico">Traduzione da virtuale a fisico</a></li>
+<li><a href="#page-fault">Page fault</a></li>
+<li><a href="#integrazione-della-memoria-cache">Integrazione della memoria cache</a></li>
+<li><a href="#gestione-della-memoria-virtuale-del-so">Gestione della memoria virtuale del SO</a></li>
 </ul>
 </li>
 </ul>
@@ -33,7 +36,7 @@
 </ul>
 <p>Per permettere queste due cose entra in gioco la <strong>memoria virtuale</strong></p>
 <p>I programmi (più in generale il processore) utilizzano uno spazio di indirizzamento virtuale che non coincide con l’indirizzamento fisico della memoria RAM.</p>
-<p>I blocchi di memoria (chiamate pagine) virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.</p>
+<p>I blocchi di memoria (chiamate <strong>pagine</strong>), cioè degli insiemi di indirizzi di memoria virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.</p>
 <h2 id="vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</h2>
 <ol>
 <li>Illusione di avere più memoria disponibile di quella che è in realtà<br>
@@ -57,6 +60,56 @@ Grazie a questo è possibile che più programmi che richiedano oltre la memoria 
 <li>dopo aver trovato la riga della tabella viene utilizzato l’offset insieme al contenuto della riga nella tabella per ottenere l’indirizzo fisico della RAM</li>
 </ol>
 <p><img src="https://i.ibb.co/5cnqdr1/mapping-virt-mem.png" alt=""></p>
+<h2 id="page-fault">Page fault</h2>
+<p>Se una pagina non viene trovata in RAM, allora significa che si trova solo nel disco, questo viene definito <strong>page fault</strong></p>
+<p>Il miss-penalty per recuperare il dato dal disco è enorme, quindi ridurre il numero di page fault è molto importante.</p>
+<p>Caratteristiche</p>
+<ul>
+<li>il mapping tra pagine virtuali e fisiche è di tipo <strong>completamente associativo</strong></li>
+<li>Viene utilizzata la politica <strong>LRU</strong> (<em>least recent used</em>) per il rimpiazzo delle pagine</li>
+<li>il page fault sono gestiti dal sistema operativo</li>
+<li>viene utilizzata la politica <strong>write-back</strong> per la scrittura</li>
+</ul>
+<h3 id="bit-di-stato">Bit di stato</h3>
+<ul>
+<li><strong>valid bit</strong>: quando posto a 1 indica che il dato è presente in RAM, mentre è 0 quando il dato è presente solo sul disco.</li>
+<li><strong>dirty bit</strong>: quando posto a 1 indica che la pagina è stata modificata e quindi quando verrà sostituita deve venir aggiornato il suo valore nelle memorie secondarie</li>
+<li><strong>reference bit</strong>: viene settato a 1 ogni volta che la pagina viene riferita e periodicamente viene posto a 0. Serve per l’implementazione della politica LRU</li>
+</ul>
+<h3 id="translation-lookaside-buffer">Translation lookaside buffer</h3>
+<p><em>Translation lookaside buffer</em> (TLB) è un’altra memoria cache utilizzata per memorizzare delle porzioni di <em>page table</em> (quelli utilizzate più recentemente). Essa presenta tempi di accesso molti più veloci della ram e sfrutta la località spaziale.</p>
+<p>Nel caso si verifichi un miss nella TLB si va prima a cercare nella <em>page table</em> e se si verifica un <em>page fault</em> si cerca nel disco.</p>
+<h2 id="integrazione-della-memoria-cache">Integrazione della memoria cache</h2>
+<p>In questo sistema di memoria virtuale si può integrare la memoria cache in tre modi differenti:</p>
+<ul>
+<li><strong>Physically addressed cache</strong>: la cache utilizza indirizzi fisici, quindi prima di ogni accesso in cache si deve passare per TLB e nel caso di TLB-miss si passa per la page table. processi diversi che utilizzano gli stessi indirizzi virtuali non creano problemi.</li>
+<li><strong>Virtually addressed cache</strong>: la cache utilizza indirizzi virtuali, ogni cache-hit non richiede accesso a TLB (evitando di provocare TBL miss e paga fault). Processi che utilizzano gli stessi indirizzi virtuali possono creare dei problemi di letture e scritture senza permesso.</li>
+<li><strong>Virtually indexed but physically tagged</strong>: l’index viene calcolato sull’indirizzo virtuale mentre il tag viene ottenuto dall’indirizzo fisico. non presenta il problemi di processi che utilizzano gli stessi indirizzi virtuali. comportamente simile alla physically addressed.</li>
+</ul>
+<h3 id="tipologie-di-miss">Tipologie di miss</h3>
+<ul>
+<li><strong>compulsory</strong>: sono i miss certi, si verificano quando i blocchi vengono acceduti per la prima volta.</li>
+<li><strong>capacity</strong>: si verificano quando la cache non è in grado di contenere tutti i blocchi necessari al processo, un blocco utile viene espulso e successivamente riammesso.</li>
+<li><strong>collisions</strong>: si verifica con le cache completamente associative e accade quando due blocchi competono per una certa posizione.</li>
+</ul>
+<h2 id="gestione-della-memoria-virtuale-del-so">Gestione della memoria virtuale del SO</h2>
+<p>Il sistema operativo deve intervenire in caso di  <em>TBL miss</em> e <em>page fault</em>.</p>
+<p>la CPU possiede almeno due modalità di esecuzione: <strong>user mode</strong> e <strong>supervisor mode</strong> (kernel mode).</p>
+<p>Alcune operazioni (le più importanti) possono essere fatte solo in kernel mode. I normali programmi vengono eseguiti in user mode.</p>
+<p>Un programma eseguito in user mode:</p>
+<ul>
+<li>non può modificare il page table register</li>
+<li>non può modificare le entry del TLB</li>
+<li>non può cambiare autonomamente in supervisor mode</li>
+</ul>
+<p>In supervisor mode non ci sono limitazioni.</p>
+<h3 id="system-call">System call</h3>
+<p>Un programma in user mode può passare alla supervisor mode solo attraverso una <strong>system call</strong> che:</p>
+<ul>
+<li>Entra in supervisor mode</li>
+<li>Trasferisce il controllo ad una locazione che si occupa di gestire l’interruzione.</li>
+<li>Salva il PC in un registro chiamato <em>Exception Link Register</em> (ELR)</li>
+</ul>
 
     </div>
   </div>
