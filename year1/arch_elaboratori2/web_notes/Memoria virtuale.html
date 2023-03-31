@@ -20,6 +20,8 @@
 <li><a href="#page-fault">Page fault</a></li>
 <li><a href="#integrazione-della-memoria-cache">Integrazione della memoria cache</a></li>
 <li><a href="#gestione-della-memoria-virtuale-del-so">Gestione della memoria virtuale del SO</a></li>
+<li><a href="#context-switch">Context switch</a></li>
+<li><a href="#page-table-multilivello">Page table multilivello</a></li>
 </ul>
 </li>
 </ul>
@@ -98,7 +100,7 @@ Grazie a questo è possibile che più programmi che richiedano oltre la memoria 
 <p>Alcune operazioni (le più importanti) possono essere fatte solo in kernel mode. I normali programmi vengono eseguiti in user mode.</p>
 <p>Un programma eseguito in user mode:</p>
 <ul>
-<li>non può modificare il page table register</li>
+<li>non può modificare il <em>page table register</em></li>
 <li>non può modificare le entry del TLB</li>
 <li>non può cambiare autonomamente in supervisor mode</li>
 </ul>
@@ -107,9 +109,50 @@ Grazie a questo è possibile che più programmi che richiedano oltre la memoria 
 <p>Un programma in user mode può passare alla supervisor mode solo attraverso una <strong>system call</strong> che:</p>
 <ul>
 <li>Entra in supervisor mode</li>
-<li>Trasferisce il controllo ad una locazione che si occupa di gestire l’interruzione.</li>
-<li>Salva il PC in un registro chiamato <em>Exception Link Register</em> (ELR)</li>
+<li>Trasferisce il controllo ad una locazione che si occupa di gestire l’interruzione (quindi in supervisor mode viene eseguito solo codice del sistema operativo).</li>
+<li>Salva il PC del processo in un registro chiamato <em>Exception Link Register</em> (ELR)</li>
 </ul>
+<h3 id="eccezioni">Eccezioni</h3>
+<ul>
+<li>
+<p><strong>Eccezione TBL miss</strong>: la pagina non è presente in TLB però è presente in RAM</p>
+<ul>
+<li>L’eccezione può essere gestita tramite la <em>page table</em></li>
+<li><em>miss-penalty</em> molto basso</li>
+<li>l’istruzione che ha causate l’eccezione deve essere rieseguita dopo aver risolto l’eccezione</li>
+</ul>
+</li>
+<li>
+<p><strong>Eccezione TLB miss + page fault</strong>:la pagina non è presente in TLB e nemmeno in RAM</p>
+<ul>
+<li>La pagina mancante in RAM deve essere recuperata dal disco</li>
+<li><em>miss-penalty</em> molto grande</li>
+<li>si effettua un <strong>context switch</strong> mentre si attende il dato da recuperare</li>
+<li>quando il page fault è risolto si riprende l’esecuzione del processo.ù</li>
+</ul>
+</li>
+<li>
+<p><strong>Page fault con rimpiazzamento pagina</strong>: Page fault e la memoria RAM è piena, quindi bisogna sostituire qualche pagina in RAM</p>
+<ul>
+<li>Se la pagina da sostituire è stata anche modificata va prima aggiornata nel disco</li>
+<li>Se la pagina da sostituire era presenta in TLB va rimossa anche da lì</li>
+</ul>
+</li>
+</ul>
+<h2 id="context-switch">Context switch</h2>
+<p>Il <strong>context switch</strong> è un’operazione che fa il sistema operativo per cambiare il processo che è in esecuzione attualmente. Quando alcuni programmi per vari motivi richiedono dei tempi di attesa (ad esempio <em>Eccezione TLB miss + page fault</em>) si effettua il context switch e quindi si salva lo stato del processo e si manda in esecuzione un altro programma e si mette in “pausa” quello precedente.</p>
+<p>Quando si cambia processo in esecuzione dobbiamo assicurarci che il nuovo processo non possa accedere ai dati del vecchio processo. Mentre la <em>page table</em> è unica per ogni processo e non ci crea problemi perché basta cambiare il puntatore alla tabella (basta cambiare il valore del <em>page table register</em>), il problema sta nella TLB che è unica e tutti utilizzano la stessa. Questo problema si risolve con l’ASID.</p>
+<h3 id="asid">ASID</h3>
+<p>Svuotare la TLB ad ogni context switch sarebbe troppo dispendioso, viene quindi introdotto un <em>Address Space ID</em> (ASID), cioè un ID che viene affiancato all’indirizzo virtuale per indicare a chi appartiene quel blocco di memoria, così non serve svuotare la cache/TLB ad ogni context switch.</p>
+<h2 id="page-table-multilivello">Page table multilivello</h2>
+<p>Per spazi di indirizzamento molto grandi si ottengono delle page table di una dimensione discretamente grande, contando però che ogni processo ha una propria page table si potrebbe arrivare a saturare la memoria RAM solo per contenere le page table.</p>
+<p>Si utilizzano quindi delle page table multilivello:</p>
+<p>Praticamente abbiamo che nella page table di primo livello ci sono dei puntatori alle page table di secondo livello, nelle page table di secondo livello ci sono dei puntatori a quelle di terzo livello e così via. solo l’ultimo livello conterrà gli indirizzi che cerchiamo. In RAM caricheremo solo la sequenza di page table che ci portano all’indirizzo che ci interessa e non tutte le possibili page table.<br>
+Le page table che non ci interessano vengono messe nel disco secondario (ci sarà una entry nella page di primo livello che le punterà).<br>
+La page di primo livello deve rimanere sempre in memoria RAM.<br>
+Ad esempio ARM utilizza 4 livelli di page table.</p>
+<p><img src="https://i.ibb.co/MCSdpp8/multilev-page.png" alt=""></p>
+<p>approfondimento: <a href="https://www.youtube.com/watch?v=Z4kSOv49GNc">https://www.youtube.com/watch?v=Z4kSOv49GNc</a></p>
 
     </div>
   </div>

@@ -1,0 +1,120 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30-03-2023_ARM ISA</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#armv8-isa">ARMv8 ISA</a>
+<ul>
+<li><a href="#simple-sequential-execution-sse">Simple Sequential Execution (SSE)</a></li>
+<li><a href="#registri">Registri</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="armv8-isa">ARMv8 ISA</h1>
+<p>Ci concentreremo sulla versione di ARM <strong>ARMv8-A</strong> che rappresenta la famiglia più utilizzata nei dispositivi mobili.</p>
+<p>l’ARMv8-A supporta 3 <em>instruction set</em>, noi ci concentreremo sull’istruction set “A64” che è la versione a 64bit.</p>
+<h2 id="simple-sequential-execution-sse">Simple Sequential Execution (SSE)</h2>
+<p>Le istruzioni nelle architetture ARM seguono il modello SSE, cioè si comporta come se le istruzioni fossero caricate una alla volta e nell’ordine in cui sono scritte nel programma. cioè rende il programma più prevedibile e affidabile.<br>
+Anche se questa cosa può sembrare scontata non lo è perché altre architetture utilizzano un modello OOE (<em>out-of-order execution</em>).</p>
+<p>In realtà le CPU ARM caricano 2 istruzioni alla volta e talvolta le eseguono in parallelo, l’implementazione però ci assicura che l’effetto è lo stesso di una esecuzione sequenziale in cui una istruzione non viene caricata finche la precedente non è stata completata.</p>
+<h2 id="registri">Registri</h2>
+<p>Abbiamo <strong>31 registri <em>general purpose</em></strong> anche se alcuni registri è preferibile non modificarli.</p>
+<p>ogni registro può essere utilizzato come un registro a 64bit (chiamandolo X&lt;n&gt;) oppure come un registro a 32bit (chiamandolo Q&lt;n&gt;)</p>
+<pre><code>add w0,w1,w2 // somma a 32bit
+add x0,x1,x2 // somma a 64bit
+</code></pre>
+<p>Abbiamo <strong>31 registri per le operazioni floating point e operazioni vettorizzate</strong>. Questi registri possiedono vari prefissi in base alla dimensione sui cui si vuole lavorare.</p>
+<pre><code>fadd s0,s1,s2 // somma floating point a 32bit
+fadd d0,d1,d2 // somma floating point a 64bit
+</code></pre>
+<p>Tabella dei prefissi</p>
+
+<table>
+<thead>
+<tr>
+<th>prefisso</th>
+<th>tipo di dato</th>
+<th>dimensione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>intero</td>
+<td>8bit</td>
+</tr>
+<tr>
+<td>h</td>
+<td>intero</td>
+<td>16bit</td>
+</tr>
+<tr>
+<td>w</td>
+<td>intero</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>x</td>
+<td>intero</td>
+<td>64bit</td>
+</tr>
+<tr>
+<td>s</td>
+<td>floating point</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>d</td>
+<td>floating point</td>
+<td>64bit</td>
+</tr>
+<tr>
+<td>q</td>
+<td>floating point</td>
+<td>128bit</td>
+</tr>
+<tr>
+<td>v</td>
+<td>vettori</td>
+<td>variabile</td>
+</tr>
+</tbody>
+</table><p><strong>Altri registri speciali</strong>:</p>
+<ul>
+<li><strong>XZR</strong> viene sempre letto come fosse 0</li>
+<li><strong>SP</strong> (x28) stack pointer</li>
+<li><strong>FP</strong> (x29) frame pointer</li>
+<li><strong>LR</strong> (x30) link register</li>
+<li><strong>PC</strong> Program counter, non è un registro <em>general purpose</em> e non può essere letto/scritto direttamente, può essere letto però utilizzando una pseudo-istruzione chiamata <strong>ADR</strong></li>
+<li><strong>APSR</strong> Application program status register, contiene una copia dello stato dell’ultima operazione effettuata dall’ALU<br>
+<img src="https://i.ibb.co/8PFdhCS/condition-codes-alu.png" alt=""><br>
+Siamo interessati particolarmente ai flag:
+<ul>
+<li>N: posto a 1 se il risultato dell’ultima operazione è <strong>negativo</strong></li>
+<li>Z: posto a 1 se il risultato dell’ultima operazione è <strong>zero</strong></li>
+<li>V: posto a 1 se nell’ultima operazione si è verificato <strong>overflow</strong></li>
+<li>C: posto a 1 se nell’ultima operazione c’è stato un <strong>riporto</strong></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

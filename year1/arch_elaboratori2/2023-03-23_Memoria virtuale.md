@@ -89,7 +89,7 @@ la CPU possiede almeno due modalità di esecuzione: **user mode** e **supervisor
 Alcune operazioni (le più importanti) possono essere fatte solo in kernel mode. I normali programmi vengono eseguiti in user mode.
 
 Un programma eseguito in user mode:
-- non può modificare il page table register
+- non può modificare il *page table register*
 - non può modificare le entry del TLB
 - non può cambiare autonomamente in supervisor mode
 
@@ -100,5 +100,52 @@ In supervisor mode non ci sono limitazioni.
 Un programma in user mode può passare alla supervisor mode solo attraverso una **system call** che:
 
 - Entra in supervisor mode
-- Trasferisce il controllo ad una locazione che si occupa di gestire l'interruzione.
-- Salva il PC in un registro chiamato *Exception Link Register* (ELR)
+- Trasferisce il controllo ad una locazione che si occupa di gestire l'interruzione (quindi in supervisor mode viene eseguito solo codice del sistema operativo).
+- Salva il PC del processo in un registro chiamato *Exception Link Register* (ELR)
+
+### Eccezioni 
+
+- **Eccezione TBL miss**: la pagina non è presente in TLB però è presente in RAM
+	
+	- L'eccezione può essere gestita tramite la *page table*
+	- *miss-penalty* molto basso
+	- l'istruzione che ha causate l'eccezione deve essere rieseguita dopo aver risolto l'eccezione
+
+- **Eccezione TLB miss + page fault**:la pagina non è presente in TLB e nemmeno in RAM
+	- La pagina mancante in RAM deve essere recuperata dal disco
+	- *miss-penalty* molto grande
+	- si effettua un **context switch** mentre si attende il dato da recuperare
+	- quando il page fault è risolto si riprende l'esecuzione del processo.ù
+- **Page fault con rimpiazzamento pagina**: Page fault e la memoria RAM è piena, quindi bisogna sostituire qualche pagina in RAM
+	- Se la pagina da sostituire è stata anche modificata va prima aggiornata nel disco
+	- Se la pagina da sostituire era presenta in TLB va rimossa anche da lì
+
+
+## Context switch
+
+Il **context switch** è un'operazione che fa il sistema operativo per cambiare il processo che è in esecuzione attualmente. Quando alcuni programmi per vari motivi richiedono dei tempi di attesa (ad esempio *Eccezione TLB miss + page fault*) si effettua il context switch e quindi si salva lo stato del processo e si manda in esecuzione un altro programma e si mette in "pausa" quello precedente.
+
+Quando si cambia processo in esecuzione dobbiamo assicurarci che il nuovo processo non possa accedere ai dati del vecchio processo. Mentre la *page table* è unica per ogni processo e non ci crea problemi perché basta cambiare il puntatore alla tabella (basta cambiare il valore del *page table register*), il problema sta nella TLB che è unica e tutti utilizzano la stessa. Questo problema si risolve con l'ASID.
+
+### ASID
+
+Svuotare la TLB ad ogni context switch sarebbe troppo dispendioso, viene quindi introdotto un *Address Space ID* (ASID), cioè un ID che viene affiancato all'indirizzo virtuale per indicare a chi appartiene quel blocco di memoria, così non serve svuotare la cache/TLB ad ogni context switch.
+
+## Page table multilivello
+
+Per spazi di indirizzamento molto grandi si ottengono delle page table di una dimensione discretamente grande, contando però che ogni processo ha una propria page table si potrebbe arrivare a saturare la memoria RAM solo per contenere le page table.
+
+Si utilizzano quindi delle page table multilivello:
+
+Praticamente abbiamo che nella page table di primo livello ci sono dei puntatori alle page table di secondo livello, nelle page table di secondo livello ci sono dei puntatori a quelle di terzo livello e così via. solo l'ultimo livello conterrà gli indirizzi che cerchiamo. In RAM caricheremo solo la sequenza di page table che ci portano all'indirizzo che ci interessa e non tutte le possibili page table.
+Le page table che non ci interessano vengono messe nel disco secondario (ci sarà una entry nella page di primo livello che le punterà).
+La page di primo livello deve rimanere sempre in memoria RAM.
+Ad esempio ARM utilizza 4 livelli di page table.
+
+![](https://i.ibb.co/MCSdpp8/multilev-page.png)
+
+approfondimento: [https://www.youtube.com/watch?v=Z4kSOv49GNc](https://www.youtube.com/watch?v=Z4kSOv49GNc)
+
+
+
+
