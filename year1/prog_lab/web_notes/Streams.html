@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Streams</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#streams">Streams</a>
+<ul>
+<li><a href="#streams-in-c">Streams in c++</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="streams">Streams</h1>
+<p>Gli stream sono flussi di dati (sequenze di byte) utilizzati per le operazione di input (comunicare con dispositivi come tastiera e mouse) e di output (come lo schermo).</p>
+<p>I byte degli stream possono essere interpretati in vari modi, ad esempio come numeri, caratteri, stringhe ecc…</p>
+<p>Per questioni di efficienza non è ottimale leggere/scrivere un byte alla volta interrogando per ogni byte l’hardware, per questo vengono utilizzati dei <strong>buffer</strong> cioè delle piccole memorie (input buffer e output buffer) che continuano ad accumulare byte che vengono utilizzati quando richiesto, cioè con le istruzioni:</p>
+<pre class=" language-c"><code class="prism ++ language-c">std<span class="token punctuation">:</span><span class="token punctuation">:</span>cin <span class="token operator">&gt;&gt;</span> x<span class="token punctuation">;</span> <span class="token comment">// estrae i byte dal buffer di input che vengono inseriti da un</span>
+			   <span class="token comment">// dipositivo di input (la tastiera ad esempio)</span>
+std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout <span class="token operator">&lt;&lt;</span> x<span class="token punctuation">;</span> <span class="token comment">// spinge i byte dal buffer di output verso una</span>
+				<span class="token comment">// periferica di output (il monitor ad esempio)</span>
+</code></pre>
+<h2 id="streams-in-c">Streams in c++</h2>
+
+<table>
+<thead>
+<tr>
+<th>Stream</th>
+<th>Utilizzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::istream</code></td>
+<td>è la classe stream di input general purpose, <code>cin</code> è l’oggetto standard appartenente a quella classe</td>
+</tr>
+<tr>
+<td><code>std::ostream</code></td>
+<td>è la classe stream di output general purpose, <code>cout</code> e <code>cerr</code> sono due oggetti standard appartenenti a quella classe</td>
+</tr>
+<tr>
+<td><code>std::ifstream</code></td>
+<td>input stream per i file. legge dati da un file.</td>
+</tr>
+<tr>
+<td><code>std::ofstream</code></td>
+<td>output stream per i file. scrive dati in un file.</td>
+</tr>
+<tr>
+<td><code>std::istringstream</code></td>
+<td>input stream per le stringhe. legge dati da una stringa.</td>
+</tr>
+<tr>
+<td><code>std::ostringstream</code></td>
+<td>output stream per le stringhe. scrive dati su una stringa.</td>
+</tr>
+</tbody>
+</table><p>Gli stream non possono essere copiati, quindi non possono essere passati per valore ad una funzione (ma solamente per reference) e non è possibile creare un nuovo stream copiando lo stream <code>std::cout</code>. Questo perché gli stream solo legati alla periferica esterna e fare una copia significherebbe fare una copia anche della periferica.</p>
+<h3 id="stato-di-uno-stream">Stato di uno stream</h3>
+<p>sono presenti delle funzioni che possono mostrare lo stato di uno stream</p>
+
+<table>
+<thead>
+<tr>
+<th>funzione</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>good()</td>
+<td>le operazioni fatte hanno avuto successo</td>
+</tr>
+<tr>
+<td>eof()</td>
+<td>raggiundo la fine dell’input (<em>end of file</em>)</td>
+</tr>
+<tr>
+<td>fail()</td>
+<td>errore nello stream (dovuto a come è scritto il programma, oppure era presente qualcosa di inaspettato nel buffer)</td>
+</tr>
+<tr>
+<td>bad()</td>
+<td>si è verificato un errore per cui lo stream non è più in grado di performare operazioni di input/output</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+</body>
+
+</html>
