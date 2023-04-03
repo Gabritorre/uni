@@ -158,3 +158,86 @@ $$\lim_{P\to P_0} f(x) = L \in \mathbb{R}$$
 se e solo se per ogni $\epsilon>0$ esiste $\delta>0$ tale che:
 
 $$0<||P-P_0||<\delta \implies |f(x) - L| < \epsilon$$
+
+
+**Somma, rapporto, prodotto e composizione di funzioni continue sono funzioni continue**
+
+### Funzioni definite a tratti
+
+Le funzioni definiti a tratti possono non essere continue (nella maggior parte dei casi non sono continue)
+
+Data una funzione
+
+$\begin{cases}
+x^2 + y^2 -1 &\text{se} y > 2x \\
+-2x-y &\text{se} y \leq 2x
+\end{cases}$
+
+le due funzioni sono continue perché somma e composizione di funzioni continue, dobbiamo però vedere cosa accade in $y = 2x$
+
+Per fare ciò costruiamo il sistema
+
+$\begin{cases}
+ y = 2x \\
+-2x-y = x^2 + y^2 -1
+\end{cases} \to
+\begin{cases}
+ y = 2x \\
+-2x-2x = x^2 + 4x^2 -1
+\end{cases}$
+
+$\to \begin{cases}
+ y = 2x \\
+-4x = 5x^2 -1
+\end{cases}
+\to
+\begin{cases}
+ y = 2x \\
+5x^2+4x-1=0
+\end{cases}$
+
+dalla seconda equazione otteniamo 
+
+$x_1 = -1, x_2 = \frac{1}{5}$
+
+per cui otteniamo i punti di continuità trovando la relativa $y$ :
+$P_1(-1,-2), P_2(\frac{1}{5}, \frac{2}{5})$
+
+
+### Calcolo dei limiti
+
+Quando non si presentano forme di indecisione il limite si può calcolare semplicemente sostituendo. Se si presentano forme indecisione nascono i problemi.
+
+Bisogna innanzitutto provare delle **sezioni** cioè fissare tutti i valori tendenti con il valore per cui tendono tranne 1 e vedere che risultato da il valore restante nella funzione. se più sezioni danno risultati diversi allora si può concludere che il limite non esiste, se tutte le sezioni provate restituiscono lo stesso valore bisogna dimostrare con il **teorema del confronto** che quel valore è giusto.
+
+Es.
+
+$$\lim_{(x,y)\to(0,0)}\frac{y(x^2+3y^2)}{x^2+5y^2}$$
+
+Si presenta una forma indeterminata $\left[\frac{0}{0}\right]$
+
+proviamo la sezione: $x=0$
+
+$$\lim_{y\to0}\frac{3y^3}{5y^2} \hspace{5mm} \to \hspace{5mm} \lim_{y\to0}\frac{3}{5}y = 0$$
+
+proviamo la sezione: $y=0$
+
+$$\lim_{y\to0}\frac{0}{x^2}  = 0$$
+
+entrambe le sezioni ci ritornano lo stesso valore (nel caso fossero stati diversi allora il limite non sarebbe esistito), utilizziamo il teorema del confronto per dimostrare che il limite è 0.
+
+$0\leq \frac{y(x^2+3y^2)}{x^2+5y^2} \leq?$
+
+$\frac{(x^2+3y^2)}{x^2+5y^2}$ sarà una quantità $<1$ quindi una quantità minore di $1$ moltiplicata per $y$ sarà una quantità minore di $y$
+
+$0\leq \frac{y(x^2+3y^2)}{x^2+5y^2} \leq|y|$
+
+#### Disuguaglianze utili per il teorema del confronto
+
+- $2|ab|\leq a^2+b^2$
+- $\frac{a^2}{a^2+b^2}\leq 1$
+- $e^z\geq 1 + z$
+- $\ln z \leq z-1 \hspace{5mm}\forall z >0$
+- $|\sin z| \leq |z|$
+- $|\sin z| \leq 1$
+- $|\cos z| \leq 1$
