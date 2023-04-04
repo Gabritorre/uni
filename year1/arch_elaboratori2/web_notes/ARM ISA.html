@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#simple-sequential-execution-sse">Simple Sequential Execution (SSE)</a></li>
 <li><a href="#registri">Registri</a></li>
+<li><a href="#formato-istruzioni">Formato istruzioni</a></li>
 </ul>
 </li>
 </ul>
@@ -101,7 +102,7 @@ fadd d0,d1,d2 // somma floating point a 64bit
 <li><strong>FP</strong> (x29) frame pointer</li>
 <li><strong>LR</strong> (x30) link register</li>
 <li><strong>PC</strong> Program counter, non è un registro <em>general purpose</em> e non può essere letto/scritto direttamente, può essere letto però utilizzando una pseudo-istruzione chiamata <strong>ADR</strong></li>
-<li><strong>APSR</strong> Application program status register, contiene una copia dello stato dell’ultima operazione effettuata dall’ALU<br>
+<li><strong>APSR</strong> Application program status register, contiene una copia dello stato (condition codes) dell’ultima operazione effettuata dall’ALU<br>
 <img src="https://i.ibb.co/8PFdhCS/condition-codes-alu.png" alt=""><br>
 Siamo interessati particolarmente ai flag:
 <ul>
@@ -112,6 +113,223 @@ Siamo interessati particolarmente ai flag:
 </ul>
 </li>
 </ul>
+<h2 id="formato-istruzioni">Formato istruzioni</h2>
+<p>Tutte le istruzioni sono a 32 bit</p>
+<ul>
+<li>Rn = source 1</li>
+<li>Rm = source 2</li>
+<li>Rd = destination<br>
+<img src="https://i.ibb.co/ZV9bNMX/formato-istru.png" alt=""></li>
+</ul>
+<h3 id="operazioni-aritmetico-logiche">Operazioni aritmetico-logiche</h3>
+<p>Una istruzione di questo tipo è formata come segue:</p>
+<p><code>&lt;op&gt;{s} Rd, Rn, operand2</code></p>
+<ul>
+<li>
+<p><code>s</code>: è un carattere opzionale che si può aggiungere all’istruzione che serve ad settare i condition codes dell’ALU per quella istruzione. Essi tornano utili quando vogliamo fare delle operazioni in base ai codici dell’ALU.</p>
+</li>
+<li>
+<p><code>operand2</code>: può essere</p>
+<ul>
+<li><code>Rm</code> un registro comune</li>
+<li><code>Rm, &lt;shift&gt; #x</code> un registro shiftato di un numero immediato</li>
+<li><code>Rm, &lt;shift&gt; Rs</code> un registro shiftato per un valore di un registro</li>
+<li><code>#imm</code> un numero immediato a 12bit (fino a 4096)</li>
+</ul>
+</li>
+<li>
+<p><code>&lt;shift&gt;</code>:  sono presenti vari tipi di shift</p>
+<ul>
+<li>LSL</li>
+<li>LSR</li>
+<li>ASR</li>
+</ul>
+</li>
+</ul>
+<p>Le principali operazioni aritmetico logiche sono: <strong><code>ADD, SUB, AND, XOR, ORR, MUL</code></strong></p>
+<h3 id="shift">Shift</h3>
+<p>Lo scopo dello shift è quello di dividere e moltiplicare per potenze di 2 e anche per accedere a elementi di array.</p>
+<ul>
+<li>LSL (<em>Logical left shift</em>)<br>
+fa uno shift a <strong>sinistra</strong> inserendo degli zeri a destra  (rappresenta la moltiplicazione)</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>←</mo></mrow><annotation encoding="application/x-tex">\leftarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">←</span></span></span></span></span></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>←</mo></mrow><annotation encoding="application/x-tex">\leftarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">←</span></span></span></span></span></td>
+</tr>
+</tbody>
+</table><ul>
+<li>LSR (<em>Logical right shift</em>)<br>
+fa uno shift a <strong>destra</strong> inserendo degli zeri a sinistra (rappresenta la divisione)</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="0.9958464566929134em"></mspace></mrow><annotation encoding="application/x-tex">\hspace{3.5mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0em; vertical-align: 0em;"></span><span class="mspace" style="margin-right: 0.995846em;"></span></span></span></span></span> 4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="0.9958464566929134em"></mspace></mrow><annotation encoding="application/x-tex">\hspace{3.5mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0em; vertical-align: 0em;"></span><span class="mspace" style="margin-right: 0.995846em;"></span></span></span></span></span> 1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><ul>
+<li>ARS (<em>Arithmetic right shift</em>)<br>
+fa uno shift a <strong>destra</strong> inserendo degli zeri oppure uno a sinistra a seconda del segno  (rappresenta la divisione)<br>
+con LSR se il numero era negativo, e quindi terminava per 1, questo dato veniva perso inserendo gli zeri.<br>
+con LSL non è un problema perché se perdiamo l’uno più a destra significa che siamo andati in overflow<br>
+con l’ARS riusciamo a mantenere il segno nelle divisioni</li>
+</ul>
+<p>Quindi per recap</p>
+
+<table>
+<thead>
+<tr>
+<th>tipo di shift</th>
+<th>utilizzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LSL</td>
+<td>divisione per numeri senza segno</td>
+</tr>
+<tr>
+<td>LSR</td>
+<td>moltiplicazione per numeri con e senza segno segno</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>divisione per numeri con segno</td>
+</tr>
+</tbody>
+</table><h3 id="assegnamento">Assegnamento</h3>
+<p>L’istruzione <code>MOV</code> serve per assegnare un valore ad un registro, oppure per copiare il valore di un registro in un altro.</p>
+<ul>
+<li><code>MOVZ</code> permette di caricare un immediato di 16bit (fino a 65535) shiftato di 0, 16, 32, 48 settando tutti gli altri spazi del registro a zero.</li>
+<li><code>MOVK</code>permette di caricare un immediato di 16bit (fino a 65535) shiftato di 0, 16, 32, 48 lasciando inalterati gli altri bit del registro.</li>
+</ul>
+<p>esempio: <code>MOVZ X9, #255, LSL #16</code></p>
+<p>Se abbiamo un valore grande due byte (16bit) rappresentato in esadecimale “AB”</p>
+
+<table>
+<thead>
+<tr>
+<th>n° byte <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shift di 0 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>shift di 16 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>shift di 32 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>shift di 48 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><p>è possibile combinare MOVZ e MOVK per creare registri che contengono numeri molto grandi</p>
+<h3 id="adr-e-adrp">ADR e ADRP</h3>
+<p>Queste due istruzioni servono a caricare degli indirizzi nei registri</p>
+<p>ADR salva l’indirizzo di label a partire dal PC e un offset<br>
+<code>adr X1, label</code></p>
+<p>ADRP salva l’indice della pagina che contiene l’indirizzo di label.</p>
 
     </div>
   </div>
