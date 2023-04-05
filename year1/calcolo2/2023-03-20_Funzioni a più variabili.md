@@ -241,3 +241,67 @@ $0\leq \frac{y(x^2+3y^2)}{x^2+5y^2} \leq|y|$
 - $|\sin z| \leq |z|$
 - $|\sin z| \leq 1$
 - $|\cos z| \leq 1$
+
+### Limiti con le coordinate polare
+
+In alcuni casi passare alle coordinate polari può semplificare il calcolo del limite
+
+$\begin{cases} 
+x = x_0 + \rho \cos \alpha \\
+y = y_0 + \rho \sin \alpha
+\end{cases}$
+
+possiamo passare da un limite come
+
+$$\lim_{(x,y)\to(x_0, y_0)}f(x,y)$$
+
+ad un limite
+
+$$\lim_{\rho\to0}f(\rho, \alpha)$$
+
+Esempio:
+
+$$\lim_{(x,y)\to(1, 0)}\frac{y^2\ln(x)}{(x-1)^2 + y^2}$$
+
+
+Passando alle coordinate polari:
+
+$\begin{cases} 
+x = 1 + \rho \cos \alpha \\
+y = 0+ \rho \sin \alpha
+\end{cases}$
+
+$$\lim_{\rho\to0}\frac{\rho^2\sin^2(\alpha) \ln(1+\rho\cos(\alpha))}{(1+\rho\cos(\alpha) -1)^2 + \rho^2\sin^2(\alpha)}$$
+
+$$\lim_{\rho\to0}\frac{\rho^2\sin^2(\alpha) \ln(1+\rho\cos(\alpha))}{\rho^2\cos^2(\alpha) + \rho^2\sin^2(\alpha)}$$
+
+$$\lim_{\rho\to0}\frac{\rho^2\sin^2\alpha \cdot\ln(1)}{\rho^2}$$
+
+$$\lim_{\rho\to0}\sin^2\alpha \cdot\ln(1) = 0$$
+
+
+## Derivabilità e differenziabilità
+
+Nelle funzione a 2 variabili la derivata è data da due limiti del rapporto incrementale
+
+il primo rapporto incrementale viene definito **derivata parziale** di $f$ rispetto a $x$ nel punto $(x_0, y_0)$
+
+$$D_x(f(x_0,y_0)) = \lim_{h \to 0} \frac{f(x_0 + h, y_0) - f(x_0, y_0)}{h}$$
+
+il secondo rapporto incrementale viene definito **derivata parziale** di $f$ rispetto a $y$ nel punto $(x_0, y_0)$
+
+$$D_y(f(x_0,y_0)) = \lim_{k \to 0} \frac{f(x_0, y_0 + k) - f(x_0, y_0)}{k}$$
+
+Per calcolare le derivate basta pensare che quando si sta facendo la derivata parziale per $x$ , si tratta la $y$ come un valore costante. Analogamente quando si sta facendo la derivata parziale di $y$ si tratta la $x$ come un valore costante
+
+Es.
+
+$D_x[2xy^2+x^3] = 2y^2 + 3x^2$ 
+$D_y[2xy^2+x^3] =4xy$
+
+ $D_x[y^3\sin x] = y^3\cos x$ 
+$D_y[y^3\sin x] =3y^2 \sin x$
+
+Il vettore che contiene le derivate parziali viene chiamato **vettore gradiente**
+
+$\nabla f(x_0, y_0) = \begin{pmatrix}D_x(f(x_0, y_0))\\D_y(f(x_0, y_0))\end{pmatrix}$
