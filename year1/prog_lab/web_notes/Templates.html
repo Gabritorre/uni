@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Templates</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#template">Template</a>
+<ul>
+<li><a href="#template-di-funzioni">Template di Funzioni</a></li>
+<li><a href="#template-di-classi">Template di classi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="template">Template</h1>
+<p>I template servono a generalizzare le nostre classi o funzioni, essi ci permettono infatti di creare una funzione/classe una unica volta che su un generico tipo di dato che verrà scelto dal chiamante della funzione/classe.</p>
+<p>Ad esempio se vogliamo scrivere una funzione che riordina gli elementi dell’array l’algoritmo per farlo non cambia in base al tipo di dato, utilizzando i template quindi non dobbiamo specificare che quella funzione lavora su int, unsigned int, long int, double, ecc… ma la funzione si adatterà al tipo che viene deciso dal chiamante.</p>
+<h2 id="template-di-funzioni">Template di Funzioni</h2>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// definiamo un tipo generico T che verrà utilizzato nella funzione sottostante</span>
+<span class="token comment">// T verrà sostituito con il tipo passato alla funzione</span>
+template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+T <span class="token function">get_max</span><span class="token punctuation">(</span>T val1<span class="token punctuation">,</span> T val2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>val1 <span class="token operator">&gt;</span> val2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> val1<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> val2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+T <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	T var <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> var <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> x <span class="token operator">=</span> get_max<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//tra parentesi angolari specifichiamo il tipo di dato</span>
+	 
+	 <span class="token comment">// nella maggior parte dei casi il compilatore riconosce il tipo di dato</span>
+	 <span class="token comment">// e quindi non è necessario specificarlo</span>
+	 <span class="token keyword">double</span> y <span class="token operator">=</span> <span class="token function">get_max</span><span class="token punctuation">(</span><span class="token number">7.1</span><span class="token punctuation">,</span> <span class="token number">9.3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// il compilatore riconosce il tipo di dato "double"</span>
+	
+	<span class="token comment">// nel caso in cui T non faccia parte dei parametri in quel caso</span>
+	<span class="token comment">// è obbligatorio specificare il tipo di dato</span>
+	  <span class="token keyword">if</span><span class="token punctuation">(</span>foo<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">11</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="template-di-classi">Template di classi</h2>
+<p>Si possono utilizzare i template per i tipi degli attributi di classe</p>
+<pre class=" language-c"><code class="prism ++ language-c">template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+class container <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">container</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">container</span><span class="token punctuation">(</span><span class="token keyword">const</span> T<span class="token operator">&amp;</span> new_val<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">var</span><span class="token punctuation">(</span>new_val<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token keyword">const</span> T<span class="token operator">&amp;</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">{</span>
+			<span class="token keyword">return</span> var<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">void</span> <span class="token function">set</span><span class="token punctuation">(</span>T new_val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			var <span class="token operator">=</span> new_val<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		T var<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	container<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> con<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> value <span class="token operator">=</span> <span class="token number">10.33</span><span class="token punctuation">;</span>
+	con<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	container<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">con2</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>é possibile definire dei propri tipi di dato (con struct) e passarle come template, bisogna stare attenti però a ridefinire gli operatori come “==”, “&gt;”, “&lt;”, “=”, “++” eccetera.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

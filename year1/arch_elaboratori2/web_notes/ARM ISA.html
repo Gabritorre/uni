@@ -18,6 +18,9 @@
 <li><a href="#simple-sequential-execution-sse">Simple Sequential Execution (SSE)</a></li>
 <li><a href="#registri">Registri</a></li>
 <li><a href="#formato-istruzioni">Formato istruzioni</a></li>
+<li><a href="#branches">Branches</a></li>
+<li><a href="#load-e-store">Load e Store</a></li>
+<li><a href="#system-calls">System calls</a></li>
 </ul>
 </li>
 </ul>
@@ -330,6 +333,89 @@ con l’ARS riusciamo a mantenere il segno nelle divisioni</li>
 <p>ADR salva l’indirizzo di label a partire dal PC e un offset<br>
 <code>adr X1, label</code></p>
 <p>ADRP salva l’indice della pagina che contiene l’indirizzo di label.</p>
+<h2 id="branches">Branches</h2>
+<p><strong>nota</strong> ricorda che ogni volta che in ARM ci si riferisce a degli indirizzi si utilizzano i registri <code>x&lt;m&gt;</code> perché gli indirizzi sono sempre a 64bit.</p>
+<ul>
+<li>
+<p><strong>Salti incondizionati</strong> (saltano sempre):</p>
+<ul>
+<li><code>B label</code> salta all’indirizzo di label</li>
+<li><code>BL label</code> salta all’indirizzo di label e salva l’indirizzo di questa istruzione nel registro <code>x30</code></li>
+<li><code>RET label</code> salta all’indirizzo contenuto nel registro <code>x30</code></li>
+<li><code>BR x&lt;m&gt;</code> salta all’indirizzo contenuto nel registro <code>x&lt;m&gt;</code></li>
+<li><code>BLR x&lt;m&gt;</code> salta all’indirizzo contenuto nel registro <code>x&lt;m&gt;</code> e salva l’indirizzo di questa istruzione nel registro <code>x30</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Salti condizionati</strong></p>
+<p>Sono presenti due salti condizionati semplici:</p>
+<ul>
+<li><code>CBZ w&lt;n&gt;, label</code> salta all’indirizzo di label se <code>w&lt;n&gt;</code> è uguale a zero</li>
+<li><code>CBNZ w&lt;n&gt;, label</code> salta all’indirizzo di label se <code>w&lt;n&gt;</code> è diverso da zero</li>
+</ul>
+<p>Ma per tutti gli altri tipi di salti condizionati bisogna</p>
+<ul>
+<li><code>CMP w&lt;n&gt;, w&lt;m&gt;</code> si settano i condition codes dell’alu comparando due registri<br>
+<code>B.&lt;condition&gt; label</code> si salta all’indirizzo label se la condizione è soddisfatta.<br>
+Le condizione possibili sono:<br>
+<img src="https://i.ibb.co/K6PXcXp/conditions.png" alt="enter image description here"><br>
+Ad esempio se vogliamo vedere se due registri sono uguali</li>
+</ul>
+<pre><code>CMP w1, w2
+B.EQ label
+</code></pre>
+</li>
+</ul>
+<h3 id="conditional-select-e-conditional-increment">Conditional select e conditional increment</h3>
+<p><strong>Conditional select</strong></p>
+<pre><code>CMP ...
+CSEL x&lt;d&gt;, x&lt;n&gt;, x&lt;m&gt;, &lt;condition&gt;
+</code></pre>
+<p>Se la condizione è verificata allora <code>x&lt;d&gt; = x&lt;n&gt;</code> altrimenti <code>x&lt;d&gt; = x&lt;m&gt;</code></p>
+<p><strong>Conditional increment</strong></p>
+<pre><code>CMP ...
+CINC x&lt;d&gt;, x&lt;n&gt;, x&lt;m&gt;, &lt;condition&gt;
+</code></pre>
+<p>Se la condizione è verificata allora <code>x&lt;d&gt; = x&lt;n&gt; + 1</code> altrimenti <code>x&lt;d&gt; = x&lt;m&gt;</code></p>
+<p>Queste due istruzioni sono molto comode e sono più ottimizzate perché si comportano come dei branch ma non lo sono.</p>
+<h2 id="load-e-store">Load e Store</h2>
+<p>caricare un valore dalla memoria ad un registro:</p>
+<p><code>LDR&lt;sign&gt;&lt;size&gt; &lt;reg&gt;, [addr]</code></p>
+<p>salvare un valore da un registro alla memoria:</p>
+<p><code>STR&lt;sign&gt;&lt;size&gt; &lt;reg&gt;, [addr]</code></p>
+<ul>
+<li>
+<p>Il campo <strong>size</strong> indica la dimensione di quanti dati vogliamo spostare, può essere ignorata se vogliamo passare tutto il registro.</p>
+<p><code>LDR w0, [addr]</code> carica 32 bit<br>
+<code>STRB w0, [addr]</code> la <strong>B</strong> indica che salva gli 8bit meno significativi del registro w0 (H-&gt;16, W-&gt;32)<br>
+<code>LDRB w4, [addr]</code> carica 8bit e il resto dello spazio viene riempito di zeri</p>
+</li>
+<li>
+<p>Il campo <strong>sign</strong> indica se vogliamo interpretare i valore come con segno oppure no</p>
+<p><code>LDRSB w4, [addr]</code> carica 8bit e il resto dello spazio viene esteso con il segno del dato a 8bit<br>
+Nota usando un registro a 32 bit solo fino al 32esimo bit verrà esteso il segno, da lì fino al 64esimo verranno inseriti zeri.</p>
+</li>
+<li>
+<p>Per il campo <strong>addr</strong> sono possibili 4 modi di indirizzamento:</p>
+<ol>
+<li>Base register<br>
+Si inserisce un registro che contiene l’indirizzo (l’indirizzo si ottiene con l’istruzione ADR)<br>
+<code>LDR w0, [x1]</code></li>
+<li>Offset<br>
+Si somma un immediato ad un registro contenente l’indirizzo<br>
+<code>LDR w0, [x1, #8]</code></li>
+<li>Pre-indexed<br>
+Si somma un immediato ad un registro contenente l’indirizzo e si aggiorna il registro mettendo l’indirizzo ottenuto dalla somma (il registro viene aggiornato prima di accedere alla memoria)<br>
+<code>LDR w0, [x1, #8]!</code></li>
+<li>Post-indexed<br>
+si accedere all’indirizzo contenuto in un registro e poi si aggiorna il registro sommando un immediato all’indirizzo (il registro viene aggiornato dopo aver fatto l’accesso alla memoria)<br>
+<code>LDR w0, [x1], #8</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="system-calls">System calls</h2>
+<p><code>SVC #0</code></p>
+<p>Tramite le syscalls si può chiedere al sistema operativo di fare delle operazioni che noi gli chiediamo, in base al valore contenuto nel registro <code>x8</code> il sistema operativo farà un’operazione diversa.</p>
 
     </div>
   </div>
