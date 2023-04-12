@@ -305,3 +305,73 @@ $D_y[y^3\sin x] =3y^2 \sin x$
 Il vettore che contiene le derivate parziali viene chiamato **vettore gradiente**
 
 $\nabla f(x_0, y_0) = \begin{pmatrix}D_x(f(x_0, y_0))\\D_y(f(x_0, y_0))\end{pmatrix}$
+
+### Funzione derivabile
+
+Una funzione si dice derivabile in un punto se esistono tutte le derivate parziali in quel punto.
+Una funzione si dice derivabile nel suo dominio se è derivabile in tutti i punti interni del dominio
+
+Funzioni come radice, valore assoluto, oppure definite a tratti possono non essere derivabili nel loro dominio, nei punti dove può non essere derivabile va fatta la derivata con il limite.
+
+La proprietà "se una funzione è derivabile in un punto allora è anche continua in quel punto" non si estende alle funzioni a più variabili
+
+## Piano tangente a una superficie
+
+Nelle funzioni a due variabili possiamo estendere il significato di derivata che avevamo nelle funzione a singola variabile. Nelle funzioni a singola variabile la derivata rappresentava il coefficiente angolare della retta tangente in un punto. In due variabili fare la derivata parziale rispetto a $x$ rappresenta il coefficiente angolare della retta tangente alla superficie mantenendo costante la $y$ .
+
+Consideriamo la sequente funzione
+
+![enter image description here](https://i.ibb.co/LPhQwdP/superficie.png)
+
+fare la derivata parziale rispetto a $x$ nel punto $P_0$ rappresenta il coefficiente angolare della retta $r$ , possiamo pensarlo come un piano passante per $A$ e $P_0$ e parallelo al piano $Oxz$
+
+![](https://i.ibb.co/sP9sp5T/der-risp-x.png)
+
+fare la derivata parziale rispetto a $y$ nel punto $P_0$ rappresenta il coefficiente angolare della retta $s$ , possiamo pensarlo come un piano passante per $A$ e $P_0$ e parallelo al piano $Oyz$
+
+![](https://i.ibb.co/HNd5WFR/der-risp-y.png)
+
+Il piano che contiene le due rette $r$ e $s$ è il **piano tangente alla superficie nel punto A**
+
+![](https://i.ibb.co/T8x1tT6/piano-super.png)
+
+L'equazione del piano tangente è:
+
+$$z=f(x_0,y_0) + D_x(x_0,y_0)(x-x_0) + D_y(x_0,y_0)(y-y_0)$$
+
+
+Es.
+
+$f(x,y) = 4x^2+y^2-6x$
+determiniamo l'equazione del piano tangente nel punto A(2, 3)
+
+Calcoliamo le derivate parziali:
+
+$D_x(2,3) = 8x-6 =8\cdot 2-6 = 10$
+
+$D_y(2,3) = 2y = 2 \cdot 3 = 6$
+
+Andando a sostituire nella formula:
+
+$z = f(2,3) + 10(x-2) + 6(y-3)$
+
+$z = 13 + 10x-20 + 6y-18$
+
+Equazione del piano tangente $z = 10x+ 6y-25$
+
+### Differenziabilità
+
+Se le derivate parziali esistono e sono continue in un intorno di un punto $x_0$ allora la funzione in quel punto si dice **differenziabile**, Se esistono e sono continue tutte le derivate parziali nel dominio allora la funzione è **differenziabile** in ogni punto
+
+$f \in C^1(\text{Dominio}) \implies \text{f differenziabile nel dominio}$
+
+- composizione, prodotto, rapporto combinazione lineare di funzioni differenziabili sono funzioni differenziabili
+- Se una funzione è differenziabile in un punto allora è anche continua in quel punto
+
+## Derivate direzionali
+
+Sia $f:A\subseteq \mathbb{R} \longrightarrow \mathbb{R}$ , considerando un punto $x_0$ appartenente al dominio e un versore $v$ (vettore di lunghezza 1) Si dice **derivata direzionale** di $f$ rispetto al versore $v$ nel punto $x_0$ il limite:
+
+$$D_v(x_0) = \lim_{t\to0}\frac{f(x_0 + tv) - f(x_0)}{t}$$
+
+Le derivate parziali sono le derivate direzionali lungo i versori (1,0) per la $x$ e (0,1) per la $y$
