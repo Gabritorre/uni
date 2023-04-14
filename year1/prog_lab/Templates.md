@@ -68,3 +68,47 @@ int main() {
 ```
 
 é possibile definire dei propri tipi di dato (con struct) e passarle come template, bisogna stare attenti però a ridefinire gli operatori come "==", ">", "<", "=", "++" eccetera.
+
+Ai template è possibile assegnare dei valori de default
+
+```c++
+template <typename T = int>
+struct couple{
+	T a;
+	T b;
+};
+
+int main() {
+	couple<double> prova;
+	couple prova2; // in questo caso assumono di default il tipo int
+}
+```
+
+##  Non-type template
+
+È possibile anche parametrizzare un valore e non un tipo
+
+```c++
+template<typename T, int N>
+struct my_sequence {
+	public:
+		void set(int i, T value) {
+			vec[i] = value;
+		}
+		T get(int i) {
+		return vec[i];
+	}
+	private:
+		T vec[N];
+};
+
+  
+int  main(){
+	//il valre N deve essere conosciuto a compile-time, quindi ci va un numero oppure una constexpr
+	my_sequence<int, 5> seq;
+	seq.set(3, 15);
+}
+```
+
+
+

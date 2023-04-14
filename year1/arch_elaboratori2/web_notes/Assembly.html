@@ -18,6 +18,7 @@
 <li><a href="#compilazione">Compilazione</a></li>
 <li><a href="#linking">Linking</a></li>
 <li><a href="#loading">Loading</a></li>
+<li><a href="#labels">Labels</a></li>
 </ul>
 </li>
 </ul>
@@ -43,6 +44,57 @@
 <h2 id="loading">Loading</h2>
 <p>Nella fase di loading si carica il programma in memoria, gli viene assegnato uno spazio di indirizzamento in memoria e si risolvono gli indirizzi assoluti (indirizzi che dipendono dall’indirizzo in cui viene il programma)</p>
 <p>dopo questa fase il programma è effettivamente in esecuzione</p>
+<h2 id="labels">Labels</h2>
+<p>Possiamo veder le label in assembly come le variabili nei linguaggi ad alto livello.<br>
+le labels prenderanno un posizione in memora RAM e noi dobbiamo specificare la dimensione che quella variabile.</p>
+<p>Possiamo decidere la dimensione tramite le <strong>direttive</strong> cioè dei comandi da dare all’assemblatore in fase di compilazione. Alcune direttive sono:</p>
+
+<table>
+<thead>
+<tr>
+<th>direttiva</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.float &lt;&gt;</td>
+<td>inserisce un numero float32</td>
+</tr>
+<tr>
+<td>.ascii &lt;&gt;</td>
+<td>inserisce una stringa (non terminata dallo 0)</td>
+</tr>
+<tr>
+<td>.asciiz &lt;&gt;</td>
+<td>inserisce una stringa terminata da 0</td>
+</tr>
+<tr>
+<td>.byte &lt;&gt;</td>
+<td>inserisce un byte</td>
+</tr>
+<tr>
+<td>.word &lt;&gt;</td>
+<td>inserisce un numero da 4 byte (32bit)</td>
+</tr>
+<tr>
+<td>.dword &lt;&gt;</td>
+<td>inserisce un numero da 8 byte (64bit)</td>
+</tr>
+<tr>
+<td>.space &lt;&gt;</td>
+<td>riserva dei byte arbitrari non inizializzati</td>
+</tr>
+</tbody>
+</table><p>Queste direttive vanno inserite nel segmento <strong>.data</strong>:</p>
+<pre><code>.data
+	a: word 10 //la label chiamata 'a' grande 32bit contiene il numero 10
+</code></pre>
+<p>Per fare le operazione con le label dobbiamo ottenere il loro indirizzo in memoria, possiamo farla grazie all’istruzione <code>adr</code></p>
+<p><code>adr x0, a // ottiene l'indirizzo della label a in memoria</code></p>
+<p>ora che abbiamo l’indirizzo per poter utilizzare il suo valore dobbiamo caricarlo in un registro:</p>
+<p><code>ldr w1, [x0] // ora il registro w1 contiene il valore della label 'a'</code></p>
+<p>Una approccio generale è quello di evitare di copiare valori tra registri e memoria, quindi conviene utilizzare tutti i registri di cui disponiamo e non continuare a sovrascrivere dati su pochi registri</p>
 
     </div>
   </div>
