@@ -370,8 +370,75 @@ $f \in C^1(\text{Dominio}) \implies \text{f differenziabile nel dominio}$
 
 ## Derivate direzionali
 
-Sia $f:A\subseteq \mathbb{R} \longrightarrow \mathbb{R}$ , considerando un punto $x_0$ appartenente al dominio e un versore $v$ (vettore di lunghezza 1) Si dice **derivata direzionale** di $f$ rispetto al versore $v$ nel punto $x_0$ il limite:
+Sia $f:A\subseteq \mathbb{R}^n \longrightarrow \mathbb{R}$ , considerando un punto $x_0$ appartenente al dominio e un versore $v$ (vettore di lunghezza 1) Si dice **derivata direzionale** di $f$ rispetto al versore $v$ nel punto $x_0$ il limite:
 
 $$D_v(x_0) = \lim_{t\to0}\frac{f(x_0 + tv) - f(x_0)}{t}$$
 
 Le derivate parziali sono le derivate direzionali lungo i versori (1,0) per la $x$ e (0,1) per la $y$
+
+
+Possiamo trovare la derivata direzionale con la formula
+
+$$D_v(x_0) = \nabla f(x_0) \cdot v = \sum_{i = 0}^{n} \frac{df}{dx_i} \cdot v_i$$
+
+esempio:
+
+$f(x,y) = y^3 - \sin(xy)$
+$x_0 = (\pi, 1)$
+$v = (\frac{\sqrt{2}}{2}, -\frac{\sqrt{2}}{2})$
+
+calcolo le derivate parziali
+
+$\frac{df}{dx} = -y\cos(xy)$ calcolata nel punto $(\pi, 1)$ otteniamo $-\cos \pi = 1$
+
+$\frac{df}{dy} = 3y^2 - x\cos(xy)$ calcolata nel punto $(\pi, 1)$ otteniamo $3-\pi\cos\pi = 3 + \pi$
+
+il gradiente vale $\nabla f(\pi, 1) = 
+\begin{pmatrix}1 \\
+3+\pi
+\end{pmatrix}$
+
+moltiplichiamo il gradiente (trasposto, in modo che sia vettore riga) per il versore
+
+$(1, 3+\pi) \cdot \begin{pmatrix}\frac{\sqrt{2}}{2}\\ -\frac{\sqrt{2}}{2} \end{pmatrix}=$
+
+$= 1 \cdot \frac{\sqrt{2}}{2} + (3+\pi)\cdot(-\frac{\sqrt{2}}{2}) = -\sqrt{2} - \frac{\sqrt{2}}{2}\pi$
+
+
+### Direzione di massima crescita e decrescita
+
+- direzione di massima crescita, cioè la direzione in cui il valore della funzione cresce più velocemente:
+	 $$v = \frac{\nabla f(x_0)}{||\nabla f(x_0)||}$$
+
+- direzione di massima decrescita, cioè la direzione in cui il valore della funzione decresce più velocemente:
+	 $$v = -\frac{\nabla f(x_0)}{||\nabla f(x_0)||}$$
+
+Quando $\nabla f(x_0) = 0$ non esiste la direzione di massima crescita/decrescita, in quel punto ci sarà un **punto critico**.
+
+
+## Estremi di una funzione
+
+Esistono due tipi di estremi:
+- estremi liberi: estremi all'interno del dominio
+- estremi vincolati: estremi al bordo del dominio
+
+noi ci occuperemo degli estremi liberi
+
+- **punto di massimo assoluto** $x_0$ per $f$ se per ogni punto $x$ del domino si ha che $f(x) \leq f(x_0)$
+- **punto di minimo assoluto** $x_0$ per $f$ se per ogni punto $x$ del domino si ha che $f(x) \geq f(x_0)$
+- **punto di massimo relativo** $x_0$ per $f$ se ogni punto $x$ appartenente ad un intorno di $x_0$ chiamato $U_{x_0}$ si ha che $f(x) \leq f(x_0)$
+- **punto di minimo relativo** $x_0$ per $f$ se ogni punto $x$ appartenente ad un intorno di $x_0$ chiamato $U_{x_0}$ si ha che $f(x) \geq f(x_0)$
+
+
+**teorema di Wierstrass**
+
+Se $f$ è definita in un dominio chiuso e limitato e $f$ è continua allora ammette un massimo e un minimo assoluti
+
+### Punti critici
+
+In una funzione $f$ si dice punto critico un punto $x_0$ se entrambe le derivate parziali in quel punto sono nulle
+
+Dal **teorema di Fermat** otteniamo che se abbiamo un punto di massimo o minimo locale $x_0$ e $f$ è derivabile in quel punto allora $x_0$ è un punto critico
+
+non tutti i punti critici sono di massimo o di minimo
+
