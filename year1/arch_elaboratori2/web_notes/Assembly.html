@@ -19,6 +19,8 @@
 <li><a href="#linking">Linking</a></li>
 <li><a href="#loading">Loading</a></li>
 <li><a href="#labels">Labels</a></li>
+<li><a href="#classici-costrutti">Classici costrutti</a></li>
+<li><a href="#array">Array</a></li>
 </ul>
 </li>
 </ul>
@@ -28,6 +30,11 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="assembly">Assembly</h1>
+<p>tool necessari per l’esecuzione di un file assembly armv8 64</p>
+<ul>
+<li>compilatore: clang</li>
+<li>linker: lld (llvm)</li>
+</ul>
 <h2 id="compilazione">Compilazione</h2>
 <p>La fase di compilazione si occupa di tradurre un programma scritto in un linguaggio in un programma scritto in un altro linguaggio, Spesso si compila un linguaggio ad alto livello per farlo diventare un codice a basso livello o in linguaggio macchina</p>
 <p>Quando si compila un codice si generano dei file oggetto, nei sistemi UNIX questi file sono composti da:</p>
@@ -39,11 +46,20 @@
 <li><strong>symbol table</strong>: che contiene i simboli (le label) locali e globali (da esportare)</li>
 <li><strong>debug informations</strong>: Informazioni aggiuntive come ad esempio il mapping tra sorgente ad alto livello e codice macchina</li>
 </ol>
+<p>comando per la compilazione</p>
+<pre><code>clang --target=aarch64-elf -c code.s -o code.o
+</code></pre>
 <h2 id="linking">Linking</h2>
 <p>Dopo la compilazione viene la fase di <strong>linking</strong> in cui si collegano i file oggetti e si produce un unico file eseguibile. In questa fase vengono risolti tutti i riferimenti e gli indirizzi relativi (indirizzi che dipendono dalla posizione in byte della label rispetto al modulo (file) a cui appartiene)</p>
+<p>comando per il linking</p>
+<pre><code>ld.lld -nostdlib code.o -o code
+</code></pre>
 <h2 id="loading">Loading</h2>
 <p>Nella fase di loading si carica il programma in memoria, gli viene assegnato uno spazio di indirizzamento in memoria e si risolvono gli indirizzi assoluti (indirizzi che dipendono dall’indirizzo in cui viene il programma)</p>
 <p>dopo questa fase il programma è effettivamente in esecuzione</p>
+<p>comando per l’esecuzione</p>
+<pre><code>./code
+</code></pre>
 <h2 id="labels">Labels</h2>
 <p>Possiamo veder le label in assembly come le variabili nei linguaggi ad alto livello.<br>
 le labels prenderanno un posizione in memora RAM e noi dobbiamo specificare la dimensione che quella variabile.</p>
@@ -95,6 +111,80 @@ le labels prenderanno un posizione in memora RAM e noi dobbiamo specificare la d
 <p>ora che abbiamo l’indirizzo per poter utilizzare il suo valore dobbiamo caricarlo in un registro:</p>
 <p><code>ldr w1, [x0] // ora il registro w1 contiene il valore della label 'a'</code></p>
 <p>Una approccio generale è quello di evitare di copiare valori tra registri e memoria, quindi conviene utilizzare tutti i registri di cui disponiamo e non continuare a sovrascrivere dati su pochi registri</p>
+<h2 id="classici-costrutti">Classici costrutti</h2>
+<h3 id="costrutto-if-else">costrutto if-else</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>	B.&lt;!cond&gt; else // se la condizione negata si verifica allora saltiamo nel ramo else
+	// altrimenti andiamo continuiamo nel ramo then
+	...
+	B endif
+else: 
+	...
+endif:
+</code></pre>
+<h3 id="costrutto-do-while">costrutto do-while</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">do</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span> <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>init-do:
+	...
+	B.&lt;cond&gt; init_do
+</code></pre>
+<h3 id="costrutto-while">costrutto while</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>	B.&lt;!cond&gt; end-while // condizione di entrata nel while che viene fatta solo la prima volta
+init-while:
+	...
+	B.&lt;cond&gt; init_while // la condizione viene comunque controllata alla fine
+end-while:
+</code></pre>
+<h3 id="costrutto-for">costrutto for</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>init<span class="token operator">&gt;</span><span class="token punctuation">;</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">;</span><span class="token operator">&lt;</span>incr<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly viene rappresentato come un ciclo while</p>
+<pre><code>	&lt;init&gt;
+	B.&lt;!cond&gt; end-for
+init-for:
+	...
+	&lt;incr&gt;
+	B.&lt;cond&gt; init-for
+end-for:
+	
+</code></pre>
+<h2 id="array">Array</h2>
+<p>Gli elementi di un array sono consecutivi in memoria, possiamo sfruttare questo per poter visitare l’array con la seguente formula per ottenere l’elemento in posizione n:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>&amp;A[0]&nbsp;+&nbsp;sizeof(&lt;data_type&gt;)</mtext><mo>⋅</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\text{\&amp;A[0] + sizeof(&lt;data\_type&gt;)}\cdot n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06em; vertical-align: -0.31em;"></span><span class="mord text"><span class="mord">&amp;A[0]&nbsp;+&nbsp;sizeof(&lt;data_type&gt;)</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span></span></p>
+<p>ad esempio per ottenere l’elemento il posizione 4</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>&amp;A[0]&nbsp;+&nbsp;sizeof(int)</mtext><mo>⋅</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\text{\&amp;A[0] + sizeof(int)}\cdot 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">&amp;A[0]&nbsp;+&nbsp;sizeof(int)</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4</span></span></span></span></span></p>
+<p>Se</p>
+<ul>
+<li>x0 contiene l’indirizzo del primo elemento dell’array (&amp;A[0])</li>
+<li>x1 contiene l’indice dell’array che ci interessa</li>
+</ul>
+<p>possiamo ottenere il valore in indice x1 e metterlo nel registro x3 facendo</p>
+<p><code>add x3, x0, x1, LSL #2</code></p>
+<p>in questo caso LSL #2 rappresenta la moltiplicazione per sizeof(int) = 4,</p>
+<ul>
+<li>LSL #1 per sizeof(short) = 2</li>
+<li>LSL #2 per sizeof(int) = 4</li>
+<li>LSL #3 per sizeof(long int) = 8</li>
+</ul>
 
     </div>
   </div>
