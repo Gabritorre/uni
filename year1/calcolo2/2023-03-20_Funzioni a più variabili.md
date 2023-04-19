@@ -442,3 +442,51 @@ Dal **teorema di Fermat** otteniamo che se abbiamo un punto di massimo o minimo 
 
 non tutti i punti critici sono di massimo o di minimo
 
+
+## Derivate parziali seconde
+
+Fare le derivate seconde significa derivare le derivate parziali prime, dato che con funzioni in due variabili si hanno due derivate prime parziali otteniamo 4 derivate parziali seconde:
+
+Per la derivata parziale prima rispetto ad $x$ otteniamo le derivate seconde:
+- $\frac{d^2f}{dx^2}$ anche scritta come $f^{''}_{xx}$
+- $\frac{d^2f}{dydx}$ anche scritta come $f^{''}_{xy}$
+
+Per la derivata parziale prima rispetto ad $y$ otteniamo le derivate seconde:
+- $\frac{d^2f}{dxdy}$ anche scritta come $f^{''}_{yx}$
+- $\frac{d^2f}{dy^2}$ anche scritta come $f^{''}_{yy}$
+
+Quindi per trovare le derivate seconde dobbiamo prima trovare le due derivate parziali prime e poi derivarle di nuovo rispetto a x e y.
+
+$f^{''}_{xy}$ e  $f^{''}_{yx}$ vengo chiamate derivate miste e secondo il **teorema di Schwarz** esse sono uguali
+
+Se le derivate parziali seconde di una funzione esistono e sono continue nel dominio allora la funzione appartiene alla classe $C^2$
+
+
+### Matrice Hessiana
+
+Si definisce matrice Hessiana di una funzione la matrice le cui componenti sono le derivate seconde della funzione
+
+$$H_f(x,y) = \begin{pmatrix}
+f^{''}_{xx} & f^{''}_{yx}\\
+f^{''}_{xy} & f^{''}_{yy} 
+\end{pmatrix}$$
+
+
+## Formula di Taylor (con resto di Peano)
+
+In due dimensioni le formula di Taylor in un punto (x_0,y_0) con un incremento (h,k) è:
+
+$f(x_0+h, y_0 +h) = f(x_0,y_0) + f'_x(x_0,y_0)h + f'_y(x_0,y_0)k+\frac{1}{2}\left[f''_{xx}(x_0,y_0)h^2 + 2f''_{xy}(x_0,y_0)hk + f''_{yy}(x_0,y_0)h^2 + o(||h,k||^2)\right]$
+
+in forma più compatta ponendo
+$\textbf{x}_1 = (x_0,y_0)^T$
+$\textbf{h} = (h,k)^T$
+
+abbiamo
+
+$$f(\textbf{x}_1+\textbf{h}) = f(\textbf{x}_1) + \nabla_f(\textbf{x}_1)^T\textbf{h} + \frac{1}{2}\textbf{h}^TH_f(\textbf{x}_1)\textbf{h} + o(||\textbf{h}||^2)$$
+
+
+Nei punti critici abbiamo che $\nabla_f = 0$ l'andamento della funzione è governato dalla forma quadratica:
+
+$q(\textbf{h}) = \textbf{h}^T \cdot H_f\cdot\textbf{h}$
