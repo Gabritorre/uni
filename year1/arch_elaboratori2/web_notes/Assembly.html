@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Assembly</title>
+  <title>2023-04-11_Assembly</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -21,6 +21,8 @@
 <li><a href="#labels">Labels</a></li>
 <li><a href="#classici-costrutti">Classici costrutti</a></li>
 <li><a href="#array">Array</a></li>
+<li><a href="#stringhe">Stringhe</a></li>
+<li><a href="#funzioni">Funzioni</a></li>
 </ul>
 </li>
 </ul>
@@ -179,12 +181,61 @@ end-for:
 </ul>
 <p>possiamo ottenere il valore in indice x1 e metterlo nel registro x3 facendo</p>
 <p><code>add x3, x0, x1, LSL #2</code></p>
-<p>in questo caso LSL #2 rappresenta la moltiplicazione per sizeof(int) = 4,</p>
+<p>in questo caso LSL #2 rappresenta la moltiplicazione per sizeof(int) = 4, quindi:</p>
 <ul>
 <li>LSL #1 per sizeof(short) = 2</li>
 <li>LSL #2 per sizeof(int) = 4</li>
 <li>LSL #3 per sizeof(long int) = 8</li>
 </ul>
+<h2 id="stringhe">Stringhe</h2>
+<p>Per le stringhe utilizzeremo lo standard ASCII in cui ogni byte rappresenta un carattere:</p>
+
+<table>
+<thead>
+<tr>
+<th>range in decimale</th>
+<th>caratteri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>48…57</td>
+<td>‘0’…‘9’ (sono i caratteri corrispettivi ai numeri, non sono effettivi numeri)</td>
+</tr>
+<tr>
+<td>65…90</td>
+<td>‘A’…‘Z’</td>
+</tr>
+<tr>
+<td>97…122</td>
+<td>‘a’…‘z’</td>
+</tr>
+</tbody>
+</table><p>Osservazioni:</p>
+<ul>
+<li>Per trasformare un carattere da minuscolo a maiuscolo: carattere - 32</li>
+<li>Per trasformare un carattere da maiuscolo a minuscolo: carattere + 32</li>
+<li>per calcolare il numero effettivo associato al carattere numerico (‘0’…‘9’): carattere - 48</li>
+</ul>
+<p>Possiamo mettere in memoria una stringa facendo:</p>
+<p><code>label: .asciiz "CIAO"</code></p>
+<p>che è lo stesso di scrivere:</p>
+<p><code>latel: .byte 67, 73, 65, 79, 0</code></p>
+<p>la ‘z’ in .asciiz indica che la stringa termina con il carattere 0</p>
+<h2 id="funzioni">Funzioni</h2>
+<p>Le funzioni sono pezzi di codice generalizzate per poter essere chiamate più volte.<br>
+Le funzioni ritornano un valore, se invece non ritornano un valore sono chiamate <strong>procedure</strong></p>
+<p>Quando vogliamo chiamare una funzione dobbiamo salvarci il punto (il PC) del codice in cui abbiamo chiamato la funzione perché una volta terminata dobbiamo tornare in quel punto</p>
+<pre><code>proc:
+	...
+	RET
+
+...
+BL proc
+...
+</code></pre>
+<p>l’istruzione BL rappresenta la chiamata alla procedura, è un normale branch ma in più viene salvato nel registro <code>X30</code> (chiamato anche registro LR) il punto in cui tornare una volta finita la procedura</p>
+<p>l’istruzione RET indica la fine della procedura e fa un branch al contenuto del registro <code>X30</code></p>
 
     </div>
   </div>
