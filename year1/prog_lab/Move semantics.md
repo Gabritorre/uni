@@ -9,8 +9,9 @@ int get_value() {	//metodo che ritorna un numero e quindi una r-value
 }
 
 int main() {
-	int& ptr = get_value(); //stiamo cercando di ottenere una reference di 10, ma non è possibile 
-							//perchè possiamo ottenere una reference solo di una l-value
+	int& ptr = get_value(); //stiamo cercando di ottenere una reference di 10,
+                            // ma questo non è possibile 
+                            //possiamo ottenere una reference solo di una l-value
 }
 ```
 
@@ -23,7 +24,8 @@ int get_value() {	//metodo che ritorna un numero e quindi una r-value
 }
 
 int main() {
-	int&& ptr = get_value(); //usando && indichiamo che vogliamo ottenere una reference di un r-value 
+	int&& ptr = get_value(); //usando && indichiamo che vogliamo ottenere
+	                         // una reference di un r-value 
 							
 }
 ```
@@ -187,15 +189,15 @@ struct Class {
 7	my_obj = f();
 8 }
 ```
-output:
+Output:
 
-	constructor                       # costruttore di my_obj
-	constructor                       # costruttore dell'oggetto locale di f()
-	move constructor		          # move constructor dell'oggetto che verrà poi passato al chiamante
-	destructor						  # distruttore dell'oggetto locale ad f()
-	move assignment					  # assegnamento di un oggetto temporaneo
-	destructor   					  # distruttore dell'oggetto temporaneo
-	destructor                        # distruttore di my_obj
+	constructor                  # costruttore di my_obj
+	constructor                  # costruttore dell'oggetto locale di f()
+	move constructor             # move constructor dell'oggetto che verrà poi passato al chiamante
+	destructor                   # distruttore dell'oggetto locale ad f()
+	move assignment              # assegnamento di un oggetto temporaneo
+	destructor                   # distruttore dell'oggetto temporaneo
+	destructor                   # distruttore di my_obj
 
 
 È possibile far diventare un l-value in un r-value con l'istruzione `std::move()` con questa istruzione possiamo forzare la chiamata di un move assignment e di conseguenza stiamo permettendo a qualche altra variabile di prendere la zona di memoria che era intestata alla nostra variabile.

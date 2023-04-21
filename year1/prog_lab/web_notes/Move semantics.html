@@ -32,8 +32,9 @@
 <span class="token punctuation">}</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-	<span class="token keyword">int</span><span class="token operator">&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//stiamo cercando di ottenere una reference di 10, ma non è possibile </span>
-							<span class="token comment">//perchè possiamo ottenere una reference solo di una l-value</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//stiamo cercando di ottenere una reference di 10,</span>
+                            <span class="token comment">// ma questo non è possibile </span>
+                            <span class="token comment">//possiamo ottenere una reference solo di una l-value</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Esiste però un modo ottenere una reference di una r-value:</p>
@@ -43,7 +44,8 @@
 <span class="token punctuation">}</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-	<span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//usando &amp;&amp; indichiamo che vogliamo ottenere una reference di un r-value </span>
+	<span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//usando &amp;&amp; indichiamo che vogliamo ottenere</span>
+	                         <span class="token comment">// una reference di un r-value </span>
 							
 <span class="token punctuation">}</span>
 </code></pre>
@@ -184,14 +186,14 @@ destructor
 <span class="token number">7</span>	my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token number">8</span> <span class="token punctuation">}</span>
 </code></pre>
-<p>output:</p>
-<pre><code>constructor                       # costruttore di my_obj
-constructor                       # costruttore dell'oggetto locale di f()
-move constructor		          # move constructor dell'oggetto che verrà poi passato al chiamante
-destructor						  # distruttore dell'oggetto locale ad f()
-move assignment					  # assegnamento di un oggetto temporaneo
-destructor   					  # distruttore dell'oggetto temporaneo
-destructor                        # distruttore di my_obj
+<p>Output:</p>
+<pre><code>constructor                  # costruttore di my_obj
+constructor                  # costruttore dell'oggetto locale di f()
+move constructor             # move constructor dell'oggetto che verrà poi passato al chiamante
+destructor                   # distruttore dell'oggetto locale ad f()
+move assignment              # assegnamento di un oggetto temporaneo
+destructor                   # distruttore dell'oggetto temporaneo
+destructor                   # distruttore di my_obj
 </code></pre>
 <p>È possibile far diventare un l-value in un r-value con l’istruzione <code>std::move()</code> con questa istruzione possiamo forzare la chiamata di un move assignment e di conseguenza stiamo permettendo a qualche altra variabile di prendere la zona di memoria che era intestata alla nostra variabile.</p>
 
