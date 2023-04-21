@@ -1,0 +1,202 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Move semantics</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#move-semantics">Move semantics</a>
+<ul>
+<li><a href="#move-constructor-e-move-assignment">Move constructor e move assignment</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="move-semantics">Move semantics</h1>
+<p>Con move semantics si intende una tecnica che ruba la zona di memoria di un oggetto temporaneo, quindi di una r-value. Normalmente però non riusciamo a ottenere l’indirizzo di un r-value ad esempio:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo che ritorna un numero e quindi una r-value</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//stiamo cercando di ottenere una reference di 10, ma non è possibile </span>
+							<span class="token comment">//perchè possiamo ottenere una reference solo di una l-value</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Esiste però un modo ottenere una reference di una r-value:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo che ritorna un numero e quindi una r-value</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//usando &amp;&amp; indichiamo che vogliamo ottenere una reference di un r-value </span>
+							
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Ma perché è utile fare questo?<br>
+È una questione di performance: le reference ad r-value ci permettono di identificare degli oggetti temporanei, nell’esempio ‘a’ era un oggetto temporaneo che alla fine della funzione “get_value()” non esiste più.<br>
+Dato che siamo in grado di riconoscere oggetti temporanei possiamo agire in modo diverso da oggetti non temporanei, come ad esempio rubare la zona di memoria in cui sono al posto di copiare interamente l’area di memoria.</p>
+<p>Un esempio che fa capire maggiormente l’utilità di questa tecnica è il seguente:</p>
+<p>Abbiamo un vettore e da questo vettore vogliamo crearne uno nuovo con tutti gli elementi sommati di 1.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">f</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token keyword">const</span><span class="token operator">&amp;</span> vec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> new_vec<span class="token punctuation">;</span>
+<span class="token number">3</span> 	new_vec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span>vec<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//assegno la stessa dimensione</span>
+<span class="token number">4</span> 	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> el <span class="token punctuation">:</span> vec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">5</span> 		new_vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>el <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">6</span> 	<span class="token punctuation">}</span>
+<span class="token number">7</span>   <span class="token keyword">return</span> new_vec<span class="token punctuation">;</span>
+<span class="token number">8</span>  <span class="token punctuation">}</span>
+<span class="token number">9</span>
+<span class="token number">10</span>  <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">11</span> 		vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> vec<span class="token punctuation">;</span>
+<span class="token number">12</span>		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">!=</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">13</span>			vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">14</span>		<span class="token punctuation">}</span>
+<span class="token number">15</span>		vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> y <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>vec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">16</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>Abbiamo il nostro metodo f() che prende un vettore per const reference, all’interno della funzione viene creato un nuovo vettore locale e quindi un <strong>vettore temporaneo</strong> e viene riempito con gli elementi del vettore orginale sommati di 1, infine viene fatto un return by value.</p>
+<p>Quello che ci interessa avviene a riga 15 dove vogliamo inizializzare il vettore y con quello che abbiamo creato nel metodo f. In quel punto dovrebbe avvenire una deep-copy del vettore, quindi si alloca la memoria necessario per y, poi viene fatta la copia elemento per elemento e infine si de alloca il vettore temporaneo, che si traduce in un grande spreco di tempo.<br>
+Usando la move semantics possiamo permettere a y di rubare l’area di memoria assegnata all’oggetto temporaneo, evitando tutti i passaggi precedenti.</p>
+<p>Nota: nell’esempio vengono utilizzati i vector, i quali implementano già al loro interno la move semantics, quindi il codice sarebbe già ottimizzato così, però se lavorassimo con una classe fatta da noi che non implementa la move semantics verrebbe utilizzato il classico copy constructor che fa una deep-copy, risultando inefficiente.</p>
+<h2 id="move-constructor-e-move-assignment">Move constructor e move assignment</h2>
+<p>La move semantics viene utilizzata principalmente per due operazioni nelle classi:</p>
+<ul>
+<li>il <strong>move constructor</strong> cioè un costruttore in cui il parametro è un oggetto temporaneo (riconosciuto da una r-value reference)</li>
+<li>il <strong>move assignment</strong> cioè l’overloading dell’operatore ‘=’ il cui oggetto a destra dell’assegnamento è un oggetto temporaneo (riconosciuto da una r-value reference)</li>
+</ul>
+<p>Prendiamo in considerazione la seguente classe</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">7</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>Disabilitando la <a href="https://shaharmike.com/cpp/rvo/">RVO</a> otteniamo in output</p>
+<pre><code>constructor
+copy constructor
+destructor
+copy constructor
+destructor
+destructor
+</code></pre>
+<ol>
+<li>viene fatto il costruttore a riga 2</li>
+<li>viene copiato l’oggetto che verrà poi passato al chiamante sempre a riga 2</li>
+<li>viene fatto il distruttore del dell’oggetto locale nella funzione <code>f()</code></li>
+<li>viene fatto il copy constructor a riga 6 per inizializzare <code>my_obj</code></li>
+<li>viene distrutto sempre a riga 6 l’oggetto risultante della funzione <code>f()</code></li>
+<li>viene distrutto <code>my_obj</code></li>
+</ol>
+<p>Se noi andiamo ad aggiungere il move constuctor alla nostra classe</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">Snitch</span><span class="token punctuation">(</span>Class<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// copia i puntatori</span>
+		<span class="token comment">// fai puntare i puntatori derubati a nullptr</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">7</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>sempre disabilitando la <a href="https://shaharmike.com/cpp/rvo/">RVO</a> otteniamo in output</p>
+<pre><code>constructor
+move constructor
+destructor
+move constructor
+destructor
+destructor
+</code></pre>
+<p>In questo caso al posto del copy constructor viene chiamato il move constructor perché il compilatore ha riconosciuto che l’oggetto restituito da <code>f()</code> è un oggetto temporaneo e quindi noi possiamo definire il nostro costruttore in una maniera diversa dal copy constructor (rubando il puntatore al posto di copiare elemento per elemento)</p>
+<p><strong>Nota importante</strong>: quando rubiamo i puntatori dobbiamo ricordarci di impostare a nullptr i puntatori che abbiamo derubato, questo perché essendo oggetti temporanei verrà chiamato il distruttore a breve e quindi dobbiamo dire che quel puntatore non punta più all’area di memoria di prima (che abbiamo rubato) altrimenti il suo distruttore la libererebbe.</p>
+<p>Possiamo utilizzare lo stesso meccanismo per il move assignment</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">Snitch</span><span class="token punctuation">(</span>Class<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// copia i puntatori</span>
+		<span class="token comment">// fai puntare i puntatori derubati a nullptr</span>
+	<span class="token punctuation">}</span>
+	Snitch<span class="token operator">&amp;</span> operator<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> Snitch<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy assignment"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">*</span>this<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span> 
+	Snitch<span class="token operator">&amp;</span> operator<span class="token operator">=</span><span class="token punctuation">(</span>Snitch<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move assignment"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">*</span>this<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj<span class="token punctuation">;</span>
+<span class="token number">7</span>	my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">8</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>output:</p>
+<pre><code>constructor                       # costruttore di my_obj
+constructor                       # costruttore dell'oggetto locale di f()
+move constructor		          # move constructor dell'oggetto che verrà poi passato al chiamante
+destructor						  # distruttore dell'oggetto locale ad f()
+move assignment					  # assegnamento di un oggetto temporaneo
+destructor   					  # distruttore dell'oggetto temporaneo
+destructor                        # distruttore di my_obj
+</code></pre>
+<p>È possibile far diventare un l-value in un r-value con l’istruzione <code>std::move()</code> con questa istruzione possiamo forzare la chiamata di un move assignment e di conseguenza stiamo permettendo a qualche altra variabile di prendere la zona di memoria che era intestata alla nostra variabile.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
