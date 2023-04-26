@@ -436,7 +436,12 @@ Se $f$ è definita in un dominio chiuso e limitato e $f$ è continua allora amme
 
 ### Punti critici
 
-In una funzione $f$ si dice punto critico un punto $x_0$ se entrambe le derivate parziali in quel punto sono nulle
+In una funzione $f$ si dice punto critico un punto $x_0$ se entrambe le derivate parziali in quel punto sono nulle. Quindi per trovare i punti critici di una funzione bisogna risolvere il sistema che pone le derivate parziali prime a 0
+
+$\begin{cases}
+\frac{df}{dx} = 0 \\
+\frac{df}{dy} = 0
+\end{cases}$
 
 Dal **teorema di Fermat** otteniamo che se abbiamo un punto di massimo o minimo locale $x_0$ e $f$ è derivabile in quel punto allora $x_0$ è un punto critico
 
@@ -472,7 +477,7 @@ f^{''}_{xy} & f^{''}_{yy}
 \end{pmatrix}$$
 
 
-## Formula di Taylor (con resto di Peano)
+### Formula di Taylor (con resto di Peano)
 
 In due dimensioni le formula di Taylor in un punto (x_0,y_0) con un incremento (h,k) è:
 
@@ -490,3 +495,144 @@ $$f(\textbf{x}_1+\textbf{h}) = f(\textbf{x}_1) + \nabla_f(\textbf{x}_1)^T\textbf
 Nei punti critici abbiamo che $\nabla_f = 0$ l'andamento della funzione è governato dalla forma quadratica:
 
 $q(\textbf{h}) = \textbf{h}^T \cdot H_f\cdot\textbf{h}$
+
+la forma quadratica ci serve per determinare la forma della funzione (paraboloide ellittico verso l'alto, verso il basso, iperbolico ecc...)
+
+## Carattere dei punti critici
+ 
+ Grazie all'utilizzo della matrice hessiana possiamo determinare i punti di massimo, minimo e punti di sella.
+
+Quando la matrice hessiana è diagonalizzata (quindi con dei valori diversi da 0 solo nella diagonale principale) possiamo pensare che gli elementi nella diagonale siano degli autovalori e le colonne a cui appartengano siano degli autovettori.
+
+ipotiziamo di essere in due dimensioni, quindi la matrice hessiana è 2x2
+chiamiamo gli autovalori $\lambda_1, \lambda_2$
+
+$$H =\begin{bmatrix}
+\lambda_1 & 0\\
+0 & \lambda_2
+\end{bmatrix}$$
+
+Guardando gli autovalori possiamo determinare la forma quadratica:
+
+- $\lambda_1,\lambda_2 > 0$ in questo caso abbiamo
+	-  $H$ è matrice hessiana simmetrica **definita positivamente**
+	- la forma quadratica è un **paraboloide ellittico rivolto verso l'alto**
+	- ha un punto di minimo
+
+- $\lambda_1,\lambda_2 < 0$ in questo caso abbiamo
+	-  $H$ è matrice hessiana simmetrica **definita negativamente**
+	- la forma quadratica è un **paraboloide ellittico rivolto verso il basso**
+	- ha un punto di massimo
+
+- $\lambda_1,\lambda_2$ con segno discorde, in questo caso abbiamo
+	-  $H$ è matrice hessiana simmetrica **indefinita**
+	- la forma quadratica è un **paraboloide iperbolico**
+	- ha un punto di sella
+
+
+Non è detto che la matrice hessiana sia diagonalizzata e quindi possiamo non avere gli autovalori. A noi però non interessano i valori che assumono $\lambda_1$ e $\lambda_2$ ma **ci interessa il loro segno**.
+
+Per determinare il segno dobbiamo calcolare il **determinante** e possiamo fare il **test dell'hessiana**:
+
+- se $\det(H) < 0$:
+	- $\lambda_1,\lambda_2$ con segno discorde
+	- $H$ indefinita
+	-  forma quadratica paraboloide iperbolico
+	- punto critico è un punto di sella
+- se $\det(H) > 0$:
+	- $\lambda_1,\lambda_2$ sono entrambi positivi oppure entrambi negativi.
+	per determinare quale delle due prendiamo in considerazione il valore $\textbf{a}$ nella matrice hessiana
+$$\begin{bmatrix}\textbf{a}&b\\b&d\end{bmatrix}$$
+	 - Se $a>0$ allora:
+		 - $\lambda_1,\lambda_2$ entrambi positivi
+		 - $H$ definita positivamente
+		 - forma quadratica paraboloide ellittico rivolto verso l'alto
+		 - punto critico è un minimo
+	- Se $a<0$ allora:
+		 - $\lambda_1,\lambda_2$ entrambi negativi
+		 - $H$ definita negativamente
+		 - forma quadratica paraboloide ellittico rivolto verso il basso
+		 - punto critico è un massimo
+
+- se $\det(H) = 0$:
+	- $H$ semi-definita
+	-  non determinabile con il test dell'hessiana
+
+
+Esempio:
+
+$f(x,y) = x^2+2y^2-x^2y$
+
+dominio della funzione $\mathbb{R}^2$
+
+calcolo le derivate parziali
+
+$\frac{df}{dx} = 2x-2xy$
+
+$\frac{df}{dy} = 4y-x^2$
+
+trovo i punti critici risolvendo il sistema
+
+$\begin{cases}
+2x-2xy = 0\\
+4y-x^2 = 0
+\end{cases}
+\begin{cases}
+2x(1-y) = 0\\
+4y-x^2 = 0
+\end{cases}$
+
+sono possibili 2 casi:
+
+$\begin{cases}
+x = 0\\
+y = 0
+\end{cases}
+\hspace{20mm}
+\begin{cases}
+y = 1\\
+4-x^2 = 0
+\end{cases}$
+
+ottengo i punti critici
+- $P_1=(0,0)$
+- $P_2=(2,1)$
+- $P_3=(-2,1)$
+
+**importante**: controllare sempre che i punti critici siano interni al dominio della funzione
+
+Calcolo la matrice hessiana
+
+$$H = \begin{bmatrix} 
+2-2y & -2x\\
+-2x & 4
+\end{bmatrix}$$
+
+valuto il punto $P_1$ :
+
+$$H(0,0) = \begin{bmatrix} 
+2 & 0\\
+0 & 4
+\end{bmatrix}$$
+
+definita positivamente, abbiamo un minimo relativo
+
+valuto il punto $P_2$ :
+
+$$H(2,1) = \begin{bmatrix} 
+0 & -4\\
+-4 & 4
+\end{bmatrix}$$
+
+$\det(H) = 0-(-4\cdot (-4)) = -16$
+definita negativamente, abbiamo un punto di sella
+
+valuto il punto $P_3$ :
+
+$$H(-2,1) = \begin{bmatrix} 
+0 & 4\\
+4 & 4
+\end{bmatrix}$$
+
+$\det(H) = 0-(4\cdot 4) = -16$
+definita negativamente, abbiamo un punto di sella
