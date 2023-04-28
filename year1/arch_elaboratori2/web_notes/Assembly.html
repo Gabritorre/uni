@@ -23,6 +23,7 @@
 <li><a href="#array">Array</a></li>
 <li><a href="#stringhe">Stringhe</a></li>
 <li><a href="#funzioni">Funzioni</a></li>
+<li><a href="#stack">Stack</a></li>
 </ul>
 </li>
 </ul>
@@ -234,8 +235,36 @@ Le funzioni ritornano un valore, se invece non ritornano un valore sono chiamate
 BL proc
 ...
 </code></pre>
-<p>l’istruzione BL rappresenta la chiamata alla procedura, è un normale branch ma in più viene salvato nel registro <code>X30</code> (chiamato anche registro LR) il punto in cui tornare una volta finita la procedura</p>
+<p>l’istruzione BL rappresenta la chiamata alla procedura, è un normale branch ma in più viene salvato nel registro <code>x30</code> (chiamato anche registro LR) il punto in cui tornare una volta finita la procedura</p>
 <p>l’istruzione RET indica la fine della procedura e fa un branch al contenuto del registro <code>X30</code></p>
+<h3 id="procedure-call-standard-pcs">Procedure call standard (PCS)</h3>
+<p>Le PCS sono delle regole che dicono come gestire i parametri e i valori di ritorno delle funzioni</p>
+<ol>
+<li>I parametri della funzione sono passati nei registri da <code>x0...x7</code> oppure se si vogliono a 32 bit <code>w0...w7</code>. Se la funzione richiede più parametri si utilizzerà lo stack</li>
+<li>Il valore di ritorno è passato nel registro <code>x0</code></li>
+<li>l’indirizzo di ritorno della funzione viene salvata nel registro <code>x30</code></li>
+</ol>
+<p>Un <strong>side effect</strong> del chiamare funzioni può essere quello che nelle funzione possono essere utilizzati dei registri che magari contengono dei valori utili messi fuori dalla funzione e non vogliamo che la funzione modifichi quei registri. Per gestire questo problema la PCS stabilisce:</p>
+<ol start="4">
+<li>la funzione può utilizzare liberamente i registri <code>x0...x15</code> il chiamante è responsabile di salvare da qualche parte il loro valore</li>
+<li>la funzione deve mantenere i valori dei registri <code>x19...x27</code>, può modificarli ma prima di <code>RET</code> deve riportarli ai loro valori iniziali</li>
+<li>i registri <code>x8,x16,x17,x18</code> sono riservati ed è preferibili non utilizzarli</li>
+</ol>
+<p>Per salvare lo stato dei registri viene utilizzato lo <strong>stack</strong></p>
+<h2 id="stack">Stack</h2>
+<p>Lo <strong>stack</strong> è un’area di memoria che utilizza la politica LIFO (Last In First Out)</p>
+<p>per utilizzare lo stack serve lo Stack Pointer (SP) che inizialmente punta ad una locazione molto alta in memoria perche man mano che cresce utilizzerà indirizzi sempre più piccoli (contrariamente all’heap che cresce verso indirizzi più alti)</p>
+<p>In AArch64 tutti gli accessi alla memoria devono essere multipli di 16 (limitazione hardware) per rispettare questa limitazione esistono vari modi di gestire push e pop, la più semplice è sprecare spazio considerando sempre 16 bytes per ogni registro.</p>
+<ul>
+<li>push nello stack: <code>STR &lt;reg&gt;, [SP, #-16]!</code></li>
+<li>pop dallo stack: <code>LDR &lt;reg&gt;, [SP], #16</code></li>
+</ul>
+<p><img src="https://i.ibb.co/5hzGpT4/stack.png" alt=""></p>
+<ul>
+<li>È importante che chi riempie lo stack lo svuoti rimuovendo tutto quello che lui ha messo, altrimenti si presentano dei memory leak nello stack.</li>
+<li>Se si riempie lo stack oppure se si tenta di accedere a indirizzi più grandi di quello puntato dallo stack pointer iniziale si va in <em>stack overflow error</em></li>
+<li>Se una funzione chiama un’altra funzione prima della chiamata bisogna salvarsi l’indirizzo di ritorno <code>x30</code></li>
+</ul>
 
     </div>
   </div>
