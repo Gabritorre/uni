@@ -7,7 +7,7 @@ let mat_discreta = ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni"
 
 let arch_elaboratori2 = ["Nozioni introduttive", "CPU pipeline", "Memoria cache", "Memoria virtuale", "ARM ISA", "Assembly", "Input e output"];
 let calcolo2 = ["Equazioni differenziali", "Curve parametriche", "Funzioni a più variabili", "Integrali doppi"];
-let prog_lab = ["Note varie", "Compilatore", "Automatizzazioni", "Debug", "Classi", "Streams", "Templates", "Move semantics"];
+let prog_lab = ["Note varie", "Compilatore", "Automatizzazioni", "Debug", "Classi", "Streams", "Templates", "Move semantics", "Iteratori"];
 
 function show_arguments(subj) {
 	clear_output();

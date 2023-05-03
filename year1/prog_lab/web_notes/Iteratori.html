@@ -1,0 +1,112 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iteratori</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#iteratori">Iteratori</a>
+<ul>
+<li><a href="#tipi-di-iteratori">Tipi di iteratori</a></li>
+<li><a href="#operazioni-essenziali-iteratori">operazioni essenziali iteratori</a></li>
+<li><a href="#invalidation-degli-iteratori">Invalidation degli iteratori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="iteratori">Iteratori</h1>
+<p>Gli iteratori sono degli oggetti che puntano agli elementi di una struttura dati come le liste.</p>
+<p>Rappresentano un modo per scorrere e modificare le liste, quindi in generale effettuare operazioni sulle strutture dati della standard library.</p>
+<p>Sono molto generalizzati per cui gli iteratori della standard librari si adattano in basa alla struttura dati su cui operano.</p>
+<p>Si possono chiamare facendo:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token comment">//#include &lt;iterators&gt; //non è necessario includere la libreria</span>
+<span class="token comment">//perchè viene già inclusa dalle strutture della libreria standard (proprio come vector, list, stack ecc...), è possibili che le strutture dati ridefiniscano i metodi della classe iterator</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// creiamo la nostra lista</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it<span class="token punctuation">;</span> <span class="token comment">// creiamo l'iteratore</span>
+	<span class="token comment">//scorriamo la lista con gli iterator</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>it <span class="token operator">=</span> lista<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> lista<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span>it<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>begin()</code> restituisce un iteratore che punta al primo elemento della lista</li>
+<li><code>end()</code> restituisce un iteratore all’elemento successivo all’ultimo (nullptr)</li>
+<li><code>*it</code> dereferenziando l’iteratore possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+</ul>
+<p>è possibile fare la stessa cosa utilizzando i cicli for-each che nella loro implementazione fanno uso in modo trasparente degli iteratori:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token comment">//#include &lt;iterators&gt; //non è necessario includere la libreria</span>
+<span class="token comment">//perchè viene già inclusa dalle strutture della libreria standard (proprio come vector, list, stack ecc...), è possibili che le strutture dati ridefiniscano i metodi della classe iterator</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> el <span class="token punctuation">:</span>lista<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span>el<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nella standard library è presente sia l’<strong>iteratore</strong> normale che l’<strong>iteratore costante</strong> che impedisce di modificare gli elementi da esso puntati. Nota che la classe <code>const_iterator</code> è diversa da fare <code>const iterator</code>:<br>
+nel primo caso la classe è implementata per rendere <code>const</code> gli elementi puntati dall’iteratore, nel secondo caso non possiamo modificare l’iteratore in sé.</p>
+<h2 id="tipi-di-iteratori">Tipi di iteratori</h2>
+<p>In c++ sono definiti 6 diversi tipi di iteratori</p>
+<ul>
+<li><strong>input iterator</strong> può scorrere il container solo una volta (solo in avanti) e non può modificare gli elementi</li>
+<li><strong>output iterator</strong> può scorrere il container solo una volta (solo in avanti) e non può leggere gli elementi</li>
+<li><strong>forward iterator</strong>  può scorrere più volte il container (solo in avanti) e può leggere e modificare gli elementi</li>
+<li><strong>bidirectional iterator</strong> può scorrere più volte il container (sia in avanti che in indietro) e può leggere e modificare gli elementi</li>
+<li><strong>random iterator</strong> può scorrere più volte il container (sia in avanti che in indietro) e può leggere e modificare gli elementi e può saltare ad elementi in mezzo</li>
+<li><strong>contiguous iterator</strong> uguale al random ma in più assicura che gli elementi adiacenti a quello puntato siano sequenziali in memoria.</li>
+</ul>
+<p><img src="https://i.ibb.co/02vn09d/container.png" alt=""></p>
+<h2 id="operazioni-essenziali-iteratori">operazioni essenziali iteratori</h2>
+<p>Se vogliamo implementare un nostro iteratore per un particolare container dobbiamo implementare delle operazioni importanti nel nostra classe iteratore:</p>
+<ul>
+<li><code>operator*()const;</code> operatore di dereferenziazione con cui possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+<li><code>operator-&gt;()const;</code>nel caso in cui il tipo di dato della nostra lista sia una struttura particolare possiamo accedere agli elementi di quella struttura</li>
+<li><code>operator++();</code> pre indremento</li>
+<li><code>operator++(int);</code> post incremento</li>
+<li><code>operator==(my_iterator const&amp;)const;</code> confronto tra iteratori</li>
+<li><code>operator!=(my_iterator const&amp;)const;</code> operatore di dereferenziazione con cui possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+</ul>
+<h2 id="invalidation-degli-iteratori">Invalidation degli iteratori</h2>
+<p>Bisogna prestare attenzione che quando istanziamo degli iteratori e poi la lista viene cambiata quegli iteratori che abbiamo istanziato potrebbero non essere più validi.</p>
+<p>Ad esempio</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it <span class="token operator">=</span> lista<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//inizializziamo l'iteratore</span>
+	lista<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">//quest'ultima istruzione rende invalido l'iteratore che abbiamo inizializzato</span>
+<span class="token comment">/*Questo perchè i vector sono implementati come array in memoria dinamica 
+e ogni volta che avviene una modifica nella struttura della lista
+viene reistanziata la memoria
+e quindi le vecchie celle di memoria vengono deallocate.
+Il nostro iteratore puntava a quelle vecchie celle di memoria ormai deallocate
+*/</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Per capire quando gli iteratori vengono invalidati bisogna conoscere come sono implementati i container che utilizzano.<br>
+Una buona pratica è evitare di utilizzare gli iteratori per operazioni che modifichino la struttura della lista e aggiornare l’iteratore (con begin()) prima di andare ad utilizzarlo nel caso sia stato istanziato indietro nel codice.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
