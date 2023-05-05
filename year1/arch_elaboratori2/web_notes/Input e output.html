@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Input e output</title>
+  <title>2023-05-2_Input e output</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -13,7 +13,15 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#input-e-output">Input e output</a></li>
+<li><a href="#input-e-output">Input e output</a>
+<ul>
+<li><a href="#bus-sincrono">BUS sincrono</a></li>
+<li><a href="#bus-asincrono">Bus asincrono</a></li>
+<li><a href="#arbitraggio-a-daisy-chain">Arbitraggio a Daisy chain</a></li>
+<li><a href="#gestione-dellio-i-controller">Gestione dell’IO (I controller)</a></li>
+<li><a href="#dma">DMA</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -30,6 +38,69 @@
 <li>IO: serve per connettere le periferiche principali, come mouse tastiera, microfono, ma anche hard disk</li>
 </ul>
 <p>Questi 3 tipi di bus si differenziano per prestazioni e lunghezza che possono raggiungere.</p>
+<h2 id="bus-sincrono">BUS sincrono</h2>
+<p>Nel bus sincrono le operazioni vengono regolate da un clock condiviso, quindi tutte le richieste hanno un tempo specifico e uguale per tutti per essere concluse. Questo tipo di bus viene utilizzato nei percorsi brevi come tra CPU e memoria RAM (su linee di bus più lunghe il segnale di clock potrebbe disallinearsi)</p>
+<h2 id="bus-asincrono">Bus asincrono</h2>
+<p>nei bus asincrono non è presente un clock condiviso (ma ogni periferica ha il proprio) e la comunicazione può avvenire in qualsiasi momento, viene utilizzato dai dispositivi USB, SATA, PCIe. Per verificarsi la comunicazione ha bisogno di una sincronizzazione iniziale tra le periferiche chiamata <strong>handshake</strong>.</p>
+<p>La comunicazione tra due periferiche in bus asincrono avviene tramite 3 segnali: Req(1bit), Ack(1bit), e il segnale dati (grandezza variabile).</p>
+<p>Simuliamo che il dispositivo A vuole mandare dei dati al dispositivo B:</p>
+<ol>
+<li>Inizialmente tutti i segnali sono a 0</li>
+<li>A inserisce i propri dati nella segnale <code>data</code> e invia il segnale di richiesta (<code>Req</code>) a B</li>
+<li>B si accorge che il segnale <code>Req</code> è a 1 e quindi legge i dati. Quando ha finito di leggere imposta <code>Ack</code> a 1</li>
+<li>A riceve il segnale <code>Ack = 1</code> e quindi reimposta <code>Req</code> e <code>data</code> a 0</li>
+<li>infine anche B resetta il segnale <code>Ack</code> a 0</li>
+</ol>
+<pre class=" language-mermaid"><svg id="mermaid-svg-lZw5g5Mmbj3dEZke" width="100%" xmlns="http://www.w3.org/2000/svg" height="773" style="max-width: 776px;" viewBox="-204 -10 776 773"><style>#mermaid-svg-lZw5g5Mmbj3dEZke{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}#mermaid-svg-lZw5g5Mmbj3dEZke .error-icon{fill:#552222;}#mermaid-svg-lZw5g5Mmbj3dEZke .error-text{fill:#552222;stroke:#552222;}#mermaid-svg-lZw5g5Mmbj3dEZke .edge-thickness-normal{stroke-width:2px;}#mermaid-svg-lZw5g5Mmbj3dEZke .edge-thickness-thick{stroke-width:3.5px;}#mermaid-svg-lZw5g5Mmbj3dEZke .edge-pattern-solid{stroke-dasharray:0;}#mermaid-svg-lZw5g5Mmbj3dEZke .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-svg-lZw5g5Mmbj3dEZke .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-svg-lZw5g5Mmbj3dEZke .marker{fill:#666;stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke .marker.cross{stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-svg-lZw5g5Mmbj3dEZke .actor{stroke:hsl(0,0%,83%);fill:#eee;}#mermaid-svg-lZw5g5Mmbj3dEZke text.actor > tspan{fill:#333;stroke:none;}#mermaid-svg-lZw5g5Mmbj3dEZke .actor-line{stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke #arrowhead path{fill:#333;stroke:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke .sequenceNumber{fill:white;}#mermaid-svg-lZw5g5Mmbj3dEZke #sequencenumber{fill:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke #crosshead path{fill:#333;stroke:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke .messageText{fill:#333;stroke:#333;}#mermaid-svg-lZw5g5Mmbj3dEZke .labelBox{stroke:hsl(0,0%,83%);fill:#eee;}#mermaid-svg-lZw5g5Mmbj3dEZke .labelText,#mermaid-svg-lZw5g5Mmbj3dEZke .labelText > tspan{fill:#333;stroke:none;}#mermaid-svg-lZw5g5Mmbj3dEZke .loopText,#mermaid-svg-lZw5g5Mmbj3dEZke .loopText > tspan{fill:#333;stroke:none;}#mermaid-svg-lZw5g5Mmbj3dEZke .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:hsl(0,0%,83%);fill:hsl(0,0%,83%);}#mermaid-svg-lZw5g5Mmbj3dEZke .note{stroke:hsl(60,100%,23.3333333333%);fill:#ffa;}#mermaid-svg-lZw5g5Mmbj3dEZke .noteText,#mermaid-svg-lZw5g5Mmbj3dEZke .noteText > tspan{fill:#333;stroke:none;}#mermaid-svg-lZw5g5Mmbj3dEZke .activation0{fill:#f4f4f4;stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke .activation1{fill:#f4f4f4;stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke .activation2{fill:#f4f4f4;stroke:#666;}#mermaid-svg-lZw5g5Mmbj3dEZke:root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#mermaid-svg-lZw5g5Mmbj3dEZke sequence{fill:apa;}</style><g></g><g><line id="actor916" x1="75" y1="5" x2="75" y2="762" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="75" dy="0">Dispositivo A</tspan></text></g><g><line id="actor917" x1="275" y1="5" x2="275" y2="762" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="275" dy="0">Dispositivo B</tspan></text></g><defs><marker id="arrowhead" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="16" refY="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"></path><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><defs><marker id="filled-head" refX="18" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><defs><marker id="sequencenumber" refX="15" refY="15" markerWidth="60" markerHeight="40" orient="auto"><circle cx="15" cy="15" r="6"></circle></marker></defs><g><rect x="70" y="67" fill="#EDF2AE" stroke="#666" width="10" height="202" rx="0" ry="0" class="activation0"></rect></g><g><rect x="-154" y="75" fill="#EDF2AE" stroke="#666" width="204" height="52" rx="0" ry="0" class="note"></rect><text x="-52" y="80" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-52">A setta Req e data </tspan></text><text x="-52" y="96" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-52"> per iniziale la comunicazione</tspan></text></g><g><rect x="300" y="137" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="375" y="142" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="375">B rimane in attesa</tspan></text></g><text x="178" y="188" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Req = 1</text><line x1="80" y1="221" x2="275" y2="221" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="178" y="236" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">data = {...}</text><line x1="80" y1="269" x2="275" y2="269" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="270" y="271" fill="#EDF2AE" stroke="#666" width="10" height="170" rx="0" ry="0" class="activation0"></rect></g><g><rect x="300" y="279" fill="#EDF2AE" stroke="#666" width="222" height="52" rx="0" ry="0" class="note"></rect><text x="411" y="284" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="411">B legge i dati e quando ha finito </tspan></text><text x="411" y="300" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="411"> imposta ack a 1</tspan></text></g><g><rect x="-112" y="341" fill="#EDF2AE" stroke="#666" width="162" height="52" rx="0" ry="0" class="note"></rect><text x="-31" y="346" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-31">A rimane in attesa che </tspan></text><text x="-31" y="362" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-31"> B legga i dati</tspan></text></g><text x="173" y="408" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Ack = 1</text><line x1="270" y1="441" x2="75" y2="441" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="70" y="443" fill="#EDF2AE" stroke="#666" width="10" height="140" rx="0" ry="0" class="activation0"></rect></g><g><rect x="-100" y="451" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="-25" y="456" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-25">A resetta Req e data</tspan></text></g><text x="178" y="502" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Req = 0</text><line x1="80" y1="535" x2="275" y2="535" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="178" y="550" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">data = 0</text><line x1="80" y1="583" x2="275" y2="583" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="270" y="585" fill="#EDF2AE" stroke="#666" width="10" height="92" rx="0" ry="0" class="activation0"></rect></g><g><rect x="300" y="593" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="375" y="598" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="375">B resetta Ack</tspan></text></g><text x="173" y="644" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Ack = 0</text><line x1="270" y1="677" x2="75" y2="677" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="0" y="697" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="729.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="75" dy="0">Dispositivo A</tspan></text></g><g><rect x="200" y="697" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="729.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="275" dy="0">Dispositivo B</tspan></text></g></svg></pre>
+<h2 id="arbitraggio-a-daisy-chain">Arbitraggio a Daisy chain</h2>
+<p>Quando più dispositivi utilizzano lo stesso bus è necessario regolare l’accesso per evitare conflitti.<br>
+Un metodo per farlo è l’arbitragggio a daisy chain.</p>
+<p>È presenta un arbitro per dara l’accesso al bus, mentre i dispositivi che richiedono l’accesso al bus sono posti a catena in cui il più vicino all’arbitro ha la priorità più alta.</p>
+<p>Abbiamo 3 segnali condivisi tra i dispositivi:</p>
+<ul>
+<li>request: il dispotivo invia la richiesta all’arbitro di accedere al bus</li>
+<li>grant: l’arbitro da l’accesso al bus</li>
+<li>release: il dispositivo finisce le sue operazioni sul bus</li>
+</ul>
+<p><img src="https://i.ibb.co/Cw8xyZR/daisy-chain.png" alt=""><br>
+Ipotizziamo che il device 2 voglia accedere al bus:</p>
+<ol>
+<li>il device 2 imposta <code>request</code> a 1</li>
+<li>l’arbitro nota la richiesta ma essendo il segnale condiviso tra i dispositivi non sa da chi provenga</li>
+<li>l’arbitro imposta il segnale <code>grant</code> a 1 che va al device 1 che è quello con la priorità più alta</li>
+<li>Il device 1 può decidere se accedere al bus (rubandolo quindi al device 2) oppure propagare il segnale al device successivo</li>
+<li>Se decide di propagare allora il device 2 può accedere al bus come da lui richiesto</li>
+<li>una volta terminate le sue operazioni sul bus imposta il segnale <code>release</code> a 1 e l’arbitro resetta il segnale <code>grant</code></li>
+</ol>
+<p>Seppure questa tecnica è molto semplice da realizzare non è molto ottimale perché i dispositivi a bassa priorità potrebbero non avere mai accesso al bus. Esistono tecniche più ottimali ma sono più complesse da realizzare.</p>
+<h2 id="gestione-dellio-i-controller">Gestione dell’IO (I controller)</h2>
+<p>Un’operazione di input/output è un trasferimento di dati che può avvenire:</p>
+<ul>
+<li>da un dispositivo alla memoria RAM (<strong>input</strong>)</li>
+<li>dalla memoria RAM ad un dispositivo (<strong>output</strong>)</li>
+</ul>
+<p>Per effettuare questi trasferimenti abbiamo bisogno dei <strong>controller</strong>, che non è altro che un piccolo processore dedicato che possiede ogni dispositivo.</p>
+<p>In generale ogni controller deve possedere dei registri che permettano interagire con il processore:</p>
+<ul>
+<li><strong>command register</strong>: utilizzato per inviare dei comandi al controller (output)</li>
+<li><strong>status register</strong>: utilizzato per sapere lo stato del dispositivo (input)</li>
+<li><strong>data write register</strong>: utilizzato per inviare dei dati nel dispositivo (output)</li>
+<li><strong>data read register</strong>: utilizzata per ricevere dei dati dal dispositivo (input)</li>
+</ul>
+<p>Per comunicare con i controller esiste un l’approccio chiamato <strong>Memory Mapped IO</strong>:<br>
+I registri dei dispositivi sono mappati in delle locazioni di memoria specifica per loro.<br>
+Per la CPU non c’è differenza al modo di accedere a quei registri (farà delle normali load e store).<br>
+È compito della MMU (Memory Management Unit) di indirizzare le richieste a un dispositivo oppure alla RAM.</p>
+<h3 id="polling">Polling</h3>
+<p>Il polling è una tecnica per fare operazioni con i dispositivi in cui la CPU controlla periodicamente lo stato del dispositivo per vedere se ci sono dei dati da prelevare. Può essere utile quando un dispositivo ha spesso dei dati da comunicare.<br>
+La CPU però spreca molto tempo a controllare ogni volta lo stato del dispositivo</p>
+<h3 id="interrupt-driven-io">Interrupt-driven IO</h3>
+<p>In quest’altra tecnica è il dispositivo che avvisa la CPU (tramite un interrupt) che di sono dei dati disponibili.<br>
+Questa tecnica è molto vantaggiosa per dispositivi che comunicano poco di frequente, questo perché gli interrupt sono molto dispendiosi per la CPU e se avvengono troppo spesso la CPU avrà un grosso calo di performance</p>
+<h2 id="dma">DMA</h2>
+<p>In entrambe le tecniche precedenti viene sempre coinvolta la CPU nelle operazioni con lo scopo di fare da collegamento tra dispositivo e RAM, ma la CPU ha altre operazioni più importanti da fare (come eseguire i programmi)</p>
+<p>Viene introdotto quindi un controller esterno alla CPU chiamato <strong>DMA</strong> (Direct Memory Access) che si occupa dell’interazione tra dispositivi e RAM. La CPU fornisce semplicemente quanti dati trasferire e dove trasferirli, il trasferimento effettivo viene fatto dal DMA. Quando tutti dati saranno trasferiti il DMA farà un interrupt alla CPU.</p>
+<p><img src="https://i.ibb.co/XJj4rnt/dma.png" alt=""></p>
 
     </div>
   </div>
