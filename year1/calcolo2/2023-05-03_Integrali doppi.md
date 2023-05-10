@@ -105,3 +105,101 @@ $$\int_0^2 \frac{x(4x^2+x^4-4x^3)}{2}-0 \, dx$$
 $$\int_0^2 2x^3+\frac{x^5}{2}-2x^4 \, dx$$
 
 $$\left[ 2\frac{x^4}{4}+\frac{x^6}{12}-\frac{2x^5}{5} \right]_0^2 = 8+\frac{64}{12}- \frac{64}{5}=\frac{8}{15}$$
+
+## Cambio di variabili
+
+In alcuni casi è conveniente fare un cambio di variabili per passare da un dominio articolato ad un dominio in cui si può integrare più facilmente.
+
+Per fare ciò utilizziamo una **trasformazione di coordinate**
+
+$T: D' \rightarrow D$ dove
+
+$\begin{cases}
+x = g(u,v)\\
+y = h(u,v)
+\end{cases}$
+
+## Matrice Jacobiana
+
+Si dice matrice jacobiana la matrice delle derivate parziali della trasformazione $T$
+
+$$J_T(u,v) = \begin{pmatrix}
+\frac{dg}{du}&\frac{dg}{dv}\\
+\frac{dh}{du}& \frac{dh}{dv}
+\end{pmatrix}$$
+
+una trasformazione $T$ Si dice **Diffeomorfismo** se $T$ è differenziabile e se T è invertibile.
+In un altro modo è possibile dire che $T$ è un Diffeomorfismo se $T\in C^1(D')$ e $\det(J_T(u,v)) = 0$
+
+I punti in cui $\det(J_T(u,v)) = 0$ sono chiamati **punti critici** della trasformazione
+
+### Formula di cambiamento di variabili
+
+In generale la formula per il cambio di variabili è:
+
+$$\int\int_Df(x,y)\,dx\,dy = \int\int_{D'}f(g(u,v),h(u,v))\cdot|\det(J_T)|\,du\,dv$$
+
+## Trasfomazione in coordinate polari
+
+Noi ci concentriamo nel caso in cui sostituiamo con una rappresentazione con coordinate polari
+
+$\begin{cases}
+x =  g(\rho,\theta) = \rho \cos \theta\\
+y = h(\rho,\theta) = \rho \sin\theta
+\end{cases}$
+
+(ricordiamo che $\rho$ rappresenta la distanza della coordinata rispetto all'origine, mentre $\theta$ è un angolo che si forma tra l'asse x  positivo e la retta passante per $\rho$ e l'origine)
+
+generalmente $\rho > 0$ mentre $0\leq\theta < 2\pi$
+
+La matrice Jacobiana è:
+
+$$J_T(u,v) = \begin{pmatrix}
+\cos\theta&-\rho\sin\theta\\
+\sin\theta& \rho\cos\theta
+\end{pmatrix}$$
+
+
+
+Prediamo in considerazione l'area compresa tra questi due rami di circonferenza
+![](https://i.ibb.co/y54pkwy/circonferenze.png)
+
+Non si tratta di un dominio rettangolare e nemmeno semplice
+
+Passando alla rappresentazione per coordinate polari
+
+$\begin{cases}
+x =  \rho \cos \theta\\
+y =  \rho \sin\theta
+\end{cases}$
+
+![](https://i.ibb.co/7bhMM6z/circonferenze2.png)
+
+notiamo che:
+
+$$2\leq\rho\leq3$$
+
+$$0\leq\theta\leq\frac{\pi}{2}$$
+
+riusciamo ad ottenere un dominio rettangolare
+
+![](https://i.ibb.co/60nVs1L/dominio2.png)
+
+dove l'asse x è $\rho$ mentre l'asse y è $\theta$
+
+### Formula di cambiamento di variabili (coordinate polari)
+
+nel caso di cambio di variabili a coordinate polari:
+
+$$\int\int_Df(x,y)\,dx\,dy = \int\int_{D'}f(\rho\cos\theta,\rho\sin\theta)\cdot\rho\,d\rho\,d\theta$$
+
+
+## Baricentro
+
+Il baricentro è un punto del piano di coordinate $(x_C, y_C)$ che rappresenta la media aritmetica dei punti di del dominio.
+
+$$x_C = \frac{\int\int_Dx\, dx\,dy}{\int\int_D1\,dx\,dy} \hspace{10mm} y_C = \frac{\int\int_Dy\, dx\,dy}{\int\int_D1\,dx\,dy}$$
+
+Non è detto che il baricentro sia all'interno del dominio
+
+
