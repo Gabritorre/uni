@@ -111,13 +111,17 @@ Generalmente per trovare il dominio si presentano delle disequazioni, per trovar
 Es.
 Trovare il dominio della funzione $z = \sqrt{4-x^2-y^2}$
 
-Il dominio è dato da tutte le coppie (x,y) tali che $4-x^2-y^2\geq0$
+Il dominio è dato da tutte le coppie $(x,y)$ tali che $4-x^2-y^2\geq0$ cioè:
 
-disegno l'equazione associata (trovo i punti di frontiera)
+$$D=\{(x,y)\in \mathbb{R}^2:x^2+y^2 \leq4\}$$
+
+trovo i punti di frontiera considerando l'equazione associata
 
 $x^2+ y^2 = 4$ è una circonferenza di centro $(0,0)$ e raggio $2$
 
-per capire se il domino della funzione è interno o esterno alla circonferenza sostituisco al posto di x e y lo 0 (che è un punto interno), la disequazione restituisce $4-0-0\geq0$ che è vera quindi la funzione è interna alla circonferenza
+Per capire se il domino della funzione è interno o esterno alla circonferenza sostituisco al posto di x e y lo $0$ (che è un punto interno alla circonferenza), la disequazione restituisce vero $(4-0-0\geq0)$ quindi la funzione è interna alla circonferenza.
+
+In alternativa potevamo fare una curva di livello e vedere se era una circonferenza più piccola di quella.
 
 ## Topologia in $\mathbb{R}^n$
 
@@ -169,13 +173,13 @@ Le funzioni definiti a tratti possono non essere continue (nella maggior parte d
 Data una funzione
 
 $\begin{cases}
-x^2 + y^2 -1 &\text{se} y > 2x \\
--2x-y &\text{se} y \leq 2x
+x^2 + y^2 -1 &\text{se } y > 2x \\
+-2x-y &\text{se } y \leq 2x
 \end{cases}$
 
 le due funzioni sono continue perché somma e composizione di funzioni continue, dobbiamo però vedere cosa accade in $y = 2x$
 
-Per fare ciò costruiamo il sistema
+Per fare ciò costruiamo il sistema in cui poniamo la $y$ uguale al punto che stiamo studiando (questo in base  alla condizione che ci viene data) e poi mettiamo in uguaglianza le due funzioni
 
 $\begin{cases}
  y = 2x \\
