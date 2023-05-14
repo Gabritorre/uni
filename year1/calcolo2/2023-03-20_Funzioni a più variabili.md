@@ -212,7 +212,9 @@ $P_1(-1,-2), P_2(\frac{1}{5}, \frac{2}{5})$
 
 Quando non si presentano forme di indecisione il limite si può calcolare semplicemente sostituendo. Se si presentano forme indecisione nascono i problemi.
 
-Bisogna innanzitutto provare delle **sezioni** cioè fissare tutti i valori tendenti con il valore per cui tendono tranne 1 e vedere che risultato da il valore restante nella funzione. se più sezioni danno risultati diversi allora si può concludere che il limite non esiste, se tutte le sezioni provate restituiscono lo stesso valore bisogna dimostrare con il **teorema del confronto** che quel valore è giusto.
+Bisogna innanzitutto provare delle **sezioni** cioè fissare tutti i valori tendenti con il valore per cui tendono tranne uno e vedere cosa restituisce il limite restante nella funzione. 
+Se più sezioni danno risultati diversi allora si può concludere che il limite non esiste.
+Se tutte le sezioni provate restituiscono lo stesso valore bisogna dimostrare con il **teorema del confronto** che quel valore è giusto.
 
 Es.
 
@@ -234,7 +236,9 @@ $0\leq \frac{y(x^2+3y^2)}{x^2+5y^2} \leq?$
 
 $\frac{(x^2+3y^2)}{x^2+5y^2}$ sarà una quantità $<1$ quindi una quantità minore di $1$ moltiplicata per $y$ sarà una quantità minore di $y$
 
-$0\leq \frac{y(x^2+3y^2)}{x^2+5y^2} \leq|y|$
+$0\leq \frac{|y|(x^2+3y^2)}{x^2+5y^2} \leq|y|$
+
+otteniamo quindi che $\frac{|y|(x^2+3y^2)}{x^2+5y^2}$ è compreso tra $0$ e la $|y|$ che tende a zero, concludiamo che anche $\frac{|y|(x^2+3y^2)}{x^2+5y^2}$ tende a $0$
 
 #### Disuguaglianze utili per il teorema del confronto
 
@@ -341,7 +345,7 @@ Il piano che contiene le due rette $r$ e $s$ è il **piano tangente alla superfi
 
 L'equazione del piano tangente è:
 
-$$z=f(x_0,y_0) + D_x(x_0,y_0)(x-x_0) + D_y(x_0,y_0)(y-y_0)$$
+$$z=f(x_0,y_0) + D_x(x_0,y_0)\cdot(x-x_0) + D_y(x_0,y_0)\cdot(y-y_0)$$
 
 
 Es.
@@ -413,6 +417,10 @@ $= 1 \cdot \frac{\sqrt{2}}{2} + (3+\pi)\cdot(-\frac{\sqrt{2}}{2}) = -\sqrt{2} - 
 
 - direzione di massima crescita, cioè la direzione in cui il valore della funzione cresce più velocemente:
 	 $$v = \frac{\nabla f(x_0)}{||\nabla f(x_0)||}$$
+
+quindi in due dimensioni il versore sarà:
+
+ $v = (\frac {D_x(f(x_0,y_0))}{||\nabla f(x_0,y_0)||}, \frac {D_y(f(x_0,y_0))}{||\nabla f(x_0,y_0)||})$
 
 - direzione di massima decrescita, cioè la direzione in cui il valore della funzione decresce più velocemente:
 	 $$v = -\frac{\nabla f(x_0)}{||\nabla f(x_0)||}$$
