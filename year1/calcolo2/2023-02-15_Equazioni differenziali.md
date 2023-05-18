@@ -4,13 +4,13 @@ Le equazioni differenziali ordinarie si presentano nella forma:
 
 $$F(x;y;y';...;y^{(n)}) = 0$$
 
-Una equazione differenziale è una equazione che ha per incognita una funzione $y$ nella variabile $x$,  e in che stabilisce una relazione fra $x, y$ e almeno una delle derivate di $y$.
+Una equazione differenziale è una equazione che ha per incognita una funzione $y$ nella variabile $x$, e che stabilisce una relazione fra: $x, y, y^{(n)}$
 
 l'**ordine** dell'equazione differenziale è dato dal massimo ordine di derivata della $y$.
 
-In generale le soluzione di un'equazione differenziale sono infinite:
-- l'insime delle infinite soluzione viene detto **integrale generale**
-- una soluzione specifica, fissando un valore a $c$ viene detto **integale o soluzione particolare**
+In generale le soluzioni di un'equazione differenziale sono infinite:
+- L'insieme delle infinite soluzione viene detto **integrale generale**
+- Una soluzione specifica, detta **integrale o soluzione particolare**, si ottiene fissando un valore a $c$
 
 ## Tipologie di equazioni differenziali
 
@@ -67,13 +67,13 @@ $y = -\frac{1}{2x^2+c}$
 
 non bisogna dimenticarsi che anche $y = 0$ può essere una soluzione, infatti in questo caso lo è dato che andando a sostituire nell'equazione iniziale si ottiene una espressione vera.
 
-Il caso $y = 0$ spesso può essere già compreso nella soluzione generale perché il valore $c$ può azzerare il membro di destra.
+Il caso $y = 0$ spesso può essere già compreso nella soluzione generale quando il valore $c$ azzera il membro di destra.
 
 In questo caso però, nessun valore di $c$ ci restituisce $y = 0$ quindi va aggiunto alle soluzioni:
 
 $S: y = -\frac{1}{2x^2+c} \lor y = 0$
 
-###  Le equazioni lineari omogenee
+###  Le equazioni lineari
 
 Questo tipo di equazioni sono scritte nella forma
 
@@ -81,8 +81,8 @@ $$y' = a(x)\cdot y + b(x)$$
 
 Per essere lineare l'equazione deve avere $y$ e $y'$ al primo grado e non devono essere moltiplicate tra loro.
 
-- Se $b(x) = 0$  l'equazione è detta **omogenea**.
-- Se $b(x) \neq 0$  l'equazione è detta **completa**.
+- Se $b(x) = 0$  l'equazione è detta **lineare omogenea**.
+- Se $b(x) \neq 0$  l'equazione è detta **lineare completa**.
 
 #### formula risolutiva per le omogenee
 
@@ -94,7 +94,7 @@ $$y = e^{\int a(x)\,dx}\left[\int b(x)\cdot e^{-\int a(x)\,dx}dx+c\right]$$
 
 ###  Le equazioni lineari del secondo ordine a coefficienti costanti omogenee 
 
-Le equzioni lineari del socondo ordine si presentano come:
+Le equazioni lineari del secondo ordine si presentano come:
 
 $$a_2(x)y'' + a_1(x)y' + a_0(x)y = g(x)$$
 
@@ -115,11 +115,11 @@ per risolvere questo tipo di equazioni:
 $$z^2+az+b = 0$$
 
 2. si calcola il $\Delta$ e si distinguono 3 casi:
-	-  $\Delta > 0$: si hanno due soluzioni distinte ($z_1, z_2$)
+	-  $\Delta > 0$: si hanno due soluzioni distinte $(z_1, z_2)$
 		$$y = c_1e^{z_1x} + c_2e^{z_2x}$$
-	- $\Delta = 0$: si hanno due soluzioni coincidenti ($z_1 = z_2$)
+	- $\Delta = 0$: si hanno due soluzioni coincidenti $(z_1 = z_2)$
 		$$y = e^{z_1x}(c_1 + c_2x)$$
-	- $\Delta < 0$: si hanno due soluzioni complesse coniugate (uguali ma con la parte immaginaria cambiata di segno) ($z_{1, 2} = \alpha \pm i\beta$)
+	- $\Delta < 0$: si hanno due soluzioni complesse coniugate (uguali ma con la parte immaginaria cambiata di segno) $(z_{1, 2} = \alpha \pm i\beta)$
 		$$y = e^{\alpha x}(c_1 \cos \beta x + c_2 \sin \beta x)$$
 
 - Esempio con  $\Delta > 0$
@@ -175,7 +175,7 @@ Si presentano come
 
 $$y'' + ay' + by = g(x)$$
 
-la soluzione a queste è quazioni è data dalla somma tra la **soluzione dell'equazione omogenea associata** e la **soluzione particolare**
+la soluzione a queste equazioni è data dalla somma tra la **soluzione dell'equazione omogenea associata** e la **soluzione particolare**
 
 ####  1 Caso con a = 0, b = 0
 
@@ -195,7 +195,7 @@ integro una seconda volta
 
 $y = x^4 + 2x^2 + c_1x + c_2$
 
-#### 2 Caso b $\neq$ 0, c $= 0$
+#### 2 Caso a $\neq$ 0, b $= 0$
 
 In questo caso la soluzione particolare deve essere di un grado maggiore a quello di $g(x)$, e va risolta utilizzando il metodo della somiglianza.
 
@@ -231,9 +231,9 @@ b = -2
 
 soluzione particolare: $y_0 = x^2 -2x$
 
-ovviamente per trovare l'integrale generale bisogna sommare la soluzione particolare trovata per la soluzione dell'equazione omogenea associata.
+ovviamente per trovare l'integrale generale bisogna sommare alla soluzione particolare la soluzione dell'equazione omogenea associata.
 
-#### 3 Caso b $\neq$ 0, c $\neq 0$
+#### 3 Caso a $\neq$ 0, b $\neq 0$
 
 In questo caso la soluzione particolare deve avere lo stesso grado di $g(x)$, e va risolta utilizzando il metodo della somiglianza.
 
@@ -241,7 +241,7 @@ ES.
 
 $y'' - 2y' - 3y = 3x + 7$
 
-la nostra soluzione particolare sarà di primo grado proprio come $g(x)$ e avrà una forma $ax + b$
+la nostra soluzione particolare sarà di primo grado proprio come $g(x)$ e quindi avrà la forma $ax + b$
 
 Calcoliamo le derivate prima e seconda della nostra equazione generica
 
@@ -269,7 +269,7 @@ b = -\frac{5}{3}
 
 soluzione particolare: $y_0 = -x-\frac{5}{3}$
 
-ovviamente per trovare l'integrale generale bisogna sommare la soluzione particolare trovata per la soluzione dell'equazione omogenea associata.
+ovviamente per trovare l'integrale generale bisogna sommare alla soluzione particolare la soluzione dell'equazione omogenea associata.
 
 #### 4 Caso con $g(x) = s(x)e^{\alpha x}$
 
@@ -283,7 +283,7 @@ In questo caso dobbiamo calcolare l'equazione omogenea associata come prima cosa
 
 dove $p(x)$ è un polinomio generico dello stesso grado di $s(x)$
 
-(si prosegue come nel caso 3)
+Si prosegue come nel caso 3:
 
 Si calcola la derivata prima e seconda del polinomio generico e si sostituiscono nell'equazione originale.
 Si risolve il sistema relazionando i membri con la x e i termini noti e si trovano $a,b$ che vanno sostituiti in $y_0$ trovando così la soluzione particolare.
@@ -293,8 +293,8 @@ Infine va sommato alla soluzione dell'omogenea.
 
 Calcoliamo l'equazione omogenea associata come prima cosa, questo perché la soluzione particolare dipende da essa:
 
-- se $\alpha + i\beta$ è nella soluzione dell'omogenea allora la soluzione ha forma $y_0 = e^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
-- se $\alpha + i\beta$ è nella soluzione omogenea allora la soluzione particolare ha forma $y_0 = xe^{\alpha x}(a 
+- se $\alpha + i\beta$ non è soluzione dell'omogenea allora la soluzione ha forma $y_0 = e^{\alpha x}(a \cos(\beta x) + b \sin(\beta x))$
+- se $\alpha + i\beta$ è soluzione dell'omogenea allora la soluzione particolare ha forma $y_0 = xe^{\alpha x}(a 
 \cos(\beta x) + b \sin(\beta x))$
 
 (si prosegue come nel caso 3)
@@ -395,7 +395,7 @@ $0 = 3 + c_2$
 
 $c_2 = -3$
 
-Quindi la soluzioine al problema di Cauchy è:
+Quindi la soluzione al problema di Cauchy è:
 
 $y = e^{3x}(\cos(x) -3 \sin(x))$
 
