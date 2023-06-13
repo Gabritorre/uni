@@ -62,7 +62,8 @@ In un sistema completo vengono utilizzate tutte le tipologie di memoria, ognuna 
 
 Le memorie più veloci vanno messe più vicine possibile al processore dato che i dati che cerca la CPU vengono cercate a cascata prima nelle memoria più veloci e poi, se il dato non viene trovato, cerca nelle altre memorie.
 
-Le memorie più vicine alla CPU (cache) contengono delle copie dei dati che si trovano nei livelli più lontani. Il livello più lontano di tutti contiene tutti dati.
+Le memorie più vicine alla CPU (chiamate memoria cache) contengono le copie di alcuni dati che si trovano nei livelli più lontani. 
+Il livello più lontano di tutti contiene tutti dati.
 
 ### Principio di località
 
@@ -79,28 +80,26 @@ L'unità di informazione minima è detta **blocco** Quando il dato viene trovato
 Viene chiamato **hit time** il tempo impiegato per trovare il dato nella prima memoria in cui guarda il processore.
 Viene chiamato **miss penalty** il tempo necessario per trovare il dato nelle memoria inferiori + il tempo a passare tali dati alla CPU.
 
-## Memorie cache
-
-
 Le memorie cache sono delle memorie che nascono con lo scopo di aumentare l'hit-rate e minimizzare i tempi di accesso per i dati utilizzati più frequentemente.
 
-### Cache ad accesso diretto
+## Cache ad accesso diretto
 
 Per progettare una cache bisogna decidere:
 - La dimensione di un blocco e la quantità di blocchi da utilizzare
 - Come accedere/trovare/scrivere un blocco
 
-Bisogna creare una funziona che fa un *mappinig* tra gli indirizzi di memoria e i blocchi.
+Bisogna creare una funzione che fa un *mappinig* tra gli indirizzi di memoria e i blocchi.
 
-l'indice della memoria principale viene mappato con il relativo indice in memoria cache con formula:
+L'indice della memoria principale viene mappato con il relativo indice in memoria cache con formula:
 
 $$\text{indice-blocco} = \text{indice-memoria} \,\% \,\text{numero-blocchi}$$
 
 Per agevolare le operazioni il numero di blocchi è solitamente una potenza di 2, in questo modo l'operazione di modulo equivale a prendere i primi $\log_2(\text{numero-blocchi})$ dell'indirizzo (meno significativi).
 
 Ad esempio
-avendo 8 blocchi $(2^3)$
-come indice di memoria abbiamo: 01101
+considerando una cache grande 8 blocchi $(2^3)$ e prendendo come esempio l'indice di memoria: 01101
+
+abbiamo che: 
 $\log_2 2^3 = 3$
 Quindi l'indice del blocco associato al nostro indirizzo di memoria equivale ai primi 3 bit meno significativi dell'indirizzo, cioè 101.
 
@@ -114,14 +113,14 @@ Il mapping in questo caso si fa con:
 
 $$\text{indice-blocco} = (\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-blocchi}$$
 
-Esempio
+ad esempio
 avendo 8 blocchi $(2^3)$
 la dimensione di un blocco è 2
 come indice di memoria abbiamo: 01101
 
 $(\text{indice-memoria} \,/ \,\text{grandezza-blocco})$
 
-$(01101 \,/ \, 2)$ equivale a fare uno shift di 1 $(\log_22)$ a destra
+$(01101 \,/ \, 2)$ equivale a fare uno shift di 1 $(\log_22=1)$ a destra
 
 Quindi il nostro indirizzo diventa $0110$
 
@@ -131,15 +130,15 @@ $0110 \,\% \,8$ equivale a prendere in considerazione i primi 3 ($log_28$) bit m
 
 ![](https://i.ibb.co/VNXSXBX/cache2.png)
 
-Come si vede dall'immagine andando a ignorare l'ultimo bit ci sono due istruzioni che vanno contemporaneamente nello stesso blocco
+Come si vede dall'immagine andando a ignorare l'ultimo bit otteniamo che ci sono due istruzioni che vanno contemporaneamente nello stesso blocco. I bit ignorati vengono chiamati **offset**
 
 ### Tag
 
-Dato che durante l'esecuzione del codice più istruzioni utilizzeranno le stesse locuzione, come faccio a riconoscere l'istruzione che c'è all'interno di una locuzione in un determinato momento.
+Dato che durante l'esecuzione del codice più istruzioni utilizzeranno gli stessi blocchi della cache, come faccio a riconoscere l'istruzione che c'è all'interno di un blocco in un determinato momento.
 
-Per risolvere questo problema andiamo a memorizzare oltre al dato anche l'indice della memoria:
+Per risolvere questo problema andiamo a **memorizzare oltre al dato anche l'indice** della memoria:
 
-Nell'ultimo esempio fatto avevamo come indice 01101 che viene salvato assieme all'indice 01100 Quindi oltre ai dati contenuti in questi indici dovremmo salvarci anche gli indici stessi, ma in realtà basta salvarsi solo i bit più significativi (in questo caso '0') perché i meno significativi (110*) rappresentano già l'indice del blocco della cache.
+Nell'ultimo esempio fatto avevamo come indice 01101 che viene salvato assieme all'indice 01100. Quindi oltre ai dati contenuti in questi indici dovremmo salvarci anche gli indici stessi, ma in realtà basta salvarsi solo i bit più significativi (in questo caso '0') perché i meno significativi (110*) rappresentano già l'indice del blocco della cache.
 
 Questi bit più significativi vengono chiamati **tag**
 
@@ -165,7 +164,9 @@ Man mano che la cache viene riempita, i valid bit dei blocchi passano da 0 a 1
 
 ## Conflitti
 
-Quando dobbiamo portare un blocco in cache nella stessa posizione dove risiedono altri dati, cosa ne facciamo di questi dati già presenti?
+Quando dobbiamo portare un blocco in cache nella stessa posizione dove risiedono altri dati si causa un conflitto. Un conflitto si presenta quando due indirizzi hanno il campo INDEX uguale e il campo TAG diverso.
+
+cosa ne facciamo di questi dati già presenti quando bisogna risolvere un conflitto?
 
 - Se i quei dati dopo essere stati portati in cache sono stati solo letti, possiamo rimpiazzarli senza problemi (tanto in RAM ci sarà già una copia di essi)
 - Se quei dati dopo essere stati portati in cache sono stati modificati, prima di andare a rimpiazzarli dobbiamo aggiornare i dati anche ai livelli di memoria inferiori per mantenere una coerenza di dati. Occorre stabilire delle **politiche di coerenza tra livelli di memoria**
@@ -250,7 +251,7 @@ $\frac{3.38}{2} = 1.69$
 Rispetto al nostro $\text{CPI}_{\text{ideale}}$ , quello reale risulta essere 1.69 volte peggiore
 
 
-### Cache associative
+## Cache associative
 
 Nella cache ad accesso diretto ogni blocco di memoria veniva associato ad un blocco di cache (tramite la funzione di mapping)
 

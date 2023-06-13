@@ -8,7 +8,7 @@ Per permettere queste due cose entra in gioco la **memoria virtuale**
 
 I programmi (più in generale il processore) utilizzano uno spazio di indirizzamento virtuale che non coincide con l'indirizzamento fisico della memoria RAM.
 
-I blocchi di memoria (chiamate **pagine**), cioè degli insiemi di indirizzi di memoria virtuali vengono mappati dal sistema operativo in indirizzi fisici nella RAM.
+I blocchi di memoria (chiamate **pagine**), cioè degli insiemi di indirizzi di memoria virtuali, vengono mappati dal sistema operativo in indirizzi fisici nella RAM.
 
 ## Vantaggi della memoria virtuale
 
@@ -71,7 +71,7 @@ Nel caso si verifichi un miss nella TLB si va prima a cercare nella *page table*
 In questo sistema di memoria virtuale si può integrare la memoria cache in tre modi differenti:
 
 - **Physically addressed cache**: la cache utilizza indirizzi fisici, quindi prima di ogni accesso in cache si deve passare per TLB e nel caso di TLB-miss si passa per la page table. processi diversi che utilizzano gli stessi indirizzi virtuali non creano problemi.
-- **Virtually addressed cache**: la cache utilizza indirizzi virtuali, ogni cache-hit non richiede accesso a TLB (evitando di provocare TBL miss e paga fault). Processi che utilizzano gli stessi indirizzi virtuali possono creare dei problemi di letture e scritture senza permesso.
+- **Virtually addressed cache**: la cache utilizza indirizzi virtuali, ogni cache-hit non richiede accesso a TLB (evitando di provocare TLB miss e paga fault). Processi che utilizzano gli stessi indirizzi virtuali possono creare dei problemi di letture e scritture senza permesso.
 - **Virtually indexed but physically tagged**: l'index viene calcolato sull'indirizzo virtuale mentre il tag viene ottenuto dall'indirizzo fisico. non presenta il problemi di processi che utilizzano gli stessi indirizzi virtuali. comportamente simile alla physically addressed.
 
 ### Tipologie di miss
@@ -82,7 +82,7 @@ In questo sistema di memoria virtuale si può integrare la memoria cache in tre 
 
 ## Gestione della memoria virtuale del SO
 
-Il sistema operativo deve intervenire in caso di  *TBL miss* e *page fault*.
+Il sistema operativo deve intervenire in caso di  *TLB miss* e *page fault*.
 
 la CPU possiede almeno due modalità di esecuzione: **user mode** e **supervisor mode** (kernel mode).
 
@@ -105,7 +105,7 @@ Un programma in user mode può passare alla supervisor mode solo attraverso una 
 
 ### Eccezioni 
 
-- **Eccezione TBL miss**: la pagina non è presente in TLB però è presente in RAM
+- **Eccezione TLB miss**: la pagina non è presente in TLB però è presente in RAM
 	
 	- L'eccezione può essere gestita tramite la *page table*
 	- *miss-penalty* molto basso
@@ -138,7 +138,7 @@ Per spazi di indirizzamento molto grandi si ottengono delle page table di una di
 Si utilizzano quindi delle page table multilivello:
 
 Praticamente abbiamo che nella page table di primo livello ci sono dei puntatori alle page table di secondo livello, nelle page table di secondo livello ci sono dei puntatori a quelle di terzo livello e così via. solo l'ultimo livello conterrà gli indirizzi che cerchiamo. In RAM caricheremo solo la sequenza di page table che ci portano all'indirizzo che ci interessa e non tutte le possibili page table.
-Le page table che non ci interessano vengono messe nel disco secondario (ci sarà una entry nella page di primo livello che le punterà).
+Le page table che non ci interessano vengono messe nel disco secondario (ci sarà una entry nella page di primo livello che l punterà).
 La page di primo livello deve rimanere sempre in memoria RAM.
 Ad esempio ARM utilizza 4 livelli di page table.
 

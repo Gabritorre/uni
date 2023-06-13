@@ -122,4 +122,21 @@ Viene introdotto quindi un controller esterno alla CPU chiamato **DMA** (Direct 
 
 ![](https://i.ibb.co/XJj4rnt/dma.png)
 
+Senza il DMA c'era una unica via per accedere alla memoria che era passando attraverso la CPU che gestiva gli indirizzi virtuali e la cache, inserendo il DMA però si crea un'altra strada che non utilizza la cache (incoerenza dei dati tra CPU e DMA) e non utilizza gli indirizzi virtuali
 
+per risolvere il **problema della cache** ci sono varie soluzioni:
+
+1. far passare l'attività di I/O tramite la cache impattando negativamente sulle prestazioni (perchè il DMA potrebbe sostituire in cache dei dati frequentemente utilizzati dalla CPU con dei dati poco utilizzati)
+2. far intervenire il sistema operativo per ogni operazione I/O: in cui quando avviene una scrittura in RAM da parte del DMA il corrispettivo valore che è in cache viene invalidato e quando il DMA vuole leggere un dato in RAM viene prima fatto un write-back dalla cache (aggiornando il valore in RAM prima che il DMA lo legga)
+3. utilizzare dei componenti hw aggiuntivi per invalidare dei dati in cache
+
+per quanto riguarda gli indirizzi virtuali:
+
+Se il DMA utilizzasse indirizzi virtuali dovrebbe essere anche in grado di tradurli in indirizzi fisici, dovrebbe quindi avere accesso alla page table e alla TLB per essere più performante. ciò porterebbe alla stessa incoerenza che avevamo nella cache.
+
+Se il DMA utilizzasse indirizzi fisici la dimensione del trasferimento sarebbe vincolata alla dimensione di una pagina, questo perché gli indirizzi fisici contigui in memoria fisica non sono necessariamente contigui in memoria virtuale
+
+soluzioni:
+
+1. Il DMA lavora con indirizzi virtuali e il sistema operativo si occupa di fornirgli delle tabelle di traduzione per il trasferimento
+2. il DMA lavora con indirizzi fisici frammentando il trasferimento in tanti piccoli trasferimenti.

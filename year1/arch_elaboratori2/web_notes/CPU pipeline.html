@@ -59,14 +59,14 @@ scrittura nei registri</li>
 <p>Con il termine hazard o criticità si indica un fenomeno in cui l’esecuzione dell’istruzione dipende dai risultati dell’istruzione precedente, creando così una <strong>dipendenza</strong>.</p>
 <p>Le dipendenze creano degli <strong>stalli</strong> nella CPU. Lo stallo viene scoperto durante la fase ID e l’istruzione stessa e tutte le successive entrano in stallo.</p>
 <p>Lo stallo viene risolto solo quando l’istruzione dipendente viene completata così da sbloccare l’istruzione che la richiedeva.</p>
-<p>Dato che ogni fase deve lavorare ad ogni ciclo ci clock quando si presenta uno stallo è possibile che per alcune fasi non ci siano istruzioni da fare, vengon quindi introdotte le istruzioni <strong>nop</strong> o <strong>bubble</strong> cioè delle istruzioni che non fanno nulla ma servono a tenere impegnata quella fase.</p>
+<p>Dato che ogni fase deve lavorare ad ogni ciclo di clock, quando si presenta uno stallo è possibile che per alcune fasi non ci siano istruzioni da fare, vengono quindi introdotte le istruzioni <strong>nop</strong> o <strong>bubble</strong> cioè delle istruzioni che non fanno nulla ma servono a tenere impegnata quella fase.</p>
 <p>Esempio di istruzioni che creano uno stallo:</p>
 <pre><code>add $s1, $t0, $t1
 sub $s2, $s1, $s3 
 </code></pre>
 <p>l’istruzione <code>sub</code> entra in stallo perché richiede il registro $s1 che non è stato ancora aggiornato dall’istruzione <code>add</code>. Diciamo che la seconda istruzione dipende dalla precedente</p>
-<p>La dipendenza indica che non possiamo modificare l’ordine delle istruzione senza alterare il risultato</p>
-<h3 id="tipi-di-dipendenza">Tipi di dipendenza</h3>
+<p>La dipendenza implica che non possiamo modificare l’ordine delle istruzione senza alterare il risultato</p>
+<h3 id="tipi-di-dipendenza-data-hazards">Tipi di dipendenza (data hazards)</h3>
 <h4 id="dipendenza-raw">Dipendenza RAW</h4>
 <p><em>Read After Write</em> avviene quando un’istruzione legge un registro scritto da una istruzione precedente.</p>
 <p>Es.</p>
@@ -85,7 +85,8 @@ sub $s1, $s2, $t3 // write $s1
 <pre><code>add $t0, $s1, $t1 // read $s1
 sub $s1, $s2, $t3 // write $s1
 </code></pre>
-<p>la dipendenza che capita più spesso e anche più importante è quella di tipo RAW.</p>
+<p>Mentre le dipendenze di tipo WAR e WAW possono generare problemi sono nel caso in cui la cpu esegue le istruzioni in modo disordinato (out-of-order execution),<br>
+la dipendenza che capita più spesso e anche più importante è quella di tipo RAW:</p>
 <p><img src="https://i.ibb.co/2sXVrWx/esempio-dipendenze.png" alt=""></p>
 <p>La gestione degli stalli viene fatta dalla <em>Hazard detection unit</em> che è contenuta nella fase ID e quello che fa è semplicemente confrontare i registri coinvolti nell’istruzione corrente con quegli delle istruzioni precedenti.</p>
 <h3 id="register-file-ottimizzato">Register file ottimizzato</h3>
@@ -100,7 +101,7 @@ sub $s1, $s2, $t3 // write $s1
 <p>Una <code>beq</code> impiega 4 cicli ad aggiornare il valore del PC e fino a che il PC non viene aggiornato non si sa se bisogna saltare oppure eseguire normalmente le istruzioni successive.<br>
 In quei 4 cicli l’istruzione subito successiva alla <code>beq</code> è arrivata allo stadio EXE e quindi non ha ancora modificato alcun registro, quindi nel caso la <code>beq</code> dovesse saltare sostituiamo le istruzioni che sono entrate nella pipeline con delle nop e ripartiamo dal salto, mentre nel caso la <code>beq</code> non salti non abbiamo perso nessun ciclo di clock.</p>
 <p>In caso di salto però perdiamo 3 cicli di clock inutilmente, possiamo ottimizzare la nostra CPU facendo fare il confronto tra i registri nella fase ID al posto della EXE, perdendo così solo un ciclo e non tre. Questa tecnica viene chiamata <strong>delayed branch</strong></p>
-<p>Si noti che questo implica che l’istruzione subito dopo la <code>beq</code> <strong>viene sempre completata</strong> quindi sta al programmatore decidere come gestire il comportamento, esplicitando una <code>nop</code> oppure inserendo una istruzione che non modifica la semantica del programma.</p>
+<p>Si noti che questo implica che l’istruzione subito dopo la <code>beq</code> <strong>viene sempre completata</strong> quindi sta al programmatore (oppure al compilatore se in grado) decidere come gestire il comportamento, esplicitando una <code>nop</code> oppure inserendo una istruzione che non modifica la semantica del programma.</p>
 <p>Il fatto di aver spostare il confronto nella fase ID ci porta un problema: il forwarding mandava i dati alla fase EXE e non alla fase ID, per poter mandare i valori corretti nella fase ID abbiamo bisogna di mettere una nop.<br>
 <img src="https://i.ibb.co/jVZ2FtK/exebeq.png" alt=""></p>
 <p>Mentre se abbiamo una dipendenza tra <code>beq</code> e <code>lw</code> abbiamo bisogno di 2 nop</p>
@@ -211,12 +212,12 @@ pred: 11111<strong>10</strong>1111<strong>10</strong>11110…</p>
 <h2 id="eccezioni-ed-interruzioni">Eccezioni ed interruzioni</h2>
 <p>Ci sono dei casi particolari in cui il normale flusso del codice può essere cambiato, questi casi particolari sono <strong>le eccezioni e le interruzioni</strong></p>
 <ul>
-<li>Si parla di <strong>eccezioni</strong> quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefiniti o altre sviste di programmazione (sono tendenzialmente software)</li>
+<li>Si parla di <strong>eccezioni</strong> quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefinite o altre sviste di programmazione (sono tendenzialmente software)</li>
 <li>Si parla di <strong>interruzioni</strong> quando la causa è esterna al processore come l’interazione con dei dispositivi IO (sono tendenzialmente hardware)</li>
 </ul>
 <p>Quando si verifica una eccezione o una interruzione la CPU deve:</p>
 <ul>
-<li>Interrompere l’esecuzione del programma utente</li>
+<li>Interrompere l’esecuzione del programma utente (quindi anche le istruzioni che sono già entrate in pipeline</li>
 <li>Salvare lo stato di esecuzione del programma, nel MIPS solo il PC viene salvato in un registro chiamato <em>Exception program counter</em> (EPC)</li>
 <li>Trasferire il controllo al sistema operativo modificando opportunamente il PC, quando il sistema operativo ha gestito l’eccezione l’esecuzione riprende.</li>
 </ul>

@@ -43,7 +43,7 @@ Le dipendenze creano degli **stalli** nella CPU. Lo stallo viene scoperto durant
 
 Lo stallo viene risolto solo quando l'istruzione dipendente viene completata così da sbloccare l'istruzione che la richiedeva.
 
-Dato che ogni fase deve lavorare ad ogni ciclo ci clock quando si presenta uno stallo è possibile che per alcune fasi non ci siano istruzioni da fare, vengon quindi introdotte le istruzioni **nop** o **bubble** cioè delle istruzioni che non fanno nulla ma servono a tenere impegnata quella fase.
+Dato che ogni fase deve lavorare ad ogni ciclo di clock, quando si presenta uno stallo è possibile che per alcune fasi non ci siano istruzioni da fare, vengono quindi introdotte le istruzioni **nop** o **bubble** cioè delle istruzioni che non fanno nulla ma servono a tenere impegnata quella fase.
 
 Esempio di istruzioni che creano uno stallo:
 
@@ -54,9 +54,9 @@ sub $s2, $s1, $s3
 
 l'istruzione `sub` entra in stallo perché richiede il registro $s1 che non è stato ancora aggiornato dall'istruzione `add`. Diciamo che la seconda istruzione dipende dalla precedente
 
-La dipendenza indica che non possiamo modificare l'ordine delle istruzione senza alterare il risultato
+La dipendenza implica che non possiamo modificare l'ordine delle istruzione senza alterare il risultato
 
-### Tipi di dipendenza
+### Tipi di dipendenza (data hazards)
 
 #### Dipendenza RAW
 
@@ -86,7 +86,8 @@ Es.
 	sub $s1, $s2, $t3 // write $s1
 
 
-la dipendenza che capita più spesso e anche più importante è quella di tipo RAW.
+Mentre le dipendenze di tipo WAR e WAW possono generare problemi sono nel caso in cui la cpu esegue le istruzioni in modo disordinato (out-of-order execution),
+la dipendenza che capita più spesso e anche più importante è quella di tipo RAW:
 
 ![](https://i.ibb.co/2sXVrWx/esempio-dipendenze.png)
 
@@ -116,7 +117,7 @@ In quei 4 cicli l'istruzione subito successiva alla `beq` è arrivata allo stadi
 
 In caso di salto però perdiamo 3 cicli di clock inutilmente, possiamo ottimizzare la nostra CPU facendo fare il confronto tra i registri nella fase ID al posto della EXE, perdendo così solo un ciclo e non tre. Questa tecnica viene chiamata **delayed branch**
 
-Si noti che questo implica che l'istruzione subito dopo la `beq` **viene sempre completata** quindi sta al programmatore decidere come gestire il comportamento, esplicitando una `nop` oppure inserendo una istruzione che non modifica la semantica del programma.
+Si noti che questo implica che l'istruzione subito dopo la `beq` **viene sempre completata** quindi sta al programmatore (oppure al compilatore se in grado) decidere come gestire il comportamento, esplicitando una `nop` oppure inserendo una istruzione che non modifica la semantica del programma.
 
 Il fatto di aver spostare il confronto nella fase ID ci porta un problema: il forwarding mandava i dati alla fase EXE e non alla fase ID, per poter mandare i valori corretti nella fase ID abbiamo bisogna di mettere una nop.
 ![](https://i.ibb.co/jVZ2FtK/exebeq.png)
@@ -202,12 +203,12 @@ pred: 11111**10**1111**10**11110....
 
 Ci sono dei casi particolari in cui il normale flusso del codice può essere cambiato, questi casi particolari sono **le eccezioni e le interruzioni**
 
-- Si parla di **eccezioni** quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefiniti o altre sviste di programmazione (sono tendenzialmente software)
+- Si parla di **eccezioni** quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefinite o altre sviste di programmazione (sono tendenzialmente software)
 - Si parla di **interruzioni** quando la causa è esterna al processore come l'interazione con dei dispositivi IO (sono tendenzialmente hardware)
 
 Quando si verifica una eccezione o una interruzione la CPU deve:
 
-- Interrompere l'esecuzione del programma utente
+- Interrompere l'esecuzione del programma utente (quindi anche le istruzioni che sono già entrate in pipeline
 - Salvare lo stato di esecuzione del programma, nel MIPS solo il PC viene salvato in un registro chiamato *Exception program counter* (EPC)
 - Trasferire il controllo al sistema operativo modificando opportunamente il PC, quando il sistema operativo ha gestito l'eccezione l'esecuzione riprende.
 
