@@ -1,5 +1,5 @@
 let algo_strut_dati1 = [];
-let basi_dati1 = [];
+let basi_dati1 = ["Introduzione"];
 let prob_stat = ["Introduzione"];
 let prog_ogg1 = [];
 let sis_operativi1 = [];

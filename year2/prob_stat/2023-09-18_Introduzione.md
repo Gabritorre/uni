@@ -6,7 +6,8 @@ La statistica unita al mondo della computer science forma una disciplina chiamat
 
 **popolazione di riferimento**: è un insieme di individui di qualunque tipo (chiamati **unità statistiche**) su cui lavorare per ottenere dati e generare nuove informazioni
 
-**dati** sono dei valori grezzi (non elaborati) ottenuti attraverso misure o rilevazioni fatte sulla popolazione oppure su un campione (cioè un sottoinsieme della popolazione)
+**dati** sono dei valori grezzi (non elaborati) ottenuti attraverso misure o rilevazioni fatte sulla popolazione oppure su un **campione** (cioè un sottoinsieme della popolazione)
+
 
 ## Variabili
 
@@ -21,3 +22,8 @@ La statistica unita al mondo della computer science forma una disciplina chiamat
 - Le variabili sono dette **quantitative** (o numeriche) quando i valori che la variabile assume sono numeri che si suddividono in:
 - **discreti** (o interi): quando si tratta appunti di numeri interi (numero di clienti, visualizzazioni)
 - **continui** (o reali): quando si tratta di numeri reali (peso, tempo)
+
+## Inferenza Statistica
+
+con inferenza si indica che i dati sono stati prelevati solo su un campione e non su tutta la popolazione, però le conclusioni vengono estese a tutta la popolazione.
+Affinché ciò avvengo in modo corretto bisogna stabilire il **legame** tra la **popolazione** e il **campione**, esistono dei modelli matematici per fare ciò.
