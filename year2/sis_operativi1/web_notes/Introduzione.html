@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-09-19_Introduzione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione-ai-sistemi-operativi">Introduzione ai sistemi operativi</a>
+<ul>
+<li><a href="#definizione-di-sistema-operativo">Definizione di sistema operativo</a></li>
+<li><a href="#storia-dei-sistemi-operativi">Storia dei sistemi operativi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione-ai-sistemi-operativi">Introduzione ai sistemi operativi</h1>
+<h2 id="definizione-di-sistema-operativo">Definizione di sistema operativo</h2>
+<p>Il computer moderno è un sistema composto da molte parti hardware e scrivere software che tenga conto di tutte le parti è a dir poco impossibile, per questo è fondamentale il <strong>sistema operativo</strong> cioè un software (o meglio un insieme di processi) che si occupa principalmente di due cose (pensandolo ad alto livello)</p>
+<ol>
+<li><strong>gestire le risorse</strong>: quindi far comunicare e gestire le componenti hardware, e ovviamente le risorse software le quali richiedono <strong>tempo e spazio</strong> che il sistema operativo deve gestire</li>
+<li><strong>essere vista come una macchina astratta</strong>: quindi fornire all’utente un’interfaccia che permetta di comunicare semplicemente con il computer (<strong>trasparenza</strong>) senza preoccuparsi delle operazioni complesse che fa la macchina (<strong>mascheramento</strong>).</li>
+</ol>
+<p>Nella seguente immagine si vede che il sistema operativo fa da cuscinetto tra l’hardware e il software</p>
+<p><img src="https://i.ibb.co/TBkYbbD/achitecture.png" alt=""></p>
+<p>Distinguiamo la differenza tra programma e processo:</p>
+<ul>
+<li><strong>Programma</strong>: è il codice eseguibile che sta in memoria di massa</li>
+<li><strong>Processo</strong>: è il programma che è attualmente in esecuzione sulla CPU</li>
+</ul>
+<p>Quindi un programma diventa un processo quando esso viene eseguito</p>
+<p>Il sistema operativo ha 2 modalità con cui eseguire i processi che differiscono in base ai permessi che deve avere un processo:</p>
+<ul>
+<li><strong>user mode</strong>: permessi limitati, generalmente i programmi che usa l’utente normale vengono eseguiti in questa modalità</li>
+<li><strong>kernel mode</strong>: permessi totali, i processi del sistema operativo utilizzano questa modalità</li>
+</ul>
+<h2 id="storia-dei-sistemi-operativi">Storia dei sistemi operativi</h2>
+<p>la storia dei sistemi operativi si suddivide in 5 generazioni:</p>
+<h3 id="gen-1">Gen 1</h3>
+<ul>
+<li>Periodo 1945 - 1955</li>
+<li>Non esiste ancora il concetto di sistema operativo. In questi anni si sviluppano le prime macchine (MARK 1 che funzionava a relè, ENIAC a valvole termoioniche, EDVAC su transistor).</li>
+<li>Limiti della I generazione: affidabilità scarsa, ruoli non distinti, complessità di uso, lentezza</li>
+</ul>
+<h3 id="gen-2">Gen 2</h3>
+<ul>
+<li>Periodo 1955 - 65</li>
+<li>Nascono i primi linguaggi a più alto livello come assembly e fortran</li>
+<li>Nasce il concetto di <strong>monoprogrammazione</strong> cioè eseguire un <strong>job</strong> alla volta (con job si intende un programma o un insieme di programmi, che sono memorizzati in memoria)</li>
+<li>C’è una netta separazione dei ruoli (operatori, costruttori, programmatori…)</li>
+<li>Nascono le versioni primordiali del sistema operativo chiamati <em>monitor</em></li>
+<li>Veniva usato un <strong>sistema di elaborazione batch</strong>:<br>
+<img src="https://i.ibb.co/B3hcbYS/batch.png" alt="enter image description here">
+<ul>
+<li>a. il programmatore scriveva il programma in fortran o assembly su carta, poi copiarlo su schede perforate</li>
+<li>b. vari gruppi di schede perforate, quindi più di un job (per questo definito sistema batch) venivano dati ad un calcolatore (1401) in grado di trasferire il contenuto delle schede su un nastro magnetico</li>
+<li>c. il nastro veniva riavvolto e portato ai calcolatori (7094) dove veniva caricato prima un programma (l’antenato dei sistemi operativi) in grado di leggere i job ed eseguirli uno dietro l’altro</li>
+<li>d. venivano eseguiti i job e il risultato di ogni job veniva salvato su un ulteriore nastro</li>
+<li>e. dopo che ogni job ha dato il proprio risultato si estrae il nastro e si portava nella macchina 1401</li>
+<li>f. qui il nastro veniva letto e si stampavano i risultati dei vari job</li>
+</ul>
+</li>
+</ul>
+<p>Durante l’esecuzione di un sistema batch la memoria si comportava nel seguente modo:</p>
+<p><img src="https://i.ibb.co/G9F2Rkw/memoria-batch.png" alt="enter image description here"></p>
+<h3 id="gen-3">Gen 3</h3>
+<ul>
+<li>Periodo 1965 - 80</li>
+<li>nasce la <strong>multiprogrammazione</strong>: quando un job richiede delle operazioni di I/O la CPU lascia il job in mano alle unità periferiche e si occupa di eseguire un altro job per non perdere tempo, inoltre la memoria viene partizionata per ospitare vari job contemporaneamente</li>
+<li>Vengono sviluppati i circuiti integrati</li>
+<li>Nascono altri linguaggi ad alto livello tra cui <strong>C</strong></li>
+<li>Si sviluppano degli algoritmi di cpu scheduling (che eseguirà il sistema operativo)</li>
+<li>Nascono i <strong>sistemi timesharing</strong></li>
+<li>Nascono i sistemi UNIX e lo standard POSIX per rendere compatibili le diverse versioni di UNIX</li>
+<li>Nasce internet</li>
+</ul>
+<h4 id="sistemi-timesharing">Sistemi timesharing</h4>
+<p>i sistemi timesharing sono delle varianti della multiprogrammazione fatto per far collegare più utenti tramite un terminale alla macchina la quale cercava di soddisfare i job richiesti a turno</p>
+<p>In questo meccanismo vengono introdotti i concetti di:</p>
+<ul>
+<li><strong>cambio di contesto</strong>: ciò ogni volta che si cambia job, il sistema operativo deve salvare le informazioni di quel job e prepararsi ad far partire il job successivo ripristinando eventualmente delle informazioni</li>
+<li><strong>protezione</strong>: ogni job doveva essere indipendente e quindi non doveva leggere o scrivere nelle memoria di altri job</li>
+<li><strong>memoria virtuale</strong>: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa riferimento agli indirizzi fisici della memoria per agevolare la protezione</li>
+</ul>
+<h3 id="gen-4">Gen 4</h3>
+<ul>
+<li>Periodo 1980 - oggi</li>
+<li>Si sviluppano i <strong>personal computer</strong> e le <strong>workstation</strong> con GUI sempre più semplici da utilizzare</li>
+<li>Trasferimenti di dati tramite la rete sempre più frequente</li>
+<li>Vengono sviluppati tantissimi sistemi operativi</li>
+<li>nasce il modello <strong>client-server</strong> in cui i client fanno delle richieste che il server elabora e poi restituisce un risultato</li>
+<li>cloud computing</li>
+<li>programmazione multithread e programmazione ad oggetti</li>
+<li>Si forma una suddivisione tra software open source e closed source</li>
+<li>Software utilizzabili direttamente su internet</li>
+</ul>
+<h3 id="gen-5">Gen 5</h3>
+<ul>
+<li>Periodo 1990 - oggi</li>
+<li>sempre più forte presenza di dispositivi mobile che possiedono una potenza di calcolo molto elevata</li>
+<li>IoT</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
