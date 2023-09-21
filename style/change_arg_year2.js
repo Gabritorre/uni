@@ -1,6 +1,6 @@
 let algo_strut_dati1 = [];
 let basi_dati1 = ["Introduzione"];
-let prob_stat = ["Introduzione"];
+let prob_stat = ["Introduzione", "Probabilita elementare"];
 let prog_ogg1 = [];
 let sis_operativi1 = ["Introduzione"];
 
