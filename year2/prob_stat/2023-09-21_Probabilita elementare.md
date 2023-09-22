@@ -29,6 +29,7 @@ Il totale è dato da: $m_1 \cdot m_2 \cdot m_3 = 6 \cdot 6 \cdot 6 = 216$
 ### Disposizioni
 
 Avendo un insieme di $n$ elementi, una disposizione è una scelta di $r$ elementi ordinati presi dall'insieme.
+Due disposizioni sono diverse tra loro se contengono elementi diversi oppure se contengono gli stessi elementi ma in ordine diverso
 
 Si distinguono le **disposizioni semplici e le disposizioni con ripetizioni** in base a se un elemento si può ripetere o meno.
 
@@ -49,20 +50,55 @@ $r = 2$
 totale di combinazioni: $3^2 = 9$ infatti abbiamo:
 $$(II), (IL), (IA), (LI), (LL), (LA), (AI), (AL), (AA)$$
 
-- **disposizioni con ripetizione**: se invece vogliamo sempre prendere $r$ su un insieme $n$ ma non ci interessa l'ordine degli elementi, possiamo calcolare il totale come 
+- **disposizioni senza ripetizione**: se invece vogliamo sempre prendere $r$ su un insieme $n$ ma non ci interessa l'ordine degli elementi, possiamo calcolare il totale come 
 $$\frac{n!}{(n-r)!}$$
 
 
-esempio: quante parole di 2 lettere **diverse** sono componibili con l'alfabeto $\{I, L, A\}$
+**Esempio**: quante parole di 2 lettere **diverse** sono componibili con l'alfabeto $\{I, L, A\}$
 
 $n = 3$
 $r = 2$
 
 totale: $\frac{3!}{(3-2)!} = \frac{6}{1} = 6$
 
-### Permutazione
+**Esempio**: ad una gara partecipano 9 concorrenti ma solo 3 vengono premiati quanti sono i possibili podi?
 
-### Combinazione
-https://dariomalchiodi.gitlab.io/sad-python-book/L09-Calcolo_combinatorio.html#:~:text=Principio%20fondamentale%20del%20calcolo%20combinatorio%3A%20se%20ci%20sono%20s1,allora%20il%20numero%20delle%20sequenze
+qui abbiamo 9 possibilità per il primo posto
+8 possibilità per il secondo posto
+7 possibilità per il terzo posto
+
+utilizzando la formula faremo $\frac{9!}{(9-3)!} = \frac{9!}{6!} = 9\cdot 8 \cdot 7$
+
+### Permutazioni
+
+Quando in un insieme di $n$ elementi vogliamo ottenere tutte le combinazioni possibili utilizzando tutti gli elementi dell'insieme si usano le **permutazioni**, anch'esse si distinguono di due tipi: semplici e con ripetizioni.
+Ricordiamo che due permutazioni sono diverse se cambia l'ordine in cui appaiono gli elementi
+
+- **permutazioni semplici**: gli elementi non si possono ripetere. Il totale è dato dal fattoriale di $n$ :
+	$$n!$$
+- **permutazioni con ripetizioni**: gli elementi si possono ripetere un determinato numero di volte. In questo caso il totale è dato da:
+	$$\frac{n!}{k_1!\cdot k2!\cdot k3!\cdot ... \cdot k_j!}$$
+	dove ogni $k_\text{j-esimo}$ rappresenta quante volte può essere ripetuto l'elemento 1, poi l'elemento 2 e così via
+	
+
+**Esempio**: quanti sono i possibili anagrammi della parola MAMMA
+Abbiamo $n = 5$ lettere totale
+la M si ripete 3 volte e la A si ripete 2 volte, quindi la formula per trovare il totale di permutazioni è:
+
+$$\frac{5!}{3!\cdot 2!} = 10$$
+
+Infatti le possibilità sono: MMMAA, MMAMA, MAMMA, AMMMA, AMMAM, AMAMM, AAMMM, MAAMM, MMAAM, MAMAM
+
+**Esempio**: in quanti modi si possono disporre 10 persone in 10 sedie allineate
+possiamo pensare che per la prima sedia abbiamo 10 scelte possibili,
+per la seconda sedia abbiamo 9 scelte possibili
+per la terza sedia abbiamo 8 scelte possibili
+...
+
+otteniamo quindi che il totale di modi di disporre le persone è $10!$
+
+	
+### Combinazioni
+
 
 ![](https://i.ibb.co/xSxMfH0/albero-calc-comb.png)
