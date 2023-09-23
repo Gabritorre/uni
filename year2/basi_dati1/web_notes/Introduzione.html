@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Introduzione</title>
+  <title>2023-09-18_Introduzione</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -16,6 +16,7 @@
 <li><a href="#introduzione-a-basi-di-dati">Introduzione a basi di dati</a>
 <ul>
 <li></li>
+<li><a href="#database-e-dbms">Database e DBMS</a></li>
 </ul>
 </li>
 </ul>
@@ -25,7 +26,6 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="introduzione-a-basi-di-dati">Introduzione a basi di dati</h1>
-<p>I <strong>database</strong> sono uno strumento di gestione di grandi quantità di dati memorizzati in modo permanente e che permettono ad utenti o programmi di consultare, modificare e archiviare i dati in modo sicuro ed efficiente.</p>
 <h3 id="distinzione-tra-sistema-informatico-e-informativo">Distinzione tra sistema informatico e informativo</h3>
 <p><strong>sistema informativo</strong>: insieme di procedure e risorse (umani e non) per la raccolta, archiviazione, elaborazione e distribuzione di informazioni utili ad un’organizzazione per prendere delle decisioni</p>
 <p><strong>sistema informatico</strong>: insieme di tecnologie informatiche e telecomunicazioni che sono a supporto delle attività di un’organizzazione</p>
@@ -33,6 +33,48 @@
 <h3 id="distinzione-tra-dato-e-informazione">Distinzione tra dato e informazione</h3>
 <p><strong>dati</strong>: sono dei valori grezzi (non elaborati) che sono subito visibili ma difficili da interpretare<br>
 <strong>informazioni</strong>: provengono dall’elaborazione dei dati e servono a generare nuova conoscenza tramite delle interpretazioni e comprensione dei dati</p>
+<h2 id="database-e-dbms">Database e DBMS</h2>
+<p>Un database è una raccolta di <strong>dati</strong> permanenti gestiti da un computer suddivisi in:</p>
+<ul>
+<li><strong>Metadati</strong>: servono a definire lo schema del database, la struttura dei dati, le operazioni eseguibili, le restrizioni, le autorizzazioni. I metadati vengono definiti prima di creare i dati.</li>
+<li><strong>Dati</strong>: sono i valori presenti nel database che devono essere conformi alle caratteristiche del DB e su cui sono definite delle relazioni. I dati sono molti di più dei metadati, sono permanenti e sono utilizzabili contemporaneamente da più utenti inoltre sono protetti e accessibili mediante transazioni.</li>
+</ul>
+<p>Un DBMS (Data Base Management System) è un sistema che offre strumenti per gestire una base di dati, quindi la definizione della struttura le modifiche, le aggiunte, gli accessi, ecc…</p>
+<p>Generalmente un utente non accede mai direttamente alla base di dati bensì si interfaccia o con il DBMS oppure con un programma esterno il quale si interfaccia a sua volta con il DBMS.</p>
+<h3 id="funzionalità-del-dbms">Funzionalità del DBMS</h3>
+<ul>
+<li><strong>DDL</strong>: (Data Definition Language) Si occupa di definire la struttura dei dati, le regole di integrità e i privilegi degli utenti (Appartengono a questa categoria comandi come <strong>CREATE</strong>, <strong>ALTER</strong>, <strong>DROP</strong>).</li>
+<li><strong>DML</strong>: Si occupa di leggere, inserire, modificare e cancellare dei dati (alcuni comandi sono <strong>SELECT</strong>, <strong>INSERT</strong>, <strong>UPDATE</strong>, <strong>DELETE</strong>).</li>
+<li>Meccanismi per il controllo dei dati</li>
+<li>Altri strumenti per l’amministrazione del DB</li>
+</ul>
+<h4 id="ddl">DDL</h4>
+<p>Possiamo descrivere un database in 3 livelli differenti</p>
+<ul>
+<li>livello fisico: descrive come vengono organizzati i dati fisicamente in memoria</li>
+<li>livello logico: descrive la struttura dei dati e le loro relazioni in modo astratto</li>
+<li>livello di vista logica: descrive come appare la struttura astratta del BD per un certo applicativo esterno (può variare in base all’applicativo)</li>
+</ul>
+<h4 id="dml">DML</h4>
+<p>Per manipolare un database ci sono generalmente 2 modi in base alla capacità di chi vuole agire:</p>
+<ul>
+<li>Tramite una interfaccia grafica</li>
+<li>Oppure tramite uno specifico linguaggio: direttamente in SQL, oppure in altri linguaggi usando librerie o SQL embedded nel linguaggio</li>
+</ul>
+<h4 id="controllo-dei-dati">Controllo dei dati</h4>
+<p>Il DBMS deve controllare che:</p>
+<ul>
+<li>l’integrità del database sia mantenuta, quindi ogni dato deve rispettare i propri <strong>vincoli di integrità</strong></li>
+<li>Proteggere il database da accessi non autorizzati, da malfunzionamenti hw e sw, da accessi concorrenti degli utenti</li>
+</ul>
+<h3 id="transazioni">Transazioni</h3>
+<p>Una transazione è una sequenza di istruzioni in lettura e scrittura che deve rispettare le proprietà <strong>ACID</strong>:</p>
+<ul>
+<li><em>Atomicità</em>: le istruzioni devono essere viste come una istruzione singola, quindi se nel mezzo si verifica un problema va abortita tutta la transazione, annullando tutte le modifiche apportate</li>
+<li><em>Consistenza</em>: Dopo la transazione l’integrità referenziale deve essere mantenuta</li>
+<li><em>Isolamento</em>: più transazioni effettuate in contemporanea devono risultare come se fossero eseguiti una dopo l’altra</li>
+<li><em>Durabilità</em>: Alla fine della transazione le modifiche devono essere salvate permanentemente su disco</li>
+</ul>
 
     </div>
   </div>
