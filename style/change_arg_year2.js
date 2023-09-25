@@ -1,5 +1,5 @@
 let algo_strut_dati1 = ["Fibonacci"];
-let basi_dati1 = ["Introduzione"];
+let basi_dati1 = ["Introduzione", "Progettazione e modellazione"];
 let prob_stat = ["Introduzione", "Probabilita elementare"];
 let prog_ogg1 = [];
 let sis_operativi1 = ["Introduzione"];
