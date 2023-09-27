@@ -20,7 +20,7 @@ Quindi un programma diventa un processo quando esso viene eseguito
 
 Il sistema operativo ha 2 modalità con cui eseguire i processi che differiscono in base ai permessi che deve avere un processo:
 
-- **user mode**: permessi limitati, generalmente i programmi che usa l'utente normale vengono eseguiti in questa modalità
+- **user mode**: permessi limitati, generalmente i programmi che usa l'utente normale vengono eseguiti in questa modalità. **Non è possibile** fare direttamente operazioni di I/O o di accedere liberamente alla memoria, e ovviamente di passare alla kernel mode,
 - **kernel mode**: permessi totali, i processi del sistema operativo utilizzano questa modalità
 
 
@@ -71,7 +71,7 @@ Durante l'esecuzione di un sistema batch la memoria si comportava nel seguente m
 i sistemi timesharing sono delle varianti della multiprogrammazione fatto per far collegare più utenti tramite un terminale alla macchina la quale cercava di soddisfare i job richiesti a turno
 
 In questo meccanismo vengono introdotti i concetti di:
-- **cambio di contesto**: ciò ogni volta che si cambia job, il sistema operativo deve salvare le informazioni di quel job e prepararsi ad far partire il job successivo ripristinando eventualmente delle informazioni
+- **cambio di contesto**: cioè ogni volta che si cambia job, il sistema operativo deve salvare le informazioni di quel job e prepararsi ad far partire il job successivo ripristinando eventualmente delle informazioni
 - **protezione**: ogni job doveva essere indipendente e quindi non doveva leggere o scrivere nelle memoria di altri job
 - **memoria virtuale**: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa riferimento agli indirizzi fisici della memoria per agevolare la protezione
 
@@ -93,5 +93,106 @@ In questo meccanismo vengono introdotti i concetti di:
 ### Gen 5
 
 - Periodo 1990 - oggi
-- sempre più forte presenza di dispositivi mobile che possiedono una potenza di calcolo molto elevata
+- sempre più forte presenza di dispositivi *mobile* che possiedono una potenza di calcolo molto elevata
 - IoT
+
+## Componenti HW gestite dal sistema operativo
+
+Semplificando possiamo dire che un computer è composto da componenti hw quali: CPU, Memoria e periferiche di I/O che comunicano tra loro attraverso un BUS (nella realtà è decisamente più complesso di così)
+
+
+### CPU
+
+La CPU (Central Processing Unit) è il componente il cui compito è generalmente quello di recuperare delle istruzioni dalla memoria, decodificarle ed eseguirle.
+
+La CPU è dotata di **registri** cioè delle memorie su cui può trasferire dei dati ed eseguire operazioni su di essi.
+Tre registri particolari sono:
+- il **PC** (Program Counter) il quale contiene l'indirizzo di memoria della prossima istruzione da eseguire.
+- lo **ST** (Stack Pointer) il quale punta alla cima dello stack (una area di memoria RAM contenente chiamate a funzioni variabili, parametri delle funzioni e altre cose...)
+- il **PSW** (Program Status Word) in cui abbiamo 1 bit per vedere se il processo è il Kernel mode o in User mode, e altri bit per il controllo. Importante per chiamate al sistema operativo e operazioni di I/O. 
+Per passare **dalla user mode alla kernel mode** esiste una istruzione chiamata *TRAP*, la quale da il comando al sistema operativo per fare delle determinate operazioni per poi tornare in user mode.
+
+una CPU può contenere al suo interno un coprocessore destinato all'uso grafico per esempio.
+
+Il processore ha il compito importante di fare **context switch**: spesso i processi vengono interrotti per far partire altri processi, quando accade ciò la CPU deve salvare lo stato dei registri del processo attuale e prepararsi per il nuovo processo, quando il vecchio processo torna ad essere eseguito i registri vengono ripristinati.
+
+Le CPU odierne funzionano tramite una **pipeline** cioè un meccanismo che permette alle varie fari di una istruzione (fetch-decode-execution-....) di essere eseguite in parallelo su più istruzioni.
+Permettono di avere ancora più parallelismo le CPU **superscalari** in cui delle istruzioni vengono eseguite effettivamente contemporaneamente assicurandosi che il risultato sia lo stesso di una esecuzione in serie.
+
+Vediamo anche i concetti di **multicore e multithreading**:
+- Una CPU multicore significa che presenta più di una unità di calcolo chiamati **core** ogni core ha i suoi registri, la propria cache L1 (e anche L2 in alcune architetture), e altri componenti. Questo permette di eseguire più processi in parallelo dato che ogni core si occupa di una esecuzione indipendente.
+- Il concetto di multithreading si riferisce al fatto che un core può gestire, generalmente, due thread (cioè un flusso di istruzioni appartenenti ad un processo più grande) contemporaneamente **condividendone le risorse**, questi due thread vengono eseguiti alternativamente ad una velocità talmente alta da simulare una esecuzione simultanea
+
+### Memoria
+
+Per non fare da bottleneck al processore la memoria dovrebbe essere estremamente veloce, capiente e a basso costo. Dato che non è possibile soddisfare tutti i requisiti si è optato per fare una gerarchia di memorie
+
+![enter image description here](https://i.ibb.co/nBwyw4B/memory-hierarchy-drawio.png)
+
+- **registri** i registri sono zone di memoria volatile ad altissima velocità posizionati all'interno del chip del processore, il problema è che sono pochi e piccoli (generalemente 32 registri grandi 32 bit oppure 64 registri grandi 64 bit)
+- **cache** la cache è una memoria volatile che a sua volta viene divisa in 3 livelli:
+	- cache L1: è la più veloce e più vicina all'unità di calcolo delle tre, ma è anche la più piccola (pochi KB) ne è presente una per ogni core.
+	- cache L2: è leggermente più lenta e distante della L1 me è un po' più capiente (pochi MB), in alcune architetture è condivisa tra i core mentre in altre è separata per ogni core.
+	- cache L3: è la più lenta e distante delle tre ma è la più capiente (decide fino a toccare le centinaia di MB), condivisa tra i core.
+Il funzionamento di utilizzo della cache è il seguente: quando la CPU richiede un dato viene prima cercato nella cache (dalla L1 alla L3) nel caso venga trovato si verifica un **cache hit** quindi il dato viene preso in tempi brevissimi, se non è presente invece va cercato nella memoria RAM (**cache miss**) il ché peggiora di non poco i tempi, Il dato poi viene messo in cache per essere pronto in caso di bisogno nel breve tempo.
+
+	Si distinguono anche 2 tipi di cache in base alla loro funzione: abbiamo la **cache dati** e la **cache istruzioni** che sono ottimizzate per il loro scopo.
+
+- **Memoria principale** è anche chiamata Memoria RAM (Random Access Memory) è anche questa è una memoria volatile decisamente più lenta della cache ma le sue dimensioni girano intorno a svariati GB (8,16,32,...).
+In questa è presente sia il sistema operativo che è in esecuzione e ogni processo che ha la propria porzione di memoria definita da due indirizzi chiamati **base** e **limit** in modo da evitare che un processo acceda ad un'area di memoria che non è di sua proprietà. In alcuni casi più processi utilizzano lo stesso set di dati oppure lo stesso processo lavora su set di dati diversi, in questi casi si cerca di suddividere ulteriormente *base* e *limit* in modo da non duplicare inutilmente le zone di memoria
+
+- **Dischi rigidi** Nei dischi rigidi comprendiamo i classici **Hard Disk** (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell'HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovuta a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.
+
+	Un'evoluzione degli Hard Disk sono gli SSD (Solid State Drive) che non sono più magnetici ma elettrici e quindi risultano essere decisamente più veloci degli HDD ma non raggiungono comunque le velocità della memoria RAM, ma in generale risolvono gran parte dei limiti dei classici Hard Disk.
+
+
+- Esistono altri particolari tipi di memorie come:
+	- ROM (Read Only Memory): una memoria non volatile, molto veloce ma è scrivibile una solo volta e viene fatta dal costruttore (è solo leggibile). Spesso usata per contenere codice per l'avvio dei computer.
+	- EEPROM (Electrically Erasable Programmable ROM) e le memorie flash: anch'esse non volatili ma sono riscrivibili.
+	- CMOS: è una memoria volatile di solito affiancata da una batteria (che serve a non cancellare il contenuto una volta spento il PC), e viene utilizzata per mantenere le informazioni del BIOS di un sistema (cioè il primo software che viene eseguito all'accensione del PC, il quale fa un controllo sui componenti HW e avvia il sistema operativo)
+
+### Dispositivi di Input/Output
+
+Generalmente un dispositivo di I/O presenta due parti: un **controller** e il **dispositivo stesso**, il controller è un chip (una CPU molto più semplificata) che sa precisamente come funziona il dispositivo e offre al sistema operativo un modo semplificato per interfacciarsi con il dispositivo, così sarà il controller ad occuparsi dei dettagli mentre il sistema operativo da un comando ad "alto livello". Il sistema operativo però deve essere in grado di comunicare a dovere con il controller del dispositivo, per questo è necessario un software chiamato **driver** che si occupa di questo.
+Un **driver** è uno strato software che si posiziona tra il sistema operativo e il dispositivo che permette ai due di comunicare al meglio. Un driver è diverso per ogni sistema operativo.
+
+#### Gestione dell'I/O
+
+Un'aspetto importante è la gestione delle operazioni di input e output tra il dispositivo e la CPU. Esistono principalmente tre tecniche per gestire le operazioni:
+
+1. **Polling** (busy waiting): Quando viene richiesta una operazione di I/O la CPU rimane in attesa del termine dell'operazione continuando ad interrogare il dispositivo per sapere se ha finito. (metodo non ottimale)
+2. **interrupt**: Quando viene richiesta una operazione di I/O la CPU si mette a fare altro, una volta che l'operazione è terminata sarà il dispositivo ad avvisare la CPU la quale gestirà l'interruzione
+3. **DMA**: (Direct Memory Access) è un chip a parte che si occupa di gestire le operazioni di I/O permettendo alla CPU di eseguire altri compiti nel mentre, risultando più efficiente. La CPU si occupa solo di dire quanto e dove trasferire i dati, del resto se ne occupa il DMA che comunicherà alla CPU il termine delle operazioni.
+
+### Bus
+
+Un bus non è altro che un collegamento elettrico capaci di trasportare dei dati da un punto A ad un punto B all'interno dei circuiti stampati, ne sono un esempio i collegamenti PCIe, USB, SATA. Vengono quindi utilizzati per far comunicare tutti i componenti di un computer tra loro
+
+
+
+## Tipi di sistemi operativi
+
+Vediamo alcuni tipi di sistemi operativi in base all'elaboratore su cui operano
+
+### OS per mainframe
+
+Con mainframe si intendono quegli elaboratori centralizzati molto grandi (anche alcuni metri) generalmente utilizzati dalle aziende. Il sistema operativo in questo caso deve essere in grado di gestire grandi quantità di operazioni I/O, richieste di consultare una grossa base dati, eseguire un grosso numero di piccoli task
+
+### OS per server
+Un server può essere sia un normale computer, una workstation, oppure un mainframe, e il sistema operativo deve essere in grado di gestire un gran numero di utenti (i client), deve gestire la condivisione delle risorse (hw e sw) in genere si ha un insieme di server per spartire il lavoro e il collegamento avviene tramite internet.
+
+### OS multiprocessore
+In questo caso il sistema operativo deve essere in grado di gestire più CPU contemporaneamente e quinti tanti calcoli in parallelo.
+
+### OS per PC
+In questa categoria ci sono i sistemi operativi che conosciamo di più, sono general purpose
+
+### OS per real-time
+Sistemi operativi che sono operano su dispositivi di automazione dove il tempo per completare un task è fondamentale
+
+### OS per embedded
+Il sistema operativo deve lavorare su risorse limitate, deve gestire bene l'energia
+
+### OS per smart-card
+sono dei sistemi operativi molto semplici che vengono inseriti nelle carte con dei chip piccolissimi, con una limitata alimentazione e possono fare una sola funzione.
+
