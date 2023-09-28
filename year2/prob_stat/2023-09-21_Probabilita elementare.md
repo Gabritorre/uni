@@ -33,31 +33,31 @@ Due disposizioni sono diverse tra loro se contengono elementi diversi oppure se 
 
 Si distinguono le **disposizioni semplici e le disposizioni con ripetizioni** in base a se un elemento si può ripetere o meno.
 
-- **disposizioni con ripetizione**: il totale delle combinazioni di un insieme di $n$ elementi prendendone $r$ alla volta e in cui l'ordine degli elementi è importante è dato da:
-$$n^r$$
+- **disposizioni con ripetizione**: il totale delle combinazioni di un insieme di $n$ elementi prendendone $k$ alla volta e in cui l'ordine degli elementi è importante è dato da:
+$$n^k$$
 ne è un esempio il linguaggio binario
 $n = \{0,1\} = 2$
-$r = 3$
+$k = 3$
 
-le combinazioni totali sono $n^r = 2^3 = 8$ infatti andandole a rappresentare tutte:
+le combinazioni totali sono $n^k = 2^3 = 8$ infatti andandole a rappresentare tutte:
 
 $$(000), (001), (010), (011), (100), (101), (110), (111)$$
 
 similmente possiamo fare l'esempio di rappresentare parole lunghe 2 lettere utilizzando l'alfabeto $\{I, L, A\}$
 
 $n = 3$
-$r = 2$
+$k = 2$
 totale di combinazioni: $3^2 = 9$ infatti abbiamo:
 $$(II), (IL), (IA), (LI), (LL), (LA), (AI), (AL), (AA)$$
 
-- **disposizioni senza ripetizione**: se invece vogliamo sempre prendere $r$ su un insieme $n$ ma non ci interessa l'ordine degli elementi, possiamo calcolare il totale come 
-$$\frac{n!}{(n-r)!}$$
+- **disposizioni senza ripetizione**: se invece vogliamo sempre prendere $k$ su un insieme $n$ ma non ci interessa l'ordine degli elementi, possiamo calcolare il totale come 
+$$\frac{n!}{(n-k)!}$$
 
 
 **Esempio**: quante parole di 2 lettere **diverse** sono componibili con l'alfabeto $\{I, L, A\}$
 
 $n = 3$
-$r = 2$
+$k = 2$
 
 totale: $\frac{3!}{(3-2)!} = \frac{6}{1} = 6$
 
@@ -99,6 +99,37 @@ otteniamo quindi che il totale di modi di disporre le persone è $10!$
 
 	
 ### Combinazioni
+Avendo un insieme di $n$ elementi, una disposizione è una scelta di $k$ elementi, di cui l'ordine non è importante, presi dall'insieme.
+Due combinazioni sono diverse tra loro se contengono elementi diversi.
 
+Si distinguono le **combinazioni semplici e le combinazioni con ripetizioni** in base a se un elemento si può ripetere o meno.
+
+- **combinazioni semplici**: In cui gli elementi non si possono ripetere:
+$$\frac{n!}{k!\cdot(n-k)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n}{k}$$
+	es. 1 quanti sono i sottoinsiemi di 3 lettere creabili dal seguente alfabeto $\{A, B, C, D, E\}$  in questo caso l'ordine non è importante quindi, per esempio, il sottoinsieme (ABC) è uguale a (CBA)
+per trovare il totale dobbiamo trovare tutte le permutazioni senza ripetizioni:
+
+	$\frac{5!}{2!} = 5 \cdot 4 \cdot 3 = 60$
+
+	e da questi dividere per quante sono le coppie uguali per ogni scelta
+abbiamo che ogni sottoinsieme è possibile scriverlo in $3! = 6$ modi differenti.
+quindi il numero totale di sottoinsiemi non ripetuti è $\frac{60}{6} = 10$
+utilizzando la formula per intero sarebbe $\frac{5!}{3! \cdot (5-3)!}$
+
+	es 2 quanti numeri interi compresi tra 100 e 999 hanno tutte le cifre crescenti?
+il risultato è dato da $\binom{9}{3}$ oppure scritto in formula $\frac{9!}{3!\cdot(9-3)!} = \frac{9\cdot 8 \cdot 7}{3 \cdot 2 \cdot 1} = 84$
+
+
+- **combinazioni semplici**: In cui gli elementi si possono ripetere:
+
+$$\frac{(n-k+1)!}{k!(n-1)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n + k -1}{k}$$
+
+es. una urna contiene 20 palline, in quanti modi si possono estrarre 3 palline supponendo che dopo ogni estrazione la pallina venga reimmessa. ricordiamo che non ci interessa l'ordine in cui sono state estratte le palline (quindi estrarre 1 poi 3 poi 7 equivale ad estrarre 7 poi 1 poi 3)
+
+abbiamo $n = 20$ palline, e $k= 3$ palline da estrarre, e ovviamente dopo che la pallina viene estratta viene reimmessa nell'urna in modo che possa essere ripescata (c'è ripetizione)
+
+$\binom{20 + 3 -1}{3} \to \binom{22}{3} \to \frac{22!}{3!\cdot(22-3)!} = 1540$
+
+### Schema riassuntivo
 
 ![](https://i.ibb.co/xSxMfH0/albero-calc-comb.png)
