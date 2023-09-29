@@ -13,7 +13,11 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#classi">Classi</a></li>
+<li><a href="#classi">Classi</a>
+<ul>
+<li><a href="#costruttore">Costruttore</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -23,14 +27,19 @@
       <h1 id="classi">Classi</h1>
 <p>Posiamo definire una <strong>classe</strong> come un modello astratto che definisce le caratteristiche e le funzionalità che possiede un <strong>oggetto</strong></p>
 <p>un <strong>oggetto</strong> è un’istanza della classe, quindi una sorta di “variabile” che rispetta le caratteristiche definite dalla classe.</p>
-<p>Le caratteristiche definite nella classe prendono il nome di <strong>campi</strong> (o attributi) e sono effettivamente delle variabili di vario tipo che possiedono un significato specifico per quella classe.<br>
-Le funzionalità sono delle <strong>funzioni o metodi</strong> quindi pezzi di codice che lavorano sui campi</p>
+<ul>
+<li>Le caratteristiche definite nella classe prendono il nome di <strong>campi</strong> (o attributi) e sono effettivamente delle variabili di vario tipo che possiedono un significato specifico per quella classe. I tipi che può assumere un campo sono sia tipi primitive oppure possono essere altre classi.</li>
+<li>Le funzionalità sono delle <strong>funzioni o metodi</strong> quindi pezzi di codice che lavorano sui campi</li>
+</ul>
 <p>Un classico esempio è la classe automobile che possiede delle caratteristiche come: marca, colore, targa, peso, capacità della benzina. E possiede delle funzionalità come accelerare frenare, fare rifornimento.<br>
 La classe quindi definisce come deve essere fatto l’oggetto automobile, gli oggetti effettivi istanziati saranno delle automobili con le proprie caratteristiche che rispettano quelle della classe</p>
-<p>definiremo la classe come segue:</p>
-<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Car</span><span class="token punctuation">{</span>
+<p>definiremo la classe come segue in un apposito <strong>file</strong> che deve per forza essere nominato con <strong>lo stesso nome della classe</strong> (Car.java):</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+	<span class="token comment">// Campi</span>
 	<span class="token keyword">double</span> speed<span class="token punctuation">;</span>
 	<span class="token keyword">double</span> fuel<span class="token punctuation">;</span>
+	string color<span class="token punctuation">;</span>
+	<span class="token comment">// Metodi</span>
 	<span class="token keyword">void</span> <span class="token function">refuel</span><span class="token punctuation">(</span><span class="token keyword">double</span> amount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		fuel <span class="token operator">+=</span> amount<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
@@ -43,13 +52,38 @@ La classe quindi definisce come deve essere fatto l’oggetto automobile, gli og
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>L’istanziamento di una classe può avvenire un numero indefinito di volte e ogni oggetto è indipendente dagli altri</p>
-<p>Creiamo tre istanze della classe</p>
-<pre class=" language-java"><code class="prism  language-java">Car myCar1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Car myCar2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-Car myCar3 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p>l’istanziazione di una classe può avvenire un numero indefinito di volte e ogni oggetto è indipendente dagli altri</p>
+<p>Creiamo una istanza della classe utilizzando la parola chiave <strong>new</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>	<span class="token comment">//main del programma</span>
+	Car myCar1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	myCar1<span class="token punctuation">.</span>fuel <span class="token operator">=</span> <span class="token number">10.0</span><span class="token punctuation">;</span>	<span class="token comment">//accedo direttamente al campo dell'oggetto</span>
+	myCar<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//eseguo il metodo dell'oggetto</span>
+<span class="token punctuation">}</span>
 </code></pre>
 <p>Questi tre oggetti provengono dalla stessa classe ma ognuno ha il proprio spazio di memora e quindi non si influenzano tra loro.</p>
+<h2 id="costruttore">Costruttore</h2>
+<p>Il costruttore è un metodo speciale della classe che deve avere lo stesso nome della classe e viene chiamato quando viene istanziato un oggetto. Il suo compito è quello di inizializzare i campi dell’oggetto con dei valori passati come parametro alla funzione.</p>
+<p>Sempre nell’esempio della macchina un possibile costruttore potrebbe essere:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+	<span class="token comment">// Campi</span>
+	<span class="token keyword">double</span> speed<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> fuel<span class="token punctuation">;</span>
+	String color<span class="token punctuation">;</span>
+	<span class="token comment">//costruttore</span>
+	<span class="token function">Car</span><span class="token punctuation">(</span><span class="token keyword">double</span> s<span class="token punctuation">,</span> <span class="token keyword">double</span> f<span class="token punctuation">,</span> String c<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		speed <span class="token operator">=</span> s<span class="token punctuation">;</span>
+		fuel <span class="token operator">=</span> f<span class="token punctuation">;</span>
+		color <span class="token operator">=</span> c<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// Metodi</span>
+	<span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	Car myCar <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">100.0</span><span class="token punctuation">,</span> <span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//utilizzo il costruttore per istanziare l'oggetto</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>è possibile avere anche più di un costruttore e se non se ne scrive nemmeno uno entra in gioco il costruttore di default che inizializza i campi ai loro valori standard.</p>
 
     </div>
   </div>
