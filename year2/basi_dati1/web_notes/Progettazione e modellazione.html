@@ -15,7 +15,7 @@
 <ul>
 <li><a href="#progettazione-e-modellazione-del-bd">Progettazione e modellazione del BD</a>
 <ul>
-<li><a href="#entità-proprietà-e-associazioni">Entità, Proprietà e Associazioni</a></li>
+<li><a href="#modello-concettuale">Modello concettuale</a></li>
 </ul>
 </li>
 </ul>
@@ -26,21 +26,30 @@
     <div class="stackedit__html">
       <h1 id="progettazione-e-modellazione-del-bd">Progettazione e modellazione del BD</h1>
 <p>Prima di realizzare fisicamente un database bisogna prima creare dei <strong>modelli astratti</strong> che rappresentano la realtà di riferimento.</p>
-<h2 id="entità-proprietà-e-associazioni">Entità, Proprietà e Associazioni</h2>
+<h2 id="modello-concettuale">Modello concettuale</h2>
+<p>IL modello concettuale è il primo schema da realizzare che interpreta realtà di riferimento.</p>
+<p>Noi useremo un <strong>modello ad oggetti</strong> che appunto riprende dei concetti dalla programmazione ad oggetti e li applica alla progettazione concettuale di un DB.</p>
+<h3 id="entità-proprietà-e-associazioni">Entità, Proprietà e Associazioni</h3>
 <p>Ci si concentra sulla rappresentazione di <strong>entità</strong>, le relative <strong>proprietà</strong> e le <strong>associazioni</strong> tra varie entità:</p>
+<p>la seguente foto è una simil-tabella di un database per orientarsi con i termini<br>
+<img src="https://i.ibb.co/64Wm6kQ/class.png" alt="enter image description here"></p>
 <ul>
 <li>
-<p>Una <strong>entità</strong>: può essere un oggetto fisico, un oggetto astratto, oppure anche un evento (ad esempio: un libro, una descrizione bibliografica, un prestito)</p>
+<p>Una <strong>entità</strong>: può essere un oggetto fisico, un oggetto astratto, oppure anche un evento (ad esempio: un libro, una descrizione bibliografica, un prestito).<br>
+una istanza dell’entità deve possedere una <strong>chiave primaria</strong>, nel modello concettuale ad oggetti se non è esplicitata una proprietà che può essere una PK <strong>non</strong> bisogna inventarsene una.<br>
+<img src="https://i.ibb.co/k597RHG/entita.png" alt="enter image description here"></p>
 </li>
 <li>
 <p>le <strong>proprietà</strong> sono le caratteristiche che possiede una entità<br>
 le proprietà possono essere di vario tipo:</p>
 <ul>
 <li>Atomiche: cioè una che non è divisibile in più parti</li>
-<li>Strutturata: in cui vengono messi insieme più componenti che potrebbero essere divisi (come un indirizzo)</li>
-<li>Multiplo: la caratteristica è singola ma può aver più di un valore (ad esempio i recapiti telefonici)</li>
+<li>record: in cui vengono messi insieme più componenti che potrebbero essere divisi (come un indirizzo)</li>
+<li>sequenza: la caratteristica è singola ma può aver più di un valore (ad esempio i recapiti telefonici o le lingue parlate)</li>
+<li>enumerazione: cioè una caratteristica che può assumere un valore tra tra un numero ristretto di valori possibili (ad esempio il sesso)</li>
 </ul>
-<p>Le proprietà possono avere dei <strong>vincoli di integrità</strong> cioè delle restrizioni sui valori che che possono assumere le proprietà di una entità</p>
+<p>Le proprietà possono avere dei <strong>vincoli di integrità</strong> cioè delle restrizioni sui valori che che possono assumere le proprietà di una entità<br>
+<img src="https://i.ibb.co/FDcHPbR/propriet.png" alt="enter image description here"></p>
 </li>
 <li>
 <p>le <strong>associazioni</strong> sono dei collegamenti logici che legano due o più entità.<br>
@@ -58,11 +67,12 @@ Una associazione è caratterizzata da due aspetti: la molteplicità e la totalit
 un altro esempio è Insegna(Professori, Corsi) ha molteplicità (1:N),</p>
 </li>
 <li>
-<p><strong>Totalità</strong> una associazione è <strong>totale</strong> se per ogni x esiste una y che è associata ad una x, altrimenti l’associazione si dice <strong>parziale</strong><br>
-Esempio: Insegna(Professori, Corsi) è <strong>totale su Corsi</strong> in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, <strong>parziale su Professori</strong>, in quanto un professore potrebbe non tenere corsi.</p>
+<p><strong>Totalità</strong> una associazione è <strong>totale</strong> se per ogni x esiste una y che è associata ad una x, altrimenti se una x può anche non è associata a nessuna y si dice <strong>parziale</strong><br>
+Esempio: Insegna(Professori, Corsi) è <strong>totale su Corsi</strong> in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, <strong>parziale su Professori</strong>, in quanto un professore potrebbe non tenere corsi.<br>
+Inoltre le associazioni possono avere delle <strong>proprietà a parte</strong>, possono essere ricorsive, e possono associarsi a più entità (e quindi non solo 2 alla volta) in questo caso chiamate <strong>associazione n-arie</strong></p>
 </li>
 </ul>
-<p>Inoltre le associazioni possono avere delle <strong>proprietà a parte</strong>. Possono essere ricorsive. E possono associarsi a n entità (e quindi non solo 2 alla volta) in questo caso chiamate <strong>associazione n-arie</strong></p>
+<p><img src="https://i.ibb.co/gJ7XcdQ/cardinalit.png" alt="enter image description here"></p>
 </li>
 </ul>
 
