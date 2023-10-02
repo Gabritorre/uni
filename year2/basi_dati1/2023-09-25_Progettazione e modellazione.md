@@ -47,5 +47,19 @@ Inoltre le associazioni possono avere delle **proprietà a parte**, possono esse
 
 
 
+## Ereditarietà delle classi
 
+nel modello ad oggetti è possibile ereditare una classa da un'altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:
 
+- aggiungere altri attributi
+- ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)
+
+## Tipi di sottoclasse
+
+![enter image description here](https://i.ibb.co/4PTcTQf/sottoclassi.png)
+
+(istanze = righe di una tabella)
+1. **sottoclassi scorrelate**: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre
+2. **sottoclassi disgiunte**: i figli non hanno istanze in comune
+3. **sottoclassi copertura**: le istanze dei figli uniti rappresentano la totalità delle istanze del padre
+4. **sottoclassi partizione**: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre

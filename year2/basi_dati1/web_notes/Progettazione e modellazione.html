@@ -16,6 +16,8 @@
 <li><a href="#progettazione-e-modellazione-del-bd">Progettazione e modellazione del BD</a>
 <ul>
 <li><a href="#modello-concettuale">Modello concettuale</a></li>
+<li><a href="#ereditarietà-delle-classi">Ereditarietà delle classi</a></li>
+<li><a href="#tipi-di-sottoclasse">Tipi di sottoclasse</a></li>
 </ul>
 </li>
 </ul>
@@ -75,6 +77,21 @@ Inoltre le associazioni possono avere delle <strong>proprietà a parte</strong>,
 <p><img src="https://i.ibb.co/gJ7XcdQ/cardinalit.png" alt="enter image description here"></p>
 </li>
 </ul>
+<h2 id="ereditarietà-delle-classi">Ereditarietà delle classi</h2>
+<p>nel modello ad oggetti è possibile ereditare una classa da un’altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:</p>
+<ul>
+<li>aggiungere altri attributi</li>
+<li>ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)</li>
+</ul>
+<h2 id="tipi-di-sottoclasse">Tipi di sottoclasse</h2>
+<p><img src="https://i.ibb.co/4PTcTQf/sottoclassi.png" alt="enter image description here"></p>
+<p>(istanze = righe di una tabella)</p>
+<ol>
+<li><strong>sottoclassi scorrelate</strong>: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre</li>
+<li><strong>sottoclassi disgiunte</strong>: i figli non hanno istanze in comune</li>
+<li><strong>sottoclassi copertura</strong>: le istanze dei figli uniti rappresentano la totalità delle istanze del padre</li>
+<li><strong>sottoclassi partizione</strong>: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre</li>
+</ol>
 
     </div>
   </div>
