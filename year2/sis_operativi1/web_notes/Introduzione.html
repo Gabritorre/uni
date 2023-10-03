@@ -19,6 +19,8 @@
 <li><a href="#storia-dei-sistemi-operativi">Storia dei sistemi operativi</a></li>
 <li><a href="#componenti-hw-gestite-dal-sistema-operativo">Componenti HW gestite dal sistema operativo</a></li>
 <li><a href="#tipi-di-sistemi-operativi">Tipi di sistemi operativi</a></li>
+<li><a href="#ulteriori-concetti-base-di-un-sistema-operativo">Ulteriori concetti base di un sistema operativo</a></li>
+<li><a href="#struttura-di-un-sistema-operativo">Struttura di un sistema operativo</a></li>
 </ul>
 </li>
 </ul>
@@ -46,6 +48,27 @@
 <ul>
 <li><strong>user mode</strong>: permessi limitati, generalmente i programmi che usa l’utente normale vengono eseguiti in questa modalità. <strong>Non è possibile</strong> fare direttamente operazioni di I/O o di accedere liberamente alla memoria, e ovviamente di passare alla kernel mode,</li>
 <li><strong>kernel mode</strong>: permessi totali, i processi del sistema operativo utilizzano questa modalità</li>
+</ul>
+<p>generalmente si tende a dare ad un processo utente i minimi permessi necessari per essere eseguito.</p>
+<p>I Principali componenti di un sistema operativo sono:</p>
+<ul>
+<li>Processor scheduler</li>
+<li>Gestore della memoria</li>
+<li>Gestore della I/O</li>
+<li>Gestore della Interprocess communication (IPC) (comunicazione dei processi)</li>
+<li>Gestore del File system</li>
+</ul>
+<p>Le proprietà che il S.O. deve riuscire ad ottenere</p>
+<ul>
+<li>Efficienza</li>
+<li>Robustezza</li>
+<li>Scalabilità</li>
+<li>Estensibilità</li>
+<li>Portabilità</li>
+<li>Sicurezza</li>
+<li>Protezione</li>
+<li>Interattività</li>
+<li>Usabilità</li>
 </ul>
 <h2 id="storia-dei-sistemi-operativi">Storia dei sistemi operativi</h2>
 <p>la storia dei sistemi operativi si suddivide in 5 generazioni:</p>
@@ -153,7 +176,8 @@ Il funzionamento di utilizzo della cache è il seguente: quando la CPU richiede 
 </li>
 <li>
 <p><strong>Memoria principale</strong> è anche chiamata Memoria RAM (Random Access Memory) è anche questa è una memoria volatile decisamente più lenta della cache ma le sue dimensioni girano intorno a svariati GB (8,16,32,…).<br>
-In questa è presente sia il sistema operativo che è in esecuzione e ogni processo che ha la propria porzione di memoria definita da due indirizzi chiamati <strong>base</strong> e <strong>limit</strong> in modo da evitare che un processo acceda ad un’area di memoria che non è di sua proprietà. In alcuni casi più processi utilizzano lo stesso set di dati oppure lo stesso processo lavora su set di dati diversi, in questi casi si cerca di suddividere ulteriormente <em>base</em> e <em>limit</em> in modo da non duplicare inutilmente le zone di memoria</p>
+In questa è presente sia il <strong>sistema operativo</strong> che è in esecuzione e <strong>ogni processo</strong> che ha la propria porzione di memoria definita da due indirizzi chiamati <strong>base</strong> e <strong>limit</strong> in modo da evitare che un processo acceda ad un’area di memoria che non è di sua proprietà. In alcuni casi più processi utilizzano lo stesso set di dati oppure lo stesso processo lavora su set di dati diversi, in questi casi si cerca di suddividere ulteriormente <em>base</em> e <em>limit</em> in modo da non duplicare inutilmente le zone di memoria</p>
+<p>Il sistema operativo si occupa di assegnare i valori di <strong>base e limit</strong> ai corrispettivi registri nella CPU (se fosse il processo stesso ad assegnarli potrebbe accedere liberamente a zone di memoria che su cui non dovrebbe accedere)</p>
 </li>
 <li>
 <p><strong>Dischi rigidi</strong> Nei dischi rigidi comprendiamo i classici <strong>Hard Disk</strong> (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell’HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovuta a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.</p>
@@ -196,6 +220,68 @@ Un <strong>driver</strong> è uno strato software che si posiziona tra il sistem
 <p>Il sistema operativo deve lavorare su risorse limitate, deve gestire bene l’energia</p>
 <h3 id="os-per-smart-card">OS per smart-card</h3>
 <p>sono dei sistemi operativi molto semplici che vengono inseriti nelle carte con dei chip piccolissimi, con una limitata alimentazione e possono fare una sola funzione.</p>
+<h2 id="ulteriori-concetti-base-di-un-sistema-operativo">Ulteriori concetti base di un sistema operativo</h2>
+<h3 id="interrupt-e-eccezioni">Interrupt e eccezioni</h3>
+<ul>
+<li>Si parla di  <strong>eccezioni</strong> (o segnali)  quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefinite o altre sviste di programmazione (sono tendenzialmente software)</li>
+<li>Si parla di  <strong>interruzioni</strong>  quando la causa è esterna al processore come l’interazione con dei dispositivi IO (sono tendenzialmente hardware)</li>
+</ul>
+<h3 id="bootstrap">Bootstrap</h3>
+<p>La fase di <strong>bootstrap o boot</strong> rappresenta la fase di avvio di un computer quindi l’avvio inizialmente del BIOS oppure EFI nei dispositivi più moderni che si occupa di fare un controllo delle componenti hardware, e carica in memoria principale le istruzioni per far effettivamente partire il sistema operativo. Successivamente avviene l’esecuzione dei programmi utente</p>
+<h3 id="processo">Processo</h3>
+<p>Come abbiamo già detto un processo è un programma in esecuzione sulla CPU.<br>
+Ogni processo possiede:</p>
+<ul>
+<li>un proprio spazio di indirizzamento in memoria dove è contenuto il programma, i suoi dati, lo stack.</li>
+<li>un descrittore che contiene delle informazioni utili al sistema operativo riguardo al processo</li>
+<li>un UID (User Identification) cioè un ID che si riferisce all’utente che ha eseguito il processo (in ambiente linux “sudo” è un UID)</li>
+<li>un PID (Process IDentifier) cioè un ID che permette di riconoscere un processo dagli altri</li>
+</ul>
+<p>Il sistema operativo contiene le principali informazioni dei vari processi in una tabella (<em>process table</em>)</p>
+<p>Un processo è in grado di generare processi figli, che a loro volta possono generare altri processi figli.</p>
+<p>Spesso i processi devono cooperare e quindi sono necessari dei modi per far comunicare i processi tra loro (IPC, InterProcess Communication)</p>
+<p>Tra i processi si possono verificare anche degli stalli che che vanno gestiti: o ignorandoli, o prevendendoli, oppure sistemarli dopo che sono accaduti.</p>
+<h3 id="file-system">File System</h3>
+<p>Il file system descrive come sono organizzati i file nella memoria secondaria, in modo semplice dice come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.</p>
+<p><img src="https://i.ibb.co/V9GqpXw/file-system.png" alt="enter image description here"></p>
+<p>Il sistema operativo permette di navigare in questo file system, effettuando dei cammini nell’albero.<br>
+Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un camminio che ci porta alla cartella “CS101”</p>
+<p>chiamiamo <strong>working directory</strong> la cartella su cui ci troviamo.</p>
+<p>Ogni dispositivo di memoria secondaria ad esempio una chiavetta USB ha il proprio file system ed è possibile attaccare il suo albero a quello del sistema per poterlo esplorare, questa operazione è detta <strong>montare un file system</strong></p>
+<p>Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo <strong>pipe</strong> uno pseudo-file che serve per far comunicare due processi tra loro, quindi si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.</p>
+<h3 id="buffer-e-spool">Buffer e spool</h3>
+<p>Oltre alla memoria cache che abbiamo già visto c’è un’altra memoria particolare che è il <strong>buffer</strong> cioè una memoria temporanea che contiene i dati delle operazioni di I/O asincrone (quindi dove il ricevente può anche non essere attivo al momento, ma può comunque leggere il dato dal buffer più tardi)</p>
+<p>lo <strong>spool</strong> (Simultaneous Peripheral Operations On Line) è una tecnica di buffering utilizzata tra un processo e una periferica lenta, in modo tale che il processo non deve aspettare attivamente</p>
+<h3 id="chiamate-a-sistema">Chiamate a sistema</h3>
+<p>le chiamate a sistema o <em>system call</em> sono delle chiamate che un processo fa al sistema operativo per fare delle operazioni specifiche che il processo non può fare ma il sistema operativo sì.<br>
+Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo il quale dopo aver terminato l’operazione che gli è stata chiesta fa riprendere il normale flusso del processo.</p>
+<h2 id="struttura-di-un-sistema-operativo">Struttura di un sistema operativo</h2>
+<p>la struttura del sistema operativo detta anche <strong>l’architettura di un sistema operativo</strong> deve la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.</p>
+<p>Abbiamo 3 diversi tipi di architettura:</p>
+<ul>
+<li>
+<p><strong>Architettura monolitica</strong>: In questa architettura il sistema operativo è programmato come un’insieme di procedure ognuna delle quali può chiamare una qualsiasi altra funzione. questo tipo di architettura presenta una struttura minimale a 3 livelli generalmente:</p>
+<ul>
+<li>un programma principale</li>
+<li>un insieme di procedure che eseguono le chiamate di sistema</li>
+<li>un insieme di procedure di utilità che aiutano le chiamate a sistema</li>
+</ul>
+<p>questa architettura è efficiente però in caso di errori è difficile capire chi lo abbia generato.</p>
+<p><img src="https://i.ibb.co/H75Cy71/monolitica.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>Architettura a livelli</strong>:  i componenti vengono organizzati in livelli i quali possono comunicare solo con i livelli adiacenti. Una richiesta da parte del processo deve passare tutti i livelli per essere completata, questo riduce un po’ l’efficienza l’organizzazione del sistema operativo è decisamente migliore</p>
+<p>un esempio di architettura a livello:<br>
+<img src="https://i.ibb.co/47mm8gD/a-livelli.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>Architettura microkernel</strong> fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.</p>
+</li>
+<li>
+<p>Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.<br>
+<img src="https://i.ibb.co/ct8cCNc/microkernel.png" alt="enter image description here"></p>
+</li>
+</ul>
 
     </div>
   </div>

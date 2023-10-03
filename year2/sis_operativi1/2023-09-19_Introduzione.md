@@ -23,6 +23,27 @@ Il sistema operativo ha 2 modalità con cui eseguire i processi che differiscono
 - **user mode**: permessi limitati, generalmente i programmi che usa l'utente normale vengono eseguiti in questa modalità. **Non è possibile** fare direttamente operazioni di I/O o di accedere liberamente alla memoria, e ovviamente di passare alla kernel mode,
 - **kernel mode**: permessi totali, i processi del sistema operativo utilizzano questa modalità
 
+generalmente si tende a dare ad un processo utente i minimi permessi necessari per essere eseguito.
+
+
+I Principali componenti di un sistema operativo sono:
+
+- Processor scheduler
+- Gestore della memoria
+- Gestore della I/O
+- Gestore della Interprocess communication (IPC) (comunicazione dei processi)
+- Gestore del File system
+
+Le proprietà che il S.O. deve riuscire ad ottenere
+- Efficienza
+- Robustezza
+- Scalabilità
+- Estensibilità
+- Portabilità
+- Sicurezza
+- Protezione
+- Interattività
+- Usabilità
 
 ## Storia dei sistemi operativi
 
@@ -139,7 +160,9 @@ Il funzionamento di utilizzo della cache è il seguente: quando la CPU richiede 
 	Si distinguono anche 2 tipi di cache in base alla loro funzione: abbiamo la **cache dati** e la **cache istruzioni** che sono ottimizzate per il loro scopo.
 
 - **Memoria principale** è anche chiamata Memoria RAM (Random Access Memory) è anche questa è una memoria volatile decisamente più lenta della cache ma le sue dimensioni girano intorno a svariati GB (8,16,32,...).
-In questa è presente sia il sistema operativo che è in esecuzione e ogni processo che ha la propria porzione di memoria definita da due indirizzi chiamati **base** e **limit** in modo da evitare che un processo acceda ad un'area di memoria che non è di sua proprietà. In alcuni casi più processi utilizzano lo stesso set di dati oppure lo stesso processo lavora su set di dati diversi, in questi casi si cerca di suddividere ulteriormente *base* e *limit* in modo da non duplicare inutilmente le zone di memoria
+In questa è presente sia il **sistema operativo** che è in esecuzione e **ogni processo** che ha la propria porzione di memoria definita da due indirizzi chiamati **base** e **limit** in modo da evitare che un processo acceda ad un'area di memoria che non è di sua proprietà. In alcuni casi più processi utilizzano lo stesso set di dati oppure lo stesso processo lavora su set di dati diversi, in questi casi si cerca di suddividere ulteriormente *base* e *limit* in modo da non duplicare inutilmente le zone di memoria
+
+	Il sistema operativo si occupa di assegnare i valori di **base e limit** ai corrispettivi registri nella CPU (se fosse il processo stesso ad assegnarli potrebbe accedere liberamente a zone di memoria che su cui non dovrebbe accedere)
 
 - **Dischi rigidi** Nei dischi rigidi comprendiamo i classici **Hard Disk** (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell'HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovuta a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.
 
@@ -196,3 +219,85 @@ Il sistema operativo deve lavorare su risorse limitate, deve gestire bene l'ener
 ### OS per smart-card
 sono dei sistemi operativi molto semplici che vengono inseriti nelle carte con dei chip piccolissimi, con una limitata alimentazione e possono fare una sola funzione.
 
+
+## Ulteriori concetti base di un sistema operativo
+
+### Interrupt e eccezioni
+
+-   Si parla di  **eccezioni** (o segnali)  quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefinite o altre sviste di programmazione (sono tendenzialmente software)
+-   Si parla di  **interruzioni**  quando la causa è esterna al processore come l’interazione con dei dispositivi IO (sono tendenzialmente hardware)
+
+### Bootstrap
+
+La fase di **bootstrap o boot** rappresenta la fase di avvio di un computer quindi l'avvio inizialmente del BIOS oppure EFI nei dispositivi più moderni che si occupa di fare un controllo delle componenti hardware, e carica in memoria principale le istruzioni per far effettivamente partire il sistema operativo. Successivamente avviene l'esecuzione dei programmi utente
+
+
+### Processo
+Come abbiamo già detto un processo è un programma in esecuzione sulla CPU.
+Ogni processo possiede:
+- un proprio spazio di indirizzamento in memoria dove è contenuto il programma, i suoi dati, lo stack.
+- un descrittore che contiene delle informazioni utili al sistema operativo riguardo al processo
+- un UID (User Identification) cioè un ID che si riferisce all'utente che ha eseguito il processo (in ambiente linux "sudo" è un UID)
+- un PID (Process IDentifier) cioè un ID che permette di riconoscere un processo dagli altri
+
+Il sistema operativo contiene le principali informazioni dei vari processi in una tabella (*process table*)
+
+Un processo è in grado di generare processi figli, che a loro volta possono generare altri processi figli.
+
+Spesso i processi devono cooperare e quindi sono necessari dei modi per far comunicare i processi tra loro (IPC, InterProcess Communication)
+
+Tra i processi si possono verificare anche degli stalli che che vanno gestiti: o ignorandoli, o prevendendoli, oppure sistemarli dopo che sono accaduti.
+
+
+### File System
+
+Il file system descrive come sono organizzati i file nella memoria secondaria, in modo semplice dice come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.
+
+![enter image description here](https://i.ibb.co/V9GqpXw/file-system.png)
+
+Il sistema operativo permette di navigare in questo file system, effettuando dei cammini nell'albero.
+Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un camminio che ci porta alla cartella "CS101"
+
+chiamiamo **working directory** la cartella su cui ci troviamo.
+
+Ogni dispositivo di memoria secondaria ad esempio una chiavetta USB ha il proprio file system ed è possibile attaccare il suo albero a quello del sistema per poterlo esplorare, questa operazione è detta **montare un file system**
+
+Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo **pipe** uno pseudo-file che serve per far comunicare due processi tra loro, quindi si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.
+
+
+### Buffer e spool
+
+Oltre alla memoria cache che abbiamo già visto c'è un'altra memoria particolare che è il **buffer** cioè una memoria temporanea che contiene i dati delle operazioni di I/O asincrone (quindi dove il ricevente può anche non essere attivo al momento, ma può comunque leggere il dato dal buffer più tardi)
+
+lo **spool** (Simultaneous Peripheral Operations On Line) è una tecnica di buffering utilizzata tra un processo e una periferica lenta, in modo tale che il processo non deve aspettare attivamente
+
+
+### Chiamate a sistema
+
+le chiamate a sistema o *system call* sono delle chiamate che un processo fa al sistema operativo per fare delle operazioni specifiche che il processo non può fare ma il sistema operativo sì.
+Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo il quale dopo aver terminato l'operazione che gli è stata chiesta fa riprendere il normale flusso del processo.
+
+## Struttura di un sistema operativo
+
+la struttura del sistema operativo detta anche **l'architettura di un sistema operativo** deve la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.
+
+Abbiamo 3 diversi tipi di architettura:
+
+- **Architettura monolitica**: In questa architettura il sistema operativo è programmato come un'insieme di procedure ognuna delle quali può chiamare una qualsiasi altra funzione. questo tipo di architettura presenta una struttura minimale a 3 livelli generalmente:
+	- un programma principale
+	- un insieme di procedure che eseguono le chiamate di sistema
+	- un insieme di procedure di utilità che aiutano le chiamate a sistema
+
+	questa architettura è efficiente però in caso di errori è difficile capire chi lo abbia generato.
+
+	![enter image description here](https://i.ibb.co/H75Cy71/monolitica.png)
+
+
+- **Architettura a livelli**:  i componenti vengono organizzati in livelli i quali possono comunicare solo con i livelli adiacenti. Una richiesta da parte del processo deve passare tutti i livelli per essere completata, questo riduce un po' l'efficienza l'organizzazione del sistema operativo è decisamente migliore
+
+	un esempio di architettura a livello:
+![enter image description here](https://i.ibb.co/47mm8gD/a-livelli.png)
+
+- **Architettura microkernel** fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.
+- Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.
+![enter image description here](https://i.ibb.co/ct8cCNc/microkernel.png)
