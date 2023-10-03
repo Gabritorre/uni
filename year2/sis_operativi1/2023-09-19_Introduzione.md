@@ -82,7 +82,7 @@ Durante l'esecuzione di un sistema batch la memoria si comportava nel seguente m
 - nasce la **multiprogrammazione**: quando un job richiede delle operazioni di I/O la CPU lascia il job in mano alle unità periferiche e si occupa di eseguire un altro job per non perdere tempo, inoltre la memoria viene partizionata per ospitare vari job contemporaneamente
 - Vengono sviluppati i circuiti integrati
 - Nascono altri linguaggi ad alto livello tra cui **C**
-- Si sviluppano degli algoritmi di cpu scheduling (che eseguirà il sistema operativo)
+- Si sviluppano degli algoritmi di CPU scheduling (che eseguirà il sistema operativo)
 - Nascono i **sistemi timesharing**
 - Nascono i sistemi UNIX e lo standard POSIX per rendere compatibili le diverse versioni di UNIX
 - Nasce internet
@@ -150,7 +150,7 @@ Per non fare da bottleneck al processore la memoria dovrebbe essere estremamente
 
 ![enter image description here](https://i.ibb.co/nBwyw4B/memory-hierarchy-drawio.png)
 
-- **registri** i registri sono zone di memoria volatile ad altissima velocità posizionati all'interno del chip del processore, il problema è che sono pochi e piccoli (generalemente 32 registri grandi 32 bit oppure 64 registri grandi 64 bit)
+- **registri** i registri sono zone di memoria volatile ad altissima velocità posizionati all'interno del chip del processore, il problema è che sono pochi e piccoli (generalmente 32 registri grandi 32 bit oppure 64 registri grandi 64 bit)
 - **cache** la cache è una memoria volatile che a sua volta viene divisa in 3 livelli:
 	- cache L1: è la più veloce e più vicina all'unità di calcolo delle tre, ma è anche la più piccola (pochi KB) ne è presente una per ogni core.
 	- cache L2: è leggermente più lenta e distante della L1 me è un po' più capiente (pochi MB), in alcune architetture è condivisa tra i core mentre in altre è separata per ogni core.
@@ -202,7 +202,7 @@ Vediamo alcuni tipi di sistemi operativi in base all'elaboratore su cui operano
 Con mainframe si intendono quegli elaboratori centralizzati molto grandi (anche alcuni metri) generalmente utilizzati dalle aziende. Il sistema operativo in questo caso deve essere in grado di gestire grandi quantità di operazioni I/O, richieste di consultare una grossa base dati, eseguire un grosso numero di piccoli task
 
 ### OS per server
-Un server può essere sia un normale computer, una workstation, oppure un mainframe, e il sistema operativo deve essere in grado di gestire un gran numero di utenti (i client), deve gestire la condivisione delle risorse (hw e sw) in genere si ha un insieme di server per spartire il lavoro e il collegamento avviene tramite internet.
+Un server può essere sia un normale computer, una workstation, oppure un mainframe, e il sistema operativo deve essere in grado di gestire un gran numero di utenti (i client), deve gestire la condivisione delle risorse (HW e SW) in genere si ha un insieme di server per spartire il lavoro e il collegamento avviene tramite internet.
 
 ### OS multiprocessore
 In questo caso il sistema operativo deve essere in grado di gestire più CPU contemporaneamente e quinti tanti calcoli in parallelo.
@@ -256,7 +256,7 @@ Il file system descrive come sono organizzati i file nella memoria secondaria, i
 ![enter image description here](https://i.ibb.co/V9GqpXw/file-system.png)
 
 Il sistema operativo permette di navigare in questo file system, effettuando dei cammini nell'albero.
-Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un camminio che ci porta alla cartella "CS101"
+Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un cammino che ci porta alla cartella "CS101"
 
 chiamiamo **working directory** la cartella su cui ci troviamo.
 
@@ -299,5 +299,5 @@ Abbiamo 3 diversi tipi di architettura:
 ![enter image description here](https://i.ibb.co/47mm8gD/a-livelli.png)
 
 - **Architettura microkernel** fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.
-- Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.
+Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.
 ![enter image description here](https://i.ibb.co/ct8cCNc/microkernel.png)

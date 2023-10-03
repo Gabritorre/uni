@@ -105,7 +105,7 @@
 <li>nasce la <strong>multiprogrammazione</strong>: quando un job richiede delle operazioni di I/O la CPU lascia il job in mano alle unità periferiche e si occupa di eseguire un altro job per non perdere tempo, inoltre la memoria viene partizionata per ospitare vari job contemporaneamente</li>
 <li>Vengono sviluppati i circuiti integrati</li>
 <li>Nascono altri linguaggi ad alto livello tra cui <strong>C</strong></li>
-<li>Si sviluppano degli algoritmi di cpu scheduling (che eseguirà il sistema operativo)</li>
+<li>Si sviluppano degli algoritmi di CPU scheduling (che eseguirà il sistema operativo)</li>
 <li>Nascono i <strong>sistemi timesharing</strong></li>
 <li>Nascono i sistemi UNIX e lo standard POSIX per rendere compatibili le diverse versioni di UNIX</li>
 <li>Nasce internet</li>
@@ -162,7 +162,7 @@ Permettono di avere ancora più parallelismo le CPU <strong>superscalari</strong
 <p><img src="https://i.ibb.co/nBwyw4B/memory-hierarchy-drawio.png" alt="enter image description here"></p>
 <ul>
 <li>
-<p><strong>registri</strong> i registri sono zone di memoria volatile ad altissima velocità posizionati all’interno del chip del processore, il problema è che sono pochi e piccoli (generalemente 32 registri grandi 32 bit oppure 64 registri grandi 64 bit)</p>
+<p><strong>registri</strong> i registri sono zone di memoria volatile ad altissima velocità posizionati all’interno del chip del processore, il problema è che sono pochi e piccoli (generalmente 32 registri grandi 32 bit oppure 64 registri grandi 64 bit)</p>
 </li>
 <li>
 <p><strong>cache</strong> la cache è una memoria volatile che a sua volta viene divisa in 3 livelli:</p>
@@ -209,7 +209,7 @@ Un <strong>driver</strong> è uno strato software che si posiziona tra il sistem
 <h3 id="os-per-mainframe">OS per mainframe</h3>
 <p>Con mainframe si intendono quegli elaboratori centralizzati molto grandi (anche alcuni metri) generalmente utilizzati dalle aziende. Il sistema operativo in questo caso deve essere in grado di gestire grandi quantità di operazioni I/O, richieste di consultare una grossa base dati, eseguire un grosso numero di piccoli task</p>
 <h3 id="os-per-server">OS per server</h3>
-<p>Un server può essere sia un normale computer, una workstation, oppure un mainframe, e il sistema operativo deve essere in grado di gestire un gran numero di utenti (i client), deve gestire la condivisione delle risorse (hw e sw) in genere si ha un insieme di server per spartire il lavoro e il collegamento avviene tramite internet.</p>
+<p>Un server può essere sia un normale computer, una workstation, oppure un mainframe, e il sistema operativo deve essere in grado di gestire un gran numero di utenti (i client), deve gestire la condivisione delle risorse (HW e SW) in genere si ha un insieme di server per spartire il lavoro e il collegamento avviene tramite internet.</p>
 <h3 id="os-multiprocessore">OS multiprocessore</h3>
 <p>In questo caso il sistema operativo deve essere in grado di gestire più CPU contemporaneamente e quinti tanti calcoli in parallelo.</p>
 <h3 id="os-per-pc">OS per PC</h3>
@@ -245,7 +245,7 @@ Ogni processo possiede:</p>
 <p>Il file system descrive come sono organizzati i file nella memoria secondaria, in modo semplice dice come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.</p>
 <p><img src="https://i.ibb.co/V9GqpXw/file-system.png" alt="enter image description here"></p>
 <p>Il sistema operativo permette di navigare in questo file system, effettuando dei cammini nell’albero.<br>
-Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un camminio che ci porta alla cartella “CS101”</p>
+Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un cammino che ci porta alla cartella “CS101”</p>
 <p>chiamiamo <strong>working directory</strong> la cartella su cui ci troviamo.</p>
 <p>Ogni dispositivo di memoria secondaria ad esempio una chiavetta USB ha il proprio file system ed è possibile attaccare il suo albero a quello del sistema per poterlo esplorare, questa operazione è detta <strong>montare un file system</strong></p>
 <p>Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo <strong>pipe</strong> uno pseudo-file che serve per far comunicare due processi tra loro, quindi si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.</p>
@@ -275,10 +275,8 @@ Praticamente tutti i comandi di input/output di un programma sono delle chiamate
 <img src="https://i.ibb.co/47mm8gD/a-livelli.png" alt="enter image description here"></p>
 </li>
 <li>
-<p><strong>Architettura microkernel</strong> fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.</p>
-</li>
-<li>
-<p>Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.<br>
+<p><strong>Architettura microkernel</strong> fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.<br>
+Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.<br>
 <img src="https://i.ibb.co/ct8cCNc/microkernel.png" alt="enter image description here"></p>
 </li>
 </ul>
