@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-04_Processi e thread</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#processi-e-thread">Processi e thread</a>
+<ul>
+<li><a href="#modello-a-processi">Modello a processi</a></li>
+<li><a href="#gestione-dei-processi">Gestione dei processi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="processi-e-thread">Processi e thread</h1>
+<p>Un <strong>processo</strong> è un <strong>programma in esecuzione sulla CPU</strong></p>
+<p>In un sistema con CPU a singolo core abbiamo un <strong>pseudo-parallelismo</strong> dei processi in quanto la CPU in un istante di tempo lavora solo su un processo alla volta ma nell’arco di più tempo la CPU continua a cambiare processo in modo da illudere una esecuzione parallela su più processi</p>
+<p>Mentre in un sistema a CPU con più core (sistemi multiprocessore) abbiamo una effettiva <strong>esecuzione parallela</strong> su più processi in contemporanea.</p>
+<p>Un Processo ha un proprio <strong>spazio di indirizzamento</strong> diviso in:</p>
+<ul>
+<li>sezione del <strong>testo</strong>: dove risiede il codice da eseguire</li>
+<li>sezione dei <strong>dati</strong>: dove sono salvate le variabili e la memoria allocata dinamicamente</li>
+<li>sezione dello <strong>stack</strong>: dove vengono salvate le istruzioni, e le funzioni con le proprie variabili locali</li>
+</ul>
+<h2 id="modello-a-processi">Modello a processi</h2>
+<p>Possiamo rappresentare il software come una sequenza di processi che vengono eseguiti in coda uno dopo l’altro.</p>
+<p>Nel seguente modello vediamo come 4 processi indipendenti in memoria vengono eseguiti dalla CPU uno alla volta e continuando a passare da un processo all’altro anche se l’attuale processo non è terminato (context switch).<br>
+<img src="https://i.ibb.co/18rP5k5/modello-a-processi.png" alt="enter image description here"></p>
+<h2 id="gestione-dei-processi">Gestione dei processi</h2>
+<p>Il sistema operativo può svolgere alcune funzioni per gestire i processi tra cui:</p>
+<ul>
+<li>Creazione di processi</li>
+<li>Distruzione di processi</li>
+<li>Sospensione di processi</li>
+<li>Ripresa di processi</li>
+<li>Modifica della priorità di un processo</li>
+<li>Blocco di processi</li>
+<li>Risveglio di processi</li>
+<li>Dispatching di processi</li>
+<li>Interprocess communication (IPC)</li>
+</ul>
+<h3 id="creazione-di-un-processo">Creazione di un processo</h3>
+<p>Un processo può venir creato nei seguenti casi:</p>
+<ol>
+<li>in fase di inizializzazione del sistema</li>
+<li>per una chiamata di sistema</li>
+<li>su richiesta di un utente</li>
+<li>l’inizio di un job batch</li>
+</ol>
+<p>I processi possono essere in <em><strong>foreground</strong></em> quindi attivi oppure in <em><strong>background</strong></em>:</p>
+<ul>
+<li>quelli in <em>foreground</em> sono spesso processi che interagiscono con l’utente e soddisfano richieste</li>
+<li>quelli in <em>background</em> sono spesso dei processi del sistema operativo che non interagiscono attivamente con l’utente ma svolgo comunque compiti importanti per far funzionare il sistema come si deve. La maggior parte di questi processi sono in continua attesa che un determinato evento accada, questi processi sono chiamati <strong>deamon</strong></li>
+</ul>
+<p>In Unix si usa la chiamata a sistema <strong>fork</strong> per creare un clone figlio che è la copia del processo chiamante e quindi il contenuto dello spazio di indirizzamento del padre viene <strong>copiato</strong> in un nuovo spazio di indirizzamento che viene assegnato al figlio. poi è pratica comune eseguire il comando <em>execve</em> sul processo figlio per farli eseguire un programma specifico.</p>
+<p>Il corrispettivo Windows è <strong>CreateProcess</strong> che crea il processo e carica direttamente il nuovo programma al processo, in questo caso lo spazio di indirizzamento del figlio è diverso fin da subito (non c’è nessuna copia come in Unix)</p>
+<p>In entrambi i casi dopo la creazione del processo e il caricamento del programma il processo padre e figlio hanno <strong>spazi di memoria distinti</strong> anche se in alcuni casi è possibile che padre e figlio condividano delle risorse.</p>
+<h3 id="terminazione-di-un-processo">Terminazione di un processo</h3>
+<p>Un processo può terminare per via delle seguenti ragioni:</p>
+<ol>
+<li>uscita normale (volontaria)</li>
+<li>uscita con errore (volontaria)</li>
+<li>terminato per errore fatale (involontario)</li>
+<li>terminazione forzata da un altro processo (killed, involontario)</li>
+</ol>
+<p>Quando un processo padre viene terminato involontariamente il sistema operativo può decidere se terminare anche i figli oppure lasciarli continuare.</p>
+<p>In Unix esiste una gerarchia tra i processi dove il processo <em>init</em> è la radice, mentre in windows tutti i processi sono uguali. Su windows però il padre di un processo possiede un <em>handle</em> per gestire il figlio, questo <em>handle</em> è possibile passarlo ad altri processi.</p>
+<h3 id="ciclo-di-vita-di-un-processo">Ciclo di vita di un processo</h3>
+<p>Un processo possiede un ciclo di vita, cioè dal momento che viene creato al momento in cui viene distrutto può assumere diversi <strong>stati</strong>:</p>
+<ul>
+<li><strong>Running</strong> (esecuzione): il processo è in esecuzione sulla CPU.</li>
+<li><strong>Ready</strong> (pronto): il processo è pronto per essere eseguito ma attende che la CPU lo metta in esecuzione</li>
+<li><strong>Blocked</strong> (bloccato): il processo è in attesa che si verifichi un evento prima di poter continuare la sua esecuzione</li>
+</ul>
+<p>Il sistema operativo possiede una lista dei processi <strong>ready</strong> e <strong>blocked</strong></p>
+<p>Possiamo individuare 4 transazioni tra gli stati appena descritti:</p>
+<p><img src="https://i.ibb.co/sQ797KJ/life-cycle.png" alt="enter image description here"></p>
+<ol>
+<li>Il processo si blocca in attesa di un evento</li>
+<li>lo scheduler dei processo seleziona un altro processo da eseguire e l’attuale processo viene messo in <em>ready</em></li>
+<li>Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata <strong>dispatching</strong>)</li>
+<li>l’evento si è verificato e il processo è pronto a continuare la sua esecuzione</li>
+</ol>
+<h3 id="pcb">PCB</h3>
+<p>Il sistema operativo possiede una tabella chiamate <strong>process table</strong> che contiene i <strong>PCB</strong> (Process Control Block) di ogni processo in vita al momento, anche chiamato <strong>descrittore del processo</strong>.</p>
+<p>Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processa da <em>ready</em> a <em>running</em> e vice versa</p>
+<p><img src="https://i.ibb.co/CVKTckK/tabella-processi.png" alt="enter image description here"></p>
+<h3 id="sospensione-di-un-processo">Sospensione di un processo</h3>
+<p>Un processo può essere mandato in uno stato di <strong>sospensione</strong> che non corrisponde a nessuno dei 3 stati precedenti. Quando è sospeso il processo messo da parte momentaneamente, questo può essere utile per rilevare problemi di sicurezza oppure in fase di debugging.</p>
+<p>La sospensione può essere richiesta dal processo stesso oppure da un altro processo, deve però essere un altro processo a farlo ripartire</p>
+<p><img src="https://i.ibb.co/XzK5K9C/sospensione.png" alt="enter image description here"></p>
+<h3 id="context-switch">Context switch</h3>
+<p>il context switch è un’operazione che fa lo scheduler che si occupa di scambiare processo in esecuzione.</p>
+<p>Questa operazione è divisa in 2 fasi:</p>
+<ol>
+<li>la prima è di salvare lo stato dell’attuale processo in esecuzione, in modo da saper dove riprendere la sua esecuzione in futuro</li>
+<li>la seconda è caricare le informazioni del nuovo processo da eseguire</li>
+</ol>
+<p>durante questa operazione la CPU non fa nulla quindi bisogna minimizzare il tempo necessario per effettuare lo scambio.</p>
+<h3 id="interrupts">Interrupts</h3>
+<p>Gli <strong>interrupts</strong> sono dei segnali che abilitano il software a rispondere a degli avvisi hardware. Gli interrupt vengono chiamati trap e possono essere sincroni e asincroni:</p>
+<ul>
+<li><strong>sincroni</strong> se il segnale è derivato direttamente dalle operazioni del processo</li>
+<li><strong>asincroni</strong> se il segnale non è derivato dalle operazioni fatte dal processo</li>
+</ul>
+<p>Dopo aver ricevuto un interrupt il processore completa l’istruzione corrente e poi interrompe il processo.</p>
+<p>viene dato il comando al sistema operativo in base al tipo di interrupt viene scelto un <strong>gestore di interrupt</strong> in quale deciderà cosa fare.<br>
+Una volta che il gestore termina viene ripresa l’esecuzione del processo che era stato momentaneamente sospeso (oppure un processo successivo)</p>
+<p>Gli interrups sono solitamente collegati a fattori esterni al processore. Per riferirsi a segnali generati all’interno del processore esistono le <strong>eccezioni</strong></p>
+<h3 id="interprocess-communication">InterProcess Communication</h3>
+<p>Il sistema operativo offre dei meccanismi di comunicazione tra i processi.</p>
+<p>Abbiamo una comunicazione tramite scambio di messaggi che può essere:</p>
+<ul>
+<li>una comunicazione in cui i messaggi vengono trasmessi <strong>una direzione alla volta</strong></li>
+<li>una <strong>comunicazione bidirezionale</strong>, quindi ogni processo può essere sia mittente che ricevitore</li>
+</ul>
+<p>I messaggi possono essere:</p>
+<ul>
+<li><strong>bloccanti</strong> il ricevente deve comunicare al mittente che ha ricevuto il messaggio</li>
+<li><strong>non bloccanti</strong> il mittente non si aspetta una risposta di avvenuta consegna</li>
+</ul>
+<p>L’implementazione comune di una comunicazione tra processi è la <strong>pipe</strong> cioè una memoria chiamata buffer in cui un processo ci scriverà dei dati mentre l’altro li leggerà</p>
+<p>Nei sistemi distribuiti la comunicazione è più complessa, i messaggi inviati possono essere corrotti o persi, è necessario quindi un meccanismo di conferma che i dati siano stati ricevuti correttamente. Sono necessari anche dei sistemi di <em>timeout</em> per rimandare il messaggio in caso di mancata conferma.</p>
+<p>Vengono utilizzate delle porte per identificare quale tipo di messaggio si sta inviando. Inoltre servirebbe autenticare il mittente del messaggio.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
