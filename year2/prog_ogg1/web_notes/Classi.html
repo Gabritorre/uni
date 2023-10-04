@@ -15,7 +15,12 @@
 <ul>
 <li><a href="#classi">Classi</a>
 <ul>
+<li><a href="#new">new</a></li>
 <li><a href="#costruttore">Costruttore</a></li>
+<li><a href="#static">Static</a></li>
+<li><a href="#aliasing">Aliasing</a></li>
+<li><a href="#this">This</a></li>
+<li><a href="#package">Package</a></li>
 </ul>
 </li>
 </ul>
@@ -28,7 +33,8 @@
 <p>Posiamo definire una <strong>classe</strong> come un modello astratto che definisce le caratteristiche e le funzionalità che possiede un <strong>oggetto</strong></p>
 <p>un <strong>oggetto</strong> è un’istanza della classe, quindi una sorta di “variabile” che rispetta le caratteristiche definite dalla classe.</p>
 <ul>
-<li>Le caratteristiche definite nella classe prendono il nome di <strong>campi</strong> (o attributi) e sono effettivamente delle variabili di vario tipo che possiedono un significato specifico per quella classe. I tipi che può assumere un campo sono sia tipi primitive oppure possono essere altre classi.</li>
+<li>Le caratteristiche definite nella classe prendono il nome di <strong>campi</strong> (o attributi) e sono effettivamente delle variabili (contenute però all’interno della memoria <strong>heap</strong>) di vario tipo che possiedono un significato specifico per quella classe. I tipi che può assumere un campo sono sia tipi primitive oppure possono essere altre classi.<br>
+I campi possono essere <strong>final</strong>, cioè che non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all’interno della classe oppure dal costruttore)</li>
 <li>Le funzionalità sono delle <strong>funzioni o metodi</strong> quindi pezzi di codice che lavorano sui campi</li>
 </ul>
 <p>Un classico esempio è la classe automobile che possiede delle caratteristiche come: marca, colore, targa, peso, capacità della benzina. E possiede delle funzionalità come accelerare frenare, fare rifornimento.<br>
@@ -52,15 +58,24 @@ La classe quindi definisce come deve essere fatto l’oggetto automobile, gli og
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
+<h2 id="new">new</h2>
 <p>l’istanziazione di una classe può avvenire un numero indefinito di volte e ogni oggetto è indipendente dagli altri</p>
 <p>Creiamo una istanza della classe utilizzando la parola chiave <strong>new</strong></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>	<span class="token comment">//main del programma</span>
 	Car myCar1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	myCar1<span class="token punctuation">.</span>fuel <span class="token operator">=</span> <span class="token number">10.0</span><span class="token punctuation">;</span>	<span class="token comment">//accedo direttamente al campo dell'oggetto</span>
 	myCar<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//eseguo il metodo dell'oggetto</span>
+	Car myCar2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Questi tre oggetti provengono dalla stessa classe ma ognuno ha il proprio spazio di memora e quindi non si influenzano tra loro.</p>
+<p>Questi due oggetti (<code>myCar1</code> e <code>myCar2</code>) provengono dalla stessa classe ma ognuno ha il proprio spazio di memora e quindi non si influenzano tra loro.</p>
+<p>Quello che fa nello specifico l’operatore new è:</p>
+<ol>
+<li>allocare lo spazio necessario per l’oggetto nell’heap</li>
+<li>inizializza i valori ai valori di default i campi dell’oggetto</li>
+<li>chiama un eventuale costruttore</li>
+<li>ritorna un puntatore all’oggetto nello stack (Java non mostra esplicitamente i puntatori)</li>
+</ol>
 <h2 id="costruttore">Costruttore</h2>
 <p>Il costruttore è un metodo speciale della classe che deve avere lo stesso nome della classe e viene chiamato quando viene istanziato un oggetto. Il suo compito è quello di inizializzare i campi dell’oggetto con dei valori passati come parametro alla funzione.</p>
 <p>Sempre nell’esempio della macchina un possibile costruttore potrebbe essere:</p>
@@ -83,7 +98,57 @@ La classe quindi definisce come deve essere fatto l’oggetto automobile, gli og
 	Car myCar <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">100.0</span><span class="token punctuation">,</span> <span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//utilizzo il costruttore per istanziare l'oggetto</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>è possibile avere anche più di un costruttore e se non se ne scrive nemmeno uno entra in gioco il costruttore di default che inizializza i campi ai loro valori standard.</p>
+<p>è possibile avere anche più costruttori (che si differenziano dal tipo, l’ordine e la quantità dei parametri) e se non se ne scrive nemmeno uno entra in gioco il costruttore di default che inizializza i campi ai loro valori standard.</p>
+<h2 id="static">Static</h2>
+<p>Static è una keyword la quale indica che un campo oppure un metodo sono associati direttamente alla classe.</p>
+<p>Sia i campi che le funzioni possono essere <strong>static</strong> cioè ci si può riferire a loro anche direttamente attraverso la classe senza bisogno di avere un oggetto istanziato.<br>
+Per quanto riguarda un <strong>campo static</strong> è importante ricordare che quel campo sarà condiviso tra tutti gli oggetti e quindi non ne viene creata una copia per ogni oggetto.<br>
+Per quanto riguarda in <strong>metodi static</strong> è importante ricordare che possono accedere solo ai campi e altri metodi della classe che sono anch’essi <strong>static</strong>.</p>
+<h2 id="aliasing">Aliasing</h2>
+<p>Seppur non esplicitamente java fa uso di puntatori, ad esempio per array e per gli oggetti.</p>
+<p>Il fenomeno dell’aliasing accade quando si hanno più variabili fanno riferimento ad una stessa zona di memoria.<br>
+Questo porta al problema che se si modifica i dati all’interno di quella zona di memoria utilizzando una variabile implicitamente anche l’altra si aggiornerà, e questo potrebbe essere un comportamento non atteso dal programmatore.</p>
+<p>Ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span>  <span class="token keyword">static</span>  <span class="token keyword">void</span>  <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array2 <span class="token operator">=</span> array1<span class="token punctuation">;</span> <span class="token comment">// array2 fa riferimento allo stesso array di array1</span>
+	<span class="token comment">// Modificando array2, si modifica anche array1</span>
+	array2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"array1[0]: "</span> <span class="token operator">+</span> array1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Stampa 100</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"array2[0]: "</span> <span class="token operator">+</span> array2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Stampa 100</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="this">This</h2>
+<p><strong>this</strong> è una keyword che serve a riferirsi all’oggetto corrente (quindi è un puntatore) che viene utilizzata all’interno dei metodi della classe.</p>
+<p>Serve per accedere esplicitamente ai campi o metodi della proprio oggetto<br>
+oppure serve per passare come reference il nostro oggetto ad un altro metodo</p>
+<h2 id="package">Package</h2>
+<p>In java è possibile organizzare della classi all’interno di un package che si può importare in altri codici.</p>
+<p>Servono sia per organizzazione ma hanno anche l’importante funzionalità di essere dei namespace quindi classi con lo stesso nome ma che risiedono in package differenti non creano conflitti.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// Definizione di un package</span>
+<span class="token keyword">package</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">;</span>
+
+<span class="token comment">// Definizione di una classe all'interno del package</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Campi e metodi della classe</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// Definizione di un'altra classe all'interno del package</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse2</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Campi e metodi della classe</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>è quindi possibile importare delle classi specifiche all’interno di un package (oppure importare tutto il package)</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">.</span>MiaClasse<span class="token punctuation">;</span>	<span class="token comment">//importo la singola classe</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">.</span>*<span class="token punctuation">;</span>	<span class="token comment">//importo tutte le classi del package</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AltraClasse</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	    <span class="token comment">// ...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Importante: il nome del package deve corrispondere alla gerarchia di sotto cartelle con lo stesso nome. Quindi:</p>
+<p>le classi appartenenti al package <code>com.example.mio_package</code> devono risiedere nella cartella al percorso “com/example/mio_package”</p>
 
     </div>
   </div>

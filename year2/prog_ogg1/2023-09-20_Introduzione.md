@@ -4,7 +4,7 @@ In questo corso approfondiremo il concetto di programmazione ad oggetti, cioè u
 
 Verrà usato il linguaggio **Java**, un linguaggio derivato da C ma orientato alla programmazione ad oggetti.
 
-è un linguaggio **compilato ed interpretato**: Il codice sorgente java viene compilato in **bytecode** il quale viene interpretato da una macchina virtuale chiamata *Java Virtual Machine*. questo rende un programma scritto in java compatibile con più sistemi perché è l'installazione della JVM che cambia in base al sistema su cui viene eseguito il codice, allo stesso tempo non risulta essere tanto efficiente quanto lo è C.
+è un linguaggio **compilato ed interpretato**: Il codice sorgente java viene compilato in **bytecode** (file contenente simil-linguaggio macchina che termina con l'estensione .class) il quale viene interpretato da una macchina virtuale chiamata *Java Virtual Machine*. questo rende un programma scritto in java compatibile con più sistemi perché è l'installazione della JVM che cambia in base al sistema su cui viene eseguito il codice, allo stesso tempo non risulta essere tanto efficiente quanto lo è C.
 
 Java non utilizza esplicitamente i puntatori e adotta un sistema chiamato **garbage collection** che si occupa in automatico di deallocare la memoria non più utilizzata.
 
