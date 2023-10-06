@@ -2,6 +2,8 @@
 
 **Statistica**: disciplina che studia e lavora sui dati per generare delle decisioni, ipotesi o conclusioni. Permette inoltre di combinare informazioni e valutarne l'affidabilità, sintetizzare i dati, costruire modelli e fare previsioni
 
+**probabilità**: disciplina che studia la logica di ciò che non è certo, si usa per ragionare su possibili risultati di eventi casuali
+
 La statistica unita al mondo della computer science forma una disciplina chiamata **data science**
 
 **popolazione di riferimento**: è un insieme di individui di qualunque tipo (chiamati **unità statistiche**) su cui lavorare per ottenere dati e generare nuove informazioni

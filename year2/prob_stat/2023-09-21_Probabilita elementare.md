@@ -133,3 +133,68 @@ $\binom{20 + 3 -1}{3} \to \binom{22}{3} \to \frac{22!}{3!\cdot(22-3)!} = 1540$
 ### Schema riassuntivo
 
 ![](https://i.ibb.co/xSxMfH0/albero-calc-comb.png)
+
+
+## Probabilità
+
+La probabilità si usa per ragionare su dei risultati possibili di un **fenomeno aleatorio** (casuale).
+
+con evento aleatorio ci riferiamo ad un evento che se ripetuto può generare un risultato diverso dal precedente (esattamente il contrario di un evento deterministico). Un classico esempio è il lancio di un dado.
+
+
+Definiamo come **spazio campionario** ($\Omega$) l'insieme di tutti i possibili risultati di un fenomeno aleatorio.
+
+Un **evento** è un sottoinsieme dello spazio campionario
+
+lo spazio campionario è detto **evento certo** se è sicuro che si verificherà
+
+
+Esempio:
+nel fenomeno aleatorio del lancio di un dado a 6 facce abbiamo che $\Omega = \{1,2,3,4,5,6\}$
+
+l'evento "lanciando un dado esce un numero positivo minore di 10" è un evento certo
+
+
+### Diagrammi di Venn
+
+dato che gli eventi sono degli insiemi possiamo fare delle operazioni sugli insieme con i diagrammi di Venn:
+
+1. il **complementare** di un evento $A$ viene indicato con $\overline A$ è l'evento opposto dell'evento $A$
+![enter image description here](https://i.ibb.co/xH0Z4PJ/complementare.png)
+
+2. **l'intersezione** di due eventi $A, B$ che viene indicato con $A \cap B$ è l'evento che si verifica quando sia $A$ che $B$ si verificano
+![enter image description here](https://i.ibb.co/HCzV6n8/intersezione.png)
+
+
+3. **l'unione** di due eventi $A, B$ che viene indicata con $A \cup B$ è l'evento che si verifica quando $A$ oppure $B$ si verificano
+![enter image description here](https://i.ibb.co/521bpWq/unione.png)
+
+4. **inclusione** dell'evento $A$ nell'evento $B$ implica che se si verifica l'evento $A$ implicitamente si verifica anche l'evento $B$
+![enter image description here](https://i.ibb.co/dW0kQmk/inclusione.png)
+
+Due eventi si dicono **disgiunti** se la loro intersezione è vuota
+
+lo spazio campionario si può partizionare in insiemi più piccoli disgiunti che uniti fanno l'insieme di partenza, questi insiemi vengono chiamati **partizioni**
+
+![enter image description here](https://i.ibb.co/jRpVttf/partizionamento.png)
+
+Dall'immagine vediamo che $C_1, C_2, C_3$ sono tre insiemi disgiunti e la cui unione forma lo spazio campionario
+
+
+
+### Assiomi sulla probabilità
+
+- **positività**: la probabilità è un valore compreso tra 0 e 1: 
+
+$$0\leq\mathbb{P}\leq1$$
+
+- **normalizzazione**: la probabilità che accada un evento dello spazio campionario è $1$ (probabilità certa)
+
+$$\mathbb{P}[\Omega] = 1$$
+
+- **additività** la probabilità dell'unione di tutti gli eventi disgiunti è uguale alla somma delle singole probabilità degli eventi
+	
+$$\mathbb{P}\bigg[\bigcup_{n=1}^{\infty}A_n\bigg] = \sum_{n=1}^{\infty}\mathbb{P}[A_n]$$
+
+
+La **probabilità di un evento** è quindi un numero compreso tra 0 e 1 che rappresenta con quale possibilità un evento casuale possa capitare, più il numero è vicino ad 1 più sarà probabile mentre è vicino allo 0 più è improbabile 
