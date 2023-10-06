@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-06_Incapsulamento</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#incapsulamento">Incapsulamento</a>
+<ul>
+<li><a href="#getter-e-setter">Getter e setter</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="incapsulamento">Incapsulamento</h1>
+<p>L’incapsulamento è un concetto fondamentale nella programmazione ad oggetti, esso infatti dice che i <strong>dati</strong> devono essere <strong>nascosti</strong> e non <strong>accessibili</strong> direttamente ma solo <strong>attraverso</strong> dei <strong>metodi</strong> che rendono più flessibile operare sui dati.</p>
+<p>Lo scopo dell’incapsulamento è garantire la <strong>consistenza dei dati</strong> effettuando dei controlli prima di operare su un campo della classe.<br>
+rendere la documentazione più semplice e anche più semplice lavorare con la classe non interessandoci a quali campi possiede ma piuttosto a utilizzare dei metodi che svolgono l’azione per noi (con i dovuti controlli)</p>
+<p>Per questo in Java vengono introdotti dei <strong>modificatori di accesso</strong> associabili ai campi e ai metodi:</p>
+<ul>
+<li><strong>public</strong>: il metodo/campo è accessibile <strong>ovunque</strong><br>
+generalmente va messo come public le funzionalità più esterne della classe, che chiunque può utilizzare</li>
+<li><strong>protected</strong>: il metodo/campo è accessibile: nella <strong>classe stessa</strong>, nello <strong>stesso package</strong>, nelle <strong>sottoclassi</strong></li>
+<li><strong>default</strong>: il metodo/campo è accessibile: nella <strong>classe stessa</strong> e nello <strong>stesso package</strong><br>
+come protected e default va messo ciò che l’intero pacchetto software deve utilizzare</li>
+<li><strong>private</strong>: il metodo/campo è accessibile solo nella <strong>classe stessa</strong><br>
+come private vanno messi i dettagli implementativi</li>
+</ul>
+<p>Generalmente è meglio minimizzare ciò che è accessibile all’esterno, lasciare solo dei metodi controllati accessibili dall’esterno rende il codice meno rompibile.</p>
+<h2 id="getter-e-setter">Getter e setter</h2>
+<p>I <strong>getter</strong> sono dei metodi che permettono di ottenere in modalità sola lettura il contenuto di un campo della classe, spesso è un semplice return del campo ma può essere anche un valore calcolato dallo stato dell’oggetto.</p>
+<p>I <strong>setter</strong> d’altra parte sono dei metodi che permettono di modificare dei campi della classe, il vantaggio è che prima di aggiornare il campo viene fatto un controllo che il nuovo valore rispetti i vincoli del campo.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
