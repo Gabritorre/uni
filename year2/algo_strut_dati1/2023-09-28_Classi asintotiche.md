@@ -96,15 +96,22 @@ $$ c_1 \cdot g(n)\leq f(n) \leq c_2 \cdot g(n)\}$$
 
  $f(n) = \Theta(g(n))$
 
-Significa che per un $n$ sufficientemente grande la funzione $f(n)$ sarà sempre sopra una funzione $g(n)$moltiplicata per una costante $c_1$e sempre sotto una funzione $g(n)$ moltiplicata per un'altra costante $c_2$
+Significa che per un $n$ sufficientemente grande la funzione $f(n)$ sarà sempre sopra una funzione $g(n)$moltiplicata per una costante $c_1$e sempre sotto una funzione $g(n)$ moltiplicata per un'altra costante $c_2$ .
+Possiamo dire che la funzione $f$ "si comporta come" la funzione $g$
 
 ![enter image description here](https://i.ibb.co/bRzwH5T/theta.png)
 
 ### Proprietà
 
-$f(n) = \Theta(g(n)) \iff f(n) = O(g(n))$ e $f(n) = \Omega(g(n))$
+- $$f(n) = \Theta(g(n)) \iff f(n) = O(g(n)) \text{ e } f(n) = \Omega(g(n))$$
 
-$\frac{1}{2}n^2 - 3n$ soddisfa questa formula quindi $\frac{1}{2}n^2 - 3n = \Theta(g(n))$
+	$\frac{1}{2}n^2 - 3n$ soddisfa questa formula quindi $\frac{1}{2}n^2 - 3n = \Theta(g(n))$
+- $$\lim_{n\to \infty}\frac{f(n)}{g(n)} = 0<\ell<+\infty \implies f(n) = \Theta(g(n))$$
+$3n^3 + 2n^2 + 6n + 5 = \Theta(n^3)$
+$\lim_{n\to \infty}\frac{3n^3 + 2n^2 + 6n + 5}{n^3} =$
+$= \lim_{n\to \infty}3 + \frac{2}{n} + \frac{6}{n^2} + \frac{5}{n^3} = 3$
+
+	attenzione che non vale il contrario di quest'ultima proprietà (infatti è **implica** e non una doppia implicazione)
 
 ### Esempio
 
@@ -125,7 +132,10 @@ $\iff n +10 \leq c_2^2 n \hspace{10mm}\text{elevando alla seconda}$
 $\iff n (c_2^2 - 1) \geq 10 \hspace{10mm}\text{raccogliendo n}$
 poniamo $c_2^2-1 \geq 0$ otteniamo $c_2 \geq 1$ e la condizione è verificate per ogni $n \geq \frac{10}{c_2^2 - 1}$
 
-## Esempi di funzioni
+
+
+
+### Esempi di funzioni
 
 - $\log n = O(n)$ il logaritmo sta "sotto" alla funzione lineare
 - $n\log n = O(n^2)$ il logaritmo di una potenza ($n\log n = log(n^n)$) sta sotto la funzione quadratica
@@ -133,7 +143,7 @@ poniamo $c_2^2-1 \geq 0$ otteniamo $c_2 \geq 1$ e la condizione è verificate pe
 - $n! = \Omega(2^n)$ il fattoriale sta sopra alla funzione esponenziale
 - $\log(n!) = O(n\log n)$ il logaritmo di un fattoriale sta sotto a $n \log n$
 - $\sqrt{n} = O(n)$ ovviamente la radice sta sotto alla funzione lineare
-- 
+
 ![enter image description here](https://i.ibb.co/KjS7MJN/comparison.png)
 
 ## Proprietà delle classi asintotiche
@@ -190,4 +200,149 @@ mentre $n_3$ sceglieremo il maggiore tra $n_1$ e $n_2$, perché immaginiamo di c
 
 ![enter image description here](https://i.ibb.co/xMLB30T/graph.png)
 
+## Classe $o$
 
+definizione formale:
+
+$$o(g(n)) = \{f(n) | \forall \, c > 0, \exist \, n_0 \in \mathbb{N} \backepsilon \forall n \geq n_0 : f(n) < c \cdot g(n)\}$$
+
+Le due differenze rispetto a $O(g(n))$ sono il **per ogni** $c$ e il $f(n)$ **strettamente minore** di $c \cdot g(n)$
+
+
+### Significato
+
+ $f(n) = o(g(n))$
+
+Significa che per un $n$ sufficientemente grande la funzione $f(n)$ sarà sempre strettamente "sotto" alla funzione $g(n)$ moltiplicata per una qualsiasi costante positiva.
+
+dato che $o(g(n))$ è sottoinsieme di $O(g(n))$
+abbiamo che se $f(n) = o(g(n)) \implies f(n) = O(g(n))$
+
+
+### Proprietà
+
+$$f(n) = o(g(n)) \iff \lim_{n\to \infty}\frac{f(n)}{g(n)} = 0$$
+
+è possibili usare questa proprietà per verificare che una funzione sia o-piccolo di un'altra.
+
+Ad esempio:
+
+$\log n = o(\sqrt{n})$
+
+$$\lim_{n\to \infty}\frac{\log n}{\sqrt{n}} = \bigg[\frac{\infty}{\infty}\bigg] \text{possiamo usare de l'hopital}$$
+
+$$\text{per semplicità consideriamo la base del logaritmo }e$$
+
+$$\lim_{n\to \infty}\frac{\frac{1}{n}}{\frac{1}{2}n^{-\frac{1}{2}}} = \lim_{n\to \infty} \frac{2}{\sqrt{n}} = 0$$
+
+per la proprietà quindi $\log n = o(\sqrt{n})$ e dato che o-piccolo è sottoinsieme di O-grande allora $\log n = O(\sqrt{n})$
+
+
+## Classe $\omega$
+
+definizione formale:
+
+$$\omega(g(n)) = \{f(n) | \forall \, c > 0, \exist \, n_0 \in \mathbb{N} \backepsilon \forall n \geq n_0 : f(n) > c \cdot g(n)\}$$
+
+Le due differenze rispetto a $\Omega(g(n))$ sono il **per ogni** $c$ e il $f(n)$ **strettamente maggiore** di $c \cdot g(n)$
+
+
+### Significato
+
+ $f(n) = \omega(g(n))$
+
+Significa che per un $n$ sufficientemente grande la funzione $f(n)$ sarà sempre strettamente "sopra" alla funzione $g(n)$ moltiplicata per una qualsiasi costante positiva.
+
+dato che $\omega(g(n))$ è sottoinsieme di $\Omega(g(n))$
+abbiamo che se $f(n) = \omega(g(n)) \implies f(n) = \Omega(g(n))$
+
+### Proprietà
+
+$$f(n) = \omega(g(n)) \iff \lim_{n\to \infty}\frac{f(n)}{g(n)} = +\infty$$
+
+è possibili usare questa proprietà per verificare che una funzione sia omega-piccolo di un'altra.
+
+## Osservazioni
+
+1. $o(g(n)) \cap \Omega(g(n)) = \empty$
+2. $\omega(g(n)) \cap Og(n)) = \empty$
+
+Dimostriamo per assurdo il caso 1.
+
+supponiamo per assurdo che esista una funzione $f(n)$ che appartenga a $o(g(n)) \cap \Omega(g(n))$
+allora dalle definizione delle due classi:
+
+definizione di o-piccolo: $\hspace{5mm}\forall \, c > 0 \hspace{5mm} \exist \, n_0 \in \mathbb{N} \backepsilon \forall n \geq n_0 \hspace{5mm} f(n) < c\cdot g(n)$
+definizione di $\Omega$: $\hspace{14mm}\exist\, c' > 0 \hspace{5mm} \exist \, n_0' \in \mathbb{N} \backepsilon \forall n \geq n_0' \hspace{5mm} f(n) \geq c'\cdot g(n)$
+
+
+per far si che siano vere entrambe le definizioni dobbiamo considerare la parte delle funzioni dal massimo tra $n_0$ e $n_0'$ in poi , quindi $n > \max(n_0, n_0')$
+
+In tal caso si avrebbe che o-piccolo vale per tutti i $c > 0$ quindi dovrebbe valere anche per $c'$, così facendo però si nota subito la seguente condizione impossibile:
+
+$$f(n) < c' \cdot g(n) \leq f(n)$$
+
+(da una parte $g$ è **strettamente maggiore** di $f$ ma dall'altra $g$ è **minore** sempre di $f$)
+
+
+Possiamo realizzare il seguente schema degli insiemi delle classi che abbiamo visto:
+
+![enter image description here](https://i.ibb.co/2nXZ9GG/classes.png)
+
+
+Possiamo anche realizzare il seguente schema riassuntivo delle proprietà con il limite del rapporto
+
+$$\lim_{n\to\infty}\frac{f(n)}{g(n)} = \begin{cases} 
+0 & \iff f(n) = o(g(n)) \implies f(n) = O(g(n))\\
+\ell, \hspace{3mm}\ell \in \, ]0, +\infty[ & \implies f(n) = \Theta(g(n))\\
+\infty & \iff f(n) = \omega(g(n)) \implies f(n) = \Omega(g(n))\\
+\end{cases}$$
+
+Può esserci un ulteriore caso in cui il **limite non esiste**, in quel caso l'appartenenza della funzione ad una determinata classe va verificata in altri modi.
+
+Ad esempio
+
+$(1 + \sin(n))n = O(n)$
+
+In questo caso $\lim_{n\to \infty}\frac{(1+\sin(n))n}{n}$ non esiste a causa del seno che varia tra $[-1, 1]$ .
+
+Quindi per ogni $n>1$
+$$-1 \leq \sin n \leq 1$$
+
+$$0\leq 1 + \sin n \leq 2 \hspace{5mm}\text{sommando 1 a tutti i membri}$$
+
+$$0n\leq (1 + \sin n)n \leq 2n \hspace{5mm}\text{moltiplicando per n tutti i membri}$$
+
+otteniamo quindi che $(1 + \sin n)n \leq 2n$
+
+## Regola dei polinomi
+
+Se $P(n)$ è un polinomio di grado $k$, allora $P(n) = \Theta(n^k)$
+
+Ad esempio
+
+il polinomio $P(n) = 3n^2 + 7n$ ha grado $2$ quindi 
+
+$P(n) = \Theta(n^2)$
+
+
+Possiamo generalizzare la regola dei polinomi come segue:
+
+$$f(n) + o(f(n)) = \Theta(f(n))$$
+
+quindi abbiamo che una funzione $f$ sommata ad una funzione che cresce più lentamente di $f$ si comporta come la funzione $f$
+
+Dimostrazione:
+possiamo scrivere $f(n) + o(f(n))$ come $g(n)$ , in questo modo diventa $g(n) = \Theta(f(n))$ e possiamo usare il limite.
+
+$$\lim_{n\to\infty}\frac{g(n)}{f(n)}$$
+
+nota che adesso g(n) sta a sinistra dell'uguaglianza, ecco perché è al numeratore.
+rappresentiamo $o(f(n))$ con $h(n)$
+$$\lim_{n\to\infty}\frac{f(n) + h(n)}{f(n)}$$
+
+$$\lim_{n\to\infty}\frac{f(n)}{f(n)} + \frac{h(n)}{f(n)}$$
+
+$$\lim_{n\to\infty} 1 + \frac{h(n)}{f(n)} = 1$$
+
+nota: dato che $h(n) = o(f(n))$ per definizione il limite di $\frac{h(n)}{f(n)}$ tende a $0$
