@@ -2,7 +2,7 @@ let algo_strut_dati1 = ["Fibonacci", "Classi asintotiche"];
 let basi_dati1 = ["Introduzione", "Progettazione e modellazione"];
 let prob_stat = ["Introduzione", "Probabilita elementare"];
 let prog_ogg1 = ["Introduzione", "Classi", "Incapsulamento"];
-let sis_operativi1 = ["Introduzione", "Processi e thread"];
+let sis_operativi1 = ["Introduzione", "Domande_introduzione", "Processi e thread"];
 
 function show_arguments(subj) {
 	clear_output();

@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Domande_introduzione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#domande-su-introduzione">Domande su Introduzione</a>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="domande-su-introduzione">Domande su Introduzione</h1>
+<h3 id="indicare-le-due-funzioni-principali-di-un-sistema-operativo.">Indicare le due funzioni principali di un sistema operativo.</h3>
+<ul>
+<li>fungere come macchina astratta per l’utente mascherando la complessità delle operazioni e fornendo una interfaccia semplice</li>
+<li>gestione delle risorse, far comunicare le varie componenti nel modo più ottimizzato possibile</li>
+</ul>
+<h3 id="descrivere-i-diversi-tipi-di-sistema-operativo-e-dare-un-esempio-di-applicazione-per-ciascuno.">Descrivere i diversi tipi di sistema operativo e dare un esempio di applicazione per ciascuno.</h3>
+<ul>
+<li>os per mainframe: utilizzato ad esempio nelle banche, computazioni scientifiche</li>
+<li>os per server: servizi web, quindi in grado di soddisfare tante richieste da parte di più utenti</li>
+<li>os per multiprocessore: eseguire programmi multipli contemporaneamente</li>
+<li>os per personal computer: deve essere bilanciato sui vari aspetti del sistema operativo</li>
+<li>os real-time: gaming, musica, apparecchi medici, catene di montaggio</li>
+<li>os per embedded: computer piccoli come raspberry a basso consumo e basse performance</li>
+<li>os per smart-card: carta di credito</li>
+</ul>
+<h3 id="in-cosa-differiscono-i-sistemi-timesharing-e-i-sistemi-multiprogrammazione">In cosa differiscono i sistemi timesharing e i sistemi multiprogrammazione?</h3>
+<p>nel timesharing più utenti si collegano ad una macchina tramite dei terminali e la macchina a turno uno alla volta eseguira i job richiesti dagli utenti. Solo quando un job termina parte il successivo<br>
+nei sistemi multiprogrammazione l’esecuzione viene continuamente scambiata tra i processi attivi in modo da farli proseguire un po per volta tutti insieme. Durante l’esecuzione di un processo può venir fermata la sua esecuzione in favore dell’esecuzione di un altro processo.</p>
+<h3 id="cosa-si-intende-per-dma-come-viene-utilizzato-e-che-vantaggi-può-portare-in-un-sistema-operativo">Cosa si intende per DMA, come viene utilizzato e che vantaggi può portare in un sistema operativo?</h3>
+<p>Il DMA (Direct Memory Access) è un componente hardware che viene utilizzato per gestire il trasferimento dei dati da un dispositivo di I/O e la memoria RAM con un minimo intervento della CPU. Questo fa si che la CPU si possa occupare di altre operazioni aumentando di molto l’efficienza</p>
+<h3 id="indicare-i-principali-obbiettivi-dei-sistemi-operativi-e-indicarne-due-che-possono-essere-in-contrasto.">Indicare i principali obbiettivi dei sistemi operativi e indicarne due che possono essere in contrasto.</h3>
+<p>Efficienza, Robustezza, Scalabilità, Estensibilità, Portabilità, Sicurezza, Protezione, Interattività, Usabilità, Prestazioni<br>
+in contrasto sono:</p>
+<ul>
+<li>Usabilità ed efficienza: Per essere semplice da usare magari è necessario un lavoro maggiore del sistema operativo nel mascherare la complessità delle operazioni riducendo così l’efficienza.</li>
+<li>Prestazioni ed efficienza e portabilità: se vuoi un sistema performante è difficile fare in modo che sia anche efficiente</li>
+<li>Scalabilità e robustezza: un sistema operativo deve essere in grado di adattarsi a diversi tipi di dispositivi riuscendo a essere un sistema solido indipendentemente dai componenti installati.</li>
+</ul>
+<h3 id="definire-modalità-utente-e-modalità-nucleo-in-un-sistema-operativo-e-spiegarne-l’utilizzo-e-la-motivazione.">Definire modalità utente e modalità nucleo in un sistema operativo e spiegarne l’utilizzo e la motivazione.</h3>
+<p>sono due modalità di esecuzione dei processi, nella modalità utente si hanno permessi limitati e generalmente i processi dell’utente vengono eseguiti in questa modalità. Nella modalità kernel si hanno pieni permessi e i processi del sistema operativo vengono eseguiti in questa modalità.<br>
+La presenza di queste due modalità semplifica la progettazione del sistema operativo in quanto è molto semplice verificare in quale modalità ci si trova dato che è solo un bit ad indicarlo e permette di prevenire errori, garantire la sicurezza dei dati e protezione delle componenti hardware in quanto il sistema operativo utilizza dei metodi di comunicazione standard che hanno dei controlli in caso di errore.<br>
+Se l’utente fosse libero di fare ciò che vuole sarebbe molto semplice creare gravi problemi al sistema. L’utente può sempre richiedere di fare delle operazioni più sensibili tramite delle chiamate a sistema lasciando il controllo al sistema operativo.</p>
+<h3 id="indicare-quale-di-queste-istruzioni-dovrebbe-essere-consentita-solo-in-modalità-nucleo">Indicare quale di queste istruzioni dovrebbe essere consentita solo in modalità nucleo:</h3>
+<p>A. Disabilitare gli interrupt.<br>
+B. Leggere il dispositivo che calcola l’ora corrente<br>
+C. Impostare il dispositivo che calcola l’ora corrente<br>
+D. Cambiare la mappa di memoria.</p>
+<p>risposta: D, A. Forse anche la C magari in determinati sistemi dove l’ora è un fattore importante</p>
+<h3 id="in-cosa-differiscono-i-sistemi-operativi-con-architettura-monolitica-e-a-microkernel">In cosa differiscono i sistemi operativi con architettura monolitica e a microkernel?</h3>
+<p>Nell’architettura monolitica il sistema operativo è composta da un insieme di funzioni ognuna delle quali può chiamare le altre funzioni. In questo caso il sistema operativo è responsabile di praticamente tutte le operazioni più importante (file system, memory management, scheduling, interprocess communication, I/O manager, Network manager)<br>
+Nell’architettura microkernel il sistema operativo ha delle funzionalità limitate solo alla gestione della memoria e dei processi, il cui compito principale è quello di smistare i messaggi tra i processi</p>
+<h3 id="perché-è-utile-distinguere-la-politica-di-gestione-e-il-meccanismo-di-attuazione-delle-funzioni-di-un-sistema-operativo-dare-esempi.">Perché è utile distinguere la politica di gestione e il meccanismo di attuazione delle funzioni di un sistema operativo? Dare esempi.</h3>
+<p>è utile distinguerle perché la politica e il meccanismo sono indipendenti, cioè una determinata politica può essere implementata in diversi modi. Le politiche sono delle regoli generali, ad alto livello che dicono cosa sarà fatto, mentre il meccanismo implementa un modo proprio per ottenere tale politica. Ad esempio la gestione della memoria oppure lo scheduling dei processi</p>
+<h3 id="spiegare-in-cosa-consiste-e-come-viene-usata-un’istruzione-trap-nel-sistema-operativo.">Spiegare in cosa consiste e come viene usata un’istruzione trap nel sistema operativo.</h3>
+<p>trap è una istruzione che viene chiamata quando un processo vuole passare il controllo al sistema operativo andando così in kernel mode per fare delle operazioni particolari. Al termine di tali operazioni il controllo ritorna al processo. Viene anche usata in caso di interrupt o eccezioni</p>
+<h3 id="indicare-in-cosa-differiscono-i-file-speciali-a-blocchi-e-a-caratteri">Indicare in cosa differiscono i file speciali a blocchi e a caratteri?</h3>
+<p>In Unix I file speciali sono un modo per rendere i dispositivi di I/O accessibili come fossero dei file usando le stesse chiamate a sistema dei comuni file.<br>
+I file speciali a blocchi vengono utilizzati per gestire dispositivi costituiti da un insieme di blocchi come i dischi potendo accedere a determinati blocchi del disco senza tener conto del suo file system.<br>
+I file speciali a caratteri vengono utilizzati per gestire dispositivi che accettano in ingresso o forniscono in uscita un flusso di caratteri (come le stampanti).</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
