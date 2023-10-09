@@ -1,6 +1,6 @@
 let algo_strut_dati1 = ["Fibonacci", "Classi asintotiche"];
 let basi_dati1 = ["Introduzione", "Progettazione e modellazione"];
-let prob_stat = ["Introduzione", "Probabilita elementare"];
+let prob_stat = ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare"];
 let prog_ogg1 = ["Introduzione", "Classi", "Incapsulamento"];
 let sis_operativi1 = ["Introduzione", "Domande_introduzione", "Processi e thread"];
 
