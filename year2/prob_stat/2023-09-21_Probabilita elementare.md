@@ -197,4 +197,45 @@ $$\mathbb{P}[\Omega] = 1$$
 $$\mathbb{P}\bigg[\bigcup_{n=1}^{\infty}A_n\bigg] = \sum_{n=1}^{\infty}\mathbb{P}[A_n]$$
 
 
-La **probabilità di un evento** è quindi un numero compreso tra 0 e 1 che rappresenta con quale possibilità un evento casuale possa capitare, più il numero è vicino ad 1 più sarà probabile mentre è vicino allo 0 più è improbabile 
+La **probabilità di un evento** è quindi un numero compreso tra 0 e 1 che rappresenta con quale possibilità un evento casuale possa capitare, più il numero è vicino ad 1 più sarà probabile mentre è vicino allo 0 più è improbabile
+
+
+### Proprietà della probabilità
+
+1. proprietà del complementare
+dato un evento $A$
+$$\mathbb{P}[\bar A] = 1 - \mathbb{P}[A]$$
+
+2. proprietà dell'evento impossibile
+	$$\mathbb{P}[\empty] = 0$$
+3. proprietà dell'unione
+	dati due eventi $A$ e $B$
+	$$\mathbb{P}[A \cup B] = \mathbb{P}[A] + \mathbb{P}[B] - \mathbb{P}[A \cap B]$$
+4. probabilità di una partizione
+la somma di tutte le probabilità delle partizioni deve essere totale ad $1$ 
+$$\mathbb{P}\bigg[\bigcup_{i = 1}^{\infty}C_i\bigg] = \mathbb{P}[\Omega] = 1$$
+
+
+### Legge della probabilità totale (versione facile)
+
+la probabilità di un evento $A$ è possibile scriverla come la somma della probabilità delle sue partizioni
+
+$$\mathbb{P}[A] = \sum_{i}\mathbb{P}[A \cap C_i]$$
+
+
+### spazi campionari finiti
+
+Se uno spazio campionario è finito $\Omega = \{w_1,...w_n\}$ allora anche il numero di probabilità degli elementi dello spazio campionario è finito, in altre parole abbiamo $n$ probabilità tali che:
+1. ogni probabilità deve essere un numero compreso tra 0 e 1
+2. la somma di tutte le probabilità deve essere 1
+3. indichiamo con $p_i = \mathbb{P}[\{w_i\}]$
+
+Se tutti gli elementi di $\Omega$ hanno la **stessa probabilità** allora
+è possibile ottenere matematicamente il valore della probabilità dei singolo elementi di $\Omega$
+$$p_i = \mathbb{P}[\{w_i\}] = \frac{1}{n}$$
+
+da qui si deduce che la probabilità di un evento $A$ (sottoinsieme di $\Omega$) è data da:
+
+$$\mathbb{P}[A] = \frac{r}{n} = \frac{\text{numero di casi favorevoli}}{\text{numero di casi possibili}}$$
+
+**ovviamente sempre se la probabilità degli elementi dello spazio campionario è la stessa**
