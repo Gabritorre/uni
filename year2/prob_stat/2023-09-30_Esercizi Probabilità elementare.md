@@ -253,21 +253,106 @@ $$\frac{36!}{10!(36-10)!} + 4\cdot \frac{36!}{9!(36-9)!} + 6 \cdot \frac{36!}{8!
 ## Domanda 7
 
 Da un mazzo ben mescolato di 52 carte se ne estraggono 5.
-- (a) In quanti modi possibili si possono estrarre le carte? Soluzione: 2598960
-- (b) Quanti modi ci sono di ottenere un poker? Soluzione: 624
-- \(c\) un poker d’assi? Soluzione: 48
-- (d) cinque carte dello stesso seme? Soluzione: 5148
-- (e) cinque carte di cuori? Soluzione: 1287
+- (a) In quanti modi possibili si possono estrarre le carte?
+	
+	stessa logica dell'esercizio precedente:
+	$n = 52$ tutte le carte del mazzo
+	$k = 5$ il numero di carte da estrarre
+	ordine non importante
+	carte sono uniche e quindi non ripetibili
+	$$\frac{52!}{5!(52-5)!} = 2598960$$
+	
+- (b) Quanti modi ci sono di ottenere un poker?
+
+	avere un poker significa che nel proprio mazzo di 5 carte, 4 di queste sono la stessa carta con seme diverso.
+	calcoliamo per esempio la probabilità di ottenere un pocker di una qualsiasi carta, usando sempre le combinazioni semplici:
+	$n = 48$ dalle 52 carte diamo al giocatore un pocker, quindi sottraiamo 4 carte dal mazzo
+	$k = 1$ al giocatore manca solo una carta
+	$$\frac{48!}{1!(48-1)!} = 48$$
+
+	nel gioco sono presenti 13 possibili poker, quindi moltiplichiamo le combinazioni di un singolo poker per tutti i poker possibili quindi $48 \cdot 13 = 624$
+	
+- \(c\) un poker d’assi?
+	
+	Nel calcolo precedente abbiamo già calcolato qual è la probabilità di un poker qualsiasi, il poker d'assi è ovviamente incluso. quindi $48$
+	
+- (d) cinque carte dello stesso seme?
+
+	in questo caso troviamo le combinazioni di un seme unico e poi lo moltiplichiamo per il numero di possibili semi.
+	$n = 13$ dalle 52 carte togliamo 3 semi quindi (39 carte)
+	$k = 5$
+	$$\frac{13!}{5!(13-5)!} = 1287$$
+
+questa è la quantità di modi in cui possono essere pescate 5 carte tutte di uno solo stesso seme, qualsiasi esso sia.
+nel mazzo sono presenti 4 semi diversi, quindi le combinazioni vanno moltiplicate per 4
+
+$$4 \cdot \frac{13!}{5!(13-5)!} = 5148$$
+	
+
+- (e) cinque carte di cuori?
+
+nel precedente punto abbiamo già calcolato le combinazioni di un qualsiasi seme unico. il seme cuori è ovviamente incluso, quindi 1287
 
 ## Domanda 8
 
 Tra gli ultimi 90 oggetti (indistinguibili tra di loro) prodotti in una catena di montaggio si sa che 1 su 3 risulta difettoso. Se si prelevano 3 oggetti a caso.
-- (a) Quante scelte possibili ci sono? Soluzione: 117480
-- (b) Quante con esattamente un oggetto difettoso? Soluzione: 53100
-- \(c\) E che almeno uno di essi sia difettoso? Soluzione: 83260
+- (a) Quante scelte possibili ci sono?
+
+	utilizzando sempre le combinazioni semplici
+	$n = 90$ il numero di oggetti
+	$k = 3$ numero di prelevamenti
+	l'ordine non è importante
+	gli oggetti seppur indistinguibili sono unici, quando prelevi un pezzo non puoi ri-prelevarlo
+	$$\frac{90!}{3!(90-3)!} = 117480$$
+
+
+- (b) Quante con esattamente un oggetto difettoso?
+
+	utilizzando sempre le combinazioni semplici
+	$n = 60$ prelevo un pezzo difettoso e gli altri 29 li tolgo dal conto
+	$k = 2$ ho già prelevato un pezzo difettoso
+	$$\frac{60!}{2!(60-2)!}$$
+
+	ricordiamo però che ho 30 diverse scelte per prelevare il pezzo difettoso, quindi il precedente calcolo andrebbe rifatto 30 volte scegliendo sempre un pezzo difettoso diverso, quindi 
+	$$30 \cdot \frac{60!}{2!(60-2)!} = 53100$$
+	
+- \(c\) E che almeno uno di essi sia difettoso?
+
+	notiamo la parola chiave "almeno" questo significa che al totale di tutte le combinazioni dobbiamo sottrarre il numero di combinazioni in cui nessun pezzo sia difettoso.
+
+Il totale di combinazioni lo abbiamo calcolato nel punto (a) che era $\frac{90!}{3!(90-3)!}$
+per trovare il numero di combinazioni senza pezzi difettosi, applichiamo combinazioni semplici
+
+$n = 60$ ho tolto dal conto gli oggetti difettosi
+$k = 3$
+$$\frac{60!}{3!(60-3)!}$$
+
+eseguendo la sottrazione otteniamo:
+
+$$\frac{90!}{3!(90-3)!} - \frac{60!}{3!(60-3)!} = 83260$$
+
 
 ## Domanda 9
 
 In un negozio ci sono 20 computer in vendita di cui 15 sono nuovi e 5 sono stati rinnovati. A prima vista i computer sono indistinguibili fra loro. Vengono acquistati 6 computer per il laboratorio di una scuola.
-- (a) In quanti modi si possono scegliere i computer acquistati? Soluzione: 38760
-- (b) E sapendo che fra i computer scelti ce ne sono 2 rinnovati? Soluzione: 13650
+- (a) In quanti modi si possono scegliere i computer acquistati?
+
+	combinazioni semplici:
+	$n = 20$ il numero di computer nel negozio
+	$k = 6$ il numero di computer da acquistare
+	ordine non importante
+	gli oggetti sono unici e dopo che ne acquisti uno non puoi riacquistarlo
+	$$\frac{20!}{6!(20-6)!} = 38760$$
+
+- (b) E sapendo che fra i computer scelti ce ne sono 2 rinnovati?
+
+	la domanda ci chiede in quanti modi si possono scegliere i computer comprando esattamente 2 pc rinnovati e i restanti nuovi
+
+	$n = 15$ due pc rinnovati li do all'acquirente, gli altri 3 li tolgo dal conto
+$k = 4$ ho già acquistato 2 pc rinnovati
+$$\frac{15!}{4!(15-4)!}$$
+
+	ricordiamoci che posso scegliere coppie diverse tra i 5 computer rinnovati, precisamente $\frac{5!}{2!(5-2)!} = 	10$ coppie
+
+	quindi abbiamo un totale di 
+$$10 \cdot \frac{15!}{4!(15-4)!} = 13650$$
