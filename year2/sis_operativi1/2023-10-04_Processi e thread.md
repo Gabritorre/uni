@@ -162,3 +162,36 @@ Nei sistemi distribuiti la comunicazione è più complessa, i messaggi inviati p
 Vengono utilizzate delle porte per identificare quale tipo di messaggio si sta inviando. Inoltre servirebbe autenticare il mittente del messaggio.
 
 
+## Thread
+
+Un **thread** è un blocco di istruzioni. I thread appartengono ad un processo.
+I thread condividono tra loro lo **spazio di indirizzamento e i file aperti** del processo al quale appartengono. Mentre i registri, lo stack, il program counter e lo stato è singolo per ogni thread.
+
+finora quando parlavamo di esecuzione di un processo, in realtà si tratta di un thread singolo che sta eseguendo il codice del processo. 
+
+Possiamo vedere i processi come dei raggruppatori di risorse mentre i thread sono degli esecutori che lavorano su quelle risorse raggruppate, possiamo quindi avere più esecutori (thread) che lavorano contemporaneamente su uno spazio condiviso (**multithreading**)
+
+su un processore a singolo core, quando un processo con più thread viene eseguito, i singoli thread vengono eseguiti a turno, proprio come succedeva con più processi. I thread però sono **processi leggeri** in quanto gran parte dei dati è condiviso tra i thread e quando si presenta il context switch ci sono meno cose da cambiare rispetto ad un context switch tra processi. Quindi eseguire a turno più thread è più veloce che eseguire più processi a turno.
+
+
+
+| elementi del processo | elementi del singolo thread |
+|--|--|
+| spazio di indirizzamento | program counter |
+| variabili globali | registri |
+| file aperti | stack |
+| processi figli | stato |
+| allarmi in sospeso |  |
+| segnali e gestori dei segnali |  |
+| informazioni sugli account |  |
+
+
+### ciclo di vita di un thread
+
+Il **ciclo di vita** di un thread è esattamente lo stesso a quello di un processo.
+creazione -> (pronto, esecuzione, bloccato) -> termina
+
+l'overhead di creazione e terminazione di un thread è molto ridotto rispetto alla creazione/terminazione di un processo. Questo perché se immaginiamo che un processo è in esecuzione, questo processo ha il suo unico thread che sta eseguendo, esso ne crea un'altro che usa lo stesso spazio di indirizzamento che in questo esatto momento è già caricato in memoria quindi è molto rapida la creazione.
+
+
+![enter image description here](https://i.ibb.co/bQWJ3pT/thread-ciclo-vita.png)

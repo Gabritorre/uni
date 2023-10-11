@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#modello-a-processi">Modello a processi</a></li>
 <li><a href="#gestione-dei-processi">Gestione dei processi</a></li>
+<li><a href="#thread">Thread</a></li>
 </ul>
 </li>
 </ul>
@@ -135,6 +136,55 @@ Una volta che il gestore termina viene ripresa l’esecuzione del processo che e
 <p>L’implementazione comune di una comunicazione tra processi è la <strong>pipe</strong> cioè una memoria chiamata buffer in cui un processo ci scriverà dei dati mentre l’altro li leggerà</p>
 <p>Nei sistemi distribuiti la comunicazione è più complessa, i messaggi inviati possono essere corrotti o persi, è necessario quindi un meccanismo di conferma che i dati siano stati ricevuti correttamente. Sono necessari anche dei sistemi di <em>timeout</em> per rimandare il messaggio in caso di mancata conferma.</p>
 <p>Vengono utilizzate delle porte per identificare quale tipo di messaggio si sta inviando. Inoltre servirebbe autenticare il mittente del messaggio.</p>
+<h2 id="thread">Thread</h2>
+<p>Un <strong>thread</strong> è un blocco di istruzioni. I thread appartengono ad un processo.<br>
+I thread condividono tra loro lo <strong>spazio di indirizzamento e i file aperti</strong> del processo al quale appartengono. Mentre i registri, lo stack, il program counter e lo stato è singolo per ogni thread.</p>
+<p>finora quando parlavamo di esecuzione di un processo, in realtà si tratta di un thread singolo che sta eseguendo il codice del processo.</p>
+<p>Possiamo vedere i processi come dei raggruppatori di risorse mentre i thread sono degli esecutori che lavorano su quelle risorse raggruppate, possiamo quindi avere più esecutori (thread) che lavorano contemporaneamente su uno spazio condiviso (<strong>multithreading</strong>)</p>
+<p>su un processore a singolo core, quando un processo con più thread viene eseguito, i singoli thread vengono eseguiti a turno, proprio come succedeva con più processi. I thread però sono <strong>processi leggeri</strong> in quanto gran parte dei dati è condiviso tra i thread e quando si presenta il context switch ci sono meno cose da cambiare rispetto ad un context switch tra processi. Quindi eseguire a turno più thread è più veloce che eseguire più processi a turno.</p>
+
+<table>
+<thead>
+<tr>
+<th>elementi del processo</th>
+<th>elementi del singolo thread</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>spazio di indirizzamento</td>
+<td>program counter</td>
+</tr>
+<tr>
+<td>variabili globali</td>
+<td>registri</td>
+</tr>
+<tr>
+<td>file aperti</td>
+<td>stack</td>
+</tr>
+<tr>
+<td>processi figli</td>
+<td>stato</td>
+</tr>
+<tr>
+<td>allarmi in sospeso</td>
+<td></td>
+</tr>
+<tr>
+<td>segnali e gestori dei segnali</td>
+<td></td>
+</tr>
+<tr>
+<td>informazioni sugli account</td>
+<td></td>
+</tr>
+</tbody>
+</table><h3 id="ciclo-di-vita-di-un-thread">ciclo di vita di un thread</h3>
+<p>Il <strong>ciclo di vita</strong> di un thread è esattamente lo stesso a quello di un processo.<br>
+creazione -&gt; (pronto, esecuzione, bloccato) -&gt; termina</p>
+<p>l’overhead di creazione e terminazione di un thread è molto ridotto rispetto alla creazione/terminazione di un processo. Questo perché se immaginiamo che un processo è in esecuzione, questo processo ha il suo unico thread che sta eseguendo, esso ne crea un’altro che usa lo stesso spazio di indirizzamento che in questo esatto momento è già caricato in memoria quindi è molto rapida la creazione.</p>
+<p><img src="https://i.ibb.co/bQWJ3pT/thread-ciclo-vita.png" alt="enter image description here"></p>
 
     </div>
   </div>
