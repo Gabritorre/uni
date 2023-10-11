@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-11_Progettazione logica</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#progettazione-logica">Progettazione logica</a>
+<ul>
+<li><a href="#vincoli">Vincoli</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="progettazione-logica">Progettazione logica</h1>
+<p>Dopo aver realizzato il modello ad oggetti, si passa alla progettazione logica.</p>
+<p>Nella progettazione logica andremo principalmente a rappresentare <strong>relazioni</strong> e <strong>ennuple</strong>.</p>
+<p>le relazioni sono essenzialmente le tabelle (o le entità) mentre le ennuple sono la lista degli attributi con il relativo tipo di dato.</p>
+<p>Andremo a scrivere le relazioni come:</p>
+<p><code>nome_tabella(attributo_1 : tipo_di_dato, attributo_2 : tipo_di_dato, ...)</code></p>
+<p>il numero di attributi della tabella è detto <strong>grado</strong> della relazione<br>
+con <strong>cardinalità</strong> intendiamo quante righe ha una tabella.</p>
+<p>Ad esempio, nella seguente tabella “Studenti”:</p>
+
+<table>
+<thead>
+<tr>
+<th>Nome</th>
+<th>Cognome</th>
+<th>Matricola</th>
+<th>Anno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paolo</td>
+<td>Vieri</td>
+<td>13425</td>
+<td>1998</td>
+</tr>
+<tr>
+<td>Gina</td>
+<td>Conti</td>
+<td>11235</td>
+<td>2000</td>
+</tr>
+<tr>
+<td>Pierino</td>
+<td>Giusti</td>
+<td>15847</td>
+<td>1997</td>
+</tr>
+</tbody>
+</table><p>lo schema logico per questa singola tabella è:</p>
+<p><code>Studenti(Nome:String, Cognome:String, Matricola:int, Anno:Date)</code></p>
+<p>Il grado di questa tabella è 4<br>
+mentre la cardinalità è 3</p>
+<h2 id="vincoli">Vincoli</h2>
+<p>Il modello logico deve considerare dei vincoli sugli attributi:</p>
+<ul>
+<li>not null</li>
+<li>primary key</li>
+<li>foreign key</li>
+</ul>
+<p>una istanza (una riga) che non rispetta i vincoli non può essere inserita nel DB.</p>
+<h3 id="primary-key">Primary key</h3>
+<p>La primary key serve ad identificare univocamente ogni riga di una tabella. Non è che un attributo (colonna) che deve essere diverso per ogni riga, spesso è una matricola oppure un id. È necessario che ogni tabella del database abbia una primary key (PK).</p>
+<p>Esiste anche il vincolo <strong>unique</strong> che posso assegnare ad altre colonne, esso genera lo stesso risultato della primary key, però la primary ha la particolarità di essere fondamentale in fase di associare più tabelle, in più la primary key non può essere null.</p>
+<h3 id="foreign-key">Foreign key</h3>
+<p>la foreign key è una colonna in cui i valori sono le chiavi primarie di un’altra tabella, serve a dire che una riga è collegata ad una determinata riga di un’altra tabella (quella dove primary key di una e foreign key dell’altra combaciano).<br>
+La presenza di queste foreign key garantiscono la proprietà di integrità dei dati del database, chiamata <strong>integrità referenziale</strong></p>
+<p>Vediamo un esempio:</p>
+<p>Tabella Studenti:</p>
+
+<table>
+<thead>
+<tr>
+<th>Nome</th>
+<th>Cognome</th>
+<th>Matricola</th>
+<th>Anno</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Paolo</td>
+<td>Vieri</td>
+<td>13425</td>
+<td>1998</td>
+</tr>
+<tr>
+<td>Gina</td>
+<td>Conti</td>
+<td>11235</td>
+<td>2000</td>
+</tr>
+<tr>
+<td>Pierino</td>
+<td>Giusti</td>
+<td>15847</td>
+<td>1997</td>
+</tr>
+</tbody>
+</table><p>Tabella Esami:</p>
+
+<table>
+<thead>
+<tr>
+<th>Codice</th>
+<th>Materia</th>
+<th>Candidato</th>
+<th>Data</th>
+<th>Voto</th>
+<th>Lode</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>B112</td>
+<td>BD1</td>
+<td>11235</td>
+<td>08-07-06</td>
+<td>27</td>
+<td>0</td>
+</tr>
+<tr>
+<td>F31</td>
+<td>FIS1</td>
+<td>13425</td>
+<td>06-10-02</td>
+<td>25</td>
+<td>0</td>
+</tr>
+<tr>
+<td>B247</td>
+<td>BD2</td>
+<td>15847</td>
+<td>08-02-03</td>
+<td>30</td>
+<td>1</td>
+</tr>
+</tbody>
+</table><p><code>Studenti(Nome:String, Cognome:String, Matricola:int, Anno:Date)</code><br>
+<code>Esami(Codice:String, Materia:String, Candidato:int, Data:Date, voto: int, Lode: boolean)</code></p>
+<p>In questo esempio le due tabelle hanno un’associazione che le lega.<br>
+l’attributo “matricola” nella tabella studenti è primary key</p>
+<p>mentre l’attributo “candidato” sulla tabella Esami è una foreign key che si riferisce alle matricole della tabella studenti.<br>
+Inoltre “codice” nella tabella Esami è primary key della tabella.</p>
+<p>Questo design però ci costringe ad avere un solo candidato per esame. In questo caso Andrebbe creata un’altra tabella ma lo vedremo dopo.</p>
+<h3 id="not-null">not null</h3>
+<p>il valore null viene usato quando o non si conosce il valore oppure un valore dato non è applicabile.</p>
+<p>Il vincono not null ci impedisce di mettere null in un’attributo.</p>
+<p>Le chiavi primarie implicitamente non possono essere null.<br>
+Mentre una foreign key può essere null nel caso ci sia un’associazione parziale tra le tabelle.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
