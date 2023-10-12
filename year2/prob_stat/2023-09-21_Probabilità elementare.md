@@ -239,3 +239,102 @@ da qui si deduce che la probabilità di un evento $A$ (sottoinsieme di $\Omega$)
 $$\mathbb{P}[A] = \frac{r}{n} = \frac{\text{numero di casi favorevoli}}{\text{numero di casi possibili}}$$
 
 **ovviamente sempre se la probabilità degli elementi dello spazio campionario è la stessa**
+
+
+### Popolazioni
+
+La **popolazione** di un insieme rappresenta tutti i singoli elementi dell'insieme.
+
+rappresentiamo con $N$ il numero di elementi della popolazione
+
+suddividiamo questi $N$ in 2 sottopopolazioni: $m$ hanno una determinata caratteristica che ci interessa, mentre i rimanenti elementi $N - m$ non ce l'hanno.
+
+**Domanda**: qual è la probabilità che su $n$ elementi estratti casualmente, $k$ abbiano la caratteristica e i rimanenti $n-k$ no?
+
+
+Distinguiamo il caso con reinserimento e senza reinserimento
+
+**soluzione con reinserimento**
+
+lo **spazio campionario** dell'evento è dato da tutte le possibili combinazioni formate da $n$ elementi.
+
+Abbiamo degli eventi $A_k$ dove $k$ indica quanti elementi hanno la caratteristica che vogliamo.
+La formula per calcolare la probabilità di un evento $A_k$ è la seguente:
+
+$$\mathbb{P}[A_k] = \binom{n}{k}\left(\frac{m}{N}\right)^k\left(1-\frac{m}{N}\right)^{n-k}$$
+
+possiamo descriverla a parole come:
+
+$\binom{n}{k} =$ tutti i modi di ottenere
+$\frac{m}{n} =$ probabilità che esca un elemento con la caratteristica
+$1-\frac{m}{n} =$ probabilità che esca un elemento senza la caratteristica
+
+Esempio:
+
+ho un'urna con 7 palline
+di queste palline 4 sono bianche e 3 nere
+
+$N = 7$
+$m = 4$
+
+le palline bianche rappresentano la caratteristica che vogliamo ottenere
+
+quindi estraendo 3 $(n = 3)$ palline con reinserimento quale è la probabilità che:
+
+- $A_0:$ ottengo zero palline bianche
+- $A_1:$ ottengo una pallina bianca
+- $A_2:$ ottengo due palline bianche
+- $A_3:$ ottengo tre palline bianche
+
+
+ad esempio
+- $\mathbb{P}[A_0] = \binom{3}{0}\left( \frac{4}{7}\right)^0\left(1-\frac{4}{7}\right)^{3-0}$
+$\hspace{9mm}=1\cdot 1\cdot\frac{27}{343} \approx 0.07$ quindi abbiamo circa il 7% di probabilità che non ci siano palle bianche
+
+- $\mathbb{P}[A_1] = \binom{3}{1}\left( \frac{4}{7}\right)^1\left(1-\frac{4}{7}\right)^{3-1}$
+$\hspace{9mm}=3\cdot \frac{4}{7}\cdot\frac{9}{49} \approx 0.31$ quindi abbiamo circa il 31% di probabilità che ci esca una sola pallina bianca
+
+- $\mathbb{P}[A_2] = \binom{3}{2}\left( \frac{4}{7}\right)^2\left(1-\frac{4}{7}\right)^{3-2}$
+$\hspace{9mm}=3\cdot \frac{16}{49}\cdot\frac{3}{7} \approx 0.41$ quindi abbiamo circa il 41% di probabilità che ci escano due palline bianche
+
+- $\mathbb{P}[A_3] = \binom{3}{3}\left( \frac{4}{7}\right)^3\left(1-\frac{4}{7}\right)^{3-0}$
+$\hspace{9mm}=1\cdot \frac{64}{343}\cdot 1 \approx 0.18$ quindi abbiamo circa il 18% di probabilità che ci escano tutte palline bianche
+
+
+**soluzione senza reinserimento**
+
+questa soluzione è valida solo se vengono rispettate le seguenti condizioni:
+
+$n \leq N :$ quindi il numero di estrazioni è minore o uguale al numero degli elementi dell'insieme
+$k \leq m :$ gli elementi estratti che hanno la caratteristica interessata devono essere minori uguali del totale degli elementi che hanno la caratteristica
+$n-k \leq N - m :$ gli elementi estratti che non hanno la caratteristica interessata devono essere minori uguali del totale degli elementi che non hanno la caratteristica
+
+anche in questo caso lo spazio campionario è formato da tutte le combinazioni di $n$ elementi
+
+Abbiamo degli eventi $A_k$ dove $k$ indica quanti elementi hanno la caratteristica che vogliamo.
+La formula per calcolare la probabilità di un evento $A_k$ è la seguente:
+
+$$\mathbb{P}[A_k] = \frac{\binom{m}{k} \binom{N-m}{n-k}}{\binom{N}{n}}$$
+
+con lo stesso esempio di prima
+
+ho un'urna con 7 palline
+di queste palline 4 sono bianche e 3 nere
+
+$N = 7$
+$m = 4$
+
+le palline bianche rappresentano la caratteristica che vogliamo ottenere
+
+quindi estraendo 3 $(n = 3)$ palline senza reinserimento quale è la probabilità che:
+
+- $A_0:$ ottengo zero palline bianche
+- $A_1:$ ottengo una pallina bianca
+- $A_2:$ ottengo due palline bianche
+- $A_3:$ ottengo tre palline bianche
+
+$\mathbb{P}[A_0] = \frac{\binom{4}{0} \binom{7-4}{3-0}}{\binom{7}{3}}$
+$\hspace{9mm}=\frac{1\cdot1}{35} \approx 0.03$ quindi abbiamo circa il 3% di probabilità che non ci siano palle bianche
+
+$\mathbb{P}[A_3] = \frac{\binom{4}{3} \binom{7-4}{3-3}}{\binom{7}{3}}$
+$\hspace{9mm}=\frac{4\cdot1}{35} \approx 0.11$ quindi abbiamo circa il 11% di probabilità che escano tutte palle bianche
