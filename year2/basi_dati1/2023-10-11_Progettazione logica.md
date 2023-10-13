@@ -87,4 +87,44 @@ Il vincono not null ci impedisce di mettere null in un'attributo.
 Le chiavi primarie implicitamente non possono essere null.
 Mentre una foreign key può essere null nel caso ci sia un'associazione parziale tra le tabelle.
 
+## Dal modello a oggetti allo schema relazionale
 
+per costruire lo schema relazionale dobbiamo trasformare alcune cose:
+
+### associazioni
+
+partiamo dalle associazioni molti a uno totali:
+
+![enter image description here](https://i.ibb.co/F7w80tD/n-1-tot.png)
+
+mentre per le associazioni molti a uno parziali abbiamo due modi di fare: o nello stesso modo delle totali, oppure creando una nuova tabella
+
+![enter image description here](https://i.ibb.co/yPnqjKY/n-1-parz.png)
+
+per le relazioni uno a uno in caso di totalità è indifferente dove mettere la foreign key mentre se c'è la parzialità bisogna rispettarla:
+
+![enter image description here](https://i.ibb.co/LYH7dfZ/1-1-parz.png)
+
+mentre per le relazioni molti a molti dobbiamo inserire una nuova tabella
+
+![enter image description here](https://i.ibb.co/pKp3L4X/molti-a-molti.png)
+
+
+### gerarchia
+
+![enter image description here](https://i.ibb.co/R6N2YVg/gerarchia.png)
+Nello schema relazionale dobbiamo rimuovere la gerarchia, possiamo farlo in tre modi diversi:
+
+1. **relazione unica**
+	possiamo accorpare le tre tabelle in una unica, in cui si uniscono gli attributi di tutte le tabelle con l'aggiunta di un discriminante che dice una riga a quale tabella apparteneva.
+	Conveniente se i figli differiscono di pochi attributi
+
+	![enter image description here](https://i.ibb.co/GFHzQQk/reaz-unica.png)	
+
+2. **partizionamento verticale**
+	manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiungiamo la primary key del padre che farà anche da foreign key verso il padre. Quindi la gerarchia diventa due associazioni
+	![enter image description here](https://i.ibb.co/Pwr9K7f/part-vert.png)
+3. **partizionamento orizzontale**
+	questo metodo **non si può applicare** se il padre della gerarchia ha una **associazione entrante**.
+	accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane
+	![enter image description here](https://i.ibb.co/qknckbs/part-oriz.png)

@@ -16,6 +16,7 @@
 <li><a href="#progettazione-logica">Progettazione logica</a>
 <ul>
 <li><a href="#vincoli">Vincoli</a></li>
+<li><a href="#dal-modello-a-oggetti-allo-schema-relazionale">Dal modello a oggetti allo schema relazionale</a></li>
 </ul>
 </li>
 </ul>
@@ -164,6 +165,39 @@ Inoltre “codice” nella tabella Esami è primary key della tabella.</p>
 <p>Il vincono not null ci impedisce di mettere null in un’attributo.</p>
 <p>Le chiavi primarie implicitamente non possono essere null.<br>
 Mentre una foreign key può essere null nel caso ci sia un’associazione parziale tra le tabelle.</p>
+<h2 id="dal-modello-a-oggetti-allo-schema-relazionale">Dal modello a oggetti allo schema relazionale</h2>
+<p>per costruire lo schema relazionale dobbiamo trasformare alcune cose:</p>
+<h3 id="associazioni">associazioni</h3>
+<p>partiamo dalle associazioni molti a uno totali:</p>
+<p><img src="https://i.ibb.co/F7w80tD/n-1-tot.png" alt="enter image description here"></p>
+<p>mentre per le associazioni molti a uno parziali abbiamo due modi di fare: o nello stesso modo delle totali, oppure creando una nuova tabella</p>
+<p><img src="https://i.ibb.co/yPnqjKY/n-1-parz.png" alt="enter image description here"></p>
+<p>per le relazioni uno a uno in caso di totalità è indifferente dove mettere la foreign key mentre se c’è la parzialità bisogna rispettarla:</p>
+<p><img src="https://i.ibb.co/LYH7dfZ/1-1-parz.png" alt="enter image description here"></p>
+<p>mentre per le relazioni molti a molti dobbiamo inserire una nuova tabella</p>
+<p><img src="https://i.ibb.co/pKp3L4X/molti-a-molti.png" alt="enter image description here"></p>
+<h3 id="gerarchia">gerarchia</h3>
+<p><img src="https://i.ibb.co/R6N2YVg/gerarchia.png" alt="enter image description here"><br>
+Nello schema relazionale dobbiamo rimuovere la gerarchia, possiamo farlo in tre modi diversi:</p>
+<ol>
+<li>
+<p><strong>relazione unica</strong><br>
+possiamo accorpare le tre tabelle in una unica, in cui si uniscono gli attributi di tutte le tabelle con l’aggiunta di un discriminante che dice una riga a quale tabella apparteneva.<br>
+Conveniente se i figli differiscono di pochi attributi</p>
+<p><img src="https://i.ibb.co/GFHzQQk/reaz-unica.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>partizionamento verticale</strong><br>
+manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiungiamo la primary key del padre che farà anche da foreign key verso il padre. Quindi la gerarchia diventa due associazioni<br>
+<img src="https://i.ibb.co/Pwr9K7f/part-vert.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>partizionamento orizzontale</strong><br>
+questo metodo <strong>non si può applicare</strong> se il padre della gerarchia ha una <strong>associazione entrante</strong>.<br>
+accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane<br>
+<img src="https://i.ibb.co/qknckbs/part-oriz.png" alt="enter image description here"></p>
+</li>
+</ol>
 
     </div>
   </div>
