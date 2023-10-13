@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-09_Javadoc</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#javadoc">Javadoc</a>
+<ul>
+<li><a href="#sintassi-di-javadoc">Sintassi di javadoc</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="javadoc">Javadoc</h1>
+<p>Quando si distribuisce il proprio codice per essere usato in altri progetti le parti del codice che vengono utilizzate sono le interfacce pubbliche. È molto importante quindi documentare i propri metodi spiegando il loro scopo, cosa prendono in input e cosa restituiscono in output, senza andare nei dettagli di implementazione.</p>
+<p>Javadoc è un’applicazione integrata in Java che permette di generare una documentazione delle proprie interfacce utilizzando i commenti.</p>
+<h2 id="sintassi-di-javadoc">Sintassi di javadoc</h2>
+<p>la seguente sintassi serve per un commento multilinee che javadoc interpreta come documentazione</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+...
+*/</span>
+</code></pre>
+<p>javadoc supporta vari tag che vengono rappresentati in modo particolare nella documentazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+* @author author's name
+* @version 1.5		// versione della classe corrente
+* @since 1.0		// da quale versione il metodo/classe è presente
+*/</span>
+</code></pre>
+<p>in particolare i tag per documentare un metodo sono:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+...
+descrizione del metodo..
+...
+
+@param &lt;parameter name&gt; &lt;description&gt;
+@return &lt;description&gt;
+@throws &lt;exception name&gt; &lt;description&gt;
+*/</span>
+</code></pre>
+<h3 id="precondizioni">precondizioni</h3>
+<p>le precondizioni sono ciò che il chiamante deve garantire prima di chiamare il metodo</p>
+<p>è importante esprime oltre al significato dei parametri, dei vincoli che devono rispettare i parametri al fine di avere l’output voluto. ad esempio un parametro deve essere maggiore di zero, ovviamente dentro al metodo verrà fatto l’effettivo controllo ma scriverlo nella documentazione è comunque importante</p>
+<h3 id="postcondizioni">postcondizioni</h3>
+<p>le postcondizioni sono ciò che il codice deve garantire dopo essere stato chiamato.</p>
+<p>lo stesso discorso fatto per le precondizione vale per le postcondizione riguardo al valore di ritorno</p>
+<h3 id="invariante-della-classe">invariante della classe</h3>
+<p>l’invariante della classe è riferita all’intera classe e non ad un singolo metodo, spesso è rivolta ai campi. l’invarianti rappresentano delle condizioni che devono essere rispettate per tutta la vita di un oggetto della classe.<br>
+Ad esempio un determinato campo deve sempre essere compreso tra 0 e 100, nessun metodo deve infrangere questa regola.</p>
+<h3 id="esempio">Esempio</h3>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+ * Questa classe contiene una funzione per calcolare la somma di due interi.
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SommaIntero</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * Questo metodo restituisce la somma di due numeri interi.
+     *
+     * @param a il primo intero
+     * @param b il secondo intero
+     * @return la somma di a e b
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">calcolaSomma</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Metodo principale per eseguire il programma.
+     *
+     * @param args gli argomenti della riga di comando
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> primoNumero <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> secondoNumero <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> risultato <span class="token operator">=</span> <span class="token function">calcolaSomma</span><span class="token punctuation">(</span>primoNumero<span class="token punctuation">,</span> secondoNumero<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"La somma di "</span> <span class="token operator">+</span> primoNumero <span class="token operator">+</span> <span class="token string">" e "</span> <span class="token operator">+</span> secondoNumero <span class="token operator">+</span> <span class="token string">" è: "</span> <span class="token operator">+</span> risultato<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>per generare la documentazione è sufficiente eseguire il seguente comando:</p>
+<pre><code>javadoc -d docs SommaIntero.java
+</code></pre>
+<p>verrà generata una pagina di questo tipo</p>
+<p><img src="https://i.ibb.co/wN6V7x9/index.png" alt="enter image description here"></p>
+<p>Cliccando sulla classe “SommaIntero” andremo nella seguente pagina</p>
+<p><img src="https://i.ibb.co/rQTCWYq/class.png" alt="enter image description here"></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
