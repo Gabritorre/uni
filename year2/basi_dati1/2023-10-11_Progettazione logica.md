@@ -125,6 +125,51 @@ Nello schema relazionale dobbiamo rimuovere la gerarchia, possiamo farlo in tre 
 	manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiungiamo la primary key del padre che farà anche da foreign key verso il padre. Quindi la gerarchia diventa due associazioni
 	![enter image description here](https://i.ibb.co/Pwr9K7f/part-vert.png)
 3. **partizionamento orizzontale**
+accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane.
 	questo metodo **non si può applicare** se il padre della gerarchia ha una **associazione entrante**.
-	accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane
+Questo metodo è scomodo nel caso la gerarchia sia di tipo scorrelata, in quanto i figli possono avere degli attributi comuni e quando si vuole modificare un figlio bisogna modificare anche l'altro per mantenere la coerenza dei dati.
 	![enter image description here](https://i.ibb.co/qknckbs/part-oriz.png)
+
+### chiave primaria
+
+ogni tabella deve avere una chiave primaria che identifica le righe, quindi se non è presente va aggiunta
+
+
+### Attributi multivalore
+
+Gli attributi multivalore possono essere gestiti in 2 modi diversi, in base a se se vuole far diventare l'attributo una tabella indipendente oppure solo una associazione diretta con la tabella da cui proviene:
+
+1. associazione diretta.
+
+	un esempio può essere una persona con i numeri di telefono, dato che è molto improbabile condividere un numero di telefono tra più persone fare una associazione diretta è sufficiente:
+
+	es.
+![enter image description here](https://i.ibb.co/1XKmGY3/multival-before.png)
+
+	diventa:
+
+	![enter image description here](https://i.ibb.co/qxScpSw/multival-after.png)
+
+	abbiamo quindi una tabella telefono che è composta da il codice fiscale della persona e dal numero di telefono, insieme identifica una riga della tabella
+
+2. tabella indipendente
+un esempio può essere fatto tra persona e le lingue che una persona sa parlare, in questo caso è molto probabile che delle lingue siano in comune tra più persone quindi è conveniente fare una tabella indipendente per le lingue e avere una relazione che lega persona e lingua.
+
+
+	![enter image description here](https://i.ibb.co/x8H48Xj/multival-before.png)
+
+	diventa:
+
+	![enter image description here](https://i.ibb.co/hZg0SVg/multival-after.png)
+
+### Attributi strutturati
+
+I campi strutturati (cioè composti da più tipi di dato) vanno scomposti in più attributi, fino a che ogni attributo sia un tipo di dato primitivo.
+
+es.
+
+![enter image description here](https://i.ibb.co/3MnGGQ9/struct-before.png)
+
+diventa:
+
+![enter image description here](https://i.ibb.co/2WcQMyp/struct-after.png)

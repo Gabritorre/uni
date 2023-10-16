@@ -193,11 +193,40 @@ manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiun
 </li>
 <li>
 <p><strong>partizionamento orizzontale</strong><br>
+accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane.<br>
 questo metodo <strong>non si può applicare</strong> se il padre della gerarchia ha una <strong>associazione entrante</strong>.<br>
-accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane<br>
+Questo metodo è scomodo nel caso la gerarchia sia di tipo scorrelata, in quanto i figli possono avere degli attributi comuni e quando si vuole modificare un figlio bisogna modificare anche l’altro per mantenere la coerenza dei dati.<br>
 <img src="https://i.ibb.co/qknckbs/part-oriz.png" alt="enter image description here"></p>
 </li>
 </ol>
+<h3 id="chiave-primaria">chiave primaria</h3>
+<p>ogni tabella deve avere una chiave primaria che identifica le righe, quindi se non è presente va aggiunta</p>
+<h3 id="attributi-multivalore">Attributi multivalore</h3>
+<p>Gli attributi multivalore possono essere gestiti in 2 modi diversi, in base a se se vuole far diventare l’attributo una tabella indipendente oppure solo una associazione diretta con la tabella da cui proviene:</p>
+<ol>
+<li>
+<p>associazione diretta.</p>
+<p>un esempio può essere una persona con i numeri di telefono, dato che è molto improbabile condividere un numero di telefono tra più persone fare una associazione diretta è sufficiente:</p>
+<p>es.<br>
+<img src="https://i.ibb.co/1XKmGY3/multival-before.png" alt="enter image description here"></p>
+<p>diventa:</p>
+<p><img src="https://i.ibb.co/qxScpSw/multival-after.png" alt="enter image description here"></p>
+<p>abbiamo quindi una tabella telefono che è composta da il codice fiscale della persona e dal numero di telefono, insieme identifica una riga della tabella</p>
+</li>
+<li>
+<p>tabella indipendente<br>
+un esempio può essere fatto tra persona e le lingue che una persona sa parlare, in questo caso è molto probabile che delle lingue siano in comune tra più persone quindi è conveniente fare una tabella indipendente per le lingue e avere una relazione che lega persona e lingua.</p>
+<p><img src="https://i.ibb.co/x8H48Xj/multival-before.png" alt="enter image description here"></p>
+<p>diventa:</p>
+<p><img src="https://i.ibb.co/hZg0SVg/multival-after.png" alt="enter image description here"></p>
+</li>
+</ol>
+<h3 id="attributi-strutturati">Attributi strutturati</h3>
+<p>I campi strutturati (cioè composti da più tipi di dato) vanno scomposti in più attributi, fino a che ogni attributo sia un tipo di dato primitivo.</p>
+<p>es.</p>
+<p><img src="https://i.ibb.co/3MnGGQ9/struct-before.png" alt="enter image description here"></p>
+<p>diventa:</p>
+<p><img src="https://i.ibb.co/2WcQMyp/struct-after.png" alt="enter image description here"></p>
 
     </div>
   </div>
