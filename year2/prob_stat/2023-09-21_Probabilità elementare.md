@@ -99,7 +99,7 @@ otteniamo quindi che il totale di modi di disporre le persone è $10!$
 
 	
 ### Combinazioni
-Avendo un insieme di $n$ elementi, una disposizione è una scelta di $k$ elementi, di cui l'ordine non è importante, presi dall'insieme.
+Avendo un insieme di $n$ elementi, una combinazione è una scelta di $k$ elementi, di cui l'ordine non è importante, presi dall'insieme.
 Due combinazioni sono diverse tra loro se contengono elementi diversi.
 
 Si distinguono le **combinazioni semplici e le combinazioni con ripetizioni** in base a se un elemento si può ripetere o meno.
@@ -120,7 +120,7 @@ utilizzando la formula per intero sarebbe $\frac{5!}{3! \cdot (5-3)!}$
 il risultato è dato da $\binom{9}{3}$ oppure scritto in formula $\frac{9!}{3!\cdot(9-3)!} = \frac{9\cdot 8 \cdot 7}{3 \cdot 2 \cdot 1} = 84$
 
 
-- **combinazioni semplici**: In cui gli elementi si possono ripetere:
+- **combinazioni con ripetizioni**: In cui gli elementi si possono ripetere:
 
 $$\frac{(n-k+1)!}{k!(n-1)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n + k -1}{k}$$
 
@@ -256,9 +256,22 @@ Distinguiamo il caso con reinserimento e senza reinserimento
 
 **soluzione con reinserimento**
 
-lo **spazio campionario** dell'evento è dato da tutte le possibili combinazioni formate da $n$ elementi.
+in questo caso ogni vettore di $n$ elementi ha la stessa probabilità di essere estratto (dato che reinseriamo ogni volta dopo una estrazione) e in questo caso teniamo conto  dell'**ordine in cui sono stati estratti gli elementi**
+
+lo **spazio campionario** dell'evento è dato da tutte le possibili combinazioni formate da $n$ elementi in cui l'ordine è importante.
+
+$$\#\Omega = N^n$$
 
 Abbiamo degli eventi $A_k$ dove $k$ indica quanti elementi hanno la caratteristica che vogliamo.
+
+$$\#A_k = \binom{n}{k}m^k(N-m)^{n-k}$$
+
+possiamo descriverla come:
+$\binom{n}{k} =$ i modi di ordinare
+$m^k =$ scegliere i $k$ elementi che hanno la caratteristica tra gli $m$ totali che possiedono la caratteristica
+$(N-m)^{n-k} =$ scegliere i $n-k$ elementi senza caratteristica tra gli $N-m$ totali che sono senza caratteristica
+
+
 La formula per calcolare la probabilità di un evento $A_k$ è la seguente:
 
 $$\mathbb{P}[A_k] = \binom{n}{k}\left(\frac{m}{N}\right)^k\left(1-\frac{m}{N}\right)^{n-k}$$
@@ -286,8 +299,20 @@ quindi estraendo 3 $(n = 3)$ palline con reinserimento quale è la probabilità 
 - $A_2:$ ottengo due palline bianche
 - $A_3:$ ottengo tre palline bianche
 
+prima di calcolare la probabilità proviamo a calcolare la numerosità dell'evento $A_2$
 
-ad esempio
+$\#A_2 = \binom{3}{2}4^2(7-4)^{3-2} = 144$
+
+quindi abbiamo $\binom{3}{2} = 3$ modi di ordinare le tre estrazioni in cui 2 sono bianche. infatti
+
+$B, B, N$
+$B, N, B$
+$N, B, B$
+
+abbiamo $4^2 = 16$ modi di scegliere le due palline bianche tra le 4 che ho
+e abbiamo $(7-4)^{3-2} = 3^1 = 3$ modi di scegliere la pallina nera tra le 3 che ho
+
+passiamo al calcolo della probabilità degli eventi:
 - $\mathbb{P}[A_0] = \binom{3}{0}\left( \frac{4}{7}\right)^0\left(1-\frac{4}{7}\right)^{3-0}$
 $\hspace{9mm}=1\cdot 1\cdot\frac{27}{343} \approx 0.07$ quindi abbiamo circa il 7% di probabilità che non ci siano palle bianche
 
@@ -309,9 +334,19 @@ $n \leq N :$ quindi il numero di estrazioni è minore o uguale al numero degli e
 $k \leq m :$ gli elementi estratti che hanno la caratteristica interessata devono essere minori uguali del totale degli elementi che hanno la caratteristica
 $n-k \leq N - m :$ gli elementi estratti che non hanno la caratteristica interessata devono essere minori uguali del totale degli elementi che non hanno la caratteristica
 
-anche in questo caso lo spazio campionario è formato da tutte le combinazioni di $n$ elementi
+in questo caso le n-uple sono degli insiemi in quanto **non siamo interessati all'ordine** in cui estraiamo gli elementi
+
+anche in questo caso lo spazio campionario è formato da tutte le combinazioni di $n$ elementi in cui l'ordine non è importante
+
+$$\#\Omega = \binom{N}{n}$$
 
 Abbiamo degli eventi $A_k$ dove $k$ indica quanti elementi hanno la caratteristica che vogliamo.
+
+$$\#A_k =\binom{m}{k}\binom{N-m}{n-k}$$
+
+$\binom{m}{k} =$ modi di scegliere $k$ elementi con la caratteristica tra gli elementi totali che hanno la caratteristica, considerando che ogni estrazione influenza la successiva (dato che non c'è reinserimento)
+$\binom{N-m}{n-k}$ modi di scegliere $n-k$ elementi senza la caratteristica tra gli elementi totali che non hanno la caratteristica
+
 La formula per calcolare la probabilità di un evento $A_k$ è la seguente:
 
 $$\mathbb{P}[A_k] = \frac{\binom{m}{k} \binom{N-m}{n-k}}{\binom{N}{n}}$$
@@ -332,6 +367,15 @@ quindi estraendo 3 $(n = 3)$ palline senza reinserimento quale è la probabilit�
 - $A_1:$ ottengo una pallina bianca
 - $A_2:$ ottengo due palline bianche
 - $A_3:$ ottengo tre palline bianche
+
+calcoliamo prima la numerosità dell'evento $A_2$
+
+$\#A_2 =\binom{4}{2}\binom{7-4}{3-2} = 18$
+
+abbiamo $\binom{4}{2} = 6$ modi di scegliere due palline bianche tra le 4
+abbiamo $\binom{3}{1} = 3$ modi di scegliere la pallina nera tra le 3 che ho
+
+ora calcoliamo le probabilità di alcuni aventi:
 
 $\mathbb{P}[A_0] = \frac{\binom{4}{0} \binom{7-4}{3-0}}{\binom{7}{3}}$
 $\hspace{9mm}=\frac{1\cdot1}{35} \approx 0.03$ quindi abbiamo circa il 3% di probabilità che non ci siano palle bianche
