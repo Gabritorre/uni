@@ -1,4 +1,5 @@
 let algo_strut_dati1 = ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze"];
+let algo_strut_dati2 = ["Le strutture dati", "Dizionari"];
 let basi_dati1 = ["Introduzione", "Progettazione e modellazione", "Progettazione logica"];
 let prob_stat = ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2"];
 let prog_ogg1 = ["Introduzione", "Classi", "Incapsulamento", "Javadoc"];
@@ -13,6 +14,9 @@ function show_arguments(subj) {
 	switch (subj) {
 		case "algo_strut_dati1":
 			selected_subject = algo_strut_dati1;
+			break;
+		case "algo_strut_dati2":
+			selected_subject = algo_strut_dati2;
 			break;
 		case "basi_dati1":
 			selected_subject = basi_dati1;
