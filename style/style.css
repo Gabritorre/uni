@@ -36,6 +36,7 @@ body {
 .curses{
 	width: 100%;
 	display: flex;
+	flex-wrap:wrap;
 	flex-direction: row;
 	justify-content: space-evenly;
 	padding: 10px 0px;
@@ -49,6 +50,10 @@ body {
 #arguments-sep {
 	width: 90%;
 	margin: auto;
+}
+
+.separator {
+	height:40px;
 }
 
 .change-subject {
@@ -107,6 +112,11 @@ li a {
 	color: #1f8ec5;
 }
 
+.special {
+	color: #1fc580;
+}
+
+
 li a:after {
 	content: '';
 	position: absolute;
@@ -122,6 +132,10 @@ li a:after {
 li a:hover:after {
 	transform: scaleX(1);
 	transform-origin: bottom left;
+}
+
+.special:after {
+	background-color: #1fc580;
 }
 
 .subject-list {

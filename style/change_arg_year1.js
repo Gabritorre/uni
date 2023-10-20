@@ -1,52 +1,19 @@
-let alg_lineare = ["Numeri complessi", "Vettori", "Rette e piani", "Sistemi lineari", "Matrici", "Grafi", "Spazi vettoriali", "Trasformazioni lineari", "Autovalori e autovettori"];
-let arch_elaboratori = ["Il computer", "Rappresentazione informazioni", "Algebra booleana", "Circuiti logici", "MIPS", "ALU", "Moltiplicazione e divisione tra interi", "Circuiti sequenziali", "CPU Mips-like singolo ciclo", "CPU Mips-like multi ciclo", "Valutazione prestazioni"];
-let calcolo1 = ["Insiemistica", "Insieme R", "Funzioni", "Funzioni elementari", "Limiti", "Funzioni continue", "Derivate", "Infiniti e infinitesimi", "Serie", "Integrali"];
-let int_program = ["Progetto Snake Labyrinth"];
-let mat_base = ["Potenze radici", "Grafici delle funzioni"];
-let mat_discreta = ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Ricorsione e sommatorie", "Aritmetica modulare", "Numeri primi", "Calcolo combinatorio"];
-
-let arch_elaboratori2 = ["Nozioni introduttive", "CPU pipeline", "Memoria cache", "Memoria virtuale", "ARM ISA", "Assembly", "Input e output"];
-let calcolo2 = ["Equazioni differenziali", "Curve parametriche", "Funzioni a più variabili", "Integrali doppi"];
-let prog_lab = ["Note varie", "Compilatore", "Automatizzazioni", "Debug", "Classi", "Streams", "Templates", "Move semantics", "Iteratori"];
+let courses = {
+	alg_lineare : ["Numeri complessi", "Vettori", "Rette e piani", "Sistemi lineari", "Matrici", "Grafi", "Spazi vettoriali", "Trasformazioni lineari", "Autovalori e autovettori"],
+	arch_elaboratori : ["Il computer", "Rappresentazione informazioni", "Algebra booleana", "Circuiti logici", "MIPS", "ALU", "Moltiplicazione e divisione tra interi", "Circuiti sequenziali", "CPU Mips-like singolo ciclo", "CPU Mips-like multi ciclo", "Valutazione prestazioni"],
+	calcolo1 : ["Insiemistica", "Insieme R", "Funzioni", "Funzioni elementari", "Limiti", "Funzioni continue", "Derivate", "Infiniti e infinitesimi", "Serie", "Integrali"],
+	int_program : ["Progetto Snake Labyrinth"],
+	mat_base : ["Potenze radici", "Grafici delle funzioni"],
+	mat_discreta : ["Introduzione", "Logica", "Insiemi", "Relazioni", "Funzioni", "Principio di induzione", "Ricorsione e sommatorie", "Aritmetica modulare", "Numeri primi", "Calcolo combinatorio"],
+	arch_elaboratori2 : ["Nozioni introduttive", "CPU pipeline", "Memoria cache", "Memoria virtuale", "ARM ISA", "Assembly", "Input e output"],
+	calcolo2 : ["Equazioni differenziali", "Curve parametriche", "Funzioni a più variabili", "Integrali doppi"],
+	prog_lab : ["Note varie", "Compilatore", "Automatizzazioni", "Debug", "Classi", "Streams", "Templates", "Move semantics", "Iteratori"]
+};
 
 function show_arguments(subj) {
 	clear_output();
-	// console.log(subj);
 	let argument_list = document.getElementById("arguments");
-	// console.log(argument_list);
-	let selected_subject;
-	switch (subj) {
-		case "alg_lineare":
-			selected_subject = alg_lineare;
-			break;
-		case "arch_elaboratori":
-			selected_subject = arch_elaboratori;
-			break;
-		case "calcolo1":
-			selected_subject = calcolo1;
-			break;
-		case "int_program":
-			selected_subject = int_program;
-			break;
-		case "mat_base":
-			selected_subject = mat_base;
-			break;
-		case "mat_discreta":
-			selected_subject = mat_discreta;
-			break;
-		case "arch_elaboratori2":
-			selected_subject = arch_elaboratori2;
-			break;
-		case "calcolo2":
-			selected_subject = calcolo2;
-			break;
-		case "prog_lab":
-			selected_subject = prog_lab;
-			break;
-
-		default:
-			break
-	}
+	let selected_subject = courses[subj];
 
 	for (let i = 0; i < selected_subject.length; i++){
 		let arg_link = document.createElement("a");
@@ -56,6 +23,7 @@ function show_arguments(subj) {
 		if(selected_subject[i] == "Progetto Snake Labyrinth") {
 			arg_link.href = "https://github.com/Gabritorre/labyrinth";
 			arg_link.target = "_blank";
+			arg_link.classList.add("special");
 		}
 		else{
 			arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";

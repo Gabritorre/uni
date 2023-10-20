@@ -1,45 +1,25 @@
-let algo_strut_dati1 = ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze"];
-let algo_strut_dati2 = ["Le strutture dati", "Dizionari"];
-let basi_dati1 = ["Introduzione", "Progettazione e modellazione", "Progettazione logica"];
-let prob_stat = ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2"];
-let prog_ogg1 = ["Introduzione", "Classi", "Incapsulamento", "Javadoc"];
-let sis_operativi1 = ["Introduzione", "Domande_introduzione", "Processi e thread"];
+let courses = {
+	algo_strut_dati1 : ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze"],
+ 	algo_strut_dati2 : ["Le strutture dati", "Dizionari"],
+ 	basi_dati1 : ["Introduzione", "Progettazione e modellazione", "Progettazione logica"],
+	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2"],
+	prog_ogg1 : ["Introduzione", "Classi", "Incapsulamento", "Javadoc"],
+	sis_operativi1 : ["Introduzione", "Esercizi_introduzione", "Processi e thread"]
+};
 
 function show_arguments(subj) {
 	clear_output();
-	// console.log(subj);
 	let argument_list = document.getElementById("arguments");
-	// console.log(argument_list);
-	let selected_subject;
-	switch (subj) {
-		case "algo_strut_dati1":
-			selected_subject = algo_strut_dati1;
-			break;
-		case "algo_strut_dati2":
-			selected_subject = algo_strut_dati2;
-			break;
-		case "basi_dati1":
-			selected_subject = basi_dati1;
-			break;
-		case "prob_stat":
-			selected_subject = prob_stat;
-			break;
-		case "prog_ogg1":
-			selected_subject = prog_ogg1;
-			break;
-		case "sis_operativi1":
-			selected_subject = sis_operativi1;
-			break;
-
-		default:
-			break
-	}
+	let selected_subject = courses[subj];
 
 	for (let i = 0; i < selected_subject.length; i++){
 		let arg_link = document.createElement("a");
 		var link_text = document.createTextNode(selected_subject[i]);
 		let elem = document.createElement("li");
 		arg_link.appendChild(link_text);
+		if (selected_subject[i].includes("Esercizi")){
+			arg_link.classList.add("special");
+		}
 		arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
 		arg_link.target = "_blank";
 		
