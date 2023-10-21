@@ -122,7 +122,7 @@ il risultato è dato da $\binom{9}{3}$ oppure scritto in formula $\frac{9!}{3!\c
 
 - **combinazioni con ripetizioni**: In cui gli elementi si possono ripetere:
 
-$$\frac{(n-k+1)!}{k!(n-1)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n + k -1}{k}$$
+$$\frac{(n+k-1)!}{k!(n-1)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n + k -1}{k}$$
 
 es. una urna contiene 20 palline, in quanti modi si possono estrarre 3 palline supponendo che dopo ogni estrazione la pallina venga reimmessa. ricordiamo che non ci interessa l'ordine in cui sono state estratte le palline (quindi estrarre 1 poi 3 poi 7 equivale ad estrarre 7 poi 1 poi 3)
 

@@ -95,3 +95,112 @@ $\mathbb{P}[B_2|B_1] = \frac{3}{6} = \frac{1}{2}$ infatti dopo aver pescato una 
 $\mathbb{P}[\bar B_3|B_1 \cap B_2] = \frac{3}{5}$ infatti dopo aver pescato due palline bianche ne rimangono 2 bianche e 3 nere su 5
 
 $\mathbb{P}[B_1 \cap B_2 \cap \bar B_3] =\frac{4}{7} \cdot \frac{1}{2} \cdot \frac{3}{5} =\frac{6}{35}$
+
+### Eventi indipendenti
+
+Due eventi si dicono indipendenti se sapere il risultato di uno non influenza in alcun modo l'altro, quindi
+
+$$\mathbb{P}[A|B] = \mathbb{P}[A]$$
+
+$$\mathbb{P}[A|\bar B] = \mathbb{P}[A]$$
+
+Se due eventi $A$ e $B$ sono indipendenti allora la loro intersezione si calcola come:
+
+$$\mathbb{P}[A \cap B] = \mathbb{P}[A] \cdot \mathbb{P}[B]$$
+
+questo modo di calcolare l'intersezione si può estendere se abbiamo più eventi tutti indipendenti tra loro
+
+$$\mathbb{P}[A_{i_1} \cap ...\cap A_{i_k}] = \mathbb{P}[A_{i_1}] \cdot ... \cdot \mathbb{P}[A_{i_k}]$$
+
+**eventi indipendenti e disgiunti**:
+
+- disgiunti: l'intersezione dei due eventi è vuota $\hspace{5mm}\implies \hspace{5mm}[A \cap B] = \empty$
+- indipendenti: il prodotto tra le probabilità dei due eventi è $0$ $\hspace{5mm}\implies \hspace{5mm}\mathbb{P}[A] \cdot \mathbb{P}[B] = 0$
+
+due eventi disgiunti sono anche indipendenti se la probabilità di almeno uno dei due è $0$
+
+
+esempio:
+
+consideriamo il lancio di un dato due volte
+
+A = "la somma dei dadi è 6"
+B = "la somma dei dadi è 7"
+C = "il primo dado è 4"
+
+$\mathbb{P}[A] = \frac{5}{36}$
+$\mathbb{P}[B] = \frac{1}{6}$
+$\mathbb{P}[C] = \frac{6}{36} = \frac{1}{6}$
+
+Abbiamo che gli eventi $A$ e $B$ sono **disgiunti** (o la somma dei dadi è 6 oppure 7, non può essere entrambi, per cui l'intersezione è vuota)
+
+$\mathbb{P}[A\cap C] = \frac{1}{36}$
+ma dato che $\mathbb{P}[A] \cdot \mathbb{P}[C] = \frac{5}{36}\cdot \frac{1}{6} = \frac{5}{216}$ che è diverso da $\frac{1}{36}$ allora gli eventi $A$ e  $C$ non sono indipendenti
+
+$\mathbb{P}[B\cap C] = \frac{1}{36}$
+e dato che $\mathbb{P}[B] \cdot \mathbb{P}[C] = \frac{1}{6}\cdot \frac{1}{6} = \frac{1}{36}$ che è uguale a $\frac{1}{36}$ allora gli eventi $B$ e  $C$ sono indipendenti
+
+$\mathbb{P}[A\cap B] = 0$ (quindi eventi disgiunti)
+e dato che $\mathbb{P}[A] \cdot \mathbb{P}[B] = \frac{5}{36}\cdot \frac{1}{6} = \frac{5}{216}$ che è diverso da $0$ allora gli eventi $B$ e $C$ non sono indipendenti
+
+
+### componenti in serie e parallelo
+
+Un interessante caso di studio riguarda i sistemi in serie e in parallelo, concentriamoci prima su quelli in serie:
+
+- **sistema in serie**:
+	un sistema in serie funziona solo se tutti i componenti di quel sistema funzionano, possiamo rappresentarlo graficamente come:
+	![enter image description here](https://i.ibb.co/Jsm1PQ7/serie.png)
+Sia $A_i$ l'evento in cui il componente $i$-esimo funziona
+mentre sia $A$ l'evento in cui l'intero sistema funziona
+
+	supponiamo che ogni componente si guasti indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
+
+	Quindi 
+	$$A = \bigcap_{i = 1}^{n}A_i$$
+	
+	cioè l'intero sistema funziona se tutti i componenti funzionano
+
+	la probabilità che il sistema funziona è dato da:
+
+	$$\mathbb{P}[A] = \mathbb{P}\left[\bigcap_{i = 1}^{n}A_i\right]$$
+
+	quindi dal prodotto delle probabilità di ogni singolo componente:
+	
+	$$\mathbb{P}[A] = \prod_{i=1}^{n}\mathbb{P}[A_i]$$
+
+	oppure dal prodotto della probabilità che ogni componente non sia guasto:
+
+	$$\mathbb{P}[A] = \prod_{i=1}^{n}(1-p_i)$$
+
+- **sistema in parallelo**:
+	un sistema in parallelo funziona se almeno un componente del sistema funziona, possiamo rappresentarlo graficamente come:
+
+	![enter image description here](https://i.ibb.co/gR7hDNQ/parallelo.png)
+
+	Sia $A_i$ l'evento in cui il componente $i$-esimo funziona
+mentre sia $A$ l'evento in cui l'intero sistema funziona
+
+	supponiamo che ogni componente si guasti indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
+
+	Quindi 
+	$$A = \bigcup_{i = 1}^{n}A_i$$
+	
+	cioè l'intero sistema funziona se almeno un componente funziona
+
+	la probabilità che il sistema funziona è dato da:
+
+	$$\mathbb{P}[A] = 1 - \mathbb{P}[\bar A]$$
+
+	quindi il complementare di "il sistema non funziona" che possiamo scrivere come
+
+	$$\mathbb{P}[A] = 1 - \mathbb{P}\left[\bigcap_{i = 1}^{n}\bar{A_i}\right]$$
+
+	cioè $1 -$ la probabilità che ogni componente non funzioni
+	la probabilità che ogni componente non funzioni è dato dal prodotto dei complementari
+
+	$$\mathbb{P}[A] = 1- \prod_{i=1}^{n}\mathbb{P}[\bar{A_i}]$$
+
+	oppure
+	
+	$$\mathbb{P}[A] = 1- \prod_{i=1}^{n}p_i$$
