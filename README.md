@@ -27,6 +27,8 @@ Notes for my bachelor degree
 │   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/prob_stat">Probabilità e statistica</a> <br>
 │   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/prog_ogg1">Programmazione a oggetti mod. 1</a> <br>
 │   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/sis_operativi">Sistemi operativi mod. 1</a> <br>
+│⠀⠀⠀ │------------------------ <br>
+│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/algo_strut_dati2">Algoritmi e strutture dati mod. 2</a> <br>
 │   <br>
 └─── year3 <br>
 ⠀   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year1/alg_lineare"></a> <br>

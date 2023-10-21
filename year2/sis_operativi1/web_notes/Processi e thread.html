@@ -18,6 +18,7 @@
 <li><a href="#modello-a-processi">Modello a processi</a></li>
 <li><a href="#gestione-dei-processi">Gestione dei processi</a></li>
 <li><a href="#thread">Thread</a></li>
+<li><a href="#modelli-di-threading">Modelli di threading</a></li>
 </ul>
 </li>
 </ul>
@@ -95,6 +96,7 @@
 <li>Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata <strong>dispatching</strong>)</li>
 <li>l’evento si è verificato e il processo è pronto a continuare la sua esecuzione</li>
 </ol>
+<p>ovviamente sono presente due ulteriori stati che rappresentano la <strong>fase di creazione</strong> del processo, che poi si sposterà nello stato pronto. <strong>Lo stato terminazione</strong> quando il processo ha finito le sue operazioni.</p>
 <h3 id="pcb">PCB</h3>
 <p>Il sistema operativo possiede una tabella chiamate <strong>process table</strong> che contiene i <strong>PCB</strong> (Process Control Block) di ogni processo in vita al momento, anche chiamato <strong>descrittore del processo</strong>.</p>
 <p>Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processa da <em>ready</em> a <em>running</em> e vice versa</p>
@@ -184,7 +186,92 @@ I thread condividono tra loro lo <strong>spazio di indirizzamento e i file apert
 <p>Il <strong>ciclo di vita</strong> di un thread è esattamente lo stesso a quello di un processo.<br>
 creazione -&gt; (pronto, esecuzione, bloccato) -&gt; termina</p>
 <p>l’overhead di creazione e terminazione di un thread è molto ridotto rispetto alla creazione/terminazione di un processo. Questo perché se immaginiamo che un processo è in esecuzione, questo processo ha il suo unico thread che sta eseguendo, esso ne crea un’altro che usa lo stesso spazio di indirizzamento che in questo esatto momento è già caricato in memoria quindi è molto rapida la creazione.</p>
+<p>sono presente tre sfumature dello stato bloccato:</p>
+<ul>
+<li><em>blocked</em>: in attesa di un evento IO</li>
+<li><em>waiting</em>: in attesa a causa di un altro thread</li>
+<li><em>sleeping</em>: in attesa per un tempo prefissato</li>
+</ul>
 <p><img src="https://i.ibb.co/bQWJ3pT/thread-ciclo-vita.png" alt="enter image description here"></p>
+<h3 id="operazioni-sui-thread">Operazioni sui thread</h3>
+<p>Sui threads come per i processi è possibile effettuare varie operazioni:</p>
+<ul>
+<li>Creazione</li>
+<li>Exit (terminazione)</li>
+<li>Sospensione</li>
+<li>Recupero (resume)</li>
+<li>Sleep</li>
+<li>Risveglio</li>
+</ul>
+<p>Un concetto importante dei thread è la <strong>join</strong>, la join è un’operazione che viene fatta da un thread principale che serve ad aspettare che tutti gli altri thread terminino la loro esecuzione prima che il thread principale continui la sua esecuzione.</p>
+<h3 id="vantaggi-di-utilizzare-i-thread">Vantaggi di utilizzare i thread</h3>
+<ol>
+<li>dividere un problema in più piccoli sottoproblemi che vengono assegnati a dei thread che possono risolverli in parallelo, lavorando, quindi, in parallelo sullo sullo stesso set di dati</li>
+<li>creare, distruggere e scambiare i thread è molto più semplice rispetto ai processi</li>
+<li>quando abbiamo un intenso uso della cpu e una intensa richiesto di I/O i thread permettono la sovrapposizione di queste due cose, aumentando così le prestazioni.</li>
+</ol>
+<h2 id="modelli-di-threading">Modelli di threading</h2>
+<p>Ci sono 3 modi principali di implementare i thread:</p>
+<ul>
+<li>thread a livello utente</li>
+<li>thread a livello kernel</li>
+<li>thread ibridi (sia a livello utente che a livello kernel)</li>
+</ul>
+<h3 id="thread-a-livello-utente">Thread a livello utente</h3>
+<p>In questo caso i thread vengono creati e gestiti nello spazio utente, quindi il kernel non sa della loro esistenza.<br>
+Il kenel è a conoscenza solo dei processi, i quali hanno un singolo thread.</p>
+<p><img src="https://i.ibb.co/93Xgmj6/user-thread.png" alt="enter image description here"></p>
+<p>Abbiamo una implementazione detta <strong>molti-a-uno</strong> (molti thread ad un unico contesto di esecuzione)</p>
+<p>I thread vengono create da librerie in runtime ed essendo create nello <em>user space</em> <strong>non possono eseguire istruzioni privilegiate</strong>.</p>
+<p>Ogni processo possiede una <strong>tabella dei thread</strong> contenente le informazioni di ogni thread (PC, SC, registri, stato)</p>
+<p><img src="https://i.ibb.co/xYgnrBb/user-thread-example.png" alt="enter image description here"></p>
+<p><strong>vantaggi</strong>:</p>
+<ul>
+<li>permettere di utilizzare i thread anche in sistemi che nativamente non supportano i thread</li>
+<li>le librerie possono implementare il proprio modo di schedulare i thread</li>
+<li>lo scheduling dei thread è molto efficiente dato che non deve far entrare in gioco il kernel</li>
+<li>è portabile. Essendo indipendente dal kernel è possibile usare lo stesso codice multithreading in sistemi diversi</li>
+</ul>
+<p><strong>svantaggi</strong></p>
+<ul>
+<li>il kernel vedendo tutto come processi a singolo thread, nel caso un thread faccia operazioni di I/O è possibile che il kernel sospenda l’intero processo a favore di un altro, interrompendo così l’esecuzione di tutti i thread del processo sospeso.</li>
+<li>i thread vengono schedulati all’interno di un singolo core (prestazioni limitate)</li>
+</ul>
+<h3 id="thread-a-livello-kernel">Thread a livello kernel</h3>
+<p>In questo caso il kernel è a conoscenza e gestisce i thread</p>
+<p><img src="https://i.ibb.co/TRjcdZ8/kernel-thread.png" alt="enter image description here"></p>
+<p>Abbiamo una implementazione detta <strong>uno-a-uno</strong> (unico thread a unico contesto di esecuzione)</p>
+<p>Il kernel possiede una tabella dei thread (oltre alla tabella dei processi) e ogni qual volta un thread voglia creare o distruggere un thread viene fatta una chiamata a sistema e il kernel aggiornerà la tabella di conseguenza.</p>
+<p><img src="https://i.ibb.co/0yqfbHg/kernel-thread-example.png" alt="enter image description here"></p>
+<p><strong>vantaggi</strong>:</p>
+<ul>
+<li>se un thread si blocca, il kernel può decidere se eseguire un altro thread dello stesso processo oppure un thread di un altro processo. In questo modo un processo può proseguire anche se uno dei suoi thread è bloccato</li>
+<li>quando un thread viene cancellato, in realtà esso viene solo marcato come non eseguibile ma la sua struttura viene conservata in modo che possa essere assegnata ad un nuovo thread, risparmiando così del tempo<br>
+<strong>svantaggi</strong>:</li>
+<li>il cambio di contesto limita li prestazioni (quindi quanti si creano e distruggono tanti thread c’è molto overhead)</li>
+<li>non è portabile dato che l’implementazione può variare da kernel in kernel</li>
+</ul>
+<h3 id="thread-ibridi">Thread ibridi</h3>
+<p>questa implementazione combina le caratteristiche delle due precedenti implementazioni.</p>
+<p><img src="https://i.ibb.co/2Pxp9Tc/ibrido-thread.png" alt="enter image description here"></p>
+<p>Abbiamo una implementazione molti-a-molti (più thread a livello utente e più thread a livello kernel).</p>
+<p>nello spazio kernel abbiamo un <strong>thread pool</strong> cioè un gestore di thread speciali chiamati <strong>worker threads</strong>.<br>
+Questi worker threads sono dei thread persistenti che non vengono distrutti quando hanno terminato il loro lavoro. Ogni volta che si vuole creare un nuovo thread, il compito del thread viene assegnato ad un worker thread già pronto che si occuperà di portarlo a termine.</p>
+<p>L’utilizzo di questo thread pool migliora le prestazioni dato che non dobbiamo creare e distruggere ogni volta i thread</p>
+<p><img src="https://i.ibb.co/TrC9V40/ibrido-thread-esempio.png" alt="enter image description here"></p>
+<p>L’obiettivo dell’implementazione ibrida è quello di imitare le funzionalità dei thread a livello kernel ma con le prestazioni dei thread a livello utente. Per fare questo bisogna limitare transizioni inutili tra spazio utente e spazio kernel.</p>
+<p>il kernel si occuperà di schedulare i thread a livello kernel mentre viene assegnato ad ogni processo un <strong>processore virtuale</strong> che permette di schedulare i thread a livello utente.</p>
+<p>Quando il kernel sa che un thread è bloccat:</p>
+<ol>
+<li>viene fatta una <strong>upcall</strong> al processore virtuale interessato, cioè una notifica che indica quale thread è bloccato.</li>
+<li>Il processore virtuale si occuperà poi di rischedulare i suoi thread.</li>
+<li>Quando il thread che era bloccato è pronto per essere rieseguito viene fatta un’altra <strong>upcall</strong> per avvisare il processore virtuale avvisandolo che quel thread ora può essere rischedulato.</li>
+</ol>
+<p>Questa implementazione ibrida funziona anche su CPU multicore.<br>
+Il problema è che c’è un uso intensivo del kernel che chiama procedure nello spazio utente.</p>
+<h3 id="thread-pop-up">Thread pop-up</h3>
+<p>Thread pop-up è una tecnica particolarmente utilizzata nei sistemi distribuiti lato server nel quando quando la macchina riceve un messaggio viene creato un nuovo thread per gestirlo (chiamato thread pop-up).</p>
+<p>Il vantaggio di questo utilizzo è che la latenza tra l’arrivo del messaggio e l’inizio dell’elaborazione è molto bassa</p>
 
     </div>
   </div>
