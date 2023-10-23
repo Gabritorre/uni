@@ -204,3 +204,87 @@ mentre sia $A$ l'evento in cui l'intero sistema funziona
 	oppure
 	
 	$$\mathbb{P}[A] = 1- \prod_{i=1}^{n}p_i$$
+
+## Formula di Bayes
+
+Utilizziamo un esempio sull'HIV per arrivare alla formula di Bayes e al suo utilizzo.
+
+Si immagini di somministrare un test diagnostico non perfetto a una persona estratta a caso dalla popolazione e si considerino gli eventi:
+
+$M$ = la persona estratta è ammalata
+$\bar M$ = la persona estratta non è ammalata
+$+$ = il test da risultato positivo
+$-$ = il test da risultato negativo
+
+Introduciamo prima delle terminologie riguardanti le malattie:
+
+- **prevalenza**: la frazione di soggetti sono affetti da una malattia rispetto alla popolazione.
+$$\mathbb{P}[M]$$
+- **sensitività**: probabilità che un test somministrato ad un ammalato risulti positivo
+$$\mathbb{P}[+|M]$$
+- **specificità**: probabilità che un test somministrato ad un non ammalato risulti negativo
+$$\mathbb{P}[-|\bar M]$$
+
+Realizziamo un albero che aiuterà a capire le probabilità da calcolare:
+
+![enter image description here](https://i.ibb.co/xg4X2cQ/tree.png)
+
+Ipotizziamo di avere i seguenti valori:
+$\mathbb{P}[M] = 0.001$
+$\mathbb{P}[+|M] = 0.95$
+$\mathbb{P}[-|\bar M] = 0.98$
+
+Calcoliamo la probabilità di un falso positivo, cioè test risulta positivo ma la persona non è ammalata:
+
+$\mathbb{P}[\bar M \cap +] = \mathbb{P}[\bar M] \cdot \mathbb{P}[+|\bar M]$
+
+$\mathbb{P}[\bar M \cap +] = (1-0.001)\cdot (1-0.98) = 0.01998$
+
+Calcoliamo la probabilità di un falso negativo, cioè test risulta negativo ma la persona è ammalata:
+
+$\mathbb{P}[M \cap -] = \mathbb{P}[M] \cdot \mathbb{P}[-|M]$
+
+$\mathbb{P}[M \cap -] = (0.001)\cdot (1-0.95) = 0.00005$
+
+
+Sappiamo per la legge della probabilità totale che se abbiamo delle partizioni $C_1, C_2,...$ di un evento certo allora la probabilità di un evento $A$ può essere scritta come la somma delle intersezioni di A con le partizioni:
+
+$$P[A] = \sum_{i}(C_i \cap A)$$
+
+l'intersezione la possiamo anche scrivere come:
+
+$$P[A] = \sum_{i}\mathbb{P}[C_i]\cdot \mathbb{P}[A|C_i]$$
+
+possiamo immaginarla come la somma delle strade dell'albero che portano all'evento A
+
+Nel nostro esempio $M$ e $\bar M$ rappresentano due partizioni. Possiamo applicare questa formula per trovare, ad esempio quale è la probabilità che un test somministrato ad una persona a caso sia positivo:
+
+$P[+] = (\mathbb{P}[M] \cdot \mathbb{P}[+|M]) + (\mathbb{P}[\bar M]\cdot \mathbb{P}[+|\bar M])$
+
+$P[+] = \left(0.001 \cdot 0.95\right) + \left((1-0.001)\cdot (1-0.98)\right) = 0.02093$
+
+Come facciamo però a trovare la probabilità di una partizione sapendo che un determinato evento è accaduto? in altre parole come potrebbe percorrere l'albero sopra disegnato al contrario (da destra verso sinistra)?
+
+La **formula di byes** calcola proprio questo:
+
+$$\mathbb{P}[C_m|A] = \frac{\mathbb{P}[C_m\cap A]}{\mathbb{P}[A]}$$
+
+espandendo numeratore e denominatore:
+
+$\mathbb{P}[C_m\cap A] = \mathbb{P}[C_m]\cdot\mathbb{P}[A|C_m]$
+
+$\mathbb{P}[A] =  \sum_{i}\mathbb{P}[C_i]\cdot \mathbb{P}[A|C_i]$
+
+Quindi la formula di byes si può riscrivere come:
+
+$$\mathbb{P}[C_m|A] = \frac{\mathbb{P}[C_m]\cdot\mathbb{P}[A|C_m]}{\sum_{i}\mathbb{P}[C_i]\cdot \mathbb{P}[A|C_i]}$$
+
+
+Ritornando al nostro esempio, quale sarebbe la probabilità che una persona risultata positiva sia effettivamente malata?
+
+$$\mathbb{P}[M|+] = \frac{\mathbb{P}[M]\cdot \mathbb{P}[+|M]}{(\mathbb{P}[M]\cdot \mathbb{P}[+|M])+(\mathbb{P}[\bar M] \cdot \mathbb{P}[+|\bar M])}$$
+
+$$\mathbb{P}[M|+] = \frac{0.001 \cdot 0.95}{(0.001\cdot 0.95)+((1-0.001)\cdot (1-0.98))} = 0.045$$
+
+
+Quello che la formula di byes permette di fare è quello di aggiornare la probabilità di eventi $C_m$ data la nuova informazione
