@@ -238,6 +238,7 @@ eseguiremo un inserimento in testa</p>
 </li>
 <li>
 <p>ricerca di un <em>valore</em> tramite la <em>chiave</em></p>
+<p>restituiremo la prima occorrenza della chiave, che risulta essere quella più aggiornata</p>
 <pre class=" language-c"><code class="prism ++ language-c"><span class="token function">search</span><span class="token punctuation">(</span>Dizionario L<span class="token punctuation">,</span> chiave K<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	x <span class="token operator">=</span> L<span class="token punctuation">.</span>head
 	<span class="token keyword">while</span> <span class="token punctuation">(</span>x <span class="token operator">!=</span> NIL AND x<span class="token punctuation">.</span>key <span class="token operator">!=</span> K<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -294,9 +295,36 @@ il ciclo può terminare per due ragioni:</p>
 </ul>
 </li>
 <li>
-<p>eliminazione di una coppia tramite <em>chiave</em></p>
+<p>eliminazione di una coppia tramite <em>chiave</em><br>
+la <em>delete</em> rimuoverà tutte le occorrenze della chiave all’interno del dizionario</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">delete</span><span class="token punctuation">(</span>Dizionario L<span class="token punctuation">,</span> chiave K<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	x <span class="token operator">=</span> L<span class="token punctuation">.</span>head
+	<span class="token keyword">while</span> <span class="token punctuation">(</span>x <span class="token operator">!=</span> NIL<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>key <span class="token operator">==</span> K<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>next <span class="token operator">!=</span> NIL<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				x<span class="token punctuation">.</span>next<span class="token punctuation">.</span>prev <span class="token operator">=</span> x<span class="token punctuation">.</span>prev
+			<span class="token punctuation">}</span>
+			<span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>prev <span class="token operator">!=</span> NIL<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				x<span class="token punctuation">.</span>prev<span class="token punctuation">.</span>next <span class="token operator">=</span> x<span class="token punctuation">.</span>next
+			<span class="token punctuation">}</span>
+			<span class="token keyword">else</span> <span class="token punctuation">{</span>
+				L<span class="token punctuation">.</span>head <span class="token operator">=</span> x<span class="token punctuation">.</span>next
+			<span class="token punctuation">}</span>
+			temp <span class="token operator">=</span> x
+			x <span class="token operator">=</span> x<span class="token punctuation">.</span>next
+			<span class="token function">free</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>
+			x <span class="token operator">=</span> x<span class="token punctuation">.</span>next
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
 </li>
 </ol>
+<p>la complessità di questo algoritmo è</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></span></p>
+<p>dato che scorriamo tutta la lista in cerca delle occorrenze della chiave.</p>
 
     </div>
   </div>

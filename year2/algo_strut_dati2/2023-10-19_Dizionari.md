@@ -268,6 +268,8 @@ implementeremo l'insert e la delete in modo diverso rispetto agli array, possiam
 
 2. ricerca di un *valore* tramite la *chiave*
 
+	restituiremo la prima occorrenza della chiave, che risulta essere quella più aggiornata
+
 	```c++
 	search(Dizionario L, chiave K) {
 		x = L.head
@@ -324,3 +326,33 @@ Quindi abbiamo dimostrato che tutti gli elementi da `L.head` fino a `x` compreso
 
 
 3. eliminazione di una coppia tramite *chiave*
+	la *delete* rimuoverà tutte le occorrenze della chiave all'interno del dizionario
+	```c++
+	delete(Dizionario L, chiave K) {
+		x = L.head
+		while (x != NIL) {
+			if (x.key == K) {
+				if (x.next != NIL) {
+					x.next.prev = x.prev
+				}
+				if (x.prev != NIL) {
+					x.prev.next = x.next
+				}
+				else {
+					L.head = x.next
+				}
+				temp = x
+				x = x.next
+				free(x)
+			}
+			else {
+				x = x.next
+			}
+		}
+	}
+	```
+la complessità di questo algoritmo è 
+
+$$T(n) = \Theta(n)$$
+
+dato che scorriamo tutta la lista in cerca delle occorrenze della chiave.
