@@ -119,3 +119,103 @@ Infatti l'algoritmo predilige i processi corti e solo una volta terminati quelli
 Questo algoritmo tiene in considerazione dei gruppi utente e i relativi utenti che lanciano i processi, ci sono ovviamente grouppi più importanti di altri
 
 ogni gruppo riceve una frazione del tempo di CPU che verrà distribuita tra i processi. Se la CPU assegna il 50% della CPU ad un gruppo esso avrà a disposizione il 50% indipendentemente da quanti processi possiede
+
+
+##  Scheduling per sistemi real time
+
+Nei sistemi real time il tempo è il fattore principale, in altre parole ci sono delle scadenze da rispettare per i processi.
+
+I sistemi real time sono classificati in:
+
+- hard real time
+	il processo deve essere eseguito entro la scadenza, altrimenti il risultato non è valido è va scartato o peggio potrebbe creare dei problemi
+- soft real time
+	c'è una tolleranza per la scadenza e quindi è possibile anche non rispettare la scadenza
+
+possiamo trovare una ulteriore divisione in:
+
+- periodici: i processi vengono eseguiti ad intervalli di tempo regolari
+- non periodici: non è prevedibile quando i processi andranno in esecuzione
+
+Lo schedulatore deve essere in grado di eseguire i processi cercando di rispettare le scadenze di tutti.
+
+Prendiamo in considerazione $m = 4$ eventi periodici, cioè eventi che si ripetono ad intervalli regolari $P_i$, ogni evento richiede un tot di utilizzo del processore $C_i$ per eseguire i propri processi.
+I processi di questi 4 eventi si possono schedulare solo se la sommatoria di $\frac{\text{tempo di CPU richiesto}}{\text{Periodo}}$ di ogni evento è minore di $1$, quindi:
+
+$$\sum_{i=1}^m\frac{C_i}{P_i} \leq 1$$
+
+Per esempio:
+
+$m_1:$ richiede la CPU per $2$ secondi e si ripete ogni 5 secondi
+$m_2:$ richiede la CPU per $1$ secondi e si ripete ogni 3 secondi
+$m_3:$ richiede la CPU per $1$ secondo e si ripete ogni 9 secondi
+$m_4:$ richiede la CPU per $8$ secondi e si ripete ogni 12 secondi
+
+Abbiamo 
+
+$$\frac{2}{5} + \frac{1}{3} + \frac{1}{9}+ \frac{8}{12} = \frac{68}{45} \approx1.5$$
+
+quindi questi 4 eventi non sono schedulabili (uno di loro sicuramente non viene eseguito entro la sua scadenza)
+
+Se per esempio togliamo l'ultimo evento $m_4$ otteniamo:
+
+$$\frac{2}{5} + \frac{1}{3} + \frac{1}{9} = \frac{38}{45} \approx 0.84$$
+
+In questo caso sono schedulabili
+
+Ovviamente supponiamo che l'overhead necessario per il cambio di contesto sia talmente piccolo da essere ignorato.
+
+
+### Algoritmi real time statici
+
+Gli algoritmi real time statici prendono le decisioni prima che il sistema inizi l'esecuzione, valido quando si hanno tutte le informazioni e le scadenza subito disponibili.
+
+Un esempio è il **rate monotonic scheduling** (RMS) che è utilizzabile se:
+
+- ogni processo va completato entro il suo periodo
+- tutti i processi sono indipendenti tra loro
+- il tempo di CPU richiesto da un processo non cambia nei suoi periodi
+- i processi periodici non hanno scadenze temporali
+- il pre-rilascio è leggero
+
+Ad ogni processo viene assegnata una priorità che si basa su quanto spesso deve essere eseguito, più priorità a chi deve essere eseguito più spesso. Utilizza il pre-rilascio nel caso un processo con priorità più alta dell'attuale sia pronto 
+
+Un algoritmo quindi che favorisce i processi che vengono eseguiti spesso
+
+
+### Algoritmi real time dinamici
+
+In questi algoritmi la priorità viene aggiornata in esecuzione
+
+Ad esempio l'algoritmo **Erliest Deadline First** (EDF):
+- ha pre-rilascio
+- sceglie sempre il processo con scadenza più vicina
+- massimizza il throughput e minimizza il tempo di attesa
+
+oppure l'algoritmo **Minimim Laxity First** (MLF):
+- simile a EDF ma basato sulla lassità
+- la lassità è il tempo che avanzerebbe prima della scadenza se il processo venisse eseguito in questo momento
+
+$$\text{lassità} = \text{Scadenza} - (\text{tempo corrente} + \text{tempo di esecuzione})$$
+
+![enter image description here](https://i.ibb.co/K5bjKqv/lassit.png)
+
+
+
+## Scheduling nei thread
+
+È molto frequente che i processi abbiano più thread, il processo padre sa quali thread sono più importanti e quali meno.
+
+Per fare in modo che i processi possano cambiare il comportamento dello scheduler è necessario parametrizzare l'algoritmo di scheduling, e i parametri vengono fornite dai processi utente che sa quali thread è più importante eseguire.
+
+È importante quindi separare il **meccanismo di scheduling**, che sta nel kernel e decide **come** schedulare, dalla **politica di scheduling** che è stabilita dai processi utenti i quali decidono **cosa** schedulare.
+
+
+Per lo scheduling con **thread a livello utente**
+![enter image description here](https://i.ibb.co/JpNqwD4/scheduling-tlu.png) 
+
+non è possibile schedulare thread di processi differenti
+
+mentre per lo scheduling con **thread a livello kernel**
+![enter image description here](https://i.ibb.co/ZXhPSFp/scheduling-tlk.png)
+è possibile anche schedulare thread di processi diversi
