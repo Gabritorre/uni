@@ -2,7 +2,7 @@ let courses = {
 	algo_strut_dati1 : ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze"],
  	algo_strut_dati2 : ["Le strutture dati", "Dizionari", "Esercizi calcolo delle complessità", "Alberi"],
  	basi_dati1 : ["Introduzione", "Progettazione e modellazione", "Progettazione logica", "Algebra relazionale"],
-	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2", "Variabili casuali"],
+	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2", "Variabili casuali", "Esercizi Probabilità condizionata"],
 	prog_ogg1 : ["Introduzione", "Classi", "Incapsulamento", "Javadoc", "Ereditarietà"],
 	sis_operativi1 : ["Introduzione", "Esercizi_introduzione", "Processi e thread", "Scheduling", "Gestione della memoria"]
 };
