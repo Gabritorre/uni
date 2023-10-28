@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-27_Ereditarietà</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#ereditarietà">Ereditarietà</a>
+<ul>
+<li><a href="#esempio">Esempio</a></li>
+<li><a href="#visibilità">Visibilità</a></li>
+<li><a href="#super">super</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="ereditarietà">Ereditarietà</h1>
+<p>L’ereditarietà è una tecnica che permette di creare delle gerarchie tra le classi, portando il vantaggio di avere un codice più organizzato e meno ripetuto.</p>
+<p>Abbiamo quindi una classe figlio e una classe padre (o <strong>superclasse</strong>). La classe figlio <strong>eredita</strong> dal padre i <strong>metodi e i campi</strong>. La classe figlio può estendere (aggiungendo altri metodi) oppure specializzare (sovrascrivendo i metodi del padre) il comportamento del padre.</p>
+<h2 id="esempio">Esempio</h2>
+<p>Un padre può avere più classi figlie. Possiamo rappresentare la gerarchia graficamente come:</p>
+<p><img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
+<p>le classe figlie idealmente diventano più grandi e complesse perché avranno man mano più codice, comprendendo il codice dei padri e il suo stesso codice aggiuntivo.</p>
+<p>mentre un figlio può avere un <strong>singolo padre</strong></p>
+<p>in codice possiamo esprimere questa ereditarietà tramite la <em>keyword</em> <code>extends</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Automobile</span> <span class="token keyword">extends</span> <span class="token class-name">Veicoli4ruote</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="visibilità">Visibilità</h2>
+<p>I figli possono vedere campi e metodi del padre solo se:</p>
+<ul>
+<li>i metodi/campi del padre sono pubblici o protected</li>
+<li>i metodi/campi del padre sono default e il figlio è nello stesso package</li>
+</ul>
+<p>Se un metodo/campo è protected la classe di un altro package può accedere quei membri solo se diventa una sottoclasse</p>
+<p>nel caso i <strong>metodi/campi</strong> siano <strong>privati</strong> allora il <strong>figlio non può vederli</strong></p>
+<h2 id="super">super</h2>
+<p>la <em>keyword</em> <code>super</code> serve per riferirsi a metodi oppure campi della superclasse.</p>
+<p>Abbiamo due utilizzi principali di <code>super</code></p>
+<ol>
+<li>
+<p>chiamare il costruttore del padre all’interno del costruttore del figlio.</p>
+<p>è molto probabile che quando si chiama il costruttore di una classe figlia si voglia inizializzare anche i campi derivati dal padre tramite il suo costruttore, è possibile fare ciò chiamando <code>super()</code> come prima istruzione del costruttore figlio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Operazioni di inizializzazione della classe genitore</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Child</span> <span class="token keyword">extends</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Chiamata al costruttore della classe genitore</span>
+        <span class="token comment">// Altre operazioni specifiche della classe figlia</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li>
+<p>Accedere ai membri della classe padre</p>
+<p>è possibile riferirsi ai metodi e ai campi della superclasse tramite <code>super.&lt;nome_metodo&gt;()</code> oppure <code>super.&lt;nome_campo&gt;</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe genitore"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Child</span> <span class="token keyword">extends</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Chiamata al metodo della classe genitore</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe figlia"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ol>
+
+    </div>
+  </div>
+</body>
+
+</html>
