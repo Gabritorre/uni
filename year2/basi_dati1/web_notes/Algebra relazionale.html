@@ -22,6 +22,7 @@
 <li><a href="#prodotto-cartesiano">Prodotto cartesiano</a></li>
 <li><a href="#giunzione">Giunzione</a></li>
 <li><a href="#intersezione">Intersezione</a></li>
+<li><a href="#divisione">Divisione</a></li>
 </ul>
 </li>
 </ul>
@@ -80,16 +81,245 @@
 <p>rappresentiamo questo operatore con il simbolo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋈</mo></mrow><annotation encoding="application/x-tex">\bowtie</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.51em; vertical-align: -0.005em;"></span><span class="mrel">⋈</span></span></span></span></span> e la condizione la rappresentiamo con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi></mrow><annotation encoding="application/x-tex">\phi</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">ϕ</span></span></span></span></span></p>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo><munder><mo><mo>⋈</mo></mo><mi>ϕ</mi></munder></mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R \underset{\phi}{\bowtie} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.57655em; vertical-align: -0.893216em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.505em;"><span class="" style="top: -2.34289em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">ϕ</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop">⋈</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.893216em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
 <p>serve ad affiancare le righe delle due tabelle se viene soddisfatta la condizione tra la coppia di righe</p>
-<p>equivalente al comando <strong>JOIN &lt;tabella&gt; ON &lt;condizione&gt;</strong> in SQL</p>
+<p>equivalente al comando <strong>(INNER) JOIN &lt;tabella&gt; ON &lt;condizione&gt;</strong> in SQL</p>
 <p>ad esempio</p>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo><munder><mo><mo>⋈</mo></mo><mrow><mi>R</mi><mi mathvariant="normal">.</mi><mi>a</mi><mo>=</mo><mi>S</mi><mi mathvariant="normal">.</mi><mi>b</mi></mrow></munder></mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R \underset{R.a = S.b}{\bowtie} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.44044em; vertical-align: -0.757108em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.505em;"><span class="" style="top: -2.34289em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight" style="margin-right: 0.00773em;">R</span><span class="mord mtight">.</span><span class="mord mathnormal mtight">a</span><span class="mrel mtight">=</span><span class="mord mathnormal mtight" style="margin-right: 0.05764em;">S</span><span class="mord mtight">.</span><span class="mord mathnormal mtight">b</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop">⋈</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.757108em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
 <p>crea una nuova tabella in cui si affiancano le righe se soddisfano la condizione che: l’attributo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">a</span></span></span></span></span> della tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span> e l’attributo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi></mrow><annotation encoding="application/x-tex">b</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal">b</span></span></span></span></span> della tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> sono uguali</p>
 <p>spesso usato per unire tabelle che sono in relazione tramite <em>foreign key</em>, dove la condizione è che la <em>foreign key</em> di una tabella e la <em>primary key</em> dell’altra sono uguali.</p>
-<h2 id="intersezione">Intersezione</h2>
+<h3 id="giunzione-naturale">Giunzione naturale</h3>
+<p>è un particolare tipo di join che confronta automaticamente le colonne delle due tabelle con lo stesso nome, senza bisogno quindi di condizione. Non è consigliato utilizzarla in quando è meglio esplicitare la condizione di join.</p>
+<p>equivalente al comando **NATURAL JOIN &lt;tabella&gt; ** in SQL</p>
+<h3 id="giunzione-esterna">Giunzione esterna</h3>
+<p>è un particolare tipo di join che mantiene anche le righe che non soddisfano la condizione del join (quindi vengono ottenute tutte le righe di entrambe le tabelle), a queste righe vengono aggiunti dei valori NULL dove manca la corrispondenza.</p>
+<p>equivalente al comando <strong>OUTER JOIN &lt;tabella&gt; ON &lt;condizione&gt;</strong> in SQL</p>
+<p>Esempio</p>
+<p>Tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span></p>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>nome</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Alice</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bob</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Charlie</td>
+</tr>
+</tbody>
+</table><p>Tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></p>
+
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>età</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>13</td>
+</tr>
+<tr>
+<td>3</td>
+<td>20</td>
+</tr>
+<tr>
+<td>4</td>
+<td>32</td>
+</tr>
+</tbody>
+</table><p>la giunzione esterna rappresentata con il seguente simbolo tra le due tabelle risulta<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><msub><mo><munder><mo><mo>↔</mo></mo><mo lspace="0em" rspace="0em">⋈</mo></munder></mo><mtext>R.id&nbsp;=&nbsp;S.id</mtext></msub><mi>S</mi></mrow><annotation encoding="application/x-tex">R \underset{\bowtie}{\leftrightarrow}_{\text{R.id = S.id}} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.43653em; vertical-align: -0.7532em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel"><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.36687em;"><span class="" style="top: -2.4em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">⋈</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop">↔</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7035em;"><span class=""></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist"><span class="" style="top: -1.9468em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">R.id&nbsp;=&nbsp;S.id</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7532em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
+
+<table>
+<thead>
+<tr>
+<th>id</th>
+<th>nome</th>
+<th>età</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Alice</td>
+<td>13</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bob</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Charlie</td>
+<td>20</td>
+</tr>
+<tr>
+<td>4</td>
+<td>NULL</td>
+<td>32</td>
+</tr>
+</tbody>
+</table><p>Abbiamo due sottocategoria della giunzione esterna:</p>
+<h3 id="giunzione-esterna-sinistra">Giunzione esterna sinistra</h3>
+<p>In cui consideriamo tutte le righe della tabella di sinistra e solo quelle che soddisfano la condizione della tabella di destra, se delle righe di sinistra non hanno nessuna corrispondenza con alcuna riga della destra allora si mette NULL.</p>
+<p>equivalente al comando <strong>LEFT JOIN &lt;tabella&gt; ON &lt;condizione&gt;</strong> in SQL</p>
+<p>e si rappresenta con il seguente simbolo</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><msub><mo><munder><mo><mo>←</mo></mo><mo lspace="0em" rspace="0em">⋈</mo></munder></mo><mtext>R.id&nbsp;=&nbsp;S.id</mtext></msub><mi>S</mi></mrow><annotation encoding="application/x-tex">R \underset{\bowtie}{\leftarrow}_{\text{R.id = S.id}} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.43653em; vertical-align: -0.7532em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel"><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.36687em;"><span class="" style="top: -2.4em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">⋈</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop">←</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7035em;"><span class=""></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist"><span class="" style="top: -1.9468em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">R.id&nbsp;=&nbsp;S.id</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7532em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
+<p>considerando le stesse tabelle di prima otteniamo dalla <em>left join</em>:</p>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>nome</th>
+<th>età</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Alice</td>
+<td>13</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Bob</td>
+<td>NULL</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Charlie</td>
+<td>20</td>
+</tr>
+</tbody>
+</table><h3 id="giunzione-esterna-destra">Giunzione esterna destra</h3>
+<p>è analoga alla giunzione esterna sinistra, quindi</p>
+<p>In cui consideriamo tutte le righe della tabella di destra e solo quelle che soddisfano la condizione della tabella di sinistra, se delle righe di destra non hanno nessuna corrispondenza con alcuna riga della sinistra allora si mette NULL.</p>
+<p>equivalente al comando <strong>RIGHT JOIN &lt;tabella&gt; ON &lt;condizione&gt;</strong> in SQL</p>
+<p>e si rappresenta con il seguente simbolo</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><msub><mo><munder><mo><mo>→</mo></mo><mo lspace="0em" rspace="0em">⋈</mo></munder></mo><mtext>R.id&nbsp;=&nbsp;S.id</mtext></msub><mi>S</mi></mrow><annotation encoding="application/x-tex">R \underset{\bowtie}{\rightarrow}_{\text{R.id = S.id}} S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.43653em; vertical-align: -0.7532em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel"><span class="mrel"><span class="mop op-limits"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.36687em;"><span class="" style="top: -2.4em; margin-left: 0em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mrel mtight">⋈</span></span></span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class=""><span class="mop">→</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7035em;"><span class=""></span></span></span></span></span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist"><span class="" style="top: -1.9468em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">R.id&nbsp;=&nbsp;S.id</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.7532em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
+<p>considerando le stesse tabelle di prima otteniamo dalla <em>right join</em>:</p>
+
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>nome</th>
+<th>età</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>Alice</td>
+<td>13</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Charlie</td>
+<td>20</td>
+</tr>
+<tr>
+<td>3</td>
+<td>NULL</td>
+<td>32</td>
+</tr>
+</tbody>
+</table><h2 id="intersezione">Intersezione</h2>
 <p>Avendo due tabelle <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></p>
 <p>l’<strong>intersezione</strong>: crea una nuova tabella contenente solo le righe che sono in comune tra le due tabelle</p>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>R</mi><mo>∩</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">R \cap S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∩</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></p>
 <p>equivalente al comando <strong>INTERSECT</strong> in SQL</p>
+<h2 id="divisione">Divisione</h2>
+<p>Avendo due tabelle <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> che condividono una colonna, la divisione crea una nuova tabella formata dalle colonne di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span>, tranne quella condivisa. Vengono inseriti gli elementi di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span> che possiedono tutti i valori della tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></p>
+<p>Tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span></p>
+
+<table>
+<thead>
+<tr>
+<th>nome</th>
+<th>genere</th>
+<th>ufficio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alice</td>
+<td>F</td>
+<td>uff1</td>
+</tr>
+<tr>
+<td>Alice</td>
+<td>F</td>
+<td>uff2</td>
+</tr>
+<tr>
+<td>Bob</td>
+<td>M</td>
+<td>uff1</td>
+</tr>
+<tr>
+<td>Charlie</td>
+<td>M</td>
+<td>uff1</td>
+</tr>
+<tr>
+<td>Charlie</td>
+<td>M</td>
+<td>uff2</td>
+</tr>
+</tbody>
+</table><p>Tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></p>
+
+<table>
+<thead>
+<tr>
+<th>ufficio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>uff1</td>
+</tr>
+<tr>
+<td>uff2</td>
+</tr>
+</tbody>
+</table><p>la divisione restituirà la tabella</p>
+
+<table>
+<thead>
+<tr>
+<th>nome</th>
+<th>genere</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alice</td>
+<td>F</td>
+</tr>
+<tr>
+<td>Charlie</td>
+<td>M</td>
+</tr>
+</tbody>
+</table><p>Nella tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span> ci sono due valori &lt;impiegato, genere&gt; tali che ogni &lt;impiegato, genere, ufficio&gt; è compreso in <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi></mrow><annotation encoding="application/x-tex">R</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span></span></span></span></span>.<br>
+In altre parole solo Alice e Charlie lavorano in tutti gli uffici presenti nella tabella <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span></p>
+<p>La divisione non ha un equivalente comando in SQL</p>
 
     </div>
   </div>
