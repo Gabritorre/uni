@@ -119,7 +119,21 @@ Esempio
 
 Definiamo una variabile aleatoria che ha funzione di densità
 
-$$f(x) = 2e^{-2x} \hspace{10mm} x \in [0, +\infty[$$
+$$f(x) = 2e^{-2x}\cdot\bm{1}_{(0, +\infty)}(x)$$
+
+dove $\bm{1}_{(0, +\infty)}(x)$ è detta **funzione indicatrice** che è definita come:
+
+$$\bm{1}_{(\text{intervallo})}(x) = \begin{cases}
+1 & \text{se } x \in \text{intervallo} \\
+0 & \text{altrimenti}
+\end{cases}$$
+
+nel nostro caso la funzione si potrebbe dunque riscrivere come:
+
+$$f(x)= \begin{cases}
+2e^{-2x} & \text{se } x \geq0 \\
+0 & \text{altrimenti}
+\end{cases}$$
 
 verifichiamo innanzitutto che sia effettivamente una valida funzione di densità:
 1. $f(x)$ è una funzione esponenziale che è quindi sempre positiva
@@ -132,3 +146,68 @@ $\mathbb{P}[A] = \int_1^2 2e^{-2x} \, dx = e^{-2}- e^{-4}$
 consideriamo l'evento $B=(-1,1)$ in questo caso notiamo che da -1 fino a 0 siamo fuori dall'intervallo della funzione, quindi il quella zona ci sarà probabilità 0
 
 $\mathbb{P}[A] = \int_{-1}^0 0\,dx + \int_{0}^{1} 2e^{-2x} \, dx = 1- e^{-2}$
+
+
+## Funzione di ripartizione
+
+La funzione di ripartizione in un dato punto $x$ è la probabilità che la variabile casuale assuma valori minori o uguali ad $x$. 
+Quindi se la nostra variabile casuale la indichiamo con $X$:
+
+$$F(x) = \mathbb{P}[X \leq x]$$
+
+$F(x)$ è in tutto e per tutto una probabilità, quindi i suoi valori sono compresi in $[0,1]$
+
+La funzione di ripartizione deve rispettare tre proprietà:
+
+1. deve essere crescente
+2. deve essere continua a destra
+3. per valori di $x$ che tendono a $-\infty$ allora $F(x) = 0$, mentre per valori di $x$ che tendono a $+\infty$ allora $F(x) = 1$
+
+
+### funzione di ripartizione di variabili casuali discrete
+
+prendiamo come esempio il lancio di un dado a 6 facce ingiusto, in cui la probabilità che esca 4 è più alta mentre la probabilità che esca 2 è più bassa.
+
+la nostra variabile aleatoria sarà semplicemente il numero del dado che esce.
+
+rappresentiamo su un grafico i valori che può assumere la variabile aleatoria con le rispettive probabilità
+
+![enter image description here](https://i.ibb.co/RgnSyhR/variabile-aleatoria.png)
+
+Quando abbiamo una variabile aleatoria discreta la funzione di ripartizione è data dalle **somme delle probabilità** dei valori della variabile aleatoria.
+
+Rappresentiamo quindi graficamente la funzione di ripartizione:
+
+![enter image description here](https://i.ibb.co/X8xJHvb/ripartizione.png)
+
+possiamo ottenere la probabilità che esca uno specifico dado facendo:
+
+$$\mathbb{P}[x] = F(x) - F(x^-)$$
+
+dove $F(x^-)$ rappresenta il valore discreto precedente.
+
+ad esempio la probabilità che esca il numero 4:
+
+$$\mathbb{P}[4] = F(4) - F(3) = \frac{2}{3} - \frac{4}{9} = \frac{2}{9}$$
+
+oppure la probabilità che esca un numero compreso fra 3 e 5 (inclusi):
+
+$$\mathbb{P}[4] = F(5) - F(2) = \frac{5}{6} - \frac{5}{18} = \frac{5}{9}$$
+
+
+### funzione di ripartizione di variabili casuali continue
+
+Se abbiamo una variabile casuale continua con funzione di densità $f(x)$ allora la funzione di ripartizione è data da:
+
+
+$$\int_{-\infty}^x f(t)\,dt$$
+
+quindi dall'integrale da $-\infty$ ad un punto $x$ della funzione di densità
+
+in questo caso la funzione di partizione non sarà più costante a tratti come nella versione discreta ma sarà una curva continua che andrà da $0$ a $1$
+
+![enter image description here](https://i.ibb.co/7R6pWKd/curva.png)
+
+dalla funzione di partizione è possibile ottenere la densità di probabilità in ogni punto derivabile, facendo la derivata di $F(x)$
+
+$$f(x) = \frac{dF(x)}{dx}$$
