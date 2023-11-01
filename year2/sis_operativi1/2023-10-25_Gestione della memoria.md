@@ -78,7 +78,7 @@ $n =$ numero di processi in memoria
 $p =$ frazione di tempo di attesa I/O
 
 
-### Funzionamento multiprogrammazione a partizioni fisse
+## Funzionamento multiprogrammazione a partizioni fisse
 
 Ad ogni processo attivo viene assegnato un blocco di memoria di dimensione fissa. Abbiamo quindi bisogno di più registri per sapere dove inizia e finisce ogni blocco, **registro base e registri limite**. Questo per evitare conflitti tra sistema operativo e processi e anche tra i processi stessi.
 
@@ -96,5 +96,89 @@ Gli svantaggi di questo sistema che l'anno portato ad non essere più utilizzato
 
 1. non è detto che un processo occupi tutta la partizione, creando così degli spazi di memoria non utilizzabili (frammentazione interna)
 2. la possibilità che non ci sia una partizione abbastanza grande per un processo
+
+## Funzionamento multiprogrammazione a partizioni variabili
+
+In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle **partizioni variabili** perché la loro dimensione varia in base al processo.
+
+Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della **frammentazione della memoria**.
+
+
+![enter image description here](https://i.ibb.co/MMHF69F/frammentazione.png)
+
+Per risolvere questo problema di frammentazione abbiamo due tecniche:
+
+- **coalescenza**: combinare due blocchi liberi adiacenti formando un unico blocco
+	![enter image description here](https://i.ibb.co/Rj7gg5P/coalescenza.png)
+
+- **compattazione**: riorganizza i blocchi in modo da avere quelli occupati tutti contigui e formando un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo
+![enter image description here](https://i.ibb.co/njVQkB8/compattamento.png)
+
+### Strategie di posizionamento dei processi
+
+Il compattamento della memoria è una operazione molto dispendiosa (bisogna riallocare tutti i processi).
+Bisogna cercare di mettere i processi in posizioni intelligenti quando la memoria è frammentata, lasciando il compattamento come ultima risorsa.
+
+Vediamo tre diverse strategie per scegliere dove posizionare in memoria i processi in arrivo:
+
+- **first-fit**: il processo viene allocato nel primo buco libero abbastanza grande che si incontra.
+	semplice e basso overhead
+	![enter image description here](https://i.ibb.co/pyFtHqL/first-fit.png)
+
+- **best-fit**: il processo viene allocato nel più piccolo buco libero che riesce a contenerlo.
+	maggior overhead (bisogna cercarlo questo buco)
+
+	![enter image description here](https://i.ibb.co/xsGy6yD/best-fit.png)
+
+- **worst-fit**: il processo viene allocato nel buco più grande disponibile.
+	l'obiettivo di questa strategia è quello di lasciare abbastanza spazio rimanente per contenere un altro processo
+
+	![enter image description here](https://i.ibb.co/KwL0j0P/worst-fit.png)
+
+
+## Funzionamento multiprogrammazione con swapping
+
+Spesso i processi possono variare la quantità di memoria di cui hanno bisogno in fase di esecuzione, quando si prevede che un processo possa crescere in quantità di memoria è utile allocare più memoria di quella che necessità inizialmente.
+
+È possibile quindi che la memoria principale non sia sufficiente per contenere tutti i processi. 
+In queste situazioni possiamo utilizzare una speciale area della memoria secondaria per mantenere i processi temporaneamente in attesa che la memoria si svuoti.
+
+Ovviamente andare a recuperare un processo dalla memoria secondaria è molto dispendioso.
+
+
+## Gestione della memoria libera
+
+Nei casi di assegnazione dinamica della memoria bisogna avere dei metodi per riconoscere quali porzioni di memoria sono occupate e quali sono libere.
+
+Abbiamo due modi per tenere traccia della memoria:
+
+- mappa di bit
+- liste concatenate
+
+### Mappa di bit
+
+La memoria viene divisa in **unità** (tendenzialmente molto piccole, da Byte a qualche KB), ciascuna unità viene associata ad un bit che se è 1 significa che l'unità è occupata, se invece è 0 allora l'unità è libera, formando così una mappa di bit.
+
+La mappa di bit ovviamente risiede in memoria principale
+
+la scelta di quanto grandi fare le unità è abbastanza complessa da decidere: unità molto piccole comportano avere una mappa di bit molto grande, che porta via spazio a processi utili.
+una scelta di unità grande rende si la mappa più piccola ma la probabilità che la memoria dei processi sia un multiplo dell'unità si abbassa impedendo di mappare l'ultimo pezzo di memoria.
+
+Il problema della mappa di bit sta nel fatto che per trovare lo spazio necessario per allocare un processo di $k$ unità bisogna scorrere la mappa alla ricerca di $k$ zeri consecutivi
+
+### Liste concatenate
+
+In questa implementazione abbiamo una lista concatenata in cui ogni ogni elemento della lista rappresenta degli intervalli in cui la memoria è libera oppure occupata.
+
+Il nodo di una lista è fatta da:
+
+- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)
+- l'indirizzo di dove inizia l'intevallo
+- la lunghezza dell'intervallo
+- il puntatore al nodo successivo della lista 
+- il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)
+
+vediamo graficamente l'implementazione della mappa di bit (b) e della lista concatenata \(c\)
+![enter image description here](https://i.ibb.co/jy92vNJ/mappa-e-lista.png)
 
 

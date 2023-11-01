@@ -17,6 +17,10 @@
 <ul>
 <li><a href="#modi-di-organizzare-i-programmi-in-memoria">Modi di organizzare i programmi in memoria</a></li>
 <li><a href="#multiprogrammazione-a-partizioni-fisse">Multiprogrammazione a partizioni fisse</a></li>
+<li><a href="#funzionamento-multiprogrammazione-a-partizioni-fisse">Funzionamento multiprogrammazione a partizioni fisse</a></li>
+<li><a href="#funzionamento-multiprogrammazione-a-partizioni-variabili">Funzionamento multiprogrammazione a partizioni variabili</a></li>
+<li><a href="#funzionamento-multiprogrammazione-con-swapping">Funzionamento multiprogrammazione con swapping</a></li>
+<li><a href="#gestione-della-memoria-libera">Gestione della memoria libera</a></li>
 </ul>
 </li>
 </ul>
@@ -96,7 +100,7 @@ Quando invece ho programmi con poca attesa di I/O (ad esempio 20%) già avere du
 <p>dove:<br>
 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">n =</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span> numero di processi in memoria<br>
 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo></mrow><annotation encoding="application/x-tex">p =</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span></span></span></span></span> frazione di tempo di attesa I/O</p>
-<h3 id="funzionamento-multiprogrammazione-a-partizioni-fisse">Funzionamento multiprogrammazione a partizioni fisse</h3>
+<h2 id="funzionamento-multiprogrammazione-a-partizioni-fisse">Funzionamento multiprogrammazione a partizioni fisse</h2>
 <p>Ad ogni processo attivo viene assegnato un blocco di memoria di dimensione fissa. Abbiamo quindi bisogno di più registri per sapere dove inizia e finisce ogni blocco, <strong>registro base e registri limite</strong>. Questo per evitare conflitti tra sistema operativo e processi e anche tra i processi stessi.</p>
 <p>La memoria viene divisa in questi blocchi (o partizioni) di dimensioni anche diverse e <strong>ogni processo sarà assegnato al più piccolo blocco che lo contiene</strong>. Ovviamente avendo più processi abbiamo bisogno di una coda di attesa per attendere che il blocco si liberi prima di far entrare un nuovo processo.</p>
 <p><img src="https://i.ibb.co/zNXpVdd/partizioni-fisse.png" alt="enter image description here"></p>
@@ -108,6 +112,72 @@ Quando invece ho programmi con poca attesa di I/O (ad esempio 20%) già avere du
 <li>non è detto che un processo occupi tutta la partizione, creando così degli spazi di memoria non utilizzabili (frammentazione interna)</li>
 <li>la possibilità che non ci sia una partizione abbastanza grande per un processo</li>
 </ol>
+<h2 id="funzionamento-multiprogrammazione-a-partizioni-variabili">Funzionamento multiprogrammazione a partizioni variabili</h2>
+<p>In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle <strong>partizioni variabili</strong> perché la loro dimensione varia in base al processo.</p>
+<p>Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della <strong>frammentazione della memoria</strong>.</p>
+<p><img src="https://i.ibb.co/MMHF69F/frammentazione.png" alt="enter image description here"></p>
+<p>Per risolvere questo problema di frammentazione abbiamo due tecniche:</p>
+<ul>
+<li>
+<p><strong>coalescenza</strong>: combinare due blocchi liberi adiacenti formando un unico blocco<br>
+<img src="https://i.ibb.co/Rj7gg5P/coalescenza.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>compattazione</strong>: riorganizza i blocchi in modo da avere quelli occupati tutti contigui e formando un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo<br>
+<img src="https://i.ibb.co/njVQkB8/compattamento.png" alt="enter image description here"></p>
+</li>
+</ul>
+<h3 id="strategie-di-posizionamento-dei-processi">Strategie di posizionamento dei processi</h3>
+<p>Il compattamento della memoria è una operazione molto dispendiosa (bisogna riallocare tutti i processi).<br>
+Bisogna cercare di mettere i processi in posizioni intelligenti quando la memoria è frammentata, lasciando il compattamento come ultima risorsa.</p>
+<p>Vediamo tre diverse strategie per scegliere dove posizionare in memoria i processi in arrivo:</p>
+<ul>
+<li>
+<p><strong>first-fit</strong>: il processo viene allocato nel primo buco libero abbastanza grande che si incontra.<br>
+semplice e basso overhead<br>
+<img src="https://i.ibb.co/pyFtHqL/first-fit.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>best-fit</strong>: il processo viene allocato nel più piccolo buco libero che riesce a contenerlo.<br>
+maggior overhead (bisogna cercarlo questo buco)</p>
+<p><img src="https://i.ibb.co/xsGy6yD/best-fit.png" alt="enter image description here"></p>
+</li>
+<li>
+<p><strong>worst-fit</strong>: il processo viene allocato nel buco più grande disponibile.<br>
+l’obiettivo di questa strategia è quello di lasciare abbastanza spazio rimanente per contenere un altro processo</p>
+<p><img src="https://i.ibb.co/KwL0j0P/worst-fit.png" alt="enter image description here"></p>
+</li>
+</ul>
+<h2 id="funzionamento-multiprogrammazione-con-swapping">Funzionamento multiprogrammazione con swapping</h2>
+<p>Spesso i processi possono variare la quantità di memoria di cui hanno bisogno in fase di esecuzione, quando si prevede che un processo possa crescere in quantità di memoria è utile allocare più memoria di quella che necessità inizialmente.</p>
+<p>È possibile quindi che la memoria principale non sia sufficiente per contenere tutti i processi.<br>
+In queste situazioni possiamo utilizzare una speciale area della memoria secondaria per mantenere i processi temporaneamente in attesa che la memoria si svuoti.</p>
+<p>Ovviamente andare a recuperare un processo dalla memoria secondaria è molto dispendioso.</p>
+<h2 id="gestione-della-memoria-libera">Gestione della memoria libera</h2>
+<p>Nei casi di assegnazione dinamica della memoria bisogna avere dei metodi per riconoscere quali porzioni di memoria sono occupate e quali sono libere.</p>
+<p>Abbiamo due modi per tenere traccia della memoria:</p>
+<ul>
+<li>mappa di bit</li>
+<li>liste concatenate</li>
+</ul>
+<h3 id="mappa-di-bit">Mappa di bit</h3>
+<p>La memoria viene divisa in <strong>unità</strong> (tendenzialmente molto piccole, da Byte a qualche KB), ciascuna unità viene associata ad un bit che se è 1 significa che l’unità è occupata, se invece è 0 allora l’unità è libera, formando così una mappa di bit.</p>
+<p>La mappa di bit ovviamente risiede in memoria principale</p>
+<p>la scelta di quanto grandi fare le unità è abbastanza complessa da decidere: unità molto piccole comportano avere una mappa di bit molto grande, che porta via spazio a processi utili.<br>
+una scelta di unità grande rende si la mappa più piccola ma la probabilità che la memoria dei processi sia un multiplo dell’unità si abbassa impedendo di mappare l’ultimo pezzo di memoria.</p>
+<p>Il problema della mappa di bit sta nel fatto che per trovare lo spazio necessario per allocare un processo di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> unità bisogna scorrere la mappa alla ricerca di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> zeri consecutivi</p>
+<h3 id="liste-concatenate">Liste concatenate</h3>
+<p>In questa implementazione abbiamo una lista concatenata in cui ogni ogni elemento della lista rappresenta degli intervalli in cui la memoria è libera oppure occupata.</p>
+<p>Il nodo di una lista è fatta da:</p>
+<ul>
+<li>un booleano che indica se è un pezzo libero (H) oppure occupato da un processo §</li>
+<li>l’indirizzo di dove inizia l’intevallo</li>
+<li>la lunghezza dell’intervallo</li>
+<li>il puntatore al nodo successivo della lista</li>
+<li>il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)</li>
+</ul>
+<p>vediamo graficamente l’implementazione della mappa di bit (b) e della lista concatenata (c)<br>
+<img src="https://i.ibb.co/jy92vNJ/mappa-e-lista.png" alt="enter image description here"></p>
 
     </div>
   </div>

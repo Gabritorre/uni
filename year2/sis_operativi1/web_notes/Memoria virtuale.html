@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-10-31_Memoria virtuale</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#la-memoria-virtuale">La memoria virtuale</a>
+<ul>
+<li><a href="#paginazione">Paginazione</a></li>
+<li><a href="#traduzione-degli-indirizzi-virtuali">Traduzione degli indirizzi virtuali</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="la-memoria-virtuale">La memoria virtuale</h1>
+<p>Oltre alla tecnica di swapping della memoria, abbiamo un’altra tecnica utilizzata per contrastare il problema di non aver sufficiente memoria per contenere tutti i processi che vogliono essere eseguiti, la <strong>memoria virtuale</strong>.</p>
+<p>La principale caratteristica della memoria virtuale è quella di illudere i processi che esista più memoria di quella realmente è presente.</p>
+<p>Abbiamo 2 tipologie di indirizzi con l’introduzione della memoria virtuale:</p>
+<ul>
+<li><strong>indirizzi fisici</strong>: cioè gli effettivi indirizzi delle cella della memoria principale fisica</li>
+<li><strong>indirizzi virtuali</strong>: indirizzi utilizzati dalla CPU (e quindi dai processi)</li>
+</ul>
+<p>È quindi necessario un componente hardware capace di tradurre gli indirizzi virtuali in fisici, questo componente è chiamato <strong>MMU</strong> (Memory Management Unit)</p>
+<p>lo spazio di indirizzamento fisico è unico e solo la MMU ci interagisce mentre lo spazio di indirizzamento virtuale è uno per ogni processo</p>
+<p>Tutta questa tecnica ci permette di avere solo delle porzioni di programma mappati in memoria principale mentre il resto del programma è in memoria secondaria, proprio come succedeva con la tecnica <strong>overlay</strong> solo che lavorando con gli indirizzi virtuali il programmatore non deve più indicare le parti indipendenti del programma.</p>
+<p>Data questa divisione di <strong>spazi virtuali in memoria secondaria</strong> e <strong>spazi fisici in memoria principale</strong> diciamo che la <strong>tecnica di memoria virtuale lavora su due livelli di memoria</strong></p>
+<h2 id="paginazione">Paginazione</h2>
+<p>La paginazione è una tecnica utilizzata dai sistemi con memoria virtuale.<br>
+Questa tecnica consiste nel dividere l’insieme degli indirizzi fisici in dei blocchi chiamati <strong>pagine</strong> e dividere anche gli indirizzi fisici in blocchi chiamati <strong>pagine fisiche o page frame</strong>.</p>
+<p>Le pagine e le pagine fisiche hanno la stessa dimensione fissa (che solitamente è una potenza di 2).</p>
+<p>La MMU applica una funzione di mappatura degli indirizzi nelle pagine in modo da mapparli in indirizzi fisici delle pagine fisiche</p>
+<h2 id="traduzione-degli-indirizzi-virtuali">Traduzione degli indirizzi virtuali</h2>
+<p>Vediamo tre metodi per tradurre gli indirizzi virtuali in indirizzi fisici:</p>
+<ol>
+<li>mapping diretto</li>
+<li>mappa dei blocchi</li>
+<li>mapping associativo</li>
+</ol>
+<p><img src="https://i.ibb.co/p4YC5mp/page-table.png" alt="enter image description here"></p>
+<p>Nell’esempio sopra abbiamo 64KB di memoria virtuale e 32KB di memoria fisica, la grandezza delle pagine è di 4KB. Abbiamo quindi 16 pagine virtuali e 8 pagine fisiche</p>
+<h3 id="mapping-diretto">Mapping diretto</h3>
+<p>Nel mapping diretto abbiamo che un indirizzo virtuale è mappato sempre al solito blocco</p>
+<p>Consideriamo l’indirizzo virtuale 8196 (base 10) che in binario è 0010000000000100 (in 16 bit perché per rappresentare 64KB indirizzi).</p>
+<p>dividiamo il numero binario in 2 parti una parte di <strong>numero di pagina</strong> grande tanti bit quanti servono per rappresentare il numero di pagine (nel nostro caso abbiamo 16 pagine e quindi ci servono 4 bit) e un parte di <strong>offset</strong> che servirà per riferirci a tutti gli indirizzi all’interno di una pagina (abbiamo 4KB di indirizzi per pagina, infatti abbiamo i 12 bit rimanente per contenerli)</p>
+<p>il <strong>numero di pagina</strong> verrà usato come indice di una <strong>tabella delle pagine</strong>, questa tabella contiene il numero di <strong>pagina fisica</strong> corrispondente al numero della pagina virtuale.<br>
+è anche presente un <strong>bit di residenza</strong> per sapere se anche se quella pagina virtuale è già mappata in memoria principale (bit = 1) o meno (bit = 0).</p>
+<p>l’indirizzo fisico viene quindi formato da il valore della tabella con l’indice corrispettivo al numero di pagina virtuale e l’aggiunta dell’offset dell’indirizzo virtuale senza nessuna modifica</p>
+<p><img src="https://i.ibb.co/LRLMM4b/traduzione.png" alt="enter image description here"></p>
+<p>in questo caso in uscita avremo 15 bit perché la memoria fisica è grande 32KB</p>
+<p>Se un processo tenta di accedere ad un indirizzo virtuale non mappato, si verifica un <strong>page fault</strong>. In questo caso il sistema operativo si deve occupare di cercare sul disco secondario la pagina non mappata e mapparla sulla relativa pagina fisica.<br>
+Nella tabella della pagine è anche presente l’indirizzo dove andare a cercare la pagina in memoria secondaria nel caso non sia stata mappata in RAM.</p>
+<p><img src="https://i.ibb.co/zJKJkyW/mapping-diretto.png" alt="enter image description here"></p>
+<h3 id="mappa-dei-blocchi">mappa dei blocchi</h3>
+<p>In questo caso viene utilizzata una mappa dei blocchi, se i blocchi sono di dimensione fissa si parla di <strong>pagine,</strong> se sono di dimensione diverse tra loro si parla di <strong>segmenti</strong></p>
+<p>l’indirizzo virtuale viene diviso in due parti: il numero del blocco e l’offset</p>
+<p>si trova la riga della <strong>tabella dei blocchi</strong> sommando all’indirizzo iniziale il numero del blocco.<br>
+La tabella dei blocchi restituirà l’indirizzo dell’inizio del blocco in memoria fisica, ad esso si somma l’off set per trovare l’indirizzo fisico</p>
+<p><img src="https://i.ibb.co/K92C85C/image.png" alt="enter image description here"></p>
+<h3 id="mapping-associativo">mapping associativo</h3>
+<p>Mentre nel mapping associativo ogni indirizzo virtuale è associato sempre allo stesso blocco fisico, nel mapping associativo un indirizzo virtuale può appartenere a qualsiasi blocco fisico.</p>
+<p>Abbiamo una tabella di associatività che tiene traccia delle corrispondenze tra blocco virtuale e blocco fisico, quando vogliamo tradurre un indirizzo virtuale in fisico prendiamo il numero del blocco e lo cerchiamo nella tabella associativa (che ha accesso contemporaneo ad ogni riga), quando lo troviamo otteniamo il corrispondente blocco in memoria fisica a cui possiamo affiancare l’offset per ottenere l’indirizzo fisico.</p>
+<p>In caso di <strong>page fault</strong> non abbiamo un blocco preciso che il sistema operativo deve andare a sostituire ma può scegliere quello che preferisce.</p>
+<p><img src="https://i.ibb.co/GCJF8MZ/image.png" alt="enter image description here"></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
