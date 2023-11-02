@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-02_Esercizi alberi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#esercizi-sugli-alberi">Esercizi sugli alberi</a>
+<ul>
+<li><a href="#nodi-intermedi">Nodi intermedi</a></li>
+<li><a href="#albero-k-compreso">Albero k-compreso</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="esercizi-sugli-alberi">Esercizi sugli alberi</h1>
+<h2 id="nodi-intermedi">Nodi intermedi</h2>
+<p>Un nodo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi></mrow><annotation encoding="application/x-tex">u</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">u</span></span></span></span></span> di un albero binario è detto <strong>intermedio</strong> se il la somma delle chiavi dei noi dei suoi sottoalberi è uguale alla somma delle chiavi dei nodi presenti nel percorso che collega la radice al nodo (escluso)</p>
+<ul>
+<li>scrivere una funzione efficiente che restituisce il numero nodi intermedi dell’albero data la sua radice</li>
+<li>analizzare la complessità dell’algoritmo</li>
+</ul>
+<p>realizziamo un esempio di albero e vediamo quali sono i nodi intermedi:</p>
+<p><img src="https://i.ibb.co/XzqTFfq/nodi-intermedi.png" alt="enter image description here"></p>
+<p>consideriamo la radice -4:</p>
+<ul>
+<li>somma sottoalberi = 8 + (-4) + 3 + (-1) + (-6) = 0</li>
+<li>somma percorso = 0<br>
+<strong>intermedio</strong></li>
+</ul>
+<p>nodo 8:</p>
+<ul>
+<li>somma sottoalberi = 8</li>
+<li>somma percorso = -4<br>
+<strong>non intermedio</strong></li>
+</ul>
+<p>nodo 3:</p>
+<ul>
+<li>somma sottoalberi = -1 + 3 + (-6) = -4</li>
+<li>somma percorso = -4<br>
+<strong>intermedio</strong></li>
+</ul>
+<p>nodo -1:</p>
+<ul>
+<li>somma sottoalberi = -1</li>
+<li>somma percorso = -4 + 3 = -1<br>
+<strong>intermedio</strong></li>
+</ul>
+<p>nodo -6:</p>
+<ul>
+<li>somma sottoalberi = -6</li>
+<li>somma percorso = -4 + 3 = -1<br>
+<strong>non intermedio</strong></li>
+</ul>
+<p>Proviamo a scrivere l’algoritmo in c++:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Node <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> key<span class="token punctuation">;</span>
+	node<span class="token operator">*</span> left<span class="token punctuation">;</span>
+	node<span class="token operator">*</span> right<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">intermedi</span><span class="token punctuation">(</span>node<span class="token operator">*</span> r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> sum_sott<span class="token punctuation">;</span> <span class="token comment">// somma delle chiavi dei sottoalberi</span>
+	<span class="token keyword">return</span> <span class="token function">intermedi_aux</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> sum_sott<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">intermedi_aux</span><span class="token punctuation">(</span>node<span class="token operator">*</span> u<span class="token punctuation">,</span> <span class="token keyword">int</span> sum_p<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> sum_sott<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>u <span class="token operator">==</span> nullptr<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//caso base: l'albero è vuoto</span>
+		sum_sott <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">int</span> num_sx<span class="token punctuation">,</span> num_dx<span class="token punctuation">,</span> sum_sx<span class="token punctuation">,</span> sum_dx<span class="token punctuation">;</span>
+	num_sx <span class="token operator">=</span> <span class="token function">intermedi_aux</span><span class="token punctuation">(</span>u<span class="token operator">-&gt;</span>left<span class="token punctuation">,</span> sum_p <span class="token operator">+</span> u<span class="token operator">-&gt;</span>key<span class="token punctuation">,</span> sum_sx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	num_dx <span class="token operator">=</span> <span class="token function">intermedi_aux</span><span class="token punctuation">(</span>u<span class="token operator">-&gt;</span>right<span class="token punctuation">,</span> sum_p <span class="token operator">+</span> u<span class="token operator">-&gt;</span>key<span class="token punctuation">,</span> sum_dx<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	sum_sott <span class="token operator">=</span> sum_sx <span class="token operator">+</span> sum_dx <span class="token operator">+</span> u<span class="token operator">-&gt;</span>key<span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>sum_sott <span class="token operator">==</span> sump<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">+</span> num_sx <span class="token operator">+</span> num_dx<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> num_sx <span class="token operator">+</span> num_dx<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>vediamo come funziona l’algoritmo:</p>
+<p>la funzione <code>intermedi</code> si appoggia ad un’altra funzione che tiene traccia nei parametri di: la somma del percorso fino al nodo attuale con <code>sum_p</code> e la somma del sottoalbero contenuta in una reference <code>sum_sott</code> (nota che essendo una reference il suo valore verrà condiviso tra le chiamate ricorsive).</p>
+<p>Pensando ad alto livello quello che fa l’algoritmo è solamente prendere quanti nodi sono intermedi nel sottoalbero sinistro, prendere quanti nodi sono intermedi nel sottoalbero destro e poi sommare la radice nel caso sia anch’essa un nodo intermedio.</p>
+<p>Possiamo anche notare come la forma della funzione <code>intermedi_aux</code> sia molto simile ad una <strong>post-order</strong> proprio perche vogliamo visitare tutti i nodi dell’albero ottenendo prima informazioni sui sottoalberi sinistro e destro e la radice, la parte della “visita” possiamo pensarla come questo blocco di codice:</p>
+<pre class=" language-c"><code class="prism ++ language-c">	sum_sott <span class="token operator">=</span> sum_sx <span class="token operator">+</span> sum_dx <span class="token operator">+</span> u<span class="token operator">-&gt;</span>key<span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>sum_sott <span class="token operator">==</span> sump<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> <span class="token number">1</span> <span class="token operator">+</span> num_sx <span class="token operator">+</span> num_dx<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> num_sx <span class="token operator">+</span> num_dx<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+</code></pre>
+<p>Analizziamo la complessità dell’algoritmo</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mrow><mo fence="true">{</mo><mtable rowspacing="0.3600em" columnalign="left left" columnspacing="1em"><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mi>c</mi></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>se&nbsp;</mtext><mi>n</mi><mo>=</mo><mn>0</mn></mrow></mstyle></mtd></mtr><mtr><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>k</mi><mo stretchy="false">)</mo><mo>+</mo><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mi>d</mi></mrow></mstyle></mtd><mtd><mstyle scriptlevel="0" displaystyle="false"><mrow><mtext>se&nbsp;</mtext><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow></mstyle></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">T(n) = \begin{cases}
+c &amp; \text{se } n = 0 \\
+T(k) + T(n-k-1) + d &amp; \text{se } n&gt;0
+\end{cases}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 3.00003em; vertical-align: -1.25003em;"></span><span class="minner"><span class="mopen delimcenter" style="top: 0em;"><span class="delimsizing size4">{</span></span><span class="mord"><span class="mtable"><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.69em;"><span class="" style="top: -3.69em;"><span class="pstrut" style="height: 3.008em;"></span><span class="mord"><span class="mord mathnormal">c</span></span></span><span class="" style="top: -2.25em;"><span class="pstrut" style="height: 3.008em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mord mathnormal">d</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.19em;"><span class=""></span></span></span></span></span><span class="arraycolsep" style="width: 1em;"></span><span class="col-align-l"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.69em;"><span class="" style="top: -3.69em;"><span class="pstrut" style="height: 3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">se&nbsp;</span></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mord">0</span></span></span><span class="" style="top: -2.25em;"><span class="pstrut" style="height: 3.008em;"></span><span class="mord"><span class="mord text"><span class="mord">se&nbsp;</span></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mord">0</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 1.19em;"><span class=""></span></span></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></span></p>
+<p>Come detto nella spiegazione l’algoritmo è come se fosse una visita in profondità (post-order in particolare) e secondo il teorema delle visite in profondità che abbiamo visto la complessità dell’algoritmo è</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = \Theta(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></span></p>
+<h2 id="albero-k-compreso">Albero k-compreso</h2>
+<p>Un albero binario si dice k-compreso per un dato numero naturale <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> se per ogni nodo la somma delle chiavi del sottoalbero è compresa tra <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">-k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77777em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span></p>
+<p>realizziamo un esempio di albero non k-compreso:</p>
+<p><img src="https://i.ibb.co/bs9dVMS/non-k-compreso.png" alt="enter image description here"></p>
+<p>Se <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">k = 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span> abbiamo che la somma dei nodi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>+</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn><mo>=</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">3 + (-1) + 2 = 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4</span></span></span></span></span> non è compresa tra <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord">2</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span></p>
+<p>mentre l’albero</p>
+<p><img src="https://i.ibb.co/KbMHJgT/k-compreso.png" alt="enter image description here"><br>
+è 2-compreso dato che <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>+</mo><mo stretchy="false">(</mo><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>+</mo><mn>2</mn><mo>+</mo><mo stretchy="false">(</mo><mo>−</mo><mn>2</mn><mo stretchy="false">)</mo><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">3 + (-1) + 2 + (-2)= 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">−</span><span class="mord">2</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span> è compresa tra <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>−</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">-2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">−</span><span class="mord">2</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn></mrow><annotation encoding="application/x-tex">2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span></p>
+<p>Proviamo a scrivere l’algoritmo in c++:</p>
+<pre class=" language-c"><code class="prism ++ language-c">bool k<span class="token operator">-</span><span class="token function">compreso</span><span class="token punctuation">(</span>node<span class="token operator">*</span> r<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> sum<span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token function">k_compreso_aux</span><span class="token punctuation">(</span>r<span class="token punctuation">,</span> k<span class="token punctuation">,</span> sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+bool <span class="token function">k_compreso_aux</span><span class="token punctuation">(</span>node<span class="token operator">*</span> u<span class="token punctuation">,</span> <span class="token keyword">int</span> k<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> sum<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>u <span class="token operator">==</span> nullptr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		sum <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> true<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> left_res<span class="token punctuation">,</span> right_res<span class="token punctuation">,</span> left_sum<span class="token punctuation">,</span> right_sum<span class="token punctuation">;</span>
+		left_res <span class="token operator">=</span> <span class="token function">k_compreso_aux</span><span class="token punctuation">(</span>u<span class="token operator">-&gt;</span>left<span class="token punctuation">,</span> k<span class="token punctuation">,</span> left_sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		right_res <span class="token operator">=</span> <span class="token function">k_compreso_aux</span><span class="token punctuation">(</span>u<span class="token operator">-&gt;</span>right<span class="token punctuation">,</span> k<span class="token punctuation">,</span> right_sum<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		sum <span class="token operator">=</span> left_sum <span class="token operator">+</span> right_sum <span class="token operator">+</span> u<span class="token operator">-&gt;</span>key<span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>sum <span class="token operator">&gt;=</span> <span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span> <span class="token operator">*</span> k<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> sum <span class="token operator">&lt;=</span> k<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> true <span class="token operator">&amp;&amp;</span> left_res <span class="token operator">&amp;&amp;</span> right_res<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> false<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span> 
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>

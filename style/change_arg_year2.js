@@ -1,6 +1,6 @@
 let courses = {
 	algo_strut_dati1 : ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze"],
- 	algo_strut_dati2 : ["Le strutture dati", "Dizionari", "Esercizi calcolo delle complessità", "Alberi"],
+ 	algo_strut_dati2 : ["Le strutture dati", "Dizionari", "Esercizi calcolo delle complessità", "Alberi", "Esercizi alberi"],
  	basi_dati1 : ["Introduzione", "Progettazione e modellazione", "Progettazione logica", "Algebra relazionale"],
 	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Probabilità condizionata e indipendenza", "Esercizi Probabilità elementare 2", "Variabili casuali", "Esercizi Probabilità condizionata"],
 	prog_ogg1 : ["Introduzione", "Classi", "Incapsulamento", "Javadoc", "Ereditarietà"],
