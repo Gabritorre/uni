@@ -211,3 +211,101 @@ in questo caso la funzione di partizione non sarà più costante a tratti come n
 dalla funzione di partizione è possibile ottenere la densità di probabilità in ogni punto derivabile, facendo la derivata di $F(x)$
 
 $$f(x) = \frac{dF(x)}{dx}$$
+
+
+## Costante caratteristica
+
+Una costante caratteristica è un numero associato ad una variabile aleatoria (o alla sua distribuzione) che sintetizza una informazioni di interesse sul fenomeno analizzato.
+
+Alcune caratteristiche che vedremo sono:
+
+- il **valore atteso**
+- la **varianza**
+- la **moda**
+- la **mediana**
+- i **quantili**
+
+sono tutti detti anche **indici di posizione** tranne la varianza che è un **indice di dispersione**
+## valore atteso
+
+
+Il valore atteso è sostanzialmente la **media** dei valori che assume la variabile aleatoria.
+Dato che lavoriamo con le probabilità si tratta di una **media pesata** in cui il peso è dato dalla probabilità di ogni valore che assume la variabile.
+
+### Valore atteso di variabili aleatorie discrete
+
+Il valore atteso di una variabile aleatoria discreta $X$ rappresentato dal simbolo $\mathbb{E}[X]$ si calcola come:
+
+$$\mathbb{E}[X] = \sum_{i}(x_i\cdot p_i)$$
+
+quindi la somma di **valore** **moltiplicato** per la sua **probabilità**
+
+Esempio
+$P_X(x) = \begin{cases}
+	\frac{2}{7} & \text{se } x = 1,2,3 \\
+	\frac{1}{7} & \text{se } x = 4 \\
+	0 & \text{altrimenti} \\	
+\end{cases}$
+
+Il valore atteso in questo caso è dato da:
+
+$\mathbb{E}[X] = 1 \cdot \frac{2}{7} + 2 \cdot \frac{2}{7} + 3 \cdot \frac{2}{7} + 4 \cdot \frac{1}{7} = \frac{16}{7}$
+
+### Valore atteso di variabile aleatorie continue
+
+Data la funzione di densità della variabile continua $f(x)$ il valore atteso si calcola come:
+
+$$\mathbb{E}[X]  =\int_{\mathbb{R}}xf(x) \, dx$$
+
+### Proprietà del valore atteso
+
+- il valore atteso di una costante è la costante stessa: $\mathbb{E}[a] = a$
+- $\mathbb{E}[aX +b] = a\mathbb{E}[X] +b$
+- $\mathbb{E}[X - \mathbb{E}[X]] = 0$
+
+
+## Varianza
+la varianza è un valore che misura quanto si discostano i valori assunti dalla variabile aleatoria rispetto al valore atteso (quindi rispetto alla media).
+
+maggiore è la varianza più sono i valori che si allontanano dalla media, mentre minore è la varianza più i valori sono tutti molto vicini alla media
+
+### Varianza di variabile aleatorie discrete
+
+La varianza di una variabile aleatoria discreta $X$ rappresentato da $\text{Var}[X]$ si calcola come:
+
+$$\text{Var}[X] = \sum_{i}p_i\cdot (x_i - \mathbb{E}[X])^2$$
+
+$$\text{oppure}$$
+
+$$\text{Var}[X] = \sum_{i}(x_i^2\cdot p_i) - [\mathbb{E}[X]]^2$$
+
+Esempio 
+
+$P_X(x) = \begin{cases}
+	\frac{2}{7} & \text{se } x = 1,2,3 \\
+	\frac{1}{7} & \text{se } x = 4 \\
+	0 & \text{altrimenti} \\	
+\end{cases}$
+
+$\text{Var}[X] = (1^2\cdot \frac{2}{7}) + (2^2\cdot \frac{2}{7}) + (3^2\cdot \frac{2}{7}) + (4^2\cdot \frac{1}{7}) - (\frac {16}{17})^2 \approx 5.4$
+
+### Varianza di variabile aleatorie continue
+
+Data la funzione di densità della variabile aleatoria $f(x)$ la varianza si calcola come:
+
+$$\text{Var}[X] = \int_\mathbb{R}(x- \mathbb{E}[X])^2 \cdot f(x) \, dx$$
+
+$$\text{oppure}$$
+
+$$\text{Var}[X] = \int_\mathbb{R}x^2\cdot f(x)\,dx - [\mathbb{E}[X]]^2$$
+
+### Proprietà della varianza
+
+Avendo $a$ e $b$ costanti
+- $\text{Var}[a] = 0$
+- $\text{Var}[aX + b] = a^2\text{Var}[X]$
+
+## Moda
+
+La moda di una variabile aleatoria sono i punti in cui la variabile assume i valori di massimo (assoluto ma anche locale).
+Nota bene che la moda è il **valore che assume la variabile aleatoria** (quindi il valore nell'asse x) e non la sua probabilità (asse y)
