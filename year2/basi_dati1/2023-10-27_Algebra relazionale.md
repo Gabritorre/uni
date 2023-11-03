@@ -26,7 +26,7 @@ Serve per rinominare il nome una colonna $B$ nel nuovo nome $A$ di una tabella $
 
 Avendo due tabelle $R$ e $S$ **dello stesso tipo** (quindi le tabelle hanno le stesse colonne)
 
-- **Unione**: crea una nuova tabella con le righe della tabella $R$ assieme alle righe della tabella $S$ (il numero di colonne rimane invariato)
+- **Unione**: crea una nuova tabella con le righe della tabella $R$ assieme alle righe della tabella $S$ (il numero di colonne rimane invariato), vengono esclusi i duplicati
 
 	$$R\cup S = \{t \text{ tale che: } t\in R \lor t \in S\}$$
 
@@ -45,6 +45,12 @@ $$\pi_{a1, a2, a3, ..., an}(R)$$
 è l'equivalente del comando **SELECT** in SQL
 
 crea una tabella con un sottoinsieme delle colonne della tabella $R$, Il sottoinsieme viene specificato tramite l'elenco delle colonne che si desidera mantenere $a_1, a_2,$ ecc...
+
+### Proiezione generalizzata
+
+è possibile fare delle operazioni aritmetiche sulle colonne selezionate, e opzionalmente rinominare l'operazione usando la parola chiave **AS** seguita dal nuovo nome
+
+$\pi_{\text{a1, a2, a1+a2 AS somma}} (R)$
 
 
 ## Restrizione
@@ -209,3 +215,73 @@ Nella tabella $R$ ci sono due valori <impiegato, genere> tali che ogni <impiegat
 In altre parole solo Alice e Charlie lavorano in tutti gli uffici presenti nella tabella $S$
 
 La divisione non ha un equivalente comando in SQL
+
+
+## Funzioni di aggregazione
+
+Le funzioni di aggregazione sono delle funzioni che prendono in input uno o più insiemi di valore e restituisce un valore numerico.
+Alcuni esempi di queste funzioni sono:
+
+- sum: restituisce la somma dei valori
+- avg: restituisce la media del valori
+- count: restituisce quanti sono i valori
+- min e max: restituiscono rispettivamente il minimo e il massimo tra i valori
+
+
+
+## Raggruppamento
+
+l'operatore di raggruppamento rappresentato con il simbolo greco "gamma" $\gamma$, serve ad aggregare le righe utilizzando le funzioni di aggregazione
+
+$$_{a1,...,an}\gamma_{f1,...,fm}$$
+
+dove $a1,...,an$ sono gli attributi, mentre $f1,...,fm$ sono le funzioni di aggregazione
+
+a parole si potrebbe dire, selezionami le colonne $f1,...,fm$ e $a1,...,an$ raggruppate per i valori $a1,...,an$
+
+equivalente al comando **GROUP BY** in SQL
+
+ad esempio nella seguente tabella Esami:
+
+![enter image description here](https://i.ibb.co/P61P0Km/esempio-aggr.png)
+
+la seguente operazione di raggruppamento:
+
+$$_{\text{Materia}}\gamma_{\text{avg(voto)}} (Esami)$$
+
+restituisce
+
+![enter image description here](https://i.ibb.co/855CgHq/image.png)
+
+quindi calcola la media degli esami raggruppati per materia
+
+## Operazioni sui multinsiemi
+
+- proiezione senza eliminare i duplicati
+$$\pi^b_{a1,...,an} (O)$$
+- eliminazione dei duplicati dell'insiemi
+$$\delta(O)$$
+- ordinamento degli attributi
+$$\tau_{a1,...,an}(O)$$
+- unione, intersezione e differenza in cui si mantengono i duplicati
+
+	$$O_1 \cup^b O_2$$
+
+	nell'intersezione prendo il minimo di duplicati comuni delle due tabelle
+	
+	$$O_1 \cap^b O_2$$
+	
+	nella differenza prendo il massimo di duplicati tra 0 e la differenza tra il numero di duplicati di O_1 e il numero di duplicati di O_2
+	$$O_1 -^b O_2$$
+	
+	in altre parole se una riga è ripetuta 5 volte in $O_1$ e la stessa riga è ripetuta 3 volte in $O_2$ nel risultato quella riga sarà presente 2 volte.
+	Se invece è ripetuta 5 volte in $O_1$ e 7 volte in $O_2$ nel risultato non ci sarà nessuna occorrenza di quella riga
+
+## Equivalenze di espressioni algebriche
+
+- $\pi_{A}(\pi_{A,B}(R)) \equiv \pi_A(R)$
+- $\sigma_{C_1}(\sigma_{C_2}(R)) \equiv \sigma_{C_1 \land C_2 }(R)$
+- $\sigma_{C_1 \land C_2}(R \times S) \equiv \sigma_{C_1}(R) \times \sigma_{C_2}(S)$
+- $R \times (S \times T) \equiv (R \times S) \times T$
+- $(R \times S) \equiv (S \times R)$
+- $\sigma_{C}(_X \gamma_F(R)) \equiv \,_X\gamma_F(\sigma_C(R))$
