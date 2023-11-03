@@ -79,3 +79,19 @@ Abbiamo due utilizzi principali di `super`
 	}
 
 	```
+
+
+## Abstract
+
+`abstract` è una keyword che si applica ai metodi e alle classi.
+
+### metodi abstract
+
+Quando un metodo è abstract si sta dicendo che quel metodo è presente nella classe ma non è implementato (c'è solo la firma), sarà compito di chi eredita la classe di implementarlo.
+Un metodo astratto può essere presente solo in una classe che è anch'essa astratta.
+
+### classe abstract
+Una classe astratta è una classe che ha solo parte dei suoi metodi implementati.
+Una classe astratta non può essere istanziata, può essere solo ereditata
+
+Una classe che eredita una classe astratta deve implementare tutti i metodi `abstract` per essere istanziata, altrimenti deve essere astratta anche lei.
