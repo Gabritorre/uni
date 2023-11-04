@@ -1,5 +1,7 @@
 ﻿# Domande su Introduzione
 
+## Esercizi teorici
+
 ### Indicare le due funzioni principali di un sistema operativo.
 
 - fungere come macchina astratta per l'utente mascherando la complessità delle operazioni e fornendo una interfaccia semplice
@@ -65,3 +67,33 @@ trap è una istruzione che viene chiamata quando un processo vuole passare il co
 In Unix I file speciali sono un modo per rendere i dispositivi di I/O accessibili come fossero dei file usando le stesse chiamate a sistema dei comuni file.
 I file speciali a blocchi vengono utilizzati per gestire dispositivi costituiti da un insieme di blocchi come i dischi potendo accedere a determinati blocchi del disco senza tener conto del suo file system.
 I file speciali a caratteri vengono utilizzati per gestire dispositivi che accettano in ingresso o forniscono in uscita un flusso di caratteri (come le stampanti).
+
+
+## Esercizi pratici
+
+### Esercizio 1
+
+Se un processore usa una pipeline con quattro fasi e ogni fase impiega 1 ns per eseguire il proprio compito, il sistema quante istruzioni può eseguire per secondo? Spiegare in dettaglio la risposta. 
+
+la pipeline permette a più istruzioni di essere in pipeline contemporaneamente in fasi diverse, quindi una volta riempita la pipeline idealmente abbiamo che il sistema esegue una istruzione al nanosecondo, quindi in un secondo esegue $1 \times 10^9$ istruzioni $(1\,000\,000\,000)$
+
+
+### Esercizio 2
+
+Considerate un sistema con memoria cache, memoria principale (RAM) e disco e un sistema operativo con memoria virtuale che accede ad una parola nella cache in 2 ns, una parola nella RAM in 10 ns una parola nel disco in 10 ms. Se quando si cerca una parola la percentuale di successo nella cache è del 95% (Hit rate) e nella memoria principale (se la ricerca nella cache fallisce) è del 99% quanto è il tempo medio d’accesso a una parola?
+
+$$T_{\text{avg}} =(0.95 * 2) + (0.05 * 0.99 * 10) + (0.05 * 0.01 * 10000000) \approx 50002 ns$$
+
+### Esercizio 3
+
+Supponete che un file da 40 MB sia memorizzato su disco tutto nella stessa traccia (traccia 50) in settori consecutivi. Assumendo che: il tempo per muovere il braccio da un cilindro al successivo sia circa 1 ms, il tempo di rotazione per trovare il settore dove si trova il file sia 5 ms e la velocità di lettura di 200 MB/s, se Il braccio del disco si trova sulla traccia n. 100, quanto impiega a leggere il file dal disco?
+
+traccia = un anello del disco
+settore = fetta dell'anello
+cilindro = una colonna di fette
+
+- tempo per trovare la traccia $= 50\text{ tracce} \cdot 1\text{ ms per traccia} = 50ms$
+- tempo per trovare il settore $= 5ms$
+- tempo per la lettura di 40MB $= \frac{40}{200} = 0.2s = 200 ms$
+
+tempo impiegato $50 + 5 + 200 = 255ms$

@@ -81,11 +81,50 @@ Bisogna scegliere un buon compromesso di tempo di esecuzione rispetto al tempo d
 
 ### Considerando cinque job sono in attesa di esecuzione con richieste di tempo di esecuzione previsti di 9, 6, 3, 5 e X sec. In quale ordine dovrebbero essere eseguiti per minimizzare il tempo di risposta medio? (La risposta dipende da X).
 
-### Cinque lavori batch, A, B,C, D e E, arrivano al sistema contemporaneamente, con richiesta di esecuzione rispettivamente di 10, 6, 2, 4 e 8 min, priorità (assegnate dall’esterno) rispettivamente di 3, 5, 2, 1 e 4, dove 5 è la priorità massima e assumere che tutti i job siano CPU-bound.
+Per minimizzare il tempo di risposta medio si potrebbero eseguire i job dal più breve al più lungo.
+il job che richiede tempo X dovrebbe posizionarsi seguendo l'ordine crescente, se però non è dato saperlo forse conviene metterlo nel mezzo dell'ordine
+
+### Cinque lavori batch A, B, C, D e E, arrivano al sistema contemporaneamente, con richiesta di esecuzione rispettivamente di 10, 6, 2, 4 e 8 min, priorità (assegnate dall’esterno) rispettivamente di 3, 5, 2, 1 e 4, dove 5 è la priorità massima e assumere che tutti i job siano CPU-bound.
 Determinare per ognuno dei seguenti algoritmi di scheduling il tempo medio di turnaround, senza considerare l’overhead dovuto al cambio di processo.
 - a. Round-robin
+scelgo un quanto di tempo di 2 minuti
+$\text{1°ciclo di esecuzione} : 2 + 2 + 2 + 2 +2 = 10$
+$\text{2°ciclo di esecuzione} : 2 + 2 + 2 +2 = 8$
+$\text{3°ciclo di esecuzione} : 2 + 2 +2 = 6$
+$\text{4°ciclo di esecuzione} : 2 + 2 = 4$
+$\text{5°ciclo di esecuzione} : 2 = 2$
+	$T_{\text{medio}} =\frac{10 + (10 + 8) + (10 + 8 + 6) + (10 + 8 + 6 + 4) + (10 + 8 +6 + 4 + 2)}{5} =22 \text{ minuti}$
+	
+	oppure
+	
+	scelgo un quanto di tempo di 4 minuti
+$\text{1°ciclo di esecuzione} : 4 + 4 + 4 + 4 + 4 = 20$
+$\text{2°ciclo di esecuzione} : 4 + 4 + 4 = 12$
+$\text{3°ciclo di esecuzione} : 4 = 4$
+	$T_{\text{medio}} =\frac{20 + (20 + 12) + (20 + 12 + 4)}{5} =17.6 \text{ minuti}$
+	
 - b. Scheduling a priorità (senza prelazione)
+	$T_{\text{medio}} =\frac{6 + (6+8) + (6 + 8 + 10) + (6 + 8 + 10 + 2) + (6 + 8 + 10 + 2 + 4)}{5} =20 \text{ minuti}$
+
 - c. First-come first-served (eseguire nell’ordine 10, 6, 2, 4, 8).
+	$T_{\text{medio}} =\frac{10 + (10+6) + (10 + 6 + 2) + (10 + 6 + 2 + 4) + (10 + 6 + 2 + 4 + 8)}{5} =19.2 \text{ minuti}$
+	
 - d. Shortest job first (senza prelazione)
+	$T_{\text{medio}} =\frac{2 + (2+4) + (2+4+6) + (2+4+6+8) + (2+4+6+8+10)}{5} =14 \text{ minuti}$
 
 ### Assumere di usare un algoritmo di scheduling con aging con a = 1/2 per stimare i tempi di esecuzione. Se i precedenti quattro tempi di esecuzione, dal più vecchio al più recente, sono 40, 20, 40 e 15 ms, qual è la prossima previsione?
+
+sarebbe l'algoritmo chiamata shortest job next.
+Utilizziamo la formula: $aT_0 + (1-a)T_1$
+dove $a$ è l'invecchiamento
+$T_0$ è il primo tempo di esecuzione
+$T_1$ è il secondo tempo di esecuzione
+
+Se $a = \frac{1}{2}$ avremmo $\frac{T_0}{2} + \frac{T_1}{2}$
+per includere un terzo tempo basta sommarlo e dividere tutto per 2:
+$\frac{1}{2}(\frac{T_0}{2} + \frac{T_1}{2} + T_3) = \frac{T_0}{4} + \frac{T_1}{4} + \frac{T_3}{2}$
+e così via...
+
+nel nostro caso avremo:
+
+$$T_5 = \frac{40}{8} + \frac{20}{8} + \frac{40}{4} + \frac{15}{2} = 25 \text{ ms}$$
