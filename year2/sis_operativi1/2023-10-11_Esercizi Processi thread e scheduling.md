@@ -75,6 +75,7 @@ Durante l'esecuzione se quel processo rimane spesso nello stato di bloccato e ra
 
 Nell'algoritmo round-robin la dimensione del quanto è il tempo della CPU che viene assegnato ad un processo.
 Il tempo del cambio di contento è il tempo necessario per passare l'esecuzione da un processo ad un altro.
+
 La dimensione del quanto di tempo va scelto attentamente in quanto se scegliamo un tempo molto piccolo verrebbero fatti cambi di contesto molto spesso generando un grande overhead, quindi sarebbe più il tempo di CPU sprecato rispetto a quello utilizzato per l'esecuzione di qualche processo.
 
 Bisogna scegliere un buon compromesso di tempo di esecuzione rispetto al tempo del cambio di contesto per avere delle performance ottimali
