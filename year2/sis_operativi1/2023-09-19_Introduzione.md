@@ -5,7 +5,7 @@
 Il computer moderno è un sistema composto da molte parti hardware e scrivere software che tenga conto di tutte le parti è a dir poco impossibile, per questo è fondamentale il **sistema operativo** cioè un software (o meglio un insieme di processi) che si occupa principalmente di due cose (pensandolo ad alto livello)
 
 1. **gestire le risorse**: quindi far comunicare e gestire le componenti hardware, e ovviamente le risorse software le quali richiedono **tempo e spazio** che il sistema operativo deve gestire
-2. **essere vista come una macchina astratta**: quindi fornire all'utente un'interfaccia che permetta di comunicare semplicemente con il computer (**trasparenza**) senza preoccuparsi delle operazioni complesse che fa la macchina (**mascheramento**).
+2. **essere visto come una macchina astratta**: quindi fornire all'utente un'interfaccia che permetta di comunicare semplicemente con il computer (**trasparenza**) senza preoccuparsi delle operazioni complesse che fa la macchina (**mascheramento**).
 
 Nella seguente immagine si vede che il sistema operativo fa da cuscinetto tra l'hardware e il software
 
@@ -16,11 +16,12 @@ Distinguiamo la differenza tra programma e processo:
 - **Programma**: è il codice eseguibile che sta in memoria di massa
 - **Processo**: è il programma che è attualmente in esecuzione sulla CPU
 
-Quindi un programma diventa un processo quando esso viene eseguito
+Quindi eseguire un programma significa generare un nuovo processo che esegue le istruzioni presenti nel programma
 
-Il sistema operativo ha 2 modalità con cui eseguire i processi che differiscono in base ai permessi che deve avere un processo:
+Il sistema operativo ha 2 modalità di esecuzione dei processi che differiscono in base ai permessi che deve avere un processo:
 
-- **user mode**: permessi limitati, generalmente i programmi che usa l'utente normale vengono eseguiti in questa modalità. **Non è possibile** fare direttamente operazioni di I/O o di accedere liberamente alla memoria, e ovviamente di passare alla kernel mode,
+- **user mode**: permessi limitati, generalmente usato per i programmi dell'utente.
+In questa modalità **non è possibile** fare operazioni di I/O, accedere liberamente alla memoria, e ovviamente passare liberamente alla kernel mode.
 - **kernel mode**: permessi totali, i processi del sistema operativo utilizzano questa modalità
 
 generalmente si tende a dare ad un processo utente i minimi permessi necessari per essere eseguito.
@@ -89,13 +90,12 @@ Durante l'esecuzione di un sistema batch la memoria si comportava nel seguente m
 
 #### Sistemi timesharing
 
-i sistemi timesharing sono delle varianti della multiprogrammazione fatto per far collegare più utenti tramite un terminale alla macchina la quale cercava di soddisfare i job richiesti a turno
+i sistemi timesharing sono delle varianti della multiprogrammazione in cui più utenti si collegano alla stessa macchina tramite un terminale. La macchina cerca di soddisfare i job richiesti a turno, dando l'impressione ad ogni utente di possedere una macchina unicamente per sè.
 
 In questo meccanismo vengono introdotti i concetti di:
 - **cambio di contesto**: cioè ogni volta che si cambia job, il sistema operativo deve salvare le informazioni di quel job e prepararsi ad far partire il job successivo ripristinando eventualmente delle informazioni
 - **protezione**: ogni job doveva essere indipendente e quindi non doveva leggere o scrivere nelle memoria di altri job
-- **memoria virtuale**: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa riferimento agli indirizzi fisici della memoria per agevolare la protezione
-
+- **memoria virtuale**: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa direttamente riferimento agli indirizzi fisici della memoria per agevolare la protezione
 
 
 ### Gen 4
@@ -121,7 +121,6 @@ In questo meccanismo vengono introdotti i concetti di:
 
 Semplificando possiamo dire che un computer è composto da componenti hw quali: CPU, Memoria e periferiche di I/O che comunicano tra loro attraverso un BUS (nella realtà è decisamente più complesso di così)
 
-
 ### CPU
 
 La CPU (Central Processing Unit) è il componente il cui compito è generalmente quello di recuperare delle istruzioni dalla memoria, decodificarle ed eseguirle.
@@ -137,7 +136,7 @@ una CPU può contenere al suo interno un coprocessore destinato all'uso grafico 
 
 Il processore ha il compito importante di fare **context switch**: spesso i processi vengono interrotti per far partire altri processi, quando accade ciò la CPU deve salvare lo stato dei registri del processo attuale e prepararsi per il nuovo processo, quando il vecchio processo torna ad essere eseguito i registri vengono ripristinati.
 
-Le CPU odierne funzionano tramite una **pipeline** cioè un meccanismo che permette alle varie fari di una istruzione (fetch-decode-execution-....) di essere eseguite in parallelo su più istruzioni.
+Le CPU odierne funzionano tramite una **pipeline** cioè un meccanismo che permette alle varie fasi di una istruzione (fetch-decode-execution-....) di essere eseguite in parallelo su più istruzioni.
 Permettono di avere ancora più parallelismo le CPU **superscalari** in cui delle istruzioni vengono eseguite effettivamente contemporaneamente assicurandosi che il risultato sia lo stesso di una esecuzione in serie.
 
 Vediamo anche i concetti di **multicore e multithreading**:
@@ -146,7 +145,7 @@ Vediamo anche i concetti di **multicore e multithreading**:
 
 ### Memoria
 
-Per non fare da bottleneck al processore la memoria dovrebbe essere estremamente veloce, capiente e a basso costo. Dato che non è possibile soddisfare tutti i requisiti si è optato per fare una gerarchia di memorie
+Per non fare da *bottleneck* al processore la memoria dovrebbe essere estremamente veloce, capiente e a basso costo. Dato che non è possibile soddisfare tutti i requisiti si è optato per fare una gerarchia di memorie
 
 ![enter image description here](https://i.ibb.co/nBwyw4B/memory-hierarchy-drawio.png)
 
@@ -164,9 +163,9 @@ In questa è presente sia il **sistema operativo** che è in esecuzione e **ogni
 
 	Il sistema operativo si occupa di assegnare i valori di **base e limit** ai corrispettivi registri nella CPU (se fosse il processo stesso ad assegnarli potrebbe accedere liberamente a zone di memoria che su cui non dovrebbe accedere)
 
-- **Dischi rigidi** Nei dischi rigidi comprendiamo i classici **Hard Disk** (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell'HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovuta a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.
+- **Dischi rigidi** Nei dischi rigidi comprendiamo i classici **Hard Disk** (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell'HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovute a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.
 
-	Un'evoluzione degli Hard Disk sono gli SSD (Solid State Drive) che non sono più magnetici ma elettrici e quindi risultano essere decisamente più veloci degli HDD ma non raggiungono comunque le velocità della memoria RAM, ma in generale risolvono gran parte dei limiti dei classici Hard Disk.
+	Un'evoluzione degli Hard Disk sono gli SSD (Solid State Drive) che non sono più magnetici ma elettrici e quindi risultano essere decisamente più veloci degli HDD ma non raggiungono comunque le velocità della memoria RAM, in generale risolvono gran parte dei limiti dei classici Hard Disk.
 
 
 - Esistono altri particolari tipi di memorie come:
@@ -189,8 +188,7 @@ Un'aspetto importante è la gestione delle operazioni di input e output tra il d
 
 ### Bus
 
-Un bus non è altro che un collegamento elettrico capaci di trasportare dei dati da un punto A ad un punto B all'interno dei circuiti stampati, ne sono un esempio i collegamenti PCIe, USB, SATA. Vengono quindi utilizzati per far comunicare tutti i componenti di un computer tra loro
-
+Un bus non è altro che un collegamento elettrico capace di trasportare dei dati da un punto A ad un punto B all'interno dei circuiti stampati, ne sono un esempio i collegamenti PCIe, USB, SATA. Vengono quindi utilizzati per far comunicare i componenti di un computer tra loro
 
 
 ## Tipi di sistemi operativi
@@ -301,3 +299,6 @@ Abbiamo 3 diversi tipi di architettura:
 - **Architettura microkernel** fornisce delle funzionalità limitate per la gestione dei processi e della memoria in modo da mantenere leggero il kernel ma allo stesso tempo è facilmente scalabile e modulare.
 Il kernel in questo caso ha il principale compito di smistare i messaggi fra i processi.
 ![enter image description here](https://i.ibb.co/ct8cCNc/microkernel.png)
+
+
+

@@ -29,10 +29,10 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="scheduling">Scheduling</h1>
-<p>lo scheduler è il componente del sistema operativo che decide quali processi, che sono nello stato di pronto, mandare in esecuzione. Tale decisione la prende tramite un <strong>algoritmo di scheduling</strong></p>
-<p>Ci sono due caratteristiche chiave che un algoritmo di scheduling può utilizzare oppure no:</p>
+<p>lo scheduler è il componente del sistema operativo che decide quali processi, che sono nello stato di pronto, mandare in esecuzione. Tale decisione viene presa tramite un <strong>algoritmo di scheduling</strong></p>
+<p>Ci sono due caratteristiche chiave che un algoritmo di scheduling può utilizzare o meno:</p>
 <ul>
-<li><strong>pre-rilasio o preemptive</strong>
+<li><strong>pre-rilasio, prelazione o preemptive</strong>
 <ul>
 <li>algoritmi senza pre-rilascio: il processo in esecuzione rimane in esecuzione finchè o si blocca o decide volontariamente di fermare l’esecuzione</li>
 <li>algoritmi con pre-rilascio: lo scheduler può interrompere l’esecuzione di un processo per favorirne un altro.</li>
@@ -40,7 +40,7 @@
 </li>
 <li><strong>priorità</strong>
 <ul>
-<li>priorità statica: una volta assegnata la priorità ad un processo essa non cambia</li>
+<li>priorità statica: una volta assegnata la priorità ad un processo essa non cambia nel tempo</li>
 <li>priorità dinamica: la priorità di un processo può variare nel tempo</li>
 </ul>
 </li>
@@ -55,10 +55,10 @@
 </ul>
 <p>I tre ambienti principali con i propri obiettivi sono:</p>
 <ol>
-<li><strong>Sistemi batch</strong> (quindi non sono presenti utenti):
+<li><strong>Sistemi batch</strong> (in cui non sono presenti utenti):
 <ul>
 <li>massimizzare il numero di processi eseguiti per unità di tempo</li>
-<li>minimizzare il tempo fra l’inizio della richiesta e la sua conclusione</li>
+<li>minimizzare il tempo fra l’inizio della richiesta e la sua conclusione (detto tempo di <strong>turnaround</strong>)</li>
 <li>massimizzare l’uso del processore</li>
 </ul>
 </li>
@@ -75,32 +75,41 @@
 </ul>
 </li>
 </ol>
+<p>In generale lo scheduler interviene in caso di:</p>
+<ul>
+<li>creazione di un processo figlio</li>
+<li>alla terminazione di un processo</li>
+<li>quando un processo si blocca</li>
+<li>quando si verifica un’interruzione</li>
+</ul>
 <h2 id="algoritmi-per-sistemi-batch">Algoritmi per sistemi batch</h2>
 <h3 id="first-come-first-served">First-come-first-served</h3>
 <p>FCFS è un algoritmo che implementa una semplice coda FIFO (First In First Out), quindi i processi vengono eseguiti in ordine di arrivo. Quando un processo si blocca viene messo alla fine della coda.<br>
 Questo algoritmo <strong>non utilizza pre-rilascio e tutti hanno la stessa priorità</strong>.<br>
 Non è un algoritmo ottimale perché i processi grandi rallentano tutta la coda</p>
 <h3 id="shortest-job-first">Shortest Job First</h3>
-<p>SJF fa una stima di quanto tempo ogni processo impiega per terminare ed manda in esecuzione prima i processi che hanno un tempo minore.<br>
+<p>SJF fa una stima di quanto tempo ogni processo impiega per terminare ed manda in esecuzione prima i processi che hanno un tempo di esecuzione stimato minore.<br>
 Ha un tempo di attesa medio migliore rispetto al FCFS<br>
 Anche questo algoritmo <strong>non utilizza pre-rilascio</strong><br>
 Non ottimale in quanto è difficile stimare i tempi di esecuzione (soprattutto per i processi che variano i tempi in base ad input utente) e anche perché normalmente non si hanno tutti i processi subito disponibili ma arrivano man mano, quindi combinarli in maniera ottimale non è sempre possibile.<br>
 È possibile anche che i processi lunghi difficilmente vengano eseguiti</p>
 <h3 id="shortest-remaining-time-first">Shortest Remaining Time First</h3>
-<p>SRTF è la versione <strong>con pre-rilascio</strong> di SJF, vengo quindi eseguiti processi il cui tempo rimanente è minore. Se mentre è in esecuzione un processo ne arriva un altro che ha un tempo di esecuzione minore di quello che rimane all’attuale processo allora quest’ultimo viene interrotto e viene eseguito il nuovo processo.<br>
+<p>SRTF è la versione <strong>con pre-rilascio</strong> di SJF, vengono quindi eseguiti processi il cui tempo rimanente è minore. Se durante l’esecuzione un processo ne arriva un altro che ha un tempo di esecuzione minore del tempo rimanente dell’attuale processo allora quest’ultimo viene interrotto e viene eseguito il nuovo processo.<br>
 Ha un tempo di attesa medio migliore rispetto al SJF<br>
 I problemi di questo algoritmo sono che i processi che sono quasi finiti vengono interrotti (magari era più conveniente far finire quel processo prima di fare context switch, che crea overhead)<br>
-in più è ancora più probabile che i processi lunghi non vengano eseguiti. Inoltre c’è lo stesso problema della stima dei tempi del SJF</p>
+Inoltre è ancora più probabile che i processi lunghi non vengano eseguiti.<br>
+Anche in questo caso c’è lo stesso problema della stima dei tempi del SJF</p>
 <h2 id="algoritmi-per-sistemi-interativi">Algoritmi per sistemi interativi</h2>
 <h3 id="round-robin">Round Robin</h3>
 <p>Questo algoritmo utilizza una coda FIFO proprio come FCFS ma in questo caso i processi hanno un tempo di CPU prefissato, se il tempo non è sufficiente per completare il processo allora il processo viene messo alla fine della coda.<br>
+Se il processo termina prima che finisca il suo tempo allora si passa immediatamente al processo successivo.<br>
 Utilizza il <strong>pre-rilascio</strong>, tutti i processi hanno stessa priorità, è un buon algoritmo in quanto tutti i processi vengo eseguiti man mano equamente.<br>
 Il problema in questo caso è quanto tempo di CPU impostare?<br>
 troppo breve risulterebbe in tanti cambi di contesto (tanto overhead) ma troppo lungo potrebbe rallentare i tempi di risposta per richieste semplici, in quanto devono aspettare che quelli davanti finiscano il loro <em>slice</em> di tempo, bisogna trovare un compromesso nel mezzo.</p>
 <h3 id="scheduling-a-priorità">Scheduling a priorità</h3>
 <p>Introduciamo le <strong>classi di priorità</strong> cioè dei livelli di priorità in cui chi ha la priorità più alta viene eseguito per primo. Nello scheduling a priorità prima bisogna definire quante classi di priorità abbiamo e all’interno di ogni classe viene utilizzato il Round Robin per schedulare i singoli processi appartenenti a quella classe.</p>
 <p>Le priorità possono essere statiche oppure dinamiche, nella maggior parte dei casi avere delle priorità dinamiche è la scelta migliore perché:</p>
-<p>consideriamo la seguente immagine e utilizziamo una priorità statica:</p>
+<p>consideriamo la seguente immagine e utilizziamo una priorità statica</p>
 <p><img src="https://i.ibb.co/8PcSvRm/priorit.png" alt="enter image description here"></p>
 <p>finche ci sono processi di priorità 4 vengono eseguiti quelli, quando non abbiamo processi di priorità 4 passiamo a quelli con priorità 3 e così via. Possiamo notare che se arrivano continuamente processi con priorità alta quelli con priorità bassa non vengono mai eseguiti.<br>
 La soluzione a questo è quella di cambiare la priorità dei processi dinamicamente.</p>
@@ -115,15 +124,15 @@ Quando la sua priorità è in linea con le priorità dei processi nella coda “
 <p>la priorità dinamica calcolata come <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mtext>tempo&nbsp;di&nbsp;attesa&nbsp;+&nbsp;tempo&nbsp;di&nbsp;esecuzione</mtext><mtext>tempo&nbsp;di&nbsp;esecuzione</mtext></mfrac></mrow><annotation encoding="application/x-tex">\frac{\text{tempo di attesa + tempo di esecuzione}}{\text{tempo di esecuzione}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.41332em; vertical-align: -0.481108em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.932216em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">tempo&nbsp;di&nbsp;esecuzione</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.44611em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">tempo&nbsp;di&nbsp;attesa&nbsp;+&nbsp;tempo&nbsp;di&nbsp;esecuzione</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.481108em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
 <p>Quindi la priorità è sia in base a quanto è il suo tempo di esecuzione  ma anche da quanto tempo il processo sta aspettando di essere eseguito</p>
 <h3 id="code-multilivello-con-feedback">code multilivello con feedback</h3>
-<p>In questo caso abbiamo un tot di code FIFO, ogni coda rappresenta una classe di priorità.</p>
+<p>In questo caso abbiamo un certo numero di code FIFO, ogni coda rappresenta una classe di priorità.</p>
 <p>Tutti i nuovi processi vanno inizialmente nella coda con priorità più alta e vengono eseguiti uno ad uno per un tempo prefissato di CPU.<br>
-Quando il tempo termina se il processo è terminato è ok e si va semplicemente al prossimo, mentre se non è terminato va alla coda successiva che ha una priorità minore.<br>
+Quando il tempo termina se il processo è terminato si va semplicemente al prossimo, mentre se non è terminato va messo nella coda successiva che ha una priorità minore.<br>
 Questo comportamento continua fino all’ultima coda dove viene applicato Round Robin.</p>
 <p>I processi lunghi quindi scendono con la priorità man mano.<br>
 Infatti l’algoritmo predilige i processi corti e solo una volta terminati quelli di priorità maggiore si occupa di quelli di priorità minore</p>
 <p><img src="https://i.ibb.co/X2N3dGp/multilive-feedback.png" alt="enter image description here"></p>
 <h3 id="fair-share">Fair share</h3>
-<p>Questo algoritmo tiene in considerazione dei gruppi utente e i relativi utenti che lanciano i processi, ci sono ovviamente grouppi più importanti di altri</p>
+<p>Questo algoritmo tiene in considerazione dei gruppi utente e i relativi utenti che lanciano i processi, ci sono ovviamente gruppi più importanti di altri</p>
 <p>ogni gruppo riceve una frazione del tempo di CPU che verrà distribuita tra i processi. Se la CPU assegna il 50% della CPU ad un gruppo esso avrà a disposizione il 50% indipendentemente da quanti processi possiede</p>
 <h2 id="scheduling-per-sistemi-real-time">Scheduling per sistemi real time</h2>
 <p>Nei sistemi real time il tempo è il fattore principale, in altre parole ci sono delle scadenze da rispettare per i processi.</p>
@@ -132,7 +141,7 @@ Infatti l’algoritmo predilige i processi corti e solo una volta terminati quel
 <li>hard real time<br>
 il processo deve essere eseguito entro la scadenza, altrimenti il risultato non è valido è va scartato o peggio potrebbe creare dei problemi</li>
 <li>soft real time<br>
-c’è una tolleranza per la scadenza e quindi è possibile anche non rispettare la scadenza</li>
+c’è una tolleranza per la scadenza e quindi è possibile anche non rispettare la scadenza entro certi limiti</li>
 </ul>
 <p>possiamo trovare una ulteriore divisione in:</p>
 <ul>
@@ -178,13 +187,13 @@ I processi di questi 4 eventi si possono schedulare solo se la sommatoria di <sp
 <p>oppure l’algoritmo <strong>Minimim Laxity First</strong> (MLF):</p>
 <ul>
 <li>simile a EDF ma basato sulla lassità</li>
-<li>la lassità è il tempo che avanzerebbe prima della scadenza se il processo venisse eseguito in questo momento</li>
+<li>la lassità è il tempo che avanzerebbe dalla terminazione del processo fino alla sua scadenza</li>
 </ul>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>lassit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover></mrow><mo>=</mo><mtext>Scadenza</mtext><mo>−</mo><mo stretchy="false">(</mo><mtext>tempo&nbsp;corrente</mtext><mo>+</mo><mtext>tempo&nbsp;di&nbsp;esecuzione</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\text{lassità} = \text{Scadenza} - (\text{tempo corrente} + \text{tempo di esecuzione})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">lassit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.77777em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">Scadenza</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">tempo&nbsp;corrente</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">tempo&nbsp;di&nbsp;esecuzione</span></span><span class="mclose">)</span></span></span></span></span></span></p>
 <p><img src="https://i.ibb.co/K5bjKqv/lassit.png" alt="enter image description here"></p>
 <h2 id="scheduling-nei-thread">Scheduling nei thread</h2>
 <p>È molto frequente che i processi abbiano più thread, il processo padre sa quali thread sono più importanti e quali meno.</p>
-<p>Per fare in modo che i processi possano cambiare il comportamento dello scheduler è necessario parametrizzare l’algoritmo di scheduling, e i parametri vengono fornite dai processi utente che sa quali thread è più importante eseguire.</p>
+<p>Per fare in modo che i processi possano cambiare il comportamento dello scheduler è necessario parametrizzare l’algoritmo di scheduling, i parametri vengono forniti dai processi utente che sanno quali thread sono più importanti eseguire.</p>
 <p>È importante quindi separare il <strong>meccanismo di scheduling</strong>, che sta nel kernel e decide <strong>come</strong> schedulare, dalla <strong>politica di scheduling</strong> che è stabilita dai processi utenti i quali decidono <strong>cosa</strong> schedulare.</p>
 <p>Per lo scheduling con <strong>thread a livello utente</strong><br>
 <img src="https://i.ibb.co/JpNqwD4/scheduling-tlu.png" alt="enter image description here"></p>

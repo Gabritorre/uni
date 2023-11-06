@@ -89,20 +89,18 @@ il job che richiede tempo X dovrebbe posizionarsi seguendo l'ordine crescente, s
 Determinare per ognuno dei seguenti algoritmi di scheduling il tempo medio di turnaround, senza considerare l’overhead dovuto al cambio di processo.
 - a. Round-robin
 scelgo un quanto di tempo di 2 minuti
-$\text{1°ciclo di esecuzione} : 2 + 2 + 2 + 2 +2 = 10$
-$\text{2°ciclo di esecuzione} : 2 + 2 + 2 +2 = 8$
-$\text{3°ciclo di esecuzione} : 2 + 2 +2 = 6$
-$\text{4°ciclo di esecuzione} : 2 + 2 = 4$
-$\text{5°ciclo di esecuzione} : 2 = 2$
-	$T_{\text{medio}} =\frac{10 + (10 + 8) + (10 + 8 + 6) + (10 + 8 + 6 + 4) + (10 + 8 +6 + 4 + 2)}{5} =22 \text{ minuti}$
-	
-	oppure
-	
-	scelgo un quanto di tempo di 4 minuti
-$\text{1°ciclo di esecuzione} : 4 + 4 + 4 + 4 + 4 = 20$
-$\text{2°ciclo di esecuzione} : 4 + 4 + 4 = 12$
-$\text{3°ciclo di esecuzione} : 4 = 4$
-	$T_{\text{medio}} =\frac{20 + (20 + 12) + (20 + 12 + 4)}{5} =17.6 \text{ minuti}$
+$\text{1°ciclo di esecuzione} : 2_A + 2_B + 2_C + 2_D + 2_E = 10_{TOT}$
+$\hspace{5mm}$il processo C ha concluso dopo $6$ minuti
+$\text{2°ciclo di esecuzione} : 10 + (2_A + 2_B + 2_D + 2_E) = 18_{TOT}$
+$\hspace{5mm}$il processo D ha concluso dopo $16$ minuti
+$\text{3°ciclo di esecuzione} : 18 + (2_A + 2_B + 2_E) = 24_{TOT}$
+$\hspace{5mm}$il processo B ha concluso dopo $22$ minuti
+$\text{4°ciclo di esecuzione} : 24 + (2_A + 2_E) = 28_{TOT}$
+$\hspace{5mm}$il processo E ha concluso dopo $28$ minuti
+$\text{5°ciclo di esecuzione} : 28 + (2_A) = 30_{TOT}$
+$\hspace{5mm}$il processo A ha concluso dopo $30$ minuti
+
+	$T_{\text{medio}} =\frac{6 + 16 + 22+ 28 + 30}{5} =20.4 \text{ minuti}$
 	
 - b. Scheduling a priorità (senza prelazione)
 	$T_{\text{medio}} =\frac{6 + (6+8) + (6 + 8 + 10) + (6 + 8 + 10 + 2) + (6 + 8 + 10 + 2 + 4)}{5} =20 \text{ minuti}$

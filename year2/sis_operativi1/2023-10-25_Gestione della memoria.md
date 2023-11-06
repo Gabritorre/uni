@@ -22,7 +22,7 @@ Generalmente ad ogni processo viene assegnata una porzione della memoria, questa
  
  1. quanta memoria assegnare ad un processo
  2. dove posizionare in memoria un processo
- 3. quale processo mandare in memoria (su richiesto o tramite previsione)
+ 3. quale processo mandare in memoria (su richiesta o tramite previsione)
  4. decidere quale processo sostituire quando la memoria si sta saturando
  5. gestire gli scambi di memoria tra i vari livelli
 
@@ -38,15 +38,15 @@ Abbiamo principalmente due modi di organizzare la memoria dei processi:
 
 - **allocazione contigua**
 	un programma viene memorizzato come un blocco unico di indirizzi contigui in memoria.
-	Basso overhead ma può essere che non sia possibili trovare un blocco abbastanza grande
+	Basso overhead ma può essere possibile non trovare un blocco abbastanza grande
 	
 	ad esempio una allocazione contigua con un solo utente:
 	![enter image description here](https://i.ibb.co/TTftdVr/contigua.png)
 - **allocazione non contigua**
 	in programma viene diviso in blocco chiamati **segmenti**.
-	ogni segmento può essere in parti diverse della memoria, questo permette di avere più processi in memoria contemporaneamente, ma ha anche un overhead maggiore.
+	ogni segmento può essere posizionato in parti diverse della memoria, questo permette di avere più processi in memoria contemporaneamente, ma ha anche un overhead maggiore.
 	
-	**overlay** è una tecnica di allocazione non contigua in cui un **programma** grande viene **suddiviso in segmenti logici indipendenti** che vengono caricate in memoria man mano che il programma è in esecuzione (non tutte insieme), in modo che i vari segmenti si sovrappongano in memoria (overlay).
+	**overlay** è una tecnica di allocazione non contigua in cui un **programma** grande viene **suddiviso in segmenti logici indipendenti** che vengono caricati in memoria man mano che il programma è in esecuzione, in modo che i vari segmenti si sovrappongano in memoria (overlay).
 
 	![enter image description here](https://i.ibb.co/T8J4sFL/overlay.png)
 
@@ -60,7 +60,7 @@ Viene utilizzato un **registro limite** che contiene l'indirizzo da dove cominci
 
 ## Multiprogrammazione a partizioni fisse
 
-Quando abbiamo un singolo processo in memoria (come nei sistemi batch) nel caso in cui il processo faccio delle richieste di I/O la CPU rimarrebbe libera in attesa che il processo completi la richiesta. Con la multiprogrammazione vogliamo evitare questo tempo morto di CPU, infatti avendo più processi in memoria ,quando un processo fa richieste di I/O ne mandiamo in esecuzione un altro mentre l'altro attende di soddisfare la richiesta.
+Quando abbiamo un singolo processo in memoria (come nei sistemi batch) nel caso in cui il processo faccia delle richieste di I/O, la CPU rimarrebbe libera in attesa che il processo completi la richiesta. Con la multiprogrammazione vogliamo evitare questo tempo morto di CPU, infatti avendo più processi in memoria, quando un processo fa richieste di I/O ne mandiamo in esecuzione un altro mentre l'altro attende di soddisfare la richiesta.
 
 nel seguente grafico vediamo il rapporto tra l'utilizzo della CPU in funzione del grado di quanti processi posso tenere in memoria contemporaneamente
 
@@ -86,20 +86,20 @@ La memoria viene divisa in questi blocchi (o partizioni) di dimensioni anche div
 
 ![enter image description here](https://i.ibb.co/zNXpVdd/partizioni-fisse.png)
 
-Il problema è che si possono verificare casi in cui un blocco piccolo (*partition 1*) abbiano una coda lunga e un blocco grande (*partition 3*) sia libero, Abbiamo quindi un grande spreco di memoria.
+Il problema è che si possono verificare casi in cui un blocco piccolo (come *partition 1*) abbiano una coda lunga e un blocco grande (come *partition 3*) sia libero, Abbiamo quindi un grande spreco di memoria.
 
 Una soluzione potrebbe essere quella di avere una singola coda, e appena un blocco si libera si assegna un processo a quel blocco, andando così ad utilizzare tutti i blocchi.
 
 ![enter image description here](https://i.ibb.co/dcxYMwd/single-queue.png)
 
-Gli svantaggi di questo sistema che l'anno portato ad non essere più utilizzato sono:
+Gli svantaggi di questo sistema che l'hanno portato ad non essere più utilizzato sono:
 
 1. non è detto che un processo occupi tutta la partizione, creando così degli spazi di memoria non utilizzabili (frammentazione interna)
 2. la possibilità che non ci sia una partizione abbastanza grande per un processo
 
 ## Funzionamento multiprogrammazione a partizioni variabili
 
-In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle **partizioni variabili** perché la loro dimensione varia in base al processo.
+In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle **partizioni variabili** in cui la dimensione varia in base al processo.
 
 Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della **frammentazione della memoria**.
 
@@ -111,7 +111,7 @@ Per risolvere questo problema di frammentazione abbiamo due tecniche:
 - **coalescenza**: combinare due blocchi liberi adiacenti formando un unico blocco
 	![enter image description here](https://i.ibb.co/Rj7gg5P/coalescenza.png)
 
-- **compattazione**: riorganizza i blocchi in modo da avere quelli occupati tutti contigui e formando un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo
+- **compattazione**: riorganizzare i blocchi in modo da avere quelli occupati tutti contigui, formando così un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo.
 ![enter image description here](https://i.ibb.co/njVQkB8/compattamento.png)
 
 ### Strategie di posizionamento dei processi
@@ -162,7 +162,7 @@ La memoria viene divisa in **unità** (tendenzialmente molto piccole, da Byte a 
 La mappa di bit ovviamente risiede in memoria principale
 
 la scelta di quanto grandi fare le unità è abbastanza complessa da decidere: unità molto piccole comportano avere una mappa di bit molto grande, che porta via spazio a processi utili.
-una scelta di unità grande rende si la mappa più piccola ma la probabilità che la memoria dei processi sia un multiplo dell'unità si abbassa impedendo di mappare l'ultimo pezzo di memoria.
+una scelta di unità grande rende sì la mappa più piccola, ma la probabilità che la memoria dei processi sia un multiplo dell'unità si abbassa impedendo di mappare correttamente l'ultimo pezzo di memoria del processo, dovendo per forza comprenderne di più.
 
 Il problema della mappa di bit sta nel fatto che per trovare lo spazio necessario per allocare un processo di $k$ unità bisogna scorrere la mappa alla ricerca di $k$ zeri consecutivi
 
@@ -172,8 +172,8 @@ In questa implementazione abbiamo una lista concatenata in cui ogni ogni element
 
 Il nodo di una lista è fatta da:
 
-- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)
-- l'indirizzo di dove inizia l'intevallo
+- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo \(P\)
+- l'indirizzo di dove inizia l'intervallo
 - la lunghezza dell'intervallo
 - il puntatore al nodo successivo della lista 
 - il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)

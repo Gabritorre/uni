@@ -60,7 +60,7 @@
 <ol>
 <li>quanta memoria assegnare ad un processo</li>
 <li>dove posizionare in memoria un processo</li>
-<li>quale processo mandare in memoria (su richiesto o tramite previsione)</li>
+<li>quale processo mandare in memoria (su richiesta o tramite previsione)</li>
 <li>decidere quale processo sostituire quando la memoria si sta saturando</li>
 <li>gestire gli scambi di memoria tra i vari livelli</li>
 </ol>
@@ -73,15 +73,15 @@ Nella <strong>memoria cache</strong> teniamo <strong>i dati utilizzati nell’im
 <li>
 <p><strong>allocazione contigua</strong><br>
 un programma viene memorizzato come un blocco unico di indirizzi contigui in memoria.<br>
-Basso overhead ma può essere che non sia possibili trovare un blocco abbastanza grande</p>
+Basso overhead ma può essere possibile non trovare un blocco abbastanza grande</p>
 <p>ad esempio una allocazione contigua con un solo utente:<br>
 <img src="https://i.ibb.co/TTftdVr/contigua.png" alt="enter image description here"></p>
 </li>
 <li>
 <p><strong>allocazione non contigua</strong><br>
 in programma viene diviso in blocco chiamati <strong>segmenti</strong>.<br>
-ogni segmento può essere in parti diverse della memoria, questo permette di avere più processi in memoria contemporaneamente, ma ha anche un overhead maggiore.</p>
-<p><strong>overlay</strong> è una tecnica di allocazione non contigua in cui un <strong>programma</strong> grande viene <strong>suddiviso in segmenti logici indipendenti</strong> che vengono caricate in memoria man mano che il programma è in esecuzione (non tutte insieme), in modo che i vari segmenti si sovrappongano in memoria (overlay).</p>
+ogni segmento può essere posizionato in parti diverse della memoria, questo permette di avere più processi in memoria contemporaneamente, ma ha anche un overhead maggiore.</p>
+<p><strong>overlay</strong> è una tecnica di allocazione non contigua in cui un <strong>programma</strong> grande viene <strong>suddiviso in segmenti logici indipendenti</strong> che vengono caricati in memoria man mano che il programma è in esecuzione, in modo che i vari segmenti si sovrappongano in memoria (overlay).</p>
 <p><img src="https://i.ibb.co/T8J4sFL/overlay.png" alt="enter image description here"></p>
 </li>
 </ul>
@@ -90,7 +90,7 @@ ogni segmento può essere in parti diverse della memoria, questo permette di ave
 Viene utilizzato un <strong>registro limite</strong> che contiene l’indirizzo da dove comincia la parte di memoria per l’utente e ogni tentativo di accesso oltre quel limite è negato.<br>
 È comunque possibile interagire con il sistema operativo tramite le apposite chiamate di sistema.</p>
 <h2 id="multiprogrammazione-a-partizioni-fisse">Multiprogrammazione a partizioni fisse</h2>
-<p>Quando abbiamo un singolo processo in memoria (come nei sistemi batch) nel caso in cui il processo faccio delle richieste di I/O la CPU rimarrebbe libera in attesa che il processo completi la richiesta. Con la multiprogrammazione vogliamo evitare questo tempo morto di CPU, infatti avendo più processi in memoria ,quando un processo fa richieste di I/O ne mandiamo in esecuzione un altro mentre l’altro attende di soddisfare la richiesta.</p>
+<p>Quando abbiamo un singolo processo in memoria (come nei sistemi batch) nel caso in cui il processo faccia delle richieste di I/O, la CPU rimarrebbe libera in attesa che il processo completi la richiesta. Con la multiprogrammazione vogliamo evitare questo tempo morto di CPU, infatti avendo più processi in memoria, quando un processo fa richieste di I/O ne mandiamo in esecuzione un altro mentre l’altro attende di soddisfare la richiesta.</p>
 <p>nel seguente grafico vediamo il rapporto tra l’utilizzo della CPU in funzione del grado di quanti processi posso tenere in memoria contemporaneamente</p>
 <p><img src="https://i.ibb.co/qJy0jMS/mutiprog.png" alt="enter image description here"></p>
 <p>Notiamo come quando ho tanta attesa di I/O (ad esempio 80%) è conveniente avere in memoria tanti processi pronti per essere eseguiti per mantenere sempre impegnata la CPU.<br>
@@ -104,16 +104,16 @@ Quando invece ho programmi con poca attesa di I/O (ad esempio 20%) già avere du
 <p>Ad ogni processo attivo viene assegnato un blocco di memoria di dimensione fissa. Abbiamo quindi bisogno di più registri per sapere dove inizia e finisce ogni blocco, <strong>registro base e registri limite</strong>. Questo per evitare conflitti tra sistema operativo e processi e anche tra i processi stessi.</p>
 <p>La memoria viene divisa in questi blocchi (o partizioni) di dimensioni anche diverse e <strong>ogni processo sarà assegnato al più piccolo blocco che lo contiene</strong>. Ovviamente avendo più processi abbiamo bisogno di una coda di attesa per attendere che il blocco si liberi prima di far entrare un nuovo processo.</p>
 <p><img src="https://i.ibb.co/zNXpVdd/partizioni-fisse.png" alt="enter image description here"></p>
-<p>Il problema è che si possono verificare casi in cui un blocco piccolo (<em>partition 1</em>) abbiano una coda lunga e un blocco grande (<em>partition 3</em>) sia libero, Abbiamo quindi un grande spreco di memoria.</p>
+<p>Il problema è che si possono verificare casi in cui un blocco piccolo (come <em>partition 1</em>) abbiano una coda lunga e un blocco grande (come <em>partition 3</em>) sia libero, Abbiamo quindi un grande spreco di memoria.</p>
 <p>Una soluzione potrebbe essere quella di avere una singola coda, e appena un blocco si libera si assegna un processo a quel blocco, andando così ad utilizzare tutti i blocchi.</p>
 <p><img src="https://i.ibb.co/dcxYMwd/single-queue.png" alt="enter image description here"></p>
-<p>Gli svantaggi di questo sistema che l’anno portato ad non essere più utilizzato sono:</p>
+<p>Gli svantaggi di questo sistema che l’hanno portato ad non essere più utilizzato sono:</p>
 <ol>
 <li>non è detto che un processo occupi tutta la partizione, creando così degli spazi di memoria non utilizzabili (frammentazione interna)</li>
 <li>la possibilità che non ci sia una partizione abbastanza grande per un processo</li>
 </ol>
 <h2 id="funzionamento-multiprogrammazione-a-partizioni-variabili">Funzionamento multiprogrammazione a partizioni variabili</h2>
-<p>In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle <strong>partizioni variabili</strong> perché la loro dimensione varia in base al processo.</p>
+<p>In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle <strong>partizioni variabili</strong> in cui la dimensione varia in base al processo.</p>
 <p>Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della <strong>frammentazione della memoria</strong>.</p>
 <p><img src="https://i.ibb.co/MMHF69F/frammentazione.png" alt="enter image description here"></p>
 <p>Per risolvere questo problema di frammentazione abbiamo due tecniche:</p>
@@ -123,7 +123,7 @@ Quando invece ho programmi con poca attesa di I/O (ad esempio 20%) già avere du
 <img src="https://i.ibb.co/Rj7gg5P/coalescenza.png" alt="enter image description here"></p>
 </li>
 <li>
-<p><strong>compattazione</strong>: riorganizza i blocchi in modo da avere quelli occupati tutti contigui e formando un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo<br>
+<p><strong>compattazione</strong>: riorganizzare i blocchi in modo da avere quelli occupati tutti contigui, formando così un unico grande blocco di memoria libera. Questa operazione comporta un overhead molto significativo.<br>
 <img src="https://i.ibb.co/njVQkB8/compattamento.png" alt="enter image description here"></p>
 </li>
 </ul>
@@ -164,14 +164,14 @@ In queste situazioni possiamo utilizzare una speciale area della memoria seconda
 <p>La memoria viene divisa in <strong>unità</strong> (tendenzialmente molto piccole, da Byte a qualche KB), ciascuna unità viene associata ad un bit che se è 1 significa che l’unità è occupata, se invece è 0 allora l’unità è libera, formando così una mappa di bit.</p>
 <p>La mappa di bit ovviamente risiede in memoria principale</p>
 <p>la scelta di quanto grandi fare le unità è abbastanza complessa da decidere: unità molto piccole comportano avere una mappa di bit molto grande, che porta via spazio a processi utili.<br>
-una scelta di unità grande rende si la mappa più piccola ma la probabilità che la memoria dei processi sia un multiplo dell’unità si abbassa impedendo di mappare l’ultimo pezzo di memoria.</p>
+una scelta di unità grande rende sì la mappa più piccola, ma la probabilità che la memoria dei processi sia un multiplo dell’unità si abbassa impedendo di mappare correttamente l’ultimo pezzo di memoria del processo, dovendo per forza comprenderne di più.</p>
 <p>Il problema della mappa di bit sta nel fatto che per trovare lo spazio necessario per allocare un processo di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> unità bisogna scorrere la mappa alla ricerca di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi></mrow><annotation encoding="application/x-tex">k</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span></span></span></span></span> zeri consecutivi</p>
 <h3 id="liste-concatenate">Liste concatenate</h3>
 <p>In questa implementazione abbiamo una lista concatenata in cui ogni ogni elemento della lista rappresenta degli intervalli in cui la memoria è libera oppure occupata.</p>
 <p>Il nodo di una lista è fatta da:</p>
 <ul>
-<li>un booleano che indica se è un pezzo libero (H) oppure occupato da un processo §</li>
-<li>l’indirizzo di dove inizia l’intevallo</li>
+<li>un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)</li>
+<li>l’indirizzo di dove inizia l’intervallo</li>
 <li>la lunghezza dell’intervallo</li>
 <li>il puntatore al nodo successivo della lista</li>
 <li>il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)</li>

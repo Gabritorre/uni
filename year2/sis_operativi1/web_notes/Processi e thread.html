@@ -67,7 +67,7 @@
 <li>quelli in <em>foreground</em> sono spesso processi che interagiscono con l’utente e soddisfano richieste</li>
 <li>quelli in <em>background</em> sono spesso dei processi del sistema operativo che non interagiscono attivamente con l’utente ma svolgo comunque compiti importanti per far funzionare il sistema come si deve. La maggior parte di questi processi sono in continua attesa che un determinato evento accada, questi processi sono chiamati <strong>deamon</strong></li>
 </ul>
-<p>In Unix si usa la chiamata a sistema <strong>fork</strong> per creare un clone figlio che è la copia del processo chiamante e quindi il contenuto dello spazio di indirizzamento del padre viene <strong>copiato</strong> in un nuovo spazio di indirizzamento che viene assegnato al figlio. poi è pratica comune eseguire il comando <em>execve</em> sul processo figlio per farli eseguire un programma specifico.</p>
+<p>In Unix si usa la chiamata a sistema <strong>fork</strong> per creare un clone figlio che è la copia del processo chiamante e quindi il contenuto dello spazio di indirizzamento del padre viene <strong>copiato</strong> in un nuovo spazio di indirizzamento che viene assegnato al figlio. poi è pratica comune eseguire il comando <em>execve</em> sul processo figlio per fargli eseguire un programma specifico.</p>
 <p>Il corrispettivo Windows è <strong>CreateProcess</strong> che crea il processo e carica direttamente il nuovo programma al processo, in questo caso lo spazio di indirizzamento del figlio è diverso fin da subito (non c’è nessuna copia come in Unix)</p>
 <p>In entrambi i casi dopo la creazione del processo e il caricamento del programma il processo padre e figlio hanno <strong>spazi di memoria distinti</strong> anche se in alcuni casi è possibile che padre e figlio condividano delle risorse.</p>
 <h3 id="terminazione-di-un-processo">Terminazione di un processo</h3>
@@ -76,15 +76,15 @@
 <li>uscita normale (volontaria)</li>
 <li>uscita con errore (volontaria)</li>
 <li>terminato per errore fatale (involontario)</li>
-<li>terminazione forzata da un altro processo (killed, involontario)</li>
+<li>terminazione forzata da un altro processo (<em>killed</em>, involontario)</li>
 </ol>
-<p>Quando un processo padre viene terminato involontariamente il sistema operativo può decidere se terminare anche i figli oppure lasciarli continuare.</p>
+<p>Quando un processo padre viene terminato involontariamente, il sistema operativo può decidere se terminare anche i figli oppure lasciarli continuare.</p>
 <p>In Unix esiste una gerarchia tra i processi dove il processo <em>init</em> è la radice, mentre in windows tutti i processi sono uguali. Su windows però il padre di un processo possiede un <em>handle</em> per gestire il figlio, questo <em>handle</em> è possibile passarlo ad altri processi.</p>
 <h3 id="ciclo-di-vita-di-un-processo">Ciclo di vita di un processo</h3>
 <p>Un processo possiede un ciclo di vita, cioè dal momento che viene creato al momento in cui viene distrutto può assumere diversi <strong>stati</strong>:</p>
 <ul>
 <li><strong>Running</strong> (esecuzione): il processo è in esecuzione sulla CPU.</li>
-<li><strong>Ready</strong> (pronto): il processo è pronto per essere eseguito ma attende che la CPU lo metta in esecuzione</li>
+<li><strong>Ready</strong> (pronto): il processo è pronto per essere eseguito ma attende che il sistema operativo lo metta in esecuzione</li>
 <li><strong>Blocked</strong> (bloccato): il processo è in attesa che si verifichi un evento prima di poter continuare la sua esecuzione</li>
 </ul>
 <p>Il sistema operativo possiede una lista dei processi <strong>ready</strong> e <strong>blocked</strong></p>
@@ -92,29 +92,29 @@
 <p><img src="https://i.ibb.co/sQ797KJ/life-cycle.png" alt="enter image description here"></p>
 <ol>
 <li>Il processo si blocca in attesa di un evento</li>
-<li>lo scheduler dei processo seleziona un altro processo da eseguire e l’attuale processo viene messo in <em>ready</em></li>
+<li>lo scheduler dei processi seleziona un altro processo da eseguire e l’attuale processo viene messo in <em>ready</em></li>
 <li>Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata <strong>dispatching</strong>)</li>
 <li>l’evento si è verificato e il processo è pronto a continuare la sua esecuzione</li>
 </ol>
 <p>ovviamente sono presente due ulteriori stati che rappresentano la <strong>fase di creazione</strong> del processo, che poi si sposterà nello stato pronto. <strong>Lo stato terminazione</strong> quando il processo ha finito le sue operazioni.</p>
 <h3 id="pcb">PCB</h3>
-<p>Il sistema operativo possiede una tabella chiamate <strong>process table</strong> che contiene i <strong>PCB</strong> (Process Control Block) di ogni processo in vita al momento, anche chiamato <strong>descrittore del processo</strong>.</p>
-<p>Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processa da <em>ready</em> a <em>running</em> e vice versa</p>
+<p>Il sistema operativo possiede una tabella chiamata <strong>process table</strong> che contiene i <strong>PCB</strong> (Process Control Block) di ogni processo in vita al momento, viene anche chiamato <strong>descrittore del processo</strong>.</p>
+<p>Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processo da <em>ready</em> a <em>running</em> e vice versa</p>
 <p><img src="https://i.ibb.co/CVKTckK/tabella-processi.png" alt="enter image description here"></p>
 <h3 id="sospensione-di-un-processo">Sospensione di un processo</h3>
-<p>Un processo può essere mandato in uno stato di <strong>sospensione</strong> che non corrisponde a nessuno dei 3 stati precedenti. Quando è sospeso il processo messo da parte momentaneamente, questo può essere utile per rilevare problemi di sicurezza oppure in fase di debugging.</p>
-<p>La sospensione può essere richiesta dal processo stesso oppure da un altro processo, deve però essere un altro processo a farlo ripartire</p>
+<p>Un processo può essere mandato in uno stato di <strong>sospensione</strong> che non corrisponde a nessuno dei 3 stati precedenti. Quando è sospeso, il processo viene messo da parte momentaneamente, questo può essere utile per rilevare eventuali problemi di sicurezza oppure in fase di debugging.</p>
+<p>La sospensione può essere richiesta dal processo stesso oppure da un altro processo, in ogni caso deve essere un altro processo a farlo ripartire</p>
 <p><img src="https://i.ibb.co/XzK5K9C/sospensione.png" alt="enter image description here"></p>
 <h3 id="context-switch">Context switch</h3>
-<p>il context switch è un’operazione che fa lo scheduler che si occupa di scambiare processo in esecuzione.</p>
+<p>il context switch è un’operazione che fa lo scheduler e che consiste nello scegliere il prossimo processo da eseguire.</p>
 <p>Questa operazione è divisa in 2 fasi:</p>
 <ol>
-<li>la prima è di salvare lo stato dell’attuale processo in esecuzione, in modo da saper dove riprendere la sua esecuzione in futuro</li>
+<li>la prima è di salvare lo stato dell’attuale processo in esecuzione, in modo da sapere da che punto riprendere la sua esecuzione in futuro</li>
 <li>la seconda è caricare le informazioni del nuovo processo da eseguire</li>
 </ol>
-<p>durante questa operazione la CPU non fa nulla quindi bisogna minimizzare il tempo necessario per effettuare lo scambio.</p>
+<p>durante questa operazione la CPU rimane libera, quindi bisogna minimizzare il tempo necessario per effettuare lo scambio per evitare di perdere troppo tempo.</p>
 <h3 id="interrupts">Interrupts</h3>
-<p>Gli <strong>interrupts</strong> sono dei segnali che abilitano il software a rispondere a degli avvisi hardware. Gli interrupt vengono chiamati trap e possono essere sincroni e asincroni:</p>
+<p>Gli <strong>interrupts</strong> sono dei segnali che abilitano il software a rispondere a degli avvisi hardware. Gli interrupt possono essere sincroni e asincroni:</p>
 <ul>
 <li><strong>sincroni</strong> se il segnale è derivato direttamente dalle operazioni del processo</li>
 <li><strong>asincroni</strong> se il segnale non è derivato dalle operazioni fatte dal processo</li>
@@ -122,7 +122,7 @@
 <p>Dopo aver ricevuto un interrupt il processore completa l’istruzione corrente e poi interrompe il processo.</p>
 <p>viene dato il comando al sistema operativo in base al tipo di interrupt viene scelto un <strong>gestore di interrupt</strong> in quale deciderà cosa fare.<br>
 Una volta che il gestore termina viene ripresa l’esecuzione del processo che era stato momentaneamente sospeso (oppure un processo successivo)</p>
-<p>Gli interrups sono solitamente collegati a fattori esterni al processore. Per riferirsi a segnali generati all’interno del processore esistono le <strong>eccezioni</strong></p>
+<p>Gli interrups sono solitamente collegati a fattori esterni al processore. Per riferirsi a segnali generati all’interno del processore si parla di <strong>eccezioni</strong></p>
 <h3 id="interprocess-communication">InterProcess Communication</h3>
 <p>Il sistema operativo offre dei meccanismi di comunicazione tra i processi.</p>
 <p>Abbiamo una comunicazione tramite scambio di messaggi che può essere:</p>
@@ -219,10 +219,10 @@ creazione -&gt; (pronto, esecuzione, bloccato) -&gt; termina</p>
 </ul>
 <h3 id="thread-a-livello-utente">Thread a livello utente</h3>
 <p>In questo caso i thread vengono creati e gestiti nello spazio utente, quindi il kernel non sa della loro esistenza.<br>
-Il kenel è a conoscenza solo dei processi, i quali hanno un singolo thread.</p>
+Il kernel è a conoscenza solo dei processi, che sono visti con un singolo thread.</p>
 <p><img src="https://i.ibb.co/93Xgmj6/user-thread.png" alt="enter image description here"></p>
 <p>Abbiamo una implementazione detta <strong>molti-a-uno</strong> (molti thread ad un unico contesto di esecuzione)</p>
-<p>I thread vengono create da librerie in runtime ed essendo create nello <em>user space</em> <strong>non possono eseguire istruzioni privilegiate</strong>.</p>
+<p>I thread vengono create da librerie in <em>runtime</em> ed essendo create nello <em>user space</em> <strong>non possono eseguire istruzioni privilegiate</strong>.</p>
 <p>Ogni processo possiede una <strong>tabella dei thread</strong> contenente le informazioni di ogni thread (PC, SC, registri, stato)</p>
 <p><img src="https://i.ibb.co/xYgnrBb/user-thread-example.png" alt="enter image description here"></p>
 <p><strong>vantaggi</strong>:</p>
@@ -246,9 +246,11 @@ Il kenel è a conoscenza solo dei processi, i quali hanno un singolo thread.</p>
 <p><strong>vantaggi</strong>:</p>
 <ul>
 <li>se un thread si blocca, il kernel può decidere se eseguire un altro thread dello stesso processo oppure un thread di un altro processo. In questo modo un processo può proseguire anche se uno dei suoi thread è bloccato</li>
-<li>quando un thread viene cancellato, in realtà esso viene solo marcato come non eseguibile ma la sua struttura viene conservata in modo che possa essere assegnata ad un nuovo thread, risparmiando così del tempo<br>
-<strong>svantaggi</strong>:</li>
-<li>il cambio di contesto limita li prestazioni (quindi quanti si creano e distruggono tanti thread c’è molto overhead)</li>
+<li>quando un thread viene cancellato, in realtà esso viene solo marcato come non eseguibile ma la sua struttura viene conservata in modo che possa essere assegnata ad un nuovo thread, risparmiando così del tempo (evitando di crearne uno da capo)</li>
+</ul>
+<p><strong>svantaggi</strong>:</p>
+<ul>
+<li>il cambio di contesto limita li prestazioni (quando si creano e distruggono tanti thread c’è molto overhead)</li>
 <li>non è portabile dato che l’implementazione può variare da kernel in kernel</li>
 </ul>
 <h3 id="thread-ibridi">Thread ibridi</h3>
@@ -261,7 +263,7 @@ Questi worker threads sono dei thread persistenti che non vengono distrutti quan
 <p><img src="https://i.ibb.co/TrC9V40/ibrido-thread-esempio.png" alt="enter image description here"></p>
 <p>L’obiettivo dell’implementazione ibrida è quello di imitare le funzionalità dei thread a livello kernel ma con le prestazioni dei thread a livello utente. Per fare questo bisogna limitare transizioni inutili tra spazio utente e spazio kernel.</p>
 <p>il kernel si occuperà di schedulare i thread a livello kernel mentre viene assegnato ad ogni processo un <strong>processore virtuale</strong> che permette di schedulare i thread a livello utente.</p>
-<p>Quando il kernel sa che un thread è bloccat:</p>
+<p>Quando il kernel sa che un thread è bloccato:</p>
 <ol>
 <li>viene fatta una <strong>upcall</strong> al processore virtuale interessato, cioè una notifica che indica quale thread è bloccato.</li>
 <li>Il processore virtuale si occuperà poi di rischedulare i suoi thread.</li>
@@ -270,8 +272,8 @@ Questi worker threads sono dei thread persistenti che non vengono distrutti quan
 <p>Questa implementazione ibrida funziona anche su CPU multicore.<br>
 Il problema è che c’è un uso intensivo del kernel che chiama procedure nello spazio utente.</p>
 <h3 id="thread-pop-up">Thread pop-up</h3>
-<p>Thread pop-up è una tecnica particolarmente utilizzata nei sistemi distribuiti lato server nel quando quando la macchina riceve un messaggio viene creato un nuovo thread per gestirlo (chiamato thread pop-up).</p>
-<p>Il vantaggio di questo utilizzo è che la latenza tra l’arrivo del messaggio e l’inizio dell’elaborazione è molto bassa</p>
+<p>Thread pop-up è una tecnica particolarmente utilizzata nei sistemi distribuiti lato server in cui: quando la macchina riceve un messaggio, viene creato un nuovo thread per gestirlo (chiamato thread pop-up).</p>
+<p>Il vantaggio di questo utilizzo è che la latenza tra l’arrivo del messaggio e l’inizio dell’elaborazione è molto bassa.</p>
 
     </div>
   </div>

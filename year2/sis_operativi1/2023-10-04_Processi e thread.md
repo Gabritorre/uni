@@ -48,7 +48,7 @@ I processi possono essere in ***foreground*** quindi attivi oppure in ***backgro
 - quelli in *foreground* sono spesso processi che interagiscono con l'utente e soddisfano richieste
 - quelli in *background* sono spesso dei processi del sistema operativo che non interagiscono attivamente con l'utente ma svolgo comunque compiti importanti per far funzionare il sistema come si deve. La maggior parte di questi processi sono in continua attesa che un determinato evento accada, questi processi sono chiamati **deamon**
 
-In Unix si usa la chiamata a sistema **fork** per creare un clone figlio che è la copia del processo chiamante e quindi il contenuto dello spazio di indirizzamento del padre viene **copiato** in un nuovo spazio di indirizzamento che viene assegnato al figlio. poi è pratica comune eseguire il comando *execve* sul processo figlio per farli eseguire un programma specifico. 
+In Unix si usa la chiamata a sistema **fork** per creare un clone figlio che è la copia del processo chiamante e quindi il contenuto dello spazio di indirizzamento del padre viene **copiato** in un nuovo spazio di indirizzamento che viene assegnato al figlio. poi è pratica comune eseguire il comando *execve* sul processo figlio per fargli eseguire un programma specifico. 
 
 Il corrispettivo Windows è **CreateProcess** che crea il processo e carica direttamente il nuovo programma al processo, in questo caso lo spazio di indirizzamento del figlio è diverso fin da subito (non c'è nessuna copia come in Unix)
 
@@ -62,9 +62,9 @@ Un processo può terminare per via delle seguenti ragioni:
 1. uscita normale (volontaria)
 2. uscita con errore (volontaria)
 3. terminato per errore fatale (involontario)
-4. terminazione forzata da un altro processo (killed, involontario)
+4. terminazione forzata da un altro processo (*killed*, involontario)
 
-Quando un processo padre viene terminato involontariamente il sistema operativo può decidere se terminare anche i figli oppure lasciarli continuare.
+Quando un processo padre viene terminato involontariamente, il sistema operativo può decidere se terminare anche i figli oppure lasciarli continuare.
 
 In Unix esiste una gerarchia tra i processi dove il processo *init* è la radice, mentre in windows tutti i processi sono uguali. Su windows però il padre di un processo possiede un *handle* per gestire il figlio, questo *handle* è possibile passarlo ad altri processi.
 
@@ -75,7 +75,7 @@ In Unix esiste una gerarchia tra i processi dove il processo *init* è la radice
 Un processo possiede un ciclo di vita, cioè dal momento che viene creato al momento in cui viene distrutto può assumere diversi **stati**:
 
 - **Running** (esecuzione): il processo è in esecuzione sulla CPU.
-- **Ready** (pronto): il processo è pronto per essere eseguito ma attende che la CPU lo metta in esecuzione
+- **Ready** (pronto): il processo è pronto per essere eseguito ma attende che il sistema operativo lo metta in esecuzione
 - **Blocked** (bloccato): il processo è in attesa che si verifichi un evento prima di poter continuare la sua esecuzione
 
 Il sistema operativo possiede una lista dei processi **ready** e **blocked**
@@ -85,7 +85,7 @@ Possiamo individuare 4 transazioni tra gli stati appena descritti:
 ![enter image description here](https://i.ibb.co/sQ797KJ/life-cycle.png)
 
 1. Il processo si blocca in attesa di un evento
-2. lo scheduler dei processo seleziona un altro processo da eseguire e l'attuale processo viene messo in *ready*
+2. lo scheduler dei processi seleziona un altro processo da eseguire e l'attuale processo viene messo in *ready*
 3. Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata **dispatching**)
 4. l'evento si è verificato e il processo è pronto a continuare la sua esecuzione
 
@@ -93,9 +93,9 @@ ovviamente sono presente due ulteriori stati che rappresentano la **fase di crea
 
 ### PCB
 
-Il sistema operativo possiede una tabella chiamate **process table** che contiene i **PCB** (Process Control Block) di ogni processo in vita al momento, anche chiamato **descrittore del processo**.
+Il sistema operativo possiede una tabella chiamata **process table** che contiene i **PCB** (Process Control Block) di ogni processo in vita al momento, viene anche chiamato **descrittore del processo**.
 
-Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processa da *ready* a *running* e vice versa
+Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processo da *ready* a *running* e vice versa
 
 
 ![enter image description here](https://i.ibb.co/CVKTckK/tabella-processi.png)
@@ -104,9 +104,9 @@ Il PCB contiene le informazioni del processo quali: Program Counter, Stack Point
 
 ### Sospensione di un processo
 
-Un processo può essere mandato in uno stato di **sospensione** che non corrisponde a nessuno dei 3 stati precedenti. Quando è sospeso il processo messo da parte momentaneamente, questo può essere utile per rilevare problemi di sicurezza oppure in fase di debugging.
+Un processo può essere mandato in uno stato di **sospensione** che non corrisponde a nessuno dei 3 stati precedenti. Quando è sospeso, il processo viene messo da parte momentaneamente, questo può essere utile per rilevare eventuali problemi di sicurezza oppure in fase di debugging.
 
-La sospensione può essere richiesta dal processo stesso oppure da un altro processo, deve però essere un altro processo a farlo ripartire
+La sospensione può essere richiesta dal processo stesso oppure da un altro processo, in ogni caso deve essere un altro processo a farlo ripartire
 
 
 ![enter image description here](https://i.ibb.co/XzK5K9C/sospensione.png)
@@ -114,20 +114,20 @@ La sospensione può essere richiesta dal processo stesso oppure da un altro proc
 
 ### Context switch
 
-il context switch è un'operazione che fa lo scheduler che si occupa di scambiare processo in esecuzione.
+il context switch è un'operazione che fa lo scheduler e che consiste nello scegliere il prossimo processo da eseguire.
 
 Questa operazione è divisa in 2 fasi:
 
-1. la prima è di salvare lo stato dell'attuale processo in esecuzione, in modo da saper dove riprendere la sua esecuzione in futuro
+1. la prima è di salvare lo stato dell'attuale processo in esecuzione, in modo da sapere da che punto riprendere la sua esecuzione in futuro
 2. la seconda è caricare le informazioni del nuovo processo da eseguire
 
-durante questa operazione la CPU non fa nulla quindi bisogna minimizzare il tempo necessario per effettuare lo scambio. 
+durante questa operazione la CPU rimane libera, quindi bisogna minimizzare il tempo necessario per effettuare lo scambio per evitare di perdere troppo tempo. 
 
 
 
 ### Interrupts
 
-Gli **interrupts** sono dei segnali che abilitano il software a rispondere a degli avvisi hardware. Gli interrupt vengono chiamati trap e possono essere sincroni e asincroni:
+Gli **interrupts** sono dei segnali che abilitano il software a rispondere a degli avvisi hardware. Gli interrupt possono essere sincroni e asincroni:
 
 - **sincroni** se il segnale è derivato direttamente dalle operazioni del processo
 - **asincroni** se il segnale non è derivato dalle operazioni fatte dal processo
@@ -137,9 +137,7 @@ Dopo aver ricevuto un interrupt il processore completa l'istruzione corrente e p
 viene dato il comando al sistema operativo in base al tipo di interrupt viene scelto un **gestore di interrupt** in quale deciderà cosa fare.
 Una volta che il gestore termina viene ripresa l'esecuzione del processo che era stato momentaneamente sospeso (oppure un processo successivo)
 
-
-Gli interrups sono solitamente collegati a fattori esterni al processore. Per riferirsi a segnali generati all'interno del processore esistono le **eccezioni**
-
+Gli interrups sono solitamente collegati a fattori esterni al processore. Per riferirsi a segnali generati all'interno del processore si parla di **eccezioni**
 
 
 ### InterProcess Communication
@@ -235,13 +233,13 @@ Ci sono 3 modi principali di implementare i thread:
 ### Thread a livello utente
 
 In questo caso i thread vengono creati e gestiti nello spazio utente, quindi il kernel non sa della loro esistenza.
-Il kenel è a conoscenza solo dei processi, i quali hanno un singolo thread.
+Il kernel è a conoscenza solo dei processi, che sono visti con un singolo thread.
 
 ![enter image description here](https://i.ibb.co/93Xgmj6/user-thread.png)
 
 Abbiamo una implementazione detta **molti-a-uno** (molti thread ad un unico contesto di esecuzione)
 
-I thread vengono create da librerie in runtime ed essendo create nello *user space* **non possono eseguire istruzioni privilegiate**.
+I thread vengono create da librerie in *runtime* ed essendo create nello *user space* **non possono eseguire istruzioni privilegiate**.
 
 Ogni processo possiede una **tabella dei thread** contenente le informazioni di ogni thread (PC, SC, registri, stato)
 
@@ -272,9 +270,10 @@ Il kernel possiede una tabella dei thread (oltre alla tabella dei processi) e og
 
 **vantaggi**:
 - se un thread si blocca, il kernel può decidere se eseguire un altro thread dello stesso processo oppure un thread di un altro processo. In questo modo un processo può proseguire anche se uno dei suoi thread è bloccato
-- quando un thread viene cancellato, in realtà esso viene solo marcato come non eseguibile ma la sua struttura viene conservata in modo che possa essere assegnata ad un nuovo thread, risparmiando così del tempo
+- quando un thread viene cancellato, in realtà esso viene solo marcato come non eseguibile ma la sua struttura viene conservata in modo che possa essere assegnata ad un nuovo thread, risparmiando così del tempo (evitando di crearne uno da capo)
+
 **svantaggi**:
-- il cambio di contesto limita li prestazioni (quindi quanti si creano e distruggono tanti thread c'è molto overhead)
+- il cambio di contesto limita li prestazioni (quando si creano e distruggono tanti thread c'è molto overhead)
 - non è portabile dato che l'implementazione può variare da kernel in kernel
 
 ### Thread ibridi
@@ -297,7 +296,7 @@ L'obiettivo dell'implementazione ibrida è quello di imitare le funzionalità de
 
 il kernel si occuperà di schedulare i thread a livello kernel mentre viene assegnato ad ogni processo un **processore virtuale** che permette di schedulare i thread a livello utente.
 
-Quando il kernel sa che un thread è bloccat:
+Quando il kernel sa che un thread è bloccato:
 1. viene fatta una **upcall** al processore virtuale interessato, cioè una notifica che indica quale thread è bloccato.
 2. Il processore virtuale si occuperà poi di rischedulare i suoi thread.
 3. Quando il thread che era bloccato è pronto per essere rieseguito viene fatta un'altra **upcall** per avvisare il processore virtuale avvisandolo che quel thread ora può essere rischedulato.
@@ -308,6 +307,6 @@ Il problema è che c'è un uso intensivo del kernel che chiama procedure nello s
 
 ### Thread pop-up
 
-Thread pop-up è una tecnica particolarmente utilizzata nei sistemi distribuiti lato server nel quando quando la macchina riceve un messaggio viene creato un nuovo thread per gestirlo (chiamato thread pop-up). 
+Thread pop-up è una tecnica particolarmente utilizzata nei sistemi distribuiti lato server in cui: quando la macchina riceve un messaggio, viene creato un nuovo thread per gestirlo (chiamato thread pop-up). 
 
-Il vantaggio di questo utilizzo è che la latenza tra l'arrivo del messaggio e l'inizio dell'elaborazione è molto bassa
+Il vantaggio di questo utilizzo è che la latenza tra l'arrivo del messaggio e l'inizio dell'elaborazione è molto bassa.

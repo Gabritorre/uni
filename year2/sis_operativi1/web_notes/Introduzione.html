@@ -34,7 +34,7 @@
 <p>Il computer moderno è un sistema composto da molte parti hardware e scrivere software che tenga conto di tutte le parti è a dir poco impossibile, per questo è fondamentale il <strong>sistema operativo</strong> cioè un software (o meglio un insieme di processi) che si occupa principalmente di due cose (pensandolo ad alto livello)</p>
 <ol>
 <li><strong>gestire le risorse</strong>: quindi far comunicare e gestire le componenti hardware, e ovviamente le risorse software le quali richiedono <strong>tempo e spazio</strong> che il sistema operativo deve gestire</li>
-<li><strong>essere vista come una macchina astratta</strong>: quindi fornire all’utente un’interfaccia che permetta di comunicare semplicemente con il computer (<strong>trasparenza</strong>) senza preoccuparsi delle operazioni complesse che fa la macchina (<strong>mascheramento</strong>).</li>
+<li><strong>essere visto come una macchina astratta</strong>: quindi fornire all’utente un’interfaccia che permetta di comunicare semplicemente con il computer (<strong>trasparenza</strong>) senza preoccuparsi delle operazioni complesse che fa la macchina (<strong>mascheramento</strong>).</li>
 </ol>
 <p>Nella seguente immagine si vede che il sistema operativo fa da cuscinetto tra l’hardware e il software</p>
 <p><img src="https://i.ibb.co/TBkYbbD/achitecture.png" alt=""></p>
@@ -43,10 +43,11 @@
 <li><strong>Programma</strong>: è il codice eseguibile che sta in memoria di massa</li>
 <li><strong>Processo</strong>: è il programma che è attualmente in esecuzione sulla CPU</li>
 </ul>
-<p>Quindi un programma diventa un processo quando esso viene eseguito</p>
-<p>Il sistema operativo ha 2 modalità con cui eseguire i processi che differiscono in base ai permessi che deve avere un processo:</p>
+<p>Quindi eseguire un programma significa generare un nuovo processo che esegue le istruzioni presenti nel programma</p>
+<p>Il sistema operativo ha 2 modalità di esecuzione dei processi che differiscono in base ai permessi che deve avere un processo:</p>
 <ul>
-<li><strong>user mode</strong>: permessi limitati, generalmente i programmi che usa l’utente normale vengono eseguiti in questa modalità. <strong>Non è possibile</strong> fare direttamente operazioni di I/O o di accedere liberamente alla memoria, e ovviamente di passare alla kernel mode,</li>
+<li><strong>user mode</strong>: permessi limitati, generalmente usato per i programmi dell’utente.<br>
+In questa modalità <strong>non è possibile</strong> fare operazioni di I/O, accedere liberamente alla memoria, e ovviamente passare liberamente alla kernel mode.</li>
 <li><strong>kernel mode</strong>: permessi totali, i processi del sistema operativo utilizzano questa modalità</li>
 </ul>
 <p>generalmente si tende a dare ad un processo utente i minimi permessi necessari per essere eseguito.</p>
@@ -111,12 +112,12 @@
 <li>Nasce internet</li>
 </ul>
 <h4 id="sistemi-timesharing">Sistemi timesharing</h4>
-<p>i sistemi timesharing sono delle varianti della multiprogrammazione fatto per far collegare più utenti tramite un terminale alla macchina la quale cercava di soddisfare i job richiesti a turno</p>
+<p>i sistemi timesharing sono delle varianti della multiprogrammazione in cui più utenti si collegano alla stessa macchina tramite un terminale. La macchina cerca di soddisfare i job richiesti a turno, dando l’impressione ad ogni utente di possedere una macchina unicamente per sè.</p>
 <p>In questo meccanismo vengono introdotti i concetti di:</p>
 <ul>
 <li><strong>cambio di contesto</strong>: cioè ogni volta che si cambia job, il sistema operativo deve salvare le informazioni di quel job e prepararsi ad far partire il job successivo ripristinando eventualmente delle informazioni</li>
 <li><strong>protezione</strong>: ogni job doveva essere indipendente e quindi non doveva leggere o scrivere nelle memoria di altri job</li>
-<li><strong>memoria virtuale</strong>: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa riferimento agli indirizzi fisici della memoria per agevolare la protezione</li>
+<li><strong>memoria virtuale</strong>: si ingannano i job di possedere più memoria di quella realmente disponibile, e non si fa direttamente riferimento agli indirizzi fisici della memoria per agevolare la protezione</li>
 </ul>
 <h3 id="gen-4">Gen 4</h3>
 <ul>
@@ -150,7 +151,7 @@ Per passare <strong>dalla user mode alla kernel mode</strong> esiste una istruzi
 </ul>
 <p>una CPU può contenere al suo interno un coprocessore destinato all’uso grafico per esempio.</p>
 <p>Il processore ha il compito importante di fare <strong>context switch</strong>: spesso i processi vengono interrotti per far partire altri processi, quando accade ciò la CPU deve salvare lo stato dei registri del processo attuale e prepararsi per il nuovo processo, quando il vecchio processo torna ad essere eseguito i registri vengono ripristinati.</p>
-<p>Le CPU odierne funzionano tramite una <strong>pipeline</strong> cioè un meccanismo che permette alle varie fari di una istruzione (fetch-decode-execution-…) di essere eseguite in parallelo su più istruzioni.<br>
+<p>Le CPU odierne funzionano tramite una <strong>pipeline</strong> cioè un meccanismo che permette alle varie fasi di una istruzione (fetch-decode-execution-…) di essere eseguite in parallelo su più istruzioni.<br>
 Permettono di avere ancora più parallelismo le CPU <strong>superscalari</strong> in cui delle istruzioni vengono eseguite effettivamente contemporaneamente assicurandosi che il risultato sia lo stesso di una esecuzione in serie.</p>
 <p>Vediamo anche i concetti di <strong>multicore e multithreading</strong>:</p>
 <ul>
@@ -158,7 +159,7 @@ Permettono di avere ancora più parallelismo le CPU <strong>superscalari</strong
 <li>Il concetto di multithreading si riferisce al fatto che un core può gestire, generalmente, due thread (cioè un flusso di istruzioni appartenenti ad un processo più grande) contemporaneamente <strong>condividendone le risorse</strong>, questi due thread vengono eseguiti alternativamente ad una velocità talmente alta da simulare una esecuzione simultanea</li>
 </ul>
 <h3 id="memoria">Memoria</h3>
-<p>Per non fare da bottleneck al processore la memoria dovrebbe essere estremamente veloce, capiente e a basso costo. Dato che non è possibile soddisfare tutti i requisiti si è optato per fare una gerarchia di memorie</p>
+<p>Per non fare da <em>bottleneck</em> al processore la memoria dovrebbe essere estremamente veloce, capiente e a basso costo. Dato che non è possibile soddisfare tutti i requisiti si è optato per fare una gerarchia di memorie</p>
 <p><img src="https://i.ibb.co/nBwyw4B/memory-hierarchy-drawio.png" alt="enter image description here"></p>
 <ul>
 <li>
@@ -180,8 +181,8 @@ In questa è presente sia il <strong>sistema operativo</strong> che è in esecuz
 <p>Il sistema operativo si occupa di assegnare i valori di <strong>base e limit</strong> ai corrispettivi registri nella CPU (se fosse il processo stesso ad assegnarli potrebbe accedere liberamente a zone di memoria che su cui non dovrebbe accedere)</p>
 </li>
 <li>
-<p><strong>Dischi rigidi</strong> Nei dischi rigidi comprendiamo i classici <strong>Hard Disk</strong> (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell’HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovuta a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.</p>
-<p>Un’evoluzione degli Hard Disk sono gli SSD (Solid State Drive) che non sono più magnetici ma elettrici e quindi risultano essere decisamente più veloci degli HDD ma non raggiungono comunque le velocità della memoria RAM, ma in generale risolvono gran parte dei limiti dei classici Hard Disk.</p>
+<p><strong>Dischi rigidi</strong> Nei dischi rigidi comprendiamo i classici <strong>Hard Disk</strong> (conosciti con la sigla HDD, Hard Disk Drive) che sono dischi magnetici (non volatili) composti appunto da dei dischi suddivisi in settori che contengono dei dati su cui una testina magnetica si muove per poter leggere o scrivere i dati. Le dimensioni dell’HDD variano da centinaia di GB a qualche TB, ma sono decisamente lenti. Soffrono di problematiche dovute a dove fisicamente sono posizionati i dati, soffrono le vibrazione intense, emettono rumore e avendo parti in movimento consumano anche relativa energia.</p>
+<p>Un’evoluzione degli Hard Disk sono gli SSD (Solid State Drive) che non sono più magnetici ma elettrici e quindi risultano essere decisamente più veloci degli HDD ma non raggiungono comunque le velocità della memoria RAM, in generale risolvono gran parte dei limiti dei classici Hard Disk.</p>
 </li>
 <li>
 <p>Esistono altri particolari tipi di memorie come:</p>
@@ -203,7 +204,7 @@ Un <strong>driver</strong> è uno strato software che si posiziona tra il sistem
 <li><strong>DMA</strong>: (Direct Memory Access) è un chip a parte che si occupa di gestire le operazioni di I/O permettendo alla CPU di eseguire altri compiti nel mentre, risultando più efficiente. La CPU si occupa solo di dire quanto e dove trasferire i dati, del resto se ne occupa il DMA che comunicherà alla CPU il termine delle operazioni.</li>
 </ol>
 <h3 id="bus">Bus</h3>
-<p>Un bus non è altro che un collegamento elettrico capaci di trasportare dei dati da un punto A ad un punto B all’interno dei circuiti stampati, ne sono un esempio i collegamenti PCIe, USB, SATA. Vengono quindi utilizzati per far comunicare tutti i componenti di un computer tra loro</p>
+<p>Un bus non è altro che un collegamento elettrico capace di trasportare dei dati da un punto A ad un punto B all’interno dei circuiti stampati, ne sono un esempio i collegamenti PCIe, USB, SATA. Vengono quindi utilizzati per far comunicare i componenti di un computer tra loro</p>
 <h2 id="tipi-di-sistemi-operativi">Tipi di sistemi operativi</h2>
 <p>Vediamo alcuni tipi di sistemi operativi in base all’elaboratore su cui operano</p>
 <h3 id="os-per-mainframe">OS per mainframe</h3>
