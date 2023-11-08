@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-03_Calcolo relazionale</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#calcolo-relazionale">Calcolo relazionale</a>
+<ul>
+<li></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="calcolo-relazionale">Calcolo relazionale</h1>
+<p>Il calcolo relazione è un modo alternativo all’algebra relazione di interrogare i database.<br>
+Esistono due varianti del calcolo relazionale:</p>
+<ul>
+<li>calcolo relazionale su ennuple (CRE)</li>
+<li>calcolo relazionale su domini (CRD)</li>
+</ul>
+<p>Queste due varianti e l’algebra relazionale sono espressivamente equivalenti ma hanno alcune differenze:</p>
+<ul>
+<li>l’algebra relazionale è un <strong>linguaggio procedurale</strong><br>
+una interrogazione specifica cosa si vuole recuperare e anche come recuperarlo</li>
+<li>il calcolo relazionale è un <strong>linguaggio dichiarativo</strong><br>
+una interrogazione specifica cosa si vuole recuperare ma <strong>non come</strong></li>
+</ul>
+<p>Il calcolo relazionale utilizza una logica fatta da <strong>termini</strong> e <strong>formule</strong></p>
+<p>I termini possono essere: valori costanti, variabili oppure funzioni.<br>
+Le formule denotano valori di verità (and, or, not, implies, forall, exist)</p>
+<h3 id="calcolo-relazione-su-ennuple">Calcolo relazione su ennuple</h3>
+<p>Le interrogazione hanno la seguente forma</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mtext>riga.attributo</mtext><mi mathvariant="normal">∣</mi><mtext>formule</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\text{riga.attributo}|\text{formule}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord text"><span class="mord">riga.attributo</span></span><span class="mord">∣</span><span class="mord text"><span class="mord">formule</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+<p>le formule possono essere:</p>
+<ul>
+<li>
+<p>formule di tipo<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>t</mtext><mo>∈</mo><mtext>Studenti</mtext></mrow><annotation encoding="application/x-tex">\text{t} \in \text{Studenti}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.65418em; vertical-align: -0.0391em;"></span><span class="mord text"><span class="mord">t</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di confronto tra valori e fra costanti<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>t.Matricola&nbsp;=&nbsp;e.Candidato</mtext></mrow><annotation encoding="application/x-tex">\text{t.Matricola = e.Candidato}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">t.Matricola&nbsp;=&nbsp;e.Candidato</span></span></span></span></span></span></span></p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>t.Provincia&nbsp;=&nbsp;’VE’</mtext></mrow><annotation encoding="application/x-tex">\text{t.Provincia = 'VE'}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">t.Provincia&nbsp;=&nbsp;’VE’</span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di restrizione<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo>∧</mo><mtext>t.Provincia&nbsp;=&nbsp;’VE’</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{t| t \in \text{Studenti}\land \text{t.Provincia = 'VE'}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">t</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">t.Provincia&nbsp;=&nbsp;’VE’</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di proiezione<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mtext>t.Nome,&nbsp;t.Cognome</mtext><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\text{t.Nome, t.Cognome}| t \in \text{Studenti}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord text"><span class="mord">t.Nome,&nbsp;t.Cognome</span></span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di unione<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo>∨</mo><mi>t</mi><mo>∈</mo><mtext>Docenti</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{t| t \in \text{Studenti}\lor t \in \text{Docenti}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">t</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∨</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.65418em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Docenti</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di differenza<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo>∧</mo><mi mathvariant="normal">¬</mi><mo stretchy="false">(</mo><mi>t</mi><mo>∈</mo><mtext>Docenti</mtext><mo stretchy="false">)</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{t| t \in \text{Studenti}\land \lnot (t \in \text{Docenti})\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">t</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">¬</span><span class="mopen">(</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Docenti</span></span><span class="mclose">)}</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di prodotto<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mi>t</mi><mo separator="true">,</mo><mi>e</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo>∧</mo><mi>e</mi><mo>∈</mo><mtext>Docenti</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{t, e| t \in \text{Studenti}\land e \in \text{Docenti}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">e</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Docenti</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>formule di intersezione<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mo stretchy="false">{</mo><mi>t</mi><mi mathvariant="normal">∣</mi><mi>t</mi><mo>∈</mo><mtext>Studenti</mtext><mo>∧</mo><mi>t</mi><mo>∈</mo><mtext>Docenti</mtext><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{t| t \in \text{Studenti}\land t \in \text{Docenti}\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord mathnormal">t</span><span class="mord">∣</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.65418em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Docenti</span></span><span class="mclose">}</span></span></span></span></span></span></p>
+</li>
+</ul>
+<p>Esempio di interrogazione con calcolo relazionale su ennuple<br>
+“ottenere nome e cognome degli studenti che hanno superato almeno un esame”</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">{</mo><mtext>t.Nome,&nbsp;t.Cognome&nbsp;|&nbsp;t&nbsp;</mtext><mo>∈</mo><mtext>Studenti</mtext><mo>∧</mo><mi mathvariant="normal">∃</mi><mi>e</mi><mo>∈</mo><mtext>Esami.(t.Matricola</mtext><mo>=</mo><mi>e</mi><mi mathvariant="normal">.</mi><mtext>Candidato</mtext><mo stretchy="false">)</mo><mo stretchy="false">}</mo></mrow><annotation encoding="application/x-tex">\{\text{t.Nome, t.Cognome | t }\in \text{Studenti} \land \exist e \in \text{Esami.(t.Matricola} = e.\text{Candidato})\}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">{</span><span class="mord text"><span class="mord">t.Nome,&nbsp;t.Cognome&nbsp;|&nbsp;t&nbsp;</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Studenti</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.73354em; vertical-align: -0.0391em;"></span><span class="mord">∃</span><span class="mord mathnormal">e</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">∈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">Esami.(t.Matricola</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal">e</span><span class="mord">.</span><span class="mord text"><span class="mord">Candidato</span></span><span class="mclose">)}</span></span></span></span></span></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
