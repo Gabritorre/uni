@@ -279,6 +279,8 @@ $$\text{oppure}$$
 
 $$\text{Var}[X] = \sum_{i}(x_i^2\cdot p_i) - [\mathbb{E}[X]]^2$$
 
+nella prima formula vediamo come da ogni valore sottraiamo il valore medio, ottenendo quindi la distanza dal valore medio. Eleviamo al quadrato per trasformare le distanze negative in positive.
+
 Esempio 
 
 $P_X(x) = \begin{cases}
@@ -309,3 +311,58 @@ Avendo $a$ e $b$ costanti
 
 La moda di una variabile aleatoria sono i punti in cui la variabile assume i valori di massimo (assoluto ma anche locale).
 Nota bene che la moda è il **valore che assume la variabile aleatoria** (quindi il valore nell'asse x) e non la sua probabilità (asse y)
+
+
+## Mediana
+
+La mediana rappresenta il valore centrale di un insieme di dati **ordinati**
+
+Avendo la funzione di ripartizione di una variabile aleatoria, la mediana è il minimo valore che assume la variabile la cui probabilità è maggiore di $\frac{1}{2}$:
+
+$$F(m) = \mathbb{P}[X \leq m] \geq \frac{1}{2}$$
+
+**Per una variabile continua esiste un unico punto** di mediana
+
+
+considerando il precedente esempio che aveva la seguente funzione di ripartizione (di una variabile aleatoria discreta)
+![enter image description here](https://i.ibb.co/X8xJHvb/ripartizione.png)
+
+la mediana è 4, cioè il più piccolo valore che assume la variabile la cui probabilità supera $\frac{1}{2}$, infatti il valore 3 ha probabilità $\frac{4}{9}\approx 0.4$ mentre il 4 ha probabilità $\frac{2}{3} \approx 0.6$
+
+
+## Quantili
+
+I quantili sono degli indici di posizione che sono una generalizzazione del concetto della mediana
+
+Avendo la funzione di ripartizione di una variabile aleatoria, il **quantile di livello** $\alpha$ è il minimo valore che assume la variabile la cui probabilità è maggiore di $\alpha$:
+
+$$F(m) = \mathbb{P}[X \leq q_\alpha] \geq \alpha$$
+
+**Per una variabile continua esiste un unico punto** di mediana
+
+la mediana è un quantile in cui $\alpha = \frac{1}{2}$
+
+i **percentili** sono dei quantili espressi in percentuale (il livello $\alpha$ è una percentuale, quindi $\frac{k}{100}$)
+i **decili** sono dei quantili espressi su una scala di 10 (il livello $\alpha$ è $\frac{k}{10}$)
+i **quartili** sono dei quantili di livello 0.25 (detto **primo quartile**), 0.5 (detta **mediana**), 0.75 (detto **terzo quartile**)
+
+## Deviazione standard
+
+La deviazione standard o scarto quadratico medio è un concetto simile alla varianza, anche in questo caso la deviazione standard è una misura di dispersione dei dati rispetto alla media, ma la sostanziale differenza è che essa è sulla stessa scala dei valori originali (diversamente dalla varianza che ha una scala quadratica).
+
+in altre parole potremmo definirla come: la media di quanto si discostano i valori dal valore atteso (la media)
+
+la deviazione standard si calcola come: 
+
+$$\text{sd}(x) = \sqrt{\text{Var}(x)}$$
+
+mentre il valore della varianza poteva già darci una interpretazione di come sono distribuiti i dati, la deviazione standard non è altrettanto utile da sola, abbiamo bisogno del coefficiente di variazione.
+
+### Coefficiente di variazione
+
+Il coefficiente di variazione serve per paragonare la deviazione standard rispetto alla media.
+
+$$\text{cv}(x) = \frac{\text{sd}(x)}{|E(x)|}$$
+
+maggiore è la il coefficiente di variazione più sono i valori che si allontanano dalla media, mentre minore è la il coefficiente più i valori sono tutti molto vicini alla media.
+
