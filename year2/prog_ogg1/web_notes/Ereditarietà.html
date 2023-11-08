@@ -19,6 +19,7 @@
 <li><a href="#visibilità">Visibilità</a></li>
 <li><a href="#super">super</a></li>
 <li><a href="#abstract">Abstract</a></li>
+<li><a href="#override-e-overload">Override e overload</a></li>
 </ul>
 </li>
 </ul>
@@ -97,6 +98,54 @@ Un metodo astratto può essere presente solo in una classe che è anch’essa as
 <p>Una classe astratta è una classe che ha solo parte dei suoi metodi implementati.<br>
 Una classe astratta non può essere istanziata, può essere solo ereditata</p>
 <p>Una classe che eredita una classe astratta deve implementare tutti i metodi <code>abstract</code> per essere istanziata, altrimenti deve essere astratta anche lei.</p>
+<h2 id="override-e-overload">Override e overload</h2>
+<p>prima di spiegare i concetti di overriding e overloading bisogna chiarire i concetti di <strong>firma e definizione</strong> di un metodo</p>
+<p>con <strong>firma</strong> si intende tutto quello che è disponibile in fase di chiamata del metodo:</p>
+<ul>
+<li>nome del metodo</li>
+<li>l’oggetto su cui è chiamato</li>
+<li>la lista di parametri</li>
+</ul>
+<p>mentre con <strong>definizione</strong> si intende tutto quello che è disponibile quando si crea il metodo:</p>
+<ul>
+<li>comprende tutto quello che ha la firma</li>
+<li>tipo di ritorno</li>
+<li>la visibilità</li>
+<li>altri modificatori (static, abstract, final…)</li>
+</ul>
+<h3 id="override-e-overload-1">override e overload</h3>
+<p><strong>override e overload</strong> sono due modi diversi di ridefinire il comportamento di un metodo già esistente.</p>
+<ul>
+<li>nel caso di override la firma del metodo rimane la stessa, cambia solo il corpo del metodo</li>
+<li>nel caso di overload cambia anche la firma (il nome del metodo deve rimanere lo stesso, può cambiare il ritorno e i parametri)</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Messaggio: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">OverrideClass</span> <span class="token keyword">extends</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Messaggio sovrascritto: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">OverloadClass</span> <span class="token keyword">extends</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">,</span> String prefix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>prefix <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>nota che <code>@Override</code> è una indicazione per il compilatore in cui si vuole esplicitare che si sta facendo override di un metodo. Nel caso per un typo si sbagliasse a scrivere il nome del metodo il compilatore si accorgerebbe che non stai facendo l’override di un metodo</p>
+<h3 id="visibilità-in-caso-di-override">Visibilità in caso di override</h3>
+<p>quando si vuole fare override di un metodo si può usare una visibilità <strong>uguale o meno restrittiva</strong> ad esempio:</p>
+<ul>
+<li>Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.</li>
+<li>Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma <strong>non private</strong></li>
+</ul>
 
     </div>
   </div>

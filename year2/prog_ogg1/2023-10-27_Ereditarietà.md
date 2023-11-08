@@ -95,3 +95,56 @@ Una classe astratta è una classe che ha solo parte dei suoi metodi implementati
 Una classe astratta non può essere istanziata, può essere solo ereditata
 
 Una classe che eredita una classe astratta deve implementare tutti i metodi `abstract` per essere istanziata, altrimenti deve essere astratta anche lei.
+
+## Override e overload
+
+prima di spiegare i concetti di overriding e overloading bisogna chiarire i concetti di **firma e definizione** di un metodo
+
+con **firma** si intende tutto quello che è disponibile in fase di chiamata del metodo:
+- nome del metodo
+- l'oggetto su cui è chiamato
+- la lista di parametri
+
+mentre con **definizione** si intende tutto quello che è disponibile quando si crea il metodo:
+- comprende tutto quello che ha la firma
+- tipo di ritorno
+- la visibilità
+- altri modificatori (static, abstract, final...)
+
+### override e overload
+
+**override e overload** sono due modi diversi di ridefinire il comportamento di un metodo già esistente.
+
+- nel caso di override la firma del metodo rimane la stessa, cambia solo il corpo del metodo
+- nel caso di overload cambia anche la firma (il nome del metodo deve rimanere lo stesso, può cambiare il ritorno e i parametri)
+
+```java
+class BaseClass {
+    void printMessage(String message) {
+        System.out.println("Messaggio: " + message);
+    }
+}
+
+class OverrideClass extends BaseClass {
+    @Override
+    void printMessage(String message) {
+        System.out.println("Messaggio sovrascritto: " + message);
+    }
+}
+
+class OverloadClass extends BaseClass {
+    void printMessage(String message, String prefix) {
+        System.out.println(prefix + ": " + message);
+    }
+}
+
+```
+
+nota che `@Override` è una indicazione per il compilatore in cui si vuole esplicitare che si sta facendo override di un metodo. Nel caso per un typo si sbagliasse a scrivere il nome del metodo il compilatore si accorgerebbe che non stai facendo l'override di un metodo
+
+### Visibilità in caso di override
+
+quando si vuole fare override di un metodo si può usare una visibilità **uguale o meno restrittiva** ad esempio:
+- Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.
+- Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma **non private**
+
