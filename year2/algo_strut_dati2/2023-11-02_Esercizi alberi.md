@@ -414,3 +414,47 @@ T(n_s) + T(n-n_s-1) + d & \text{se } n>0
 
 dato che è possibile fermarmi prima di visitare tutti i nodi, sono limitato superiormente dal numero di nodi.
 $$T(n) = O(n)$$
+
+
+## Albero speculare
+
+scriviamo un algoritmo efficiente che dato un albero binario ritorna `true` se l'albero è speculare sia dal punto di vista di contenuto dei nodi che di posizione, altrimenti ritorna `false`
+
+un esempio di albero speculare è il seguente:
+
+![enter image description here](https://i.ibb.co/SBcxdZ6/image.png)
+
+il ragionamento che possiamo applicare per risolvere questo problema è quello di trattare i due sottoalberi della radice come due alberi separati e compararli nodo per nodo
+
+```c++
+bool speculare(node* u) {
+	// caso di albero vuoto oppure albero con sola radice
+	if (u == nullptr || (u->left == nullptr && u->right == nullptr)) {
+		return true;
+	}
+	return speculare_aux(u->left, u->right);
+}
+
+bool speculare_aux(node* left_tree, node* right_tree) {
+	// se hanno la stessa struttura
+	if (left_tree == nullptr && right_tree == nullptr) {
+		return true;
+	}
+	// se la struttura è diversa ritorna false
+	if ((left_tree == nullptr && right_tree != nullptr) || (left_tree != nullptr && right_tree == nullptr)) {
+		return false;
+	}
+	// se il valore delle chiavi è lo stesso, continua a comparare i nodi
+	if (left_tree->key == right_tree->key) {
+		return speculare_aux(left_tree->left, right_tree->right) && speculare_aux(left_tree->right, right_tree->left)
+	}
+	// se hanno chiavi diverse
+	else {
+		return false;
+	}
+}
+```
+
+per quanto riguarda la complessità, stiamo visitando tutti i nodi dell'albero, nel caso peggiore dovremmo comparare tutti i nodi, ma nel caso l'albero non sia speculare l'algoritmo si fermerebbe prima di visitare tutti i nodi. La complessità è quindi 
+
+$$T(n) = O(n)$$
