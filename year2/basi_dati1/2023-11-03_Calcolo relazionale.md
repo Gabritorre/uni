@@ -33,17 +33,28 @@ le formule possono essere:
 	
 	$$\text{t.Provincia = 'VE'}$$
 - formule di restrizione
-	$$\{t| t \in \text{Studenti}\land \text{t.Provincia = 'VE'}\}$$
+	$$\{\text{t}| \text{t} \in \text{Studenti}\land \text{t.Provincia = 'VE'}\}$$
 - formule di proiezione
-	$$\{\text{t.Nome, t.Cognome}| t \in \text{Studenti}\}$$
+	$$\{\text{t.Nome, t.Cognome}| \text{t} \in \text{Studenti}\}$$
+- formule di ridenominazione
+ridenominazione dell'attributo A in B nella tabella con i seguenti attributi $R(A, C)$
+	$$\{\text{t} |\exist \text{u} \in R : \text{t.B = u.A} \land \text{t.C = u.C}\}$$
 - formule di unione
-	$$\{t| t \in \text{Studenti}\lor t \in \text{Docenti}\}$$
+	$$\{t| t \in \text{Studenti}\lor \text{t} \in \text{Docenti}\}$$
 - formule di differenza
-	$$\{t| t \in \text{Studenti}\land \lnot (t \in \text{Docenti})\}$$
+	$$\{\text{t}| \text{t} \in \text{Studenti}\land \lnot (t \in \text{Docenti})\}$$
 - formule di prodotto
-	$$\{t, e| t \in \text{Studenti}\land e \in \text{Docenti}\}$$
+	$$\{\text{t, e| t} \in \text{Studenti}\land e \in \text{Docenti}\}$$
 - formule di intersezione
-	$$\{t| t \in \text{Studenti}\land t \in \text{Docenti}\}$$
+		$$\{\text{t| t} \in \text{Studenti}\land \text{t} \in \text{Docenti}\}$$
+- formule di giunzione
+	giunzione tra $R(A,B)$ e $S(C,D)$
+		$$\{\text{r,s| r} \in \text{R}\land s \in \text{S}\land \text{r.B = s.C}\}$$
+- formule di giunzione naturale
+	giunzione tra $R(A,B)$ e $S(B,C)$
+		$$\{\text{r.A, r.B,s.C}| r \in \text{R}\land s \in \text{S}\land r.B = s.C\}$$
+
+
 
 Esempio di interrogazione con calcolo relazionale su ennuple
 "ottenere nome e cognome degli studenti che hanno superato almeno un esame"

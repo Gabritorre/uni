@@ -1,0 +1,111 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-10_Linguaggio SQL</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#linguaggio-sql">Linguaggio SQL</a>
+<ul>
+<li><a href="#dml">DML</a></li>
+<li><a href="#select">Select</a></li>
+<li><a href="#giunzione">Giunzione</a></li>
+<li><a href="#notazione-con-il-punto">Notazione con il punto</a></li>
+<li><a href="#alias">Alias</a></li>
+<li><a href="#ridenominazione">Ridenominazione</a></li>
+<li><a href="#funzioni-di-aggregazione">Funzioni di aggregazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="linguaggio-sql">Linguaggio SQL</h1>
+<p>SQL (<em>Structured Query Language</em>) è un linguaggio dichiarativo che serve per interrogare una base di dati. È suddiviso in due parti principali:</p>
+<ul>
+<li><strong>DML (Data Manipulation Language)</strong>: Per leggere, inserire, modificare e cancellare dei dati (<strong>SELECT</strong>,  <strong>INSERT</strong>,  <strong>UPDATE</strong>,  <strong>DELETE</strong>).</li>
+<li><strong>DDL (Data Definition Language)</strong>: Per la definizione della struttura dei dati, delle regole di integrità e dei privilegi degli utenti (<strong>CREATE</strong>,  <strong>ALTER</strong>,  <strong>DROP</strong>).</li>
+</ul>
+<h2 id="dml">DML</h2>
+<p>Generalmente in questa categoria andiamo a fare delle operazioni su delle tabelle in input e in output viene restituita una tabella.</p>
+<p>Le query si baseranno sul seguente esempio</p>
+<p><img src="https://i.ibb.co/92qdhR2/image.png" alt="enter image description here"></p>
+<h2 id="select">Select</h2>
+<p>Il comando <strong>select</strong> serve per selezionare degli attributi da delle tabelle.<br>
+La struttura generale è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">&lt;</span>attributi<span class="token operator">&gt;</span>
+<span class="token keyword">FROM</span> <span class="token operator">&lt;</span>tabelle<span class="token operator">&gt;</span>
+<span class="token punctuation">[</span><span class="token keyword">WHERE</span> <span class="token operator">&lt;</span>condizioni<span class="token operator">&gt;</span><span class="token punctuation">]</span>
+</code></pre>
+<p>esempi</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> Nome<span class="token punctuation">,</span> Cognome<span class="token punctuation">,</span> Matricola
+<span class="token keyword">FROM</span> Studenti
+</code></pre>
+<p>la clausola <strong>where</strong> serve per applicare una restrizione ai dati</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Esami
+<span class="token keyword">WHERE</span> Voto <span class="token operator">&gt;</span> <span class="token number">26</span>
+</code></pre>
+<p>(l’asterico significa seleziona tutti i campi delle tabelle)</p>
+<p>possiamo utilizzare la keyword <strong>DISTINCT</strong> per rimuovere i duplicati dalle righe</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> Provincia
+<span class="token keyword">FROM</span> Studenti
+</code></pre>
+<h2 id="giunzione">Giunzione</h2>
+<p>è possibile combinare tutte le righe di due tabelle (prodotto cartesiano) semplicemente facendo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti<span class="token punctuation">,</span> Esami
+</code></pre>
+<p>La giunzione si fa nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti <span class="token keyword">JOIN</span> Esami <span class="token keyword">ON</span> Matricola <span class="token operator">=</span> Candidato
+</code></pre>
+<h2 id="notazione-con-il-punto">Notazione con il punto</h2>
+<p>Quando si lavora con più di una tabella spesso è conveniente (in altri casi è necessario) specificare la tabella da cui si riferisce l’attributo.<br>
+Per fare ciò utilizziamo la seguente sintassi</p>
+<p><code>Tabella.Attributo</code></p>
+<p>Es. generare una tabella che riporti Codice, Nome, Cognome dei docenti e Codice degli esami corrispondenti</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> Docenti<span class="token punctuation">.</span>CodDoc<span class="token punctuation">,</span> Docenti<span class="token punctuation">.</span>Nome<span class="token punctuation">,</span> Docenti<span class="token punctuation">.</span>Cognome<span class="token punctuation">,</span> Esami<span class="token punctuation">.</span>Codice
+<span class="token keyword">FROM</span> Esami <span class="token keyword">JOIN</span> Docenti <span class="token keyword">ON</span> Docenti<span class="token punctuation">.</span>CodDoc <span class="token operator">=</span> Esami<span class="token punctuation">.</span>CodDoc
+</code></pre>
+<p>In quel esempio sia <code>Docenti</code> che <code>Esami</code> hanno una colonna chiamata <code>CodDoc</code> quindi è necessario specificare la tabella a cui si riferisce.</p>
+<h2 id="alias">Alias</h2>
+<p>Possiamo attribuire degli alias alle tabelle della clausola <code>FROM</code> questo torna particolarmente utile per migliorare la leggibilità delle query, quando però si lavora con tabelle ricorsive è necessario utilizzare gli alias.</p>
+<p>Es. generare una tabella che contenga cognomi e matricole degli studenti e dei loro tutor</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> s<span class="token punctuation">.</span>Cognome<span class="token punctuation">,</span> s<span class="token punctuation">.</span>Matricola<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Cognome<span class="token punctuation">,</span> t<span class="token punctuation">.</span>Matricola
+<span class="token keyword">FROM</span> Studenti s <span class="token keyword">JOIN</span> Studenti t <span class="token keyword">ON</span> s<span class="token punctuation">.</span>Tutor <span class="token operator">=</span> t<span class="token punctuation">.</span>Matricola
+</code></pre>
+<h2 id="ridenominazione">Ridenominazione</h2>
+<p>possiamo ridenominare le nostre colonne nella clausola <code>SELECT</code>, questo torna utile per rendere la tabella di output più chiara.<br>
+Viene utilizzata la <em>keyword</em> <strong>AS</strong> e può essere usato per rinominare un attributo, un attributo calcolato oppure una funzione</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> Nome<span class="token punctuation">,</span> Cognome<span class="token punctuation">,</span> date_part<span class="token punctuation">(</span>‘year’<span class="token punctuation">,</span> <span class="token keyword">current_date</span><span class="token punctuation">)</span> <span class="token operator">-</span> Nascita <span class="token keyword">AS</span> Età
+<span class="token keyword">FROM</span> Studenti
+<span class="token keyword">WHERE</span> Provincia<span class="token operator">=</span>’VE’
+</code></pre>
+<p>come si vede abbiamo un campo calcolato <code>date_part(‘year’, current_date) - Nascita</code> che possiamo chiamare semplicemente <code>Età</code></p>
+<h2 id="funzioni-di-aggregazione">Funzioni di aggregazione</h2>
+<p>Le funzioni di aggregazione prendono in input tutte le righe di una o più colonne e restituiscono una riga oppure nessuna. Alcuni esempi di queste funzioni sono:</p>
+<ul>
+<li><strong>COUNT()</strong>: conta il numero di righe che non sono <code>NULL</code> (se tutte le righe sono <code>NULL</code> allora ritorna zero)</li>
+<li><strong>SUM()</strong>: somma i valori numerici delle righe (se tutte le righe sono <code>NULL</code> allora ritorno <code>NULL</code>)</li>
+<li><strong>AVG()</strong>: media dei valori numerici delle righe (se tutte le righe sono <code>NULL</code> allora ritorno <code>NULL</code>)</li>
+<li><strong>MIN()</strong>: restituisce il minimo valore numerico delle righe (se tutte le righe sono <code>NULL</code> allora ritorno <code>NULL</code>)</li>
+<li><strong>MAX()</strong>: restituisce il massimo valore numerico delle righe (se tutte le righe sono <code>NULL</code> allora ritorno <code>NULL</code>)</li>
+</ul>
+<p>queste funzioni possono solo essere utilizzate nel <code>SELECT</code> oppure nel <code>HAVING</code> ma <strong>non</strong> nel <code>WHERE</code></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
