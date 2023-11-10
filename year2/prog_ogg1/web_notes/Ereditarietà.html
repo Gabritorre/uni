@@ -20,6 +20,8 @@
 <li><a href="#super">super</a></li>
 <li><a href="#abstract">Abstract</a></li>
 <li><a href="#override-e-overload">Override e overload</a></li>
+<li><a href="#final">Final</a></li>
+<li><a href="#combinazioni-dei-modificatori">Combinazioni dei modificatori</a></li>
 </ul>
 </li>
 </ul>
@@ -145,6 +147,70 @@ Una classe astratta non può essere istanziata, può essere solo ereditata</p>
 <ul>
 <li>Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.</li>
 <li>Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma <strong>non private</strong></li>
+</ul>
+<h2 id="final">Final</h2>
+<p>Il modificatore <code>final</code> associato ad un <strong>metodo</strong> impedisce a quel metodo di essere sovrascritto  dalle classi che ereditano la classe.</p>
+<p>Anche i <strong>campi</strong> possono essere <strong>final</strong>, e in questo caso non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all’interno della classe oppure dal costruttore)</p>
+<p>costruttori e metodi astratti <strong>non possono essere final</strong></p>
+<p>Una <strong>classe final</strong> sta a significare che nessuna classe può estendere quella classe. Riprendendo la rappresentazione grafica di prima:<br>
+<img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
+<p>una classe final rappresenta una foglia dell’albero.<br>
+Di solito non è una buona pratica in quanto è meglio mettere tutti i metodi della classe come final cosicché un’altra classe possa aggiungere i suoi metodi.</p>
+<h2 id="combinazioni-dei-modificatori">Combinazioni dei modificatori</h2>
+<p>Per quanto riguarda i modificatori di visibilità possiamo associare ogni modificatore ad ogni elemento (classe, campo o metodo) tranne nei seguenti due casi:</p>
+<ul>
+<li><strong>classe privata</strong>: con una classe privata non sarebbe possibile fare nessuna operazione, la classe sarebbe accessibile solo da se stessa.</li>
+<li><strong>classe protected</strong>: mettendo una classe come protected non avrebbe molto senso in quanto se tutti possono ereditarla tanto vale metterla pubblica, mentre se nessuno può ereditarla al di fuori del package tanto vale mettere la visibilità di default. Con protected non possiamo decidere a chi è permesso utilizzare la nostra classe.</li>
+</ul>
+<p>Vediamo gli altri modificatori</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">Classe</th>
+<th align="center">Campo</th>
+<th align="center">Metodo</th>
+<th align="center">Static</th>
+<th align="center">Final</th>
+<th align="center">Abstract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Final</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">❗</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Abstract</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table><ul>
+<li><strong>Classe statica</strong>: una classe “esterna” non può essere statica. Le classi interne (<em>inner classes</em>) che vedremo nel modulo 2 potranno essere anche statiche.</li>
+<li><strong>Campo abstract</strong>: Il tipo di dato del campo già definisce il suo comportamento</li>
+<li><strong>metodo statico e abstract</strong>: un metodo statico è legato alla classe e non viene ereditato, ciò va in contro senso con abstract che richiede l’ereditarietà per implementare il metodo</li>
+<li><strong>Metodo final e abstract</strong>: un metodo final non si può sovrascrivere mentre abstract richiede che sia implementato da una sottoclasse tramite override, controsenso.</li>
+<li><strong>Metodo static e final</strong>: compila con un warning: in questo caso mettere sia static che final è una ripetizione: final dice che non può essere sovrascritto e static impedisce che sia ereditato, quindi basta solo uno dei due.</li>
 </ul>
 
     </div>

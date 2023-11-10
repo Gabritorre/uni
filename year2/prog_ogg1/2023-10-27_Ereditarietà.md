@@ -148,3 +148,38 @@ quando si vuole fare override di un metodo si può usare una visibilità **ugual
 - Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.
 - Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma **non private**
 
+## Final
+
+Il modificatore `final` associato ad un **metodo** impedisce a quel metodo di essere sovrascritto  dalle classi che ereditano la classe.
+
+Anche i **campi** possono essere **final**, e in questo caso non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all'interno della classe oppure dal costruttore)
+
+costruttori e metodi astratti **non possono essere final**
+
+Una **classe final** sta a significare che nessuna classe può estendere quella classe. Riprendendo la rappresentazione grafica di prima:
+![enter image description here](https://i.ibb.co/7G8cLfX/ereditariet.png)
+
+una classe final rappresenta una foglia dell'albero.
+Di solito non è una buona pratica in quanto è meglio mettere tutti i metodi della classe come final cosicché un'altra classe possa aggiungere i suoi metodi.
+
+
+## Combinazioni dei modificatori
+Per quanto riguarda i modificatori di visibilità possiamo associare ogni modificatore ad ogni elemento (classe, campo o metodo) tranne nei seguenti due casi:
+
+- **classe privata**: con una classe privata non sarebbe possibile fare nessuna operazione, la classe sarebbe accessibile solo da se stessa.
+- **classe protected**: mettendo una classe come protected non avrebbe molto senso in quanto se tutti possono ereditarla tanto vale metterla pubblica, mentre se nessuno può ereditarla al di fuori del package tanto vale mettere la visibilità di default. Con protected non possiamo decidere a chi è permesso utilizzare la nostra classe.
+
+Vediamo gli altri modificatori
+
+|          | Classe | Campo | Metodo | Static | Final | Abstract |
+| -------- |:-----:|:-----:|:------:|:------:|:-----:|:--------:|
+| Static   |  ❌   |  ✅   |   ✅   |        |       |          |
+| Final    |  ✅   |  ✅   |   ✅   |   ❗   |       |          |
+| Abstract |  ✅   |  ❌   |   ✅   |   ❌   |  ❌   |          |
+
+
+- **Classe statica**: una classe "esterna" non può essere statica. Le classi interne (*inner classes*) che vedremo nel modulo 2 potranno essere anche statiche.
+- **Campo abstract**: Il tipo di dato del campo già definisce il suo comportamento
+- **metodo statico e abstract**: un metodo statico è legato alla classe e non viene ereditato, ciò va in contro senso con abstract che richiede l'ereditarietà per implementare il metodo
+- **Metodo final e abstract**: un metodo final non si può sovrascrivere mentre abstract richiede che sia implementato da una sottoclasse tramite override, controsenso.
+- **Metodo static e final**: compila con un warning: in questo caso mettere sia static che final è una ripetizione: final dice che non può essere sovrascritto e static impedisce che sia ereditato, quindi basta solo uno dei due.

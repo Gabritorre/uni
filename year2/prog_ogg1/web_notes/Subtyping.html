@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-10_Subtyping</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#subtyping">Subtyping</a>
+<ul>
+<li><a href="#sostituzione-con-la-sottoclasse">Sostituzione con la sottoclasse</a></li>
+<li><a href="#polimorfimo">Polimorfimo</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="subtyping">Subtyping</h1>
+<p>Java è un linguaggio fortemente tipizzato, ciò significa che ogni cosa in memoria deve possedere un tipo: variabili, parametri, campi, tipi di ritorno,…</p>
+<p>Il tipi vengono saputi in fase di compilazione e durante l’esecuzione il tipo di una zona di memoria no può cambiare.<br>
+In fase di compilazione oltre a controllare i tipi dichiarati vengono anche controllati i tipi di dato dedotti, ad esempio fare <code>2 + "ciao"</code>, in fase di compilazione il compilatore si accorge dell’errore</p>
+<h2 id="sostituzione-con-la-sottoclasse">Sostituzione con la sottoclasse</h2>
+<p>Una istanza di una superclasse può essere sostituita da una istanza di una sua sottoclasse, questo perché una sottoclasse sarà sempre una versione più grande della superclasse.<br>
+Si dice che la sottoclasse che estende una superclasse è un un <strong>subtype</strong> (sottotipo) della superclasse</p>
+<p>Consideriamo il seguente esempio:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Truck</span> <span class="token keyword">extends</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Bicycle</span> <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">,</span> <span class="token keyword">double</span> length<span class="token punctuation">)</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+
+Car c1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+c2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Truck t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Bicycle b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> c2<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> t<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> b<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> b<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Abbiamo una superclasse <code>Vehicle</code> le cui classi estese sono <code>Car</code> e <code>Bycycle</code>, poi abbiamo <code>Truck</code> che estende <code>Car</code> quindi è comunque imparentata con <code>Vehicle</code>.</p>
+<p>Nonostante il metodo <code>race</code> accetti come parametri dei tipi <code>Vehicle</code> posso comunque chiamare il metodo con le sue sottoclassi senza problemi.</p>
+<p>Ovviamente bisogna che all’interno dell’implementazione del metodo race ci siano campi e metodi della classe <code>Vehicle</code> in modo che sicuramente tutte le sottoclassi abbiano l’implementazione di quei metodi.</p>
+<h2 id="polimorfimo">Polimorfimo</h2>
+<p>Il concetto di polimorfismo significa usare lo stesso simbolo, ad esempio un metodo, che si comporta in maniera diversa in base all’oggetto su cui è chiamato.</p>
+<p>Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo <code>race</code> che come parametro prende la classe <code>Vehicle</code> la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata.</p>
+<p>Il polimorfismo è realizzato attraverso l’ereditarietà e il subtyping</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
