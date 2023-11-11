@@ -101,7 +101,7 @@ Gli svantaggi di questo sistema che l'hanno portato ad non essere più utilizzat
 
 In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle **partizioni variabili** in cui la dimensione varia in base al processo.
 
-Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della **frammentazione della memoria**.
+Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi in questo caso della **frammentazione esterna della memoria**.
 
 
 ![enter image description here](https://i.ibb.co/MMHF69F/frammentazione.png)
@@ -172,8 +172,8 @@ In questa implementazione abbiamo una lista concatenata in cui ogni ogni element
 
 Il nodo di una lista è fatta da:
 
-- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo \(P\)
-- l'indirizzo di dove inizia l'intervallo
+- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)
+- l'indirizzo di dove inizia l'intevallo
 - la lunghezza dell'intervallo
 - il puntatore al nodo successivo della lista 
 - il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)

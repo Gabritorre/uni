@@ -114,7 +114,7 @@ Quando invece ho programmi con poca attesa di I/O (ad esempio 20%) già avere du
 </ol>
 <h2 id="funzionamento-multiprogrammazione-a-partizioni-variabili">Funzionamento multiprogrammazione a partizioni variabili</h2>
 <p>In questo caso viene assegnato ad ogni processo esattamente lo spazio in memoria di cui ha bisogno. Abbiamo quindi delle <strong>partizioni variabili</strong> in cui la dimensione varia in base al processo.</p>
-<p>Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi anche in questo caso della <strong>frammentazione della memoria</strong>.</p>
+<p>Inizialmente non ci sarà spreco di memoria ma quando i processi iniziano a terminare lasciano dei buchi in memoria che potrebbero non essere abbastanza grandi per contenere altri processi, abbiamo quindi in questo caso della <strong>frammentazione esterna della memoria</strong>.</p>
 <p><img src="https://i.ibb.co/MMHF69F/frammentazione.png" alt="enter image description here"></p>
 <p>Per risolvere questo problema di frammentazione abbiamo due tecniche:</p>
 <ul>
@@ -170,8 +170,8 @@ una scelta di unità grande rende sì la mappa più piccola, ma la probabilità 
 <p>In questa implementazione abbiamo una lista concatenata in cui ogni ogni elemento della lista rappresenta degli intervalli in cui la memoria è libera oppure occupata.</p>
 <p>Il nodo di una lista è fatta da:</p>
 <ul>
-<li>un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)</li>
-<li>l’indirizzo di dove inizia l’intervallo</li>
+<li>un booleano che indica se è un pezzo libero (H) oppure occupato da un processo §</li>
+<li>l’indirizzo di dove inizia l’intevallo</li>
 <li>la lunghezza dell’intervallo</li>
 <li>il puntatore al nodo successivo della lista</li>
 <li>il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)</li>

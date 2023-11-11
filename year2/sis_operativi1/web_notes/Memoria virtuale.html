@@ -15,8 +15,17 @@
 <ul>
 <li><a href="#la-memoria-virtuale">La memoria virtuale</a>
 <ul>
+<li><a href="#mapping-dei-blocchi">Mapping dei blocchi</a></li>
 <li><a href="#paginazione">Paginazione</a></li>
-<li><a href="#traduzione-degli-indirizzi-virtuali">Traduzione degli indirizzi virtuali</a></li>
+<li><a href="#traduzione-degli-indirizzi-virtuali-nella-paginazione">Traduzione degli indirizzi virtuali nella paginazione</a></li>
+<li><a href="#mapping-diretto">Mapping diretto</a></li>
+<li><a href="#mapping-associativo">mapping associativo</a></li>
+<li><a href="#mapping-diretto-e-associativo">Mapping diretto e associativo</a></li>
+<li><a href="#tabelle-di-pagine-multilivello">Tabelle di pagine multilivello</a></li>
+<li><a href="#tabella-inversa-delle-pagine">Tabella inversa delle pagine</a></li>
+<li><a href="#condivisione">Condivisione</a></li>
+<li><a href="#sostituzione">Sostituzione</a></li>
+<li><a href="#strategie-di-sostituzione">Strategie di sostituzione</a></li>
 </ul>
 </li>
 </ul>
@@ -33,26 +42,42 @@
 <li><strong>indirizzi fisici</strong>: cioè gli effettivi indirizzi delle cella della memoria principale fisica</li>
 <li><strong>indirizzi virtuali</strong>: indirizzi utilizzati dalla CPU (e quindi dai processi)</li>
 </ul>
-<p>È quindi necessario un componente hardware capace di tradurre gli indirizzi virtuali in fisici, questo componente è chiamato <strong>MMU</strong> (Memory Management Unit)</p>
-<p>lo spazio di indirizzamento fisico è unico e solo la MMU ci interagisce mentre lo spazio di indirizzamento virtuale è uno per ogni processo</p>
+<p>È quindi necessario un componente hardware capace di tradurre gli indirizzi virtuali in fisici, questo componente è chiamato <strong>MMU</strong> (Memory Management Unit).<br>
+La MMU esegue un meccanismo di traduzione dinamica degli indirizzi chiamato (<strong>DAT</strong>, <em>Dynamic Address Translation</em>)</p>
+<p>lo spazio di indirizzamento fisico è unico e solo la MMU ci interagisce, lo spazio di indirizzamento virtuale è uno per ogni processo.</p>
 <p>Tutta questa tecnica ci permette di avere solo delle porzioni di programma mappati in memoria principale mentre il resto del programma è in memoria secondaria, proprio come succedeva con la tecnica <strong>overlay</strong> solo che lavorando con gli indirizzi virtuali il programmatore non deve più indicare le parti indipendenti del programma.</p>
-<p>Data questa divisione di <strong>spazi virtuali in memoria secondaria</strong> e <strong>spazi fisici in memoria principale</strong> diciamo che la <strong>tecnica di memoria virtuale lavora su due livelli di memoria</strong></p>
+<p>Dato che possiamo avere moltissimi indirizzi virtuali, il sistema operativo deve mantenere solo alcuni indirizzi in memoria principale, mentre gli altri vanno in memoria secondaria. Per questo diciamo che la tecnica di memoria virtuale <strong>lavora su due livelli di memoria</strong></p>
+<p>I sistemi che utilizzano la memoria virtuale possono utilizzare:</p>
+<ul>
+<li>la paginazione</li>
+<li>la  segmentazione</li>
+<li>un ibrido delle due</li>
+</ul>
+<h2 id="mapping-dei-blocchi">Mapping dei blocchi</h2>
+<p>Vediamo un modo generico per tradurre gli indirizzi da virtuali in fisici.</p>
+<p>La memoria fisica e virtuale va divisa in blocchi contenenti degli indirizzi, l’obiettivo è quello di associare i blocchi in memoria virtuale a i blocchi in memoria fisica.</p>
+<p>Viene utilizzata una mappa dei blocchi, se i blocchi sono di dimensione fissa si parla di <strong>pagine,</strong> se sono di dimensione diverse tra loro si parla di <strong>segmenti</strong></p>
+<p>l’indirizzo virtuale viene diviso in due parti: il numero del blocco e l’offset</p>
+<p>Per tradurre bisogna trovare la riga nella <strong>mappa dei blocchi</strong> sommando all’indirizzo iniziale il numero del blocco virtuale.<br>
+La tabella dei blocchi restituirà l’indirizzo dell’inizio del blocco in memoria fisica, ad esso si somma l’offset per trovare l’indirizzo fisico</p>
+<p><img src="https://i.ibb.co/K92C85C/image.png" alt="enter image description here"></p>
 <h2 id="paginazione">Paginazione</h2>
-<p>La paginazione è una tecnica utilizzata dai sistemi con memoria virtuale.<br>
-Questa tecnica consiste nel dividere l’insieme degli indirizzi fisici in dei blocchi chiamati <strong>pagine</strong> e dividere anche gli indirizzi fisici in blocchi chiamati <strong>pagine fisiche o page frame</strong>.</p>
+<p>Vediamo ora il caso specifico della paginazione:</p>
+<p>Questa tecnica consiste nel dividere l’insieme degli indirizzi fisici in dei blocchi chiamati <strong>pagine (virtuali)</strong> e dividere anche gli indirizzi fisici in blocchi chiamati <strong>pagine fisiche o page frame</strong>.</p>
 <p>Le pagine e le pagine fisiche hanno la stessa dimensione fissa (che solitamente è una potenza di 2).</p>
-<p>La MMU applica una funzione di mappatura degli indirizzi nelle pagine in modo da mapparli in indirizzi fisici delle pagine fisiche</p>
-<h2 id="traduzione-degli-indirizzi-virtuali">Traduzione degli indirizzi virtuali</h2>
-<p>Vediamo tre metodi per tradurre gli indirizzi virtuali in indirizzi fisici:</p>
-<ol>
-<li>mapping diretto</li>
-<li>mappa dei blocchi</li>
-<li>mapping associativo</li>
-</ol>
 <p><img src="https://i.ibb.co/p4YC5mp/page-table.png" alt="enter image description here"></p>
 <p>Nell’esempio sopra abbiamo 64KB di memoria virtuale e 32KB di memoria fisica, la grandezza delle pagine è di 4KB. Abbiamo quindi 16 pagine virtuali e 8 pagine fisiche</p>
-<h3 id="mapping-diretto">Mapping diretto</h3>
-<p>Nel mapping diretto abbiamo che un indirizzo virtuale è mappato sempre al solito blocco</p>
+<h2 id="traduzione-degli-indirizzi-virtuali-nella-paginazione">Traduzione degli indirizzi virtuali nella paginazione</h2>
+<p>Utilizzando la paginazione abbiamo molti modi per tradurre gli indirizzi virtuali in indirizzi fisici:</p>
+<ol>
+<li>mapping diretto</li>
+<li>mapping associativo</li>
+<li>mapping diretto e associativo</li>
+<li>tabelle di pagine multilivello</li>
+<li>tabella inversa delle pagine</li>
+</ol>
+<h2 id="mapping-diretto">Mapping diretto</h2>
+<p>Nel mapping diretto abbiamo che un indirizzo virtuale è mappato sempre nello stesso blocco fisico.</p>
 <p>Consideriamo l’indirizzo virtuale 8196 (base 10) che in binario è 0010000000000100 (in 16 bit perché per rappresentare 64KB indirizzi).</p>
 <p>dividiamo il numero binario in 2 parti una parte di <strong>numero di pagina</strong> grande tanti bit quanti servono per rappresentare il numero di pagine (nel nostro caso abbiamo 16 pagine e quindi ci servono 4 bit) e un parte di <strong>offset</strong> che servirà per riferirci a tutti gli indirizzi all’interno di una pagina (abbiamo 4KB di indirizzi per pagina, infatti abbiamo i 12 bit rimanente per contenerli)</p>
 <p>il <strong>numero di pagina</strong> verrà usato come indice di una <strong>tabella delle pagine</strong>, questa tabella contiene il numero di <strong>pagina fisica</strong> corrispondente al numero della pagina virtuale.<br>
@@ -63,18 +88,157 @@ Questa tecnica consiste nel dividere l’insieme degli indirizzi fisici in dei b
 <p>Se un processo tenta di accedere ad un indirizzo virtuale non mappato, si verifica un <strong>page fault</strong>. In questo caso il sistema operativo si deve occupare di cercare sul disco secondario la pagina non mappata e mapparla sulla relativa pagina fisica.<br>
 Nella tabella della pagine è anche presente l’indirizzo dove andare a cercare la pagina in memoria secondaria nel caso non sia stata mappata in RAM.</p>
 <p><img src="https://i.ibb.co/zJKJkyW/mapping-diretto.png" alt="enter image description here"></p>
-<h3 id="mappa-dei-blocchi">mappa dei blocchi</h3>
-<p>In questo caso viene utilizzata una mappa dei blocchi, se i blocchi sono di dimensione fissa si parla di <strong>pagine,</strong> se sono di dimensione diverse tra loro si parla di <strong>segmenti</strong></p>
-<p>l’indirizzo virtuale viene diviso in due parti: il numero del blocco e l’offset</p>
-<p>si trova la riga della <strong>tabella dei blocchi</strong> sommando all’indirizzo iniziale il numero del blocco.<br>
-La tabella dei blocchi restituirà l’indirizzo dell’inizio del blocco in memoria fisica, ad esso si somma l’off set per trovare l’indirizzo fisico</p>
-<p><img src="https://i.ibb.co/K92C85C/image.png" alt="enter image description here"></p>
-<h3 id="mapping-associativo">mapping associativo</h3>
+<h2 id="mapping-associativo">mapping associativo</h2>
 <p>Mentre nel mapping associativo ogni indirizzo virtuale è associato sempre allo stesso blocco fisico, nel mapping associativo un indirizzo virtuale può appartenere a qualsiasi blocco fisico.</p>
 <p>Abbiamo una tabella di associatività che tiene traccia delle corrispondenze tra blocco virtuale e blocco fisico, quando vogliamo tradurre un indirizzo virtuale in fisico prendiamo il numero del blocco e lo cerchiamo nella tabella associativa (che ha accesso contemporaneo ad ogni riga), quando lo troviamo otteniamo il corrispondente blocco in memoria fisica a cui possiamo affiancare l’offset per ottenere l’indirizzo fisico.</p>
 <p>In caso di <strong>page fault</strong> non abbiamo un blocco preciso che il sistema operativo deve andare a sostituire ma può scegliere quello che preferisce.</p>
 <p><img src="https://i.ibb.co/GCJF8MZ/image.png" alt="enter image description here"></p>
+<h2 id="mapping-diretto-e-associativo">Mapping diretto e associativo</h2>
+<p>In questa tecnica cerchiamo di combinare i vantaggi delle due precedenti tecniche.</p>
+<p>i componenti per realizzare una memoria ad accesso diretto sono poco costosi, mentre le memorie ad accesso diretto sono decisamente più performanti ma anche più costose.</p>
+<p>In questo caso utilizziamo entrambe le memorie:</p>
+<ul>
+<li>Nella memoria principale metteremo ci sarà la solita tabella delle pagine.</li>
+<li>le righe della tabelle che sono state utilizzate più di recente vengono anche salvate in una memoria cache associativa chiamata <strong>TLB</strong> (Translation lookaside buffer)</li>
+</ul>
+<p>Quindi quando vogliamo tradurre un indirizzo prima andremo a vedere se c’è nella TLB (tramite mapping associativo), in caso negativo dovremo andare a cercare in RAM (tramite mapping diretto).</p>
+<p>L’utilizzo della TLB porta un notevole vantaggio grazie al principio di località spaziale: se un dato è stato riferito di recente è probabile che venga riferito ancora in tempi brevi</p>
+<p><img src="https://i.ibb.co/PZJL9rL/image.png" alt="enter image description here"></p>
+<h2 id="tabelle-di-pagine-multilivello">Tabelle di pagine multilivello</h2>
+<p>Dato che ogni processo ha una propria <em>page table</em> con il passare del tempo è diventato praticamente impossibile mantenere attive tutte le tabelle dei processi attivi, si saturerebbe la memoria RAM solo per contenere le tabelle.</p>
+<p>Si è pensato quindi di costruire una gerarchia ad albero di tabelle, i nodi interni dell’albero saranno delle tabelle di puntatori ad altre tabelle, le foglie dell’albero sono le vere page table che contengono gli indirizzi.<br>
+In questo modo è possibile andare direttamente alla tabella interessata percorrendo un cammino dell’albero.<br>
+Viene utilizzata sempre una TLB.</p>
+<p>L’utilizzo di pagine multilivello riduce sia il numero di righe della tabella presente in memoria sia l’overhead rispetto al mapping diretto.</p>
+<p>nella seguente immagine si mostra la traduzione con 2 livelli di gerarchia</p>
+<p><img src="https://i.ibb.co/23Ngg56/image.png" alt="enter image description here"></p>
+<p>l’indirizzo virtuale viene diviso diviso in 3 parti, in generale con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> livelli l’indirizzo dovrà essere diviso in <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n+1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> parti</p>
+<p>I sistemi di oggi utilizzano generalmente dai 2 ai 5 livelli di gerarchia.</p>
+<h2 id="tabella-inversa-delle-pagine">Tabella inversa delle pagine</h2>
+<p>La tabella inversa delle pagine mappa la pagina fisica a una o più pagine virtuali, quindi inversamente rispetto a prima che si mappava partendo dalla pagina virtuale a quella fisica.<br>
+La grandezza della tabella sarà dato dalla numero di <em>page frame</em><br>
+in ogni riga della tabella avremo PID + <em>page number</em>, mentre il numero della riga rappresenterà il numero fisico del blocco a cui accedere.</p>
+<p>(Nella tabella non sono presenti informazioni relative alla memoria secondaria)</p>
+<p>Vengono utilizzate delle <strong>funzioni hash</strong> cercare in quale riga appartiene l’indirizzo virtuale</p>
+<p>Dato che tendenzialmente si hanno più indirizzi virtuali di quelli fisici l’hashing genererà delle <strong>collisioni</strong> (più indirizzi virtuali vengono tradotti nello stessa riga della tabella). Questo viene risolto tramite il <strong>sistema di concatenamento</strong> in cui nelle righe un altro campo: un puntatore ad un’altra riga.</p>
+<p><img src="https://i.ibb.co/gMQJJmc/image.png" alt="enter image description here"></p>
+<p>L’indirizzo virtuale diviso in <em>page number</em> e <em>offset</em>, viene applicata la funzione hash sul <em>page number</em> che restituisce un indice della tabella:</p>
+<ul>
+<li>Se in quella riga sono già contenuti il PID e <em>page number</em> giusti allora non c’è collisione e l’indice della tabella viene affiancato all’offset per ottenere l’indirizzo fisico.</li>
+<li>Se in quella riga non è presente il PID e <em>page number</em> che ci interessano si va a scorrere la lista dei puntatori fino a che non si trova il PID e <em>page number</em> che vogliamo.
+<ul>
+<li>Una volta trovato possiamo utilizzare l’indice della tabella che abbiamo raggiunto affiancato all’offset come indirizzo fisico.</li>
+<li>Se nello scorrimento della lista si giunge ad un puntatore NULL significa che l’indirizzo non è mappato in memoria fisica e quindi dobbiamo dire al sistema operativo di recuperare la pagina dalla memoria secondaria, deve caricare la pagine nella memoria fisica in un indirizzo libero e deve aggiornare il puntatore NULL facendolo puntare alla nuova zona (la quale sarà lei ad avere puntatore NULL adesso).</li>
+</ul>
+</li>
+</ul>
+<p>Avere tante collisioni significa creare catene molto lunghe e la visita di un nodo della catena rappresenta un accesso in memoria RAM, quindi visitare tanti nodi richiede tanto tempo.<br>
+È possibile ridurre il numero di collisioni aumentando il range di valori di output della funzione hash tramite una <strong>tabella hash di ancoraggio</strong> (Hash Anchor Table, HAT)</p>
+<p>Utilizzando la HAT la funzione hash non restituirà subito l’indice della tabella inversa ma l’indice della tabella hash di ancoraggio che conterrà i puntatori agli indici della tabella inversa</p>
+<p><img src="https://i.ibb.co/J2n2Ly8/image.png" alt="enter image description here"></p>
+<h2 id="condivisione">Condivisione</h2>
+<p>È comune che vari processi condividano dati e librerie, possiamo quindi risparmiare un po di memoria evitando di mettere in memoria gli stessi dati più volte per ogni processo, ma piuttosto metterle una volta sola e lasciare che più processi possono accederci.</p>
+<p>Dobbiamo quindi identificare ogni pagina come <strong>condivisibile o meno</strong>.</p>
+<p>Bisogna anche scegliere quale politica attuare in caso di modifica dei dati da parte di un processo, i dati vengono modificati per tutti? creo una copia con la modifica? impedisco di modificare?</p>
+<p>Ad esempio Unix adotta la politica <strong>copy-on-write</strong> quando si fa un <em>fork</em> in cui il processo figlio inizialmente utilizza la stessa zona di memoria del padre ma quando un altro processo (il padre ad esempio) modifica dati condivisi viene creata una copia della pagina e la modifica viene fatta su questa copia. Da quel momento in poi padre e figlio utilizzeranno zone di memoria distinte.</p>
+<h2 id="sostituzione">Sostituzione</h2>
+<p>Quando dobbiamo referenziare una nuova pagina che non è presente in <em>page table</em> ma la memoria è piena bisogna sostituire una pagina presente in memoria.</p>
+<p>In generale quando bisogna inserire in memoria una nuova pagina bisogna decidere <strong>dove</strong> e il <strong>quando</strong>.</p>
+<p>per rispondere al “quando” esistono due strategie dette di <strong>fetch</strong>:</p>
+<ul>
+<li><strong>a richiesta</strong>: quando il processore riferisce una pagina allora la andiamo a caricare in memoria (caricamento iniziale del processo molto rapido ma poi l’esecuzione è più lenta)</li>
+<li><strong>a previsione</strong>: si cerca di prevedere quali pagine potrebbero essere richieste e quindi le andiamo già a caricare (caricamento iniziale del processo lento ma esecuzione più veloce)</li>
+</ul>
+<p>La previsione delle pagine si base su due principi: il principio di località spaziale e di località temporale.</p>
+<ul>
+<li>località spaziale: se accedo ad un dato in una pagine è probabile che a breve accederò ai dati delle pagine adiacenti</li>
+<li>località temporale: se accedo ad un dato è probabile che a breve ci riaccenderò</li>
+</ul>
+<p>Solitamente si fissa un limite di quante pagine vengono caricate per previsione. La previsione non agisce nel caso ci siano delle sostituzioni da fare, funziona solo se c’è della memoria libera.</p>
+<h3 id="sostituzione-di-pagina">Sostituzione di pagina</h3>
+<p>Quando un pagina referenziato non è presente in memoria il sistema operativo deve:</p>
+<ol>
+<li>cercare la pagine in memoria secondaria</li>
+<li>caricarla in memoria</li>
+<li>aggiornare la <em>page table</em></li>
+</ol>
+<p>Quando bisogna sostituire una pagina in memoria, bisogna controllare il <em><strong>dirty bit</strong></em> della pagina da sostituire, se esso è a 1 significa che la pagina è stata modificata ma la modifica non risulta nel disco secondario. Bisogna quindi aggiornare la pagina in memoria secondaria (operazione detta <strong>flush</strong>) prima di rimuoverla dalla memoria.</p>
+<h2 id="strategie-di-sostituzione">Strategie di sostituzione</h2>
+<p>Esistono varie tecniche di sostituzione:</p>
+<h3 id="sostituzione-casuale">Sostituzione casuale</h3>
+<p>Viene sostituita una pagina casuale.</p>
+<ul>
+<li>Veloce</li>
+<li>semplice</li>
+<li>overhead molto basso</li>
+<li>rischio di sostituire la pagina appena inserita</li>
+<li>equa</li>
+</ul>
+<h3 id="sostituzione-fifo">Sostituzione FIFO</h3>
+<p>Viene sostituita la pagina che è arrivata in memoria per prima.</p>
+<ul>
+<li>può sostituire pagine spesso utilizzate</li>
+<li>overhead basso</li>
+<li>può causare un susseguirsi di page fault in alcune situazioni</li>
+<li>all’aumentare della grandezza della page table aumentano anche i page fault (anomalia di Belady)</li>
+</ul>
+<h3 id="sostituzione-lru">Sostituzione LRU</h3>
+<p>Viene sostituita la pagina che da più tempo non è riferita (Least Recently Used)</p>
+<ul>
+<li>overhead medio, bisogna tenere traccia di quando è stata riferita un pagina</li>
+<li>prestazioni migliori di FIFO</li>
+</ul>
+<h3 id="sostituzione-lfu">Sostituzione LFU</h3>
+<p>Viene sostituita la pagina riferita meno spesso di tutte (Least Frequently Used)</p>
+<ul>
+<li>overhead medio, bisogna tenere traccia di quanto spesso vengono riferite le pagine</li>
+<li>potrebbe facilmente sbagliare la predizione</li>
+</ul>
+<h3 id="sostituzione-nfu">Sostituzione NFU</h3>
+<p>Viene sostituita la pagina che recentemente non è stata riferita (Not Frequently Used)</p>
+<ul>
+<li>overhead significativo, è necessario un contatore da aggiornare regolarmente su ogni pagina</li>
+</ul>
+<h3 id="sostituzione-nru">Sostituzione NRU</h3>
+<p>Viene sostituita la pagina che recentemente non è stata riferita (Not Recently Used)<br>
+Uguale al NFU ma cerca di ottimizzarlo utilizzando un <strong>bit di modifica</strong> e un <strong>bit di riferimento</strong> che vengono regolarmente azzerati:</p>
+<ul>
+<li>bit di riferimento: se 0 la pagina non è stata riferita, se 1 è stata riferita</li>
+<li>bit di modifica: se 0 la pagina non è stata modificata, se 1 è stata modificata</li>
+</ul>
+<p>Possiamo decidere le migliori scelte secondo la seguente tabella:</p>
 
+<table>
+<thead>
+<tr>
+<th align="center">bit riferimento</th>
+<th align="center">bit modifica</th>
+<th align="center">descrizione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">0</td>
+<td align="center">0</td>
+<td align="center">Migliore scelta per la sostituzione</td>
+</tr>
+<tr>
+<td align="center">0</td>
+<td align="center">1</td>
+<td align="center">Caso particolare dovuto all’azzeramento dei bit avvenuto assieme alla modifica, si presume che si come il caso 1 1</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">0</td>
+<td align="center">Scelta media</td>
+</tr>
+<tr>
+<td align="center">1</td>
+<td align="center">1</td>
+<td align="center">Peggiore scelta per la sostituzione</td>
+</tr>
+</tbody>
+</table>
     </div>
   </div>
 </body>
