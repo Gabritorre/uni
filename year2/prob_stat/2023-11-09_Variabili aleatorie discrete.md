@@ -94,7 +94,7 @@ La media (il valore atteso) della distribuzione bernoulliana è
 
 $$\mathbb{E}[X] = p$$
 
-La varianza della distribuzione ipergeometrica è
+La varianza della distribuzione bernoulliana è
 
 $$\text{Var}[X] = p(1-p)$$
 
@@ -122,10 +122,17 @@ $$\mathbb{P}[X = x] = \binom{n}{x}p^x(1-p)^{n-x}$$
 
 ovviamente $x \in \{0,..., n\}$
 
+La media (il valore atteso) della distribuzione binomiale è
+
+$$\mathbb{E}[X] = np$$
+
+La varianza della distribuzione binomiale è
+
+$$\text{Var}[X] = np(1-p)$$
+
 Questa distribuzione ricopre il caso delle **popolazioni con reinserimento**
 
 la distribuzione di Bernoulli è un caso particolare di questa distribuzione in cui $n = 1$
-
 
 ### Esempio
 
@@ -136,3 +143,74 @@ Considerando l’estrazione di pallina bianca come successo e visto che $\mathbb
 Allora:
 
 $\mathbb{P}[S_3 = 2] = \binom{3}{2}(\frac{4}{7})^2(1-\frac{4}{7})^{3-2} = 0.4198$
+
+
+## Distribuzione di Poisson
+
+Una variabile aleatoria quando può assumere in tutto l'insieme dei numeri naturali $\mathbb{N}$, abbiamo una distribuzione di Poisson.
+
+La distribuzione di Poisson viene utilizzata come modello in tutti quei casi in cui la variabile aleatoria assume una quantità di valori tendenti ad infinito e in cui la probabilità di ognuno è bassissima.
+
+Degli esempi di testi in cui si può utilizzare questa distribuzione sono:
+
+1. "chiamate in arriva entro 1 ora"
+2. "automobili in transito in una strada dalle 9am alle 11am"
+3. "difetti rilevati in un pezzo d'acciaio prodotto in una ditta"
+
+notiamo sempre che dobbiamo contare qualcosa in una unità di tempo (non sempre si tratta di tempo, come nel caso 3)
+
+Questa distribuzione si scrive come:
+
+$$X \sim \text{Po}(\lambda)$$
+
+La probabilità di avere $k$ casi contati è
+
+$$\mathbb{P}[X = k] = \frac{\lambda^k}{k!}\cdot e^{-\lambda}$$
+
+con $k \in \mathbb{N}$
+e $\lambda$ che rappresenta quanti valori si contano **in media** nell'unità di tempo
+
+La media (il valore atteso) della distribuzione di Poisson è
+
+$$\mathbb{E}[X] = \lambda$$
+
+La varianza della distribuzione di Poisson è
+
+$$\text{Var}[X] = \lambda$$
+
+
+### Esempio
+
+Al mio account di posta elettronica arrivano messaggi con una media di 10 ogni mezz’ora.
+Qual è la probabilità che nella prossima mezz’ora mi arrivino non più di 3 messaggi?
+
+$X = \text{“n. messaggi ogni mezz’ora”}∼ Po (λ = 10)$
+
+$\mathbb{P}[X \leq 3] = \mathbb{P}[X = 0] + \mathbb{P}[X = 1] + \mathbb{P}[X = 2] + \mathbb{P}[X =3]$
+
+$\mathbb{P}[X \leq 3] = \frac{10^0}{0!}e^{-10} + \frac{10^1}{1!}e^{-10} + \frac{10^2}{2!}e^{-10} +\frac{10^3}{3!}e^{-10} = 0.0103$
+
+### Approssimazione della Binomiale
+
+In alcuni casi è possibile utilizzare le formule della distribuzione binomiale come una buona approssimazione della distribuzione binomiale.
+
+I casi in questo si può fare sono quei casi in cui $n$ è grande e la probabilità di ogni valore è molto basso inoltre il prodotto $np$ deve tendere a $\lambda$
+Generalmente quando $n \geq 100$ e $p \leq 0.05$
+
+quindi la distribuzione binomiale:
+
+$\binom{n}{x}p^x(1-p)^{n-x}$
+
+si può calcolare con: 
+
+$$e^{-\lambda}\cdot \frac{\lambda^x}{x!}$$
+
+Ad esempio:
+
+Una fabbrica di componenti elettronici fornisce il 3% dei chip acquistati da un produttore di telefoni cellulari. Qual è la probabilità che su 100 chip acquistati ve ne siano al massimo 3 provenienti da quella fabbrica?
+
+Dato che $n=100$ è grande e $p=0.03$ è piccolo, si può utilizzare la distribuzione di Poisson con $\lambda = 100 \cdot 0.03 = 3$
+
+$$\mathbb{P}[X \leq 3] = \sum_{k = 0}^{3}\frac{3^k}{k!}e^{-3} = 0.6472$$
+
+
