@@ -319,3 +319,225 @@ se prendo $\epsilon = 1$ ottengo che $f(n) = O(n)$ che è vero quindi:
 $$T(n) = \Theta(n^2)$$
 
 
+## Dimostrazione del teorema Master
+
+La dimostrazione si divide in 2 grandi passaggi:
+1. Trasformare la formula generale in una formula non ricorsiva
+2. dimostrare i singoli casi
+
+### Step 1
+
+Realizzando l'albero delle ricorsioni basato sulla formula:
+
+$$T(n)  = a\cdot T\left(\frac{n}{b}\right) + f(n)$$
+
+![enter image description here](https://i.ibb.co/7vtWHp6/image.png)
+
+Al primo livello abbiamo un solo nodo, che rappresenta la chiamata ricorsiva iniziale che riceve un problema di dimensione $n$. Questo nodo creerà $a$ nodi figli i quali risolveranno problemi di dimensione $\frac{n}{b}$, Questa operazione si ripete fino al raggiungimento delle foglie.
+
+Possiamo notare che:
+
+1. ad ogni livello $i$ i nodi presenti in quel livello sono $a^i$
+2. ad ogni livello $i$ la dimensione del problema di ogni nodo è $\frac{n}{b^i}$
+3. il tempo che ogni nodo impiegherà a risolvere il relativo sottoproblema è una funzione della sua dimensione: $f(\frac{n}{b^i})$
+
+Il tempo di esecuzione totale sarà pari alla somma delle complessità di ogni livello:
+
+$$T(n) = \sum_{i = 0}^{\text{tot\_livelli}}a^i \cdot f\left(\frac{n}{b^i}\right)$$
+
+Ora dobbiamo trovare il numero totale di livelli.
+
+Possiamo esplicitare il caso base che avrà una complessità costante:
+
+$$T(n) = \begin{cases}
+a \cdot T(\frac{n}{b}) + f(n) & n \geq 2\\
+c & n = 1
+\end{cases}$$
+
+Per trovare il numero di livelli facciamo una sostituzione per ricondurci al caso base:
+
+$$\frac{n}{b^i} = 1$$
+
+dal quale otteniamo il valore di $i$:
+
+$$n = b^i$$
+
+$$i = \log_b n$$
+
+Possiamo quindi riscrivere la formula precedente come:
+
+$$T(n) = \sum_{i = 0}^{\log_b n}a^i \cdot f\left(\frac{n}{b^i}\right)$$
+
+ora concentriamoci a trovare il numero di foglie totali e il numero di nodi totali:
+
+- numero di foglie:
+	le foglie sono **l'ultimo livello** quindi quando $i = \log_b n$
+
+	$$n_\text{foglie} = a^{\log_b n}$$
+	
+	$$= a^{\log_b a \cdot \log_a n}$$
+
+	$$= (a^{\log_a n})^{\log_b a}$$
+
+	$$= n^{\log_b a}$$
+
+	$$= n^{d}$$
+
+- numero totale di nodi:
+	il numero di nodi è dato dalla somma dei nodi presenti su ogni livello
+
+	$$n_\text{nodi} = \sum_{i=0}^{\log_b n}a^i$$
+
+	che è una progressione geometrica
+	
+	$$= \frac{a^{\log_b n+1} -1}{a-1}$$
+	
+	$$= \frac{a \cdot a^{\log_b n} -1}{a-1}$$
+
+	$$= \frac{a \cdot n^d -1}{a-1}$$
+
+	siamo quindi nell'ordine di $\Theta(n^d)$
+
+### Step 2
+
+Ora andiamo ad dimostrare il teorema master caso per caso
+
+
+### Caso 1
+
+Dall'ipotesi sappiamo che $\exist \epsilon > 0, f(n) = O(n^{d-\epsilon})$
+
+applichiamo tale ipotesi alla formula della complessità totale di un livello $i$-esimo
+
+$$a^i \cdot f\left(\frac{n}{b^i}\right)=$$
+
+Che per la nostra ipotesi diventa:
+
+$$= a^i \cdot O\left(\left(\frac{n}{b^i}\right)^{d-\epsilon}\right)$$
+
+$$= O\left(a^i\cdot\left(\frac{n}{b^i}\right)^{d-\epsilon}\right)$$
+
+$$= O\left(a^i\cdot\frac{n^{d-\epsilon}}{(b^i)^{d - \epsilon}}\right)$$
+
+$$= O\left(a^i\cdot\frac{n^{d-\epsilon}}{(b^i)^{d}\cdot (b^i)^{-\epsilon}}\right)$$
+
+$$= O\left(a^i\cdot\frac{n^{d-\epsilon}}{(b^d)^{i}\cdot (b^i)^{-\epsilon}}\right)$$
+
+dato che $d = \log_ba$ allora $(b^{d})^i$ equivale a $a^i$ che possiamo semplificare.
+
+$$= O\left(\frac{n^{d-\epsilon}}{(b^i)^{-\epsilon}}\right)$$
+
+$$= O\left((b^i)^\epsilon \cdot n^{d-\epsilon}\right)$$
+
+$$= O\left((b^\epsilon)^i \cdot n^{d-\epsilon}\right)$$
+
+Utilizzando i calcoli appena fatti calcoliamo la sommatoria della complessità di ogni livello per trovare la complessità totale
+
+$$T(n) = \sum_{i = 0}^{\log_b n} a^i \cdot f\left(\frac{n}{b^i}\right)$$
+
+$$= \sum_{i = 0}^{\log_b n} O\left((b^\epsilon)^i \cdot n^{d-\epsilon}\right)$$
+
+$$= O\left(n^{d-\epsilon} \cdot \sum_{i = 0}^{\log_b n} (b^\epsilon)^i\right)$$
+
+la sommatoria è una progressione geometrica
+
+$$= O\left(n^{d-\epsilon} \cdot \frac{(b^\epsilon)^{\log_b (n) +1}-1}{b^\epsilon - 1}\right)$$
+
+$$= O\left(n^{d-\epsilon} \cdot \frac{b^\epsilon \cdot (b^\epsilon)^{\log_b (n)}-1}{b^\epsilon - 1}\right)$$
+
+$$= O\left(n^{d-\epsilon} \cdot \frac{b^\epsilon \cdot (b^{\log_b n})^{\epsilon}-1}{b^\epsilon - 1}\right)$$
+
+$$= O\left(n^{d-\epsilon} \cdot \frac{b^\epsilon \cdot n^{\epsilon}-1}{b^\epsilon - 1}\right)$$
+
+togliamo le costanti
+
+$$= O\left(n^{d-\epsilon} \cdot n^{\epsilon}\right)$$
+
+$$= O\left(n^{d}\right)$$
+
+
+Dato che l'algoritmo dovrà passare per tutti i $n^d$ nodi foglia quindi l'algoritmo è limitato inferiormente da $n^d$, quindi $T(n) = \Omega(n^d)$
+
+Possiamo quindi concludere che un algoritmo che ricade in questo caso avrà complessità simile a $n^d$, quindi 
+$$T(n)=\Theta(n^d)$$
+
+### Caso 2
+
+Dall'ipotesi sappiamo che se $f(n) = \Theta(n^{d})$ allora
+$T(n) = \Theta(n^d \log n)$
+
+
+applichiamo tale ipotesi alla formula della complessità totale di un livello $i$-esimo
+
+$$a^i \cdot f\left(\frac{n}{b^i}\right)=$$
+
+Che per la nostra ipotesi diventa:
+
+$$a^i \cdot \Theta\left(\left(\frac{n}{b^i}\right)^d\right)$$
+
+$$\Theta\left(a^i \cdot \frac{n^d}{(b^{i})^{d}}\right)$$
+
+come nel caso 1 possiamo semplificare $a^i$ con $(b^d)^i$
+
+$$\Theta\left(n^d\right)$$
+
+
+Sappiamo che la complessità è data dalla seguente sommatoria:
+
+$$\sum_{i = 0}^{\log_b n}a^i f\left(\frac{n}{b^i}\right)$$
+
+in cui possiamo sostituire quello che abbiamo trovato prima
+
+$$\sum_{i = 0}^{\log_b n} \Theta(n^d)$$
+
+$$\Theta\left(\sum_{i = 0}^{\log_b n}n^d\right)$$
+
+la sommatoria esegue $(\log_b n + 1)$ somme di $n^d$ (il $+1$ è dato dal fatto che i parte da 0 e non da 1)
+
+$$\Theta\left(n^d \log n\right)$$
+
+
+### Caso 3
+
+Dall'ipotesi sappiamo che $f(n) = \Omega(n^{d + \epsilon})$ e che
+$\exist 0<c<1 \hspace{3mm} af(\frac{n}{b}) \leq c \cdot f(n)$
+
+La seconda condizione ci sta dicendo che la complessità temporale del livello 0 (la radice) dell'albero è più dispendiosa della complessità dei livelli successivi. Questo accade perche il tempo di *split* + *merge* domina sulla risoluzione effettiva dei sottoproblemi.
+La **formula più generale** sarebbe:
+
+$$\forall i\geq 0 \hspace{3mm} a^if\left(\frac{n}{b^i}\right) \leq c^i \cdot f(n)$$
+
+La complessità dell'albero è sempre dato da:
+
+$$T(n) = \sum_{i = 0}^{\log_b n} a^i \cdot f\left(\frac{n}{b^i}\right)$$
+
+che per la nostra ipotesi generalizzata sappiamo essere minore di:
+
+$$\leq \sum_{i = 0}^{\log_b n} c^i \cdot f(n)$$
+
+possiamo portare fuori $f(n)$ da quest'ultimo
+
+$$=f(n)\sum_{i = 0}^{\log_b n} c^i$$
+
+a questo punto possiamo eliminare la sommatoria maggiorandola con la stessa sommatoria ma che va ad infinito. Dato che $c$ è un valore sicuramente positivo allora la somma che va ad infinito sarà sicuramente più grande
+
+$$\leq f(n)\sum_{i = 0}^{\infty} c^i$$
+
+Una serie geometrica infinita è uguale a $\frac{1}{1-c}$:
+
+$$=f(n)\cdot \frac{1}{1-c}$$
+
+rimuovendo in termini costanti otteniamo che la complessità è 
+
+$$T(n) = O(f(n))$$
+
+per quanto riguarda il verificare che $T(n) = \Omega(f(n))$, possiamo semplicemente dedurlo dalla formula del teorema master:
+
+$$T(n) = aT\left(\frac{n}{b}\right) + f(n)$$
+
+dato che $aT\left(\frac{n}{b}\right)$ è sicuramente una quantità positiva allora la complessità sarà sicuramente più grande o uguale ad $f(n)$
+
+concludiamo quindi che $T(n) = \Theta(f(n))$
+
+
+
