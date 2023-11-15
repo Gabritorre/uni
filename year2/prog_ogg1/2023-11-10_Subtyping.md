@@ -33,9 +33,12 @@ race(c1, b, 100);
 ```
 Abbiamo una superclasse `Vehicle` le cui classi estese sono `Car` e `Bycycle`, poi abbiamo `Truck` che estende `Car` quindi è comunque imparentata con `Vehicle`.
 
-Nonostante il metodo `race` accetti come parametri dei tipi `Vehicle` posso comunque chiamare il metodo con le sue sottoclassi senza problemi.
+Nonostante il metodo `race` accetti come parametri dei tipi `Vehicle` posso comunque chiamare il metodo con oggetti del tipo delle sue sottoclassi senza problemi.
 
 Ovviamente bisogna che all'interno dell'implementazione del metodo race ci siano campi e metodi della classe `Vehicle` in modo che sicuramente tutte le sottoclassi abbiano l'implementazione di quei metodi.
+
+
+
 
 
 ## Polimorfimo
@@ -45,3 +48,57 @@ Il concetto di polimorfismo significa usare lo stesso simbolo, ad esempio un met
 Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo `race` che come parametro prende la classe `Vehicle` la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata.
 
 Il polimorfismo è realizzato attraverso l'ereditarietà e il subtyping
+
+
+## tipi dinamici
+
+In Java abbiamo dei tipi statici e dinamici:
+
+- i tipi statici vengono determinati in tempo di compilazione
+- i tipi dinamici vengono determinati in *runtime*
+
+
+Stiamo utilizzando i tipi dinamici quando Ad un oggetto che ha il tipo di una superclasse istanziamo una sua sottoclasse, ad esempio
+
+```java
+Vehicle v = new Car();
+```
+
+`Vehicle` è il tipo statico mentre `Car` è il tipo dinamico, questo perché noi inizialmente adiamo a dichiarare il tipo della variabile `v` che è `Vehicle` il quale statico (in fase di compilazione si sa quale tipo deve avere `v`) per quanto riguarda il tipo dinamico il compilatore  potrebbe non riuscire a determinare quale sarà il sottotipo assegnato alla variabile, che sarà quindi determinato in fase di esecuzione.
+
+```java
+Vehicle v = null;
+if (Math.random() > 0.5) {
+	v = new Car();
+}
+else {
+	v = new Bicycle();
+}
+//sia Car che Bicycle sono sottotipi della classe Vehicle quindi il codice compila.
+```
+
+**Il tipo dinamico deve essere una sottoclasse del tipo statico** altrimenti il codice non compila
+
+
+### Type casting
+
+È possibile anche castare un oggetto in un suo sottotipo:
+
+```java
+Vehicle v = new Car();
+Car a = (Car) v;
+```
+
+è possibile fare il casting solo verso un tipo che è sottoclasse dell'oggetto da castare, nell'esempio `Car` è sottoclasse di `Vehicle`
+
+
+### instanceof
+
+Per determinare il tipo dinamico di un oggetto si usa la keyword `instanceof`
+
+`<oggetto> instanceof <TipoDesiderato>`
+
+che restituisce `true` oppure `false`
+
+Torna molto utile di utilizzare `instanceof` prima di fare il casting del tipo, per essere sicuri che il casting non dia errore in *runtime*
+

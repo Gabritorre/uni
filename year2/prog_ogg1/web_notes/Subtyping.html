@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#sostituzione-con-la-sottoclasse">Sostituzione con la sottoclasse</a></li>
 <li><a href="#polimorfimo">Polimorfimo</a></li>
+<li><a href="#tipi-dinamici">tipi dinamici</a></li>
 </ul>
 </li>
 </ul>
@@ -51,12 +52,43 @@ Bicycle b <span class="token operator">=</span> <span class="token keyword">new<
 <span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> b<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Abbiamo una superclasse <code>Vehicle</code> le cui classi estese sono <code>Car</code> e <code>Bycycle</code>, poi abbiamo <code>Truck</code> che estende <code>Car</code> quindi è comunque imparentata con <code>Vehicle</code>.</p>
-<p>Nonostante il metodo <code>race</code> accetti come parametri dei tipi <code>Vehicle</code> posso comunque chiamare il metodo con le sue sottoclassi senza problemi.</p>
+<p>Nonostante il metodo <code>race</code> accetti come parametri dei tipi <code>Vehicle</code> posso comunque chiamare il metodo con oggetti del tipo delle sue sottoclassi senza problemi.</p>
 <p>Ovviamente bisogna che all’interno dell’implementazione del metodo race ci siano campi e metodi della classe <code>Vehicle</code> in modo che sicuramente tutte le sottoclassi abbiano l’implementazione di quei metodi.</p>
 <h2 id="polimorfimo">Polimorfimo</h2>
 <p>Il concetto di polimorfismo significa usare lo stesso simbolo, ad esempio un metodo, che si comporta in maniera diversa in base all’oggetto su cui è chiamato.</p>
 <p>Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo <code>race</code> che come parametro prende la classe <code>Vehicle</code> la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata.</p>
 <p>Il polimorfismo è realizzato attraverso l’ereditarietà e il subtyping</p>
+<h2 id="tipi-dinamici">tipi dinamici</h2>
+<p>In Java abbiamo dei tipi statici e dinamici:</p>
+<ul>
+<li>i tipi statici vengono determinati in tempo di compilazione</li>
+<li>i tipi dinamici vengono determinati in <em>runtime</em></li>
+</ul>
+<p>Stiamo utilizzando i tipi dinamici quando Ad un oggetto che ha il tipo di una superclasse istanziamo una sua sottoclasse, ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><code>Vehicle</code> è il tipo statico mentre <code>Car</code> è il tipo dinamico, questo perché noi inizialmente adiamo a dichiarare il tipo della variabile <code>v</code> che è <code>Vehicle</code> il quale statico (in fase di compilazione si sa quale tipo deve avere <code>v</code>) per quanto riguarda il tipo dinamico il compilatore  potrebbe non riuscire a determinare quale sarà il sottotipo assegnato alla variabile, che sarà quindi determinato in fase di esecuzione.</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> null<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">else</span> <span class="token punctuation">{</span>
+	v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//sia Car che Bicycle sono sottotipi della classe Vehicle quindi il codice compila.</span>
+</code></pre>
+<p><strong>Il tipo dinamico deve essere una sottoclasse del tipo statico</strong> altrimenti il codice non compila</p>
+<h3 id="type-casting">Type casting</h3>
+<p>È possibile anche castare un oggetto in un suo sottotipo:</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car a <span class="token operator">=</span> <span class="token punctuation">(</span>Car<span class="token punctuation">)</span> v<span class="token punctuation">;</span>
+</code></pre>
+<p>è possibile fare il casting solo verso un tipo che è sottoclasse dell’oggetto da castare, nell’esempio <code>Car</code> è sottoclasse di <code>Vehicle</code></p>
+<h3 id="instanceof">instanceof</h3>
+<p>Per determinare il tipo dinamico di un oggetto si usa la keyword <code>instanceof</code></p>
+<p><code>&lt;oggetto&gt; instanceof &lt;TipoDesiderato&gt;</code></p>
+<p>che restituisce <code>true</code> oppure <code>false</code></p>
+<p>Torna molto utile di utilizzare <code>instanceof</code> prima di fare il casting del tipo, per essere sicuri che il casting non dia errore in <em>runtime</em></p>
 
     </div>
   </div>
