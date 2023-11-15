@@ -26,6 +26,9 @@
 <li><a href="#condivisione">Condivisione</a></li>
 <li><a href="#sostituzione">Sostituzione</a></li>
 <li><a href="#strategie-di-sostituzione">Strategie di sostituzione</a></li>
+<li><a href="#il-modello-working-set">il modello working set</a></li>
+<li><a href="#dimensione-della-pagina">Dimensione della pagina</a></li>
+<li><a href="#strategie-di-sostituzioni-globali">Strategie di sostituzioni globali</a></li>
 </ul>
 </li>
 </ul>
@@ -238,7 +241,72 @@ Uguale al NFU ma cerca di ottimizzarlo utilizzando un <strong>bit di modifica</s
 <td align="center">Peggiore scelta per la sostituzione</td>
 </tr>
 </tbody>
-</table>
+</table><h3 id="sostituzione-fifo-con-second-chance">Sostituzione FIFO con second chance</h3>
+<p>Viene esaminato il bit di riferimento della pagina più vecchia in memoria:</p>
+<ul>
+<li>se il bit è a 0: significa che la pagina non è stata riferita e quindi viene selezionata per la sostituzione</li>
+<li>se il bit è a 1: significa che la pagina è stata utilizzata, viene quindi azzerato il bit e viene messa alla fine della coda (rimane quindi ancora in memoria)</li>
+</ul>
+<p>L’algoritmo continua a cercare tra le pagine fino a che non ne trova una con il bit a 0.</p>
+<h3 id="sostituzione-a-orologio">Sostituzione a orologio</h3>
+<p>Funziona esattamente come la second chance ma al posto di avere una lista lineare si ha una lista circolare (come un orologio)</p>
+<p>se il bit di riferimento è a 0 si rimuove la pagina attualmente puntata, altrimenti si azzera e si punta alla pagina successiva</p>
+<h3 id="sostituzione-delle-pagine-far">Sostituzione delle pagine Far</h3>
+<p>Viene costruito un grafo in cui:</p>
+<ul>
+<li>i nodi rappresentano le pagine</li>
+<li>gli archi sono i riferimenti che una pagina fa ad un’altra</li>
+</ul>
+<p>per scegliere la pagina da sostituire si cerca la pagina non referenziata più lontana rispetto alla prima pagina referenziata che incontra</p>
+<p><img src="https://i.ibb.co/N6hNr1W/image.png" alt="enter image description here"><br>
+Nell’esempio verrà scelto Q dato che ha 2 archi per arrivare alla prima pagina referenziata, gli altri nodi non referenziati hanno solo 1 arco di distanza.</p>
+<p>Ad oggi non risulta conveniente implementare questa tecnica seppure sulla carta sia ottima, perché richiede un gran costo prestazionale per la costruzione e le varie modifiche al grafo.</p>
+<h2 id="il-modello-working-set">il modello working set</h2>
+<p>Il <strong>working set</strong> rappresenta l’insieme delle pagine su cui un processo sta lavorando in un determinato momento.</p>
+<p>Grazie al <strong>principio di località</strong> possiamo scegliere un range di pagine da caricare in memoria e questo range scorre le pagine nel tempo, minimizzando le possibilità di page fault dato che prevediamo le pagine che utilizzerà il processo.</p>
+<p><img src="https://i.ibb.co/dKkdwmp/image.png" alt="enter image description here"></p>
+<p>Il range di pagine va scelto proporzionalmente alla dimensione del programma da eseguire.<br>
+Scegliere un range di pagine troppo grande non porterebbe vantaggi significativi rispetto al page fault</p>
+<h3 id="clock-working-set">Clock Working set</h3>
+<p>Anche in questo caso è possibile tenere una lista circolare delle pagine dove ogni pagine altre a mantenere il bit di riferimento tiene anche il tempo risalente all’ultimo utilizzo di quella pagina</p>
+<p>Un esempio di funzionamento:</p>
+<p><img src="https://i.ibb.co/yd1Kp7G/image.png" alt="enter image description here"></p>
+<p><img src="https://i.ibb.co/k8Xw8T5/image.png" alt="enter image description here"></p>
+<h3 id="sostituzione-page-fault-frequency">Sostituzione Page Fault Frequency</h3>
+<p>La sostituzione <strong>PFF</strong> (<em>Page Fault Frequency</em>), si base sul quanto spesso un processo fa page fault, il tempo che passa tra un page fault ed un’altro è detto <strong>interfault</strong>.</p>
+<p>Questo meccanismo non fa altro che regolare la quantità di pagine in memoria per il processo in base al suo numero di page fault: se vengono fatti tanti page fault è probabile che abbia poche pagine in memoria, se non fa mai page fault forse ha troppe pagine in memoria</p>
+<h3 id="rilascio-delle-pagine">Rilascio delle pagine</h3>
+<p>Può capitare che una pagina che non verrà più utilizzata rimanga molto in memoria prima che l’algoritmo di sostituzione se ne accorga.<br>
+Il processo può risolvere questo problema chiedendo volontariamente di <strong>rilasciare la pagine</strong>, ottimizzando così la liberazione della memoria piuttosto che aspettare che tale pagina esca dal working set.</p>
+<h2 id="dimensione-della-pagina">Dimensione della pagina</h2>
+<p>La scelta della dimensione della pagine è molto importante:</p>
+<ul>
+<li>con pagine piccole:
+<ul>
+<li>minor frammentazione interna</li>
+<li>working set più piccolo</li>
+<li>minor spreco di memoria</li>
+<li>abbiamo però una tabella delle pagine molto grande</li>
+</ul>
+</li>
+<li>con dimensione grande:
+<ul>
+<li>migliora l’efficacia della TLB (dato che punta ad una maggiore quantità di indirizzi)</li>
+<li>riduce il numero di trasferimenti tra memoria secondaria e principale</li>
+<li>tabella delle pagine più piccola</li>
+</ul>
+</li>
+<li>si può avere anche multiple dimensioni della pagina
+<ul>
+<li>in questo caso avremo la possibilità di frammentazione esterna</li>
+</ul>
+</li>
+</ul>
+<h2 id="strategie-di-sostituzioni-globali">Strategie di sostituzioni globali</h2>
+<p>Finora abbiamo visto delle strategie di <strong>sostituzioni locali per il singolo processo</strong>, ma possiamo anche applicare delle strategie che lavorano su tutte le pagine in memoria indipendentemente dal processo.</p>
+<p>Ad esempio <strong>LRU globale</strong>: Sostituisce la pagina meno utilizzata in tutta la memoria.</p>
+<p>oppure la <strong>SEQ</strong> che usa il LRU per rimuovere le pagine meno utilizzate fino a che non rileva dei page fault di pagine contigue, in quel caso per interrompere la sequenza di errori utilizza la tecnica MRU (<em>Most Recently Used</em>), che rimuove la pagina utilizzata più di recente, basandosi sul fatto che molto probabilmente verrà rimessa in memoria a breve.</p>
+
     </div>
   </div>
 </body>

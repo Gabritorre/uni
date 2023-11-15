@@ -261,3 +261,94 @@ Possiamo decidere le migliori scelte secondo la seguente tabella:
 | 1 | 0 | Scelta media |
 | 1 | 1 | Peggiore scelta per la sostituzione |
 
+
+### Sostituzione FIFO con second chance
+
+Viene esaminato il bit di riferimento della pagina più vecchia in memoria:
+
+- se il bit è a 0: significa che la pagina non è stata riferita e quindi viene selezionata per la sostituzione
+- se il bit è a 1: significa che la pagina è stata utilizzata, viene quindi azzerato il bit e viene messa alla fine della coda (rimane quindi ancora in memoria)
+
+L'algoritmo continua a cercare tra le pagine fino a che non ne trova una con il bit a 0.
+
+### Sostituzione a orologio
+
+Funziona esattamente come la second chance ma al posto di avere una lista lineare si ha una lista circolare (come un orologio)
+
+se il bit di riferimento è a 0 si rimuove la pagina attualmente puntata, altrimenti si azzera e si punta alla pagina successiva
+
+### Sostituzione delle pagine Far
+
+Viene costruito un grafo in cui:
+- i nodi rappresentano le pagine
+- gli archi sono i riferimenti che una pagina fa ad un'altra
+
+per scegliere la pagina da sostituire si cerca la pagina non referenziata più lontana rispetto alla prima pagina referenziata che incontra
+
+![enter image description here](https://i.ibb.co/N6hNr1W/image.png)
+Nell'esempio verrà scelto Q dato che ha 2 archi per arrivare alla prima pagina referenziata, gli altri nodi non referenziati hanno solo 1 arco di distanza.
+
+Ad oggi non risulta conveniente implementare questa tecnica seppure sulla carta sia ottima, perché richiede un gran costo prestazionale per la costruzione e le varie modifiche al grafo.
+
+## il modello working set
+
+Il **working set** rappresenta l'insieme delle pagine su cui un processo sta lavorando in un determinato momento.
+
+
+Grazie al **principio di località** possiamo scegliere un range di pagine da caricare in memoria e questo range scorre le pagine nel tempo, minimizzando le possibilità di page fault dato che prevediamo le pagine che utilizzerà il processo.
+
+![enter image description here](https://i.ibb.co/dKkdwmp/image.png)
+
+Il range di pagine va scelto proporzionalmente alla dimensione del programma da eseguire. 
+Scegliere un range di pagine troppo grande non porterebbe vantaggi significativi rispetto al page fault
+
+### Clock Working set
+
+Anche in questo caso è possibile tenere una lista circolare delle pagine dove ogni pagine altre a mantenere il bit di riferimento tiene anche il tempo risalente all'ultimo utilizzo di quella pagina
+
+Un esempio di funzionamento:
+
+![enter image description here](https://i.ibb.co/yd1Kp7G/image.png)
+
+![enter image description here](https://i.ibb.co/k8Xw8T5/image.png)
+
+
+### Sostituzione Page Fault Frequency
+
+La sostituzione **PFF** (*Page Fault Frequency*), si base sul quanto spesso un processo fa page fault, il tempo che passa tra un page fault ed un'altro è detto **interfault**.
+
+Questo meccanismo non fa altro che regolare la quantità di pagine in memoria per il processo in base al suo numero di page fault: se vengono fatti tanti page fault è probabile che abbia poche pagine in memoria, se non fa mai page fault forse ha troppe pagine in memoria
+
+
+### Rilascio delle pagine
+
+Può capitare che una pagina che non verrà più utilizzata rimanga molto in memoria prima che l'algoritmo di sostituzione se ne accorga.
+Il processo può risolvere questo problema chiedendo volontariamente di **rilasciare la pagine**, ottimizzando così la liberazione della memoria piuttosto che aspettare che tale pagina esca dal working set.
+
+
+## Dimensione della pagina
+
+La scelta della dimensione della pagine è molto importante:
+
+- con pagine piccole:
+	- minor frammentazione interna
+	- working set più piccolo
+	- minor spreco di memoria
+	- abbiamo però una tabella delle pagine molto grande
+- con dimensione grande:
+	- migliora l'efficacia della TLB (dato che punta ad una maggiore quantità di indirizzi)
+	- riduce il numero di trasferimenti tra memoria secondaria e principale
+	- tabella delle pagine più piccola
+- si può avere anche multiple dimensioni della pagina
+	- in questo caso avremo la possibilità di frammentazione esterna
+
+
+## Strategie di sostituzioni globali
+
+Finora abbiamo visto delle strategie di **sostituzioni locali per il singolo processo**, ma possiamo anche applicare delle strategie che lavorano su tutte le pagine in memoria indipendentemente dal processo.
+
+Ad esempio **LRU globale**: Sostituisce la pagina meno utilizzata in tutta la memoria.
+
+oppure la **SEQ** che usa il LRU per rimuovere le pagine meno utilizzate fino a che non rileva dei page fault di pagine contigue, in quel caso per interrompere la sequenza di errori utilizza la tecnica MRU (*Most Recently Used*), che rimuove la pagina utilizzata più di recente, basandosi sul fatto che molto probabilmente verrà rimessa in memoria a breve.
+
+
