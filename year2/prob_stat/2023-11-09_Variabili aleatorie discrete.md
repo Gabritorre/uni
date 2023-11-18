@@ -213,4 +213,81 @@ Dato che $n=100$ è grande e $p=0.03$ è piccolo, si può utilizzare la distribu
 
 $$\mathbb{P}[X \leq 3] = \sum_{k = 0}^{3}\frac{3^k}{k!}e^{-3} = 0.6472$$
 
+## Distribuzione geometrica
+
+Abbiamo una variabile aleatoria $X$ che conta il numero di ripetizioni indipendenti necessarie per ottenere il primo successo di un esperimento binario.
+La probabilità del successo è $p$ e si dice che $X$ ha una distribuzione geometrica
+
+Questa distribuzione si scrive come:
+
+$$X \sim \text{Geo}(p)$$
+
+Si ha che
+
+$$\mathbb{P}[X = x] = (1-p)^{x-1}p$$
+
+La media (il valore atteso) della distribuzione geometrica è
+
+$$\mathbb{E}[X] = \frac{1}{p}$$
+
+La varianza della distribuzione di geometrica è
+
+$$\text{Var}[X] = \frac{1-p}{p^2}$$
+
+### Proprietà di mancanza della memoria
+
+$$\mathbb{P}[X > m + n | X > m] = \mathbb{P}[X > n]$$
+
+Inoltre sappiamo anche che la distribuzione di avere **più di** $k$ ripetizioni (escluso il valore di $k$) è dato da:
+
+$$\mathbb{P}[X > k] = (1-p)^k$$
+
+
+Vediamo un esempio
+
+Si consideri un motore di ricerca su internet. Se il 20% dei siti visitati contengono la parola cercata
+
+Supponiamo che X conti il numero di pagine da visitare per trovare per la prima volta la parola cercata. Allora $X \sim \text{Geo}(p)$
+
+- qual è la probabilità di dover visitare 15 siti per trovare la parola?
+
+	$\mathbb{P}[X = 15] = (1-0.2)^{15-1}0.2 = 0.0088$
+
+- Dato che i primi 4 siti visitati non contenevano la parola cercata, qual è la probabilità di doverne visitare più di 10 in tutto per trovare la parola cercata?
+
+	Utilizzando la proprietà di mancanza della memoria possiamo definire $m = 4$ e di conseguenza $n = 10 - 4 = 6$
+
+	$\mathbb{P}[X > 10| X > 4]$
+	che possiamo scrivere nella stessa forma della formula come:
+	$\mathbb{P}[X > 4+6 | X > 4]$
+	che quindi diventa
+	$\mathbb{P}[X > 6] = (1-0.2)^6 = 0.2621$
+
+- Qual è il numero medio di siti da visitare per trovare la parola la prima volta?
+
+	$\mathbb{E}[X] = \frac{1}{0.2} = 5$
+
+
+## Funzioni in R
+
+### Binomiale
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X = k]$ | `dbinom(x=k, size=n, prob=p)` |
+| $\mathbb{P}[X \leq k]$ | `pbinom(q=k, size=n, prob=p)` |
+
+### Poisson
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X = k]$ | `dpois(x=k, labmda=lambda)` |
+| $\mathbb{P}[X \leq k]$ | `ppois(q=k, lambda=lambda)` |
+| $\mathbb{P}[X \geq k]$ | `1 - ppois(q=k-1, lambda=lambda)` |
+
+### Geometrica
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X = k]$ | `dgeom(x=x-1, prob=p)` |
 
