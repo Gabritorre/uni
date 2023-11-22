@@ -1,0 +1,142 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-15_File system</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#file-system">File system</a>
+<ul>
+<li><a href="#i-file">I file</a></li>
+<li><a href="#directories">Directories</a></li>
+<li><a href="#organizzazione-dei-file">Organizzazione dei file</a></li>
+<li><a href="#allocazione-dei-file">Allocazione dei file</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="file-system">File system</h1>
+<p>Parliamo ora di <strong>memoria secondaria</strong>.</p>
+<p>Ogni dispositivo di memoria secondaria possiede un <strong>file system</strong> cioè una struttura che organizza i file e lo spazio libero, controlla gli accessi, possiede meccanismi di backup e di recovery e anche di crittografia.</p>
+<p>La struttura più utilizzata oggi è la <strong>struttura ad albero</strong>.</p>
+<p>Nella memoria secondaria sono tenuti i <strong>file</strong>, cioè una raccolta di dati (bytes) trattati come una entità singola.</p>
+<p>Il <strong>volume di un disco</strong>, rappresenta quanti dati esso può contenere.</p>
+<p>Il sistema operativo può generare una interfaccia grafica per poter permettere all’utente di navigare nel file system.</p>
+<h2 id="i-file">I file</h2>
+<p>Come detto prima un file è un insieme di dati, questo insieme di dati lo possiamo associare ad un <strong>nome</strong>, questo nome è diviso in 2 parti: il nome effettivo del file e una <strong>estensione</strong>.</p>
+<p>La prima parte serve specialmente all’utente per avere una idea di a che cosa serve quel file, mentre l’estensione aiuta il sistema operativo a capire come quel file può essere trattato.</p>
+<p>I file sono un insieme di <strong>record</strong>, cioè un insieme di caratteri. Questi record possono essere <strong>fisici</strong>, nel caso si parli di un blocco di informazioni salvato su un disco fisico.<br>
+Mentre si parla di <strong>record logici</strong> con blocchi di informazioni che vengono trattati come una entità unica da un software.<br>
+Quando ciascun record fisico contiene esattamente un record logico si dice che il record è <strong>non bloccante</strong>, mentre se per ogni record fisico può contenere più record logici allora il record è detto <strong>bloccante</strong>.</p>
+<h3 id="tipi-di-file">Tipi di file</h3>
+<p>I file possono essere generalmente di tre tipi:</p>
+<ul>
+<li>File puri: contengono delle informazioni dell’utente</li>
+<li>directory: sono le cartelle, cioè un insieme di file e altre cartelle</li>
+<li>file speciali: sono file a supporto del sistema, specialmente che si interfacciano con dispositivi di I/O.</li>
+</ul>
+<h3 id="accesso">Accesso</h3>
+<p>l’accesso ad un file può essere di due tipi:</p>
+<ul>
+<li><strong>sequenziale</strong>: vengono letti i byte dall’inizio alla fine, senza possibilità di fare salti</li>
+<li><strong>casuale</strong>: è possibile leggere i byte in qualsiasi ordine</li>
+</ul>
+<h3 id="attributi">Attributi</h3>
+<p>I file possiedono oltre che al loro contenuto grezzo anche molti <strong>metadati</strong> cioè attributi extra che servono per avere più informazioni su un determinato file.</p>
+<p>Ad esempio: dimensione, la data dell’ultima modifica, data di creazione, quale protezione agli accessi possiede, ecc…</p>
+<h3 id="operazioni">Operazioni</h3>
+<p>È possibile fare una gran quantità di operazioni su un file, le principali sono:</p>
+<ul>
+<li>Open</li>
+<li>Read</li>
+<li>Get attributes</li>
+<li>List Close Write Set attributes Create Append Rename Destroy Seek Copy</li>
+</ul>
+<h2 id="directories">Directories</h2>
+<p>Le <em>directories</em> sono un tipo di file che serve per raggruppare altri file.<br>
+Lo scopo principale di questo tipo di file è quello dell’<strong>organizzazione</strong> dei file per il file system</p>
+<p>Una directory memorizza informazioni quali:</p>
+<ul>
+<li>Nome del file</li>
+<li><em>Location</em> (il <em>pathname</em> oppure il blocco fisico)</li>
+<li>Dimensione</li>
+<li>Tipo</li>
+<li>Tempo di ultima modifica, accesso e creazione</li>
+</ul>
+<h3 id="file-system-piatto">File system piatto</h3>
+<p>Una volta si usava un file system piatto, in cui tutti i file erano in una singola directory.<br>
+I due maggiori problemi erano l’impossibilità di chiamare due file con lo stesso nome, e il secondo è che era necessaria una ricerca lineare per cercare ogni file.</p>
+<h3 id="file-system-gerarchico">File system gerarchico</h3>
+<p>Nel file system gerarchico (ad albero) si ha una maggiore organizzazione, più flessibilità e più prestazioni.</p>
+<ul>
+<li>È presente una directory principale (la radice dell’albero) da cui si diramano tutti i file.</li>
+<li>I nomi dei file devono essere univoci solo all’interno della loro directory padre.</li>
+<li>I singoli file sono identificati da un <em>pathname</em>, cioè una stringa che rappresenta il percorso dell’albero per raggiungere il determinato file</li>
+</ul>
+<p>In windows i pathname sono di questa forma: <code>C:\utenti\utente\cartella1\file.txt</code><br>
+mentre in unix i pathname sono di questa forma <code>/home/utente/cartella1/file.txt</code></p>
+<p><img src="https://i.ibb.co/6PdZtyr/image.png" alt="enter image description here"></p>
+<p>La navigazione dell’albero viene agevolata dalla possibilità di specificare dei <strong><em>pathname</em> assoluti</strong> che quindi partono dalla radice e arrivano al nodo specifico, alternativamente si possono usare dei <strong><em>pathname</em> relativi</strong> a in quale nodo ci si trova in questo momento sull’albero (chiamata <em>working directory</em>)</p>
+<h3 id="link">Link</h3>
+<p>All’interno di una directory si possono trovare dei riferimenti (link) ad altri file situati in altre directory. Questi collegamenti possono essere di due tipi:</p>
+<ul>
+<li><em>soft link</em>: contiene il <em>pathname</em> del file puntato.<br>
+nel caso in cui il file puntato viene cancellato o spostato in un altra directory, il link punta ad un percorso inesistente.<br>
+Ma è anche più semplice da fare, più flessibile: può attraversare più file system, è indipendente dal disco</li>
+<li><em>hard link</em>: contiene lo specifico blocco di memoria dove è presente il file nel dispositivo secondario.<br>
+Se il file viene cambiato di posizione all’interno del disco allora il link diventa non valido.<br>
+inoltre gli hard link sono disponibili solo sul file system principale (che si riferisce al disco dove è installato il sistema operativo)</li>
+</ul>
+<h3 id="integrità">Integrità</h3>
+<p>Molti file system creano un cosiddetto <strong>super-blocco</strong> contenente le informazioni critiche per mantenere l’integrità del file system, che comprendono:</p>
+<ul>
+<li>un identificativo del file system</li>
+<li>il numero di blocchi nel file system</li>
+<li>la posizione dei blocchi liberi del dispositivo</li>
+<li>la posizione della directory radice</li>
+<li>la data e l’ora in cui il file system ha subito l’ultima modifica</li>
+</ul>
+<p>più copie di questo super-blocco vengono sparse per il disco per avere delle possibilità di recupero nel caso di corruzione del file system</p>
+<h3 id="mounting">Mounting</h3>
+<p>è possibile collegare più file system insieme, operazione detta <em>mounting</em>.</p>
+<p>Nel file system viene scelto una directory particolare detta <strong>punto di mount</strong> che sarà il punto di collegamento dove andrà collegata la radice del file system da montare.</p>
+<p>Vengono usate delle <strong>tabelle di mount</strong> per tenere traccia dei punti di mount e dei file system a cui puntano</p>
+<h2 id="organizzazione-dei-file">Organizzazione dei file</h2>
+<p>Un disco è suddiviso in partizioni. All’inizio del disco è presente l’<strong>MBR</strong>(Master boot record) che contiene le istruzione per avviare il sistema. Solitamente contiene anche la tabella delle partizioni del disco</p>
+<h2 id="allocazione-dei-file">Allocazione dei file</h2>
+<p>Vediamo vari modi di allocare i file nel disco secondario</p>
+<h3 id="allocazione-sequenziale">Allocazione sequenziale</h3>
+<p>I file sono posizionati in indirizzi contigui.<br>
+È una implementazione semplice ma con <strong>scarse prestazioni</strong> e possibile <strong>frammentazione esterna</strong>, inoltre se il file cresce di dimensioni è possibile che vada riposizionato in un punto che lo contenga.</p>
+<h3 id="allocazione-con-liste-collegate">Allocazione con liste collegate</h3>
+<p>Abbiamo delle liste in cui il nodi sono composti da un blocco dei dati di un file e dal puntatore al nodo successivo della lista.<br>
+ogni file ha la propria lista.</p>
+<p>Con questa implementazione non abbiamo più frammentazione esterna ma abbiamo possibile frammentazione interna nell’ultimo elemento di ogni lista.<br>
+i puntatori per quanto poco sprecano spazio utile.<br>
+Inoltre con file grandi ho una lista molto grande da scorrere. Considerare blocchi più grandi riduce la lunghezza ma aumenta i tempi di caricamento.<br>
+D’altra parte il cambio di dimensione del file viene gestito molto efficientemente dato che bisogna solo cambiare i puntatori della lista.</p>
+<h3 id="allocazione-tabellare">Allocazione tabellare</h3>
+<p>Vengono utilizzate tabelle che memorizzano dei puntatori ai blocchi dei file.</p>
+<p>Nella directory è presente il primo blocco del file, quel blocco viene utilizzato come indice di una tabella per determinare quale sarà il prossimo blocco, il quale a sua volta verrà utilizzato di come indice. Fino al raggiungimento di un valore NULL.</p>
+<p><img src="https://i.ibb.co/tmct64X/image.png" alt="enter image description here"></p>
+<p>Avendo una tabella molto lunga, si hanno i blocchi del file sparsi per tutta la tabelle, di conseguenza seguire molti puntatori della tabella potrebbe essere oneroso.</p>
+<p>La dimensione della tabella si può calcolare facilmente facendo il prodotto tra il numero di blocchi e la dimensione del blocco</p>
+<p>Un conosciuto file system che utilizza questo metodo è il <strong>FAT</strong></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
