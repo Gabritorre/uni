@@ -4,7 +4,7 @@ let courses = {
  	basi_dati1 : ["Introduzione", "Progettazione e modellazione", "Progettazione logica", "Algebra relazionale", "Calcolo relazionale", "Linguaggio SQL"],
 	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Esercizi Probabilità elementare 2", "Probabilità condizionata e indipendenza", "Esercizi Probabilità condizionata", "Variabili casuali",  "Esercizi variabili casuali", "Esercizi costanti caratteristiche", "Variabili aleatorie discrete", "Variabili aleatorie continue"],
 	prog_ogg1 : ["Introduzione", "Classi", "Incapsulamento", "Javadoc", "Ereditarietà", "Subtyping", "Interfacce", "Dispatch dei metodi", "Tipi generici"],
-	sis_operativi1 : ["Introduzione", "Esercizi introduzione", "Processi e thread", "Scheduling","Esercizi Processi thread e scheduling", "Gestione della memoria", "Memoria virtuale", "Segmentazione", "File System"]
+	sis_operativi1 : ["Introduzione", "Esercizi introduzione", "Processi e thread", "Scheduling","Esercizi Processi thread e scheduling", "Gestione della memoria", "Memoria virtuale", "Segmentazione", "File system"]
 };
 
 function show_arguments(subj) {
