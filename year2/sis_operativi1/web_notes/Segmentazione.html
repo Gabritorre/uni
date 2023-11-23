@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-14_Segmentazione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#segmentazione">Segmentazione</a>
+<ul>
+<li></li>
+<li><a href="#sistemi-con-paginazione-e-segmentazione">Sistemi con paginazione e segmentazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="segmentazione">Segmentazione</h1>
+<p>La segmentazione è un altro modo di dividere la memoria in blocchi, questi blocchi non hanno una dimensione fissa come le pagine.<br>
+I segmenti contengono porzioni del programma significative, come array, funzioni, lo stack, ecc…</p>
+<p>Data la diversa dimensione dei segmenti è possibile che si verifichi della <strong>frammentazione esterna</strong></p>
+<p>Il funzionamento è comunque simile a quello delle pagine:</p>
+<p>L’indirizzo virtuale è diviso in <strong><em>numero di segmento</em> e <em>offset</em></strong>, al posto della tabella delle pagina abbiamo una <strong>tabella dei segmenti</strong> la quale contiene oltre all’indirizzo del segmento in memoria fisica, anche altri bit di controllo (bit di residenza, la lunghezza del segmento per evitare di andare in overflow, bit per il tipo di operazione) e l’indirizzo di memoria secondaria dove trovare il segmento nel caso non sia in RAM.</p>
+<p><img src="https://i.ibb.co/z4xFCmF/image.png" alt="enter image description here"></p>
+<h3 id="condivisione">Condivisione</h3>
+<p>La condivisione di un segmento con più processo è più efficiente rispetto alle pagine proprio perchè rappresentano un blocco logico di dati. Sono necessari dei meccanismi di sicurezza per controllare che i giusti processi abbiano accesso a tale segmento.</p>
+<p>Un meccanismo per implementare questa sicurezza è tramite delle <strong>chiavi di protezione della memoria</strong>, cioè dei valori associati ad ogni processo e ad ogni segmento (modificabili solo tramite istruzioni privilegiate).<br>
+Se la chiave del processo combacia con la chiave del segmento allora il processo è autorizzato ad accederci.</p>
+<p>Il sistema operativo può eseguire un controllo ulteriore su quali operazioni sono permesse su un segmento, ciò viene fatto dal <strong>bit di protezione</strong>.</p>
+<p>Un segmento può consentire le seguenti operazioni:</p>
+<ul>
+<li>Read</li>
+<li>Write</li>
+<li>Execute</li>
+<li>(Append) aggiungere informazioni senza modificare quelle esisteniti</li>
+</ul>
+<p>possiamo realizzare varie 7 combinazioni (che corrispondono ai valori del comando linux <code>chmod</code>)</p>
+
+<table>
+<thead>
+<tr>
+<th align="center"></th>
+<th align="center">Read</th>
+<th align="center">Write</th>
+<th align="center">Execute</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">Mode 0</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="center">Mode 1</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td align="center">Mode 2</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="center">Mode 3</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td align="center">Mode 4</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="center">Mode 5</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+</tr>
+<tr>
+<td align="center">Mode 6</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+</tr>
+<tr>
+<td align="center">Mode 7</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+</tr>
+</tbody>
+</table><h2 id="sistemi-con-paginazione-e-segmentazione">Sistemi con paginazione e segmentazione</h2>
+<p>Per cercare di sfruttare i vantaggi delle due tecniche analizziamo una versione ibrida di paginazione e segmentazione.</p>
+<ul>
+<li>con la paginazione:
+<ul>
+<li>non abbiamo frammentazione esterna</li>
+<li>abbiamo una organizzazione semplice della memoria</li>
+</ul>
+</li>
+<li>con la segmentazione:
+<ul>
+<li>condivisione dei segmenti migliore</li>
+<li>suddivisione delle memoria in blocchi significativi</li>
+</ul>
+</li>
+</ul>
+<p>Andiamo a <strong>suddividere i segmenti in pagine</strong>.<br>
+La memoria virtuale è quindi divisa in segmenti che a loro volta sono suddivisi in pagine mentre la memoria fisica è divisa in pagine.</p>
+<p>Un indirizzo virtuale è quindi diviso in: numero di segmento, numero della pagina all’interno del segmento, offset all’interno della pagina.</p>
+<p><img src="https://i.ibb.co/d62ZvYx/image.png" alt="enter image description here"></p>
+<p>Facciamo sempre uso di una TLB che contiene le pagine più utilizzate.<br>
+Prima si cerca la pagina nella TLB, se non c’è si cerca il segmento nella tabella dei segmenti. Da lì troviamo l’indirizzo iniziale di una page table e andremo a trovare la riga che ci restituirà il page frame</p>
+<h3 id="condivisione-1">Condivisione</h3>
+<p>In questo sistema abbiamo che due processi condividono della memoria se la propria tabella dei segmenti punta alla stessa page table.<br>
+In questo caso il controllo dei permessi facilitato dalla segmentazione, entre la condivisione viene facilitata dalla paginazione.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
