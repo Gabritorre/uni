@@ -1,0 +1,118 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-22_Tipi generici</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#tipi-generici">Tipi generici</a>
+<ul>
+<li><a href="#invarianti">Invarianti</a></li>
+<li><a href="#metodi-con-tipi-generici">Metodi con tipi generici</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="tipi-generici">Tipi generici</h1>
+<p>Java supporta i tipi generici su classi, parametri dei metodi e valore di ritorno dei metodi.</p>
+<p>Con i tipi generici per esempio possiamo permettere ad una funzione di lavorare su un tipo generico che verrà specificato durante l’istanza dell’oggetto.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> U<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> T primoElemento<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> U secondoElemento<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Coppia</span><span class="token punctuation">(</span>T primo<span class="token punctuation">,</span> U secondo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>primoElemento <span class="token operator">=</span> primo<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>secondoElemento <span class="token operator">=</span> secondo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> T <span class="token function">getPrimoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> primoElemento<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> U <span class="token function">getSecondoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> secondoElemento<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setPrimoElemento</span><span class="token punctuation">(</span>T primo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>primoElemento <span class="token operator">=</span> primo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSecondoElemento</span><span class="token punctuation">(</span>U secondo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>secondoElemento <span class="token operator">=</span> secondo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>ad esempio posso istanziare la seguente classe nei seguenti modi</p>
+<pre class=" language-java"><code class="prism  language-java">Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Coppia<span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3.14</span><span class="token punctuation">,</span> <span class="token string">"Due"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+coppia1<span class="token punctuation">.</span><span class="token function">getSecondoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="invarianti">Invarianti</h2>
+<p>I tipi generici di Java sono detti <strong>invarianti</strong>, cioè non è possibile fare assegnamento tra due variabili che hanno un tipo generico diverso, anche nel caso in cui un tipo sia sottotipo dell’altro.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>V<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>V el<span class="token punctuation">)</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+List<span class="token operator">&lt;</span>Vehicle<span class="token operator">&gt;</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vehicle<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+List<span class="token operator">&lt;</span>Bicycle<span class="token operator">&gt;</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Bicycle<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+b<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a <span class="token operator">=</span> b<span class="token punctuation">;</span>	<span class="token comment">//errore</span>
+b <span class="token operator">=</span> a<span class="token punctuation">;</span>	<span class="token comment">//errore</span>
+</code></pre>
+<h2 id="metodi-con-tipi-generici">Metodi con tipi generici</h2>
+<p>possiamo usare un tipo generico per il singolo metodo della classe, possiamo utilizzarlo per:</p>
+<ul>
+<li>valore di ritorno</li>
+<li>tipo dei parametri</li>
+<li>variabili locali all’interno del corpo del metodo</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EsempioTipoGenerico</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> T <span class="token function">restituisciElemento</span><span class="token punctuation">(</span>T elemento<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        T risultatoLocale <span class="token operator">=</span> elemento<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> risultatoLocale<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre>
+<p>In questa sintassi:</p>
+<ul>
+<li>prima specifichiamo che il metodo utilizzerà un tipo generico T</li>
+<li>poi specifichiamo la funzione ritorno un tipo T</li>
+<li>come parametro abbiamo una variabile di tipo T</li>
+<li>possiamo utilizzare il tipo T per dichiarare altre variabili locali</li>
+</ul>
+<h3 id="type-inference">Type inference</h3>
+<p>la <em>type inference</em> permette di non dover specificare i tipi quando si istanzia la classe.<br>
+I tipi vengono dedotti dai tipi dell’oggetto nella fase di dichiarazione</p>
+<p>considerando il primo esempio che abbiamo visto:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// senza type inference</span>
+Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//con type inference</span>
+Coppia<span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3.14</span><span class="token punctuation">,</span> <span class="token string">"Due"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="tipi-generici-limitati">Tipi generici limitati</h3>
+<p>È possibile limitare i tipi che può assumere un tipo generico, imponendo che il tipo essere un sottotipo di una data classe (oppure anche la classe stessa).<br>
+Per fare ciò utilizziamo la keyword <code>extends</code> seguito dalla classe</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token operator">&lt;</span>T <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span><span class="token operator">&gt;</span> <span class="token keyword">void</span>  <span class="token function">frena</span><span class="token punctuation">(</span>T veicolo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso il tipo T può essere di tipo <code>Vehicle</code> oppure una sottoclasse di essa.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
