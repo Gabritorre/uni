@@ -27,6 +27,8 @@
 <li><a href="#il-valore-null">Il valore NULL</a></li>
 <li><a href="#between">Between</a></li>
 <li><a href="#like">Like</a></li>
+<li><a href="#clausola-where">Clausola where</a></li>
+<li><a href="#raggruppamento">Raggruppamento</a></li>
 </ul>
 </li>
 </ul>
@@ -255,6 +257,171 @@ mentre è falso se i due valori sono uguali oppure quando entrambi sono NULL</p>
 <span class="token keyword">FROM</span> Studenti
 <span class="token keyword">WHERE</span> Nome <span class="token operator">LIKE</span> <span class="token string">'A_%'</span>
 </code></pre>
+<h2 id="clausola-where">Clausola where</h2>
+<p>Vediamo nel dettaglio cosa è possibile fare con la clausola <code>WHERE</code></p>
+<p>Abbiamo visto l’utilizzo più semplice in cui <strong>si compara una espressione con un’altra</strong><br>
+ma possiamo fare anche delle comparazioni <strong>tra una espressione e una sottoselect</strong>.<br>
+In fine abbiamo delle keyword che ci permettono di esprimere espressioni universali ed esistenziali, che sono <strong>EXIST, IN, ANY, ALL</strong></p>
+<h3 id="sottoselect">Sottoselect</h3>
+<p>Vediamo subito un esempio di sottoselect</p>
+<p>“Studenti che vivono nella stessa provincia dello studente con matricola 71346, escluso lo studente stesso”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti
+<span class="token keyword">WHERE</span> <span class="token punctuation">(</span>Matricola <span class="token operator">&lt;&gt;</span> <span class="token string">'71346'</span><span class="token punctuation">)</span> <span class="token operator">AND</span>
+	   Provincia <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> Provincia
+				    <span class="token keyword">FROM</span> Studenti
+					<span class="token keyword">WHERE</span> Matricola <span class="token operator">=</span> <span class="token string">'71346'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>fare le sottoselect non è molto elegante infatti in molti casi è possibile fare la stessa cosa tramite le giunzioni.</p>
+<h3 id="universale-e-esistenziale">Universale e esistenziale</h3>
+<p>Può capitare che nella clausola where venga richiesta la presenza di almeno un valore (esistenziale) oppure la presenza di solamente uno specifico valore (universale)</p>
+<p>è importante considerare le seguenti proprietà:</p>
+<ul>
+<li><strong>esistenziale = universale negata</strong><br>
+ad esempio: esiste un voto diverso da 30 (esistenziale) = Non tutti i voti sono uguali 30 (universale)</li>
+<li><strong>universale = esistenziale negata</strong><br>
+ad esempio: Tutti i voti sono uguali a 30 (universale) = Non esiste un voto diverso da 30 (esistenziale)</li>
+</ul>
+<h3 id="exists">Exists</h3>
+<p>L’utilizzo di <code>EXISTS</code> rappresenta <strong>l’esistenziale</strong>, segue la seguente forma:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>sottoselect<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>Nota 1: Quando si utilizza <code>EXISTS</code> è necessario avere una <strong>correlazione</strong> tra le <strong>tabelle</strong> della select <strong>esterna</strong> e le <strong>tabelle nella sottoselect</strong></li>
+<li>Nota 2: non è importante cosa viene selezionato nella sottoselect</li>
+</ul>
+<p>esempio: “La query studenti con almeno un voto &gt; 27”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+			  <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+			  <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato <span class="token operator">=</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">AND</span>
+					<span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&gt;</span> <span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Spesso è possibile sostituire l’utilizzo della <code>EXISTS</code> con le giunzioni, la query precedente verrebbe così:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> s<span class="token punctuation">.</span><span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s <span class="token keyword">JOIN</span> Esami <span class="token keyword">ON</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato <span class="token operator">=</span> s<span class="token punctuation">.</span>Matricola
+<span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>voto <span class="token operator">&gt;</span> <span class="token number">27</span><span class="token punctuation">;</span>
+</code></pre>
+<p>nota che il <code>DISTINCT</code> è fondamentale in quanto non vogliamo che uno stesso studente venga selezionato tante volte quanti sono i suoi esami &gt; 27, ma lo vogliamo selezionare solo una volta</p>
+<h3 id="any">ANY</h3>
+<p>L’utilizzo di <code>ANY</code> rappresenta <strong>l’esistenziale</strong>, segue la seguente forma:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token operator">&lt;</span>expr<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>comparativo<span class="token operator">&gt;</span> <span class="token keyword">ANY</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>sottoselect<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Verifica se l’espressione soddisfa la comparazione con almeno un elemento della sottoselect</p>
+<ul>
+<li>Nota 1: Quando si utilizza <code>ANY</code> <strong>non è necessario</strong> avere una <strong>correlazione</strong> tra le tabelle della select esterna e le tabelle nella sottoselect</li>
+<li>Nota 2: è importante cosa viene selezionato nella sottoselect</li>
+<li>Nota 3: se la sottoselect è vuota restituisce falso</li>
+</ul>
+<p>realizziamo lo stesso esempio: “La query studenti con almeno un voto &gt; 27”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">=</span><span class="token keyword">ANY</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato
+					    <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+					    <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&gt;</span> <span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>La <code>ANY</code> e la <code>EXISTS</code> sono semanticamente equivalenti, la differenza sta nel fatto che nella <code>ANY</code> facciamo il confronto nel where esterno, mentre nell’<code>EXISTS</code> il confronto viene spostato nella where della sottoselect</p>
+<p>la <code>ANY</code> restituisce:</p>
+<ul>
+<li>true: se esiste un valore che rende vero il confronto tra l’espressione e la sottoselect</li>
+<li>false: se nella sottoselect tutti i valori non sono NULL ed non esiste nessun valore che rende vero il confronto</li>
+<li>unknown: se nella sottoselect ci sono valori NULL e per tutti i valori non null il confronto risulta falso</li>
+</ul>
+<h3 id="in">IN</h3>
+<p>L’utilizzo di <code>IN</code> rappresenta <strong>l’esistenziale</strong>, segue la seguente forma:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token operator">&lt;</span>expr<span class="token operator">&gt;</span> <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>sottoselect<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>La <code>IN</code> non è altro che una <code>=ANY</code></p>
+<p>Infatti la precedente query la possiamo scrivere come</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato
+					    <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+					    <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&gt;</span> <span class="token number">27</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>si può utilizzare anche per verificare che una espressione sia contenuta in una lista di valori</p>
+<p>es. “Gli studenti di Padova, Venezia e Belluno”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti
+<span class="token keyword">WHERE</span> Provincia <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'PD'</span><span class="token punctuation">,</span> <span class="token string">'VE'</span><span class="token punctuation">,</span> <span class="token string">'BL'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="not-exists">Not Exists</h3>
+<p>L’utilizzo di <code>NOT EXISTS</code> rappresenta <strong>l’universale</strong>, segue la seguente forma:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token operator">NOT</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>sottoselect<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Sfruttando la proprietà che abbiamo detto in precedenza possiamo rappresentare un universale facendo la negazione dell’esistenziale e negando anche la proprietà da verificare.</p>
+<p>Vediamo un esempio:</p>
+<p>“Gli studenti che hanno preso solo 30”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> <span class="token operator">NOT</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+				  <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+				  <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato <span class="token operator">=</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">AND</span> <span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&lt;&gt;</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="all">ALL</h3>
+<p>L’utilizzo di <code>ALL</code> rappresenta <strong>l’universale</strong>, segue la seguente forma:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token operator">&lt;</span>expr<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>comparativo<span class="token operator">&gt;</span> <span class="token keyword">ALL</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>sottoselect<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>è il corrispettivo di <code>ANY</code> ma per l’universale.</p>
+<ul>
+<li>Nota 1: Quando si utilizza <code>ALL</code> è necessario avere una <strong>correlazione</strong> tra le <strong>tabelle</strong> della select <strong>esterna</strong> e le <strong>tabelle nella sottoselect</strong></li>
+<li>Nota 3: se la sottoselect è vuota restituisce true</li>
+</ul>
+<p>Vediamo l’esempio precedente:</p>
+<p>“Gli studenti che hanno preso solo 30”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">&lt;&gt;</span><span class="token keyword">ALL</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato
+					     <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+					     <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&lt;&gt;</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>la <code>ALL</code> restituisce:</p>
+<ul>
+<li>true: se tutti i valore della sottoselect sono diversi da NULL e ogni elemento della sottoselect rende vero il confronto</li>
+<li>false: se esiste un elemento della sottoselect che rende false il confronto</li>
+<li>unknown: se nella sottoselect ci sono dei NULL e tutti quelli che non sono NULL rendono vero il confronto.</li>
+</ul>
+<p>il fatto che se la sottoselect restituisce tutti valori NULL allora l’universale restituisce true potrebbe non essere quello che vogliamo veramente:</p>
+<p>la query precedente oltre a selezionare gli studenti che hanno preso solo 30, seleziona anche gli studenti che non hanno sostenuto alcun esame.<br>
+Per poter selezionare esclusivamente gli studenti che hanno sostenuto almeno un esame dobbiamo modificare la query nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Studenti s
+<span class="token keyword">WHERE</span> <span class="token operator">NOT</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+				  <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+				  <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato <span class="token operator">=</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">AND</span> <span class="token number">e</span><span class="token punctuation">.</span>Voto <span class="token operator">&lt;&gt;</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token operator">AND</span> <span class="token keyword">EXISTS</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+				  <span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+				  <span class="token keyword">WHERE</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato <span class="token operator">=</span> s<span class="token punctuation">.</span>Matricola<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="raggruppamento">Raggruppamento</h2>
+<p>Con il raggruppamento creiamo dei gruppi composte da rige su cui possiamo fare delle operazioni mirate all’intero gruppo.</p>
+<p>La forma di utilizzo è la seguente</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">WHERE</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">[</span><span class="token keyword">HAVING</span> <span class="token operator">&lt;</span>condizione<span class="token operator">&gt;</span><span class="token punctuation">]</span>
+</code></pre>
+<p>dove having permette di fare delle operazioni sui gruppi, diversamente dalla clausola <code>WHERE</code> in questo caso è possibile usare le funzioni di aggregazione</p>
+<p>Vediamo subito un esempio:</p>
+<p>“Per ogni materia, trovare nome della materia e voto medio degli esami in quella materia (selezionando solo le materie per le quali sono stati sostenuti più di tre esami)”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">e</span><span class="token punctuation">.</span>Materia<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span><span class="token number">e</span><span class="token punctuation">.</span>Voto<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> Esami <span class="token number">e</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token number">e</span><span class="token punctuation">.</span>Materia
+<span class="token keyword">HAVING</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">3</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Nota che gli attributi che non sono argomento di una funzione di aggregazione presenti nella select, vanno messi nel <code>GROUP BY</code></p>
 
     </div>
   </div>

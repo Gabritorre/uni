@@ -292,3 +292,246 @@ FROM Studenti
 WHERE Nome LIKE 'A_%'
 ```
 
+## Clausola where
+
+Vediamo nel dettaglio cosa è possibile fare con la clausola `WHERE`
+
+Abbiamo visto l'utilizzo più semplice in cui **si compara una espressione con un'altra**
+ma possiamo fare anche delle comparazioni **tra una espressione e una sottoselect**.
+In fine abbiamo delle keyword che ci permettono di esprimere espressioni universali ed esistenziali, che sono **EXIST, IN, ANY, ALL**
+
+### Sottoselect
+
+Vediamo subito un esempio di sottoselect
+
+"Studenti che vivono nella stessa provincia dello studente con matricola 71346, escluso lo studente stesso"
+
+```sql
+SELECT *
+FROM Studenti
+WHERE (Matricola <> '71346') AND
+	   Provincia = (SELECT Provincia
+				    FROM Studenti
+					WHERE Matricola = '71346');
+```
+
+fare le sottoselect non è molto elegante infatti in molti casi è possibile fare la stessa cosa tramite le giunzioni.
+
+
+### Universale e esistenziale
+
+Può capitare che nella clausola where venga richiesta la presenza di almeno un valore (esistenziale) oppure la presenza di solamente uno specifico valore (universale)
+
+è importante considerare le seguenti proprietà:
+
+- **esistenziale = universale negata**
+	ad esempio: esiste un voto diverso da 30 (esistenziale) = Non tutti i voti sono uguali 30 (universale)
+- **universale = esistenziale negata**
+	ad esempio: Tutti i voti sono uguali a 30 (universale) = Non esiste un voto diverso da 30 (esistenziale)
+
+
+### Exists
+
+L'utilizzo di `EXISTS` rappresenta **l'esistenziale**, segue la seguente forma:
+
+```sql
+SELECT ...
+FROM ...
+WHERE EXISTS (<sottoselect>);
+```
+
+- Nota 1: Quando si utilizza `EXISTS` è necessario avere una **correlazione** tra le **tabelle** della select **esterna** e le **tabelle nella sottoselect**
+- Nota 2: non è importante cosa viene selezionato nella sottoselect
+
+
+esempio: "La query studenti con almeno un voto > 27"
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE EXISTS (SELECT *
+			  FROM Esami e
+			  WHERE e.Candidato = s.Matricola AND
+					e.Voto > 27);
+```
+
+Spesso è possibile sostituire l'utilizzo della `EXISTS` con le giunzioni, la query precedente verrebbe così:
+
+```sql
+SELECT DISTINCT s.*
+FROM Studenti s JOIN Esami ON e.Candidato = s.Matricola
+WHERE e.voto > 27;
+```
+nota che il `DISTINCT` è fondamentale in quanto non vogliamo che uno stesso studente venga selezionato tante volte quanti sono i suoi esami > 27, ma lo vogliamo selezionare solo una volta
+
+
+### ANY
+
+L'utilizzo di `ANY` rappresenta **l'esistenziale**, segue la seguente forma:
+
+```sql
+SELECT ...
+FROM ...
+WHERE <expr> <comparativo> ANY (<sottoselect>);
+```
+
+Verifica se l'espressione soddisfa la comparazione con almeno un elemento della sottoselect
+
+- Nota 1: Quando si utilizza `ANY` **non è necessario** avere una **correlazione** tra le tabelle della select esterna e le tabelle nella sottoselect
+- Nota 2: è importante cosa viene selezionato nella sottoselect
+- Nota 3: se la sottoselect è vuota restituisce falso
+
+realizziamo lo stesso esempio: "La query studenti con almeno un voto > 27"
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE s.Matricola =ANY (SELECT e.Candidato
+					    FROM Esami e
+					    WHERE e.Voto > 27);
+```
+
+La `ANY` e la `EXISTS` sono semanticamente equivalenti, la differenza sta nel fatto che nella `ANY` facciamo il confronto nel where esterno, mentre nell'`EXISTS` il confronto viene spostato nella where della sottoselect
+
+la `ANY` restituisce:
+- true: se esiste un valore che rende vero il confronto tra l'espressione e la sottoselect
+- false: se nella sottoselect tutti i valori non sono NULL ed non esiste nessun valore che rende vero il confronto
+- unknown: se nella sottoselect ci sono valori NULL e per tutti i valori non null il confronto risulta falso
+
+
+### IN
+
+L'utilizzo di `IN` rappresenta **l'esistenziale**, segue la seguente forma:
+
+```sql
+SELECT ...
+FROM ...
+WHERE <expr> IN (<sottoselect>);
+```
+
+La `IN` non è altro che una `=ANY`
+
+Infatti la precedente query la possiamo scrivere come
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE s.Matricola IN (SELECT e.Candidato
+					    FROM Esami e
+					    WHERE e.Voto > 27);
+```
+
+si può utilizzare anche per verificare che una espressione sia contenuta in una lista di valori
+
+es. "Gli studenti di Padova, Venezia e Belluno"
+```sql
+SELECT *
+FROM Studenti
+WHERE Provincia IN ('PD', 'VE', 'BL');
+```
+
+
+### Not Exists
+
+L'utilizzo di `NOT EXISTS` rappresenta **l'universale**, segue la seguente forma:
+
+```sql
+SELECT ...
+FROM ...
+WHERE NOT EXISTS (<sottoselect>);
+```
+
+Sfruttando la proprietà che abbiamo detto in precedenza possiamo rappresentare un universale facendo la negazione dell'esistenziale e negando anche la proprietà da verificare.
+
+Vediamo un esempio:
+
+"Gli studenti che hanno preso solo 30"
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE NOT EXISTS (SELECT *
+				  FROM Esami e
+				  WHERE e.Candidato = s.Matricola AND e.Voto <> 30);
+```
+
+
+### ALL
+
+L'utilizzo di `ALL` rappresenta **l'universale**, segue la seguente forma:
+
+```sql
+SELECT ...
+FROM ...
+WHERE <expr> <comparativo> ALL (<sottoselect>);
+```
+
+è il corrispettivo di `ANY` ma per l'universale.
+
+- Nota 1: Quando si utilizza `ALL` è necessario avere una **correlazione** tra le **tabelle** della select **esterna** e le **tabelle nella sottoselect**
+- Nota 3: se la sottoselect è vuota restituisce true
+
+Vediamo l'esempio precedente:
+
+"Gli studenti che hanno preso solo 30"
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE s.Matricola <>ALL (SELECT e.Candidato
+					     FROM Esami e
+					     WHERE e.Voto <> 30);
+```
+
+la `ALL` restituisce:
+- true: se tutti i valore della sottoselect sono diversi da NULL e ogni elemento della sottoselect rende vero il confronto
+- false: se esiste un elemento della sottoselect che rende false il confronto
+- unknown: se nella sottoselect ci sono dei NULL e tutti quelli che non sono NULL rendono vero il confronto.
+
+il fatto che se la sottoselect restituisce tutti valori NULL allora l'universale restituisce true potrebbe non essere quello che vogliamo veramente:
+
+la query precedente oltre a selezionare gli studenti che hanno preso solo 30, seleziona anche gli studenti che non hanno sostenuto alcun esame.
+Per poter selezionare esclusivamente gli studenti che hanno sostenuto almeno un esame dobbiamo modificare la query nel seguente modo
+
+```sql
+SELECT *
+FROM Studenti s
+WHERE NOT EXISTS (SELECT *
+				  FROM Esami e
+				  WHERE e.Candidato = s.Matricola AND e.Voto <> 30);
+	  AND EXISTS (SELECT *
+				  FROM Esami e
+				  WHERE e.Candidato = s.Matricola)
+```
+
+
+## Raggruppamento
+
+Con il raggruppamento creiamo dei gruppi composte da rige su cui possiamo fare delle operazioni mirate all'intero gruppo.
+
+La forma di utilizzo è la seguente
+
+```sql
+SELECT ...
+FROM ...
+WHERE ...
+GROUP BY ...
+[HAVING <condizione>]
+```
+
+dove having permette di fare delle operazioni sui gruppi, diversamente dalla clausola `WHERE` in questo caso è possibile usare le funzioni di aggregazione
+
+Vediamo subito un esempio:
+
+"Per ogni materia, trovare nome della materia e voto medio degli esami in quella materia (selezionando solo le materie per le quali sono stati sostenuti più di tre esami)"
+
+```sql
+SELECT e.Materia, AVG(e.Voto)
+FROM Esami e
+GROUP BY e.Materia
+HAVING COUNT(*) > 3;
+```
+
+Nota che gli attributi che non sono argomento di una funzione di aggregazione presenti nella select, vanno messi nel `GROUP BY`
+
+
