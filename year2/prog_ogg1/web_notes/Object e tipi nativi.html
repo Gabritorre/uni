@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-24_Objects e tipi nativi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#object-e-tipi-nativi">Object e tipi nativi</a>
+<ul>
+<li><a href="#object">Object</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="object-e-tipi-nativi">Object e tipi nativi</h1>
+<h2 id="object">Object</h2>
+<p>La classe <code>Object</code> è la radice dell’albero delle gerarchie, tutte le classi che si fanno in java sono figlie della classe Object.</p>
+<p>Quando dichiariamo una classe nel seguente modo</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>implicitamente quello che succede è:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token keyword">extends</span> <span class="token class-name">Object</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il ruolo della classe <code>Object</code> è quello di fornire una implementazione base di ogni classe.<br>
+Tra le funzioni offerte dalla classe <code>Object</code> ce ne sono alcune deprecate e altre riguardanti la programmazione concorrente che non vedremo, ma ci sono dei metodi che vale la pena vedere:</p>
+<ul>
+<li><code>boolean equals(Object obj)</code></li>
+<li><code>Object clone()</code></li>
+<li><code>int hashCode()</code></li>
+<li><code>String toString()</code></li>
+</ul>
+<h3 id="equals">Equals</h3>
+<p><code>boolean equals(Object obj)</code></p>
+<p>Questo metodo serve per indicare se l’oggetto passato per parametro è uguale all’oggetto su cui è stato chiamato il metodo.<br>
+con “uguale” si intende che i due riferimenti puntano allo stesso oggetto in memoria.<br>
+È l’equivalente di fare <code>oggetto1 == oggetto2</code><br>
+Solitamente è consigliato fare un <em>override</em> di questo metodo sulla propria classe per fare l’uguaglianza a piacimento.</p>
+<p>Quindi nel caso noi <strong>non facciamo <em>override</em></strong> si avrà il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//false</span>
+car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
+</code></pre>
+<p>Se invece facciamo un <em>override</em> e andiamo a verificare che il parametro di <code>equals</code> sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//true</span>
+car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
