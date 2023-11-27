@@ -270,6 +270,13 @@ Supponiamo che X conti il numero di pagine da visitare per trovare per la prima 
 
 ## Funzioni in R
 
+### Ipergeometrica
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X = k]$ | `dhyper(x=k, m=m, n=N-m, k=n)` |
+| $\mathbb{P}[X \leq k]$ | `phyper(q=k, m=m, n=N-m, k=n)` |
+
 ### Binomiale
 
 | Probabilità | Funzione R |

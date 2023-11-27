@@ -166,3 +166,87 @@ dobbiamo effettuare una cosiddetta **correzione per continuità** per riuscire a
 $$\mathbb{P}[799.5 < X < 850.5] =$$
 
 $$= \Phi\left(\frac{850.5 - 840}{23.36664}\right) - \Phi\left(\frac{799.5 - 840}{23.36664}\right) = 0.631887$$
+
+## Distribuzione Gamma
+
+Una distribuzione con i parametri $\alpha>0$ e $\lambda>0$ e con funzione di densità 
+
+$$\large\begin{cases}
+\frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha - 1}e^{-\lambda x} & x \in (0, \infty)\\
+0 & \text{altrove}
+\end{cases}$$
+
+si chiama **distribuzione gamma**
+Si scrive come
+
+$$X \sim \text{Ga}(\alpha, \lambda)$$
+
+dove $\alpha$ viene chiamato **parametro di forma** e $\lambda$ viene chiamato **parametro di scala**
+
+La media (il valore atteso) della distribuzione gamma è
+
+$$\mathbb{E}[X] = \frac{\alpha}{\lambda}$$
+
+La varianza della distribuzione gamma è
+
+$$\text{Var}[X] = \frac{\alpha}{\lambda^2}$$
+
+$\Gamma(\alpha)$ viene chiamata **funzione gamma** ed è definita come segue
+$$\Gamma(\alpha) = \int_{0}^{\infty}x^{\alpha - 1} e^{-x}\,dx$$
+
+
+Quando $\alpha$ è un valore intero allora:
+
+$$\Gamma(\alpha) = (\alpha - 1)!$$
+
+
+## Distribuzione esponenziale
+
+La distribuzione esponenziale è una caso particolare della distribuzione gamma in cui $\alpha = 1$.
+Si scrive come:
+
+$$X \sim Exp(\lambda)$$
+
+ha funzione di densità:
+
+$$\begin{cases}
+\lambda e^{-\lambda x} & x \in (0, \infty)\\
+0 & \text{altrove}
+\end{cases}$$
+
+e la **funzione di ripartizione** si può calcolare nel seguente modo in base a $x$
+
+$$\mathbb{P}[X \leq x]\begin{cases}
+0 & x < 0\\
+1-e^{-\lambda x} & x\geq 0
+\end{cases}$$
+
+La media (il valore atteso) della distribuzione esponenziale è
+
+$$\mathbb{E}[X] = \frac{1}{\lambda}$$
+
+La varianza della distribuzione esponenziale è
+
+$$\text{Var}[X] = \frac{1}{\lambda^2}$$
+
+Questa distribuzione si usa per modellare i tempi di attesa, ad esempio:
+1. tempo di attesa tra un evento ed il successivo
+2. la vita di un componente elettronico
+
+Come la distribuzione geometrica anche questa distribuzione ha la proprietà di **mancanza della memoria**
+
+$$\mathbb{P}[X>t\, |\, X > t + s] = \mathbb{P}[X > s]$$
+
+Vediamo un esempio:
+
+"Il tecnico di un laboratorio dell’università in un’ora installa un certo software in media su 30 pc. Assumendo che il tempo di installazione su ogni pc segua una distribuzione esponenziale, vogliamo calcolare la probabilità che il tecnico impieghi più di 5 minuti per installare il software nel prossimo pc."
+
+definiamo la variabile come
+$X =$ "tempo di attesa tra l'inizio di una installazione e l'inizio della successiva"
+
+dal testo sappiamo che $\mathbb{E}[X] =\frac{1}{30}$
+da cui ricaviamo $\lambda = 30$
+
+il testo ci chiede di trovare $\mathbb{P}[X > \frac{5}{60}] = \mathbb{P}[X > \frac{1}{12}]$
+
+$\mathbb{P}[X > \frac{1}{12}] =1-(1- e^{-\lambda x}) =e^{-30 \frac{1}{12}} =e^{- \frac{30}{12}}$
