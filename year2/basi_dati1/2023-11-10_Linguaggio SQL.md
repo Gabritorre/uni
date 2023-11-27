@@ -532,6 +532,79 @@ GROUP BY e.Materia
 HAVING COUNT(*) > 3;
 ```
 
-Nota che gli attributi che non sono argomento di una funzione di aggregazione presenti nella select, vanno messi nel `GROUP BY`
+Nota che gli attributi che non sono argomento di una funzione di aggregazione nella `select` e nel `having`, vanno messi nel `GROUP BY`
 
+mentre gli attributi presenti nelle funzioni di aggregazione non devono essere presenti nel group by
+
+
+## INSERT
+
+con il comando `INSERT INTO` possiamo aggiungere una riga ad una tabella. La sintassi è la seguente:
+
+```sql
+INSERT INTO tabella(colonna_1, ..., colonna_n)
+VALUES (valore_1, ..., valore_n)
+```
+
+Alternativamente è anche possibile inserire dei valori che sono il risultato di una select:
+
+```sql
+INSERT INTO tabella(nome, cognome)
+	SELECT nome, cognome FROM tabella
+```
+
+## DELETE
+
+la `DELETE` serve per eliminare righe dalle tabelle.
+La sintassi è la seguente:
+
+
+```sql
+DELETE FROM tabella
+WHERE condizione
+```
+Vengono eliminate le righe che rispettano la condizione.
+
+Nota che fare:
+```sql
+DELETE FROM tabella
+```
+cancella tutte le righe della tabella, la tabella rimane comunque presente
+
+
+## UPDATE
+
+con `UPDATE` è possibile aggiornare i valori di una o più righe esistenti.
+La sintassi è la seguente:
+
+```sql
+UPDATE tabella
+SET attributo_1=valore_1, attributo_n=valore_n
+WHERE condizione
+```
+
+
+## CASE WHEN THEN ELSE
+
+In sql abbiamo il corrispettivo del costrutto if-then-else della classica programmazione.
+La sintassi è la seguente:
+
+```sql
+CASE
+	WHEN condizione_1 THEN valore_1
+	WHEN condizione_2 THEN valore_2
+	...
+	ELSE valore_default
+END AS alias
+```
+
+può avere vari utilizzi, ad esempio nella select:
+```sql
+SELECT Matricola,
+	CASE  
+		WHEN YEAR(CURRENT_DATE) - Nascita >= 18  THEN  'Maggiorenne'  
+		ELSE  'Minorenne'  
+	END AS maggiore_età
+FROM Studenti;
+```
 

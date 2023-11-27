@@ -29,6 +29,10 @@
 <li><a href="#like">Like</a></li>
 <li><a href="#clausola-where">Clausola where</a></li>
 <li><a href="#raggruppamento">Raggruppamento</a></li>
+<li><a href="#insert">INSERT</a></li>
+<li><a href="#delete">DELETE</a></li>
+<li><a href="#update">UPDATE</a></li>
+<li><a href="#case-when-then-else">CASE WHEN THEN ELSE</a></li>
 </ul>
 </li>
 </ul>
@@ -421,7 +425,53 @@ Per poter selezionare esclusivamente gli studenti che hanno sostenuto almeno un 
 <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> <span class="token number">e</span><span class="token punctuation">.</span>Materia
 <span class="token keyword">HAVING</span> <span class="token function">COUNT</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">3</span><span class="token punctuation">;</span>
 </code></pre>
-<p>Nota che gli attributi che non sono argomento di una funzione di aggregazione presenti nella select, vanno messi nel <code>GROUP BY</code></p>
+<p>Nota che gli attributi che non sono argomento di una funzione di aggregazione nella <code>select</code> e nel <code>having</code>, vanno messi nel <code>GROUP BY</code></p>
+<p>mentre gli attributi presenti nelle funzioni di aggregazione non devono essere presenti nel group by</p>
+<h2 id="insert">INSERT</h2>
+<p>con il comando <code>INSERT INTO</code> possiamo aggiungere una riga ad una tabella. La sintassi è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> tabella<span class="token punctuation">(</span>colonna_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> colonna_n<span class="token punctuation">)</span>
+<span class="token keyword">VALUES</span> <span class="token punctuation">(</span>valore_1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> valore_n<span class="token punctuation">)</span>
+</code></pre>
+<p>Alternativamente è anche possibile inserire dei valori che sono il risultato di una select:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> tabella<span class="token punctuation">(</span>nome<span class="token punctuation">,</span> cognome<span class="token punctuation">)</span>
+	<span class="token keyword">SELECT</span> nome<span class="token punctuation">,</span> cognome <span class="token keyword">FROM</span> tabella
+</code></pre>
+<h2 id="delete">DELETE</h2>
+<p>la <code>DELETE</code> serve per eliminare righe dalle tabelle.<br>
+La sintassi è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> tabella
+<span class="token keyword">WHERE</span> condizione
+</code></pre>
+<p>Vengono eliminate le righe che rispettano la condizione.</p>
+<p>Nota che fare:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> tabella
+</code></pre>
+<p>cancella tutte le righe della tabella, la tabella rimane comunque presente</p>
+<h2 id="update">UPDATE</h2>
+<p>con <code>UPDATE</code> è possibile aggiornare i valori di una o più righe esistenti.<br>
+La sintassi è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">UPDATE</span> tabella
+<span class="token keyword">SET</span> attributo_1<span class="token operator">=</span>valore_1<span class="token punctuation">,</span> attributo_n<span class="token operator">=</span>valore_n
+<span class="token keyword">WHERE</span> condizione
+</code></pre>
+<h2 id="case-when-then-else">CASE WHEN THEN ELSE</h2>
+<p>In sql abbiamo il corrispettivo del costrutto if-then-else della classica programmazione.<br>
+La sintassi è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CASE</span>
+	<span class="token keyword">WHEN</span> condizione_1 <span class="token keyword">THEN</span> valore_1
+	<span class="token keyword">WHEN</span> condizione_2 <span class="token keyword">THEN</span> valore_2
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token keyword">ELSE</span> valore_default
+<span class="token keyword">END</span> <span class="token keyword">AS</span> alias
+</code></pre>
+<p>può avere vari utilizzi, ad esempio nella select:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> Matricola<span class="token punctuation">,</span>
+	<span class="token keyword">CASE</span>  
+		<span class="token keyword">WHEN</span> YEAR<span class="token punctuation">(</span><span class="token keyword">CURRENT_DATE</span><span class="token punctuation">)</span> <span class="token operator">-</span> Nascita <span class="token operator">&gt;=</span> <span class="token number">18</span>  <span class="token keyword">THEN</span>  <span class="token string">'Maggiorenne'</span>  
+		<span class="token keyword">ELSE</span>  <span class="token string">'Minorenne'</span>  
+	<span class="token keyword">END</span> <span class="token keyword">AS</span> maggiore_età
+<span class="token keyword">FROM</span> Studenti<span class="token punctuation">;</span>
+</code></pre>
 
     </div>
   </div>
