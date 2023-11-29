@@ -29,7 +29,7 @@ Tra le funzioni offerte dalla classe `Object` ce ne sono alcune deprecate e altr
 - `String toString()`
 
 
-### Equals
+## Equals
 
 `boolean equals(Object obj)`
 
@@ -56,4 +56,129 @@ car1==car2 //false
 car1.equals(car1) //true
 ```
 
+Quando si ridefinisce il metodo `equals` bisogna assicurarsi di mantenere le proprietà:
+- riflessiva: `x.equals(x)` deve essere vero
+- simmetrica: allora `x.equals(y)` e `y.equals(x)` devono avere lo stesso risultato
+- transitiva: se `x.equals(y)` e `y.equals(z)` allora `x.equals(z)`
 
+
+## Clone
+
+`Object clone()`
+
+Il metodo `clone` restituisce un **nuovo oggetto** che è semanticamente identico a quello su cui è stato chiamato. 
+Quindi vorremmo che 
+- `obj.clone() == obj` restituisca falso perchè sono effettivamente due oggetti diversi
+- `obj.equals(obj.clone())` restituisca vero perché il contenuto dell'oggetto è uguale (sempre considerando che il metodo `equals` venga ridefinito per controllare il contenuto dell'oggetto)
+
+Il metodo clone **non ha una implementazione di base pubblica** (è solo una interfaccia) quindi è importante fare un *override* del metodo per fare la copia effettiva dei valori e restituire non un Object generico ma il tipo della classe.
+Inoltre di default il metodo è `protected` quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected
+
+Quando ridefiniamo il metodo possiamo scegliere se adottare una *deep copy* dei campi oppure una *shallow copy*. Questa distinzione entra in gioco quando abbiamo come campi dei tipi non primitivi.
+con la *deep copy* andiamo a copiare l'effettivo valore puntato (maggior utilizzo di memoria). Mentre con la *shallow copy* facciamo una copia del puntatore (a questo punto avremo due oggetti che puntano alla stessa area di memoria, fenomeno chiamato *aliasing*)
+
+
+## hashCode
+
+`int hashCode()`
+
+Questo è un metodo che ritorna un intero risultante da una funzione hash fatta sull'oggetto.
+
+Se si va a sovrascrivere `equals` bisogna andare anche a sovrascrivere `hashCode` perche le due funzioni sono legate, infatti:
+
+- se `a.equals(b)` restituisce vero allora anche `a.hashCode() == b.hashCode()` deve essere vero
+- però se `a.hashCode() == b.hashCode()` è vero non significa necessariamente che `a.equals(b)` sia vero
+
+Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni. Alternativamente si può ritornare un campo della classe
+
+## toString
+
+`String toString()`
+
+Questo metodo ritorna una stringa che rappresenta testualmente lo stato dell'oggetto
+
+è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando i campi ad esempio con i rispettivi valori.
+
+
+## Collections
+
+Vediamo alcune classi native di Java. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte, una porzione di questa gerarchia è la seguente:
+
+![enter image description here](https://i.ibb.co/LNyBb1L/image.png)
+
+Le strutture che noi utilizziamo solo le foglie, riconosciamo infatti classi come LinkedList, Vector, ecc...
+
+Un costrutto molto utile per iterare su queste strutture è il **for each**, che ha la seguente forma
+
+```java
+for (<tipo> <var_locale> : <struttura_iterabile>) {
+	...
+}
+```
+
+
+## Stringhe
+
+In java esiste il tipo stringa esplicito, che quindi non è propriamente un array di caratteri, bensì un array di byte.
+
+
+`String s = "abc";`
+
+È importante sapere che le stringhe in Java sono **immutabili** questo significa che dopo essere stata inizializzata una stringa non può modificare il valore della stringa a cui punta.
+
+Tutti i metodi sulle stringhe che modificano la stringa in realtà stanno creando una nuova stringa e spostano il puntatore della variabile per puntare alla nuova stringa.
+
+Tra questi metodi troviamo:
+- concatenazione di stringhe: `new_str = str.concat(str2)` alternativamente si può usare la `+`, ad esempio `new_str = str + str2`
+- rimpiazzo di un carattere: `new_str = str.replace(char_to_be_changed, new_char)`
+- ottenere una sottostringa: `new_str = str.substring(limite_sinistro, limite_destro)`
+- dividere una stringa su un carattere: `new_str[] = str.split(carattere_divisorio)`
+
+
+## Tipi primitivi
+
+I tipi primitivi di Java, che quindi non sono sottoclasse di `Object` sono le seguenti:
+
+- boolean
+- byte
+- char
+- short
+- int
+- long
+- float
+- double
+
+Su questi tipi possiamo fare le operazioni standard come
+- `+ - * /` sugli integer e floating-point
+- `&& || !` sui boolean
+
+Nota: gli operatori appena citati non si possono ridefinire negli oggetti (ad esempio non è possibile sovrascrivere il significato di `*` per fare `obj1 * obj2`), come avviene invece in c++.
+
+![enter image description here](https://i.ibb.co/LkS6PYT/image.png)
+
+
+Per quanto riguarda i casting, quando c'è perdita di dati va esplicitato il casting, mentre se non c'è perdita di dati allora non è necessario esplicitare il cast.
+Ad esempio 
+
+```java
+byte a;
+int b;
+a = b;	// non consentito
+a = (byte)b	//consentito (con possibile perdita di informazioni)
+```
+
+Nota che anche passare da un numero floating point ad uno intero significa perdere dei dati quindi anche in quel caso va fatto un cast esplicito
+
+
+## Wrappers
+
+In java esistono delle classi che fanno da contenitori per i corrispettivi valori primitivi
+
+![enter image description here](https://i.ibb.co/Nm2Y5BP/image.png)
+
+- Questo può tornare utile quando certi metodi vogliono degli oggetti come parametri e quindi non potremmo usare i tipi primitivi.
+- I wrapper possono assumere il valore Null mentre i tipi primitivi non possono.
+- È possibile eseguire dei metodi sui dati, come le conversioni.
+- I tipi generici di Java lavorano su oggetti quindi se vogliamo utilizzare i tipi primitivi dobbiamo usare i wrapper
+
+Il lato negativo dei wrapper è il maggior consumo di memoria rispetto ai semplici tipi primitivi

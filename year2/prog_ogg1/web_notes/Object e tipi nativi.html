@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2023-11-24_Objects e tipi nativi</title>
+  <title>2023-11-24_Object e tipi nativi</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -16,6 +16,14 @@
 <li><a href="#object-e-tipi-nativi">Object e tipi nativi</a>
 <ul>
 <li><a href="#object">Object</a></li>
+<li><a href="#equals">Equals</a></li>
+<li><a href="#clone">Clone</a></li>
+<li><a href="#hashcode">hashCode</a></li>
+<li><a href="#tostring">toString</a></li>
+<li><a href="#collections">Collections</a></li>
+<li><a href="#stringhe">Stringhe</a></li>
+<li><a href="#tipi-primitivi">Tipi primitivi</a></li>
+<li><a href="#wrappers">Wrappers</a></li>
 </ul>
 </li>
 </ul>
@@ -45,7 +53,7 @@ Tra le funzioni offerte dalla classe <code>Object</code> ce ne sono alcune depre
 <li><code>int hashCode()</code></li>
 <li><code>String toString()</code></li>
 </ul>
-<h3 id="equals">Equals</h3>
+<h2 id="equals">Equals</h2>
 <p><code>boolean equals(Object obj)</code></p>
 <p>Questo metodo serve per indicare se l’oggetto passato per parametro è uguale all’oggetto su cui è stato chiamato il metodo.<br>
 con “uguale” si intende che i due riferimenti puntano allo stesso oggetto in memoria.<br>
@@ -65,6 +73,95 @@ car1<span class="token punctuation">.</span><span class="token function">equals<
 car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
 car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
 </code></pre>
+<p>Quando si ridefinisce il metodo <code>equals</code> bisogna assicurarsi di mantenere le proprietà:</p>
+<ul>
+<li>riflessiva: <code>x.equals(x)</code> deve essere vero</li>
+<li>simmetrica: allora <code>x.equals(y)</code> e <code>y.equals(x)</code> devono avere lo stesso risultato</li>
+<li>transitiva: se <code>x.equals(y)</code> e <code>y.equals(z)</code> allora <code>x.equals(z)</code></li>
+</ul>
+<h2 id="clone">Clone</h2>
+<p><code>Object clone()</code></p>
+<p>Il metodo <code>clone</code> restituisce un <strong>nuovo oggetto</strong> che è semanticamente identico a quello su cui è stato chiamato.<br>
+Quindi vorremmo che</p>
+<ul>
+<li><code>obj.clone() == obj</code> restituisca falso perchè sono effettivamente due oggetti diversi</li>
+<li><code>obj.equals(obj.clone())</code> restituisca vero perché il contenuto dell’oggetto è uguale (sempre considerando che il metodo <code>equals</code> venga ridefinito per controllare il contenuto dell’oggetto)</li>
+</ul>
+<p>Il metodo clone <strong>non ha una implementazione di base pubblica</strong> (è solo una interfaccia) quindi è importante fare un <em>override</em> del metodo per fare la copia effettiva dei valori e restituire non un Object generico ma il tipo della classe.<br>
+Inoltre di default il metodo è <code>protected</code> quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected</p>
+<p>Quando ridefiniamo il metodo possiamo scegliere se adottare una <em>deep copy</em> dei campi oppure una <em>shallow copy</em>. Questa distinzione entra in gioco quando abbiamo come campi dei tipi non primitivi.<br>
+con la <em>deep copy</em> andiamo a copiare l’effettivo valore puntato (maggior utilizzo di memoria). Mentre con la <em>shallow copy</em> facciamo una copia del puntatore (a questo punto avremo due oggetti che puntano alla stessa area di memoria, fenomeno chiamato <em>aliasing</em>)</p>
+<h2 id="hashcode">hashCode</h2>
+<p><code>int hashCode()</code></p>
+<p>Questo è un metodo che ritorna un intero risultante da una funzione hash fatta sull’oggetto.</p>
+<p>Se si va a sovrascrivere <code>equals</code> bisogna andare anche a sovrascrivere <code>hashCode</code> perche le due funzioni sono legate, infatti:</p>
+<ul>
+<li>se <code>a.equals(b)</code> restituisce vero allora anche <code>a.hashCode() == b.hashCode()</code> deve essere vero</li>
+<li>però se <code>a.hashCode() == b.hashCode()</code> è vero non significa necessariamente che <code>a.equals(b)</code> sia vero</li>
+</ul>
+<p>Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni. Alternativamente si può ritornare un campo della classe</p>
+<h2 id="tostring">toString</h2>
+<p><code>String toString()</code></p>
+<p>Questo metodo ritorna una stringa che rappresenta testualmente lo stato dell’oggetto</p>
+<p>è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando i campi ad esempio con i rispettivi valori.</p>
+<h2 id="collections">Collections</h2>
+<p>Vediamo alcune classi native di Java. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte, una porzione di questa gerarchia è la seguente:</p>
+<p><img src="https://i.ibb.co/LNyBb1L/image.png" alt="enter image description here"></p>
+<p>Le strutture che noi utilizziamo solo le foglie, riconosciamo infatti classi come LinkedList, Vector, ecc…</p>
+<p>Un costrutto molto utile per iterare su queste strutture è il <strong>for each</strong>, che ha la seguente forma</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>var_locale<span class="token operator">&gt;</span> <span class="token operator">:</span> <span class="token operator">&lt;</span>struttura_iterabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="stringhe">Stringhe</h2>
+<p>In java esiste il tipo stringa esplicito, che quindi non è propriamente un array di caratteri, bensì un array di byte.</p>
+<p><code>String s = "abc";</code></p>
+<p>È importante sapere che le stringhe in Java sono <strong>immutabili</strong> questo significa che dopo essere stata inizializzata una stringa non può modificare il valore della stringa a cui punta.</p>
+<p>Tutti i metodi sulle stringhe che modificano la stringa in realtà stanno creando una nuova stringa e spostano il puntatore della variabile per puntare alla nuova stringa.</p>
+<p>Tra questi metodi troviamo:</p>
+<ul>
+<li>concatenazione di stringhe: <code>new_str = str.concat(str2)</code> alternativamente si può usare la <code>+</code>, ad esempio <code>new_str = str + str2</code></li>
+<li>rimpiazzo di un carattere: <code>new_str = str.replace(char_to_be_changed, new_char)</code></li>
+<li>ottenere una sottostringa: <code>new_str = str.substring(limite_sinistro, limite_destro)</code></li>
+<li>dividere una stringa su un carattere: <code>new_str[] = str.split(carattere_divisorio)</code></li>
+</ul>
+<h2 id="tipi-primitivi">Tipi primitivi</h2>
+<p>I tipi primitivi di Java, che quindi non sono sottoclasse di <code>Object</code> sono le seguenti:</p>
+<ul>
+<li>boolean</li>
+<li>byte</li>
+<li>char</li>
+<li>short</li>
+<li>int</li>
+<li>long</li>
+<li>float</li>
+<li>double</li>
+</ul>
+<p>Su questi tipi possiamo fare le operazioni standard come</p>
+<ul>
+<li><code>+ - * /</code> sugli integer e floating-point</li>
+<li><code>&amp;&amp; || !</code> sui boolean</li>
+</ul>
+<p>Nota: gli operatori appena citati non si possono ridefinire negli oggetti (ad esempio non è possibile sovrascrivere il significato di <code>*</code> per fare <code>obj1 * obj2</code>), come avviene invece in c++.</p>
+<p><img src="https://i.ibb.co/LkS6PYT/image.png" alt="enter image description here"></p>
+<p>Per quanto riguarda i casting, quando c’è perdita di dati va esplicitato il casting, mentre se non c’è perdita di dati allora non è necessario esplicitare il cast.<br>
+Ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">byte</span> a<span class="token punctuation">;</span>
+<span class="token keyword">int</span> b<span class="token punctuation">;</span>
+a <span class="token operator">=</span> b<span class="token punctuation">;</span>	<span class="token comment">// non consentito</span>
+a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span>b	<span class="token comment">//consentito (con possibile perdita di informazioni)</span>
+</code></pre>
+<p>Nota che anche passare da un numero floating point ad uno intero significa perdere dei dati quindi anche in quel caso va fatto un cast esplicito</p>
+<h2 id="wrappers">Wrappers</h2>
+<p>In java esistono delle classi che fanno da contenitori per i corrispettivi valori primitivi</p>
+<p><img src="https://i.ibb.co/Nm2Y5BP/image.png" alt="enter image description here"></p>
+<ul>
+<li>Questo può tornare utile quando certi metodi vogliono degli oggetti come parametri e quindi non potremmo usare i tipi primitivi.</li>
+<li>I wrapper possono assumere il valore Null mentre i tipi primitivi non possono.</li>
+<li>È possibile eseguire dei metodi sui dati, come le conversioni.</li>
+<li>I tipi generici di Java lavorano su oggetti quindi se vogliamo utilizzare i tipi primitivi dobbiamo usare i wrapper</li>
+</ul>
+<p>Il lato negativo dei wrapper è il maggior consumo di memoria rispetto ai semplici tipi primitivi</p>
 
     </div>
   </div>
