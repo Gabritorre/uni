@@ -250,3 +250,66 @@ da cui ricaviamo $\lambda = 30$
 il testo ci chiede di trovare $\mathbb{P}[X > \frac{5}{60}] = \mathbb{P}[X > \frac{1}{12}]$
 
 $\mathbb{P}[X > \frac{1}{12}] =1-(1- e^{-\lambda x}) =e^{-30 \frac{1}{12}} =e^{- \frac{30}{12}}$
+
+## Processo di Poisson
+
+Ricordiamo che la distribuzione di Poisson che abbiamo già visto viene utilizzata per i conteggi degli eventi che accadono in una unità di tempo fissa.
+
+Il **processo di Poisson** cerca di lavorare su una unità di tempo più piccola in modo da coprire degli intervalli di tempo più flessibili.
+Si dice che il processo di Poisson è una successioni di variabili aleatorie dipendenti dal parametro $t$ (che rappresenta l'intervallo di tempo) $\{X_t\}_{t\geq 0}$
+
+$$X_t \sim \mathcal{P}(\lambda \cdot t)$$
+
+Vediamo un esempio:
+
+"i messaggi in arrivo nella mia casella di posta elettronica sono in media 12 ogni 10 minuti. "
+
+Definiamo $X$ come la variabile che conta i messaggi in arrivo in un intervallo di 10 minuti:
+
+$$X \sim \text{Po}(12)$$
+
+Utilizzando poisson in questo modo però potremmo solo lavorare con intervalli di 10 minuti. Se invece volessimo sapere quanti ne arrivano ogni 15 minuti? ogni 13?
+Il processo di Poisson ci aiuta in questo:
+Quello che bisogna fare è scalare i dati secondo una unità di tempo più comoda: cerchiamo di ricavare **quanti messaggi arrivano mediamente in 1 minuto**
+
+risolviamo la semplice proporzione $12:10 = x : 1 \to x = \frac{12}{10} \text{ messaggi al minuto}$
+
+- Definiamo $\lambda = "\text{numero di messaggi al minuto}" = \frac{12}{10}$
+- Definiamo $t = "\text{intevallo di tempo richiesto dall'esercizio}"$
+- Definiamo $X_t = "\text{numero di messaggi nell'intervallo di tempo}"$
+
+quindi:
+- se $t = 10 \implies X_{10} \sim \mathcal{P}(1.2\cdot 10)$
+- se $t = 15 \implies X_{15} \sim \mathcal{P}(1.2\cdot 15)$
+- se $t = 13 \implies X_{13} \sim \mathcal{P}(1.2\cdot 13)$
+
+Se vogliamo sapere la probabilità di ricevere più di 3 messaggi in 10 minuti:
+allora sarebbe come fare $X_{10}\sim \text{Po}(12)$ che sappiamo già calcolare
+
+$\mathbb{P}[X_{10} > 3] = 1 - \mathbb{P}[X_{10} \leq 3] = 1 - \left(\frac{12^0}{0!}e^{-12} + \frac{12^1}{1!}e^{-12} + \frac{12^2}{2!}e^{-12} +\frac{12^3}{3!}e^{-12}\right) = 0.9977$
+
+Oppure se vogliamo sapere la probabilità di ricevere più di 3 messaggi in 15 minuti:
+allora sarebbe come fare $X_{15}\sim \text{Po}(18)$ che sappiamo già calcolare
+
+$\mathbb{P}[X_{15} > 3] = 1 - \mathbb{P}[X_{15} \leq 3] = 1 - \left(\frac{18^0}{0!}e^{-18} + \frac{18^1}{1!}e^{-18} + \frac{18^2}{2!}e^{-18} +\frac{18^3}{3!}e^{-18}\right) = 0.99998$
+
+### Relazione con la distribuzione esponenziale
+
+Il processo di Poisson è fortemente relazionato con la distribuzione esponenziale, infatti possiamo utilizzare le due distribuzione per calcolare lo stesso evento:
+
+Sempre utilizzando il precedente esempio calcoliamo la probabilità che "in 15 minuti non arrivi nessun messaggio"
+
+Per calcolare questa probabilità possiamo utilizzare poisson:
+
+$X_{15} = "\text{numero di messaggi in 15 minuti}"$
+$$X_{15} \sim \text{Po}(18)$$
+
+$\mathbb{P}[X_{15} = 0] = \frac{18^0}{0!}e^{-18} = e^{-18}$
+
+oppure possiamo utilizzare la distribuzione esponenziale:
+
+$T = "\text{tempo trascorso tra due messaggi}"$
+
+$$T \sim \text{Exp}(1.2)$$
+
+$\mathbb{P}[T > 15] = e^{1.2\cdot 15} = e^{-18}$
