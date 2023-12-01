@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-11-30_Alberi di ricerca particolari</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#alberi-di-ricerca-particolari">Alberi di ricerca particolari</a>
+<ul>
+<li><a href="#alberi-avl">Alberi AVL</a></li>
+<li><a href="#b-alberi">B-alberi</a></li>
+<li><a href="#alberi-rossi-e-neri">Alberi rossi e neri</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="alberi-di-ricerca-particolari">Alberi di ricerca particolari</h1>
+<h2 id="alberi-avl">Alberi AVL</h2>
+<p>Il nome di questi tipi di alberi derivano dai loro inventori <em>Adelson-Velskij Landis</em>.</p>
+<p>Questi tipi di alberi sono alberi binari di ricerca che hanno la caratteristica di <strong>rimanere sempre bilanciati</strong>.<br>
+Ogni nodo oltre a mantenere l’informazione, ha anche un campo cosiddetto <strong>fattore di bilanciamento</strong>.<br>
+Questo fattore è determinato dalla differenza di altezza fra l’altezza del sottoalbero sinistro e l’altezza del sottoalbero destro, il valore assoluto di tale differenza deve essere <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\leq 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.77194em; vertical-align: -0.13597em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> in ogni nodo per mantenere il bilanciamento.</p>
+<h2 id="b-alberi">B-alberi</h2>
+<p>Sono alberi binari di ricerca in cui ogni nodo ha almeno 2 figli. Questi alberi seguono le seguenti proprietà:</p>
+<ol>
+<li>tutte le foglie hanno la stessa profondità</li>
+<li>Ogni nodo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi></mrow><annotation encoding="application/x-tex">v</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span></span></span></span></span> (tranne la radice) mantiene un numero di chiavi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">K(v)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mclose">)</span></span></span></span></span> ordinate.<br>
+La quantità di chiavi deve essere compresa tra il <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mtext>numero&nbsp;di&nbsp;figli</mtext><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\text{numero di figli} -1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">numero&nbsp;di&nbsp;figli</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>(2&nbsp;volte&nbsp;il&nbsp;numero&nbsp;di&nbsp;figli</mtext><mo stretchy="false">)</mo><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\text{(2 volte il numero di figli}) -1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">(2&nbsp;volte&nbsp;il&nbsp;numero&nbsp;di&nbsp;figli</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span>.<br>
+In linguaggio matematico con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mtext>numero&nbsp;di&nbsp;figli</mtext></mrow><annotation encoding="application/x-tex">t = \text{numero di figli}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.61508em; vertical-align: 0em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">numero&nbsp;di&nbsp;figli</span></span></span></span></span></span></li>
+</ol>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>t</mi><mo>−</mo><mn>1</mn><mo>≤</mo><mi>K</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>≤</mo><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">t-1\leq K(v)\leq2t-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69841em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.78041em; vertical-align: -0.13597em;"></span><span class="mord">1</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">2</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span></span></p>
+<ol start="3">
+<li>la radice mantiene almeno una chiave e al massimo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>t</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">2t-1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">2</span><span class="mord mathnormal">t</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> chiavi ordinate.</li>
+<li>ogni nodo interno dell’albero ha <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false">(</mo><mi>v</mi><mo stretchy="false">)</mo><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K(v) + 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> figli</li>
+<li>le chiavi di un nodo fanno da separatore per le chiavi dei relativi sottoalberi sinistri e destri</li>
+</ol>
+<p>Vediamo un esempio di questo albero:</p>
+<p><img src="https://i.ibb.co/MNYZ64W/image.png" alt="enter image description here"></p>
+<h2 id="alberi-rossi-e-neri">Alberi rossi e neri</h2>
+<p>Sono alberi binari di ricerca in cui ogni nodo contiene una informazione aggiuntiva: il colore del nodo che può essere rosso oppure nero.<br>
+Vincolando in modo opportuno l’alternanza di nodi rossi e neri si riesce ad ottenere la seguente proprietà:<br>
+“Il cammino più lungo nell’albero è lungo al massimo il doppio del cammino più breve”, ne deriva che l’albero risulta essere bilanciato</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
