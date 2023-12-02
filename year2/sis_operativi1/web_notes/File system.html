@@ -19,6 +19,13 @@
 <li><a href="#directories">Directories</a></li>
 <li><a href="#organizzazione-dei-file">Organizzazione dei file</a></li>
 <li><a href="#allocazione-dei-file">Allocazione dei file</a></li>
+<li><a href="#organizzazione-delle-directories">Organizzazione delle directories</a></li>
+<li><a href="#gestione-dello-spazio-libero">Gestione dello spazio libero</a></li>
+<li><a href="#protezione-dellintegrità-dei-dati">Protezione dell’integrità dei dati</a></li>
+<li><a href="#controllo-degli-accessi-ai-file">Controllo degli accessi ai file</a></li>
+<li><a href="#accesso-ai-dati">Accesso ai dati</a></li>
+<li><a href="#controllo-degli-accessi">controllo degli accessi</a></li>
+<li><a href="#prestazioni-del-file-system">Prestazioni del file system</a></li>
 </ul>
 </li>
 </ul>
@@ -120,20 +127,150 @@ inoltre gli hard link sono disponibili solo sul file system principale (che si r
 <h3 id="allocazione-sequenziale">Allocazione sequenziale</h3>
 <p>I file sono posizionati in indirizzi contigui.<br>
 È una implementazione semplice ma con <strong>scarse prestazioni</strong> e possibile <strong>frammentazione esterna</strong>, inoltre se il file cresce di dimensioni è possibile che vada riposizionato in un punto che lo contenga.</p>
-<h3 id="allocazione-con-liste-collegate">Allocazione con liste collegate</h3>
+<h3 id="allocazione-non-contigua-con-liste-collegate">Allocazione non contigua con liste collegate</h3>
 <p>Abbiamo delle liste in cui il nodi sono composti da un blocco dei dati di un file e dal puntatore al nodo successivo della lista.<br>
 ogni file ha la propria lista.</p>
 <p>Con questa implementazione non abbiamo più frammentazione esterna ma abbiamo possibile frammentazione interna nell’ultimo elemento di ogni lista.<br>
 i puntatori per quanto poco sprecano spazio utile.<br>
 Inoltre con file grandi ho una lista molto grande da scorrere. Considerare blocchi più grandi riduce la lunghezza ma aumenta i tempi di caricamento.<br>
 D’altra parte il cambio di dimensione del file viene gestito molto efficientemente dato che bisogna solo cambiare i puntatori della lista.</p>
-<h3 id="allocazione-tabellare">Allocazione tabellare</h3>
+<h3 id="allocazione-non-contigua-tabellare">Allocazione non contigua tabellare</h3>
 <p>Vengono utilizzate tabelle che memorizzano dei puntatori ai blocchi dei file.</p>
 <p>Nella directory è presente il primo blocco del file, quel blocco viene utilizzato come indice di una tabella per determinare quale sarà il prossimo blocco, il quale a sua volta verrà utilizzato di come indice. Fino al raggiungimento di un valore NULL.</p>
 <p><img src="https://i.ibb.co/tmct64X/image.png" alt="enter image description here"></p>
 <p>Avendo una tabella molto lunga, si hanno i blocchi del file sparsi per tutta la tabelle, di conseguenza seguire molti puntatori della tabella potrebbe essere oneroso.</p>
 <p>La dimensione della tabella si può calcolare facilmente facendo il prodotto tra il numero di blocchi e la dimensione del blocco</p>
 <p>Un conosciuto file system che utilizza questo metodo è il <strong>FAT</strong></p>
+<h3 id="allocazione-non-contigua-indicizzata">Allocazione non contigua indicizzata</h3>
+<p>Ogni file ha un proprio <strong>blocco indice</strong>, cioè una tabella contenente puntatori a blocchi di dati del file. È anche possibile che alcune righe della tabella puntino ad altri blocchi indice, tecnica chiamata <strong>chaining</strong></p>
+<p><img src="https://i.ibb.co/RHn80q5/image.png" alt="enter image description here"></p>
+<p>Con questa tecnica si riesce a sfruttare meglio la cache dato che possiamo mettere in cache i blocchi indice che non sono molto grandi.<br>
+I file system cercano di tenere il puntatore con il relativo blocco dati molto vicini in memoria secondaria in modo da essere acceduti più velocemente dopo il riferimento.</p>
+<p>In Unix i blocchi indice sono chiamati <strong>i-node</strong>, mentre i blocchi indice puntati da altri blocchi indice sono detti <strong>blocchi indiretti</strong></p>
+<p>Gli i-node contengono vari attributi del file come: proprietario, dimensione, data creazione, i puntatori ai blocchi dati e i puntatori ai blocchi indiretti (generalmente c’è una gerarchia a 3 livelli)</p>
+<h2 id="organizzazione-delle-directories">Organizzazione delle directories</h2>
+<p>Vediamo come sono organizzati gli attributi dei file nelle directories:</p>
+<ul>
+<li>direttamente nelle righe della directory (tecnica utilizzata da Windows)</li>
+<li>le directories puntano agli i-node i quali hanno gli attributi (tecnica utilizzata da Unix)</li>
+</ul>
+<p>Vediamo 3 modi diversi di gestire il nome dei file:</p>
+<ul>
+<li>si riserva una dimensione fissa (ad esempio 255 caratteri) e il nome del file non può eccedere tale dimensione</li>
+<li>Il nome viene messo alla fine degli attributi lasciandogli una dimensione variabile e si usa un carattere speciale per terminare il nome. Così facendo se il file venisse eliminato, un successivo file con un nome più lungo non ci starebbe (frammentazione esterna)</li>
+<li>I nomi vengono messi in una memoria dinamica condivisa chiamata <strong>heap</strong> separati da un carattere speciale, tra gli attributi di ogni file ci sarà un puntatore che punta all’inizio del proprio nome in questa area di memoria</li>
+</ul>
+<h2 id="gestione-dello-spazio-libero">Gestione dello spazio libero</h2>
+<p>Nel file system bisogna tenere traccia, oltre che dei blocchi che sono occupati, anche di quelli che sono liberi. Vediamo i vari approcci per tenere traccia dei blocchi liberi.</p>
+<h3 id="lista-dei-blocchi-liberi">lista dei blocchi liberi</h3>
+<p>Utilizziamo una <em>linked list</em> contenente le posizioni dei blocchi liberi:</p>
+<ul>
+<li>quando un file deve essere allocato cerca nella lista il numero di blocchi necessari a partire dalla testa della lista</li>
+<li>i nuovi blocchi liberi vengono messi in coda alla lista</li>
+<li>per migliorare append e remove ci sono dei puntatori alla testa e alla coda della lista</li>
+</ul>
+<p><img src="https://i.ibb.co/51PcF5D/image.png" alt="enter image description here"></p>
+<p>lo svantaggio di questa soluzione è che se un file è molto grande deve scorrere molti elementi della lista, quindi si hanno molti accessi in memoria secondaria.<br>
+Inoltre un file che richiede più blocchi per essere salvato è probabile che venga frammentato in parti sparse nel disco, rendendo l’accesso successivo al file più dispendioso (difficilmente elementi della lista contigui rappresentano blocco in memoria contigui).</p>
+<p>Su dischi molto grandi la lista può diventare molto grande</p>
+<h3 id="bitmap">bitmap</h3>
+<p>Abbiamo una mappa di bit in cui il bit:</p>
+<ul>
+<li>vale 1 se il blocco è occupato</li>
+<li>vale 0 se il blocco è libero</li>
+</ul>
+<p>l’i-esimo bit corrisponde all’i-esimo blocco di memoria</p>
+<p>In questo modo il file system può determinare velocemente se dei blocchi contigui liberi (non c’è frammentazione).<br>
+D’altro parte è probabile che prima di trovare un blocco libero si debba cercare in tutta la mappa.</p>
+<p>Diversamente dalle lista qui ogni elemento della mappa è un solo bit (e non un puntatore) quindi lo spazio occupato dalla mappa è decisamente meno rispetto alle liste.</p>
+<h2 id="protezione-dellintegrità-dei-dati">Protezione dell’integrità dei dati</h2>
+<p>Un sistema deve prevedere nel suo ciclo di vita possono accadere dei crash, disastri naturali, malware che potrebbero intaccare i dati salvati in memoria secondaria.<br>
+È necessaria prevedere delle tecniche di recupero e ripristino dopo un guasto.</p>
+<h3 id="backup">Backup</h3>
+<p>Una prima tecnica è quella del <strong>backup</strong>, cioè una copia dei dati.<br>
+quando la copia originale dei dati viene corrotta in qualche modo, utilizziamo il backup per ripristinare i dati allo stato precedente (tale processo viene detto <strong>recovery</strong>).</p>
+<p>Per mantenere sempre delle copie recenti dei dati è necessario fare il backup frequentemente.</p>
+<p>Abbiamo due tipologie di backup:</p>
+<ul>
+<li>backup fisico<br>
+viene fatta una duplicazione dei dati bit per bit, senza mantenere informazioni sulla struttura logica di tali informazioni</li>
+<li>backup logico<br>
+vengono duplicati i dati con la loro struttura logica e gerarchia (ricordando ogni file a che percorso apparteneva)<br>
+in questo tipo di backup possiamo utilizzare i cosiddetti <strong>backup incrementali</strong> in cui vengono salvati solo i file che sono stati modificati rispetto all’ultimo backup fatto (evitando quindi di ricopiare da capo)</li>
+</ul>
+<h3 id="file-system-strutturato-a-log">File system strutturato a log</h3>
+<p>Se si verifica un errore durante una operazione di scrittura su disco i file potrebbero essere lasciati in uno stato inconsistente, ciò va evitato.</p>
+<p>Per evitarlo si utilizzano sistemi RAID (che vedremo più avanti) oppure file system basati su transazioni. Vediamo questi ultimi:</p>
+<p>Una <strong>transazione</strong> è un raggruppamento di operazioni per renderle come fossero una unica operazione atomica. Quindi quando eseguo una transazione, per essere completata, tutte le operazioni al suo interno devono essere completate, se almeno una non viene completata allora tutta la transizione fallisce e si ritorna allo stato precedente alla sua esecuzione (processo che viene chiamato <em>rollback</em>)</p>
+<p>Tali transazioni vengono implementate registrando il risultato di ogni singola operazione all’interno della transazione in un <strong>file di log</strong> (e non direttamente sui file interessati). Al termine di tutte le operazioni verrà verranno salvate le modifiche della transazione in memoria secondaria.</p>
+<p>Poichè i log possono diventare molto grandi vengono utilizzati dei <strong>checkpoint</strong> che puntano all’ultima transazione che è stata trasferita in memora secondaria.<br>
+Se il sistema si blocca, il file system andrà ad esaminare solo le transazione avvenuto dopo il checkpoint</p>
+<p>La <strong>paginazione shadow</strong> è una tecnica in cui le transazioni vengono eseguiti su un blocco libero in memoria, una volta completata correttamente la transazione si aggiornano i metadati del blocco originale per farlo puntare al nuovo blocco, di conseguenza quello originale viene deallocato.</p>
+<p>I file system che utilizzano la tecnica dei log vengono anche chiamati <strong>journaling file system</strong>, viene utilizzato l’intero disco come file di log</p>
+<h2 id="controllo-degli-accessi-ai-file">Controllo degli accessi ai file</h2>
+<p>Dei file potrebbero contenere dei dati che devono essere visibili solo a determinati utenti e non a chiunque. Servono quindi dei metodi per gestire chi può accedere a determinati file, vediamo due modi: tramite matrice di controllo e controllo per classi di utenti.</p>
+<h3 id="matrice-di-controllo">Matrice di controllo</h3>
+<p>Abbiamo una matrice di bit in cui nelle righe abbiamo gli utenti mentre nelle colonne abbiamo i file. Se l’elemento della matrice è a 0 significa che l’utente in quella riga non può accedere al file di quella colonna, mentre se è 1 allora può accedere.</p>
+<p><img src="https://i.ibb.co/RPvLJph/image.png" alt="enter image description here"></p>
+<p>Si può facilmente dedurre che all’aumentare degli utenti e dei file, la matrice diventerebbe enorme.</p>
+<h3 id="controllo-per-classi-di-utenti">controllo per classi di utenti</h3>
+<p>In questo caso viene controllato l’accesso al file in base ad una classe di utenti, che può essere:</p>
+<ul>
+<li>il proprietario del file</li>
+<li>un utente specifico</li>
+<li>un gruppo di utenti</li>
+<li>accessibile a tutti</li>
+</ul>
+<p>ogni file all’interno del proprio descrittore conterrà quale classe può accedere ad esso.</p>
+<h2 id="accesso-ai-dati">Accesso ai dati</h2>
+<p>Vediamo dei metodi di accesso ai file.</p>
+<ul>
+<li>
+<p><strong>metodi di accesso a coda</strong><br>
+Questi metodi vengono utilizzati quando può essere previsto quali sono i record che verranno richiesti.<br>
+vengono quindi già resi disponibili (in memoria principale) dei record prevedendo che verranno richiesti a breve, migliorando così le prestazioni e i tempi di attesa</p>
+</li>
+<li>
+<p><strong>metodi di accesso di base</strong><br>
+Questi metodi vengono utilizzati quando non è possibile prevedere i record che verranno richiesti</p>
+</li>
+<li>
+<p><strong>file mappati in memoria</strong><br>
+è possibile mappare i dati di un file in uno spazio di indirizzamento virtuale, poichè il processo utilizza anch’esso indirizzi virtuali la gestione viene più comoda.<br>
+Quando un processo modifica dei dati (che sono stati portati in memoria principale) la relativa pagina virtuale viene marcata come <em>dirty</em>, ad intervalli regolari (e anche quando il file verrà chiuso) il contenuto delle pagine <em>dirty</em> viene copiato in memoria secondaria.</p>
+</li>
+</ul>
+<h2 id="controllo-degli-accessi">controllo degli accessi</h2>
+<p>Il sistema operativo deve assicurarsi che gli utenti non facciano un uso improprio delle risorse del computer.<br>
+Per fare ciò solitamente vengono utilizzate delle</p>
+<ul>
+<li>matrice di controllo degli accessi<br>
+simile alla matrice che abbiamo visto precedentemente ma in questo caso al posto di 0 e 1 abbiamo i privilegi ammessi e non (lettura, scrittura, esecuzione)</li>
+<li>liste di controllo di accesso (<em>access control lists</em>)<br>
+Simile alla matrice di controllo vista precedentemente ma in questo caso vengono solo salvati  i privilegi espliciti (se un utente non ha un privilegio su un determinato file, non lo salviamo nella lista). le liste possono  essere basate sui file ed elencare i privilegi per ogni utente, o viceversa elencare, per ogni utente, i privilegi detenuti su ogni file.<br>
+A questo punto però per ricavare i privilegi specifici per un utente o per un file bisogna scorrere tutta la lista.</li>
+<li>liste di capacità (<em>capability lists</em>)<br>
+una capacità è un puntatore che garantisce dei privilegi ad un soggetto sul particolare oggetto puntato. Ogni capacità è contrassegnata da un identificatore, ma si possono fare delle copie.<br>
+Definiamo <strong>dominio di protezione</strong> come l’insieme delle capacità di un utente</li>
+</ul>
+<p>I privilegi sono generalmente: <strong>lettura, scrittura ed esecuzione</strong>, e in base al modello di sicurezza possiamo avere:</p>
+<ul>
+<li><strong>DAC</strong> (<em>Discretionary Access Control</em>) in cui il proprietario del file controlla i privilegi</li>
+<li><strong>MAC</strong> (<em>Mandatory Access Control</em>) in cui è sistema centrale e gestire i privilegi</li>
+</ul>
+<p>È importante sottilineare la differenza tra la politica di sicurezza e il meccanismo di sicurezza:</p>
+<ul>
+<li><strong>politica di sicurezza</strong>: definisce quali privilegi ai file vengono assegnati agli utenti. Solitamente si cerca di dare il <strong>privilegio minimo</strong> possibile agli utenti, per poi aumentarlo in base alle situazioni specifiche.</li>
+<li><strong>meccanismo di sicurezza</strong>: implementa la politica di sicurezza</li>
+</ul>
+<h2 id="prestazioni-del-file-system">Prestazioni del file system</h2>
+<p>Dato che i tempi di accesso ai dischi secondari è molto lento, vediamo quali ottimizzazione sono possibili per migliorare le prestazioni:</p>
+<ul>
+<li><strong>uso della cache</strong>: spostare alcuni blocchi in memoria principale</li>
+<li><strong>read ahead</strong>: leggere il blocco successivo oltre a quello richiesto, prevedendo che sarà richiesto a breve</li>
+<li><strong>allocare i file vicini</strong>: posizione i blocchi appartenenti allo stesso file vicini fisicamente migliora il tempo di ricerca e lettura</li>
+<li><strong>ridurre la frammentazione</strong>: cercare di eliminare i buchi vuoti in mezzo al disco, ravvicinando gli spazi vuoti del disco.</li>
+</ul>
 
     </div>
   </div>
