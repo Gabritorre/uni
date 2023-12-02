@@ -192,7 +192,7 @@ $\mathbb{P}[X \leq 3] = \frac{10^0}{0!}e^{-10} + \frac{10^1}{1!}e^{-10} + \frac{
 
 ### Approssimazione della Binomiale
 
-In alcuni casi è possibile utilizzare le formule della distribuzione binomiale come una buona approssimazione della distribuzione binomiale.
+In alcuni casi è possibile utilizzare le formule della distribuzione di Poisson come una buona approssimazione della distribuzione binomiale.
 
 I casi in questo si può fare sono quei casi in cui $n$ è grande e la probabilità di ogni valore è molto basso inoltre il prodotto $np$ deve tendere a $\lambda$
 Generalmente quando $n \geq 100$ e $p \leq 0.05$
