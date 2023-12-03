@@ -313,3 +313,13 @@ $T = "\text{tempo trascorso tra due messaggi}"$
 $$T \sim \text{Exp}(1.2)$$
 
 $\mathbb{P}[T > 15] = e^{1.2\cdot 15} = e^{-18}$
+
+
+## Funzioni in R
+
+### Normale
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X \leq x]$ | `pnorm(q=x, mean=μ, sd=σ)` |
+| $\mathbb{P}[a\leq X \leq b]$ | `pnorm(q=b, mean=μ, sd=σ) - pnorm(q=a, mean=μ, sd=σ)` |

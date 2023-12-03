@@ -215,6 +215,25 @@ che quindi diventa<br>
 <td><code>phyper(q=k, m=m, n=N-m, k=n)</code></td>
 </tr>
 </tbody>
+</table><h3 id="bernoulli">Bernoulli</h3>
+
+<table>
+<thead>
+<tr>
+<th>Probabilità</th>
+<th>Funzione R</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>=</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X = k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
+<td><code>dbinom(x=k, size=1, prob=p)</code></td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>≤</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X \leq k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
+<td><code>pbinom(q=k, size=1, prob=p)</code></td>
+</tr>
+</tbody>
 </table><h3 id="binomiale">Binomiale</h3>
 
 <table>
@@ -269,7 +288,19 @@ che quindi diventa<br>
 <tbody>
 <tr>
 <td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>=</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X = k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
-<td><code>dgeom(x=x-1, prob=p)</code></td>
+<td><code>dgeom(x=k-1, prob=p)</code></td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>≤</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X \leq k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≤</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
+<td><code>pgeom(q=k-1, prob=p)</code></td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>≥</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X \geq k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≥</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
+<td><code>1 - pgeom(q=k-2, prob=p)</code></td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="double-struck">P</mi><mo stretchy="false">[</mo><mi>X</mi><mo>&gt;</mo><mi>k</mi><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">\mathbb{P}[X &gt; k]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathbb">P</span><span class="mopen">[</span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mclose">]</span></span></span></span></span></td>
+<td><code>1 - pgeom(q=k-1, prob=p)</code></td>
 </tr>
 </tbody>
 </table>

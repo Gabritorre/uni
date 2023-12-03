@@ -277,6 +277,13 @@ Supponiamo che X conti il numero di pagine da visitare per trovare per la prima 
 | $\mathbb{P}[X = k]$ | `dhyper(x=k, m=m, n=N-m, k=n)` |
 | $\mathbb{P}[X \leq k]$ | `phyper(q=k, m=m, n=N-m, k=n)` |
 
+### Bernoulli
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X = k]$ | `dbinom(x=k, size=1, prob=p)` |
+| $\mathbb{P}[X \leq k]$ | `pbinom(q=k, size=1, prob=p)` |
+
 ### Binomiale
 
 | Probabilità | Funzione R |
@@ -296,5 +303,8 @@ Supponiamo che X conti il numero di pagine da visitare per trovare per la prima 
 
 | Probabilità | Funzione R |
 |--|--|
-| $\mathbb{P}[X = k]$ | `dgeom(x=x-1, prob=p)` |
+| $\mathbb{P}[X = k]$ | `dgeom(x=k-1, prob=p)` |
+| $\mathbb{P}[X \leq k]$ | `pgeom(q=k-1, prob=p)` |
+| $\mathbb{P}[X \geq k]$ | `1 - pgeom(q=k-2, prob=p)` |
+| $\mathbb{P}[X > k]$ | `1 - pgeom(q=k-1, prob=p)` |
 
