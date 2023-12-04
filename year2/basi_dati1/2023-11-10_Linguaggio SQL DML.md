@@ -6,7 +6,7 @@ SQL (*Structured Query Language*) è un linguaggio dichiarativo che serve per in
 -   **DDL (Data Definition Language)**: Per la definizione della struttura dei dati, delle regole di integrità e dei privilegi degli utenti (**CREATE**,  **ALTER**,  **DROP**).
 
 
-## DML
+# DML
 
 Generalmente in questa categoria andiamo a fare delle operazioni su delle tabelle in input e in output viene restituita una tabella.
 

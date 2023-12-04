@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-04_Linguaggio SQL_DDL</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#ddl">DDL</a>
+<ul>
+<li><a href="#schemi">Schemi</a></li>
+<li><a href="#tabelle">Tabelle</a></li>
+<li><a href="#vincoli">Vincoli</a></li>
+<li><a href="#viste">Viste</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="ddl">DDL</h1>
+<p><strong>DDL</strong> (<em>Data Definition Language</em>) è la parte del linguaggio SQL in cui si <strong>definisce la base di dati</strong></p>
+<p>Questa parte comprende:</p>
+<ul>
+<li>creare tabelle</li>
+<li>modificare la struttura delle tabelle</li>
+<li>definire i vincoli sugli attributi e tra le tabelle</li>
+<li>altre cose che non vedremo.</li>
+</ul>
+<h2 id="schemi">Schemi</h2>
+<p>Uno schema rappresenta sostanzialmente un insieme di tabelle. Serve per creare un collegamento logico tra le tabelle</p>
+<p>Possiamo creare un schema facendo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>nome_schema<span class="token operator">&gt;</span>
+</code></pre>
+<p>possiamo poi andare a creare le tabelle appartenente a questo schema.</p>
+<p>eliminiamo lo schema tramite il comando:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DROP</span> <span class="token keyword">SCHEMA</span> <span class="token operator">&lt;</span>nome_schema<span class="token operator">&gt;</span> <span class="token punctuation">[</span><span class="token keyword">CASCADE</span> <span class="token operator">|</span> <span class="token keyword">RESTRICT</span><span class="token punctuation">]</span>
+</code></pre>
+<p>aggiungendo il <code>CASCADE</code> cancelliamo lo schema ed anche tutti gli eventuali riferimenti ad tabelle esterne allo schema.<br>
+aggiungendo il <code>RESTRICT</code> lo schema viene cancellato solo se non ci sono riferimenti (se ci sono viene generato un errore)</p>
+<h2 id="tabelle">Tabelle</h2>
+<p>Possiamo definire le tabelle come un insieme di attributi (colonne), e per ciascuna colonna va indicato:</p>
+<ul>
+<li>nome</li>
+<li>tipo di dato, che può essere <strong>predefinito</strong> oppure <strong>definito dall’utente</strong> tramite il comando <code>CREATE DOMAIN</code></li>
+</ul>
+<p>creiamo una tabella nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>nome_tabella<span class="token operator">&gt;</span><span class="token punctuation">(</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>cancelliamo una tabella nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> <span class="token operator">&lt;</span>nome_tabella<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+</code></pre>
+<p>possiamo modificare praticamente ogni aspetto di una tabella tramite il comando <code>ALTER TABLE</code>, possiamo per esempio:</p>
+<ul>
+<li>aggiungere ed eliminare attributi</li>
+<li>modificare il tipo degli attributi</li>
+<li>aggiungere, rimuovere e modificare i vincoli</li>
+</ul>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> Studenti
+	<span class="token keyword">ADD</span> <span class="token keyword">COLUMN</span> Nazionalita <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> ‘Italiana’<span class="token punctuation">;</span>
+</code></pre>
+<h3 id="tipi-di-dato-predefiniti">Tipi di dato predefiniti</h3>
+<p>Vediamo i più comuni tipi di dato predefiniti</p>
+<ul>
+<li>numerici
+<ul>
+<li><code>SMALLINT</code> intero a 16 bit</li>
+<li><code>INTEGER</code> intero a 32 bit</li>
+<li><code>FLOAT(n)</code>decimale dove <code>n</code> indica la precisione che può arrivare fino a 64bit</li>
+<li><code>REAL</code> decimale a 32 bit</li>
+<li><code>NUMERIC(p, s)</code> decimale in cui <code>p</code> rappresenta il numero di cifre totali da cui è composto il numero, mentre <code>s</code> rappresenta quanti delle cifre di <code>p</code> sono dedicate dopo la virgola</li>
+</ul>
+</li>
+<li>boolean
+<ul>
+<li>può contenere solo i valori: true, false, null</li>
+<li><code>1, yes, y, t, true</code> vengono tradotti come <code>true</code></li>
+<li><code>0, no, f, false</code> vengono tradotti come <code>false</code></li>
+</ul>
+</li>
+<li>caratteri
+<ul>
+<li><code>CHAR(x)</code>contiene una stringa lunga <code>x</code> caratteri (se la stringa è più corta allora vengono aggiunti dei valori per riempire)</li>
+<li><code>VARCHAR(x)</code> contiene una stringa di lunghezza variabile fino a <code>x</code> caratteri (se la stringa è più corta non vengono aggiunti dei valori di riempimento)</li>
+<li><code>TEXT</code> contiene una stringa di lunghezza ipoteticamente senza limite</li>
+</ul>
+</li>
+<li>temporali
+<ul>
+<li><code>DATE</code> contiene anno:mese:giorno</li>
+<li><code>TIME</code> contiene ora:minuto:secondo</li>
+<li><code>TIMESTAMP</code> combinazione di <code>DATE</code> e <code>TIME</code></li>
+</ul>
+</li>
+<li>grandi insiemi di dati
+<ul>
+<li>in questi tipi di dati non è possibile fare operazioni e confronti</li>
+<li><code>BLOB</code> binary large object</li>
+<li><code>CLOB</code> character large object</li>
+</ul>
+</li>
+</ul>
+<p>Consideriamo a parte il tipo <code>SERIAL</code> utilizzato dal <em>dbms</em> per identificare in modo autonomo una riga.<br>
+Ogni volta che si aggiunge una riga quel attributo viene automaticamente aggiornato.</p>
+<h2 id="vincoli">Vincoli</h2>
+<p>Sugli attributi possiamo specificare sia dei valori di default, tramite la keyword <code>DEFAULT</code> sia dei vincoli come:</p>
+<ul>
+<li><code>NOT NULL</code> se l’attributo non può essere null</li>
+<li><code>UNIQUE</code> se l’attributo deve essere unico (ma può assumere il valore null)</li>
+<li><code>PRIMARY KEY</code> l’attributo deve essere unico e non null</li>
+<li><code>CHECK (&lt;condizione&gt;)</code> serve per fare un controllo sul valore che assume la colonna, per essere valido il valore deve soddisfare la condizione del check</li>
+</ul>
+<p>Abbiamo anche il vincolo di chiave esterna <code>FOREIGN KEY</code> che può essere accompagnata da un comportamento in caso di cancellazione e modifica del riferimento alla chiave primaria, tali comportamenti sono:</p>
+<ul>
+<li><code>NO ACTION</code> viene impedita la cancellazione o modifica della chiave primaria</li>
+<li><code>SET NULL</code> viene settata la chiave esterna a null</li>
+<li><code>SET DEFAULT</code> viene settata la chiave esterna al suo valore di default</li>
+<li><code>CASCADE</code>la cancellazione o modifica della chiave primaria si propaga anche alle chiavi esterne</li>
+</ul>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Studenti <span class="token punctuation">(</span>
+	Nome <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	Cognome <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	Sesso CHAR<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token keyword">CHECK</span><span class="token punctuation">(</span>Sesso <span class="token operator">IN</span> <span class="token punctuation">(</span>‘M’<span class="token punctuation">,</span> ‘F’<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	Matricola CHAR<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	Nascita <span class="token keyword">DATE</span><span class="token punctuation">,</span>
+	Provincia CHAR<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token keyword">DEFAULT</span> <span class="token string">'VE'</span><span class="token punctuation">,</span>
+	Tutor CHAR<span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>Tutor<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> Studenti<span class="token punctuation">(</span>Matricola<span class="token punctuation">)</span>
+		<span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span>
+		<span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">SET</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="viste">Viste</h2>
+<p>Le viste (<em>view</em>, oppure tabelle virtuali) sono delle tabelle temporanee generate da una query, utilizzate principalmente per realizzare in modo più ordinato query complesse (ma ha anche altri utilizzi).</p>
+<p>sostanzialmente è come dare un nome ad una query, essa infatti verrà ricalcolata ogni volta che si scrive il nome datogli.</p>
+<p>Viene creata nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> <span class="token operator">&lt;</span>nome_vista<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>attributi<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token keyword">AS</span>
+	<span class="token operator">&lt;</span><span class="token keyword">SELECT</span><span class="token operator">&gt;</span>
+</code></pre>
+<p>Vediamo due esempi in cui le view tornano molto utili per le query:</p>
+<p>Esempio 1: “Trovare la media dei voti massimi ottenuti nelle varie province”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> ProvMax<span class="token punctuation">(</span>Provincia<span class="token punctuation">,</span> Max<span class="token punctuation">)</span> <span class="token keyword">AS</span>
+	<span class="token keyword">SELECT</span> s<span class="token punctuation">.</span>Provincia<span class="token punctuation">,</span> <span class="token function">MAX</span><span class="token punctuation">(</span><span class="token number">e</span><span class="token punctuation">.</span>Voto<span class="token punctuation">)</span>
+	<span class="token keyword">FROM</span> Studenti s <span class="token keyword">JOIN</span> Esami <span class="token number">e</span> <span class="token keyword">ON</span> s<span class="token punctuation">.</span>Matricola <span class="token operator">=</span> <span class="token number">e</span><span class="token punctuation">.</span>Candidato
+	<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> s<span class="token punctuation">.</span>Provincia<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>Max<span class="token punctuation">)</span> <span class="token keyword">FROM</span> ProvMax<span class="token punctuation">;</span>
+</code></pre>
+<p>creo prima la view che mi contiene i voti massimi per ogni provincia.<br>
+Poi faccio una query in cui seleziono la media dei massimi</p>
+<p>Esempio 2: “Le province dove la media dei voti degli studenti è la più alta”</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">VIEW</span> ProvMedia <span class="token punctuation">(</span>Provincia<span class="token punctuation">,</span> Media<span class="token punctuation">)</span> <span class="token keyword">AS</span>
+<span class="token keyword">SELECT</span> s<span class="token punctuation">.</span>Provincia<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span><span class="token number">e</span><span class="token punctuation">.</span>Voto<span class="token punctuation">)</span>
+<span class="token keyword">FROM</span> Studenti s <span class="token keyword">JOIN</span> Esami <span class="token number">e</span> <span class="token keyword">ON</span> s<span class="token punctuation">.</span>Matricola<span class="token operator">=</span><span class="token number">e</span><span class="token punctuation">.</span>Candidato
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> s<span class="token punctuation">.</span>Provincia<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> Provincia<span class="token punctuation">,</span> Media
+<span class="token keyword">FROM</span> ProvMedia
+<span class="token keyword">WHERE</span> Media <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>Media<span class="token punctuation">)</span>
+				<span class="token keyword">FROM</span> ProvMedia<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>creo prima la view che mi contiene la media voti per ogni provincia.<br>
+Poi faccio una query in cui seleziono le provincie in cui la media è quale alla media più grande tra le provincie</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
