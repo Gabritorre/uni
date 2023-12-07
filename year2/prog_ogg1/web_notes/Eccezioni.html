@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-06_Eccezioni</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#exceptions">Exceptions</a>
+<ul>
+<li><a href="#override">Override</a></li>
+<li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
+<li><a href="#catturare-eccezioni">Catturare eccezioni</a></li>
+<li><a href="#catene-di-eccezioni">Catene di eccezioni</a></li>
+<li><a href="#assertions">Assertions</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="exceptions">Exceptions</h1>
+<p>La normale esecuzione del codice può essere interrotta a causa di errori, In java tali errori vengono rappresentati dalle <strong>exceptions</strong>. Le exceptions sono degli oggetti che contengono informazioni utili sui relativi errori.</p>
+<p>Quando si verifica un errore viene interrotta l’esecuzione e  l’eccezione relativa viene propagata (tramite il comando <code>throw</code>) attraverso tutto lo stack delle chiamate fino a che qualche funzione la “catturi” <code>catch</code> per gestire l’errore, se nessuna funzione ha previsto una cattura allora il programma verrà terminato.</p>
+<p>Tutti i vari oggetti che definiscono le eccezioni appartengono ad una classe <code>Throwable</code>, nella seguente immagini vediamo una piccola parte della gerarchia:</p>
+<p><img src="https://i.ibb.co/PhD2xnT/image.png" alt="enter image description here"></p>
+<p>Notiamo intanto una distinzione tra <code>Error</code> ed <code>Exception</code></p>
+<ul>
+<li>gli <code>Error</code> sono errori seri da cui non è possibile riprendere l’esecuzione del programma</li>
+<li>le <code>Exception</code> sono errori più leggeri che se gestiti possono far riprendere l’esecuzione del programma</li>
+</ul>
+<p>È possibile definire delle nostre eccezioni estendendo la classe <code>Throwable</code> oppure una delle sue sottoclassi</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// definisco la mia exception</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NegativeSpeedException</span> <span class="token keyword">extends</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token function">NegativeSpeedException</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">super</span><span class="token punctuation">(</span>“Negative speed not allowed<span class="token operator">:</span> “ <span class="token operator">+</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span> <span class="token keyword">double</span> speed<span class="token punctuation">;</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token keyword">throws</span> NegativeSpeedException <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NegativeSpeedException</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//lancio l'eccezione</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>speed <span class="token operator">=</span> a<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se dovessimo andare ad eseguire il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//lancia l'eccezione con il messaggio “Negative speed not allowed: -10“</span>
+</code></pre>
+<p>come si nota dal codice al momento della definizione del metodo <code>accelerate</code> abbiamo messo <code>throws NegativeSpeedException</code>, questo perchè tutti i metodi devono dichiarare anticipatamente le eccezioni che possono lanciare.<br>
+Inoltre anche le funzioni che utilizzano le funzioni che possono lanciare eccezioni devono a loro volta dichiarare le eccezioni (Quindi nel caso ci fosse un metodo che usa <code>accelerate</code> quel metodo deve aggiungere alla propria definizione <code>throws NegativeSpeedException</code>)</p>
+<p>è importante documentare accuratamente le eccezioni che possono essere lanciate dai nostri metodi.<br>
+In javadoc possiamo utilizzare il tag <code>@throws &lt;exception_name&gt; &lt;descrizione&gt;</code></p>
+<h2 id="override">Override</h2>
+<p>Le eccezioni rispettano il principio di sostituzione: “se una classe C1 espone una interfaccia più aperta di C2, allora possiamo l’istanza di C1 anche quando si aspetta una istanza di C2”<br>
+Con più aperta prima intendevamo ad esempio i modificatori di visibilità più aperti.<br>
+Per quanto riguarda le eccezioni invece una classe viene definita <strong>più aperta</strong> se essa espone <strong>al massimo</strong> le eccezioni del metodo sovrascritto.</p>
+<p>Se vogliamo sovrascrivere un metodo che prevede delle eccezioni ma noi vogliamo aggiungerne altre non lo possiamo fare.</p>
+<h2 id="eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</h2>
+<p>Per migliorare questo problema java divide le eccezioni in due categorie:</p>
+<ul>
+<li><strong>Unchecked</strong>: non è necessario dichiarare queste eccezioni. Includono la maggior parte delle eccezioni generiche che estendono le classi <code>Error</code> e <code>RuntimException</code> (Sono solitamente errori del programma che possono essere evitati con una corretta progettazione e programmazione.)</li>
+<li><strong>Checked</strong>: devono essere dichiarate. includono le eccezioni che estendono la classe <code>Exception</code> ma non di <code>RuntimException</code></li>
+</ul>
+<h2 id="catturare-eccezioni">Catturare eccezioni</h2>
+<p>È possibile gestire le eccezioni tramite il comando <code>catch</code>, che quindi permette di fare delle operazioni nel caso si verificasse una eccezione specifica.</p>
+<p>Riusciamo a catturare eccezioni tramite il costrutto <code>try-catch</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+	<span class="token comment">// blocco che potrebbe generare una exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo eccezione<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_variabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice da eseguire in caso di exception</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>il codice precedente può avere tre risvolti:</p>
+<ol>
+<li>non viene generata nessuna eccezione e quindi il codice prosegue normalemente</li>
+<li>viene generata una eccezione del tipo specificato nel <code>catch</code> (oppure anche un sottotipo), e viene eseguito il corpo del <code>catch</code></li>
+<li>viene generata una eccezione che però non è un sottotipo di quello specificato nel <code>catch</code>. In quel caso l’eccezione viene propagata in tutte lo stack di chiamate</li>
+</ol>
+<h3 id="finally">Finally</h3>
+<p>Abbiamo anche un blocco aggiuntivo <code>finally</code> da poter mettere dopo i catch.<br>
+È un blocco che viene eseguito sempre, che si verifichi o meno una eccezione, Questo è utile, ad esempio, quando si lavora con risorse come file o connessioni di rete e si desidera assicurarsi che tali risorse vengano correttamente rilasciate, anche in caso di eccezioni.</p>
+<p>Viene eseguito anche se nel try oppure nel catch c’è un return. Nel caso all’interno del finally ci sia un return, i return precedenti verranno scartati</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+	<span class="token comment">// blocco che potrebbe generare una exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo eccezione<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_variabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice da eseguire in caso di exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">finally</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice eseguito indipendentemente dal verificarsi dell'exception</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="catene-di-eccezioni">Catene di eccezioni</h2>
+<p>Quando lanciamo una eccezione possiamo anche passare come parametro l’eccezione che l’ha causata:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Race</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> T <span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">double</span> length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token keyword">try</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">catch</span><span class="token punctuation">(</span>ImpossibleAccelerationException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span>“Random returned a negative number<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>	 <span class="token comment">//passiamo il valore e che è a sua volta una eccezione</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">finally</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in questo caso vedremo nella console sia l’eccezione esterna che anche quella che l’ha causata.<br>
+Il tutto per migliorare il debug in caso di errori.</p>
+<h2 id="assertions">Assertions</h2>
+<p>Le assertions sono delle condizione che dovrebbero rappresentare qualcosa che dovrebbe essere sempre vero.<br>
+Possiamo utilizzare queste condizione per testare la correttezza di variabile durante l’esecuzione del programma.</p>
+<p>vediamo un esempio:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EsempioAssertion</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> numero <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Utilizzo di assert per verificare che il numero sia positivo</span>
+        <span class="token keyword">assert</span> numero <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">:</span> <span class="token string">"Il numero deve essere positivo"</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Se l'assertion fallisce, il messaggio specificato viene stampato</span>
+        <span class="token comment">// e il programma termina se gli assert sono abilitati (-ea).</span>
+        
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Il numero è: "</span> <span class="token operator">+</span> numero<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>nota che gli assert sono disabilitati di default e vanno abilitati aggiungendo le opzioni <code>-ea</code> quando si esegue il programma</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
