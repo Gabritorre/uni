@@ -34,6 +34,10 @@ La varianza della distribuzione uniforme è
 
 $$\text{Var}[X] = \frac{(b-a)^2}{12}$$
 
+Proprietà che potrebbe tornare utile
+
+$$\text{Var}[X] =E[X^2] - E[X]^2$$
+
 
 ## Distribuzione normale o gaussiana
 
@@ -221,6 +225,10 @@ $$\mathbb{P}[X \leq x]\begin{cases}
 1-e^{-\lambda x} & x\geq 0
 \end{cases}$$
 
+la probabilità $\mathbb{P}[X > x]$ viene definita **funzione di sopravvivenza** e si può calcolare come segue:
+
+$$\mathbb{P}[X > x] = 1-\mathbb{P}[X \leq x] = e^{-x\lambda}$$
+
 La media (il valore atteso) della distribuzione esponenziale è
 
 $$\mathbb{E}[X] = \frac{1}{\lambda}$$
@@ -256,7 +264,7 @@ $\mathbb{P}[X > \frac{1}{12}] =1-(1- e^{-\lambda x}) =e^{-30 \frac{1}{12}} =e^{-
 Ricordiamo che la distribuzione di Poisson che abbiamo già visto viene utilizzata per i conteggi degli eventi che accadono in una unità di tempo fissa.
 
 Il **processo di Poisson** cerca di lavorare su una unità di tempo più piccola in modo da coprire degli intervalli di tempo più flessibili.
-Si dice che il processo di Poisson è una successioni di variabili aleatorie dipendenti dal parametro $t$ (che rappresenta l'intervallo di tempo) $\{X_t\}_{t\geq 0}$
+Si dice che il processo di Poisson è una successione di variabili aleatorie dipendenti dal parametro $t$ (che rappresenta l'intervallo di tempo) $\{X_t\}_{t\geq 0}$
 
 $$X_t \sim \mathcal{P}(\lambda \cdot t)$$
 
@@ -317,9 +325,33 @@ $\mathbb{P}[T > 15] = e^{1.2\cdot 15} = e^{-18}$
 
 ## Funzioni in R
 
+### Uniforme
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X \leq x]$ | `punif(q=x, min=a, max=b)` |
+
+
 ### Normale
 
 | Probabilità | Funzione R |
 |--|--|
 | $\mathbb{P}[X \leq x]$ | `pnorm(q=x, mean=μ, sd=σ)` |
 | $\mathbb{P}[a\leq X \leq b]$ | `pnorm(q=b, mean=μ, sd=σ) - pnorm(q=a, mean=μ, sd=σ)` |
+
+
+### Gamma
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X \leq x]$ | `pgamma(q=x, shape=α, rate=λ)` |
+| $\mathbb{P}[a\leq X \leq b]$ | `pgamma(q=b, shape=α, rate=λ) - pgamma(q=a, shape=α, rate=λ)` |
+
+
+### Esponenziale
+
+| Probabilità | Funzione R |
+|--|--|
+| $\mathbb{P}[X \leq x]$ | `pexp(q=x, rate=λ)` |
+| $\mathbb{P}[a\leq X \leq b]$ | `pexp(q=b, rate=λ) - pexp(q=a, rate=λ)` |
+
