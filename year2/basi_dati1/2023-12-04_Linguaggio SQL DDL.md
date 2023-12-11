@@ -165,3 +165,51 @@ WHERE Media = (SELECT MAX(Media)
 ```
 creo prima la view che mi contiene la media voti per ogni provincia.
 Poi faccio una query in cui seleziono le provincie in cui la media è quale alla media più grande tra le provincie
+
+
+### With
+
+Il costrutto `WITH` rappresenta una view utilizzabile solo una volta.
+
+Si utilizza nel seguente modo:
+
+```sql
+WITH ProvinceMedia AS (
+	SELECT s.Provincia, AVG(e.Voto) AS Media
+	FROM Studenti s JOIN Esami e ON s.Matricola=e.Candidato 	
+	GROUP BY s.Provincia
+)
+SELECT Provincia, Media
+FROM ProvinceMedia
+WHERE Media = ( SELECT MAX(Media)
+				FROM ProvinceMedia
+			  );
+```
+
+## Associazioni simmetriche
+
+Immaginiamo di avere la seguente relazione ricorsiva
+
+![enter image description here](https://i.ibb.co/qF9GX3s/image.png)
+
+
+Quando andiamo ad inserire i dati nella tabella Fratelli, cosa andiamo a mettere?
+
+- tutte le ennuple:
+	quindi se abbiamo due fratelli con `id = 13` e `id = 21` inseriamo nella tabella fratelli sia (13, 21) che (21, 13)
+	In questo modo abbiamo una **ridondanza di informazioni** e risulta intricato riuscire ad ottenere la lista di fratelli senza ripetizioni.
+si dovrebbe fare una cosa di questo tipo:
+	```sql
+	SELECT p1.*, p2.*
+	FROM Persone p1 JOIN Fratelli f ON p1.Id = f.Id1 JOIN Persone p2 ON f.Id2 = p2.Id
+	WHERE f.Id1 < f.Id2
+	```
+	la condizione nel `where` ci garantisce l'assenza di ripetizioni.
+
+- una sola riga per coppia:
+	In questo caso risolviamo la ridondanza di dati però complichiamo le query, ad esempio per ottenere tutti i fratelli di una persona (ad esempio la persona con id=21):
+	```sql
+	SELECT p.*
+	FROM Persone p, Fratelli f
+	WHERE (f.Id1 = 21 AND f.Id2 = p.Id) OR (f.Id2 = 21 AND f.Id1 = p.Id)
+	```

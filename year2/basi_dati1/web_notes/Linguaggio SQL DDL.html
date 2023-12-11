@@ -19,6 +19,7 @@
 <li><a href="#tabelle">Tabelle</a></li>
 <li><a href="#vincoli">Vincoli</a></li>
 <li><a href="#viste">Viste</a></li>
+<li><a href="#associazioni-simmetriche">Associazioni simmetriche</a></li>
 </ul>
 </li>
 </ul>
@@ -173,6 +174,45 @@ Poi faccio una query in cui seleziono la media dei massimi</p>
 </code></pre>
 <p>creo prima la view che mi contiene la media voti per ogni provincia.<br>
 Poi faccio una query in cui seleziono le provincie in cui la media è quale alla media più grande tra le provincie</p>
+<h3 id="with">With</h3>
+<p>Il costrutto <code>WITH</code> rappresenta una view utilizzabile solo una volta.</p>
+<p>Si utilizza nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">WITH</span> ProvinceMedia <span class="token keyword">AS</span> <span class="token punctuation">(</span>
+	<span class="token keyword">SELECT</span> s<span class="token punctuation">.</span>Provincia<span class="token punctuation">,</span> <span class="token function">AVG</span><span class="token punctuation">(</span><span class="token number">e</span><span class="token punctuation">.</span>Voto<span class="token punctuation">)</span> <span class="token keyword">AS</span> Media
+	<span class="token keyword">FROM</span> Studenti s <span class="token keyword">JOIN</span> Esami <span class="token number">e</span> <span class="token keyword">ON</span> s<span class="token punctuation">.</span>Matricola<span class="token operator">=</span><span class="token number">e</span><span class="token punctuation">.</span>Candidato 	
+	<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> s<span class="token punctuation">.</span>Provincia
+<span class="token punctuation">)</span>
+<span class="token keyword">SELECT</span> Provincia<span class="token punctuation">,</span> Media
+<span class="token keyword">FROM</span> ProvinceMedia
+<span class="token keyword">WHERE</span> Media <span class="token operator">=</span> <span class="token punctuation">(</span> <span class="token keyword">SELECT</span> <span class="token function">MAX</span><span class="token punctuation">(</span>Media<span class="token punctuation">)</span>
+				<span class="token keyword">FROM</span> ProvinceMedia
+			  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="associazioni-simmetriche">Associazioni simmetriche</h2>
+<p>Immaginiamo di avere la seguente relazione ricorsiva</p>
+<p><img src="https://i.ibb.co/qF9GX3s/image.png" alt="enter image description here"></p>
+<p>Quando andiamo ad inserire i dati nella tabella Fratelli, cosa andiamo a mettere?</p>
+<ul>
+<li>
+<p>tutte le ennuple:<br>
+quindi se abbiamo due fratelli con <code>id = 13</code> e <code>id = 21</code> inseriamo nella tabella fratelli sia (13, 21) che (21, 13)<br>
+In questo modo abbiamo una <strong>ridondanza di informazioni</strong> e risulta intricato riuscire ad ottenere la lista di fratelli senza ripetizioni.<br>
+si dovrebbe fare una cosa di questo tipo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> p1<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">,</span> p2<span class="token punctuation">.</span><span class="token operator">*</span>
+<span class="token keyword">FROM</span> Persone p1 <span class="token keyword">JOIN</span> Fratelli <span class="token number">f</span> <span class="token keyword">ON</span> p1<span class="token punctuation">.</span>Id <span class="token operator">=</span> <span class="token number">f</span><span class="token punctuation">.</span>Id1 <span class="token keyword">JOIN</span> Persone p2 <span class="token keyword">ON</span> <span class="token number">f</span><span class="token punctuation">.</span>Id2 <span class="token operator">=</span> p2<span class="token punctuation">.</span>Id
+<span class="token keyword">WHERE</span> <span class="token number">f</span><span class="token punctuation">.</span>Id1 <span class="token operator">&lt;</span> <span class="token number">f</span><span class="token punctuation">.</span>Id2
+</code></pre>
+<p>la condizione nel <code>where</code> ci garantisce l’assenza di ripetizioni.</p>
+</li>
+<li>
+<p>una sola riga per coppia:<br>
+In questo caso risolviamo la ridondanza di dati però complichiamo le query, ad esempio per ottenere tutti i fratelli di una persona (ad esempio la persona con id=21):</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> p<span class="token punctuation">.</span><span class="token operator">*</span>
+<span class="token keyword">FROM</span> Persone p<span class="token punctuation">,</span> Fratelli <span class="token number">f</span>
+<span class="token keyword">WHERE</span> <span class="token punctuation">(</span><span class="token number">f</span><span class="token punctuation">.</span>Id1 <span class="token operator">=</span> <span class="token number">21</span> <span class="token operator">AND</span> <span class="token number">f</span><span class="token punctuation">.</span>Id2 <span class="token operator">=</span> p<span class="token punctuation">.</span>Id<span class="token punctuation">)</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token number">f</span><span class="token punctuation">.</span>Id2 <span class="token operator">=</span> <span class="token number">21</span> <span class="token operator">AND</span> <span class="token number">f</span><span class="token punctuation">.</span>Id1 <span class="token operator">=</span> p<span class="token punctuation">.</span>Id<span class="token punctuation">)</span>
+</code></pre>
+</li>
+</ul>
 
     </div>
   </div>
