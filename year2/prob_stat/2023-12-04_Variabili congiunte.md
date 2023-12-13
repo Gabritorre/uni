@@ -241,13 +241,139 @@ Il valore atteso di una trasformazione $g(X,Y)$ è possibile calcolarlo senza an
 
 - caso discreto:
 
-$$\mathbb{E}[g(X,Y)]] )\sum_y\sum_x g(x,y)p(x,y)$$
+$$\mathbb{E}[g(X,Y)]] ) =\sum_y\sum_x g(x,y)p(x,y)$$
 
 - caso continuo:
 
-$$\mathbb{E}[g(X,Y)]] )\int\int_{\mathbb{R^2}} g(x,y)f(x,y)\,dxdy$$
+$$\mathbb{E}[g(X,Y)]] )=\int\int_{\mathbb{R^2}} g(x,y)f(x,y)\,dxdy$$
 
 Due importanti conseguenze sono
 
 1. $\mathbb{E}[X+Y] = \mathbb{E}[X] + \mathbb{E}[Y]$
 2. se $X$ e $Y$ sono indipendenti allora $\mathbb{E}[X\cdot Y] = \mathbb{E}[X] \cdot \mathbb{E}[Y]$
+
+Esempio:
+prendiamo lo stesso esempio precedentemente visto.
+![enter image description here](https://i.ibb.co/FwtyQxW/image.png)
+
+$\mathbb{E}[X] = 0\cdot 0.5 + 1 \cdot 0.5 = 0.5$
+$\mathbb{E}[Y] = 0\cdot 0.4 + 1 \cdot 0.3 + 2 \cdot 0.15 + 3 \cdot 0.15 = 1.05$
+
+$\mathbb{E}[X + Y] =0.5 + 1.05 = 1.55$
+
+## Covarianza
+
+La varianza di due variabili congiunte, detta **covarianza** viene calcolata nel seguente modo:
+
+$$\text{Cov}[X,Y] =\mathbb{E}[XY] - E[X]\cdot E[Y]$$
+
+Vediamo le proprietà della covarianza:
+
+- $\text{Cov}[X,Y] = \text{Cov}[Y,X]$
+- $\text{Cov}[X,X] = \text{Var}[X]$
+- $\text{Cov}[aX,Y] = a\text{Cov}[X,Y]$
+- $\text{Cov}[X,a] = 0$
+- $\text{Cov}[\sum_i X_i,\sum_j Y_j] = \sum_i \sum_j\text{Cov}[X_i,Y_i]$
+
+
+### Varianza di una somma di variabili
+
+Un'altra importante proprietà è la seguente:
+
+$$\text{Var}\left[X + Y\right] = \text{Var}[X] + \text{Var}[Y] + 2\text{Cov}[X,Y]$$
+
+Se **le variabili sono è indipendente** allora
+
+$$\text{Var}\left[X +Y\right] = \text{Var}[X] + \text{Var}[Y]$$
+
+### Covarianza e Indipendenza
+
+Se due variabili $X,Y$sono **indipendenti** allora $\text{Cov}[X,Y] =0$
+**Non è possibile affermare il contrario**
+
+Infatti se $\text{Cov}[X,Y] =0$ si dice che $X$ e $Y$ sono **non correlate**
+
+
+## Correlazione
+
+La **correlazione** misura quanto sono dipendenti tra le due variabili tra loro.
+Viene indicata come $\text{Cor}[X,Y]$ oppure con $\rho$. Si misura come segue:
+
+$$\text{Cor}[X,Y]= \rho_{X,Y} =\frac{\text{Cov}[X,Y]}{\sqrt{\text{Var}[X]\cdot \text{Var}[Y]}}$$
+
+Il valore della correlazione varia tra -1 e 1
+
+$$-1\leq \rho \leq 1$$
+
+dove se:
+- se $\rho \to 0$ allora significa che le variabili sono quasi indipendenti: non sembra esserci una evidente correlazione tra il movimento di una variabile con il movimento dell'altra
+- se $\rho \to 1$ (correlazione positiva) significa che quando una aumenta anche l'altra aumenta, e quando una diminuisce anche l'altra diminuisce
+- se $\rho \to -1$ (correlazione negativa) significa che quando una aumenta l'altra diminuisce, e quando una diminuisce l'altra aumenta
+
+![enter image description here](https://i.ibb.co/0VkGV4g/image.png)
+
+Esempio
+Calcoliamo la correlazione delle seguenti variabili congiunte
+![enter image description here](https://i.ibb.co/FwtyQxW/image.png)
+
+Troviamo le medie per calcolare la covarianza
+$\mathbb{E}[XY] = (1 \cdot 1 \cdot 0.10) + (1 \cdot 2 \cdot 0.10) + (1 \cdot 3 \cdot 0.10) = 0.6$
+$\mathbb{E}[X] = 0\cdot 0.5 + 1 \cdot 0.5 = 0.5$
+$\mathbb{E}[Y] = 0\cdot 0.4 + 1 \cdot 0.3 + 2 \cdot 0.15 + 3 \cdot 0.15 = 1.05$
+
+$\text{Cov}[X,Y] =0.6 - 0.5\cdot 1.05= 0.075$
+
+calcoliamo le varianze per calcolare la correlazione
+$\text{Var}[X] =(0^2 \cdot 0.5) + (1^2 \cdot 0.5) - 0.5^2 = 0.25$
+$\text{Var}[Y] =(0^2 \cdot 0.40) + (1^2 \cdot0.30) + (2^2 \cdot 0.15) + (3 \cdot 0.15) - 1.05^2 = 1.1475$
+
+$$\text{Cor}[X,Y] = \frac{0.075}{\sqrt{0.25 \cdot 1.1475}} = 0.14$$
+
+
+## Somma di variabili con distribuzioni note
+
+- $\text{Bin}(1,p) +\text{Bin}(1,p)$ indipendenti $\longrightarrow \text{Bin}(2,p)$
+- $\text{Po}(\lambda_1) +\text{Po}(\lambda_2)$ indipendenti $\longrightarrow \text{Po}(\lambda_1 + \lambda_2)$
+- $\text{Exp}(\lambda) +\text{Exp}(\lambda)$ indipendenti $\longrightarrow \text{Ga}(2, \lambda)$
+- $\text{N}(\mu_1, \sigma_1^2) +\text{N}(\mu_2, \sigma_2^2)$ indipendenti $\longrightarrow \text{N}(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2)$
+
+## Media campionaria
+
+Avendo due variabili $X_1, X_2$ indipendenti e con stessa distribuzione (viene detto un **campione di variabili**).
+Diciamo che $\mathbb{E}[X_i] = \mu$ e $\text{Var}[X_i]=\sigma^2$ (entrambe le variabili hanno stessa media e varianza)
+
+La media campionaria è un'altra variabile aleatoria che si definisce come:
+
+$$\overline{X} =\frac{X_1 + X_2}{2}$$
+
+
+Dato che si tratta di una variabile aleatoria possiamo calcolare:
+
+- valore atteso
+	$$\mathbb{E}[\overline{X}] = \mu$$
+- varianza
+	$$\mathbb{E}[\overline{X}] = \frac{\sigma^2}{2}$$
+
+## Legge dei grandi numeri
+
+Il calcolo della media campionaria si può estendere facilmente ad un numero $n$ di variabili.
+La **legge dei grandi numeri** ci dice che all'aumentare di $n$, la probabilità che la media campionaria $\overline{X}_n$ si avvicini alla media della distribuzione delle variabili $\mu$ si avvicina ad 1
+
+$$\overline{X}_n\xrightarrow{\text{p}}\mu$$
+
+in altre parole più variabili si considerano più la media campionaria si avvicina alla media della distribuzione.
+
+Un classico esempio è il lancio di un dado: ogni faccia ha una probabilità teorica di $\frac{1}{6}$, per la legge dei grandi numeri facendo un sufficiente numero di lanci del dado la media dei valori ottenuti si avvicinerà ad $\frac{1}{6}$.
+
+## Teorema del limite centrale
+
+Il teorema del limite centrale ci dice che considerando un sufficiente numero di variabili aleatorie, **indipendentemente dalla loro distribuzione**, la distribuzione della media campionaria si può approssimare alla distribuzione normale standard
+
+Se le variabili che considero $X_1,...,X_n$ seguono già una distribuzione normale allora la media campionaria seguirà già una distribuzione normale, anche se considero poche variabili.
+Mentre se le variabili hanno distribuzione molto diverse dalla normale è necessario considerare molte variabili (circa più di 30) per ottenere una approssimazione valida della media campionaria alla distribuzione normale standard.
+
+$$\overline{X}_n \sim \text{N}\left(\mu, \frac{\sigma^2}{n}\right)$$
+
+equivalente a
+
+$$\sum_{i = 1}^n X_i \sim \text{N}\left(n\mu, n\sigma^2\right)$$
