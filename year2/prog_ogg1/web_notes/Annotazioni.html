@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-15_Annotazioni</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#annotazioni">Annotazioni</a>
+<ul>
+<li><a href="#creare-una-annotazione">Creare una annotazione</a></li>
+<li><a href="#target">Target</a></li>
+<li><a href="#retention">Retention</a></li>
+<li><a href="#junit">JUnit</a></li>
+<li><a href="#jaxb">JAXB</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="annotazioni">Annotazioni</h1>
+<p>Le annotazioni in Java sono metadati che forniscono informazioni aggiuntive sul codice sorgente.<br>
+Esse non hanno un impatto diretto sull’esecuzione del programma, ma possono essere lette da strumenti durante il processo di compilazione o esecuzione per applicare comportamenti speciali, generare codice ausiliario, o fornire informazioni utili agli sviluppatori o a strumenti di analisi.</p>
+<p>Le annotazioni possono venir associate a:</p>
+<ul>
+<li>classi</li>
+<li>metodi e costruttori</li>
+<li>campi</li>
+<li>parametri</li>
+<li>variabili locali</li>
+</ul>
+<p>Un esempio di annotazione che abbiamo già visto è il <code>@override</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso il ruolo dell’annotazione è assicurare che il metodo sia effettivamente un override, altrimenti non viene compilato il codice.</p>
+<p>Altri esempi molto utilizzati sono <code>@Deprecated(since="&lt;versione&gt;")</code> per dire che un costrutto è deprecato da un certa versione.<br>
+Oppure <code>@SuppressWarnings("&lt;warning_type&gt;")</code> per evitare che il compilatore generi il tipo di warning specificato</p>
+<h2 id="creare-una-annotazione">Creare una annotazione</h2>
+<p>La sintassi per definire una propria annotazione è la seguente:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token operator">&lt;</span>visibilità<span class="token operator">&gt;</span> @<span class="token keyword">interface</span> <span class="token operator">&lt;</span>nome_annotazione<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	<span class="token comment">// eleneco dei campi che seguono il seguente formato</span>
+	<span class="token operator">&lt;</span>tipo<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_campo<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token operator">&lt;</span>valore_di_default<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+	
+<span class="token punctuation">}</span>
+</code></pre>
+<p>solitamente le annotazioni vengono messe in un file java a parte e poi viene importato tale file dove serve.<br>
+Vediamo come ad ogni campo possiamo attribuire un valore di default, se esso non viene specificato quando si fa riferimento all’annotazione bisogna assegnare un valore a tale campo.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>vediamo come utilizzare questa annotazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyClass</span> <span class="token punctuation">{</span>
+	 <span class="token comment">//utilizzo valido</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"Custom Value"</span><span class="token punctuation">,</span> priority <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+	
+	<span class="token comment">//utilizzo valido</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>priority <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">//utilizzo non valido: bisogna inizializzare il campo "priority"</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+    
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h2 id="target">Target</h2>
+<p>Nella definizione è possibile anche limitare a cosa è possibile affiancare l’annotazione.<br>
+Questo viene fatto aggiungendo una annotazione speciale chiamata <code>@Target</code> alla nostra annotazione, specificando al suo interno a cosa è possibile affiancare la nostra annotazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai campi</span>
+	ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai metodi</span>
+	ElementType<span class="token punctuation">.</span>PARAMETER <span class="token comment">// può assere affiancata ai parametri</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="retention">Retention</h2>
+<p>Similmente all’annotazione <code>@Target</code>, l’annotazione <code>@Retention</code> permette di rendere l’annotazione presente solo nel codice, nella classe, oppure in esecuzione.<br>
+Possiamo decidere modificando il campo <code>RetentionPolicy</code></p>
+<ul>
+<li><code>RetentionPolicy = SOURCE</code>: l’annotazione viene trattata come fosse un normale commento.</li>
+<li><code>RetentionPolicy = CLASS</code>:Nel secondo l’annotazione viene considerata in fase di compilazione (documentazione esterna).</li>
+<li><code>RetentionPolicy = RUNTIME</code>:nel terzo caso l’annotazione viene considerata anche in fase di esecuzione.</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai campi</span>
+	ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai metodi</span>
+	ElementType<span class="token punctuation">.</span>PARAMETER <span class="token comment">// può assere affiancata ai parametri</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>
+	RetentionPolicy<span class="token punctuation">.</span>SOURCE
+<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="junit">JUnit</h2>
+<p><strong>JUnit</strong> è un framework utilizzato per fare testing di un codice, in sostanza un metodo che richiama parti del nostro codice per vedere se si comporta come previsto.<br>
+Questo framework fa uso delle annotazioni per gestire le fasi di testing e quali metodi del nostro codice testare.<br>
+<a href="https://junit.org/junit5/docs/current/user-guide/">junit user guide</a></p>
+<h2 id="jaxb">JAXB</h2>
+<p>Un altro framework che fa intenso uso delle annotazioni è <strong>JAXB</strong>, utilizzato per rappresentare le classi di Java in XML.<br>
+Attraverso diverse annotazioni si possono riconoscere le varie componenti della classe.<br>
+La traduzione da oggetto Java a XML viene chiamata <strong>Marshalling</strong>. Mentre la traduzione da XML a oggetto Java viene chiamata <strong>Unmarshalling</strong></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
