@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-18_Reflection</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#reflection">Reflection</a>
+<ul>
+<li><a href="#classi">Classi</a></li>
+<li><a href="#campi">Campi</a></li>
+<li><a href="#metodi">Metodi</a></li>
+<li><a href="#costruttori">Costruttori</a></li>
+<li><a href="#annotazioni">Annotazioni</a></li>
+<li><a href="#vantaggi-e-svantaggi-della-reflection">Vantaggi e svantaggi della reflection</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="reflection">Reflection</h1>
+<p>La <strong>reflection</strong> è una feature di Java che permette di ottenere informazioni e interagire <strong>a runtime</strong>, attraverso il codice, con: classi, campi, metodi e costruttori</p>
+<h2 id="classi">Classi</h2>
+<p>Vediamo come accedere alle informazioni di una classe.<br>
+Si utilizza una classe chiamata <code>Class</code> e per istanziare un oggetto di tipo class si possono utilizzare due modi:</p>
+<ul>
+<li><code>&lt;oggetto&gt;.getClass()</code></li>
+<li><code>&lt;classe&gt;.class</code></li>
+</ul>
+<p><code>Class</code> definisce tutti i getter per ottenere:</p>
+<ul>
+<li>informazioni sulla struttura di definizione della classe: <code>isPrimitive(), isInterface(), isAnnotation(), getModifiers(), ...</code></li>
+<li>informazioni sulla gerarchia: <code>getInterfaces(), getSuperclass(), getPackage(), ...</code></li>
+<li>campi/metodi con visibilità pubblica definiti nella classe e anche quelli ereditati: <code>getFields(), getMethods(), getCostructors()</code></li>
+<li>campi/metodi (ignorando i modificatori di visibilità) definiti nella classe (ma non quelli ereditati): <code>getDeclaredFields(), gedDeclaredMethods(), getDeclaredConstructors()</code></li>
+<li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">lista operazioni</a></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java">Class <span class="token class-name">c</span> <span class="token operator">=</span> Vehicle<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token comment">// tutti i costruttori</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Constructor t <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredConstructors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// tutti i metodi</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Method m <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// i campi pubblici</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// tutti i campi</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//la superclasse</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//il package a cui appartiene la classe</span>
+</code></pre>
+<h2 id="campi">Campi</h2>
+<p>Vediamo come accedere e manipolare i campi di una classe.<br>
+Si utilizza una classe chiamata <code>Field</code><br>
+Come abbiamo visto possiamo ottenere la lista dei campi tramite <code>getFields(), getDeclaredFields()</code>.<br>
+È possibile anche ottenere un campo in particolare specificando come parametro il nome del campo: <code>get[Declared]Field("&lt;nome_campo&gt;")</code> (se il campo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>
+<p>Ottenere informazioni generali sul campo: <code>getType(), getModifiers()</code></p>
+</li>
+<li>
+<p>Leggere il valore del campo: <code>get(), getDouble(), getInt(), ...</code><br>
+Si utilizza <code>get()</code> per leggere degli oggetti, mentre ci sono dei metodi specifici per i tipi primitivi<br>
+Come parametro ai <code>get()</code> va passato l’oggetto da cui si vuole leggere il campo:<br>
+<code>&lt;field&gt;.get(&lt;oggetto&gt;)</code></p>
+</li>
+<li>
+<p>Scrivere il valore del campo: <code>set(), setDouble(), setInt(), ...</code><br>
+Si utilizza <code>set()</code> per scrivere degli oggetti, mentre ci sono dei metodi specifici per i tipi primitivi<br>
+Come parametro ai <code>set()</code> va passato l’oggetto da cui si vuole leggere il campo e il nuovo valore:<br>
+<code>&lt;field&gt;.set(&lt;oggetto&gt;, &lt;nuovo_valore&gt;)</code></p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Field.html">lista operazioni</a></p>
+</li>
+</ul>
+<p>In caso di <strong>campi privati</strong> non è direttamente possibile performare dei <code>set</code> e dei <code>get</code> (verrebbe lanciato un <code>IllegalAccessException</code>). È possibile prima di eseguire un <code>set</code> o un <code>get</code> mettere la seguente riga di codice:<br>
+<code>&lt;field&gt;.setAccessible(true);</code><br>
+rendendo così il campo accessibile.<br>
+Si tenga nota però che questa operazione infrange il concetto di incapsulamento, che potrebbe portare a problemi al normale funzionamento del codice e un riduzione della sicurezza del codice.<br>
+È quindi consigliato usare questo metodo solo quando strettamente necessario.</p>
+<pre class=" language-java"><code class="prism  language-java">Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classCar</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classVehicle</span> <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Field speed <span class="token operator">=</span> classVehicle<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span> <span class="token string">"speed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+speed<span class="token punctuation">.</span><span class="token function">setDouble</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">10.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="metodi">Metodi</h2>
+<p>Vediamo come accedere e manipolare i metodi di una classe.<br>
+Si utilizza una classe chiamata <code>Method</code><br>
+Come abbiamo visto possiamo ottenere la lista dei metodi tramite <code>getMethods(), getDeclaredMethods()</code>.<br>
+È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la classe dei tipi dei parametri: <code>get[Declared]Method("&lt;nome_metodo&gt;", &lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>Ottenere informazioni generali sul sul metodo: <code>getReturnType(), getTypeParameters(), getGenericExceptionTypes(), getModifiers()</code></li>
+<li>invocare il metodo tramite il metodo <code>&lt;method&gt;.invoke(&lt;oggetto&gt;, &lt;valore_parametro&gt;, ...)</code></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html">lista operazioni</a></li>
+</ul>
+<p>In caso di <strong>metodi privati</strong> vale lo stesso discorso fatto sui campi.</p>
+<pre class=" language-java"><code class="prism  language-java">Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classCar</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classVehicle</span> <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Method accelerate <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"accelerate"</span><span class="token punctuation">,</span> <span class="token keyword">double</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Method getSpeed <span class="token operator">=</span> classVehicle<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"getSpeed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Object result <span class="token operator">=</span> getSpeed<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+result <span class="token operator">=</span> accelerate<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="costruttori">Costruttori</h2>
+<p>Vediamo come accedere e manipolare i costruttori di una classe.<br>
+Si utilizza una classe chiamata <code>Constructor</code><br>
+Come abbiamo visto possiamo ottenere la lista dei costruttori tramite <code>getConstructors(), getDeclaredConstructors()</code>.<br>
+È possibile anche ottenere un costruttore in particolare specificando come parametro il la classe dei tipi dei parametri (ovviamente dato che i costruttori non hanno un nome, non serve metterlo): <code>get[Declared]Constructor(&lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>Ottenere informazioni generali sul sul costruttore: <code>getParameterTypes(), getGenericExceptionTypes(), getModifiers()</code></li>
+<li>chiamare il costruttore per creare una nuova istanza della classe: <code>&lt;costruttore&gt;.newInstance(&lt;valore_parametro&gt;, ...);</code></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html">lista operazioni</a></li>
+</ul>
+<p>In caso di <strong>costruttori privati</strong> vale lo stesso discorso fatto sui campi.</p>
+<pre class=" language-java"><code class="prism  language-java">Class <span class="token class-name">class</span><span class="token operator">&lt;</span>Car<span class="token operator">&gt;</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Constructor cst <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> FuelType<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car created <span class="token operator">=</span> cst<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FuelType</span><span class="token punctuation">(</span><span class="token string">"diesel"</span><span class="token punctuation">,</span> <span class="token number">0.015</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="annotazioni">Annotazioni</h2>
+<p>Con la reflection si può interagire con le annotazioni che hanno <code>RetentionPolicy = RUNTIME</code>.<br>
+Si utilizza una classe chiamata <code>Annotation</code></p>
+<ul>
+<li>possiamo ottenere le annotazioni: <code>getAnnotations(), getDeclaredAnnotations()</code><br>
+anche ottenere delle specifiche annotazioni con <code>getAnnotation(&lt;nome_annotazione&gt;.class),getDeclaredAnnotation(&lt;nome_annotazione&gt;.class)</code></li>
+<li>possiamo ottenere i valori presenti nei campi dell’annotazione, usando il nome del campo come funzione</li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html">lista operazioni</a></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// Definizione di un'annotazione personalizzata</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+    String <span class="token function">mio_campo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Ottenere il valore dell'annotazione da una classe</span>
+MyAnnotation myAnnotation <span class="token operator">=</span> MyClass<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>MyAnnotation<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+String annotationValue <span class="token operator">=</span> myAnnotation<span class="token punctuation">.</span><span class="token function">mio_campo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="vantaggi-e-svantaggi-della-reflection">Vantaggi e svantaggi della reflection</h2>
+<ul>
+<li>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>tramite reflection abbiamo accesso a componenti a cui non avremmo accesso normalmente, in alcuni casi ciò può rompere il principio di incapsulamento ma delle volte può essere necessario (estremamente utile per i framework).</li>
+<li>accedere a componente sconosciuti in fase di compilazione. i framework infatti non sono a conoscenza su quali classi, metodi, campi andranno a lavorare</li>
+</ul>
+</li>
+<li>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>la reflection funziona a <em>runtime</em>, quindi nel caso ci fossero dei palesi errori (cercare di ottenere un metodo non esistente) il codice compilerebbe lo stesso ma verrebbe lanciata una eccezione a <em>runtime</em></li>
+<li>la sintassi utilizzate per fare le varie operazioni è abbastanza verbosa e poco intuitiva rispetto al modo classico di fare le cose</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
