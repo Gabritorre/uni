@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-19_Caso di studio Windows</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#caso-di-studio-windows">Caso di studio Windows</a>
+<ul>
+<li><a href="#architettura">Architettura</a></li>
+<li><a href="#struttura-dellarchitettura">Struttura dell’architettura</a></li>
+<li><a href="#registro-di-sistema">Registro di sistema</a></li>
+<li><a href="#gestione-interruzioni">Gestione interruzioni</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="caso-di-studio-windows">Caso di studio Windows</h1>
+<h2 id="architettura">Architettura</h2>
+<p>Il kernel su cui si basa il sistema operativo è chiamato NTOS (New Tecnology Operative System).<br>
+L’architettura su cui si basano i più moderni sistemi operativi Windows è chiamata <strong>Windows NT</strong>.</p>
+<h3 id="api">API</h3>
+<p>Le API utilizzate per creare le applicazioni Windows sono chiamate <strong>WinAPI</strong>, c’è ne sono di varie versioni ad esempio <em>Win32</em> (per la versione a 32bit)<br>
+Esse sono responsabili di praticamente ogni aspetto del sistema operativo: creare e gestire processi e thread, fare operazioni su file, gestire la sicurezza, gestione della memoria principale, operare sull’interfaccia grafica.<br>
+Le chiamate a sistema sono implementate in un componente del kernel chiamato <em>Executive NTOS</em></p>
+<h3 id="oggetti">Oggetti</h3>
+<p>Spesso le chiamate alle API creano e operano su degli <strong>oggetti</strong> (file, processi, thread, pipe, …) e restituiscono al chiamate un <strong>handle</strong>, una sorta di puntatore all’oggetto con cui poter fare delle operazioni su tale oggetto.<br>
+Gli <em>handle</em> non possono essere direttamente passati ad altri processi ma in alcuni casi è possibile duplicare un <em>handle</em> e passarlo in modo protetto ad altri processi.</p>
+<p>Gli <strong>oggetti</strong> sono dei <strong>nomi per una risorsa fisica</strong> (una periferica) <strong>o logica</strong> (un processo).<br>
+Vengono gestiti da un <strong>gestore di oggetti</strong>, che è una struttura dati presente in memoria.<br>
+Il gestore vede e gestisce gli attributi dell’oggetto, i dati che contiene e le operazioni che può fare. Si occupa anche di creare e distruggere gli oggetti</p>
+<h2 id="struttura-dellarchitettura">Struttura dell’architettura</h2>
+<p>Il kernel NTOS viene definito un <strong>kernel ibrido</strong> in quando risulta essere una via di mezzo tra il micro-kernel e il kernel monolitico.<br>
+È composto da due livelli principali:</p>
+<ul>
+<li><strong>Esecutivo</strong>: si occupa principalmente di: gestione di I/O, gestione degli oggetti, sicurezza e altre funzioni</li>
+<li><strong>Kernel</strong>: Si occupa dello scheduling, gestire le interruzioni, sincronizzazione tra i thread e altre funzioni</li>
+</ul>
+<p>Un componente importante del kernel è l’<strong>Hardware Abstraction Layer</strong> (HAL): uno strato software interposto tra il kernel e l’hardware. È stato progettato per nascondere le differenze hardware e per fornire una piattaforma unificata per ogni applicazione in esecuzione.<br>
+per esempio un programma, invece di aprire direttamente un file chiederà all’HAL di farlo per lui e l’HAL, appena esaudita la richiesta, gli passerà un riferimento al file per la lettura</p>
+<p>A <strong>livello utente</strong> è importante la presenza di:</p>
+<ul>
+<li>DLL (<em>Dynamic Link library</em>): cioè delle librerie che i processi possono collegare per avere funzioni particolari. tali librerie vengono caricate in memoria quando necessario e sono condivise tra i processi.</li>
+<li>servizi di sistema: sono processi eseguiti in modalità utente che sono attivi in <em>background</em> per garantire il corretto funzionamento del sistema<br>
+<img src="https://i.ibb.co/FYbTwGn/image.png" alt="enter image description here"></li>
+</ul>
+<h2 id="registro-di-sistema">Registro di sistema</h2>
+<p>Il registro di sistema è un particolare file, strutturato con una logica ad albero, che memorizza tutti i <strong>dati relativi a hardware, software e utenti</strong>.<br>
+I nodi interni dell’albero (che possiamo vedere come fossero delle cartelle) sono chiamate <strong>chiavi</strong>, mentre le foglie sono chiamate <strong>valori</strong>. Ogni valore è composto da [nome, tipo, dato]:</p>
+<ul>
+<li>il nome è una normale stringa</li>
+<li>il tipo indica il tipo del dato (stringa, intero a 32 bit, intero a 16 bit, esadecimale, …)</li>
+<li>il dato rappresenta l’effettivo contenuto</li>
+</ul>
+<p>Sono presenti 6 nodi radice (nei moderni sistemi sono 5) :</p>
+<ul>
+<li>HKEY_LOCAL_MACHINE</li>
+<li>HKEY_USERS</li>
+<li>HKEY_PERFORMANCE_DATA (non più presente)</li>
+<li>HKEY_CLASSES_ROOT</li>
+<li>HKEY_CURRENT_CONFIG</li>
+<li>HKEY_CURRENT_USER<br>
+<img src="https://i.ibb.co/tzL9wdN/registri.png" alt="enter image description here"></li>
+</ul>
+<h2 id="gestione-interruzioni">Gestione interruzioni</h2>
+<p>È presente un servizio che si occupa di gestire le interruzioni chiamato <strong>ISR</strong> (<em>Interrupt Service Routine</em>). Ogni interruzione ha una priorità e viene gestita l’interruzione con priorità più alta.</p>
+<p>Nell’immagine seguente si vedono le varie priorità che si suddividono in hardware e software:</p>
+<p><img src="https://i.ibb.co/54nyMSC/image.png" alt="enter image description here"></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
