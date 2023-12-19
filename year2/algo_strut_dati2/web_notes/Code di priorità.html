@@ -1,0 +1,114 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-19_Code di priorità</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#code-di-priorità">Code di priorità</a>
+<ul>
+<li><a href="#operazioni">Operazioni</a></li>
+<li><a href="#implementazione-con-max-heap">Implementazione con max heap</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="code-di-priorità">Code di priorità</h1>
+<p>Una coda di priorità è una struttura dati un insieme variabile di elementi, in qui ogni elemento possiede un valore chiamato <strong>chiave o peso</strong>. Abbiamo due tipi di code di priorità in base alla politica applicata alle chiavi:</p>
+<ul>
+<li>coda di massima priorità</li>
+<li>coda di minima priorità</li>
+</ul>
+<h2 id="operazioni">Operazioni</h2>
+<p>Vediamo le operazioni sulle code di massima priorità</p>
+<ul>
+<li><strong>insert</strong>: inserire un elemento nella coda mantenendo mantenendo intatta la politica</li>
+<li><strong>maximum</strong>: restituisce l’elemento con chiave più grande nella coda</li>
+<li><strong>extract max</strong>: restituisce ed elimina l’elemento con chiave più grande nella coda (mantenendo intatta la politica)</li>
+<li><strong>increase key</strong>: cambia il valore della chiave di un elemento con una chiave che deve essere maggiore o uguale alla chiave originale</li>
+</ul>
+<p>Le operazioni sulle codi di minima priorità sono duali:</p>
+<ul>
+<li><strong>insert</strong>:inserire un elemento nella coda mantenendo mantenendo intatta la politica</li>
+<li><strong>minimum</strong>: restituisce l’elemento con chiave più piccola nella coda</li>
+<li><strong>extract min</strong>: restituisce ed elimina l’elemento con chiave più piccola nella coda (mantenendo intatta la politica)</li>
+<li><strong>decrease key</strong>: cambia il valore della chiave di un elemento con una chiave che deve essere minore o uguale alla chiave originale</li>
+</ul>
+<h2 id="implementazione-con-max-heap">Implementazione con max heap</h2>
+<p>Implementiamo le operazioni di una coda di massima priorità con un max heap.</p>
+<h3 id="heap-maximum">Heap maximum</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">heap_maximum</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>A<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> A<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il valore massimo risulta essere la radice.</p>
+<p>Complessità temporale: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi mathvariant="normal">Θ</mi><mo stretchy="false">(</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = \Theta(1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">Θ</span><span class="mopen">(</span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span></p>
+<h3 id="heap-extract-max">Heap extract max</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">heap_extract_max</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>A<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		max <span class="token operator">=</span> A<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+		A<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>A<span class="token punctuation">.</span>heap_size<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		A<span class="token punctuation">.</span>heap_size<span class="token operator">--</span><span class="token punctuation">;</span>
+		<span class="token function">max_heapify</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> max<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Salviamo il valore della radice (che sarà il valore di ritorno finale).<br>
+Scambiamo la radice con l’ultimo nodo e chiamiamo <code>max_heapify</code> sulla nuova radice per metterla nella posizione corretta.</p>
+<p>Complessità temporale: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<h3 id="heap-increase-key">Heap increase key</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">heap_increase_key</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">,</span> Nodo i<span class="token punctuation">,</span> Elem key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>A<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> key <span class="token operator">&gt;=</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> key<span class="token punctuation">;</span>
+		<span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">&gt;</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span><span class="token function">parent</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token operator">&lt;</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">swap</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> A<span class="token punctuation">[</span><span class="token function">parent</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			i <span class="token operator">=</span> <span class="token function">parent</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>innanzitutto controllo che la nuova chiave <code>key</code> sia maggiore o uguale alla chiave del nodo.<br>
+Aggiorno il nodo con la nuova chiave.<br>
+Dato che il nodo sarà sicuramente maggiore o uguale, l’attuale nodo può stare o in quel posto oppure deve essere in una posizione più alta nell’albero. Nel ciclo continuo a scambiare il nodo con il padre, fermandomi quando il padre sarà più grande del nodo.</p>
+<p>Nel caso peggiore devo mettere una foglia come nodo radice (un cammino dalla radice alla foglia)<br>
+Complessità temporale: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<p>Verifichiamo l’invariante del ciclo while:</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>INV</mtext><mo>≡</mo></mrow><annotation encoding="application/x-tex">\text{INV} \equiv</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">INV</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≡</span></span></span></span></span> gli elementi dell’array <code>A[1 ... heap_size]</code> soddisfano la proprietà di max heap tranne eventualmente in <code>A[i]</code></p>
+<p>Passiamo subito alla conclusione<br>
+Il ciclo può terminare per due ragioni:</p>
+<ul>
+<li><code>i = 1</code> l’unica violazione possibile sarebbe <code>A[1]</code> ma dato che essa è la radice non può esserci una violazione</li>
+<li><code>A[parent(i)] &lt; A[i]</code> l’unica violazione possibile sarebbe <code>A[i]</code> ma la condizione ci assicura che la chiave <code>A[i]</code> è minore della chiave del padre, quindi <code>A[i]</code> non è una violazione</li>
+</ul>
+<p>Concludiamo quindi che alla fine del ciclo <code>A</code> è un max heap.</p>
+<h3 id="heap-insert">Heap insert</h3>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">heap_insert</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">,</span> Elem key<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	A<span class="token punctuation">.</span>heap_size<span class="token operator">++</span><span class="token punctuation">;</span>
+	A<span class="token punctuation">[</span>A<span class="token punctuation">.</span>heap_size<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span>infinito<span class="token punctuation">;</span>
+	<span class="token function">heap_increase_key</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> A<span class="token punctuation">.</span>heap_size<span class="token punctuation">,</span> key<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>aggiungiamo alla fine della coda un valore -infinito (per rispettare la precondizione del metodo <code>heap_increase_key</code> infatti <code>key &gt;= -infinito</code>).<br>
+Viene chiamato <code>heap_increase_key</code> per mettere il nodo nella corretta posizione facendolo, eventualmente, risalire sull’albero.</p>
+<p>Complessità temporale: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo><mo>=</mo><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">T(n) = O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mopen">(</span><span class="mord mathnormal">n</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
