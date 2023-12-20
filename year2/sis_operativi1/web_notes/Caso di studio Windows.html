@@ -19,6 +19,9 @@
 <li><a href="#struttura-dellarchitettura">Struttura dell’architettura</a></li>
 <li><a href="#registro-di-sistema">Registro di sistema</a></li>
 <li><a href="#gestione-interruzioni">Gestione interruzioni</a></li>
+<li><a href="#processi-e-thread">Processi e thread</a></li>
+<li><a href="#scheduling-dei-thread">Scheduling dei thread</a></li>
+<li><a href="#gestione-delle-memoria">Gestione delle memoria</a></li>
 </ul>
 </li>
 </ul>
@@ -36,7 +39,7 @@ L’architettura su cui si basano i più moderni sistemi operativi Windows è ch
 Esse sono responsabili di praticamente ogni aspetto del sistema operativo: creare e gestire processi e thread, fare operazioni su file, gestire la sicurezza, gestione della memoria principale, operare sull’interfaccia grafica.<br>
 Le chiamate a sistema sono implementate in un componente del kernel chiamato <em>Executive NTOS</em></p>
 <h3 id="oggetti">Oggetti</h3>
-<p>Spesso le chiamate alle API creano e operano su degli <strong>oggetti</strong> (file, processi, thread, pipe, …) e restituiscono al chiamate un <strong>handle</strong>, una sorta di puntatore all’oggetto con cui poter fare delle operazioni su tale oggetto.<br>
+<p>Spesso le chiamate alle API creano e operano su degli <strong>oggetti</strong> (file, processi, thread, pipe, …) e restituiscono al chiamate un <strong>handle</strong>, una sorta di puntatore (ma non esattamente) all’oggetto con cui poter fare delle operazioni su tale oggetto.<br>
 Gli <em>handle</em> non possono essere direttamente passati ad altri processi ma in alcuni casi è possibile duplicare un <em>handle</em> e passarlo in modo protetto ad altri processi.</p>
 <p>Gli <strong>oggetti</strong> sono dei <strong>nomi per una risorsa fisica</strong> (una periferica) <strong>o logica</strong> (un processo).<br>
 Vengono gestiti da un <strong>gestore di oggetti</strong>, che è una struttura dati presente in memoria.<br>
@@ -78,6 +81,66 @@ I nodi interni dell’albero (che possiamo vedere come fossero delle cartelle) s
 <p>È presente un servizio che si occupa di gestire le interruzioni chiamato <strong>ISR</strong> (<em>Interrupt Service Routine</em>). Ogni interruzione ha una priorità e viene gestita l’interruzione con priorità più alta.</p>
 <p>Nell’immagine seguente si vedono le varie priorità che si suddividono in hardware e software:</p>
 <p><img src="https://i.ibb.co/54nyMSC/image.png" alt="enter image description here"></p>
+<h2 id="processi-e-thread">Processi e thread</h2>
+<p>Su Windows abbiamo un classico utilizzo di <strong>processi e thread</strong>, è però presente una gerarchia più varia, infatti abbiamo anche il concetto di <strong>job e fibra</strong>.<br>
+Possiamo rappresentare la loro relazione nel seguente schema:</p>
+<p><img src="https://i.ibb.co/xCPzPCM/image.png" alt="enter image description here"></p>
+<h3 id="job">Job</h3>
+<p>Un Job è un gruppo di processi che vengono trattati come una unità unica.<br>
+Servono principalmente per gestire le risorse utilizzate dai propri processi.<br>
+Contengono altre informazioni come: il numero massimo di processi, il tempo totale di CPU disponibile per ogni processo, il massimo utilizzo di memoria per processo, restrizioni sulla sicurezza, e altro…</p>
+<h3 id="processo">Processo</h3>
+<p>I processi sono strutturati in 3 blocchi:</p>
+<ul>
+<li>PEB (<em>Process Environment Block</em>): contiene informazioni sul processo che possono utilizzare i thread, Le DLL, e altre informazioni utili al sistema operativo</li>
+<li>Blocco EPROCESS (usato nella parte <em>executive</em>): descrive il processo, contiene informazioni come ID del processo, token di accesso per la sicurezza, gli handle, e altro…</li>
+<li>Blocco KPROCESS (usato nella parte <em>kernel</em>) contiene informazioni per lo scheduling e per la sincronizzazione</li>
+</ul>
+<h4 id="creazione-e-terminazione-dei-processi">Creazione e terminazione dei processi</h4>
+<p>La creazione di un processo avviene tramite una chiamata alle API, generalmente processo padre e figlio sono indipendenti fin da subito anche se è possibile ereditare degli attributi. Ogni processo creato ha un proprio thread di partenza, da cui può generarne altri.</p>
+<p>Per la terminazione abbiamo che un thread dirige la terminazione, esso deve attendere la terminazione di tutti gli altri thread del processo. La terminazione di processo figlio e padre è indipendente.</p>
+<h3 id="thread">Thread</h3>
+<p>Windows utilizza dei thread ibiridi tra kernel e utente.</p>
+<p>Un thread è strutturato in modo simile al processo:</p>
+<ul>
+<li>TEB (<em>Thread Environment Block</em>): contiene informazioni sul thread, le sezioni critiche (parti di programma accedute da più thread) e altro…</li>
+<li>Blocco ETHREAD (usato nella parte <em>executive</em>): descrive il thread, contiene informazioni come ID del thread, richieste di I/O, vari indirizzi tra chi il puntatore al proprio processo.</li>
+<li>Blocco KTHREAD (usato nella parte <em>kernel</em>) contiene informazioni per lo scheduling e per la sincronizzazione</li>
+</ul>
+<p>Il thread possiede anche una TLS (<em>Thread Local Storage</em>), cioè un’area dove i thread possono salvare dei particolari dati locali</p>
+<p>Windows fa utilizzo di <strong>thread pooling</strong> quindi un insieme di thread dormienti che si attivano quando viene richiesto un nuovo lavoro.</p>
+<h3 id="fibra">Fibra</h3>
+<p>Le fibre sono delle unità di esecuzione che vengono create e gestite da un thread. Le fibre quindi non sono schedulate dal sistema operativo (il sistema operativo è proprio ignaro della loro presenza).<br>
+Possiamo vedere le fibre come dei thread a livello utente, infatti esse vengono utilizzate per fare porting di applicazioni su architetture che fanno uso di thread al livello utente.</p>
+<p>Come per i thread, anche le fibre hanno un’area di memoria privata, chiamata <em>Fiber Local Storage</em> (FLS)</p>
+<h2 id="scheduling-dei-thread">Scheduling dei thread</h2>
+<p>Lo scheduling di windows è a livello thread, quindi i processi non vengono schedulati ma bensì solo i thread.</p>
+<p><img src="https://i.ibb.co/qrsVh1N/image.png" alt="enter image description here"></p>
+<p>Il thread hanno 32 livelli di priorità: 0 = priorità minima; 31 = priorità massima.</p>
+<p>Ogni livello di priorità è gestito da una coda round-robin.</p>
+<p>I thread <em>real-time</em> utilizzano una priorità statica nel range 16 - 31<br>
+Gli altri thread utilizzano una priorità dinamica nel range 0 - 15</p>
+<h2 id="gestione-delle-memoria">Gestione delle memoria</h2>
+<p>la <strong>Virtual Memory Manager</strong> (VMM) è la componente del kernel (sezione <em>Executive</em>) che si occupa della gestione della memoria.</p>
+<ul>
+<li>Si utilizza la tecnica di <strong>copy-on-write</strong> sulle modifiche di file/librerie condivise.</li>
+<li>Utilizza l’<strong>allocazione lazy</strong>: cioè un approccio che ritarda l’effettiva assegnazione di pagine di memoria fino a quando non è strettamente necessario, riducendo così il consumo di risorse iniziale e migliorando i tempi di avvio e la risposta del sistema.</li>
+<li>Quando vengono fatte operazioni di I/O vengono spostate più pagine del necessario, prevedendo che verranno richieste a breve.</li>
+<li>Viene riservata una parte della memoria del disco secondario per mettere le pagine che non ci stanno in memoria RAM, la zona di memoria viene chiamata <strong>pagefile</strong>.</li>
+</ul>
+<p>Vengono utilizzate pagine a dimensione fissa e la traduzione tra indirizzi virtuali e fisici utilizza 4 livelli di pagina.</p>
+<p><img src="https://i.ibb.co/wLV7F7r/image.png" alt="enter image description here"></p>
+<p>Viene sfruttata una TLB per mantenere gli indirizzi utilizzati di recente.</p>
+<p>Una pagina virtuale si può trovare in uno dei seguenti stati:</p>
+<ul>
+<li><strong>libera</strong>: non è attualmente in uso (non mappata in memoria principale), un eventuale riferimento ad essa causerebbe un page fault.</li>
+<li><strong>impegnata</strong> (committed): la pagina è mappata in memoria principale</li>
+<li><strong>riservata</strong>: la pagina è riservata per un processo, e non può venir allocata per altri processi</li>
+</ul>
+<p>La VMM può generare delle <strong>pagine larghe</strong> (o grandi), cioè dei gruppi di pagine contigui che vengono trattate come una singola pagina.</p>
+<h3 id="sostituzione-di-pagina">Sostituzione di pagina</h3>
+<p>Windows identifica il <strong>working set</strong> di un processo, come tutte le pagine presenti in memoria principale di quel processo.<br>
+Per la sostituzione delle pagine viene utilizzato l’algoritmo <strong>LRU</strong> localizzato sul singolo processo.</p>
 
     </div>
   </div>
