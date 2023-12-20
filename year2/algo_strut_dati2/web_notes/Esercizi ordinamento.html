@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-21_Esercizi ordinamento</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#esercizi-su-ordinamento">Esercizi su ordinamento</a>
+<ul>
+<li><a href="#rimozione-da-max-heap">Rimozione da max heap</a></li>
+<li><a href="#differenza-tra-max-heap">Differenza tra max heap</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="esercizi-su-ordinamento">Esercizi su ordinamento</h1>
+<h2 id="rimozione-da-max-heap">Rimozione da max heap</h2>
+<p>Implementare la rimozione di un nodo da un max heap.</p>
+<p>Per realizzare la rimozione, quello che facciamo è scambiare il nodo da eliminare con l’ultimo nodo dell’array.<br>
+Decrementare la heap_size (cancellando così l’ultimo nodo).<br>
+riposizionare il nodo scambiato per metterlo nella posizione tale da non violare la proprietà del max heap.</p>
+<p>Quando andiamo a riposizionare il nodo ci possiamo trovare in due casi:</p>
+<ul>
+<li>caso 1: il nodo va messo in una posizione più alta nell’albero. Ciò si verifica quando il nodo da eliminare era più piccolo del nodo in ultima posizione (nell’immagine sotto infatti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">0 &lt; 7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68354em; vertical-align: -0.0391em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">7</span></span></span></span></span>)</li>
+<li>caso 2: il nodo va messo in una posizione più bassa dell’albero. Ciò si verifica quando il nodo da eliminare era più grande del nodo in ultima posizione (nell’immagine sotto infatti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">3 &gt; 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68354em; vertical-align: -0.0391em;"></span><span class="mord">3</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>)</li>
+</ul>
+<p><img src="https://i.ibb.co/vdbP5nc/image.png" alt="enter image description here"></p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// precondizione: i deve appartenere all'heap</span>
+<span class="token comment">// postcondizione: i non appartiene più all'heap</span>
+<span class="token function">heap_delete</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">,</span> Node i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>A<span class="token punctuation">.</span>heap_size <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//se c'è un solo elemento lo elimino e basta</span>
+		A<span class="token punctuation">.</span>heap_size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token punctuation">{</span>
+		value_to_remove <span class="token operator">=</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		A<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> A<span class="token punctuation">[</span>A<span class="token punctuation">.</span>heap_size<span class="token punctuation">]</span><span class="token punctuation">;</span>	<span class="token comment">//metto l'ultimo elemento in posizione i</span>
+		A<span class="token punctuation">.</span>heap_size<span class="token operator">--</span><span class="token punctuation">;</span>
+	
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>value_to_remove <span class="token operator">&gt;</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//caso 2</span>
+			<span class="token function">max_heapify</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>	<span class="token comment">//caso 1</span>
+			<span class="token function">heap_increase_key</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> i<span class="token punctuation">,</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Analisi della complessità:<br>
+entrambi i secondi <code>if-else</code> eseguono un metodo che ha complessità <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span> quindi la complessità è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>log</mi><mo>⁡</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(\log n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">O</span><span class="mopen">(</span><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">n</span><span class="mclose">)</span></span></span></span></span></p>
+<h2 id="differenza-tra-max-heap">Differenza tra max heap</h2>
+<p>Dati due max heap <code>h1, h2</code> effettuare la differenza insiemistica <code>h1 - h2</code>. Quindi bisogna tenere tutti i nodi di <code>h1</code> tranne quelli che sono presenti anche in <code>h2</code></p>
+<p><img src="https://i.ibb.co/0hRR5z7/image.png" alt="enter image description here"></p>
+<p>Quello che andremo a fare è confrontare sempre le radici e:</p>
+<ul>
+<li>se la radice di <code>h1</code> è maggiore della radice di <code>h2</code>, allora la radice di <code>h1</code> farà parte dell’heap risultato e trovo la nuova radice di <code>h1</code> tramite <code>heap_extract_max</code></li>
+<li>se la radice di <code>h1</code> è uguale alla radice di <code>h2</code>, non mi interessa quel valore e quindi trovo la nuova radice di entrambi gli heap tramite <code>heap_extract_max</code></li>
+<li>se la radice di <code>h1</code> è minore della radice di <code>h2</code>, non posso determinare subito se la radice di <code>h1</code> è un valore che posso mantenere e quindi lo comparo con la successiva radice di <code>h2</code> tramite un <code>heap_extract_max</code></li>
+</ul>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">differenza</span><span class="token punctuation">(</span>Heap h1<span class="token punctuation">,</span> Heap h2<span class="token punctuation">,</span> Heap ris<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> max_h1<span class="token punctuation">,</span> max_h2<span class="token punctuation">;</span>
+	<span class="token keyword">while</span><span class="token punctuation">(</span>h1<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span> <span class="token operator">&amp;&amp;</span> h2<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		max_h1 <span class="token operator">=</span> <span class="token function">heap_maximum</span><span class="token punctuation">(</span>h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		max_h2 <span class="token operator">=</span> <span class="token function">heap_maximum</span><span class="token punctuation">(</span>h2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>max_h1 <span class="token operator">==</span> max_h2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">heap_extract_max</span><span class="token punctuation">(</span>h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token function">heap_extract_max</span><span class="token punctuation">(</span>h2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>max_h1 <span class="token operator">&gt;</span> max_h2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">heap_insert</span><span class="token punctuation">(</span>ris<span class="token punctuation">,</span> max_h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token function">heap_extract_max</span><span class="token punctuation">(</span>h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>max_h1 <span class="token operator">&lt;</span> max_h2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">heap_extract_max</span><span class="token punctuation">(</span>h2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// nel caso h2 sia finito, inserisco nel risultato tutti i valori rimanenti di h1</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span>h1<span class="token punctuation">.</span>heap_size <span class="token operator">&gt;=</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		max_h1 <span class="token operator">=</span> <span class="token function">heap_extract_max</span><span class="token punctuation">(</span>h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">heap_insert</span><span class="token punctuation">(</span>ris<span class="token punctuation">,</span> max_h1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
