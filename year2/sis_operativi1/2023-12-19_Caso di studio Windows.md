@@ -17,6 +17,7 @@ Spesso le chiamate alle API creano e operano su degli **oggetti** (file, process
 Gli *handle* non possono essere direttamente passati ad altri processi ma in alcuni casi è possibile duplicare un *handle* e passarlo in modo protetto ad altri processi.
 
 Gli **oggetti** sono dei **nomi per una risorsa fisica** (una periferica) **o logica** (un processo).
+Gli oggetti possono (ma non è necessario) avere dei nomi associati.
 Vengono gestiti da un **gestore di oggetti**, che è una struttura dati presente in memoria.
 Il gestore vede e gestisce gli attributi dell'oggetto, i dati che contiene e le operazioni che può fare. Si occupa anche di creare e distruggere gli oggetti
 
@@ -24,8 +25,9 @@ Il gestore vede e gestisce gli attributi dell'oggetto, i dati che contiene e le 
 
 Il kernel NTOS viene definito un **kernel ibrido** in quando risulta essere una via di mezzo tra il micro-kernel e il kernel monolitico.
 È composto da due livelli principali:
-- **Esecutivo**: si occupa principalmente di: gestione di I/O, gestione degli oggetti, sicurezza e altre funzioni
 - **Kernel**: Si occupa dello scheduling, gestire le interruzioni, sincronizzazione tra i thread e altre funzioni
+- **Esecutivo**: si trova sotto il livello kernel e si occupa principalmente di: gestione di I/O, gestione degli oggetti, sicurezza, gestione della memoria e altre funzioni
+
 
 Un componente importante del kernel è l'**Hardware Abstraction Layer** (HAL): uno strato software interposto tra il kernel e l'hardware. È stato progettato per nascondere le differenze hardware e per fornire una piattaforma unificata per ogni applicazione in esecuzione.
 per esempio un programma, invece di aprire direttamente un file chiederà all'HAL di farlo per lui e l'HAL, appena esaudita la richiesta, gli passerà un riferimento al file per la lettura
@@ -58,7 +60,12 @@ Sono presenti 6 nodi radice (nei moderni sistemi sono 5) :
 
 È presente un servizio che si occupa di gestire le interruzioni chiamato **ISR** (*Interrupt Service Routine*). Ogni interruzione ha una priorità e viene gestita l'interruzione con priorità più alta.
 
-Nell'immagine seguente si vedono le varie priorità che si suddividono in hardware e software:
+Nell'immagine seguente si vedono le varie priorità che si suddividono principalmente in:
+- livello passivo
+- livello APC (chiamate di procedure asincrone)
+- livello DPC (chiamate di procedure differite)
+- livello hardware 
+- livello critico
 
 ![enter image description here](https://i.ibb.co/54nyMSC/image.png)
 
@@ -150,4 +157,40 @@ La VMM può generare delle **pagine larghe** (o grandi), cioè dei gruppi di pag
 ### Sostituzione di pagina
 
 Windows identifica il **working set** di un processo, come tutte le pagine presenti in memoria principale di quel processo.
-Per la sostituzione delle pagine viene utilizzato l'algoritmo **LRU** localizzato sul singolo processo.
+Per la sostituzione delle pagine viene utilizzato l'algoritmo **LRU** localizzato sul singolo processo. Vengono utilizzati dei bit per capire quale pagina è più conveniente sostituire
+
+## File system
+
+Windows supporta vari file system, tra cui **FAT32, exFAT e NTFS**.
+
+**NTFS** è il file system nativo di Windows, è a 64 bit, ha una buona affidabilità e scalabilità. Supporta dischi di grandi dimensioni, permette la crittografia e la compressioni dei dati sui dischi.
+
+Presenta un file chiamato **Master File Table** (MFT), cioè una tabella in cui ogni riga descrive un file o una directory contenendo gli attributi e la lista di indirizzi del disco del relativo file.
+
+talvolta gli attributi sono troppo grandi per entrare in una riga, questi vengono chiamati **attributi non residenti**, e in questo caso viene salvata nella riga solo una intestazione e i dati effettivi vengono salvati da qualche altra parte sul disco,
+
+### Compressione
+
+NTFS può comprimere i file per ridurre lo spazio su disco, la compressione è trasparente per gli utenti e le applicazioni, le applicazioni possono comunque utilizzare le API standard ignorando il fatto che un file possa essere compresso o meno, perchè è il sistema che si occupa di comprimere e decomprimere.
+
+
+## Sommario
+
+Windows è composto da:
+- servizi di sistema
+- driver
+- programmi utente
+- Kernel 
+- Executive
+- HAL
+
+Il sistema è basato sugli **oggetti**, che i processi possono creare e ottenere dei handle per manipolarli.
+La parte di processi e thread in windows è organizzata in modo gerarchico in:
+job $\to$ process $\to$ thread $\to$ fiber
+
+Lo scheduling è basato sui thread è avviene utilizzando delle code di priorità (statiche e dinamiche).
+
+La memoria virtuale utilizza la paginazione a richiesta basato sui working set.
+
+Il file system è NTFS che è basato su tabelle in cui ogni riga contiene attributi di un file, tali attributi possono essere residenti o non residenti. NTFS supporta la compressione e la cifratura dei file.
+

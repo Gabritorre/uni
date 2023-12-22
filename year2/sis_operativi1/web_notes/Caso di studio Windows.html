@@ -22,6 +22,8 @@
 <li><a href="#processi-e-thread">Processi e thread</a></li>
 <li><a href="#scheduling-dei-thread">Scheduling dei thread</a></li>
 <li><a href="#gestione-delle-memoria">Gestione delle memoria</a></li>
+<li><a href="#file-system">File system</a></li>
+<li><a href="#sommario">Sommario</a></li>
 </ul>
 </li>
 </ul>
@@ -42,14 +44,15 @@ Le chiamate a sistema sono implementate in un componente del kernel chiamato <em
 <p>Spesso le chiamate alle API creano e operano su degli <strong>oggetti</strong> (file, processi, thread, pipe, …) e restituiscono al chiamate un <strong>handle</strong>, una sorta di puntatore (ma non esattamente) all’oggetto con cui poter fare delle operazioni su tale oggetto.<br>
 Gli <em>handle</em> non possono essere direttamente passati ad altri processi ma in alcuni casi è possibile duplicare un <em>handle</em> e passarlo in modo protetto ad altri processi.</p>
 <p>Gli <strong>oggetti</strong> sono dei <strong>nomi per una risorsa fisica</strong> (una periferica) <strong>o logica</strong> (un processo).<br>
+Gli oggetti possono (ma non è necessario) avere dei nomi associati.<br>
 Vengono gestiti da un <strong>gestore di oggetti</strong>, che è una struttura dati presente in memoria.<br>
 Il gestore vede e gestisce gli attributi dell’oggetto, i dati che contiene e le operazioni che può fare. Si occupa anche di creare e distruggere gli oggetti</p>
 <h2 id="struttura-dellarchitettura">Struttura dell’architettura</h2>
 <p>Il kernel NTOS viene definito un <strong>kernel ibrido</strong> in quando risulta essere una via di mezzo tra il micro-kernel e il kernel monolitico.<br>
 È composto da due livelli principali:</p>
 <ul>
-<li><strong>Esecutivo</strong>: si occupa principalmente di: gestione di I/O, gestione degli oggetti, sicurezza e altre funzioni</li>
 <li><strong>Kernel</strong>: Si occupa dello scheduling, gestire le interruzioni, sincronizzazione tra i thread e altre funzioni</li>
+<li><strong>Esecutivo</strong>: si trova sotto il livello kernel e si occupa principalmente di: gestione di I/O, gestione degli oggetti, sicurezza, gestione della memoria e altre funzioni</li>
 </ul>
 <p>Un componente importante del kernel è l’<strong>Hardware Abstraction Layer</strong> (HAL): uno strato software interposto tra il kernel e l’hardware. È stato progettato per nascondere le differenze hardware e per fornire una piattaforma unificata per ogni applicazione in esecuzione.<br>
 per esempio un programma, invece di aprire direttamente un file chiederà all’HAL di farlo per lui e l’HAL, appena esaudita la richiesta, gli passerà un riferimento al file per la lettura</p>
@@ -79,7 +82,14 @@ I nodi interni dell’albero (che possiamo vedere come fossero delle cartelle) s
 </ul>
 <h2 id="gestione-interruzioni">Gestione interruzioni</h2>
 <p>È presente un servizio che si occupa di gestire le interruzioni chiamato <strong>ISR</strong> (<em>Interrupt Service Routine</em>). Ogni interruzione ha una priorità e viene gestita l’interruzione con priorità più alta.</p>
-<p>Nell’immagine seguente si vedono le varie priorità che si suddividono in hardware e software:</p>
+<p>Nell’immagine seguente si vedono le varie priorità che si suddividono principalmente in:</p>
+<ul>
+<li>livello passivo</li>
+<li>livello APC (chiamate di procedure asincrone)</li>
+<li>livello DPC (chiamate di procedure differite)</li>
+<li>livello hardware</li>
+<li>livello critico</li>
+</ul>
 <p><img src="https://i.ibb.co/54nyMSC/image.png" alt="enter image description here"></p>
 <h2 id="processi-e-thread">Processi e thread</h2>
 <p>Su Windows abbiamo un classico utilizzo di <strong>processi e thread</strong>, è però presente una gerarchia più varia, infatti abbiamo anche il concetto di <strong>job e fibra</strong>.<br>
@@ -140,7 +150,30 @@ Gli altri thread utilizzano una priorità dinamica nel range 0 - 15</p>
 <p>La VMM può generare delle <strong>pagine larghe</strong> (o grandi), cioè dei gruppi di pagine contigui che vengono trattate come una singola pagina.</p>
 <h3 id="sostituzione-di-pagina">Sostituzione di pagina</h3>
 <p>Windows identifica il <strong>working set</strong> di un processo, come tutte le pagine presenti in memoria principale di quel processo.<br>
-Per la sostituzione delle pagine viene utilizzato l’algoritmo <strong>LRU</strong> localizzato sul singolo processo.</p>
+Per la sostituzione delle pagine viene utilizzato l’algoritmo <strong>LRU</strong> localizzato sul singolo processo. Vengono utilizzati dei bit per capire quale pagina è più conveniente sostituire</p>
+<h2 id="file-system">File system</h2>
+<p>Windows supporta vari file system, tra cui <strong>FAT32, exFAT e NTFS</strong>.</p>
+<p><strong>NTFS</strong> è il file system nativo di Windows, è a 64 bit, ha una buona affidabilità e scalabilità. Supporta dischi di grandi dimensioni, permette la crittografia e la compressioni dei dati sui dischi.</p>
+<p>Presenta un file chiamato <strong>Master File Table</strong> (MFT), cioè una tabella in cui ogni riga descrive un file o una directory contenendo gli attributi e la lista di indirizzi del disco del relativo file.</p>
+<p>talvolta gli attributi sono troppo grandi per entrare in una riga, questi vengono chiamati <strong>attributi non residenti</strong>, e in questo caso viene salvata nella riga solo una intestazione e i dati effettivi vengono salvati da qualche altra parte sul disco,</p>
+<h3 id="compressione">Compressione</h3>
+<p>NTFS può comprimere i file per ridurre lo spazio su disco, la compressione è trasparente per gli utenti e le applicazioni, le applicazioni possono comunque utilizzare le API standard ignorando il fatto che un file possa essere compresso o meno, perchè è il sistema che si occupa di comprimere e decomprimere.</p>
+<h2 id="sommario">Sommario</h2>
+<p>Windows è composto da:</p>
+<ul>
+<li>servizi di sistema</li>
+<li>driver</li>
+<li>programmi utente</li>
+<li>Kernel</li>
+<li>Executive</li>
+<li>HAL</li>
+</ul>
+<p>Il sistema è basato sugli <strong>oggetti</strong>, che i processi possono creare e ottenere dei handle per manipolarli.<br>
+La parte di processi e thread in windows è organizzata in modo gerarchico in:<br>
+job <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> process <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> thread <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> fiber</p>
+<p>Lo scheduling è basato sui thread è avviene utilizzando delle code di priorità (statiche e dinamiche).</p>
+<p>La memoria virtuale utilizza la paginazione a richiesta basato sui working set.</p>
+<p>Il file system è NTFS che è basato su tabelle in cui ogni riga contiene attributi di un file, tali attributi possono essere residenti o non residenti. NTFS supporta la compressione e la cifratura dei file.</p>
 
     </div>
   </div>
