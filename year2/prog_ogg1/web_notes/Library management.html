@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2023-12-20_Library management</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#library-management">Library management</a>
+<ul>
+<li><a href="#compatibilità-e-versioni">Compatibilità e versioni</a></li>
+<li><a href="#strumenti-di-automazione">Strumenti di automazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="library-management">Library management</h1>
+<p>Generalmente quando sviluppiamo programmi in java facciamo uso delle librerie base di Java, semplicemente importandole all’inizio del codice in quanto sono librerie già precaricate.</p>
+<p>Quando parliamo di <strong>librerie</strong> intendiamo sostanzialmente il <strong>bytecode di un insieme di classi</strong>.</p>
+<p>La JVM utilizza la <em>classpath</em> per sapere dove trovare le classi, la <em>classpath</em> è un insieme di percorsi che possono condurre a una directory contenente dei file .class oppure file .jar.</p>
+<p><strong>La ricerca delle classi avviene in fase di runtime</strong>, e se una determinata classe che viene utilizzata nel codice non viene trovata nel <em>classpath</em> allora viene lanciata una eccezione <em>ClassNotFoundException</em>.</p>
+<p>Possiamo dire alla JVM dove andare a trovare le nostre librerie in fase di compilazione aggiungendo l’opzione <code>-classpath &lt;/percorso/della/libreria1;/percorso/della/libreria2&gt;</code></p>
+<h2 id="compatibilità-e-versioni">Compatibilità e versioni</h2>
+<p>Quando si sviluppa e si modifica nel tempo una libreria è importante considerare la <em><strong>backward  compatibility</strong></em>, cioè la compatibilità di quella versione della libreria con le versioni precedenti.<br>
+Per assicurare questa compatibilità è importante non modificare le interfacce esterne (campi, metodi, classi utilizzate dagli altri) della nostra libreria.</p>
+<p>Se consideriamo un metodo pubblico ad esempio: Se in una successiva versione vogliamo aggiungere, modificare o rimuovere un parametro, stiamo rompendo la compatibilità quindi bisogna trovare un modo per evitare ciò, magari aggiungendo un’altra versione del metodo, oppure dando al parametro in più un valore di default oppure far chiamare il nuovo metodo all’interno del metodo originale.</p>
+<p>Un altro esempio potrebbe essere che il metodo che abbiamo scritto in una vecchia versioni non è più necessario e vorremmo rimuoverlo… Questa non è una buona idea in quanto chi sta utilizzando quel metodo e aggiorna la libreria si troverà il codice rotto. In questo caso entra in gioco l’annotazione <code>@deprecated</code> la quale dice che quel metodo non dovrebbe essere più utilizzato e non verrà più supportato</p>
+<p>È chiaro che in alcune situazioni mantenere la compatibilità non è possibile, in questo caso tornano molto utili i <strong>version numbers</strong>, cioè dei numeri che identificano la versione della libreria.</p>
+<p>Spesso si utilizza la seguente convenzione: <code>x1.x2.x3</code> dove:</p>
+<ul>
+<li><code>x1</code> rappresenta una <em>major release</em>, in questo caso numeri diversi implicano che delle interfacce esterne sono cambiate, quindi la compatibilità potrebbe non essere mantenuta con le versioni precedenti</li>
+<li><code>x2</code> rappresenta una <em>minor release</em>, in questo caso cambiano solo le implementazioni interne oppure vengono aggiunte nuove interfacce esterne, ma non vengono modificate le interfacce esterne già esistenti. La compatibilità dovrebbe essere garantita</li>
+<li><code>x3</code> rappresenta un <em>bug fix</em>, sono dei cambiamenti minori che sistemano dei problemi e garantiscono la compatibilità</li>
+</ul>
+<h2 id="strumenti-di-automazione">Strumenti di automazione</h2>
+<p>Quando un progetto diventa eccessivamente grande diventa difficile e frustrante gestire.<br>
+Esistono dei tool che automatizzano varie fasi come la compilazione, l’esecuzione, costruire eseguibili, effettuare test, ecc…<br>
+Uno di questi tool è <a href="https://docs.gradle.org/current/userguide/userguide.html">Gradle</a></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
