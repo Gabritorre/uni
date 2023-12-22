@@ -61,24 +61,143 @@ Quello che andremo a fare è confrontare sempre le radici e:
 differenza(Heap h1, Heap h2, Heap ris) {
 	int max_h1, max_h2;
 	while(h1.heap_size >= 1 && h2.heap_size >= 1) {
-		max_h1 = heap_maximum(h1);
-		max_h2 = heap_maximum(h2);
+		max_h1 = heap_maximum(h1);	//O(1)
+		max_h2 = heap_maximum(h2);	//O(1)
 		if (max_h1 == max_h2) {
-			heap_extract_max(h1);
-			heap_extract_max(h2);
+			heap_extract_max(h1);	//O(log n1)
+			heap_extract_max(h2);	//O(log n2)
 		}
 		else if (max_h1 > max_h2) {
-			heap_insert(ris, max_h1);
-			heap_extract_max(h1);
+			heap_insert(ris, max_h1);	// *O(1)
+			heap_extract_max(h1);	// O(log n1)
 		}
 		else if (max_h1 < max_h2) {
-			heap_extract_max(h2);
+			heap_extract_max(h2);	//O(log n2)
 		}
 	}
 	// nel caso h2 sia finito, inserisco nel risultato tutti i valori rimanenti di h1
 	while (h1.heap_size >= 1) {
-		max_h1 = heap_extract_max(h1);
-		heap_insert(ris, max_h1);
+		max_h1 = heap_extract_max(h1);	// O(log n)
+		heap_insert(ris, max_h1);	//O(1)
 	}
 }
 ```
+
+Nel caso peggiore l'algoritmo deve scorrere interamente entrambi gli heap.
+Dichiarando come `n1` il numero di elementi dell'heap `h1`, e come `n2` il numero di elementi dell'heap `h2`
+
+$$T(n) = O(n1\cdot \log(n1) + n2 \cdot \log (n2))$$
+
+la complessità è quindi data da `n1` chiamate a `heap_extract_max` e da `n2` chiamate a `heap_extract_max`.
+
+
+## Vettore di intervalli
+
+Dato un vettore di intervalli interi, creare un nuovo vettore di intervalli contenente gli stessi elementi ma gli intervalli devono essere disgiunti.
+
+Vediamo un esempio grafico dell'array di partenza
+
+![enter image description here](https://i.ibb.co/db1DLgC/image.png)
+
+L'array risultante dovrebbe essere:
+
+![enter image description here](https://i.ibb.co/R4Kp9Qt/image.png)
+ 
+ Vediamo i passaggi partendo dal vettore originale
+ `A=[<7,11>, <-1,3>, <5,10>, <9,12>]`
+ 1. ordinare il vettore
+	 `A=[<-1,3>, <5,10>, <7,11>, <9,12>]`
+2. Scorro il vettore con un ciclo while
+	- metto la coppia attuale nel vettore risultato
+	- faccio un altro ciclo while per determinare quale è il limite destro dell'intervallo più grande che posso considerare della coppia appena inserita
+	- il limite destro viene trovato quando siamo arrivati alla fine del vettore oppure quando non c'è una sovrapposizione (una sovrapposizione accade quando il limite destro è maggiore del limite sinistro dell'elemento successivo)
+ 
+```c++
+ vector<pair<int,int>> copertura(vector<pair<int,int>> arr) {
+	size_t i;	//scorre gli elementi del vettore
+	int end_temp;	// limite superiore dell'attuale intervallo
+	vector<pair<int,int>> ris;
+	if (arr.size() == 0) {
+		return ris;
+	}
+	
+	ordina(arr);	// ipotizziamo di fare un merge sort, θ(n*log(n))
+	
+	i = 0;
+	while(i < arr.size()) {
+		ris.push_back(arr[i]);	//assumiamo θ(1)
+		end_temp = arr[i].second;
+		i++;
+		while(i < arr.size() && end_temp >= arr[i].first) {
+			if (arr[i].second > end_temp) {
+				end_temp = arr[i].second;
+			}
+			i++;
+		}
+		ris[ris.size()-1].second = end_temp;
+	}
+	return ris;
+}
+```
+
+Complessità: Abbiamo la complessità dell'orginamento che è $\Theta(n\log n)$ e poi abbiamo 2 cicli while innestati. Nonostante siano innestati essi lavorano sullo stesso indice continuando ad incrementarlo, ogni elemento del vettore viene quindi visitato solo una volta, la complessità del corpo del ciclo while esterno è quindi $\Theta(n)$
+
+$$T(n) = \Theta(n\log n) + \Theta(n) = \Theta(n\log n)$$
+
+
+## Somma k
+
+Dato un intero `k` e un vettore `v` creare un algoritmo efficiente determinare se esiste una coppia di elementi `val1, val2`  con indice diverso la cui somma è uguale a `k`
+
+Abbiamo due approcci possibili per realizzare un algoritmo efficiente:
+1. chiamare la binary search per ogni elemento del vettore: $O(n\log n)$
+2. utilizzare due indici per confrontare in modo intelligente gli elementi: $O(n\log n)$ (ma risulta essere comunque migliore rispetto al primo metodo)
+
+Analizziamo meglio il secondo metodo:
+1. andiamo ad ordinare il vettore
+2. creiamo due indici `left, right` inizializzati rispettivamente al primo elemento e all'ultimo. Inizialmente `left` sarà l'indice dell'elemento più piccolo, mentre `right` sarà l'indice dell'elemento più grande
+3. in un ciclo compariamo gli elementi negli indici `left` e `right`
+	- se la somma è uguale a `k` abbiamo finito
+	- se la somma è minore di `k`, allora la somma è troppo piccola, dobbiamo cercare di aumentarla il minimo possibile andando all'elemento `left` successivo
+	- se la somma è maggiore di `k`, allora la somma è troppo grande, dobbiamo cercare di diminuirla il minimo possibile andando all'elemento `right` precedente
+
+consideriamo ad esempio l'array già ordinato
+`v = [-7, -3, 0, 5, 10, 14, 21]`
+con `k = 11`
+la successione di confronti è la seguente:
+- confronto il `-7` con il `21`: `-7 + 21 = 14 > 11` Dato che la somma è maggiore di `k` posso escludere che il `21` possa far parte della coppia.
+	Questo logicamente perchè se sommando l'elemento minimo (`-7`) con il 21 mi da un risultato maggiore di quello che cerco, non ha senso fare le somme tra elementi maggiori di `-7` con il `21` perché sicuramente mi daranno dei valori ancora maggiori di quello che cerco
+- confronto il `-7` con il `14`: `-7 + 14 = 7 < 11` Dato che la somma è minore di `k` posso escludere che il `-7` possa far parte della coppia.
+	similmente a prima perchè se sommando l'elemento massimo (`14`) con il `-7` mi da un risultato minore di quello che cerco, non ha senso fare le somme tra elementi minori di `14` con il `-7` perché sicuramente mi daranno dei valori ancora minori di quello che cerco
+- confronto il `-3` con il `14`: `-3 + 14 = 11` ho trovato la coppia che somma `k`
+
+ 
+```c++
+bool sommaK(vector<int>& v, int k, int k, int& va1, int& val2) {
+	ordina(v);	//assumiamo di fare un merge sort, θ(n log(n))
+	bool trovati = false;
+	int left = 0;
+	int right = v.size()-1;
+	while(left < right && trovati == false) {
+		if(v[left] + v[right] == k) {
+			trovati = true;
+			val1 = v[left];
+			val2 = v[right];
+		}
+		else if (v[left] + v[right] < k) {
+			left++;
+		}
+		else if (v[left] + v[right] > k) {
+			right--;
+		}
+	}
+	return trovati;
+}
+```
+
+complessità: l'ordinamento ha complessità $\Theta(n\log n)$, mentre il ciclo while viene eseguito al massimo $n$ volte ed è composto da sole istruzioni di complessità costante, quindi ha complessità $O(n)$
+
+$$T(n) = \Theta(n \log n) + O(n) = \Theta(n\log n)$$
+
+
+
