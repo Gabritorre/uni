@@ -240,7 +240,7 @@ Quindi se il tempo di *split* + *merge* cresce più lentamente del tempo di esec
 
 ### Caso 2
 
-Se $f(n) = \Omega(n^d)$ allora
+Se $f(n) = \Theta(n^d)$ allora
 
 $$T(n) = \Theta(n^d\log n)$$
 
@@ -459,7 +459,7 @@ $$= O\left(n^{d}\right)$$
 Dato che l'algoritmo dovrà passare per tutti i $n^d$ nodi foglia quindi l'algoritmo è limitato inferiormente da $n^d$, quindi $T(n) = \Omega(n^d)$
 
 Possiamo quindi concludere che un algoritmo che ricade in questo caso avrà complessità simile a $n^d$, quindi 
-$$T(n)=\Theta(n^d)$$
+$$T(n)\Theta(n^d)$$
 
 ### Caso 2
 
@@ -540,4 +540,7 @@ dato che $aT\left(\frac{n}{b}\right)$ è sicuramente una quantità positiva allo
 concludiamo quindi che $T(n) = \Theta(f(n))$
 
 
+ = \Theta(n^d)$$
 
+
+### Caso 2
