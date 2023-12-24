@@ -339,27 +339,48 @@ $$\text{Cor}[X,Y] = \frac{0.075}{\sqrt{0.25 \cdot 1.1475}} = 0.14$$
 
 ## Media campionaria
 
-Avendo due variabili $X_1, X_2$ indipendenti e con stessa distribuzione (viene detto un **campione di variabili**).
-Diciamo che $\mathbb{E}[X_i] = \mu$ e $\text{Var}[X_i]=\sigma^2$ (entrambe le variabili hanno stessa media e varianza)
+Avendo $n$ variabili $X_1, ..., X_n$ indipendenti e con stessa distribuzione (viene detto un **campione di variabili**).
+Diciamo che $\mathbb{E}[X_i] = \mu$ e $\text{Var}[X_i]=\sigma^2$ (tutte le variabili hanno stessa media e varianza)
 
 La media campionaria è un'altra variabile aleatoria che si definisce come:
 
-$$\overline{X} =\frac{X_1 + X_2}{2}$$
+$$\bar{X} =\frac{X_1 + ... + X_n}{n}$$
 
 
 Dato che si tratta di una variabile aleatoria possiamo calcolare:
 
 - valore atteso
-	$$\mathbb{E}[\overline{X}] = \mu$$
+	$$\mathbb{E}[\bar{X}] = \mu$$
 - varianza
-	$$\mathbb{E}[\overline{X}] = \frac{\sigma^2}{2}$$
+	$$\text{Var}[\bar{X}] = \frac{\sigma^2}{n}$$
+
+
+## Disuguaglianza di Chebyshev
+
+Data una variabile aleatoria $X$ di cui non si conosce la distribuzione ma si conosce il valore atteso $\mathbb{E}[X]$ e varianza $\text{Var}[X]$ (non infinita).
+Possiamo determinare un limite superiore alla probabilità che la variabile assuma valori che si discostano di almeno $\epsilon$ dal valore medio
+
+$$\mathbb{P}[|X - \mathbb{E}[X]| > \epsilon] \leq \frac{\text{Var}[X]}{\epsilon^2}$$
+
+dualmente possiamo anche avere un limite inferiore:
+
+$$\mathbb{P}[|X - \mathbb{E}[X]| > \epsilon] \geq 1-\frac{\text{Var}[X]}{\epsilon^2}$$
+
+Ad esempio:
+"Il numero di richieste giornaliere di collegamento ad un server è una v.a. Y con valore atteso 130 e varianza 50. Qual è il limite superiore della probabilità che in un giorno si colleghino fra i 100 e i 160 clienti?"
+
+Dato che il range si discosta di 30 dalla media allora $\epsilon = 30$
+
+$\mathbb{P}[100\leq Y \leq 160] = \mathbb{P}[|Y - 130| > 30] \leq \frac{50}{30^2}$
+
+$\mathbb{P}[|Y - 130| > 30] \leq 0.5555$
+
 
 ## Legge dei grandi numeri
 
-Il calcolo della media campionaria si può estendere facilmente ad un numero $n$ di variabili.
-La **legge dei grandi numeri** ci dice che all'aumentare di $n$, la probabilità che la media campionaria $\overline{X}_n$ si avvicini alla media della distribuzione delle variabili $\mu$ si avvicina ad 1
+La **legge dei grandi numeri** ci dice che all'aumentare di $n$, la probabilità che la media campionaria $\bar{X}_n$ si avvicini alla media della distribuzione delle variabili $\mu$ si avvicina ad 1
 
-$$\overline{X}_n\xrightarrow{\text{p}}\mu$$
+$$\bar{X}_n\xrightarrow{\text{p}}\mu$$
 
 in altre parole più variabili si considerano più la media campionaria si avvicina alla media della distribuzione.
 
@@ -372,8 +393,12 @@ Il teorema del limite centrale ci dice che considerando un sufficiente numero di
 Se le variabili che considero $X_1,...,X_n$ seguono già una distribuzione normale allora la media campionaria seguirà già una distribuzione normale, anche se considero poche variabili.
 Mentre se le variabili hanno distribuzione molto diverse dalla normale è necessario considerare molte variabili (circa più di 30) per ottenere una approssimazione valida della media campionaria alla distribuzione normale standard.
 
-$$\overline{X}_n \sim \text{N}\left(\mu, \frac{\sigma^2}{n}\right)$$
+$$\bar{X}_n \sim \text{N}\left(\mu, \frac{\sigma^2}{n}\right)$$
 
-equivalente a
+Da cui posso ricavarmi la normale standard:
 
-$$\sum_{i = 1}^n X_i \sim \text{N}\left(n\mu, n\sigma^2\right)$$
+$$Z = \frac{\bar{X}_n-\mu}{\sqrt{\frac{\sigma^2}{n}}}$$
+
+$$Z \sim \text{N}(0, 1)$$
+
+Questo teorema si utilizza quando nell’esercizio viene data la **quantità di elementi, la relativa media e deviazione standard/varianza**

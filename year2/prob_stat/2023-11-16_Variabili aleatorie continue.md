@@ -71,9 +71,9 @@ Data una variabile aleatoria con distribuzione normale:
 
 $X \sim N(\mu, \sigma^2)$
 
-La sua forma normale $Z$ è data da
+La sua forma normale standard $Z$ è data da
 
-$$Z = \frac{X - \mu}{\sigma}\sim N(0, 1)$$
+$$Z = \frac{X - \mu}{\sqrt{\sigma^2}}\sim N(0, 1)$$
 
 Questo significa che alla nostra distribuzione normale $X$ sottraiamo il valore atteso $\mu$, il significato di questa operazione è che la distribuzione viene centrata sul valore $0$. Poi dividiamo il tutto per la deviazione standard $\sigma$, il significato di questa operazione è che la distribuzione diventa simmetrica rispetta al valore atteso (che è $0$)
 
@@ -136,7 +136,7 @@ Considerando il grafico della distribuzione normale standard possiamo fare diver
 
 2. se $z$ è negativo
 
-	$$\mathbb{P}[Z \leq -z] = \mathbb{P}[Z \geq z] = 1 - \mathbb{P}[Z \leq -z]$$
+	$$\mathbb{P}[Z \leq -z] = \mathbb{P}[Z \geq z] = 1 - \mathbb{P}[Z \leq z]$$
 
 3. se vogliamo la probabilità tra un valore $z$ e il suo opposto
 
