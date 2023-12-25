@@ -115,17 +115,18 @@ void merge (int A[], int p, int med, int r) {
 	for (int j = 0; j < n2; j++)
 		R[j] = A[med + 1 + j];
 
-// Unire i sottoarray temporanei nei sottoarray principali arr[left..right]
-int i = 0; // Indice iniziale del primo sottoarray
-int j = 0; // Indice iniziale del secondo sottoarray
-for (int k = p; k <= r; k++){
-	if (j >= n2 || (i < n1 && L[i] <= R[j])) {	//se il sottoarray destro è finito oppure se il sottoarray sinistro ha ancora elementi e possiede l'elemento minore rispetto al sottoarray destro
-		A[k] = L[i];
-		i++;
-	}
-	else {
-		A[k] = R[j];
-		j++;
+	// Unire i sottoarray temporanei nei sottoarray principali arr[left..right]
+	int i = 0; // Indice iniziale del primo sottoarray
+	int j = 0; // Indice iniziale del secondo sottoarray
+	for (int k = p; k <= r; k++){
+		if (j >= n2 || (i < n1 && L[i] <= R[j])) {	//se il sottoarray destro è finito oppure se il sottoarray sinistro ha ancora elementi e possiede l'elemento minore rispetto al sottoarray destro
+			A[k] = L[i];
+			i++;
+		}
+		else {
+			A[k] = R[j];
+			j++;
+		}
 	}
 }
 ```

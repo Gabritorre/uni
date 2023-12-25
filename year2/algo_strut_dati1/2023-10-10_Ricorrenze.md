@@ -260,7 +260,7 @@ Quindi se il tempo di *split* + *merge* cresce più velocemente del tempo di ese
 
 ### Esempi
 
-**esempio 1**
+**esempio caso 2**
 
 $$T(n) = T\left(\frac{n}{2}\right) + c$$
 
@@ -289,7 +289,7 @@ le due funzioni appartengono allo stesso ordine, quindi siamo nel caso 2. Conclu
 
 $$T(n) = \Theta(\log n)$$
 
-**esempio 2**
+**esempio caso 1**
 
 $$T(n) = 9T\left(\frac{n}{3}\right) + n$$
 
@@ -318,6 +318,94 @@ se prendo $\epsilon = 1$ ottengo che $f(n) = O(n)$ che è vero quindi:
 
 $$T(n) = \Theta(n^2)$$
 
+**esempio caso 3**
+
+$$T(n) = 3T\left(\frac{n}{9}\right) + n$$
+
+$a = 3$
+$b = 9$
+$f(n) = n$
+
+verifico le condizioni:
+- forma? si
+- $a\geq 1?$ si
+- $b\geq 2?$ si
+- $f(n) \geq 0?$ si
+
+possiamo applicare il teorema master.
+
+calcoliamo $d$ :
+$d = \log_93 = \frac{1}{2}$ quindi $d =\frac{1}{2}$
+
+mettiamo a confronto le due funzioni $f(n)$ e $n^d$:
+
+$f(n) = n$
+$n^d = n^\frac{1}{2} = \sqrt{n}$
+
+Verifichiamo di essere nel caso 3:
+
+come prima cosa verifichiamo che esista una $\epsilon > 0$ tale per cui: $f(n) = \Omega(n^{d+\epsilon})$
+$n = \Omega(n^{\frac{1}{2}+\epsilon})$
+scelgo $\epsilon = \frac{1}{2}$
+e quindi ho che $n = \Omega(n)$
+
+Verifichiamo anche la condizione ausiliaria:
+
+deve esistere una $0< c <1$ per $n$ sufficientemente grande per cui vale che:
+$$a\cdot f\left(\frac{n}{b}\right) \leq c \cdot f(n)$$
+
+$$3\cdot \frac{n}{9} \leq c\cdot n$$
+
+$$\frac{n}{3} \leq c\cdot n$$
+
+$$\frac{1}{c} \leq c$$
+
+Scelgo $c = \frac{1}{3}$ che è compreso tra 0 e 1 e quindi ho dimostrato il caso 3.
+$T(n) = \Theta(n)$
+
+**altro esempio caso 3**
+
+$$T(n) = 7T\left(\frac{n}{3}\right) + n^2$$
+
+$a = 7$
+$b = 3$
+$f(n) = n^2$
+
+calcoliamo $d$ :
+$d = \log_37$
+
+mettiamo a confronto le due funzioni $f(n)$ e $n^d$:
+
+$f(n) = n^2$
+$n^d = n^{\log_3 7} \approx n^{1.7...}$
+
+Verifichiamo di essere nel caso 3:
+
+come prima cosa verifichiamo che esista una $\epsilon > 0$ tale per cui: $f(n) = \Omega(n^{d+\epsilon})$
+$n^2 = \Omega(n^{\log_3 7+\epsilon})$
+$\log_3 7 + \epsilon = 2$
+$\epsilon = 2 - \log_3 7$
+dato che $\log_3 7< 2$ allora $\epsilon > 0$
+e quindi ho che $n^2 = \Omega(n^2)$
+
+Verifichiamo anche la condizione ausiliaria:
+
+deve esistere una $0< c <1$ per $n$ sufficientemente grande per cui vale che:
+$$a\cdot f\left(\frac{n}{b}\right) \leq c \cdot f(n)$$
+
+$$7\cdot \frac{n}{3} \leq c \cdot n^2$$
+
+$$\frac{7}{3n} \leq c$$
+
+la condizione deve valere per $n$ sufficientemente grande, in questo caso è sufficiente che $n>=3$, se scelgo esattamente $n=3$ ottengo:
+$$\frac{7}{3\cdot 3} \leq c$$
+
+$$\frac{7}{9} \leq c$$
+
+$$\frac{7}{9} \leq c < 1$$
+
+scelgo ad esempio $c = \frac{7}{9}$ che è compreso tra $0$ e 1 e quindi ho dimostrato il caso 3.
+$T(n) = \Theta(n^2)$
 
 ## Dimostrazione del teorema Master
 
@@ -539,8 +627,3 @@ dato che $aT\left(\frac{n}{b}\right)$ è sicuramente una quantità positiva allo
 
 concludiamo quindi che $T(n) = \Theta(f(n))$
 
-
- = \Theta(n^d)$$
-
-
-### Caso 2
