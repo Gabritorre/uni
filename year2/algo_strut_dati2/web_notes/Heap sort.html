@@ -110,18 +110,21 @@ post-condizione: rende l’albero radicato in <code>i</code> un max heap</p>
 	<span class="token keyword">int</span> l <span class="token operator">=</span> <span class="token function">left</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//2*i</span>
 	<span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">right</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//2*i + 1</span>
 	<span class="token keyword">int</span> massimo<span class="token punctuation">;</span>
-	<span class="token keyword">if</span> <span class="token punctuation">(</span>l <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">heap_size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">&gt;</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>l <span class="token operator">&lt;=</span> A<span class="token punctuation">.</span><span class="token function">heap_size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>l<span class="token punctuation">]</span> <span class="token operator">&gt;</span> A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		massimo <span class="token operator">=</span> l<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 	<span class="token keyword">else</span> <span class="token punctuation">{</span>
 		massimo <span class="token operator">=</span> i<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 	
-	<span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token operator">&lt;</span> A<span class="token punctuation">.</span><span class="token function">heap_size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">&gt;</span> massimo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		massimo <span class="token operator">=</span> A<span class="token punctuation">[</span>r<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token operator">&lt;=</span> A<span class="token punctuation">.</span><span class="token function">heap_size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">&gt;</span> massimo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		massimo <span class="token operator">=</span> r<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
-	<span class="token function">swap</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> A<span class="token punctuation">[</span>massimo<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	<span class="token function">max_heapify</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> massimo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span><span class="token punctuation">(</span>massimo <span class="token operator">!=</span> i<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token function">swap</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> A<span class="token punctuation">[</span>massimo<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">max_heapify</span><span class="token punctuation">(</span>A<span class="token punctuation">,</span> massimo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Quello che fa la funzione è:</p>
