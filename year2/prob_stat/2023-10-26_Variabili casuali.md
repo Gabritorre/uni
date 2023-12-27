@@ -11,7 +11,7 @@ Le variabili casuali si indicano con la **lettera maiuscola**
 **Esempio**
 Prendiamo come esempio l'estrazione con reinserimento da un'urna con 4 palline bianche e 3 nere numerate
 
-Il nostro spazio campionario è definito come "l'insieme di tutte le coppie estratte con reinserimento"
+Definiamo lo spazio campionario come "l'insieme di tutte le coppie estratte con reinserimento"
 
 $$\Omega=\{(1B, 1B), (1B, 1N), (1B, 2B), ..., (3N, 2N), (3N, 3N)\}$$
 
@@ -45,12 +45,12 @@ Possiamo definire varie variabili casuali, ad esempio:
 
 Ora bisogna assegnare le probabilità ai possibili risultati numerici che abbiamo creato.
 
-Avremo due modi di assegnare la probabilità in base alla numerabilità o meno dei valori che abbiamo assegnato agli eventi, distingueremo quindi le:
+In generale abbiamo due modi di assegnare la probabilità, in base alla numerabilità o meno dei valori che abbiamo assegnato agli eventi, distingueremo quindi le:
 
-- variabili aleatorie discrete
-- variabili aleatorie continue
+- **variabili aleatorie discrete**
+- **variabili aleatorie continue**
 
-### Variabili aleatorie discrete
+## Variabili aleatorie discrete
 
 In questo caso abbiamo assegnato agli eventi dei valori numerabili (come l'insieme dei numeri naturali $\mathbb{N}$), quindi che possiamo contare.
 
@@ -66,12 +66,14 @@ Abbiamo 2 proprietà da rispettare:
 - $\sum_ip_i = 1$
 	quindi la somma delle probabilità di tutti i valori che assume la variabile aleatoria devono risultare 1
 
-possiamo rappresentare graficamente l'assegnazione delle probabilità in un grafico cartesiano:
+La probabilità che una variabile aleatoria $X$ possa assumere un valore generico $x$ è chiamata **funzione di probabilità**
+$$P(x) =\mathbb{P}[X = x]$$
+possiamo rappresentare graficamente la funzione di probabilità in un grafico cartesiano:
 
 ![enter image description here](https://i.ibb.co/wMXSr1Z/grafichello.png)
 
-- nell'asse x abbiamo i possibili valori che assume la variabile aleatoria
-- nell'asse y abbiamo le relative probabilità
+- Nell'asse x abbiamo i possibili valori che assume la variabile aleatoria
+- Nell'asse y abbiamo le relative probabilità
 
 Nell'esempio precedente dell'urna definiamo la variabile aleatoria 
 $X =$ numero della pallina estratta
@@ -86,7 +88,7 @@ $p_3 = \frac{2}{7} \hspace{10mm}$ abbiamo 2 palline con il numero tre su 7 palli
 $p_4 = \frac{1}{7} \hspace{10mm}$ abbiamo 1 pallina con il numero quattro su 7 palline
 
 tutte le probabilità sono comprese tra 0 e 1 e la somma di tutte le probabilità fa 1.
-più sintatticamente possiamo scrivere le probabilità così
+più sinteticamente possiamo scrivere le probabilità così
 
 $$P_X(x)\begin{cases}
 \frac{2}{7} & \text{se } x = 1,2,3 \\
@@ -103,9 +105,9 @@ Per assegnare la probabilità a tutti gli infiniti valori che può assumere la v
 
 Definiamo una funzione $f(x)$ chiamata **funzione della densità di probabilità** che ha le seguenti due proprietà:
 1. $f(x)\geq 0\hspace{14mm}$ la funzione è sempre positiva
-2. $\int_{\mathbb{R}f(x) dx} = 1\hspace{10mm}$ l'area totale sotto il grafico di $f(x)$ è risulta essere 1
+2. $\int_{\mathbb{R}}f(x) dx = 1\hspace{10mm}$ l'area totale sotto il grafico di $f(x)$ risulta essere 1
 
-$f(x)$ è come se dà una probabilità a tutti gli infiniti valori che assume la variabile aleatoria, formando quindi una curva.
+È come se $f(x)$ desse una probabilità a tutti gli infiniti valori che assume la variabile aleatoria, formando quindi una curva.
 **Un intervallo di questa curva rappresenta un evento**.
 Per calcolare la probabilità di quel evento dobbiamo calcolare l'area sottesa alla curva in quel intervallo.
 L'area la calcoliamo tramite gli integrali definiti
@@ -139,11 +141,11 @@ verifichiamo innanzitutto che sia effettivamente una valida funzione di densità
 1. $f(x)$ è una funzione esponenziale che è quindi sempre positiva
 2. $\int_0^\infty 2e^{-2x} dx = 1$
 
-consideriamo l'evento $A=(1,2)$
+consideriamo l'evento $A=[1,2]$
 
 $\mathbb{P}[A] = \int_1^2 2e^{-2x} \, dx = e^{-2}- e^{-4}$
 
-consideriamo l'evento $B=(-1,1)$ in questo caso notiamo che da -1 fino a 0 siamo fuori dall'intervallo della funzione, quindi il quella zona ci sarà probabilità 0
+consideriamo l'evento $B=[-1,1]$ in questo caso notiamo che da -1 fino a 0 siamo fuori dall'intervallo della funzione, quindi il quella zona ci sarà probabilità 0
 
 $\mathbb{P}[A] = \int_{-1}^0 0\,dx + \int_{0}^{1} 2e^{-2x} \, dx = 1- e^{-2}$
 
@@ -166,7 +168,7 @@ La funzione di ripartizione deve rispettare tre proprietà:
 
 ### funzione di ripartizione di variabili casuali discrete
 
-prendiamo come esempio il lancio di un dado a 6 facce ingiusto, in cui la probabilità che esca 4 è più alta mentre la probabilità che esca 2 è più bassa.
+prendiamo come esempio il lancio di un dado a 6 facce truccato, in cui la probabilità che esca 4 è più alta mentre la probabilità che esca 2 è più bassa.
 
 la nostra variabile aleatoria sarà semplicemente il numero del dado che esce.
 
@@ -200,7 +202,7 @@ $$\mathbb{P}[4] = F(5) - F(2) = \frac{5}{6} - \frac{5}{18} = \frac{5}{9}$$
 Se abbiamo una variabile casuale continua con funzione di densità $f(x)$ allora la funzione di ripartizione è data da:
 
 
-$$\int_{-\infty}^x f(t)\,dt$$
+$$F(x) =\int_{-\infty}^x f(t)\,dt$$
 
 quindi dall'integrale da $-\infty$ ad un punto $x$ della funzione di densità
 
@@ -238,7 +240,7 @@ Il valore atteso di una variabile aleatoria discreta $X$ rappresentato dal simbo
 
 $$\mathbb{E}[X] = \sum_{i}(x_i\cdot p_i)$$
 
-quindi la somma di **valore** **moltiplicato** per la sua **probabilità**
+quindi la somma di: ogni **valore** moltiplicato per la sua **probabilità**
 
 Esempio
 $P_X(x) = \begin{cases}
@@ -251,7 +253,7 @@ Il valore atteso in questo caso è dato da:
 
 $\mathbb{E}[X] = 1 \cdot \frac{2}{7} + 2 \cdot \frac{2}{7} + 3 \cdot \frac{2}{7} + 4 \cdot \frac{1}{7} = \frac{16}{7}$
 
-### Valore atteso di variabile aleatorie continue
+### Valore atteso di variabili aleatorie continue
 
 Data la funzione di densità della variabile continua $f(x)$ il valore atteso si calcola come:
 
@@ -265,13 +267,14 @@ $$\mathbb{E}[X]  =\int_{\mathbb{R}}xf(x) \, dx$$
 
 
 ## Varianza
-la varianza è un valore che misura quanto si discostano i valori assunti dalla variabile aleatoria rispetto al valore atteso (quindi rispetto alla media).
+
+La varianza è un valore che misura quanto si discostano i valori assunti dalla variabile aleatoria rispetto al valore atteso (quindi rispetto alla media).
 
 maggiore è la varianza più sono i valori che si allontanano dalla media, mentre minore è la varianza più i valori sono tutti molto vicini alla media
 
-### Varianza di variabile aleatorie discrete
+### Varianza di variabili aleatorie discrete
 
-La varianza di una variabile aleatoria discreta $X$ rappresentato da $\text{Var}[X]$ si calcola come:
+La varianza di una variabile aleatoria discreta $X$, rappresentata da $\text{Var}[X]$, si calcola come:
 
 $$\text{Var}[X] = \sum_{i}p_i\cdot (x_i - \mathbb{E}[X])^2$$
 
@@ -291,7 +294,7 @@ $P_X(x) = \begin{cases}
 
 $\text{Var}[X] = (1^2\cdot \frac{2}{7}) + (2^2\cdot \frac{2}{7}) + (3^2\cdot \frac{2}{7}) + (4^2\cdot \frac{1}{7}) - (\frac {16}{17})^2 \approx 5.4$
 
-### Varianza di variabile aleatorie continue
+### Varianza di variabili aleatorie continue
 
 Data la funzione di densità della variabile aleatoria $f(x)$ la varianza si calcola come:
 
@@ -336,9 +339,7 @@ I quantili sono degli indici di posizione che sono una generalizzazione del conc
 
 Avendo la funzione di ripartizione di una variabile aleatoria, il **quantile di livello** $\alpha$ è il minimo valore che assume la variabile la cui probabilità è maggiore di $\alpha$:
 
-$$F(m) = \mathbb{P}[X \leq q_\alpha] \geq \alpha$$
-
-**Per una variabile continua esiste un unico punto** di mediana
+$$F(q_\alpha) = \mathbb{P}[X \leq q_\alpha] \geq \alpha$$
 
 la mediana è un quantile in cui $\alpha = \frac{1}{2}$
 
@@ -348,7 +349,7 @@ i **quartili** sono dei quantili di livello 0.25 (detto **primo quartile**), 0.5
 
 ## Deviazione standard
 
-La deviazione standard o scarto quadratico medio è un concetto simile alla varianza, anche in questo caso la deviazione standard è una misura di dispersione dei dati rispetto alla media, ma la sostanziale differenza è che essa è sulla stessa scala dei valori originali (diversamente dalla varianza che ha una scala quadratica).
+La deviazione standard o scarto quadratico medio è un concetto simile alla varianza, anche in questo caso la deviazione standard è una misura di dispersione dei dati rispetto alla media, ma la sostanziale differenza è che essa appartiene alla stessa scala dei valori originali (diversamente dalla varianza che ha una scala quadratica).
 
 in altre parole potremmo definirla come: la media di quanto si discostano i valori dal valore atteso (la media)
 

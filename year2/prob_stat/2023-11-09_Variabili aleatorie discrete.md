@@ -17,9 +17,21 @@ e il grafico sarò una cosa del tipo
 
 Un classico esempio è il lancio di un dado non truccato in cui ogni faccia del dado ha la stessa probabilità di uscire
 
+La probabilità di un valore $x$ dati $n$ possibili valori è dato da:
+
+$$\mathbb{P}[X = x] = \frac{1}{n}$$
+
+La media (il valore atteso) della distribuzione uniforme è
+
+$$\mathbb{E}[X] = \frac{x_1 + x_n}{2}$$
+
+La varianza della distribuzione uniforme è
+
+$$\text{Var}[X] = \frac{n^2 -1}{12}$$
+
 ## Distribuzione ipergeometrica
 
-Questo è il caso che abbiamo già visto delle popolazioni.
+Questo è il caso che abbiamo già visto delle **popolazioni senza reinserimento**.
 Una popolazione è divisa in due sottopopolazioni, una di queste sottopopolazioni ha la caratteristica che ci interessa.
 Sapendo quanti hanno e non hanno la caratteristica e sapendo se il campionamento viene fatto con o senza reinserimento possiamo calcolare la probabilità degli eventi scritti come "$k$ elementi su $n$ hanno la caratteristica"
 
@@ -29,7 +41,7 @@ In questo caso l'estrazione di un elemento con la proprietà viene chiamato **su
 
 Questa distribuzione si scrive come:
 
-$$X \sim lg(N, K, n)$$
+$$X \sim Ig(N, K, n)$$
 
 dove:
 - $N$: numero di elementi della popolazione
@@ -55,7 +67,7 @@ Un software consiste di 12 programmi, 5 dei quali necessitano di upgrade. Se ven
 1. qual è la probabilità che almeno 2 di essi siano da aggiornare?
 
 	Sia X la variabile che conta il numero di programmi da aggiornare fra i 4 scelti.
-	Abbiamo quindi $X \sim lg(N=12, K=5, n=4)$
+	Abbiamo quindi $X \sim Ig(N=12, K=5, n=4)$
 	
 	Ci viene chiesta la probabilità $\mathbb{P}[X \geq 2]$ che possiamo calcolare con l'evento complementare:
 
@@ -81,8 +93,8 @@ $$X \sim \text{Ber}(p)$$
 La probabilità del successo o insuccesso è data da:
 
 $$\mathbb{P}[X = x] = \begin{cases}
-1-p & \text{se} x = 0 \\
-p & \text{se} x = 1\\
+1-p & \text{se } x = 0 \\
+p & \text{se } x = 1\\
 0 & \text{altrimenti}
 \end{cases}$$
 
@@ -147,9 +159,7 @@ $\mathbb{P}[S_3 = 2] = \binom{3}{2}(\frac{4}{7})^2(1-\frac{4}{7})^{3-2} = 0.4198
 
 ## Distribuzione di Poisson
 
-Una variabile aleatoria quando può assumere in tutto l'insieme dei numeri naturali $\mathbb{N}$, abbiamo una distribuzione di Poisson.
-
-La distribuzione di Poisson viene utilizzata come modello in tutti quei casi in cui la variabile aleatoria assume una quantità di valori tendenti ad infinito e in cui la probabilità di ognuno è bassissima.
+La distribuzione di Poisson viene utilizzata come modello in tutti quei casi in cui la variabile aleatoria assume una quantità di valori tendenti ad infinito e in cui la probabilità di ognuno è bassissima (si dice infatti che questa distribuzione modella gli **eventi rari**).
 
 Degli esempi di testi in cui si può utilizzare questa distribuzione sono:
 
@@ -192,9 +202,9 @@ $\mathbb{P}[X \leq 3] = \frac{10^0}{0!}e^{-10} + \frac{10^1}{1!}e^{-10} + \frac{
 
 ### Approssimazione della Binomiale
 
-In alcuni casi è possibile utilizzare le formule della distribuzione di Poisson come una buona approssimazione della distribuzione binomiale.
+In alcuni casi è possibile utilizzare le formule della distribuzione di Poisson come una buona approssimazione della distribuzione binomiale (in quanto la binomiale usa il fattoriale e con numeri grandi è abbastanza difficile da calcolare).
 
-I casi in questo si può fare sono quei casi in cui $n$ è grande e la probabilità di ogni valore è molto basso inoltre il prodotto $np$ deve tendere a $\lambda$
+Si può fare tale approssimazione nei casi in cui $n$ è grande e la probabilità di ogni valore è molto bassa inoltre il prodotto $np$ deve tendere a $\lambda$
 Generalmente quando $n \geq 100$ e $p \leq 0.05$
 
 quindi la distribuzione binomiale:
@@ -247,7 +257,7 @@ Vediamo un esempio
 
 Si consideri un motore di ricerca su internet. Se il 20% dei siti visitati contengono la parola cercata
 
-Supponiamo che X conti il numero di pagine da visitare per trovare per la prima volta la parola cercata. Allora $X \sim \text{Geo}(p)$
+Supponiamo che $X$ conti il numero di pagine da visitare per trovare per la prima volta la parola cercata. Allora $X \sim \text{Geo}(p)$
 
 - qual è la probabilità di dover visitare 15 siti per trovare la parola?
 
@@ -295,7 +305,7 @@ Supponiamo che X conti il numero di pagine da visitare per trovare per la prima 
 
 | Probabilità | Funzione R |
 |--|--|
-| $\mathbb{P}[X = k]$ | `dpois(x=k, labmda=lambda)` |
+| $\mathbb{P}[X = k]$ | `dpois(x=k, lambda=lambda)` |
 | $\mathbb{P}[X \leq k]$ | `ppois(q=k, lambda=lambda)` |
 | $\mathbb{P}[X \geq k]$ | `1 - ppois(q=k-1, lambda=lambda)` |
 
@@ -305,6 +315,5 @@ Supponiamo che X conti il numero di pagine da visitare per trovare per la prima 
 |--|--|
 | $\mathbb{P}[X = k]$ | `dgeom(x=k-1, prob=p)` |
 | $\mathbb{P}[X \leq k]$ | `pgeom(q=k-1, prob=p)` |
-| $\mathbb{P}[X \geq k]$ | `1 - pgeom(q=k-2, prob=p)` |
 | $\mathbb{P}[X > k]$ | `1 - pgeom(q=k-1, prob=p)` |
 
