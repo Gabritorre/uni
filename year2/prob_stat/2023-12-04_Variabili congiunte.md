@@ -364,7 +364,7 @@ $$\mathbb{P}[|X - \mathbb{E}[X]| > \epsilon] \leq \frac{\text{Var}[X]}{\epsilon^
 
 dualmente possiamo anche avere un limite inferiore:
 
-$$\mathbb{P}[|X - \mathbb{E}[X]| > \epsilon] \geq 1-\frac{\text{Var}[X]}{\epsilon^2}$$
+$$\mathbb{P}[|X - \mathbb{E}[X]| < \epsilon] \geq 1-\frac{\text{Var}[X]}{\epsilon^2}$$
 
 Ad esempio:
 "Il numero di richieste giornaliere di collegamento ad un server è una v.a. Y con valore atteso 130 e varianza 50. Qual è il limite superiore della probabilità che in un giorno si colleghino fra i 100 e i 160 clienti?"

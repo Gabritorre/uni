@@ -6,7 +6,7 @@ $$\mathbb{P}[A|B] = \frac{\mathbb{P}[A\cap B]}{\mathbb{P}[B]}$$
 
 $\mathbb{P}[A|B]$ rappresenta la probabilità che accada l'evento $A$ dopo che si è verificato l'evento $B$
 
-Pensiamo prima che l'evento B non si sia ancora verificato, possiamo rappresentare gli eventi $A$ e $B$ come:
+Immaginiamo inizialmente che B non si sia ancora verificato, possiamo rappresentare gli eventi $A$ e $B$ come:
 
 ![enter image description here](https://i.ibb.co/kXCHJgX/prob-cond.png)
 
@@ -22,7 +22,7 @@ da questo deriva la formula della probabilità condizionata.
 $$\mathbb{P}[\bar{A}|B] = 1-\mathbb{P}[A|B]$$
 - $\mathbb{P}[A|B]$ e $\mathbb{P}[A|\bar{B}]$ non sono in relazione
 
-esempio di probabilità composta:
+Esempio di probabilità composta:
 
 Abbiamo un'urna con 7 palline:
 - 4 bianche numerate da 1 a 4
@@ -45,7 +45,7 @@ anche ragionando possiamo pensare che venga estratta una pallina bianca, dato ch
 
 $$\mathbb{P}[C_1|N] = \frac{\frac{1}{7}}{\frac{3}{7}} = \frac{1}{3}$$
 
-ragionando possiamo pensare quante sono le palline con il numero 1 tra le palline nere.
+ragionando possiamo pensare a quante sono le palline con il numero 1 tra le palline nere.
 
 $$\mathbb{P}[N|C_1] = \frac{\frac{1}{7}}{\frac{2}{7}} = \frac{1}{2}$$
 
@@ -65,7 +65,7 @@ $$\mathbb{P}[A\cap B] = \mathbb{P}[A|B] \cdot \mathbb{P}[A]$$
 
 questa formula può essere generalizzata, ottenendo la **formula delle probabilità composte**
 
-$$P(A \cap B \cap C \cdot...) = P(A) \cdot P(B | A) \cdot P(C | A \cap B) \cdot...$$
+$$P(A_1 \cap A_2 \cap A_3 \cdot...\cdot A_n) = P(A_1) \cdot P(A_2 | A_1) \cdot P(A_3 | A_1 \cap A_2) \cdot ... \cdot P[A_n| A_1 \cap ... \cap A_n-1]$$
 
 possiamo rappresentare tale formula tramite un albero binario:
 
@@ -76,6 +76,7 @@ $\mathbb{P}[A_1 \cap A_2 \cap A_3] =\mathbb{P}[A_1] \cdot \mathbb{P}[A_2|A_1]\cd
 
 $\mathbb{P}[A_1 \cap \bar A_2 \cap A_3] =\mathbb{P}[A_1] \cdot \mathbb{P}[\bar A_2|A_1]\cdot \mathbb{P}[A_3|A_1 \cap \bar A_2]$
 
+Viene utilizzata quando si vorrebbe usare la formula delle **popolazioni senza reinserimento** ma **considerando l'ordine** di estrazione.
 
 esempio:
 nella solita urna di 7 palline di cui 4 bianche e 3 nere.
@@ -112,13 +113,12 @@ questo modo di calcolare l'intersezione si può estendere se abbiamo più eventi
 
 $$\mathbb{P}[A_{i_1} \cap ...\cap A_{i_k}] = \mathbb{P}[A_{i_1}] \cdot ... \cdot \mathbb{P}[A_{i_k}]$$
 
-**eventi indipendenti e disgiunti**:
+**eventi indipendenti e anche disgiunti**:
 
 - disgiunti: l'intersezione dei due eventi è vuota $\hspace{5mm}\implies \hspace{5mm}[A \cap B] = \empty$
 - indipendenti: il prodotto tra le probabilità dei due eventi è $0$ $\hspace{5mm}\implies \hspace{5mm}\mathbb{P}[A] \cdot \mathbb{P}[B] = 0$
 
-due eventi disgiunti sono anche indipendenti se la probabilità di almeno uno dei due è $0$
-
+In altre parole due eventi disgiunti sono anche indipendenti solo se la probabilità di almeno uno dei due è $0$
 
 esempio:
 
@@ -148,13 +148,11 @@ e dato che $\mathbb{P}[A] \cdot \mathbb{P}[B] = \frac{5}{36}\cdot \frac{1}{6} = 
 
 Un interessante caso di studio riguarda i sistemi in serie e in parallelo, concentriamoci prima su quelli in serie:
 
-- **sistema in serie**:
-	un sistema in serie funziona solo se tutti i componenti di quel sistema funzionano, possiamo rappresentarlo graficamente come:
+- **Sistema in serie**:
+	Un sistema in serie funziona solo se tutti i componenti di quel sistema funzionano, possiamo rappresentarlo graficamente come:
 	![enter image description here](https://i.ibb.co/Jsm1PQ7/serie.png)
 Sia $A_i$ l'evento in cui il componente $i$-esimo funziona
 mentre sia $A$ l'evento in cui l'intero sistema funziona
-
-	supponiamo che ogni componente si guasti indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
 
 	Quindi 
 	$$A = \bigcap_{i = 1}^{n}A_i$$
@@ -165,15 +163,16 @@ mentre sia $A$ l'evento in cui l'intero sistema funziona
 
 	$$\mathbb{P}[A] = \mathbb{P}\left[\bigcap_{i = 1}^{n}A_i\right]$$
 
-	quindi dal prodotto delle probabilità di ogni singolo componente:
+	quindi dal prodotto delle probabilità che ogni singolo componente funzioni:
 	
 	$$\mathbb{P}[A] = \prod_{i=1}^{n}\mathbb{P}[A_i]$$
 
-	oppure dal prodotto della probabilità che ogni componente non sia guasto:
+	Se supponiamo che ogni componente **si guasti** indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
+	la probabilità che il sistema funziona è dato dal prodotto della probabilità che ogni componente **non sia guasto**:
 
 	$$\mathbb{P}[A] = \prod_{i=1}^{n}(1-p_i)$$
 
-- **sistema in parallelo**:
+- **Sistema in parallelo**:
 	un sistema in parallelo funziona se almeno un componente del sistema funziona, possiamo rappresentarlo graficamente come:
 
 	![enter image description here](https://i.ibb.co/gR7hDNQ/parallelo.png)
@@ -181,12 +180,10 @@ mentre sia $A$ l'evento in cui l'intero sistema funziona
 	Sia $A_i$ l'evento in cui il componente $i$-esimo funziona
 mentre sia $A$ l'evento in cui l'intero sistema funziona
 
-	supponiamo che ogni componente si guasti indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
-
 	Quindi 
 	$$A = \bigcup_{i = 1}^{n}A_i$$
 	
-	cioè l'intero sistema funziona se almeno un componente funziona
+	cioè l'intero sistema funziona se **almeno** un componente funziona
 
 	la probabilità che il sistema funziona è dato da:
 
@@ -196,12 +193,13 @@ mentre sia $A$ l'evento in cui l'intero sistema funziona
 
 	$$\mathbb{P}[A] = 1 - \mathbb{P}\left[\bigcap_{i = 1}^{n}\bar{A_i}\right]$$
 
-	cioè $1 -$ la probabilità che ogni componente non funzioni
-	la probabilità che ogni componente non funzioni è dato dal prodotto dei complementari
+	cioè: $1 - \text{"la probabilità che ogni componente non funzioni"}$
+	
+	La probabilità che ogni componente non funzioni è dato dal prodotto dei complementari
 
 	$$\mathbb{P}[A] = 1- \prod_{i=1}^{n}\mathbb{P}[\bar{A_i}]$$
 
-	oppure
+	oppure, se supponiamo che ogni componente si guasti indipendente dagli altri e la probabilità del guasto di un componente la indichiamo con $p_i$
 	
 	$$\mathbb{P}[A] = 1- \prod_{i=1}^{n}p_i$$
 
@@ -265,7 +263,7 @@ $P[+] = \left(0.001 \cdot 0.95\right) + \left((1-0.001)\cdot (1-0.98)\right) = 0
 
 Come facciamo però a trovare la probabilità di una partizione sapendo che un determinato evento è accaduto? in altre parole come potrebbe percorrere l'albero sopra disegnato al contrario (da destra verso sinistra)?
 
-La **formula di byes** calcola proprio questo:
+La **formula di bayes** calcola proprio questo:
 
 $$\mathbb{P}[C_m|A] = \frac{\mathbb{P}[C_m\cap A]}{\mathbb{P}[A]}$$
 
@@ -275,7 +273,7 @@ $\mathbb{P}[C_m\cap A] = \mathbb{P}[C_m]\cdot\mathbb{P}[A|C_m]$
 
 $\mathbb{P}[A] =  \sum_{i}\mathbb{P}[C_i]\cdot \mathbb{P}[A|C_i]$
 
-Quindi la formula di byes si può riscrivere come:
+Quindi la formula di bayes si può riscrivere come:
 
 $$\mathbb{P}[C_m|A] = \frac{\mathbb{P}[C_m]\cdot\mathbb{P}[A|C_m]}{\sum_{i}\mathbb{P}[C_i]\cdot \mathbb{P}[A|C_i]}$$
 
@@ -287,4 +285,4 @@ $$\mathbb{P}[M|+] = \frac{\mathbb{P}[M]\cdot \mathbb{P}[+|M]}{(\mathbb{P}[M]\cdo
 $$\mathbb{P}[M|+] = \frac{0.001 \cdot 0.95}{(0.001\cdot 0.95)+((1-0.001)\cdot (1-0.98))} = 0.045$$
 
 
-Quello che la formula di byes permette di fare è quello di aggiornare la probabilità di eventi $C_m$ data la nuova informazione
+Quello che la formula di bayes permette di fare è quello di aggiornare la probabilità di eventi $C_m$ data la nuova informazione

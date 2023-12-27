@@ -28,12 +28,12 @@ Il totale è dato da: $m_1 \cdot m_2 \cdot m_3 = 6 \cdot 6 \cdot 6 = 216$
 
 ### Disposizioni
 
-Avendo un insieme di $n$ elementi, una disposizione è una scelta di $r$ elementi ordinati presi dall'insieme.
+Avendo un insieme di $n$ elementi, una disposizione è una scelta di $k$ elementi ordinati presi dall'insieme.
 Due disposizioni sono diverse tra loro se contengono elementi diversi oppure se contengono gli stessi elementi ma in ordine diverso
 
 Si distinguono le **disposizioni semplici e le disposizioni con ripetizioni** in base a se un elemento si può ripetere o meno.
 
-- **disposizioni con ripetizione**: il totale delle combinazioni di un insieme di $n$ elementi prendendone $k$ alla volta e in cui l'ordine degli elementi è importante è dato da:
+- **disposizioni con ripetizione**: il totale delle combinazioni di un insieme di $n$ elementi prendendone $k$, e in quei $k$ ci possono essere valori duplicati, è dato da:
 $$n^k$$
 ne è un esempio il linguaggio binario
 $n = \{0,1\} = 2$
@@ -41,16 +41,16 @@ $k = 3$
 
 le combinazioni totali sono $n^k = 2^3 = 8$ infatti andandole a rappresentare tutte:
 
-$$(000), (001), (010), (011), (100), (101), (110), (111)$$
+$(000), (001), (010), (011), (100), (101), (110), (111)$
 
 similmente possiamo fare l'esempio di rappresentare parole lunghe 2 lettere utilizzando l'alfabeto $\{I, L, A\}$
 
 $n = 3$
 $k = 2$
 totale di combinazioni: $3^2 = 9$ infatti abbiamo:
-$$(II), (IL), (IA), (LI), (LL), (LA), (AI), (AL), (AA)$$
+$(II), (IL), (IA), (LI), (LL), (LA), (AI), (AL), (AA)$
 
-- **disposizioni senza ripetizione**: se invece vogliamo sempre prendere $k$ su un insieme $n$ ma non ci interessa l'ordine degli elementi, possiamo calcolare il totale come 
+- **disposizioni senza ripetizione**: se invece vogliamo sempre prendere $k$ su un insieme $n$ ma in quei $k$ non ci possono essere duplicati, possiamo calcolare il totale come 
 $$\frac{n!}{(n-k)!}$$
 
 
@@ -60,6 +60,8 @@ $n = 3$
 $k = 2$
 
 totale: $\frac{3!}{(3-2)!} = \frac{6}{1} = 6$
+
+infatti abbiamo $(IL), (IA), (LI), (LA), (AI), (AL)$
 
 **Esempio**: ad una gara partecipano 9 concorrenti ma solo 3 vengono premiati quanti sono i possibili podi?
 
@@ -77,7 +79,7 @@ Ricordiamo che due permutazioni sono diverse se cambia l'ordine in cui appaiono 
 - **permutazioni semplici**: gli elementi non si possono ripetere. Il totale è dato dal fattoriale di $n$ :
 	$$n!$$
 - **permutazioni con ripetizioni**: gli elementi si possono ripetere un determinato numero di volte. In questo caso il totale è dato da:
-	$$\frac{n!}{k_1!\cdot k2!\cdot k3!\cdot ... \cdot k_j!}$$
+	$$\frac{n!}{k_1!\cdot k_2!\cdot k_3!\cdot ... \cdot k_j!}$$
 	dove ogni $k_\text{j-esimo}$ rappresenta quante volte può essere ripetuto l'elemento 1, poi l'elemento 2 e così via
 	
 
@@ -99,25 +101,27 @@ otteniamo quindi che il totale di modi di disporre le persone è $10!$
 
 	
 ### Combinazioni
-Avendo un insieme di $n$ elementi, una combinazione è una scelta di $k$ elementi, di cui l'ordine non è importante, presi dall'insieme.
+Avendo un insieme di $n$ elementi, una combinazione è una scelta di $k$ elementi, presi dall'insieme, di cui l'ordine non è importante.
 Due combinazioni sono diverse tra loro se contengono elementi diversi.
 
 Si distinguono le **combinazioni semplici e le combinazioni con ripetizioni** in base a se un elemento si può ripetere o meno.
 
 - **combinazioni semplici**: In cui gli elementi non si possono ripetere:
 $$\frac{n!}{k!\cdot(n-k)!} \hspace{5mm}\text{oppure}\hspace{5mm}\binom{n}{k}$$
-	es. 1 quanti sono i sottoinsiemi di 3 lettere creabili dal seguente alfabeto $\{A, B, C, D, E\}$  in questo caso l'ordine non è importante quindi, per esempio, il sottoinsieme (ABC) è uguale a (CBA)
-per trovare il totale dobbiamo trovare tutte le permutazioni senza ripetizioni:
+	
+	es. 1: quanti sono i sottoinsiemi di 3 lettere creabili dal seguente alfabeto $\{A, B, C, D, E\}$  in questo caso l'ordine non è importante quindi, per esempio, il sottoinsieme (ABC) è uguale a (CBA)
+per trovare il totale dobbiamo trovare il numero di sottoinsiemi formati da lettere diverse (disposizioni semplici):
 
-	$\frac{5!}{2!} = 5 \cdot 4 \cdot 3 = 60$
+	$\frac{5!}{(5-3)!} = 5 \cdot 4 \cdot 3 = 60$
 
 	e da questi dividere per quante sono le coppie uguali per ogni scelta
 abbiamo che ogni sottoinsieme è possibile scriverlo in $3! = 6$ modi differenti.
 quindi il numero totale di sottoinsiemi non ripetuti è $\frac{60}{6} = 10$
 utilizzando la formula per intero sarebbe $\frac{5!}{3! \cdot (5-3)!}$
 
-	es 2 quanti numeri interi compresi tra 100 e 999 hanno tutte le cifre crescenti?
-il risultato è dato da $\binom{9}{3}$ oppure scritto in formula $\frac{9!}{3!\cdot(9-3)!} = \frac{9\cdot 8 \cdot 7}{3 \cdot 2 \cdot 1} = 84$
+	es 2: quanti sono i numeri interi, compresi tra 100 e 999, che hanno tutte le cifre crescenti?
+	La prima cifra ha 9 possibili scelte, la seconda ne ha 8 (dato che deve essere una cifra maggiore della precedente), la terza ne ha 7 (dato che deve essere maggiore delle due precedenti)
+Il risultato è dato da $\binom{9}{3}$ oppure scritto in formula $\frac{9!}{3!\cdot(9-3)!} = \frac{9\cdot 8 \cdot 7}{3 \cdot 2 \cdot 1} = 84$
 
 
 - **combinazioni con ripetizioni**: In cui gli elementi si possono ripetere:
@@ -139,7 +143,7 @@ $\binom{20 + 3 -1}{3} \to \binom{22}{3} \to \frac{22!}{3!\cdot(22-3)!} = 1540$
 
 La probabilità si usa per ragionare su dei risultati possibili di un **fenomeno aleatorio** (casuale).
 
-con evento aleatorio ci riferiamo ad un evento che se ripetuto può generare un risultato diverso dal precedente (esattamente il contrario di un evento deterministico). Un classico esempio è il lancio di un dado.
+Con evento aleatorio ci riferiamo ad un evento che se ripetuto può generare un risultato diverso dal precedente (esattamente il contrario di un evento deterministico). Un classico esempio è il lancio di un dado.
 
 
 Definiamo come **spazio campionario** ($\Omega$) l'insieme di tutti i possibili risultati di un fenomeno aleatorio.
@@ -192,12 +196,12 @@ $$0\leq\mathbb{P}\leq1$$
 
 $$\mathbb{P}[\Omega] = 1$$
 
-- **additività** la probabilità dell'unione di tutti gli eventi disgiunti è uguale alla somma delle singole probabilità degli eventi
+- **additività**: la probabilità dell'unione di tutti gli eventi disgiunti è uguale alla somma delle singole probabilità degli eventi
 	
-$$\mathbb{P}\bigg[\bigcup_{n=1}^{\infty}A_n\bigg] = \sum_{n=1}^{\infty}\mathbb{P}[A_n]$$
+$$\mathbb{P}\left[\bigcup_{n=1}^{\infty}A_n\right] = \sum_{n=1}^{\infty}\mathbb{P}[A_n]$$
 
 
-La **probabilità di un evento** è quindi un numero compreso tra 0 e 1 che rappresenta con quale possibilità un evento casuale possa capitare, più il numero è vicino ad 1 più sarà probabile mentre è vicino allo 0 più è improbabile
+La **probabilità di un evento** è quindi un numero compreso tra 0 e 1 che rappresenta con quale possibilità un evento casuale possa accadere, più il numero è vicino ad 1 più sarà probabile mentre è vicino allo 0 più è improbabile
 
 
 ### Proprietà della probabilità
@@ -218,30 +222,30 @@ $$\mathbb{P}\bigg[\bigcup_{i = 1}^{\infty}C_i\bigg] = \mathbb{P}[\Omega] = 1$$
 
 ### Legge della probabilità totale (versione facile)
 
-la probabilità di un evento $A$ è possibile scriverla come la somma della probabilità delle sue partizioni
+La probabilità di un evento $A$ è possibile scriverla come la somma della probabilità delle sue partizioni
 
 $$\mathbb{P}[A] = \sum_{i}\mathbb{P}[A \cap C_i]$$
 
 
-### spazi campionari finiti
+## spazi campionari finiti
 
 Se uno spazio campionario è finito $\Omega = \{w_1,...w_n\}$ allora anche il numero di probabilità degli elementi dello spazio campionario è finito, in altre parole abbiamo $n$ probabilità tali che:
 1. ogni probabilità deve essere un numero compreso tra 0 e 1
 2. la somma di tutte le probabilità deve essere 1
-3. indichiamo con $p_i = \mathbb{P}[\{w_i\}]$
+3. indichiamo con le probabilità con $p_i = \mathbb{P}[\{w_i\}]$
 
 Se tutti gli elementi di $\Omega$ hanno la **stessa probabilità** allora
-è possibile ottenere matematicamente il valore della probabilità dei singolo elementi di $\Omega$
+è possibile ottenere matematicamente il valore della probabilità dei singoli elementi di $\Omega$
 $$p_i = \mathbb{P}[\{w_i\}] = \frac{1}{n}$$
 
 da qui si deduce che la probabilità di un evento $A$ (sottoinsieme di $\Omega$) è data da:
 
 $$\mathbb{P}[A] = \frac{r}{n} = \frac{\text{numero di casi favorevoli}}{\text{numero di casi possibili}}$$
 
-**ovviamente sempre se la probabilità degli elementi dello spazio campionario è la stessa**
+**ovviamente sempre se la probabilità di ogni elemento dello spazio campionario è la stessa**
 
 
-### Popolazioni
+## Popolazioni
 
 La **popolazione** di un insieme rappresenta tutti i singoli elementi dell'insieme.
 
@@ -336,7 +340,7 @@ $n-k \leq N - m :$ gli elementi estratti che non hanno la caratteristica interes
 
 in questo caso le n-uple sono degli insiemi in quanto **non siamo interessati all'ordine** in cui estraiamo gli elementi
 
-anche in questo caso lo spazio campionario è formato da tutte le combinazioni di $n$ elementi in cui l'ordine non è importante
+In questo caso lo spazio campionario è formato da tutte le combinazioni di $n$ elementi in cui l'ordine non è importante:
 
 $$\#\Omega = \binom{N}{n}$$
 
@@ -345,7 +349,7 @@ Abbiamo degli eventi $A_k$ dove $k$ indica quanti elementi hanno la caratteristi
 $$\#A_k =\binom{m}{k}\binom{N-m}{n-k}$$
 
 $\binom{m}{k} =$ modi di scegliere $k$ elementi con la caratteristica tra gli elementi totali che hanno la caratteristica, considerando che ogni estrazione influenza la successiva (dato che non c'è reinserimento)
-$\binom{N-m}{n-k}$ modi di scegliere $n-k$ elementi senza la caratteristica tra gli elementi totali che non hanno la caratteristica
+$\binom{N-m}{n-k} =$ modi di scegliere $n-k$ elementi senza la caratteristica tra gli elementi totali che non hanno la caratteristica
 
 La formula per calcolare la probabilità di un evento $A_k$ è la seguente:
 

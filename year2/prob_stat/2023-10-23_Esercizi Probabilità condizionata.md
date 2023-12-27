@@ -82,7 +82,7 @@ $P[B|A] = 0.75$
 
 $P[B|\bar A] = 0.5$
 
-l'esercizio ci chiede la probabilità di $[A|B]$, che si può calcolare con la formula di Byes:
+l'esercizio ci chiede la probabilità di $[A|B]$, che si può calcolare con la formula di Bayes:
 
 $$P[A|B] = \frac{P[A\cap B]}{P[B]}$$
 
@@ -98,7 +98,7 @@ $C_1$ e $C_2$ sono una partizione di $\Omega$ e hanno la stessa probabilità. Se
 
 Dato che le due partizioni hanno la stessa probabilità, questa probabilità deve essere $\frac{1}{2}$
 
-Anche in questo caso utilizziamo la formula di byes per calcolare $P[C_1|A]$
+Anche in questo caso utilizziamo la formula di Bayes per calcolare $P[C_1|A]$
 
 $$P[C1|A] = \frac{P[C_1\cap A]}{P[A]}$$
 
@@ -131,7 +131,7 @@ $P[B|\bar A] = 0.8$
 	$P[B] = P[A] \cdot P[B|A]  + P[\bar A] \cdot P[B|\bar A]$
 	$\hspace{8.6mm}=0.7 \cdot 0.6 + 0.3 \cdot 0.8 = 0.66$
 
-- (b) calcoliamo $P[\bar A|B]$ utilizzando la formula di byes
+- (b) calcoliamo $P[\bar A|B]$ utilizzando la formula di Bayes
 
 	$$P[\bar A|B] =\frac{P[\bar A \cap B]}{P[B]}$$
 
@@ -233,7 +233,7 @@ $P[A|X] = 0.05$
 $P[A|Y] = 0.1$
 $P[A|Z] = 0.06$
 
-Ci viene chiesta la $P[Z|A]$, la calcoliamo utilizzando la formula di byes
+Ci viene chiesta la $P[Z|A]$, la calcoliamo utilizzando la formula di Bayes
 
 $$P[Z|A] = \frac{P[Z \cap A]}{P[A]}$$
 
@@ -262,7 +262,7 @@ $A$ = componente privo di difetti
 $P[A|T] = 0.95$
 $P[A|\bar T] = 0.7$
 
-il testo ci chiede la $P[T|\bar A]$, che troviamo con la formula di byes
+il testo ci chiede la $P[T|\bar A]$, che troviamo con la formula di Bayes
 
 $$P[T|\bar A] = \frac{P[T \cap \bar A]}{P[\bar A]}$$
 

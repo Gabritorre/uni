@@ -274,21 +274,21 @@ Si consideri la media campionaria per campioni provenienti da una popolazione di
 	$\bar{X}_{50} \sim N(175, \frac{42}{50})$
 
 	Usando la formula di Chebychev per ottenere il limite inferiore:
-	$$\mathbb{P}[|X - \mathbb{E}[X]| > \epsilon] \geq 1-\frac{\text{Var}[X]}{\epsilon^2}$$
+	$$\mathbb{P}[|X - \mathbb{E}[X]| < \epsilon] \geq 1-\frac{\text{Var}[X]}{\epsilon^2}$$
 
 	Dato che i limiti del range si discostano di $5$ dalla media, metto $\epsilon = 5$
 
-	$$\mathbb{P}[|\bar{X}_{50} - 175| > 5] \geq 1-\frac{\frac{42}{50}}{5^2}$$
+	$$\mathbb{P}[|\bar{X}_{50} - 175| <5] \geq 1-\frac{\frac{42}{50}}{5^2}$$
 	
-	$$\mathbb{P}[|\bar{X}_{50} - 175| > 5] \geq 1-\frac{42}{50\cdot5^2}$$
+	$$\mathbb{P}[|\bar{X}_{50} - 175| < 5] \geq 1-\frac{42}{50\cdot5^2}$$
 
-	$$\mathbb{P}[|\bar{X}_{50} - 175| > 5] \geq 0.9664$$
+	$$\mathbb{P}[|\bar{X}_{50} - 175| < 5] \geq 0.9664$$
 
 
 - (b) la numerosità campionaria necessaria affinché $P[174 < \bar{X}_n < 176] \geq 0.9$
 
 	$P[174 < \bar{X}_n < 176] \geq 0.9$
-	$\mathbb{P}[|\bar{X}_{n} - 175| > 1] \geq 0.9$
+	$P[|\bar{X}_{n} - 175| < 1] \geq 0.9$
 	
 	$1 - \frac{42}{n\cdot1} \geq 0.9$
 	$- \frac{42}{n\cdot1} \geq 0.9-1$
