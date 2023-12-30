@@ -72,7 +72,7 @@ $$\large P = \begin{bmatrix}
 \end{bmatrix}$$
 
 
-Quando ci viene desso "Se oggi c'è il solo" ci viene definita la distribuzione iniziale:
+Quando ci viene detto "Se oggi c'è il sole" ci viene definita la distribuzione iniziale:
 $\pi^{(0)} = (0, 1, 0)$
 
 L'esercizio ci sta chiedendo una **probabilità condizionata**
@@ -160,3 +160,5 @@ La distribuzione stazionaria rispetta le seguenti due proprietà:
 ### Catena stazionaria
 
 Se la distribuzione iniziale $\pi^{(0)}$ è la distribuzione stazionaria $\pi$ e tutte le distribuzione marginali sono uguali a $\pi$, allora si dice che la **catena è stazionaria**
+
+

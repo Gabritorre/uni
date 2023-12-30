@@ -16,14 +16,14 @@ Vediamo un esempio in cui $X = \{0, 1, 2\}$ e $Y = \{0,1\}$ ed ad ogni combinazi
 
 ![enter image description here](https://i.ibb.co/hm33fMN/image.png)
 
-Nell'immagine sono anche rappresentate le cosiddette **distribuzioni di probabilità marginali** rispettivamente la colonna $P_y(y)$ che rappresenta la probabilità fissato un valore di $y$ con tutti i valori di $x$. La riga $P_x(x)$ rappresenta la probabilità fissato un valore di $x$ con tutti i valori di $y$.
+Nell'immagine sono anche rappresentate le cosiddette **distribuzioni di probabilità marginali** rispettivamente la colonna $P_Y(y)$ che rappresenta la probabilità fissato un valore di $y$ con tutti i valori di $x$. La riga $P_X(x)$ rappresenta la probabilità fissato un valore di $x$ con tutti i valori di $y$.
 
 Possiamo determinare ad esempio:
 
 $\mathbb{P}[X = 0] = 0.1 + 0.2 = 0.3$
 $\mathbb{P}[Y = 1] = 0.2 + 0.2 + 0 = 0.4$
 $\mathbb{P}[X \geq 1] = 0.4 + 0.2 + 0.1 + 0 = 0.7$
-$\mathbb{P}[X < Y] = 0.4 + 0.1 + 0 = 0.5$
+$\mathbb{P}[Y < X] = 0.4 + 0.1 + 0 = 0.5$
 
 ## Funzione di densità congiunta
 
@@ -128,7 +128,7 @@ infatti l'area della parte sottostante alla diagonale è metà dell'area del ret
 
 Il significato di variabili indipendenti si estende anche a più variabili:
 
-$$\mathbb{P}[X \in A \cap Y \in B] = \mathbb{P}[X \in A]\cdot \mathbb{P}[Y \in B]$$
+$$\mathbb{P}[X \in A \land Y \in B] = \mathbb{P}[X \in A]\cdot \mathbb{P}[Y \in B]$$
 
 
 che per le variabili discrete equivale ad usare la funzione di probabilità:
@@ -241,11 +241,11 @@ Il valore atteso di una trasformazione $g(X,Y)$ è possibile calcolarlo senza an
 
 - caso discreto:
 
-$$\mathbb{E}[g(X,Y)]] ) =\sum_y\sum_x g(x,y)p(x,y)$$
+$$\mathbb{E}[g(X,Y)]] =\sum_y\sum_x g(x,y)p(x,y)$$
 
 - caso continuo:
 
-$$\mathbb{E}[g(X,Y)]] )=\int\int_{\mathbb{R^2}} g(x,y)f(x,y)\,dxdy$$
+$$\mathbb{E}[g(X,Y)]]=\int\int_{\mathbb{R^2}} g(x,y)f(x,y)\,dxdy$$
 
 Due importanti conseguenze sono
 
@@ -265,7 +265,7 @@ $\mathbb{E}[X + Y] =0.5 + 1.05 = 1.55$
 
 La varianza di due variabili congiunte, detta **covarianza** viene calcolata nel seguente modo:
 
-$$\text{Cov}[X,Y] =\mathbb{E}[XY] - E[X]\cdot E[Y]$$
+$$\text{Cov}[X,Y] =\mathbb{E}[XY] - \mathbb{E}[X]\cdot \mathbb{E}[Y]$$
 
 Vediamo le proprietà della covarianza:
 

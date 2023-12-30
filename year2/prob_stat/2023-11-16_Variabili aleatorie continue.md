@@ -175,7 +175,7 @@ $$= \Phi\left(\frac{850.5 - 840}{23.36664}\right) - \Phi\left(\frac{799.5 - 840}
 
 Una distribuzione con i parametri $\alpha>0$ e $\lambda>0$ e con funzione di densità 
 
-$$\large\begin{cases}
+$$f(x) = \large\begin{cases}
 \frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha - 1}e^{-\lambda x} & x \in (0, \infty)\\
 0 & \text{altrove}
 \end{cases}$$
@@ -213,7 +213,7 @@ $$X \sim Exp(\lambda)$$
 
 ha funzione di densità:
 
-$$\begin{cases}
+$$f(x) = \begin{cases}
 \lambda e^{-\lambda x} & x \in (0, \infty)\\
 0 & \text{altrove}
 \end{cases}$$
