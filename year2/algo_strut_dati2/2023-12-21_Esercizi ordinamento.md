@@ -200,7 +200,7 @@ complessità: l'ordinamento ha complessità $\Theta(n\log n)$, mentre il ciclo w
 $$T(n) = \Theta(n \log n) + O(n) = \Theta(n\log n)$$
 
 
-## 
+## valori intervallo che non compaiono nell'array
 
 Sia A un array di lunghezza `n − k` con `k >= 2` e `k <= n`, privo di ripetizioni e contenente interi nell’intervallo `[n*n + 1, n*n + n]`. Si consideri il problema di determinare i `k` numeri interi appartenenti all’intervallo `[n*n + 1, n*n + n]` che non compaiono in `A`.
 Si scriva una procedura efficiente che, dati `A, n` e `k`, risolva il problema proposto stampando gli interi che non compaiono in A. Calcolarne la complessità.
@@ -237,6 +237,6 @@ void determinaK(const vector<int>& arr, int n, int k) {
 }
 ```
 
-**complessità**: abbiamo un ciclo for che viene eseguito $n-k$ volte e un ciclo while che viene eseguito k volte. Abbiamo quindi una complessità lineare, in quanto vengono fatte $n-k+k = n$ iterazioni.
+**complessità**: abbiamo un ciclo for che viene eseguito $n-k$ volte e un ciclo while che viene eseguito n volte. Abbiamo quindi una complessità lineare, in quanto vengono fatte $n-k+n = 2n-k$ iterazioni.
 
 $$T(n) = \Theta(n)$$
