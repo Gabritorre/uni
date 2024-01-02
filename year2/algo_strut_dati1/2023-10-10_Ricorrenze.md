@@ -393,19 +393,63 @@ Verifichiamo anche la condizione ausiliaria:
 deve esistere una $0< c <1$ per $n$ sufficientemente grande per cui vale che:
 $$a\cdot f\left(\frac{n}{b}\right) \leq c \cdot f(n)$$
 
-$$7\cdot \frac{n}{3} \leq c \cdot n^2$$
+$$7\cdot \left(\frac{n}{3}\right)^2 \leq c \cdot n^2$$
 
-$$\frac{7}{3n} \leq c$$
-
-la condizione deve valere per $n$ sufficientemente grande, in questo caso è sufficiente che $n>=3$, se scelgo esattamente $n=3$ ottengo:
-$$\frac{7}{3\cdot 3} \leq c$$
+$$7\cdot \frac{n^2}{9} \leq c \cdot n^2$$
 
 $$\frac{7}{9} \leq c$$
 
 $$\frac{7}{9} \leq c < 1$$
 
-scelgo ad esempio $c = \frac{7}{9}$ che è compreso tra $0$ e 1 e quindi ho dimostrato il caso 3.
+scelgo ad esempio $c = \frac{7}{9}$ che vale per ogni $n\geq 1$e quindi ho dimostrato il caso 3.
 $T(n) = \Theta(n^2)$
+
+
+**altro ulteriore ennesimo esempio caso 3**
+
+$$T(n) = 4T\left(\frac{n}{2}\right) + 2^n$$
+
+$a = 4$
+$b = 2$
+$f(n) = 2^n$
+
+$n^{\log _2 4} = n^2$
+
+dato che $f(n)$ è più grande allora verifichiamo di essere nel caso 3
+
+come prima cosa verifichiamo che esista una $\epsilon > 0$ tale per cui: $f(n) = \Omega(n^{d+\epsilon})$
+$2^n = \Omega(n^{2+\epsilon})$
+scelgo $\epsilon = 1$
+e quindi ho che $2^n = \Omega(n^3)$
+
+Verifichiamo anche la condizione ausiliaria:
+
+deve esistere una $0< c <1$ per $n$ sufficientemente grande per cui vale che:
+
+$$a\cdot f\left(\frac{n}{b}\right) \leq c \cdot f(n)$$
+
+$$4\cdot 2^{\frac{n}{2}} \leq c \cdot 2^n$$
+
+$$2^2\cdot 2^{\frac{n}{2}} \leq c \cdot 2^n$$
+
+$$2^{\frac{n}{2}+2} \leq c \cdot 2^n$$
+
+$$\frac{2^{\frac{n}{2}+2}}{2^n} \leq c$$
+
+$$\frac{2^{\frac{n}{2}+2}}{2^n} \leq c < 1$$
+
+dobbiamo trovare il valore di $n_0$ in modo tale che "n sia sufficientemente grande" per di trovare un valore di $c$
+
+Possiamo risolvere la disequazione $\frac{2^{\frac{n}{2}+2}}{2^n} < 1$ oppure possiamo andare a tentativi sostituendo valori interi di $n$ fino a che non otteniamo un valore minore di $1$.
+In questo caso troviamo che il primo valore di $n$ per cui vale tale condizione è $n=5$
+
+infatti sostituendo $n=5$ otteniamo
+
+$$\frac{2^{\frac{5}{2}+2}}{2^5} \leq c < 1$$
+
+$$\frac{\sqrt{2}}{2} \leq c < 1$$
+
+Scelgo quindi $c = \frac{\sqrt{2}}{2}$ che vale per ogni $n\geq 5$
 
 ## Dimostrazione del teorema Master
 
