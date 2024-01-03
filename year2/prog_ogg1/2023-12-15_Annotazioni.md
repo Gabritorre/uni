@@ -10,8 +10,7 @@ Le annotazioni possono venir associate a:
 - parametri
 - variabili locali
 
-
-Un esempio di annotazione che abbiamo già visto è il `@override`
+Un esempio di annotazione che abbiamo già visto è `@override`
 
 ```java
 @override
@@ -32,14 +31,13 @@ La sintassi per definire una propria annotazione è la seguente:
 <visibilità> @interface <nome_annotazione> {
 	// eleneco dei campi che seguono il seguente formato
 	<tipo> <nome_campo>() default <valore_di_default>;
-	
 }
 ```
 
-solitamente le annotazioni vengono messe in un file java a parte e poi viene importato tale file dove serve.
+Solitamente le annotazioni vengono messe in un file Java a parte e poi viene importato tale file dove serve.
 Vediamo come ad ogni campo possiamo attribuire un valore di default, se esso non viene specificato quando si fa riferimento all'annotazione bisogna assegnare un valore a tale campo.
 
-
+Creiamo la seguente annotazione con due campi:
 ```java
 public @interface MyAnnotation {
 	String value() default "";
@@ -68,9 +66,7 @@ public class MyClass {
     public void myMethod() {
         ...
     }
-    
 }
-
 ```
 
 ## Target
@@ -89,16 +85,15 @@ public @interface MyAnnotation {
 	int  priority();
 }
 ```
-
+nota la presenza delle parentesi graffe in quanto il campo nella annotazione `Target` è un array
 
 ## Retention
 
-Similmente all'annotazione `@Target`, l'annotazione `@Retention` permette di rendere l'annotazione presente solo nel codice, nella classe, oppure in esecuzione.
-Possiamo decidere modificando il campo `RetentionPolicy`
+Similmente all'annotazione `@Target`, l'annotazione `@Retention` permette di rendere l'annotazione presente solo nel codice, nel .class (bytecode), oppure in esecuzione.
+Possiamo decidere modificando il parametro`RetentionPolicy`
 - `RetentionPolicy = SOURCE`: l'annotazione viene trattata come fosse un normale commento.
-- `RetentionPolicy = CLASS`:Nel secondo l'annotazione viene considerata in fase di compilazione (documentazione esterna).
-- `RetentionPolicy = RUNTIME`:nel terzo caso l'annotazione viene considerata anche in fase di esecuzione.
-
+- `RetentionPolicy = CLASS`: L'annotazione viene considerata in fase di compilazione (documentazione esterna).
+- `RetentionPolicy = RUNTIME`: L'annotazione viene considerata anche in fase di esecuzione.
 
 ```java
 @Target({
@@ -115,11 +110,10 @@ public @interface MyAnnotation {
 }
 ```
 
-
 ## JUnit
 
 **JUnit** è un framework utilizzato per fare testing di un codice, in sostanza un metodo che richiama parti del nostro codice per vedere se si comporta come previsto.
-Questo framework fa uso delle annotazioni per gestire le fasi di testing e quali metodi del nostro codice testare.
+Questo framework fa uso delle annotazioni per gestire le fasi di testing e identificare quali metodi del nostro codice testare.
 [junit user guide](https://junit.org/junit5/docs/current/user-guide/)
 
 

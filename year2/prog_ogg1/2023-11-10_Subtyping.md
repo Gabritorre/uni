@@ -3,13 +3,12 @@
 Java è un linguaggio fortemente tipizzato, ciò significa che ogni cosa in memoria deve possedere un tipo: variabili, parametri, campi, tipi di ritorno,...
 
 Il tipi vengono saputi in fase di compilazione e durante l'esecuzione il tipo di una zona di memoria no può cambiare.
-In fase di compilazione oltre a controllare i tipi dichiarati vengono anche controllati i tipi di dato dedotti, ad esempio fare `2 + "ciao"`, in fase di compilazione il compilatore si accorge dell'errore
-
+In fase di compilazione oltre a controllare i tipi dichiarati vengono anche controllati i tipi di dato dedotti, ad esempio fare `2 + "ciao"`, il compilatore si accorge dell'errore
 
 ## Sostituzione con la sottoclasse
 
-Una istanza di una superclasse può essere sostituita da una istanza di una sua sottoclasse, questo perché una sottoclasse sarà sempre una versione più grande della superclasse.
-Si dice che la sottoclasse che estende una superclasse è un un **subtype** (sottotipo) della superclasse
+Una istanza di una superclasse può essere sostituita da una istanza di una sua sottoclasse, questo perché una sottoclasse sarà sempre una versione più grande della superclasse (ha tutto quello che ha la superclasse e in più ha altro).
+Si dice che la classe che estende una superclasse è un un **subtype** (sottotipo) della superclasse
 
 Consideriamo il seguente esempio:
 
@@ -33,22 +32,17 @@ race(c1, b, 100);
 ```
 Abbiamo una superclasse `Vehicle` le cui classi estese sono `Car` e `Bycycle`, poi abbiamo `Truck` che estende `Car` quindi è comunque imparentata con `Vehicle`.
 
-Nonostante il metodo `race` accetti come parametri dei tipi `Vehicle` posso comunque chiamare il metodo con oggetti del tipo delle sue sottoclassi senza problemi.
+Nonostante il metodo `race` accetti come parametri dei tipi `Vehicle` posso comunque chiamare il metodo passando come parametri dei sottotipi di `Vehicle` senza problemi.
 
-Ovviamente bisogna che all'interno dell'implementazione del metodo race ci siano campi e metodi della classe `Vehicle` in modo che sicuramente tutte le sottoclassi abbiano l'implementazione di quei metodi.
-
-
-
-
+Ovviamente è necessario che all'interno dell'implementazione del metodo `race` si utilizzino campi e metodi della classe `Vehicle` in modo che sicuramente tutte le sottoclassi abbiano l'implementazione di quei metodi.
 
 ## Polimorfimo
 
-Il concetto di polimorfismo significa usare lo stesso simbolo, ad esempio un metodo, che si comporta in maniera diversa in base all'oggetto su cui è chiamato.
+Il concetto di polimorfismo significa definire lo stesso simbolo, ad esempio un metodo, che si comporta in maniera diversa in base all'oggetto su cui è chiamato.
 
-Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo `race` che come parametro prende la classe `Vehicle` la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata.
+Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo `race` che come parametro prende la classe `Vehicle` la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata (sia una bicicletta che una automobile possono accelerare ma lo fanno in maniera diversa).
 
-Il polimorfismo è realizzato attraverso l'ereditarietà e il subtyping
-
+Il polimorfismo è realizzato attraverso l'ereditarietà e il subtyping.
 
 ## tipi dinamici
 
@@ -57,18 +51,18 @@ In Java abbiamo dei tipi statici e dinamici:
 - i tipi statici vengono determinati in tempo di compilazione
 - i tipi dinamici vengono determinati in *runtime*
 
-
-Stiamo utilizzando i tipi dinamici quando Ad un oggetto che ha il tipo di una superclasse istanziamo una sua sottoclasse, ad esempio
+Stiamo utilizzando i tipi dinamici quando ad un oggetto che ha il tipo di una superclasse istanziamo una sua sottoclasse, ad esempio
 
 ```java
 Vehicle v = new Car();
 ```
 
-`Vehicle` è il tipo statico mentre `Car` è il tipo dinamico, questo perché noi inizialmente adiamo a dichiarare il tipo della variabile `v` che è `Vehicle` il quale statico (in fase di compilazione si sa quale tipo deve avere `v`) per quanto riguarda il tipo dinamico il compilatore  potrebbe non riuscire a determinare quale sarà il sottotipo assegnato alla variabile, che sarà quindi determinato in fase di esecuzione.
+`Vehicle` è il tipo statico mentre `Car` è il tipo dinamico, questo perché noi inizialmente adiamo a dichiarare il tipo della variabile `v` che è `Vehicle` il quale è statico (in fase di compilazione si sa quale tipo deve avere `v`) per quanto riguarda il tipo dinamico il compilatore  potrebbe non riuscire a determinare quale sarà il sottotipo assegnato alla variabile, che sarà quindi determinato in fase di esecuzione.
+Un esempio che mostra questa differenza più chiaramente è il seguente
 
 ```java
 Vehicle v = null;
-if (Math.random() > 0.5) {
+if (Math.random() > 0.5) {	//in fase di compilazione non sappiamo in quale ramo andare
 	v = new Car();
 }
 else {
@@ -89,7 +83,7 @@ Vehicle v = new Car();
 Car a = (Car) v;
 ```
 
-è possibile fare il casting solo verso un tipo che è sottoclasse dell'oggetto da castare, nell'esempio `Car` è sottoclasse di `Vehicle`
+è possibile fare il casting solo verso un tipo che è sottoclasse dell'oggetto da castare, nell'esempio `Car` è sottoclasse di `Vehicle` e quindi il casting è permesso.
 
 
 ### instanceof
@@ -101,4 +95,11 @@ Per determinare il tipo dinamico di un oggetto si usa la keyword `instanceof`
 che restituisce `true` oppure `false`
 
 Torna molto utile di utilizzare `instanceof` prima di fare il casting del tipo, per essere sicuri che il casting non dia errore in *runtime*
+
+```java
+Vehicle v = new Car();
+if (v instanceof Car){
+	Car a = (Car) v;
+}
+```
 

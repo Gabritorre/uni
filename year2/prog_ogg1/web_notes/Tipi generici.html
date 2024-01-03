@@ -52,7 +52,7 @@
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>ad esempio posso istanziare la seguente classe nei seguenti modi</p>
+<p>Ad esempio posso istanziare la seguente classe nei seguenti modi</p>
 <pre class=" language-java"><code class="prism  language-java">Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Coppia<span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3.14</span><span class="token punctuation">,</span> <span class="token string">"Due"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 coppia1<span class="token punctuation">.</span><span class="token function">getSecondoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -87,9 +87,9 @@ b <span class="token operator">=</span> a<span class="token punctuation">;</span
 </code></pre>
 <p>In questa sintassi:</p>
 <ul>
-<li>prima specifichiamo che il metodo utilizzerà un tipo generico T</li>
-<li>poi specifichiamo la funzione ritorno un tipo T</li>
-<li>come parametro abbiamo una variabile di tipo T</li>
+<li>prima specifichiamo che il metodo utilizzerà un tipo generico <code>&lt;T&gt;</code></li>
+<li>poi specifichiamo la funzione ritorna un tipo <code>T</code></li>
+<li>come parametro abbiamo una variabile di tipo <code>T</code></li>
 <li>possiamo utilizzare il tipo T per dichiarare altre variabili locali</li>
 </ul>
 <h3 id="type-inference">Type inference</h3>
@@ -100,7 +100,7 @@ I tipi vengono dedotti dai tipi dell’oggetto nella fase di dichiarazione</p>
 Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">//con type inference</span>
-Coppia<span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3.14</span><span class="token punctuation">,</span> <span class="token string">"Due"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <h3 id="tipi-generici-limitati">Tipi generici limitati</h3>
 <p>È possibile limitare i tipi che può assumere un tipo generico, imponendo che il tipo essere un sottotipo di una data classe (oppure anche la classe stessa).<br>

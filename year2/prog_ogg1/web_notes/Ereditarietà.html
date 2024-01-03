@@ -19,7 +19,8 @@
 <li><a href="#visibilità">Visibilità</a></li>
 <li><a href="#super">super</a></li>
 <li><a href="#abstract">Abstract</a></li>
-<li><a href="#override-e-overload">Override e overload</a></li>
+<li><a href="#firma-e-definizione-dei-metodi">Firma e definizione dei metodi</a></li>
+<li><a href="#override-e-overload">override e overload</a></li>
 <li><a href="#final">Final</a></li>
 <li><a href="#combinazioni-dei-modificatori">Combinazioni dei modificatori</a></li>
 </ul>
@@ -32,13 +33,13 @@
     <div class="stackedit__html">
       <h1 id="ereditarietà">Ereditarietà</h1>
 <p>L’ereditarietà è una tecnica che permette di creare delle gerarchie tra le classi, portando il vantaggio di avere un codice più organizzato e meno ripetuto.</p>
-<p>Abbiamo quindi una classe figlio e una classe padre (o <strong>superclasse</strong>). La classe figlio <strong>eredita</strong> dal padre i <strong>metodi e i campi</strong>. La classe figlio può estendere (aggiungendo altri metodi) oppure specializzare (sovrascrivendo i metodi del padre) il comportamento del padre.</p>
+<p>Abbiamo quindi una classe figlio e una classe padre (o <strong>superclasse</strong>). La classe figlio <strong>eredita</strong> dal padre i <strong>metodi e i campi</strong> (che non sono privati). La classe figlio può estendere (aggiungendo altri metodi) oppure specializzare (sovrascrivendo i metodi del padre) il comportamento del padre.</p>
 <h2 id="esempio">Esempio</h2>
 <p>Un padre può avere più classi figlie. Possiamo rappresentare la gerarchia graficamente come:</p>
 <p><img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
-<p>le classe figlie idealmente diventano più grandi e complesse perché avranno man mano più codice, comprendendo il codice dei padri e il suo stesso codice aggiuntivo.</p>
-<p>mentre un figlio può avere un <strong>singolo padre</strong></p>
-<p>in codice possiamo esprimere questa ereditarietà tramite la <em>keyword</em> <code>extends</code></p>
+<p>Le classe figlie idealmente diventano più grandi e complesse perché avranno man mano più codice, comprendendo il codice dei padri e il suo stesso codice aggiuntivo.</p>
+<p>Mentre un figlio può avere un <strong>singolo padre</strong></p>
+<p>In codice possiamo esprimere questa ereditarietà tramite la <em>keyword</em> <code>extends</code></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Automobile</span> <span class="token keyword">extends</span> <span class="token class-name">Veicoli4ruote</span> <span class="token punctuation">{</span>
 	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
@@ -50,14 +51,14 @@
 <li>i metodi/campi del padre sono default e il figlio è nello stesso package</li>
 </ul>
 <p>Se un metodo/campo è protected la classe di un altro package può accedere quei membri solo se diventa una sottoclasse</p>
-<p>nel caso i <strong>metodi/campi</strong> siano <strong>privati</strong> allora il <strong>figlio non può vederli</strong></p>
+<p>Nel caso i <strong>metodi/campi</strong> siano <strong>privati</strong> allora il <strong>figlio non può vederli</strong></p>
 <h2 id="super">super</h2>
 <p>la <em>keyword</em> <code>super</code> serve per riferirsi a metodi oppure campi della superclasse.</p>
 <p>Abbiamo due utilizzi principali di <code>super</code></p>
 <ol>
 <li>
 <p>chiamare il costruttore del padre all’interno del costruttore del figlio.</p>
-<p>è molto probabile che quando si chiama il costruttore di una classe figlia si voglia inizializzare anche i campi derivati dal padre tramite il suo costruttore, è possibile fare ciò chiamando <code>super()</code> come prima istruzione del costruttore figlio</p>
+<p>È molto probabile che quando si chiama il costruttore di una classe figlia si voglia inizializzare anche i campi derivati dal padre tramite il suo costruttore, è possibile fare ciò chiamando <code>super()</code> all’interno del costruttore figlio</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
     <span class="token keyword">public</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token comment">// Operazioni di inizializzazione della classe genitore</span>
@@ -74,8 +75,9 @@
 </li>
 <li>
 <p>Accedere ai membri della classe padre</p>
-<p>è possibile riferirsi ai metodi e ai campi della superclasse tramite <code>super.&lt;nome_metodo&gt;()</code> oppure <code>super.&lt;nome_campo&gt;</code></p>
+<p>È possibile riferirsi ai metodi e ai campi della superclasse tramite <code>super.&lt;nome_metodo&gt;()</code> oppure <code>super.&lt;nome_campo&gt;</code></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a<span class="token punctuation">;</span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe genitore"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
@@ -85,6 +87,7 @@
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Chiamata al metodo della classe genitore</span>
         System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe figlia"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>	<span class="token comment">//riferiemnto al campo del padre</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
@@ -100,26 +103,27 @@ Un metodo astratto può essere presente solo in una classe che è anch’essa as
 <p>Una classe astratta è una classe che ha solo parte dei suoi metodi implementati.<br>
 Una classe astratta non può essere istanziata, può essere solo ereditata</p>
 <p>Una classe che eredita una classe astratta deve implementare tutti i metodi <code>abstract</code> per essere istanziata, altrimenti deve essere astratta anche lei.</p>
-<h2 id="override-e-overload">Override e overload</h2>
-<p>prima di spiegare i concetti di overriding e overloading bisogna chiarire i concetti di <strong>firma e definizione</strong> di un metodo</p>
-<p>con <strong>firma</strong> si intende tutto quello che è disponibile in fase di chiamata del metodo:</p>
+<h2 id="firma-e-definizione-dei-metodi">Firma e definizione dei metodi</h2>
+<p>Prima di spiegare i concetti di overriding e overloading bisogna chiarire i concetti di <strong>firma e definizione</strong> di un metodo</p>
+<p>Con <strong>firma</strong> si intende tutto quello che è disponibile in fase di chiamata del metodo:</p>
 <ul>
-<li>nome del metodo</li>
-<li>l’oggetto su cui è chiamato</li>
-<li>la lista di parametri</li>
+<li>Nome del metodo</li>
+<li>L’oggetto su cui è chiamato</li>
+<li>il tipo, il numero e l’ordine dei parametri</li>
 </ul>
-<p>mentre con <strong>definizione</strong> si intende tutto quello che è disponibile quando si crea il metodo:</p>
+<p>Mentre con <strong>definizione</strong> si intende tutto quello che è disponibile quando si crea il metodo:</p>
 <ul>
-<li>comprende tutto quello che ha la firma</li>
-<li>tipo di ritorno</li>
-<li>la visibilità</li>
-<li>altri modificatori (static, abstract, final…)</li>
+<li>Comprende tutto quello che ha la firma</li>
+<li>Tipo di ritorno</li>
+<li>Eccezioni che può lanciare</li>
+<li>La visibilità</li>
+<li>Altri modificatori (static, abstract, final…)</li>
 </ul>
-<h3 id="override-e-overload-1">override e overload</h3>
+<h2 id="override-e-overload">override e overload</h2>
 <p><strong>override e overload</strong> sono due modi diversi di ridefinire il comportamento di un metodo già esistente.</p>
 <ul>
 <li>nel caso di override la firma del metodo rimane la stessa, cambia solo il corpo del metodo</li>
-<li>nel caso di overload cambia anche la firma (il nome del metodo deve rimanere lo stesso, può cambiare il ritorno e i parametri)</li>
+<li>nel caso di overload cambia anche la firma (il nome del metodo deve rimanere lo stesso, cambiano l’ordine o il numero o il tipo dei parametri)</li>
 </ul>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
     <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -141,28 +145,24 @@ Una classe astratta non può essere istanziata, può essere solo ereditata</p>
 <span class="token punctuation">}</span>
 
 </code></pre>
-<p>nota che <code>@Override</code> è una indicazione per il compilatore in cui si vuole esplicitare che si sta facendo override di un metodo. Nel caso per un typo si sbagliasse a scrivere il nome del metodo il compilatore si accorgerebbe che non stai facendo l’override di un metodo</p>
+<p>Nota che <code>@Override</code> è una indicazione  per il compilatore (chiamata annotazione in Java, che vedremo più avanti) in cui si vuole esplicitare che si sta facendo override di un metodo.<br>
+L’utilità sta nel fatto che se a causa di un typo si sbagliasse a scrivere il nome del metodo il compilatore si accorgerebbe che non stai facendo l’override di un metodo ma stai definendo un nuovo metodo e ti verrebbe segnalato.</p>
 <h3 id="visibilità-in-caso-di-override">Visibilità in caso di override</h3>
-<p>quando si vuole fare override di un metodo si può usare una visibilità <strong>uguale o meno restrittiva</strong> ad esempio:</p>
+<p>Quando si vuole fare override di un metodo si deve usare una visibilità <strong>uguale o meno restrittiva</strong> ad esempio:</p>
 <ul>
 <li>Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.</li>
 <li>Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma <strong>non private</strong></li>
 </ul>
 <h2 id="final">Final</h2>
-<p>Il modificatore <code>final</code> associato ad un <strong>metodo</strong> impedisce a quel metodo di essere sovrascritto  dalle classi che ereditano la classe.</p>
-<p>Anche i <strong>campi</strong> possono essere <strong>final</strong>, e in questo caso non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all’interno della classe oppure dal costruttore)</p>
-<p>costruttori e metodi astratti <strong>non possono essere final</strong></p>
+<p>Il modificatore <code>final</code> associato ad un <strong>metodo</strong> impedisce a quel metodo di essere sovrascritto dalle classi figlie.</p>
+<p>Anche i <strong>campi</strong> possono essere <strong>final</strong>, e in questo caso sta a significare che non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all’interno della classe oppure dal costruttore)</p>
+<p>Costruttori e metodi astratti <strong>non possono essere final</strong></p>
 <p>Una <strong>classe final</strong> sta a significare che nessuna classe può estendere quella classe. Riprendendo la rappresentazione grafica di prima:<br>
 <img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
 <p>una classe final rappresenta una foglia dell’albero.<br>
-Di solito non è una buona pratica in quanto è meglio mettere tutti i metodi della classe come final cosicché un’altra classe possa aggiungere i suoi metodi.</p>
+Se si vuole impedire che modificare tutti i metodi della classe di solito non è una buona pratica mettere la classe come final in quanto è meglio mettere tutti i metodi della classe come final cosicché un’altra classe possa comunque aggiungere i suoi metodi.</p>
 <h2 id="combinazioni-dei-modificatori">Combinazioni dei modificatori</h2>
-<p>Per quanto riguarda i modificatori di visibilità possiamo associare ogni modificatore ad ogni elemento (classe, campo o metodo) tranne nei seguenti due casi:</p>
-<ul>
-<li><strong>classe privata</strong>: con una classe privata non sarebbe possibile fare nessuna operazione, la classe sarebbe accessibile solo da se stessa.</li>
-<li><strong>classe protected</strong>: mettendo una classe come protected non avrebbe molto senso in quanto se tutti possono ereditarla tanto vale metterla pubblica, mentre se nessuno può ereditarla al di fuori del package tanto vale mettere la visibilità di default. Con protected non possiamo decidere a chi è permesso utilizzare la nostra classe.</li>
-</ul>
-<p>Vediamo gli altri modificatori</p>
+<p>Vediamo come si possono associare i vari modificatori:</p>
 
 <table>
 <thead>
@@ -177,6 +177,42 @@ Di solito non è una buona pratica in quanto è meglio mettere tutti i metodi de
 </tr>
 </thead>
 <tbody>
+<tr>
+<td>public</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>protected</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>default</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>private</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
 <tr>
 <td>Static</td>
 <td align="center">❌</td>
@@ -205,9 +241,12 @@ Di solito non è una buona pratica in quanto è meglio mettere tutti i metodi de
 <td align="center"></td>
 </tr>
 </tbody>
-</table><ul>
-<li><strong>Classe statica</strong>: una classe “esterna” non può essere statica. Le classi interne (<em>inner classes</em>) che vedremo nel modulo 2 potranno essere anche statiche.</li>
-<li><strong>Campo abstract</strong>: Il tipo di dato del campo già definisce il suo comportamento</li>
+</table><p>nelle spiegazioni ci saranno dei riferimenti alle classi “esterne” che vedremo nel modulo 2. Per il momento possiamo ignorare e pensare alle classi in generale.</p>
+<ul>
+<li><strong>classe protected</strong>: mettere una classe “esterna” come protected non avrebbe molto senso in quanto se tutti possono ereditarla tanto vale metterla pubblica, mentre se nessuno può ereditarla al di fuori del package tanto vale mettere la visibilità di default. Con protected non possiamo decidere a chi è permesso utilizzare la nostra classe.</li>
+<li><strong>classe privata</strong>: con una classe “esterna” privata non sarebbe possibile fare nessuna operazione, la classe sarebbe accessibile solo da se stessa.</li>
+<li><strong>Classe statica</strong>: una classe “esterna” non può essere statica.</li>
+<li><strong>Campo abstract</strong>: Il tipo di dato del campo già definisce il suo comportamento, di conseguenza non avrebbe senso utilizzare abstract.</li>
 <li><strong>metodo statico e abstract</strong>: un metodo statico è legato alla classe e non viene ereditato, ciò va in contro senso con abstract che richiede l’ereditarietà per implementare il metodo</li>
 <li><strong>Metodo final e abstract</strong>: un metodo final non si può sovrascrivere mentre abstract richiede che sia implementato da una sottoclasse tramite override, controsenso.</li>
 <li><strong>Metodo static e final</strong>: compila con un warning: in questo caso mettere sia static che final è una ripetizione: final dice che non può essere sovrascritto e static impedisce che sia ereditato, quindi basta solo uno dei due.</li>

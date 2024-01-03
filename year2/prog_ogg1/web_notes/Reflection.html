@@ -30,15 +30,15 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="reflection">Reflection</h1>
-<p>La <strong>reflection</strong> è una feature di Java che permette di ottenere informazioni e interagire <strong>a runtime</strong>, attraverso il codice, con: classi, campi, metodi e costruttori</p>
+<p>La <strong>reflection</strong> è una feature di Java che permette di interagire e ottenere informazioni <strong>a runtime</strong> di: classi, campi, metodi e costruttori</p>
 <h2 id="classi">Classi</h2>
 <p>Vediamo come accedere alle informazioni di una classe.<br>
-Si utilizza una classe chiamata <code>Class</code> e per istanziare un oggetto di tipo class si possono utilizzare due modi:</p>
+Si utilizza una classe chiamata <code>Class</code> e per istanziare un oggetto di tipo <code>Class</code> si possono utilizzare due modi:</p>
 <ul>
 <li><code>&lt;oggetto&gt;.getClass()</code></li>
 <li><code>&lt;classe&gt;.class</code></li>
 </ul>
-<p><code>Class</code> definisce tutti i getter per ottenere:</p>
+<p><code>Class</code> definisce tutti i metodi per ottenere:</p>
 <ul>
 <li>informazioni sulla struttura di definizione della classe: <code>isPrimitive(), isInterface(), isAnnotation(), getModifiers(), ...</code></li>
 <li>informazioni sulla gerarchia: <code>getInterfaces(), getSuperclass(), getPackage(), ...</code></li>
@@ -55,11 +55,11 @@ Si utilizza una classe chiamata <code>Class</code> e per istanziare un oggetto d
 <span class="token keyword">for</span><span class="token punctuation">(</span>Method m <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment">// i campi pubblici</span>
+<span class="token comment">// i campi pubblici (anche ereditati)</span>
 <span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-<span class="token comment">// tutti i campi</span>
+<span class="token comment">// tutti i campi locali della classe</span>
 <span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -107,7 +107,7 @@ speed<span class="token punctuation">.</span><span class="token function">setDou
 <p>Vediamo come accedere e manipolare i metodi di una classe.<br>
 Si utilizza una classe chiamata <code>Method</code><br>
 Come abbiamo visto possiamo ottenere la lista dei metodi tramite <code>getMethods(), getDeclaredMethods()</code>.<br>
-È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la classe dei tipi dei parametri: <code>get[Declared]Method("&lt;nome_metodo&gt;", &lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la <code>Class</code> dei tipi dei parametri: <code>get[Declared]Method("&lt;nome_metodo&gt;", &lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
 È possibile:</p>
 <ul>
 <li>Ottenere informazioni generali sul sul metodo: <code>getReturnType(), getTypeParameters(), getGenericExceptionTypes(), getModifiers()</code></li>
@@ -127,7 +127,7 @@ result <span class="token operator">=</span> accelerate<span class="token punctu
 <p>Vediamo come accedere e manipolare i costruttori di una classe.<br>
 Si utilizza una classe chiamata <code>Constructor</code><br>
 Come abbiamo visto possiamo ottenere la lista dei costruttori tramite <code>getConstructors(), getDeclaredConstructors()</code>.<br>
-È possibile anche ottenere un costruttore in particolare specificando come parametro il la classe dei tipi dei parametri (ovviamente dato che i costruttori non hanno un nome, non serve metterlo): <code>get[Declared]Constructor(&lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile anche ottenere un costruttore in particolare specificando come parametro la <code>Class</code> dei tipi dei parametri (ovviamente dato che i costruttori non hanno un proprio nome, non serve metterlo): <code>get[Declared]Constructor(&lt;tipo&gt;.class, ...)</code> (se il costruttore non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
 È possibile:</p>
 <ul>
 <li>Ottenere informazioni generali sul sul costruttore: <code>getParameterTypes(), getGenericExceptionTypes(), getModifiers()</code></li>

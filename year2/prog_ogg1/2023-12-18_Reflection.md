@@ -1,17 +1,17 @@
 ﻿# Reflection
 
-La **reflection** è una feature di Java che permette di ottenere informazioni e interagire **a runtime**, attraverso il codice, con: classi, campi, metodi e costruttori 
+La **reflection** è una feature di Java che permette di interagire e ottenere informazioni **a runtime** di: classi, campi, metodi e costruttori 
 
 ## Classi
 
 Vediamo come accedere alle informazioni di una classe.
-Si utilizza una classe chiamata `Class` e per istanziare un oggetto di tipo class si possono utilizzare due modi:
+Si utilizza una classe chiamata `Class` e per istanziare un oggetto di tipo `Class` si possono utilizzare due modi:
 
 - `<oggetto>.getClass()`
 - `<classe>.class`
 
 
-`Class` definisce tutti i getter per ottenere:
+`Class` definisce tutti i metodi per ottenere:
 
 - informazioni sulla struttura di definizione della classe: `isPrimitive(), isInterface(), isAnnotation(), getModifiers(), ...`
 - informazioni sulla gerarchia: `getInterfaces(), getSuperclass(), getPackage(), ...`
@@ -30,18 +30,17 @@ for(Constructor t : c.getDeclaredConstructors())
 for(Method m : c.getDeclaredMethods())
 	System.out.println(m);
 
-// i campi pubblici
+// i campi pubblici (anche ereditati)
 for(Field f : c.getFields())
 	System.out.println(f);
 
-// tutti i campi
+// tutti i campi locali della classe
 for(Field f : c.getDeclaredFields())
 	System.out.println(f);
 
 System.out.println(c.getSuperclass());	//la superclasse
 System.out.println(c.getPackage());		//il package a cui appartiene la classe
 ```
-
 
 ## Campi
 
@@ -70,7 +69,6 @@ rendendo così il campo accessibile.
 Si tenga nota però che questa operazione infrange il concetto di incapsulamento, che potrebbe portare a problemi al normale funzionamento del codice e un riduzione della sicurezza del codice. 
 È quindi consigliato usare questo metodo solo quando strettamente necessario.
 
-
 ```java
 Car c = new Car(0, null);
 Class classCar = c.getClass();
@@ -84,7 +82,7 @@ speed.setDouble(c, 10.0);
 Vediamo come accedere e manipolare i metodi di una classe.
 Si utilizza una classe chiamata `Method`
 Come abbiamo visto possiamo ottenere la lista dei metodi tramite `getMethods(), getDeclaredMethods()`.
-È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la classe dei tipi dei parametri: `get[Declared]Method("<nome_metodo>", <tipo>.class, ...)` (se il metodo non esiste viene lanciata una eccezione a *runtime*).
+È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la `Class` dei tipi dei parametri: `get[Declared]Method("<nome_metodo>", <tipo>.class, ...)` (se il metodo non esiste viene lanciata una eccezione a *runtime*).
 È possibile:
 
 - Ottenere informazioni generali sul sul metodo: `getReturnType(), getTypeParameters(), getGenericExceptionTypes(), getModifiers()`
@@ -109,7 +107,7 @@ result = accelerate.invoke(c, 2.0);
 Vediamo come accedere e manipolare i costruttori di una classe.
 Si utilizza una classe chiamata `Constructor`
 Come abbiamo visto possiamo ottenere la lista dei costruttori tramite `getConstructors(), getDeclaredConstructors()`.
-È possibile anche ottenere un costruttore in particolare specificando come parametro il la classe dei tipi dei parametri (ovviamente dato che i costruttori non hanno un nome, non serve metterlo): `get[Declared]Constructor(<tipo>.class, ...)` (se il metodo non esiste viene lanciata una eccezione a *runtime*).
+È possibile anche ottenere un costruttore in particolare specificando come parametro la `Class` dei tipi dei parametri (ovviamente dato che i costruttori non hanno un proprio nome, non serve metterlo): `get[Declared]Constructor(<tipo>.class, ...)` (se il costruttore non esiste viene lanciata una eccezione a *runtime*).
 È possibile:
 
 - Ottenere informazioni generali sul sul costruttore: `getParameterTypes(), getGenericExceptionTypes(), getModifiers()`

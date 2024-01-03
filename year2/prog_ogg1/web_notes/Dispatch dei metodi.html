@@ -27,18 +27,18 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="dispatch-delle-chiamate-dei-metodi">Dispatch delle chiamate dei metodi</h1>
-<p>Vediamo come Java gestisce le chiamate dei metodi quando abbiamo delle sottoclassi e quando si presentano override e overload</p>
+<p>Vediamo come Java gestisce le chiamate dei metodi quando abbiamo delle sottoclassi e quando si presentano casi di override e overload</p>
 <p>Ricordiamo che il modo per chiamare un metodo di un oggetto è:</p>
-<p><code>&lt;ricevitore&gt;.&lt;firma del metodo&gt;</code></p>
-<p>Quando facciamo <em>override</em> dei metodi stiamo andando a ridefinire una funzione esistente nascondendo di conseguenza la versione che aveva il padre (all’interno di tale funzione è comunque possibile usare <code>super</code> per eseguire il codice del metodo padre così da non duplicare codice).<br>
+<p><code>&lt;ricevitore&gt;.&lt;nome del metodo&gt;(&lt;parametri&gt;)</code></p>
+<p>Quando facciamo <em>override</em> dei metodi stiamo andando a ridefinire una funzione esistente nascondendo la versione che aveva il padre (all’interno della funzione sovrascritta è comunque possibile usare <code>super</code> per eseguire il codice del metodo padre così da non duplicare codice).<br>
 Quando andiamo a chiamare un metodo di una classe viene chiamata la <strong>versione del metodo più specifica</strong>, la versione più specifica è quella del <strong>tipo dinamico</strong>. Se nel tipo dinamico non è stato fatto l’override del metodo allora si cercherà nelle superclassi una dopo l’altra (risalendo quindi l’albero della gerarchia) fino al raggiungimento della definizione del metodo.</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">,</span> <span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	v1<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	v2<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>In questo caso sappiamo che il tipo statico è <code>Vehicle</code> ma il tipo dinamico è deciso in <em>runtime</em> quindi non sappiamo quale metodo accelerate verrà chiamato.</p>
-<p>Se chiamiamo il metodo come segue:</p>
+<p>In questo caso sappiamo che il tipo statico è <code>Vehicle</code> ma il tipo dinamico è deciso in <em>runtime</em> quindi non sappiamo quale metodo <code>accelerate</code> verrà chiamato.</p>
+<p>Se chiamassimo il metodo come segue:</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>in questo caso allora</p>
@@ -47,10 +47,10 @@ Quando andiamo a chiamare un metodo di una classe viene chiamata la <strong>vers
 	v2<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//metodo della classe Truck</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Se per esempio la classe <code>Truck</code> non ha definito il metodo <code>accelerate()</code> verrà usato quello della sua superclasse.</p>
+<p>Se per esempio la classe <code>Truck</code> non ha ridefinito il metodo <code>accelerate()</code> verrà usato quello della sua superclasse.</p>
 <p>Quando invece abbiamo un <em>overload</em> dei metodi e quindi più metodi con lo stesso nome ma parametri diversi, i linguaggi possono implementare due tipi di risoluzione: dispatch statico e dinamico.</p>
 <h3 id="il-dispatch-statico">il dispatch statico</h3>
-<p>viene chiamata la versione più vicina a quelli che sono i tipi statici, ad esempio:</p>
+<p>viene chiamata la versione più vicina a quelli che sono i tipi statici, ad esempio immaginiamo di avere i seguenti metodi:</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 1</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Car v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 2</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 3</span>
@@ -58,14 +58,14 @@ Quando andiamo a chiamare un metodo di una classe viene chiamata la <strong>vers
 <p>Vediamo le chiamate quale metodo usano in base ai tipi dei parametri:</p>
 <pre class=" language-java"><code class="prism  language-java">Vehicle a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Vehicle b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">race</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 1</span>
+<span class="token function">race</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 1, in quanto a e b hanno tipo statico Vehicle</span>
 Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Car d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token function">race</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 2</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 2, in quanto c e d hanno tipo statico Car</span>
 </code></pre>
 <p>Con il dispatch statico abbiamo un <strong>basso overhead</strong> ma viene <strong>ridotto il concetto di polimorfismo</strong></p>
 <h3 id="il-dispatch-dinamico">il dispatch dinamico</h3>
-<p>viene chiamata la versione più vicina a quelli che sono i tipi dinamici, ad esempio:</p>
+<p>viene chiamata la versione più vicina a quelli che sono i tipi dinamici, ad esempio sempre con i soliti metodi:</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 1</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Car v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 2</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 3</span>
@@ -85,7 +85,7 @@ Car d <span class="token operator">=</span> <span class="token keyword">new</spa
 <pre class=" language-java"><code class="prism  language-java"><span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Quale dovrebbe essere il metodo chiamato?<br>
-Il compilatore dovrebbe riuscire a scegliere il metodo migliore in base a quale firma del metodo ha la “distanza” dei tipi tra parametro della chiamata e quello delle firma. In questo caso però abbiamo una uguale distanza, quindi nessuno dei due è definibile come “migliore”. Ad esempio se avessimo aggiunto un altro metodo</p>
+Il compilatore dovrebbe riuscire a scegliere il metodo migliore in base a quale firma del metodo ha la “distanza” minore dei tipi tra parametro della chiamata e quello delle firma. In questo caso però abbiamo una uguale distanza, quindi nessuno dei due è definibile come “migliore”. Ad esempio se avessimo aggiunto un altro metodo</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// nuovo</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 <span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Truck v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
@@ -97,8 +97,8 @@ Il compilatore dovrebbe riuscire a scegliere il metodo migliore in base a quale 
 Mentre quando abbiamo più metodi con l’<em>overload</em> utilizza un dispatch statico</p>
 <h2 id="invocazione-di-metodi-statici">Invocazione di metodi statici</h2>
 <p>Vediamo cosa accade con l’invocazione di metodi statici, dove <strong>non dovremmo avere un ricevitore</strong> su cui chiamare il metodo ma abbiamo la classe stessa.</p>
-<p>È buona pratica chiamare i metodi statici sulla classe e non sull’istanza di un oggetto, Java però ti permette comunque di farlo, ottenendo comunque un <em>warning</em></p>
-<p>Nel caso si ignorasse il warning e si procedesse a chiamare il metodo sull’istanza verrebbe utilizzato un dispatching statico sul ricevitore, diversamente quindi  dai metodi non statici</p>
+<p>È buona pratica chiamare i metodi statici sulla classe e non sull’istanza di un oggetto, Java però ti permette comunque di farlo, ottenendo un <em>warning</em></p>
+<p>Nel caso si ignorasse il warning e si procedesse a chiamare il metodo sull’istanza verrebbe utilizzato un dispatching statico sul ricevitore, diversamente quindi dai metodi non statici</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Racing</span> <span class="token punctuation">{</span>
 	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Racing 1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>

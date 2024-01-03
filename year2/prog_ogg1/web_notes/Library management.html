@@ -30,16 +30,17 @@
 <p>Quando parliamo di <strong>librerie</strong> intendiamo sostanzialmente il <strong>bytecode di un insieme di classi</strong>.</p>
 <p>La JVM utilizza la <em>classpath</em> per sapere dove trovare le classi, la <em>classpath</em> è un insieme di percorsi che possono condurre a una directory contenente dei file .class oppure file .jar.</p>
 <p><strong>La ricerca delle classi avviene in fase di runtime</strong>, e se una determinata classe che viene utilizzata nel codice non viene trovata nel <em>classpath</em> allora viene lanciata una eccezione <em>ClassNotFoundException</em>.</p>
-<p>Possiamo dire alla JVM dove andare a trovare le nostre librerie in fase di compilazione aggiungendo l’opzione <code>-classpath &lt;/percorso/della/libreria1;/percorso/della/libreria2&gt;</code></p>
+<p>Possiamo dire alla JVM dove andare a trovare le nostre librerie in fase di compilazione aggiungendo l’opzione<br>
+<code>-classpath &lt;/percorso/della/libreria1;/percorso/della/libreria2&gt;</code></p>
 <h2 id="compatibilità-e-versioni">Compatibilità e versioni</h2>
 <p>Quando si sviluppa e si modifica nel tempo una libreria è importante considerare la <em><strong>backward  compatibility</strong></em>, cioè la compatibilità di quella versione della libreria con le versioni precedenti.<br>
-Per assicurare questa compatibilità è importante non modificare le interfacce esterne (campi, metodi, classi utilizzate dagli altri) della nostra libreria.</p>
-<p>Se consideriamo un metodo pubblico ad esempio: Se in una successiva versione vogliamo aggiungere, modificare o rimuovere un parametro, stiamo rompendo la compatibilità quindi bisogna trovare un modo per evitare ciò, magari aggiungendo un’altra versione del metodo, oppure dando al parametro in più un valore di default oppure far chiamare il nuovo metodo all’interno del metodo originale.</p>
+Per assicurare questa compatibilità è importante non modificare le interfacce esterne (campi, metodi e classi utilizzate dagli altri) della nostra libreria.</p>
+<p>Se consideriamo un metodo pubblico ad esempio: Se in una successiva versione vogliamo aggiungere, modificare o rimuovere un parametro, stiamo rompendo la compatibilità quindi bisogna trovare un modo per evitare ciò, magari aggiungendo un’altra versione del metodo, oppure dando al parametro aggiunto un valore di default oppure far chiamare il nuovo metodo all’interno del metodo originale.</p>
 <p>Un altro esempio potrebbe essere che il metodo che abbiamo scritto in una vecchia versioni non è più necessario e vorremmo rimuoverlo… Questa non è una buona idea in quanto chi sta utilizzando quel metodo e aggiorna la libreria si troverà il codice rotto. In questo caso entra in gioco l’annotazione <code>@deprecated</code> la quale dice che quel metodo non dovrebbe essere più utilizzato e non verrà più supportato</p>
 <p>È chiaro che in alcune situazioni mantenere la compatibilità non è possibile, in questo caso tornano molto utili i <strong>version numbers</strong>, cioè dei numeri che identificano la versione della libreria.</p>
 <p>Spesso si utilizza la seguente convenzione: <code>x1.x2.x3</code> dove:</p>
 <ul>
-<li><code>x1</code> rappresenta una <em>major release</em>, in questo caso numeri diversi implicano che delle interfacce esterne sono cambiate, quindi la compatibilità potrebbe non essere mantenuta con le versioni precedenti</li>
+<li><code>x1</code> rappresenta una <em>major release</em>, in questo caso numeri diversi implicano che delle interfacce esterne sono cambiate, quindi la compatibilità è molto probabilità che non sia mantenuta con le versioni precedenti</li>
 <li><code>x2</code> rappresenta una <em>minor release</em>, in questo caso cambiano solo le implementazioni interne oppure vengono aggiunte nuove interfacce esterne, ma non vengono modificate le interfacce esterne già esistenti. La compatibilità dovrebbe essere garantita</li>
 <li><code>x3</code> rappresenta un <em>bug fix</em>, sono dei cambiamenti minori che sistemano dei problemi e garantiscono la compatibilità</li>
 </ul>

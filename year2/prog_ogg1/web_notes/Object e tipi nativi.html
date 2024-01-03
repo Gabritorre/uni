@@ -41,11 +41,11 @@
 <span class="token punctuation">}</span>
 </code></pre>
 <p>implicitamente quello che succede è:</p>
-<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token keyword">extends</span> <span class="token class-name">Object</span><span class="token punctuation">{</span>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token keyword">extends</span> <span class="token class-name">Object</span> <span class="token punctuation">{</span>
 	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Il ruolo della classe <code>Object</code> è quello di fornire una implementazione base di ogni classe.<br>
+<p>Il ruolo della classe <code>Object</code> è quello di fornire una implementazione di base per ogni classe.<br>
 Tra le funzioni offerte dalla classe <code>Object</code> ce ne sono alcune deprecate e altre riguardanti la programmazione concorrente che non vedremo, ma ci sono dei metodi che vale la pena vedere:</p>
 <ul>
 <li><code>boolean equals(Object obj)</code></li>
@@ -56,17 +56,17 @@ Tra le funzioni offerte dalla classe <code>Object</code> ce ne sono alcune depre
 <h2 id="equals">Equals</h2>
 <p><code>boolean equals(Object obj)</code></p>
 <p>Questo metodo serve per indicare se l’oggetto passato per parametro è uguale all’oggetto su cui è stato chiamato il metodo.<br>
-con “uguale” si intende che i due riferimenti puntano allo stesso oggetto in memoria.<br>
+nell’implementazione di default con “uguale” si intende che i due riferimenti puntano allo stesso oggetto in memoria.<br>
 È l’equivalente di fare <code>oggetto1 == oggetto2</code><br>
-Solitamente è consigliato fare un <em>override</em> di questo metodo sulla propria classe per fare l’uguaglianza a piacimento.</p>
-<p>Quindi nel caso noi <strong>non facciamo <em>override</em></strong> si avrà il seguente codice</p>
+Solitamente è consigliato fare un <em>override</em> di questo metodo sulla propria classe per creare la propria uguaglianza a piacimento (solitamente una <em>deep copy</em> in cui si confrontano tutti i campi dei due oggetti).</p>
+<p>Quindi nel caso noi <strong>non facessimo <em>override</em></strong> si avrà il seguente codice</p>
 <pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//false</span>
 car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
 car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
 </code></pre>
-<p>Se invece facciamo un <em>override</em> e andiamo a verificare che il parametro di <code>equals</code> sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice</p>
+<p>immaginiamo di aver fatto un <em>override</em> del metodo <code>equals</code> in cui andiamo a verificare che il parametro passato  sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice</p>
 <pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//true</span>
@@ -75,20 +75,20 @@ car1<span class="token punctuation">.</span><span class="token function">equals<
 </code></pre>
 <p>Quando si ridefinisce il metodo <code>equals</code> bisogna assicurarsi di mantenere le proprietà:</p>
 <ul>
-<li>riflessiva: <code>x.equals(x)</code> deve essere vero</li>
-<li>simmetrica: allora <code>x.equals(y)</code> e <code>y.equals(x)</code> devono avere lo stesso risultato</li>
-<li>transitiva: se <code>x.equals(y)</code> e <code>y.equals(z)</code> allora <code>x.equals(z)</code></li>
+<li>Riflessiva: <code>x.equals(x)</code> deve essere vero</li>
+<li>Simmetrica: allora <code>x.equals(y)</code> e <code>y.equals(x)</code> devono avere lo stesso risultato</li>
+<li>Transitiva: se <code>x.equals(y)</code> e <code>y.equals(z)</code> allora <code>x.equals(z)</code></li>
 </ul>
 <h2 id="clone">Clone</h2>
 <p><code>Object clone()</code></p>
-<p>Il metodo <code>clone</code> restituisce un <strong>nuovo oggetto</strong> che è semanticamente identico a quello su cui è stato chiamato.<br>
+<p>Il metodo <code>clone</code> restituisce un <strong>nuovo oggetto</strong> che è semanticamente identico a quello su cui è stato chiamato il metodo.<br>
 Quindi vorremmo che</p>
 <ul>
-<li><code>obj.clone() == obj</code> restituisca falso perchè sono effettivamente due oggetti diversi</li>
+<li><code>obj.clone() == obj</code> restituisca falso perchè sono effettivamente due oggetti in zone di memoria diverse</li>
 <li><code>obj.equals(obj.clone())</code> restituisca vero perché il contenuto dell’oggetto è uguale (sempre considerando che il metodo <code>equals</code> venga ridefinito per controllare il contenuto dell’oggetto)</li>
 </ul>
 <p>Il metodo clone <strong>non ha una implementazione di base pubblica</strong> (è solo una interfaccia) quindi è importante fare un <em>override</em> del metodo per fare la copia effettiva dei valori e restituire non un Object generico ma il tipo della classe.<br>
-Inoltre di default il metodo è <code>protected</code> quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected</p>
+Inoltre di default il metodo ha visibilità <code>protected</code> quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected.</p>
 <p>Quando ridefiniamo il metodo possiamo scegliere se adottare una <em>deep copy</em> dei campi oppure una <em>shallow copy</em>. Questa distinzione entra in gioco quando abbiamo come campi dei tipi non primitivi.<br>
 con la <em>deep copy</em> andiamo a copiare l’effettivo valore puntato (maggior utilizzo di memoria). Mentre con la <em>shallow copy</em> facciamo una copia del puntatore (a questo punto avremo due oggetti che puntano alla stessa area di memoria, fenomeno chiamato <em>aliasing</em>)</p>
 <h2 id="hashcode">hashCode</h2>
@@ -99,24 +99,28 @@ con la <em>deep copy</em> andiamo a copiare l’effettivo valore puntato (maggio
 <li>se <code>a.equals(b)</code> restituisce vero allora anche <code>a.hashCode() == b.hashCode()</code> deve essere vero</li>
 <li>però se <code>a.hashCode() == b.hashCode()</code> è vero non significa necessariamente che <code>a.equals(b)</code> sia vero</li>
 </ul>
-<p>Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni. Alternativamente si può ritornare un campo della classe</p>
+<p>Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni.<br>
+Per realizzare una versione semplice di funzione hash si può ritornare un campo della classe oppure la somma dei campi primitivi e non (chiamando a sua volta <code>&lt;obj&gt;hashCode()</code> quando il campo non è primitivo)</p>
 <h2 id="tostring">toString</h2>
 <p><code>String toString()</code></p>
 <p>Questo metodo ritorna una stringa che rappresenta testualmente lo stato dell’oggetto</p>
-<p>è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando i campi ad esempio con i rispettivi valori.</p>
+<p>è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando, ad esempio, i campi con i rispettivi valori.</p>
 <h2 id="collections">Collections</h2>
-<p>Vediamo alcune classi native di Java. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte, una porzione di questa gerarchia è la seguente:</p>
+<p>Vediamo alcune classi native di Java, le collezioni. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte. Una porzione di questa gerarchia è la seguente:</p>
 <p><img src="https://i.ibb.co/LNyBb1L/image.png" alt="enter image description here"></p>
-<p>Le strutture che noi utilizziamo solo le foglie, riconosciamo infatti classi come LinkedList, Vector, ecc…</p>
+<p>Le strutture che noi utilizziamo solitamente sono le foglie, riconosciamo infatti classi come LinkedList, Vector, ArrayList ecc…</p>
 <p>Un costrutto molto utile per iterare su queste strutture è il <strong>for each</strong>, che ha la seguente forma</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>var_locale<span class="token operator">&gt;</span> <span class="token operator">:</span> <span class="token operator">&lt;</span>struttura_iterabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 </code></pre>
+<p>Torna spesso utile utilizzare <code>var</code> come tipo. <code>var</code> corrisponde ad <code>auto</code> di c++ e serve per dedurre in automatico in <strong>fase di compilazione</strong> il tipo che c’è all’interno della struttura iterabile</p>
 <h2 id="stringhe">Stringhe</h2>
 <p>In java esiste il tipo stringa esplicito, che quindi non è propriamente un array di caratteri, bensì un array di byte.</p>
 <p><code>String s = "abc";</code></p>
-<p>È importante sapere che le stringhe in Java sono <strong>immutabili</strong> questo significa che dopo essere stata inizializzata una stringa non può modificare il valore della stringa a cui punta.</p>
+<p>È importante sapere che le stringhe in Java sono <strong>immutabili</strong>.<br>
+Per capire il significato capiamo cosa sono le stringhe: le Stringhe sono degli oggetti, quindi dei puntatori ad una zona di memoria dove è contenuta una serie di byte che rappresentano la stringa. dopo essere stata inizializzata tale zona di memoria non può modificare il suo contenuto.<br>
+Quindi quando si vuole modificare una stringa quello che viene fatto è creare una nuova zona di memoria contenente la nuova stringa e aggiornare il puntatore alla nuova zona</p>
 <p>Tutti i metodi sulle stringhe che modificano la stringa in realtà stanno creando una nuova stringa e spostano il puntatore della variabile per puntare alla nuova stringa.</p>
 <p>Tra questi metodi troviamo:</p>
 <ul>
@@ -126,7 +130,7 @@ con la <em>deep copy</em> andiamo a copiare l’effettivo valore puntato (maggio
 <li>dividere una stringa su un carattere: <code>new_str[] = str.split(carattere_divisorio)</code></li>
 </ul>
 <h2 id="tipi-primitivi">Tipi primitivi</h2>
-<p>I tipi primitivi di Java, che quindi non sono sottoclasse di <code>Object</code> sono le seguenti:</p>
+<p>I tipi primitivi di Java, che quindi <strong>non sono sottoclasse</strong> di <code>Object</code> sono le seguenti:</p>
 <ul>
 <li>boolean</li>
 <li>byte</li>
@@ -153,7 +157,7 @@ a <span class="token operator">=</span> <span class="token punctuation">(</span>
 </code></pre>
 <p>Nota che anche passare da un numero floating point ad uno intero significa perdere dei dati quindi anche in quel caso va fatto un cast esplicito</p>
 <h2 id="wrappers">Wrappers</h2>
-<p>In java esistono delle classi che fanno da contenitori per i corrispettivi valori primitivi</p>
+<p>In java esistono delle classi che fanno da contenitori per i corrispettivi tipi primitivi</p>
 <p><img src="https://i.ibb.co/Nm2Y5BP/image.png" alt="enter image description here"></p>
 <ul>
 <li>Questo può tornare utile quando certi metodi vogliono degli oggetti come parametri e quindi non potremmo usare i tipi primitivi.</li>
@@ -162,6 +166,21 @@ a <span class="token operator">=</span> <span class="token punctuation">(</span>
 <li>I tipi generici di Java lavorano su oggetti quindi se vogliamo utilizzare i tipi primitivi dobbiamo usare i wrapper</li>
 </ul>
 <p>Il lato negativo dei wrapper è il maggior consumo di memoria rispetto ai semplici tipi primitivi</p>
+<h3 id="boxing-autoboxing-e-unboxing">Boxing, Autoboxing e Unboxing</h3>
+<p>È pratica comune lavorare con tipi di dato primitivi ma in alcuni casi è necessario passare da un tipo primitivo ad un corrispettivo Wrapper o vice versa.</p>
+<p>Con <strong>boxing</strong> si intende passare da un tipo primitivo ad un tipo Wrapper in modo <strong>esplicito</strong>, nel seguente modo:</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Integer</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Double y <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Double</span> <span class="token punctuation">(</span><span class="token number">5.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Java supporta anche la conversione automatica chiamata <strong>autoboxing</strong>, nel seguente modo:</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+Double y <span class="token operator">=</span> <span class="token number">5.5</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Il compilatore si arrangia a fare le dovute conversioni</p>
+<p>D’altra parte convertire un Wrapper nel corrispettivo tipo primitivo è una operazione che anche in questo caso viene fatto in automatico e si chiama <strong>unboxing</strong>, si fa nel seguente modo</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> y <span class="token operator">=</span> x<span class="token punctuation">;</span>	<span class="token comment">//unboxing</span>
+</code></pre>
 
     </div>
   </div>

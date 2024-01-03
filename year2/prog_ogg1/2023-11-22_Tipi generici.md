@@ -4,7 +4,6 @@ Java supporta i tipi generici su classi, parametri dei metodi e valore di ritorn
 
 Con i tipi generici per esempio possiamo permettere ad una funzione di lavorare su un tipo generico che verrà specificato durante l'istanza dell'oggetto.
 
-
 ```java
 public class Coppia<T, U> {
 
@@ -31,7 +30,7 @@ public class Coppia<T, U> {
 }
 ```
 
-ad esempio posso istanziare la seguente classe nei seguenti modi
+Ad esempio posso istanziare la seguente classe nei seguenti modi
 
 ```java
 Coppia<String, Integer> coppia1 = new Coppia<String, Integer>("Uno", 1);
@@ -76,9 +75,9 @@ public class EsempioTipoGenerico {
 
 In questa sintassi:
 
-- prima specifichiamo che il metodo utilizzerà un tipo generico T
-- poi specifichiamo la funzione ritorno un tipo T
-- come parametro abbiamo una variabile di tipo T
+- prima specifichiamo che il metodo utilizzerà un tipo generico `<T>`
+- poi specifichiamo la funzione ritorna un tipo `T`
+- come parametro abbiamo una variabile di tipo `T`
 - possiamo utilizzare il tipo T per dichiarare altre variabili locali
 
 ### Type inference
@@ -93,7 +92,7 @@ considerando il primo esempio che abbiamo visto:
 Coppia<String, Integer> coppia1 = new Coppia<String, Integer>("Uno", 1);
 
 //con type inference
-Coppia<Double, String> coppia2 = new Coppia<>(3.14, "Due");
+Coppia<String, Integer> coppia2 = new Coppia<>("Uno", 1);
 ```
 
 ### Tipi generici limitati

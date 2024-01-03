@@ -15,12 +15,12 @@ public class MiaClasse {
 implicitamente quello che succede è:
 
 ```java
-public class MiaClasse extends Object{
+public class MiaClasse extends Object {
 	...
 }
 ```
 
-Il ruolo della classe `Object` è quello di fornire una implementazione base di ogni classe.
+Il ruolo della classe `Object` è quello di fornire una implementazione di base per ogni classe.
 Tra le funzioni offerte dalla classe `Object` ce ne sono alcune deprecate e altre riguardanti la programmazione concorrente che non vedremo, ma ci sono dei metodi che vale la pena vedere:
 
 - `boolean equals(Object obj)`
@@ -34,11 +34,11 @@ Tra le funzioni offerte dalla classe `Object` ce ne sono alcune deprecate e altr
 `boolean equals(Object obj)`
 
 Questo metodo serve per indicare se l'oggetto passato per parametro è uguale all'oggetto su cui è stato chiamato il metodo.
-con "uguale" si intende che i due riferimenti puntano allo stesso oggetto in memoria.
+nell'implementazione di default con "uguale" si intende che i due riferimenti puntano allo stesso oggetto in memoria.
 È l'equivalente di fare `oggetto1 == oggetto2`
-Solitamente è consigliato fare un *override* di questo metodo sulla propria classe per fare l'uguaglianza a piacimento.
+Solitamente è consigliato fare un *override* di questo metodo sulla propria classe per creare la propria uguaglianza a piacimento (solitamente una *deep copy* in cui si confrontano tutti i campi dei due oggetti).
 
-Quindi nel caso noi **non facciamo *override*** si avrà il seguente codice
+Quindi nel caso noi **non facessimo *override*** si avrà il seguente codice
 ```java
 Car car1 = new Car(0, fuelType, 100);
 Car car2 = new Car(0, fuelType, 100);
@@ -47,7 +47,7 @@ car1==car2 //false
 car1.equals(car1) //true
 ```
 
-Se invece facciamo un *override* e andiamo a verificare che il parametro di `equals` sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice
+immaginiamo di aver fatto un *override* del metodo `equals` in cui andiamo a verificare che il parametro passato  sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice
 ```java
 Car car1 = new Car(0, fuelType, 100);
 Car car2 = new Car(0, fuelType, 100);
@@ -57,22 +57,22 @@ car1.equals(car1) //true
 ```
 
 Quando si ridefinisce il metodo `equals` bisogna assicurarsi di mantenere le proprietà:
-- riflessiva: `x.equals(x)` deve essere vero
-- simmetrica: allora `x.equals(y)` e `y.equals(x)` devono avere lo stesso risultato
-- transitiva: se `x.equals(y)` e `y.equals(z)` allora `x.equals(z)`
+- Riflessiva: `x.equals(x)` deve essere vero
+- Simmetrica: allora `x.equals(y)` e `y.equals(x)` devono avere lo stesso risultato
+- Transitiva: se `x.equals(y)` e `y.equals(z)` allora `x.equals(z)`
 
 
 ## Clone
 
 `Object clone()`
 
-Il metodo `clone` restituisce un **nuovo oggetto** che è semanticamente identico a quello su cui è stato chiamato. 
+Il metodo `clone` restituisce un **nuovo oggetto** che è semanticamente identico a quello su cui è stato chiamato il metodo.
 Quindi vorremmo che 
-- `obj.clone() == obj` restituisca falso perchè sono effettivamente due oggetti diversi
+- `obj.clone() == obj` restituisca falso perchè sono effettivamente due oggetti in zone di memoria diverse
 - `obj.equals(obj.clone())` restituisca vero perché il contenuto dell'oggetto è uguale (sempre considerando che il metodo `equals` venga ridefinito per controllare il contenuto dell'oggetto)
 
 Il metodo clone **non ha una implementazione di base pubblica** (è solo una interfaccia) quindi è importante fare un *override* del metodo per fare la copia effettiva dei valori e restituire non un Object generico ma il tipo della classe.
-Inoltre di default il metodo è `protected` quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected
+Inoltre di default il metodo ha visibilità `protected` quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected.
 
 Quando ridefiniamo il metodo possiamo scegliere se adottare una *deep copy* dei campi oppure una *shallow copy*. Questa distinzione entra in gioco quando abbiamo come campi dei tipi non primitivi.
 con la *deep copy* andiamo a copiare l'effettivo valore puntato (maggior utilizzo di memoria). Mentre con la *shallow copy* facciamo una copia del puntatore (a questo punto avremo due oggetti che puntano alla stessa area di memoria, fenomeno chiamato *aliasing*)
@@ -89,7 +89,8 @@ Se si va a sovrascrivere `equals` bisogna andare anche a sovrascrivere `hashCode
 - se `a.equals(b)` restituisce vero allora anche `a.hashCode() == b.hashCode()` deve essere vero
 - però se `a.hashCode() == b.hashCode()` è vero non significa necessariamente che `a.equals(b)` sia vero
 
-Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni. Alternativamente si può ritornare un campo della classe
+Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni.
+Per realizzare una versione semplice di funzione hash si può ritornare un campo della classe oppure la somma dei campi primitivi e non (chiamando a sua volta `<obj>hashCode()` quando il campo non è primitivo)
 
 ## toString
 
@@ -97,16 +98,16 @@ Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso g
 
 Questo metodo ritorna una stringa che rappresenta testualmente lo stato dell'oggetto
 
-è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando i campi ad esempio con i rispettivi valori.
+è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando, ad esempio, i campi con i rispettivi valori.
 
 
 ## Collections
 
-Vediamo alcune classi native di Java. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte, una porzione di questa gerarchia è la seguente:
+Vediamo alcune classi native di Java, le collezioni. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte. Una porzione di questa gerarchia è la seguente:
 
 ![enter image description here](https://i.ibb.co/LNyBb1L/image.png)
 
-Le strutture che noi utilizziamo solo le foglie, riconosciamo infatti classi come LinkedList, Vector, ecc...
+Le strutture che noi utilizziamo solitamente sono le foglie, riconosciamo infatti classi come LinkedList, Vector, ArrayList ecc...
 
 Un costrutto molto utile per iterare su queste strutture è il **for each**, che ha la seguente forma
 
@@ -116,15 +117,17 @@ for (<tipo> <var_locale> : <struttura_iterabile>) {
 }
 ```
 
+Torna spesso utile utilizzare `var` come tipo. `var` corrisponde ad `auto` di c++ e serve per dedurre in automatico in **fase di compilazione** il tipo che c'è all'interno della struttura iterabile
 
 ## Stringhe
 
 In java esiste il tipo stringa esplicito, che quindi non è propriamente un array di caratteri, bensì un array di byte.
 
-
 `String s = "abc";`
 
-È importante sapere che le stringhe in Java sono **immutabili** questo significa che dopo essere stata inizializzata una stringa non può modificare il valore della stringa a cui punta.
+È importante sapere che le stringhe in Java sono **immutabili**.
+Per capire il significato capiamo cosa sono le stringhe: le Stringhe sono degli oggetti, quindi dei puntatori ad una zona di memoria dove è contenuta una serie di byte che rappresentano la stringa. dopo essere stata inizializzata tale zona di memoria non può modificare il suo contenuto.
+Quindi quando si vuole modificare una stringa quello che viene fatto è creare una nuova zona di memoria contenente la nuova stringa e aggiornare il puntatore alla nuova zona
 
 Tutti i metodi sulle stringhe che modificano la stringa in realtà stanno creando una nuova stringa e spostano il puntatore della variabile per puntare alla nuova stringa.
 
@@ -137,7 +140,7 @@ Tra questi metodi troviamo:
 
 ## Tipi primitivi
 
-I tipi primitivi di Java, che quindi non sono sottoclasse di `Object` sono le seguenti:
+I tipi primitivi di Java, che quindi **non sono sottoclasse** di `Object` sono le seguenti:
 
 - boolean
 - byte
@@ -172,7 +175,7 @@ Nota che anche passare da un numero floating point ad uno intero significa perde
 
 ## Wrappers
 
-In java esistono delle classi che fanno da contenitori per i corrispettivi valori primitivi
+In java esistono delle classi che fanno da contenitori per i corrispettivi tipi primitivi
 
 ![enter image description here](https://i.ibb.co/Nm2Y5BP/image.png)
 
@@ -182,3 +185,28 @@ In java esistono delle classi che fanno da contenitori per i corrispettivi valor
 - I tipi generici di Java lavorano su oggetti quindi se vogliamo utilizzare i tipi primitivi dobbiamo usare i wrapper
 
 Il lato negativo dei wrapper è il maggior consumo di memoria rispetto ai semplici tipi primitivi
+
+### Boxing, Autoboxing e Unboxing
+È pratica comune lavorare con tipi di dato primitivi ma in alcuni casi è necessario passare da un tipo primitivo ad un corrispettivo Wrapper o vice versa.
+
+Con **boxing** si intende passare da un tipo primitivo ad un tipo Wrapper in modo **esplicito**, nel seguente modo:
+
+```java
+Integer x = new Integer (10);
+Double y = new Double (5.5);
+```
+
+Java supporta anche la conversione automatica chiamata **autoboxing**, nel seguente modo:
+
+```java
+Integer x = 10;
+Double y = 5.5;
+```
+Il compilatore si arrangia a fare le dovute conversioni
+
+D'altra parte convertire un Wrapper nel corrispettivo tipo primitivo è una operazione che anche in questo caso viene fatto in automatico e si chiama **unboxing**, si fa nel seguente modo
+
+```java
+Integer x = new Integer(10);
+int y = x;	//unboxing
+```

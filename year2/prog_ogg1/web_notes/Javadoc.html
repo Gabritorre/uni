@@ -35,7 +35,7 @@
 </code></pre>
 <p>javadoc supporta vari tag che vengono rappresentati in modo particolare nella documentazione:</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
-* @author author's name
+* @author author's name		//nome di chi ha sviluppato il componente
 * @version 1.5		// versione della classe corrente
 * @since 1.0		// da quale versione il metodo/classe è presente
 */</span>
@@ -45,21 +45,22 @@
 ...
 descrizione del metodo..
 ...
-
 @param &lt;parameter name&gt; &lt;description&gt;
 @return &lt;description&gt;
 @throws &lt;exception name&gt; &lt;description&gt;
 */</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">mioMetodo</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
 </code></pre>
-<h3 id="precondizioni">precondizioni</h3>
-<p>le precondizioni sono ciò che il chiamante deve garantire prima di chiamare il metodo</p>
-<p>è importante esprime oltre al significato dei parametri, dei vincoli che devono rispettare i parametri al fine di avere l’output voluto. ad esempio un parametro deve essere maggiore di zero, ovviamente dentro al metodo verrà fatto l’effettivo controllo ma scriverlo nella documentazione è comunque importante</p>
-<h3 id="postcondizioni">postcondizioni</h3>
+<h3 id="precondizioni">Precondizioni</h3>
+<p>Le precondizioni sono ciò che il chiamante deve garantire prima di chiamare il metodo</p>
+<p>è importante esprime oltre che il significato dei singoli parametri, anche i vincoli che devono rispettare al fine di avere l’output voluto. ad esempio un parametro deve essere maggiore di zero, ovviamente dentro al metodo verrà fatto l’effettivo controllo ma scriverlo nella documentazione è comunque importante.</p>
+<h3 id="postcondizioni">Postcondizioni</h3>
 <p>le postcondizioni sono ciò che il codice deve garantire dopo essere stato chiamato.</p>
 <p>lo stesso discorso fatto per le precondizione vale per le postcondizione riguardo al valore di ritorno</p>
 <h3 id="invariante-della-classe">invariante della classe</h3>
-<p>l’invariante della classe è riferita all’intera classe e non ad un singolo metodo, spesso è rivolta ai campi. l’invarianti rappresentano delle condizioni che devono essere rispettate per tutta la vita di un oggetto della classe.<br>
-Ad esempio un determinato campo deve sempre essere compreso tra 0 e 100, nessun metodo deve infrangere questa regola.</p>
+<p>Le invarianti rappresentano delle condizioni che devono essere rispettate per tutta la vita di un oggetto della classe.<br>
+L’invariante è riferita all’intera classe e non ad un singolo metodo, spesso è rivolta anche ai campi.<br>
+Ad esempio: un determinato campo deve sempre essere compreso tra 0 e 100, nessun metodo deve infrangere questa regola.</p>
 <h3 id="esempio">Esempio</h3>
 <pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
  * Questa classe contiene una funzione per calcolare la somma di due interi.

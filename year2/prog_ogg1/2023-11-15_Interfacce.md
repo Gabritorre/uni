@@ -1,7 +1,7 @@
 ﻿# Interfacce
 
-Un limite di Java è che una classe può **estendere una sola classe**, ci potrebbero essere dei casi in ad una classe vorremmo estendere più classi perché ci interessano i metodi di più classi.
-Per fare ciò entrano in gioco le **interfacce**
+Un limite di Java è che una classe può **estendere una sola classe**, ci potrebbero essere dei casi in cui ad una classe vorremmo estendere più classi perché ci interessano i metodi di più classi.
+Per fare ciò entrano in gioco le **interfacce**.
 
 Una interfaccia non è altro che un insieme di firme di metodi (o se vogliamo dei metodi astratti, ma senza specificarlo con la keyword `abstract`)
 
@@ -13,7 +13,7 @@ interface i {
 }
 ```
 
-è possibile aggiungere anche dei campi ma essi devono essere statici, pubblici e final, quindi possiamo solo usare delle costanti pubbliche comuni ad ogni istanza, ciò non è molto utile.
+È possibile aggiungere anche dei campi ma essi saranno implicitamente statici, pubblici e final, quindi possiamo solo usare delle costanti pubbliche comuni ad ogni istanza, ciò non è molto utile nella maggior parte dei casi.
 
 Inoltre la **visibilità dei metodi** dell'interfaccia è **implicitamente *public***
 
@@ -22,6 +22,7 @@ Una classe può quindi **implementare** una interfaccia andando a specificare il
 
 Una classe può implementare più di una interfaccia.
 
+Si usa la *keyword* `implements` per estendere l'interfaccia
 ```java
 class A extends B implements i1, i2,... {
 	//implementazione di tutti i metodi dell'interfacca i1 e i2
@@ -30,7 +31,7 @@ class A extends B implements i1, i2,... {
 
 ### Implementazione di default
 
-Da java 8 in poi è anche possibile fornire una implementazione di default ai metodi dell'interfaccia
+Da java 8 in poi è anche possibile fornire una implementazione di default ai metodi dell'interfaccia, utilizzando la *keyword* `default` nella intestazione del metodo
 
 ```java
 interface i {
@@ -42,7 +43,7 @@ interface i {
 }
 ```
 
-### estendere interfacce
+### Estendere interfacce
 
 Anche con le interfacce è possibile avere l'ereditarietà, è infatti possibile estendere un'interfaccia con un'altra, esattamente come si fa per le classi.
 

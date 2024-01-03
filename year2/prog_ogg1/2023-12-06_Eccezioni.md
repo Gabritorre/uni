@@ -1,29 +1,28 @@
 ﻿# Exceptions
 
-La normale esecuzione del codice può essere interrotta a causa di errori, In java tali errori vengono rappresentati dalle **exceptions**. Le exceptions sono degli oggetti che contengono informazioni utili sui relativi errori.
+La normale esecuzione del codice può essere interrotta a causa di errori, In Java tali errori vengono rappresentati dalle **exceptions**. Le exceptions sono degli oggetti che contengono informazioni utili sui relativi errori.
 
-Quando si verifica un errore viene interrotta l'esecuzione e  l'eccezione relativa viene propagata (tramite il comando `throw`) attraverso tutto lo stack delle chiamate fino a che qualche funzione la "catturi" `catch` per gestire l'errore, se nessuna funzione ha previsto una cattura allora il programma verrà terminato.
+Quando si verifica un errore viene interrotta l'esecuzione e l'eccezione relativa viene propagata (tramite il comando `throw`) attraverso tutto lo stack delle chiamate fino a che qualche funzione la "catturi" `catch` per gestire l'errore, se nessuna funzione ha previsto una cattura allora il programma verrà terminato.
 
-
-Tutti i vari oggetti che definiscono le eccezioni appartengono ad una classe `Throwable`, nella seguente immagini vediamo una piccola parte della gerarchia:
+Gli oggetti che definiscono le eccezioni appartengono ad una classe `Throwable`, nella seguente immagini vediamo una piccola parte della gerarchia:
 
 ![enter image description here](https://i.ibb.co/PhD2xnT/image.png)
 
 Notiamo intanto una distinzione tra `Error` ed `Exception`
-- gli `Error` sono errori seri da cui non è possibile riprendere l'esecuzione del programma
-- le `Exception` sono errori più leggeri che se gestiti possono far riprendere l'esecuzione del programma
+- Gli `Error` sono errori seri da cui non è possibile riprendere l'esecuzione del programma
+- Le `Exception` sono errori più leggeri che, se gestiti, possono far riprendere l'esecuzione del programma
 
 È possibile definire delle nostre eccezioni estendendo la classe `Throwable` oppure una delle sue sottoclassi
-
 
 ```java
 // definisco la mia exception
 public class NegativeSpeedException extends Exception {
-	public NegativeSpeedException(double a) {
+	public NegativeSpeedException(double a) {	//costruttore
 		super(“Negative speed not allowed: “ + a);
 	}
 }
 
+//Utilizzo dell'eccezione
 public class Vehicle {
 	private double speed;
 	public void accelerate(double a) throws NegativeSpeedException {
@@ -42,9 +41,8 @@ Car a = new Car();
 a.accelerate(-10); 	//lancia l'eccezione con il messaggio “Negative speed not allowed: -10“
 ``` 
 
-come si nota dal codice al momento della definizione del metodo `accelerate` abbiamo messo `throws NegativeSpeedException`, questo perchè tutti i metodi devono dichiarare anticipatamente le eccezioni che possono lanciare.
-Inoltre anche le funzioni che utilizzano le funzioni che possono lanciare eccezioni devono a loro volta dichiarare le eccezioni (Quindi nel caso ci fosse un metodo che usa `accelerate` quel metodo deve aggiungere alla propria definizione `throws NegativeSpeedException`)
-
+come si nota dal codice al momento della definizione del metodo `accelerate` abbiamo messo `throws NegativeSpeedException`, questo perché tutti i metodi devono dichiarare anticipatamente le eccezioni che possono lanciare (in realtà solo quelle di tipo *checked*).
+Inoltre anche le funzioni che chiamano le funzioni che possono lanciare eccezioni devono a loro volta dichiarare le eccezioni (Quindi nel caso ci fosse un metodo che fa uso di  `accelerate` quel metodo deve aggiungere alla propria definizione `throws NegativeSpeedException`)
 
 è importante documentare accuratamente le eccezioni che possono essere lanciate dai nostri metodi.
 In javadoc possiamo utilizzare il tag `@throws <exception_name> <descrizione>`
@@ -52,18 +50,17 @@ In javadoc possiamo utilizzare il tag `@throws <exception_name> <descrizione>`
 
 ## Override
 
-Le eccezioni rispettano il principio di sostituzione: "se una classe C1 espone una interfaccia più aperta di C2, allora possiamo l'istanza di C1 anche quando si aspetta una istanza di C2"
-Con più aperta prima intendevamo ad esempio i modificatori di visibilità più aperti.
-Per quanto riguarda le eccezioni invece una classe viene definita **più aperta** se essa espone **al massimo** le eccezioni del metodo sovrascritto.
+Le eccezioni rispettano il principio di sostituzione: "se una classe C1 espone una interfaccia più aperta di C2, allora possiamo utilizzare l'istanza di C1 anche quando ci si aspetta una istanza di C2"
+Attenzione però: per quanto riguarda le eccezioni una classe viene definita **più aperta** se essa espone **un numero minore o uguale** di eccezioni del metodo sovrascritto.
 
-Se vogliamo sovrascrivere un metodo che prevede delle eccezioni ma noi vogliamo aggiungerne altre non lo possiamo fare.
+È evidente un problema: se vogliamo sovrascrivere un metodo che prevede delle eccezioni ma noi vogliamo aggiungerne altre non lo possiamo fare.
 
 ## Eccezioni checked e unchecked
 
-Per migliorare questo problema java divide le eccezioni in due categorie:
+Per migliorare questo problema Java divide le eccezioni in due categorie:
 
 - **Unchecked**: non è necessario dichiarare queste eccezioni. Includono la maggior parte delle eccezioni generiche che estendono le classi `Error` e `RuntimException` (Sono solitamente errori del programma che possono essere evitati con una corretta progettazione e programmazione.)
-- **Checked**: devono essere dichiarate. includono le eccezioni che estendono la classe `Exception` ma non di `RuntimException`
+- **Checked**: devono essere dichiarate. includono le eccezioni che estendono la classe `Exception` ma non di `RuntimeException`
 
 ## Catturare eccezioni
 
@@ -82,16 +79,16 @@ catch(<tipo eccezione> <nome_variabile>) {
 
 il codice precedente può avere tre risvolti:
 
-1. non viene generata nessuna eccezione e quindi il codice prosegue normalemente
+1. all'interno del blocco `try` non viene generata nessuna eccezione e quindi il codice prosegue normalmente
 2. viene generata una eccezione del tipo specificato nel `catch` (oppure anche un sottotipo), e viene eseguito il corpo del `catch`
-3. viene generata una eccezione che però non è un sottotipo di quello specificato nel `catch`. In quel caso l'eccezione viene propagata in tutte lo stack di chiamate
+3. viene generata una eccezione che però non è un sottotipo di quello specificato nel `catch`. In quel caso l'eccezione viene propagata in tutto lo stack di chiamate per trovare un `catch` che cattura quel tipo di eccezione
 
 ### Finally
 
 Abbiamo anche un blocco aggiuntivo `finally` da poter mettere dopo i catch.
 È un blocco che viene eseguito sempre, che si verifichi o meno una eccezione, Questo è utile, ad esempio, quando si lavora con risorse come file o connessioni di rete e si desidera assicurarsi che tali risorse vengano correttamente rilasciate, anche in caso di eccezioni.
 
-Viene eseguito anche se nel try oppure nel catch c'è un return. Nel caso all'interno del finally ci sia un return, i return precedenti verranno scartati
+Viene eseguito anche se nel `try` oppure nel `catch` c'è un return. Nel caso all'interno del finally ci sia un return, i return precedenti verranno scartati
 
 ```java
 try {
@@ -117,7 +114,7 @@ public class Race {
 			...
 		}
 		catch(ImpossibleAccelerationException e) {
-			throw new IllegalArgumentException(“Random returned a negative number, e);	 //passiamo il valore e che è a sua volta una eccezione
+			throw new IllegalArgumentException(“Random returned a negative number, e);	 //passiamo il valore 'e' che è a sua volta una eccezione
 		}
 		finally {
 			...
@@ -132,7 +129,7 @@ Il tutto per migliorare il debug in caso di errori.
 ## Assertions
 
 Le assertions sono delle condizione che dovrebbero rappresentare qualcosa che dovrebbe essere sempre vero.
-Possiamo utilizzare queste condizione per testare la correttezza di variabile durante l'esecuzione del programma.
+Possiamo utilizzare queste condizione per testare la correttezza delle variabili durante l'esecuzione del programma.
 
 vediamo un esempio:
 

@@ -25,8 +25,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="interfacce">Interfacce</h1>
-<p>Un limite di Java è che una classe può <strong>estendere una sola classe</strong>, ci potrebbero essere dei casi in ad una classe vorremmo estendere più classi perché ci interessano i metodi di più classi.<br>
-Per fare ciò entrano in gioco le <strong>interfacce</strong></p>
+<p>Un limite di Java è che una classe può <strong>estendere una sola classe</strong>, ci potrebbero essere dei casi in cui ad una classe vorremmo estendere più classi perché ci interessano i metodi di più classi.<br>
+Per fare ciò entrano in gioco le <strong>interfacce</strong>.</p>
 <p>Una interfaccia non è altro che un insieme di firme di metodi (o se vogliamo dei metodi astratti, ma senza specificarlo con la keyword <code>abstract</code>)</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
 	<span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -34,17 +34,18 @@ Per fare ciò entrano in gioco le <strong>interfacce</strong></p>
 	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>è possibile aggiungere anche dei campi ma essi devono essere statici, pubblici e final, quindi possiamo solo usare delle costanti pubbliche comuni ad ogni istanza, ciò non è molto utile.</p>
+<p>È possibile aggiungere anche dei campi ma essi saranno implicitamente statici, pubblici e final, quindi possiamo solo usare delle costanti pubbliche comuni ad ogni istanza, ciò non è molto utile nella maggior parte dei casi.</p>
 <p>Inoltre la <strong>visibilità dei metodi</strong> dell’interfaccia è <strong>implicitamente <em>public</em></strong></p>
 <p>Una classe può quindi <strong>implementare</strong> una interfaccia andando a specificare il corpo di ogni metodo.<br>
 è obbligatorio <strong>implementare tutti i metodi dell’interfaccia</strong></p>
 <p>Una classe può implementare più di una interfaccia.</p>
+<p>Si usa la <em>keyword</em> <code>implements</code> per estendere l’interfaccia</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token keyword">extends</span> <span class="token class-name">B</span> <span class="token keyword">implements</span> <span class="token class-name">i1</span><span class="token punctuation">,</span> i2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">{</span>
 	<span class="token comment">//implementazione di tutti i metodi dell'interfacca i1 e i2</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <h3 id="implementazione-di-default">Implementazione di default</h3>
-<p>Da java 8 in poi è anche possibile fornire una implementazione di default ai metodi dell’interfaccia</p>
+<p>Da java 8 in poi è anche possibile fornire una implementazione di default ai metodi dell’interfaccia, utilizzando la <em>keyword</em> <code>default</code> nella intestazione del metodo</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
 	<span class="token keyword">default</span> <span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">{</span>
 		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
@@ -53,7 +54,7 @@ Per fare ciò entrano in gioco le <strong>interfacce</strong></p>
 	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<h3 id="estendere-interfacce">estendere interfacce</h3>
+<h3 id="estendere-interfacce">Estendere interfacce</h3>
 <p>Anche con le interfacce è possibile avere l’ereditarietà, è infatti possibile estendere un’interfaccia con un’altra, esattamente come si fa per le classi.</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
 	<span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
