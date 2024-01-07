@@ -106,7 +106,7 @@ ad esempio i nodi ad altezza <span class="katex--inline"><span class="katex"><sp
 <p>La funzione max_heapify prende in input un heap (l’array <code>A</code>) in cui è presente una sola violazione della proprietà del max heap (violazione data dal nodo <code>i</code>), la funzione si occupa di sistemare questa violazione e ritornare un max heap.</p>
 <p>pre-condizione: i sottoalberi radicati in <code>left(i)</code> e <code>right(i)</code> sono dei max heap<br>
 post-condizione: rende l’albero radicato in <code>i</code> un max heap</p>
-<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">max_heapify</span><span class="token punctuation">(</span>Heap A<span class="token punctuation">,</span> Node i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token function">max_heapify</span><span class="token punctuation">(</span>Array A<span class="token punctuation">,</span> Node i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token keyword">int</span> l <span class="token operator">=</span> <span class="token function">left</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//2*i</span>
 	<span class="token keyword">int</span> r <span class="token operator">=</span> <span class="token function">right</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//2*i + 1</span>
 	<span class="token keyword">int</span> massimo<span class="token punctuation">;</span>
@@ -117,7 +117,7 @@ post-condizione: rende l’albero radicato in <code>i</code> un max heap</p>
 		massimo <span class="token operator">=</span> i<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 	
-	<span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token operator">&lt;=</span> A<span class="token punctuation">.</span>heap_size <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">&gt;</span> massimo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>r <span class="token operator">&lt;=</span> A<span class="token punctuation">.</span>heap_size <span class="token operator">&amp;&amp;</span> A<span class="token punctuation">[</span>r<span class="token punctuation">]</span> <span class="token operator">&gt;</span> A<span class="token punctuation">[</span>massimo<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		massimo <span class="token operator">=</span> r<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 
