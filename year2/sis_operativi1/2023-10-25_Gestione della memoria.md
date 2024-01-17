@@ -172,8 +172,8 @@ In questa implementazione abbiamo una lista concatenata in cui ogni ogni element
 
 Il nodo di una lista è fatta da:
 
-- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo (P)
-- l'indirizzo di dove inizia l'intevallo
+- un booleano che indica se è un pezzo libero (H) oppure occupato da un processo \(P\)
+- l'indirizzo di dove inizia l'intervallo
 - la lunghezza dell'intervallo
 - il puntatore al nodo successivo della lista 
 - il puntatore al nodo precedente della lista (questo è facoltativo ma è più conveniente)

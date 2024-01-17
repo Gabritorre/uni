@@ -249,7 +249,7 @@ Tra i processi si possono verificare anche degli stalli che che vanno gestiti: o
 
 ### File System
 
-Il file system descrive come sono organizzati i file nella memoria secondaria, in modo semplice dice come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.
+Il file system descrive come sono organizzati i file nella memoria secondaria, stabilisce come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.
 
 ![enter image description here](https://i.ibb.co/V9GqpXw/file-system.png)
 
@@ -260,7 +260,7 @@ chiamiamo **working directory** la cartella su cui ci troviamo.
 
 Ogni dispositivo di memoria secondaria ad esempio una chiavetta USB ha il proprio file system ed è possibile attaccare il suo albero a quello del sistema per poterlo esplorare, questa operazione è detta **montare un file system**
 
-Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo **pipe** uno pseudo-file che serve per far comunicare due processi tra loro, quindi si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.
+Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo **pipe** uno pseudo-file che serve per far comunicare due processi tra loro. In altre parole si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.
 
 
 ### Buffer e spool
@@ -273,11 +273,11 @@ lo **spool** (Simultaneous Peripheral Operations On Line) è una tecnica di buff
 ### Chiamate a sistema
 
 le chiamate a sistema o *system call* sono delle chiamate che un processo fa al sistema operativo per fare delle operazioni specifiche che il processo non può fare ma il sistema operativo sì.
-Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo il quale dopo aver terminato l'operazione che gli è stata chiesta fa riprendere il normale flusso del processo.
+Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo, il quale, dopo aver terminato l'operazione che gli è stata chiesta fa riprendere il normale flusso del processo.
 
 ## Struttura di un sistema operativo
 
-la struttura del sistema operativo detta anche **l'architettura di un sistema operativo** deve la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.
+la struttura del sistema operativo detta anche **l'architettura di un sistema operativo** deve gestire la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.
 
 Abbiamo 3 diversi tipi di architettura:
 

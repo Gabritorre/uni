@@ -13,7 +13,7 @@ L'indirizzo virtuale è diviso in ***numero di segmento* e *offset***, al posto 
 
 ### Condivisione
 
-La condivisione di un segmento con più processo è più efficiente rispetto alle pagine proprio perchè rappresentano un blocco logico di dati. Sono necessari dei meccanismi di sicurezza per controllare che i giusti processi abbiano accesso a tale segmento.
+La condivisione di un segmento con più processi è più efficiente rispetto alle pagine proprio perché i segmenti rappresentano un blocco logico di dati. Sono necessari dei meccanismi di sicurezza per controllare che i giusti processi abbiano accesso a tale segmento.
 
 Un meccanismo per implementare questa sicurezza è tramite delle **chiavi di protezione della memoria**, cioè dei valori associati ad ogni processo e ad ogni segmento (modificabili solo tramite istruzioni privilegiate).
 Se la chiave del processo combacia con la chiave del segmento allora il processo è autorizzato ad accederci.
@@ -22,12 +22,12 @@ Il sistema operativo può eseguire un controllo ulteriore su quali operazioni so
 
 Un segmento può consentire le seguenti operazioni:
 
-- Read
-- Write
-- Execute
-- (Append) aggiungere informazioni senza modificare quelle esisteniti
+- *Read*
+- *Write*
+- *Execute*
+- (*Append*) aggiungere informazioni senza modificare quelle esistenti
 
-possiamo realizzare varie 7 combinazioni (che corrispondono ai valori del comando linux `chmod`)
+possiamo realizzare varie 7 combinazioni (che corrispondono ai valori del comando Linux `chmod`)
 
 |  | Read | Write | Execute |
 |:--:|:--:|:--:|:--:|
@@ -65,7 +65,7 @@ Prima si cerca la pagina nella TLB, se non c'è si cerca il segmento nella tabel
 ### Condivisione
 
 In questo sistema abbiamo che due processi condividono della memoria se la propria tabella dei segmenti punta alla stessa page table. 
-In questo caso il controllo dei permessi facilitato dalla segmentazione, entre la condivisione viene facilitata dalla paginazione.
+In questo caso il controllo dei permessi è facilitato dalla segmentazione, mentre la condivisione viene facilitata dalla paginazione.
 
 
 

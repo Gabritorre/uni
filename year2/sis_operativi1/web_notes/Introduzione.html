@@ -243,21 +243,21 @@ Ogni processo possiede:</p>
 <p>Spesso i processi devono cooperare e quindi sono necessari dei modi per far comunicare i processi tra loro (IPC, InterProcess Communication)</p>
 <p>Tra i processi si possono verificare anche degli stalli che che vanno gestiti: o ignorandoli, o prevendendoli, oppure sistemarli dopo che sono accaduti.</p>
 <h3 id="file-system">File System</h3>
-<p>Il file system descrive come sono organizzati i file nella memoria secondaria, in modo semplice dice come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.</p>
+<p>Il file system descrive come sono organizzati i file nella memoria secondaria, stabilisce come organizzare i vari file in una gerarchia di cartelle (directory), dove con cartella si intende un insieme di file o altre cartelle a loro volta. Di solito viene usata una rappresentazione ad albero per disegnare il file system.</p>
 <p><img src="https://i.ibb.co/V9GqpXw/file-system.png" alt="enter image description here"></p>
 <p>Il sistema operativo permette di navigare in questo file system, effettuando dei cammini nell’albero.<br>
 Ad esempio /Docenti/Prof.Brown/Corsi/CS101 è un cammino che ci porta alla cartella “CS101”</p>
 <p>chiamiamo <strong>working directory</strong> la cartella su cui ci troviamo.</p>
 <p>Ogni dispositivo di memoria secondaria ad esempio una chiavetta USB ha il proprio file system ed è possibile attaccare il suo albero a quello del sistema per poterlo esplorare, questa operazione è detta <strong>montare un file system</strong></p>
-<p>Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo <strong>pipe</strong> uno pseudo-file che serve per far comunicare due processi tra loro, quindi si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.</p>
+<p>Un concetto importante alla base dei sistemi UNIX è che ogni dispositivo viene trattato come un file, in questo modo si standardizza il modo di interagire con i dispositivi di I/O trattandoli nello stesso modo che si trattano i file. Inoltre chiamiamo <strong>pipe</strong> uno pseudo-file che serve per far comunicare due processi tra loro. In altre parole si ingannano i processo facendogli pensare di comunicare con un file mentre stanno comunicando con un altro processo.</p>
 <h3 id="buffer-e-spool">Buffer e spool</h3>
 <p>Oltre alla memoria cache che abbiamo già visto c’è un’altra memoria particolare che è il <strong>buffer</strong> cioè una memoria temporanea che contiene i dati delle operazioni di I/O asincrone (quindi dove il ricevente può anche non essere attivo al momento, ma può comunque leggere il dato dal buffer più tardi)</p>
 <p>lo <strong>spool</strong> (Simultaneous Peripheral Operations On Line) è una tecnica di buffering utilizzata tra un processo e una periferica lenta, in modo tale che il processo non deve aspettare attivamente</p>
 <h3 id="chiamate-a-sistema">Chiamate a sistema</h3>
 <p>le chiamate a sistema o <em>system call</em> sono delle chiamate che un processo fa al sistema operativo per fare delle operazioni specifiche che il processo non può fare ma il sistema operativo sì.<br>
-Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo il quale dopo aver terminato l’operazione che gli è stata chiesta fa riprendere il normale flusso del processo.</p>
+Praticamente tutti i comandi di input/output di un programma sono delle chiamate a sistema per il sistema operativo, il quale, dopo aver terminato l’operazione che gli è stata chiesta fa riprendere il normale flusso del processo.</p>
 <h2 id="struttura-di-un-sistema-operativo">Struttura di un sistema operativo</h2>
-<p>la struttura del sistema operativo detta anche <strong>l’architettura di un sistema operativo</strong> deve la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.</p>
+<p>la struttura del sistema operativo detta anche <strong>l’architettura di un sistema operativo</strong> deve gestire la complessità proveniente dalla gestioni di molti servizi e dal supporto di hardware e software diverso.</p>
 <p>Abbiamo 3 diversi tipi di architettura:</p>
 <ul>
 <li>

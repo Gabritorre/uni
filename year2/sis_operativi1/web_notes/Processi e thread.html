@@ -96,7 +96,7 @@
 <li>Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata <strong>dispatching</strong>)</li>
 <li>l’evento si è verificato e il processo è pronto a continuare la sua esecuzione</li>
 </ol>
-<p>ovviamente sono presente due ulteriori stati che rappresentano la <strong>fase di creazione</strong> del processo, che poi si sposterà nello stato pronto. <strong>Lo stato terminazione</strong> quando il processo ha finito le sue operazioni.</p>
+<p>ovviamente sono presenti due ulteriori stati che rappresentano la <strong>fase di creazione</strong> del processo, che poi si sposterà nello stato pronto. <strong>Lo stato terminazione</strong> quando il processo ha finito le sue operazioni.</p>
 <h3 id="pcb">PCB</h3>
 <p>Il sistema operativo possiede una tabella chiamata <strong>process table</strong> che contiene i <strong>PCB</strong> (Process Control Block) di ogni processo in vita al momento, viene anche chiamato <strong>descrittore del processo</strong>.</p>
 <p>Il PCB contiene le informazioni del processo quali: Program Counter, Stack Pointer, il PID, lo stato dei file, eventuali puntatori a padre e figli,  e tutta una serie di informazioni utili per lo scheduler quando deve far passare il processo da <em>ready</em> a <em>running</em> e vice versa</p>

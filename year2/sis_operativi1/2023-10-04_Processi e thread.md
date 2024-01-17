@@ -89,7 +89,7 @@ Possiamo individuare 4 transazioni tra gli stati appena descritti:
 3. Il processo viene scelto dallo scheduler per essere eseguito (fase chiamata **dispatching**)
 4. l'evento si è verificato e il processo è pronto a continuare la sua esecuzione
 
-ovviamente sono presente due ulteriori stati che rappresentano la **fase di creazione** del processo, che poi si sposterà nello stato pronto. **Lo stato terminazione** quando il processo ha finito le sue operazioni.
+ovviamente sono presenti due ulteriori stati che rappresentano la **fase di creazione** del processo, che poi si sposterà nello stato pronto. **Lo stato terminazione** quando il processo ha finito le sue operazioni.
 
 ### PCB
 
