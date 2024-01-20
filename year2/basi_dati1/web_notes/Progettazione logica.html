@@ -17,6 +17,8 @@
 <ul>
 <li><a href="#vincoli">Vincoli</a></li>
 <li><a href="#dal-modello-a-oggetti-allo-schema-relazionale">Dal modello a oggetti allo schema relazionale</a></li>
+<li><a href="#associazioni">Associazioni</a></li>
+<li><a href="#gerarchia">Gerarchia</a></li>
 </ul>
 </li>
 </ul>
@@ -28,10 +30,10 @@
       <h1 id="progettazione-logica">Progettazione logica</h1>
 <p>Dopo aver realizzato il modello ad oggetti, si passa alla progettazione logica.</p>
 <p>Nella progettazione logica andremo principalmente a rappresentare <strong>relazioni</strong> e <strong>ennuple</strong>.</p>
-<p>le relazioni sono essenzialmente le tabelle (o le entità) mentre le ennuple sono la lista degli attributi con il relativo tipo di dato.</p>
-<p>Andremo a scrivere le relazioni come:</p>
+<p>Le <strong>relazioni</strong> sono essenzialmente le tabelle (o le entità) mentre le <strong>ennuple</strong> sono la lista degli attributi con il relativo tipo di dato.</p>
+<p>Andremo a scrivere relazioni e ennuple come:</p>
 <p><code>nome_tabella(attributo_1 : tipo_di_dato, attributo_2 : tipo_di_dato, ...)</code></p>
-<p>il numero di attributi della tabella è detto <strong>grado</strong> della relazione<br>
+<p>Il numero di attributi della tabella è detto <strong>grado</strong> della relazione<br>
 con <strong>cardinalità</strong> intendiamo quante righe ha una tabella.</p>
 <p>Ad esempio, nella seguente tabella “Studenti”:</p>
 
@@ -77,20 +79,20 @@ mentre la cardinalità è 3</p>
 </ul>
 <p>una istanza (una riga) che non rispetta i vincoli non può essere inserita nel DB.</p>
 <h3 id="primary-key">Primary key</h3>
-<p>La primary key serve ad identificare univocamente ogni riga di una tabella. Non è che un attributo (colonna) che deve essere diverso per ogni riga, spesso è una matricola oppure un id. È necessario che ogni tabella del database abbia una primary key (PK).</p>
-<p>Esiste anche il vincolo <strong>unique</strong> che posso assegnare ad altre colonne, esso genera lo stesso risultato della primary key, però la primary ha la particolarità di essere fondamentale in fase di associare più tabelle, in più la primary key non può essere null.</p>
+<p>La <em>primary key</em> (PK) serve ad identificare univocamente ogni riga di una tabella. Non è altro che un attributo (colonna) che deve essere diverso per ogni riga (spesso è una matricola oppure un id). È necessario che ogni tabella del database abbia una <em>primary key</em>.</p>
+<p>Esiste anche il vincolo <strong>unique</strong> che posso assegnare ad altre colonne, esso genera lo stesso risultato della <em>primary key</em>, la differenza sta nel fatto che <em>primary key</em> <strong>non può essere null</strong> e ha una particolare funzione in fase di associazione di tabelle.</p>
 <h3 id="foreign-key">Foreign key</h3>
-<p>la foreign key è una colonna in cui i valori sono le chiavi primarie di un’altra tabella, serve a dire che una riga è collegata ad una determinata riga di un’altra tabella (quella dove primary key di una e foreign key dell’altra combaciano).<br>
-La presenza di queste foreign key garantiscono la proprietà di integrità dei dati del database, chiamata <strong>integrità referenziale</strong></p>
+<p>La <em>foreign key</em> è una colonna in cui i valori sono le chiavi primarie di un’altra tabella, serve a dire che una riga è collegata ad una determinata riga di un’altra tabella (quindi la <em>primary key</em> di una tabella combacia con la <em>foreign key</em> dell’altra).<br>
+La presenza di queste <em>foreign key</em> garantiscono la proprietà di integrità dei dati del database, chiamata <strong>integrità referenziale</strong></p>
 <p>Vediamo un esempio:</p>
-<p>Tabella Studenti:</p>
+<p>Tabella STUDENTI:</p>
 
 <table>
 <thead>
 <tr>
 <th>Nome</th>
 <th>Cognome</th>
-<th>Matricola</th>
+<th>Matricola (PK)</th>
 <th>Anno</th>
 </tr>
 </thead>
@@ -114,14 +116,14 @@ La presenza di queste foreign key garantiscono la proprietà di integrità dei d
 <td>1997</td>
 </tr>
 </tbody>
-</table><p>Tabella Esami:</p>
+</table><p>Tabella ESAMI:</p>
 
 <table>
 <thead>
 <tr>
-<th>Codice</th>
+<th>Codice (PK)</th>
 <th>Materia</th>
-<th>Candidato</th>
+<th>Candidato*</th>
 <th>Data</th>
 <th>Voto</th>
 <th>Lode</th>
@@ -156,75 +158,76 @@ La presenza di queste foreign key garantiscono la proprietà di integrità dei d
 </table><p><code>Studenti(Nome:String, Cognome:String, Matricola:int, Anno:Date)</code><br>
 <code>Esami(Codice:String, Materia:String, Candidato:int, Data:Date, voto: int, Lode: boolean)</code></p>
 <p>In questo esempio le due tabelle hanno un’associazione che le lega.<br>
-l’attributo “matricola” nella tabella studenti è primary key</p>
-<p>mentre l’attributo “candidato” sulla tabella Esami è una foreign key che si riferisce alle matricole della tabella studenti.<br>
-Inoltre “codice” nella tabella Esami è primary key della tabella.</p>
-<p>Questo design però ci costringe ad avere un solo candidato per esame. In questo caso Andrebbe creata un’altra tabella ma lo vedremo dopo.</p>
+L’attributo “Matricola” nella tabella STUDENTI è <em>primary key</em>.<br>
+L’attributo “Codice” nella tabella ESAMI è <em>primary key</em>.</p>
+<p>Mentre l’attributo “Candidato” sulla tabella ESAMI è una <em>foreign key</em> che si riferisce all’attributo Matricola della tabella STUDENTI.</p>
+<p>Questo design, però, ci costringe ad avere un solo candidato per esame (normalmente un esame viene sostenuto da più candidati). Per migliorare la relazione andrebbe creata un’altra tabella ma lo vedremo dopo.</p>
 <h3 id="not-null">not null</h3>
-<p>il valore null viene usato quando o non si conosce il valore oppure un valore dato non è applicabile.</p>
-<p>Il vincono not null ci impedisce di mettere null in un’attributo.</p>
-<p>Le chiavi primarie implicitamente non possono essere null.<br>
-Mentre una foreign key può essere null nel caso ci sia un’associazione parziale tra le tabelle.</p>
+<p>il valore <em>null</em> viene usato quando non si conosce il valore dell’attributo oppure un valore dato non è applicabile.</p>
+<p>Il vincono <em>not null</em> ci impedisce di mettere <em>null</em> in un’attributo.</p>
+<p>Le chiavi primarie implicitamente non possono essere <em>null</em>.<br>
+Mentre una <em>foreign key</em> può essere <em>null</em> nel caso ci sia un’associazione parziale tra le tabelle.</p>
 <h2 id="dal-modello-a-oggetti-allo-schema-relazionale">Dal modello a oggetti allo schema relazionale</h2>
-<p>per costruire lo schema relazionale dobbiamo trasformare alcune cose:</p>
-<h3 id="associazioni">associazioni</h3>
-<p>partiamo dalle associazioni molti a uno totali:</p>
-<p><img src="https://i.ibb.co/F7w80tD/n-1-tot.png" alt="enter image description here"></p>
-<p>mentre per le associazioni molti a uno parziali abbiamo due modi di fare: o nello stesso modo delle totali, oppure creando una nuova tabella</p>
-<p><img src="https://i.ibb.co/yPnqjKY/n-1-parz.png" alt="enter image description here"></p>
-<p>per le relazioni uno a uno in caso di totalità è indifferente dove mettere la foreign key mentre se c’è la parzialità bisogna rispettarla:</p>
+<p>Per costruire lo schema relazionale dobbiamo trasformare alcune cose:</p>
+<h2 id="associazioni">Associazioni</h2>
+<p>Partiamo dalle <strong>associazioni molti a uno totali</strong>:<br>
+Si mette la <em>foreign key</em> ed eventuale attributi della relazione nell’entità con molteplicità n<br>
+<img src="https://i.ibb.co/F7w80tD/n-1-tot.png" alt="enter image description here"></p>
+<p>Mentre per le <strong>associazioni molti a uno parziali</strong> abbiamo due modi di trasformare: o nello stesso modo delle totali, oppure creando una nuova tabella<br>
+<img src="https://i.ibb.co/yPnqjKY/n-1-parz.png" alt="enter image description here"></p>
+<p>Per le <strong>associazione uno a uno</strong> in caso di totalità è indifferente dove mettere la <em>foreign key</em> mentre se c’è la parzialità bisogna rispettarla:</p>
 <p><img src="https://i.ibb.co/LYH7dfZ/1-1-parz.png" alt="enter image description here"></p>
-<p>mentre per le relazioni molti a molti dobbiamo inserire una nuova tabella</p>
-<p><img src="https://i.ibb.co/pKp3L4X/molti-a-molti.png" alt="enter image description here"></p>
-<h3 id="gerarchia">gerarchia</h3>
+<p>Mentre per le <strong>associazioni molti a molti</strong> dobbiamo inserire una nuova tabella<br>
+<img src="https://i.ibb.co/pKp3L4X/molti-a-molti.png" alt="enter image description here"></p>
+<h2 id="gerarchia">Gerarchia</h2>
 <p><img src="https://i.ibb.co/R6N2YVg/gerarchia.png" alt="enter image description here"><br>
-Nello schema relazionale dobbiamo rimuovere la gerarchia, possiamo farlo in tre modi diversi:</p>
+Nello schema relazionale dobbiamo rimuovere ogni forma di gerarchia, possiamo farlo in tre modi diversi:</p>
 <ol>
 <li>
-<p><strong>relazione unica</strong><br>
-possiamo accorpare le tre tabelle in una unica, in cui si uniscono gli attributi di tutte le tabelle con l’aggiunta di un discriminante che dice una riga a quale tabella apparteneva.<br>
+<p><strong>Relazione unica</strong><br>
+Possiamo accorpare le tre tabelle in una unica, in cui si uniscono gli attributi di tutte le tabelle con l’aggiunta di un discriminante che indica a quale tabella apparteneva ogni riga.<br>
 Conveniente se i figli differiscono di pochi attributi</p>
 <p><img src="https://i.ibb.co/GFHzQQk/reaz-unica.png" alt="enter image description here"></p>
 </li>
 <li>
-<p><strong>partizionamento verticale</strong><br>
-manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiungiamo la primary key del padre che farà anche da foreign key verso il padre. Quindi la gerarchia diventa due associazioni<br>
+<p><strong>Partizionamento verticale</strong><br>
+Manteniamo le tre tabelle, la tabella padre rimane uguale mentre ai figli aggiungiamo la <em>primary key</em> del padre che farà anche da <em>foreign key</em> verso il padre. Quindi la gerarchia si trasforma in due associazioni<br>
 <img src="https://i.ibb.co/Pwr9K7f/part-vert.png" alt="enter image description here"></p>
 </li>
 <li>
-<p><strong>partizionamento orizzontale</strong><br>
-accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane.<br>
-questo metodo <strong>non si può applicare</strong> se il padre della gerarchia ha una <strong>associazione entrante</strong>.<br>
-Questo metodo è scomodo nel caso la gerarchia sia di tipo scorrelata, in quanto i figli possono avere degli attributi comuni e quando si vuole modificare un figlio bisogna modificare anche l’altro per mantenere la coerenza dei dati.<br>
+<p><strong>Partizionamento orizzontale</strong><br>
+Accorpiamo gli attributi nei figli e li rendiamo due tabelle distinte, se la gerarchia è una copertura allora il padre sparisce, altrimenti rimane.<br>
+Questo metodo <strong>non si può applicare</strong> se il padre della gerarchia ha una <strong>associazione entrante</strong>.<br>
+Questo metodo è scomodo nel caso in cui la gerarchia sia di tipo scorrelata, in quanto i figli possono avere degli attributi comuni e quando si vuole modificare un figlio bisognerebbe modificare anche l’altro per mantenere la coerenza dei dati.<br>
 <img src="https://i.ibb.co/qknckbs/part-oriz.png" alt="enter image description here"></p>
 </li>
 </ol>
 <h3 id="chiave-primaria">chiave primaria</h3>
-<p>ogni tabella deve avere una chiave primaria che identifica le righe, quindi se non è presente va aggiunta</p>
+<p>Ogni tabella deve avere una chiave primaria che identifica le righe, quindi se non è presente va aggiunta (spesso si introduce un attributo come “matricola”, “codice” o “id”)</p>
 <h3 id="attributi-multivalore">Attributi multivalore</h3>
-<p>Gli attributi multivalore possono essere gestiti in 2 modi diversi, in base a se se vuole far diventare l’attributo una tabella indipendente oppure solo una associazione diretta con la tabella da cui proviene:</p>
+<p>Gli attributi multivalore possono essere gestiti in 2 modi diversi, in base a se si vuole far diventare l’attributo una tabella indipendente oppure solo una associazione diretta con la tabella da cui proviene:</p>
 <ol>
 <li>
-<p>associazione diretta.</p>
-<p>un esempio può essere una persona con i numeri di telefono, dato che è molto improbabile condividere un numero di telefono tra più persone fare una associazione diretta è sufficiente:</p>
-<p>es.<br>
+<p>Associazione diretta.</p>
+<p>Un esempio può essere una persona con i numeri di telefono, dato che è molto improbabile condividere un numero di telefono tra più persone fare una associazione diretta è sufficiente:</p>
+<p>ad esempio<br>
 <img src="https://i.ibb.co/1XKmGY3/multival-before.png" alt="enter image description here"></p>
-<p>diventa:</p>
-<p><img src="https://i.ibb.co/qxScpSw/multival-after.png" alt="enter image description here"></p>
-<p>abbiamo quindi una tabella telefono che è composta da il codice fiscale della persona e dal numero di telefono, insieme identifica una riga della tabella</p>
+<p>diventa:<br>
+<img src="https://i.ibb.co/qxScpSw/multival-after.png" alt="enter image description here"></p>
+<p>Abbiamo quindi una tabella Telefono che è composta da il codice fiscale della persona e dal numero di telefono, insieme identificano ogni riga della tabella.</p>
 </li>
 <li>
-<p>tabella indipendente<br>
-un esempio può essere fatto tra persona e le lingue che una persona sa parlare, in questo caso è molto probabile che delle lingue siano in comune tra più persone quindi è conveniente fare una tabella indipendente per le lingue e avere una relazione che lega persona e lingua.</p>
+<p>Tabella indipendente<br>
+Un esempio può essere fatto tra persona e le lingue che una persona sa parlare, in questo caso è molto probabile che delle lingue siano in comune tra più persone quindi è conveniente fare una tabella indipendente per le lingue e avere una relazione che lega persona e lingua.</p>
 <p><img src="https://i.ibb.co/x8H48Xj/multival-before.png" alt="enter image description here"></p>
-<p>diventa:</p>
-<p><img src="https://i.ibb.co/hZg0SVg/multival-after.png" alt="enter image description here"></p>
+<p>diventa:<br>
+<img src="https://i.ibb.co/hZg0SVg/multival-after.png" alt="enter image description here"></p>
 </li>
 </ol>
 <h3 id="attributi-strutturati">Attributi strutturati</h3>
 <p>I campi strutturati (cioè composti da più tipi di dato) vanno scomposti in più attributi, fino a che ogni attributo sia un tipo di dato primitivo.</p>
-<p>es.</p>
-<p><img src="https://i.ibb.co/3MnGGQ9/struct-before.png" alt="enter image description here"></p>
+<p>ad esempio<br>
+<img src="https://i.ibb.co/3MnGGQ9/struct-before.png" alt="enter image description here"></p>
 <p>diventa:</p>
 <p><img src="https://i.ibb.co/2WcQMyp/struct-after.png" alt="enter image description here"></p>
 

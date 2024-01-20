@@ -3,14 +3,14 @@
 **DDL** (*Data Definition Language*) è la parte del linguaggio SQL in cui si **definisce la base di dati**
 
 Questa parte comprende:
-- creare tabelle
-- modificare la struttura delle tabelle
-- definire i vincoli sugli attributi e tra le tabelle
-- altre cose che non vedremo.
+- Creare tabelle
+- Modificare la struttura delle tabelle
+- Definire i vincoli sugli attributi e tra le tabelle
+- Altre cose che non vedremo.
 
 ## Schemi
 
-Uno schema rappresenta sostanzialmente un insieme di tabelle. Serve per creare un collegamento logico tra le tabelle
+Uno schema rappresenta sostanzialmente un insieme di tabelle. Serve per creare un gruppo logico di tabelle
 
 Possiamo creare un schema facendo 
 
@@ -24,8 +24,8 @@ eliminiamo lo schema tramite il comando:
 ```sql
 DROP SCHEMA <nome_schema> [CASCADE | RESTRICT]
 ```
-aggiungendo il `CASCADE` cancelliamo lo schema ed anche tutti gli eventuali riferimenti ad tabelle esterne allo schema.
-aggiungendo il `RESTRICT` lo schema viene cancellato solo se non ci sono riferimenti (se ci sono viene generato un errore)
+Aggiungendo il `CASCADE` cancelliamo lo schema ed anche tutti gli eventuali riferimenti ad tabelle esterne allo schema.
+Aggiungendo il `RESTRICT` lo schema viene cancellato solo se non ci sono riferimenti (se ci sono viene generato un errore)
 
 ## Tabelle
 
@@ -34,7 +34,7 @@ Possiamo definire le tabelle come un insieme di attributi (colonne), e per ciasc
 - nome
 - tipo di dato, che può essere **predefinito** oppure **definito dall'utente** tramite il comando `CREATE DOMAIN`
 
-creiamo una tabella nel seguente modo:
+Creiamo una tabella nel seguente modo:
 
 ```sql
 CREATE TABLE <nome_tabella>(
@@ -43,17 +43,16 @@ CREATE TABLE <nome_tabella>(
 );
 ```
 
-cancelliamo una tabella nel seguente modo:
+Cancelliamo una tabella nel seguente modo:
 
 ```sql
 DROP TABLE <nome_tabella>;
 ```
 
-possiamo modificare praticamente ogni aspetto di una tabella tramite il comando `ALTER TABLE`, possiamo per esempio:
-- aggiungere ed eliminare attributi
-- modificare il tipo degli attributi
-- aggiungere, rimuovere e modificare i vincoli
-
+Possiamo modificare praticamente ogni aspetto di una tabella tramite il comando `ALTER TABLE`, possiamo per esempio:
+- Aggiungere ed eliminare attributi
+- Modificare il tipo degli attributi
+- Aggiungere, rimuovere e modificare i vincoli
 
 ```sql
 ALTER TABLE Studenti
@@ -67,9 +66,9 @@ Vediamo i più comuni tipi di dato predefiniti
 - numerici
 	- `SMALLINT` intero a 16 bit
 	- `INTEGER` intero a 32 bit
-	- `FLOAT(n)`decimale dove `n` indica la precisione che può arrivare fino a 64bit
+	- `FLOAT(n)`decimale dove `n` indica la precisione, che può arrivare fino a 64bit
 	- `REAL` decimale a 32 bit
-	- `NUMERIC(p, s)` decimale in cui `p` rappresenta il numero di cifre totali da cui è composto il numero, mentre `s` rappresenta quanti delle cifre di `p` sono dedicate dopo la virgola
+	- `NUMERIC(p, s)` decimale in cui `p` rappresenta il numero di cifre totali da cui è composto il numero, mentre `s` rappresenta quante delle cifre di `p` sono dedicate dopo la virgola.
 - boolean
 	- può contenere solo i valori: true, false, null
 	- `1, yes, y, t, true` vengono tradotti come `true`
@@ -120,12 +119,11 @@ CREATE TABLE Studenti (
 );
 ```
 
-
 ## Viste
 
 Le viste (*view*, oppure tabelle virtuali) sono delle tabelle temporanee generate da una query, utilizzate principalmente per realizzare in modo più ordinato query complesse (ma ha anche altri utilizzi).
 
-sostanzialmente è come dare un nome ad una query, essa infatti verrà ricalcolata ogni volta che si scrive il nome datogli.
+Sostanzialmente è come dare un nome ad una query, essa infatti verrà ricalcolata ogni volta che si scrive il nome datogli.
 
 Viene creata nel seguente modo
 
@@ -133,7 +131,6 @@ Viene creata nel seguente modo
 CREATE VIEW <nome_vista>(<attributi>) AS
 	<SELECT>
 ```
-
 
 Vediamo due esempi in cui le view tornano molto utili per le query:
 
@@ -154,9 +151,9 @@ Esempio 2: "Le province dove la media dei voti degli studenti è la più alta"
 
 ```sql
 CREATE VIEW ProvMedia (Provincia, Media) AS
-SELECT s.Provincia, AVG(e.Voto)
-FROM Studenti s JOIN Esami e ON s.Matricola=e.Candidato
-GROUP BY s.Provincia;
+	SELECT s.Provincia, AVG(e.Voto)
+	FROM Studenti s JOIN Esami e ON s.Matricola=e.Candidato
+	GROUP BY s.Provincia;
 
 SELECT Provincia, Media
 FROM ProvMedia
@@ -164,8 +161,7 @@ WHERE Media = (SELECT MAX(Media)
 				FROM ProvMedia);
 ```
 creo prima la view che mi contiene la media voti per ogni provincia.
-Poi faccio una query in cui seleziono le provincie in cui la media è quale alla media più grande tra le provincie
-
+Poi faccio una query in cui seleziono le provincie in cui la media è uguale alla media più grande tra le provincie
 
 ### With
 
@@ -213,3 +209,4 @@ si dovrebbe fare una cosa di questo tipo:
 	FROM Persone p, Fratelli f
 	WHERE (f.Id1 = 21 AND f.Id2 = p.Id) OR (f.Id2 = 21 AND f.Id1 = p.Id)
 	```
+

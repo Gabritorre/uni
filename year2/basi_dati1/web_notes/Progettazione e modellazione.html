@@ -29,68 +29,71 @@
       <h1 id="progettazione-e-modellazione-del-bd">Progettazione e modellazione del BD</h1>
 <p>Prima di realizzare fisicamente un database bisogna prima creare dei <strong>modelli astratti</strong> che rappresentano la realtà di riferimento.</p>
 <h2 id="modello-concettuale">Modello concettuale</h2>
-<p>IL modello concettuale è il primo schema da realizzare che interpreta realtà di riferimento.</p>
+<p>Il modello concettuale è il primo schema da realizzare che interpreta realtà di riferimento.</p>
 <p>Noi useremo un <strong>modello ad oggetti</strong> che appunto riprende dei concetti dalla programmazione ad oggetti e li applica alla progettazione concettuale di un DB.</p>
 <h3 id="entità-proprietà-e-associazioni">Entità, Proprietà e Associazioni</h3>
-<p>Ci si concentra sulla rappresentazione di <strong>entità</strong>, le relative <strong>proprietà</strong> e le <strong>associazioni</strong> tra varie entità:</p>
+<p>Questo modello si concentra sulla rappresentazione di <strong>entità</strong>, le relative <strong>proprietà</strong> e le <strong>associazioni</strong> tra varie entità:</p>
 <p>la seguente foto è una simil-tabella di un database per orientarsi con i termini<br>
 <img src="https://i.ibb.co/64Wm6kQ/class.png" alt="enter image description here"></p>
 <ul>
 <li>
 <p>Una <strong>entità</strong>: può essere un oggetto fisico, un oggetto astratto, oppure anche un evento (ad esempio: un libro, una descrizione bibliografica, un prestito).<br>
-una istanza dell’entità deve possedere una <strong>chiave primaria</strong>, nel modello concettuale ad oggetti se non è esplicitata una proprietà che può essere una PK <strong>non</strong> bisogna inventarsene una.<br>
+Una istanza dell’entità deve possedere una <strong>chiave primaria</strong> (PK), nonostante ciò nel modello concettuale ad oggetti se non è esplicitata chiaramente una proprietà che può essere una PK allora <strong>non</strong> bisogna inventarsene una (in una rappresentazione successiva ci occuperemo di definire le chiami primarie).</p>
+<p>Rappresentiamo graficamente una entità nel seguente modo<br>
 <img src="https://i.ibb.co/k597RHG/entita.png" alt="enter image description here"></p>
 </li>
 <li>
-<p>le <strong>proprietà</strong> sono le caratteristiche che possiede una entità<br>
+<p>Le <strong>proprietà</strong> sono le caratteristiche che possiede una entità<br>
 le proprietà possono essere di vario tipo:</p>
 <ul>
-<li>Atomiche: cioè una che non è divisibile in più parti</li>
-<li>record: in cui vengono messi insieme più componenti che potrebbero essere divisi (come un indirizzo)</li>
-<li>sequenza: la caratteristica è singola ma può aver più di un valore (ad esempio i recapiti telefonici o le lingue parlate)</li>
-<li>enumerazione: cioè una caratteristica che può assumere un valore tra tra un numero ristretto di valori possibili (ad esempio il sesso)</li>
+<li>Atomiche: cioè una proprietà che non è divisibile in più parti</li>
+<li>Record: una composizione di più proprietà che potrebbero essere divise (come un indirizzo di un luogo)</li>
+<li>Sequenza: una lista di proprietà dello stesso tipo (ad esempio i recapiti telefonici o le lingue parlate)</li>
+<li>Enumerazione: cioè una caratteristica che può assumere un valore tra tra un numero ristretto di valori possibili (ad esempio il sesso di una persona)</li>
 </ul>
-<p>Le proprietà possono avere dei <strong>vincoli di integrità</strong> cioè delle restrizioni sui valori che che possono assumere le proprietà di una entità<br>
+<p>Le proprietà possono avere dei <strong>vincoli di integrità</strong> cioè delle restrizioni sui valori che che possono assumere le proprietà.<br>
+Rappresentiamo graficamente le proprietà di una entità nel seguente modo<br>
 <img src="https://i.ibb.co/FDcHPbR/propriet.png" alt="enter image description here"></p>
 </li>
 <li>
-<p>le <strong>associazioni</strong> sono dei collegamenti logici che legano due o più entità.<br>
-Una associazione è caratterizzata da due aspetti: la molteplicità e la totalità</p>
+<p>Le <strong>associazioni</strong> sono dei collegamenti logici che legano due o più entità.<br>
+Una associazione è caratterizzata da due aspetti: <strong>la cardinalità e la totalità</strong></p>
 <ul>
 <li>
-<p><strong>Molteplicità</strong> considerando una associazione tra le entità x e y abbiamo:</p>
+<p><strong>Cardinalità</strong> (o molteplicità): considerando una associazione tra le entità <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> abbiamo:</p>
 <ul>
-<li><strong>una molteplicità 1-1</strong>: se per ogni x si associa al massimo un elemento di y e viceversa.</li>
-<li><strong>una molteplicità 1-n</strong>: se per ogni x si possono associare più elementi di y e per ogni y associa al massimo un x.</li>
-<li><strong>una molteplicità n-1</strong>: se per ogni x si associa al massimo un y e per ogni y si possono associare più x.</li>
-<li><strong>una molteplicità n-m</strong>: se per ogni x si possono associare più y e viceversa.</li>
+<li><strong>una molteplicità 1-1</strong>: se per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> si associa al massimo un elemento di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> e viceversa.</li>
+<li><strong>una molteplicità 1-n</strong>: se per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> si possono associare più elementi di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> e per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> associa al massimo un <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span>.</li>
+<li><strong>una molteplicità n-1</strong>: se per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> si associa al massimo un <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> e per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> si possono associare più <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span>.</li>
+<li><strong>una molteplicità n-m</strong>: se per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> si possono associare più <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> e viceversa.</li>
 </ul>
-<p>ad esempio con entità <em>studente</em> e <em>corso</em> e associazione <em>frequenta</em> abbiamo una associazione n-m perche uno studenti può frequentare più corsi e un corso può essere frequentato da più studenti.<br>
-un altro esempio è Insegna(Professori, Corsi) ha molteplicità (1:N),</p>
+<p>Ad esempio con entità <em>STUDENTE</em> e <em>CORSO</em> e associazione <em>FREQUENTA</em> abbiamo una associazione <strong>(n-m)</strong> perché uno studente può frequentare più corsi e un corso può essere frequentato da più studenti.<br>
+un altro esempio è INSEGNA(PROFESSORI, CORSI) ha molteplicità <strong>(1:n)</strong>, un professore insegna più corsi e un corso è insegnato da un professore.</p>
 </li>
 <li>
-<p><strong>Totalità</strong> una associazione è <strong>totale</strong> se per ogni x esiste una y che è associata ad una x, altrimenti se una x può anche non è associata a nessuna y si dice <strong>parziale</strong><br>
-Esempio: Insegna(Professori, Corsi) è <strong>totale su Corsi</strong> in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, <strong>parziale su Professori</strong>, in quanto un professore potrebbe non tenere corsi.<br>
-Inoltre le associazioni possono avere delle <strong>proprietà a parte</strong>, possono essere ricorsive, e possono associarsi a più entità (e quindi non solo 2 alla volta) in questo caso chiamate <strong>associazione n-arie</strong></p>
+<p><strong>Totalità</strong>: una associazione è <strong>totale</strong> se per ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> esiste una associazione con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span>, altrimenti se una <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi></mrow><annotation encoding="application/x-tex">X</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">X</span></span></span></span></span> può anche non è associata a nessuna <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi></mrow><annotation encoding="application/x-tex">Y</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">Y</span></span></span></span></span> si dice <strong>parziale</strong><br>
+Esempio: INSEGNA(PROFESSORI, CORSI) è <strong>totale su Corsi</strong> in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, <strong>parziale su Professori</strong>, in quanto un professore potrebbe non tenere corsi.</p>
 </li>
 </ul>
-<p><img src="https://i.ibb.co/gJ7XcdQ/cardinalit.png" alt="enter image description here"></p>
+<p>Inoltre le associazioni possono avere delle <strong>proprietà a parte</strong> (che non risiedono in nessuna delle entità coinvolte nell’associazione), possono essere ricorsive, e possono associarsi a più di 2 entità (in questo caso chiamate <strong>associazione n-arie</strong>)</p>
+<p>rappresentazione grafica della cardinalità e della totalità:<br>
+<img src="https://i.ibb.co/gJ7XcdQ/cardinalit.png" alt="enter image description here"></p>
 </li>
 </ul>
 <h2 id="ereditarietà-delle-classi">Ereditarietà delle classi</h2>
-<p>nel modello ad oggetti è possibile ereditare una classa da un’altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:</p>
+<p>Nel modello ad oggetti è possibile ereditare una classa da un’altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:</p>
 <ul>
-<li>aggiungere altri attributi</li>
-<li>ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)</li>
+<li>Aggiungere altri attributi</li>
+<li>Ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)</li>
 </ul>
 <h2 id="tipi-di-sottoclasse">Tipi di sottoclasse</h2>
 <p><img src="https://i.ibb.co/4PTcTQf/sottoclassi.png" alt="enter image description here"></p>
-<p>(istanze = righe di una tabella)</p>
+<p>(istanze = righe della tabella)</p>
 <ol>
-<li><strong>sottoclassi scorrelate</strong>: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre</li>
-<li><strong>sottoclassi disgiunte</strong>: i figli non hanno istanze in comune</li>
-<li><strong>sottoclassi copertura</strong>: le istanze dei figli uniti rappresentano la totalità delle istanze del padre</li>
-<li><strong>sottoclassi partizione</strong>: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre</li>
+<li><strong>Sottoclassi scorrelate</strong>: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre</li>
+<li><strong>Sottoclassi disgiunte</strong>: i figli non hanno istanze in comune</li>
+<li><strong>Sottoclassi copertura</strong>: le istanze dei figli unite rappresentano la totalità delle istanze del padre</li>
+<li><strong>Sottoclassi partizione</strong>: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre</li>
 </ol>
 
     </div>

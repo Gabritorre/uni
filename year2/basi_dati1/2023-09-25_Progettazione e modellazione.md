@@ -4,62 +4,64 @@
 
 ## Modello concettuale
 
-IL modello concettuale è il primo schema da realizzare che interpreta realtà di riferimento.
+Il modello concettuale è il primo schema da realizzare che interpreta realtà di riferimento.
 
-Noi useremo un **modello ad oggetti** che appunto riprende dei concetti dalla programmazione ad oggetti e li applica alla progettazione concettuale di un DB. 
-
+Noi useremo un **modello ad oggetti** che appunto riprende dei concetti dalla programmazione ad oggetti e li applica alla progettazione concettuale di un DB.
 
 ### Entità, Proprietà e Associazioni
 
-Ci si concentra sulla rappresentazione di **entità**, le relative **proprietà** e le **associazioni** tra varie entità:
+Questo modello si concentra sulla rappresentazione di **entità**, le relative **proprietà** e le **associazioni** tra varie entità:
 
 la seguente foto è una simil-tabella di un database per orientarsi con i termini
 ![enter image description here](https://i.ibb.co/64Wm6kQ/class.png)
 
 - Una **entità**: può essere un oggetto fisico, un oggetto astratto, oppure anche un evento (ad esempio: un libro, una descrizione bibliografica, un prestito).
-una istanza dell'entità deve possedere una **chiave primaria**, nel modello concettuale ad oggetti se non è esplicitata una proprietà che può essere una PK **non** bisogna inventarsene una.
+Una istanza dell'entità deve possedere una **chiave primaria** (PK), nonostante ciò nel modello concettuale ad oggetti se non è esplicitata chiaramente una proprietà che può essere una PK allora **non** bisogna inventarsene una (in una rappresentazione successiva ci occuperemo di definire le chiami primarie).
+
+	Rappresentiamo graficamente una entità nel seguente modo 
 ![enter image description here](https://i.ibb.co/k597RHG/entita.png)
 
-- le **proprietà** sono le caratteristiche che possiede una entità
+- Le **proprietà** sono le caratteristiche che possiede una entità
 	le proprietà possono essere di vario tipo:
-	- Atomiche: cioè una che non è divisibile in più parti
-	- record: in cui vengono messi insieme più componenti che potrebbero essere divisi (come un indirizzo)
-	- sequenza: la caratteristica è singola ma può aver più di un valore (ad esempio i recapiti telefonici o le lingue parlate)
-	- enumerazione: cioè una caratteristica che può assumere un valore tra tra un numero ristretto di valori possibili (ad esempio il sesso)
+	- Atomiche: cioè una proprietà che non è divisibile in più parti
+	- Record: una composizione di più proprietà che potrebbero essere divise (come un indirizzo di un luogo)
+	- Sequenza: una lista di proprietà dello stesso tipo (ad esempio i recapiti telefonici o le lingue parlate)
+	- Enumerazione: cioè una caratteristica che può assumere un valore tra tra un numero ristretto di valori possibili (ad esempio il sesso di una persona)
 
-	Le proprietà possono avere dei **vincoli di integrità** cioè delle restrizioni sui valori che che possono assumere le proprietà di una entità 
+	Le proprietà possono avere dei **vincoli di integrità** cioè delle restrizioni sui valori che che possono assumere le proprietà.
+	Rappresentiamo graficamente le proprietà di una entità nel seguente modo
 ![enter image description here](https://i.ibb.co/FDcHPbR/propriet.png)
-- le **associazioni** sono dei collegamenti logici che legano due o più entità.
-	Una associazione è caratterizzata da due aspetti: la molteplicità e la totalità
-	- **Molteplicità** considerando una associazione tra le entità x e y abbiamo:
-		- **una molteplicità 1-1**: se per ogni x si associa al massimo un elemento di y e viceversa.
-		- **una molteplicità 1-n**: se per ogni x si possono associare più elementi di y e per ogni y associa al massimo un x.
-		- **una molteplicità n-1**: se per ogni x si associa al massimo un y e per ogni y si possono associare più x.
-		- **una molteplicità n-m**: se per ogni x si possono associare più y e viceversa.
+- Le **associazioni** sono dei collegamenti logici che legano due o più entità.
+	Una associazione è caratterizzata da due aspetti: **la cardinalità e la totalità**
+	- **Cardinalità** (o molteplicità): considerando una associazione tra le entità $X$ e $Y$ abbiamo:
+		- **una molteplicità 1-1**: se per ogni $X$ si associa al massimo un elemento di $Y$ e viceversa.
+		- **una molteplicità 1-n**: se per ogni $X$ si possono associare più elementi di $Y$ e per ogni $Y$ associa al massimo un $X$.
+		- **una molteplicità n-1**: se per ogni $X$ si associa al massimo un $Y$ e per ogni $Y$ si possono associare più $X$.
+		- **una molteplicità n-m**: se per ogni $X$ si possono associare più $Y$ e viceversa.
 	
-		ad esempio con entità *studente* e *corso* e associazione *frequenta* abbiamo una associazione n-m perche uno studenti può frequentare più corsi e un corso può essere frequentato da più studenti.
-un altro esempio è Insegna(Professori, Corsi) ha molteplicità (1:N),
-	- **Totalità** una associazione è **totale** se per ogni x esiste una y che è associata ad una x, altrimenti se una x può anche non è associata a nessuna y si dice **parziale**
-	Esempio: Insegna(Professori, Corsi) è **totale su Corsi** in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, **parziale su Professori**, in quanto un professore potrebbe non tenere corsi.
-Inoltre le associazioni possono avere delle **proprietà a parte**, possono essere ricorsive, e possono associarsi a più entità (e quindi non solo 2 alla volta) in questo caso chiamate **associazione n-arie**
+		Ad esempio con entità *STUDENTE* e *CORSO* e associazione *FREQUENTA* abbiamo una associazione **(n-m)** perché uno studente può frequentare più corsi e un corso può essere frequentato da più studenti.
+un altro esempio è INSEGNA(PROFESSORI, CORSI) ha molteplicità **(1:n)**, un professore insegna più corsi e un corso è insegnato da un professore.
+	- **Totalità**: una associazione è **totale** se per ogni $X$ esiste una associazione con $Y$, altrimenti se una $X$ può anche non è associata a nessuna $Y$ si dice **parziale**
+	Esempio: INSEGNA(PROFESSORI, CORSI) è **totale su Corsi** in quanto non può esistere un corso del piano di studi senza il corrispondente docente che lo tiene, **parziale su Professori**, in quanto un professore potrebbe non tenere corsi.
 	
+	Inoltre le associazioni possono avere delle **proprietà a parte** (che non risiedono in nessuna delle entità coinvolte nell'associazione), possono essere ricorsive, e possono associarsi a più di 2 entità (in questo caso chiamate **associazione n-arie**)
+	
+	rappresentazione grafica della cardinalità e della totalità:
 	![enter image description here](https://i.ibb.co/gJ7XcdQ/cardinalit.png)
-
-
 
 ## Ereditarietà delle classi
 
-nel modello ad oggetti è possibile ereditare una classa da un'altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:
+Nel modello ad oggetti è possibile ereditare una classa da un'altra, la classe ereditata possiede tutti gli attributi della classe padre e in più è possibile:
 
-- aggiungere altri attributi
-- ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)
+- Aggiungere altri attributi
+- Ridefinire quelli già presenti (cambiandone il tipo, che deve essere un sottotipo del tipo del padre)
 
 ## Tipi di sottoclasse
 
 ![enter image description here](https://i.ibb.co/4PTcTQf/sottoclassi.png)
 
-(istanze = righe di una tabella)
-1. **sottoclassi scorrelate**: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre
-2. **sottoclassi disgiunte**: i figli non hanno istanze in comune
-3. **sottoclassi copertura**: le istanze dei figli uniti rappresentano la totalità delle istanze del padre
-4. **sottoclassi partizione**: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre
+(istanze = righe della tabella)
+1. **Sottoclassi scorrelate**: i figli possono avere istanze comuni e uniti non rappresentano la totalità delle istanze del padre
+2. **Sottoclassi disgiunte**: i figli non hanno istanze in comune
+3. **Sottoclassi copertura**: le istanze dei figli unite rappresentano la totalità delle istanze del padre
+4. **Sottoclassi partizione**: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre
