@@ -65,3 +65,8 @@ Nel modello ad oggetti è possibile ereditare una classa da un'altra, la classe 
 2. **Sottoclassi disgiunte**: i figli non hanno istanze in comune
 3. **Sottoclassi copertura**: le istanze dei figli unite rappresentano la totalità delle istanze del padre
 4. **Sottoclassi partizione**: i figli non hanno istanze comuni e uniti rappresentano la totalità delle istanze del padre
+
+
+## Esempio completo di schema concettuale
+
+![enter image description here](https://i.ibb.co/jD4Q007/image.png)

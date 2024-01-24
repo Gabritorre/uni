@@ -165,4 +165,6 @@ diventa:
 
 ![enter image description here](https://i.ibb.co/2WcQMyp/struct-after.png)
 
+## Esempio completo di schema relazionale
 
+![enter image description here](https://i.ibb.co/8cRMDhg/image.png)
