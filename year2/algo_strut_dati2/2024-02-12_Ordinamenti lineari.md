@@ -1,0 +1,226 @@
+﻿# Ordinamenti lineari
+
+## Limite inferiore degli ordinamenti basati sul confronto
+
+Finora abbiamo visto degli algoritmi di ordinamento basati sul **confronto**.
+Dimostriamo che $\Omega(n\log n)$ è il limite inferiore della complessità di questo tipo di algoritmi, in altre parole con algoritmi basati sul confronto non è possibile ottenere una complessità asintotica migliore di $n \log n$ nel caso peggiore.
+
+Dimostriamolo servendoci di **alberi decisionali**, cioè una struttura dati basata su alberi binari che ci permette di evidenziare i passaggi che farebbero gli algoritmi di ordinamento basati sul confronto.
+
+Lavoriamo sotto l'assumiamo gli **elementi da ordinare siano tutti distinti**.
+
+con un array di 3 elementi l'albero decisionale è il seguente:
+
+![enter image description here](https://i.ibb.co/4MNy7CZ/albero-decisionale.png)
+
+in generale per un input di dimensione $<a_1, ..., a_n>$ abbiamo che 
+- nei nodi interni sono etichettati dagli indici del vettore $i:j$
+	- confronto quindi l'elemento $a_i$ con l'elemento $a_j$
+	- se $a_i \leq a_j$ allora vado nel sottoalbero sinistro
+	- se $a_i > a_j$ allora vado nel sottoalbero destro
+- nelle foglie ci sono le permutazioni del vettore tali che i valori risultano essere ordinati
+
+ad esempio con l'array `A = [6, 8, 5]`
+
+![enter image description here](https://i.ibb.co/w47rc0c/esempio.png)
+
+
+- Dato un qualsiasi algoritmo di ordinamento basato sul confronto è possibile costruire l'albero decisionale corrispondente.
+- In base alla lunghezza dell'input si avrà un albero diverso.
+- I cammini rappresentano tutti i possibili confronti che fa l'algoritmo per raggiungere la soluzione (quindi l'albero contiene tutte le permutazioni dell'input).
+- Il tempo di esecuzione dell'algoritmo è dato dalla lunghezza del cammino (cioè il numero di confronti che fa).
+- Nel caso peggiore, il tempo di esecuzione è **l'altezza dell'albero** (dalla radice alla foglia più profonda).
+
+Vogliamo cercare un **limite inferiore** sulle altezze di tutti gli alberi di decisione, ciò infatti corrisponderà al limite inferiore al tempo di esecuzione di qualsiasi algoritmo di ordinamento basato sul confronto.
+
+Dalla definizione di permutazione sappiamo che dati $n$ elementi, esistono $n!$ permutazioni (cioè modi di disporre gli elementi in modo diverso).
+Di conseguenza il numero di foglie $f \geq n!$ (maggiore o uguale perché in alcuni algoritmi è possibile avere più permutazioni (foglie) uguali, ma ogni permutazione deve comparire **almeno** una volta)
+
+
+## Dimostrazione del limite inferiore
+
+## Dimostrazione del lemma
+
+Per la dimostrazione del limite inferiore ci serviamo del seguente **lemma**:
+
+"Un qualsiasi albero binario di altezza $h$ ha al più $2^h$ foglie"
+
+Dimostrazione del lemma per induzione su $h$
+
+**Caso base**
+$h=0$
+l'altezza uguale a $0$ significa che l'albero è composto dalla sola radice, che sarà anche una foglia, quindi
+(indichiamo con $f$ il numero di foglie)
+$f = 1$
+$2^0 = 1$
+
+$$f \leq 2^h$$
+
+$$1 \leq 1$$
+
+**Passo induttivo**
+Assumiamo che la proprietà valga per tutti gli alberi di altezza $k < h$.
+Quindi assumo che valga $f\leq2^k$ (**ipotesi induttiva**)
+Io voglio dimostrare la proprietà per $h$, cioè che vale
+
+$$f\leq2^h$$
+
+dividiamo la dimostrazione in due casistiche, Sia $r$ la radice dell'albero $T$ con altezza $h$:
+- Se $r$ ha un solo figlio
+
+	![enter image description here](https://i.ibb.co/C5HRkKw/caso1.png)
+	allora il numero di foglie dell'albero $T$ è uguale al numero di foglie del sottoalbero $T_1$
+
+	$f = f_{T_1}$
+
+	$f_{T_1} \leq 2^{h-1}$ per la nostra ipotesi induttiva (è come se $k = h-1$)
+
+	ma ovviamente $2^{h-1}\leq 2^h$
+	quindi abbiamo raggiunto che 
+
+	$$f \leq 2^h$$
+
+- Se $r$ ha entrambi i figli
+
+	![enter image description here](https://i.ibb.co/4jgD3L9/caso2.png)
+	allora il numero di foglie dell'albero $T$ è uguale alla somma delle foglie del sottoalbero $T_1$ e del sottoalbero $T_2$
+	
+	$f = f_{T_1} + f_{T_2}$
+
+	dato che $h_1 < h$ e $h_2 < h$ posso applicare la mia ipotesi induttiva:
+
+	$f_{T_1} + f_{T_2} \leq 2^{h_1} + 2^{h_2}$
+
+	$2^{h_1} + 2^{h_2} \leq 2\cdot 2^{\max(h_1, h_2)}$
+
+	$2\cdot 2^{\max(h_1, h_2)} = 2^{1 + \max(h_1, h_2)} = 2^h$
+
+	quindi abbiamo raggiunto che 
+
+	$$f \leq 2^h$$
+
+## Dimostrazione del teorema
+
+Ora dimostriamo il teorema della nostra affermazione iniziale sul limite inferiore degli algoritmo basati sul confronto.
+
+**Teorema**: "Qualsiasi algoritmo di ordinamento basato sul confronto richiede $\Omega(n \log n)$ confronti nel caso peggiore"
+
+Per dimostrare il teorema dobbiamo determinare l'altezza di un albero di decisione dove appare ogni permutazione possibile dell'input come foglia dell'albero.
+Ipotizziamo di avere un albero decisionale con la caratteristica appena descritta e che:
+- corrisponde ad un ordinamento di $n$ elementi
+- ha una altezza $h$
+- ha $f$ foglie
+
+Abbiamo già discusso prima che:
+- dalla definizione di permutazione sappiamo che 
+$$f \geq n!$$
+- dal lemma invece sappiamo che
+$$f \leq 2^h$$
+
+Quindi possiamo combinarli e ottenere
+
+$$n! \leq f \leq 2^h$$
+
+da cui otteniamo che
+
+$$n! \leq 2^h$$
+
+$$\log_2n! \leq \log_22^h$$
+
+$$\log_2n! \leq h\cdot\cancel{\log_22}$$
+
+$$h \geq \log_2n!$$
+
+Possiamo riscrivere il valore del fattoriale utilizzando una approssimazione chiamata *approssimazione di Stirling*:
+
+$$n! \approx \sqrt{2\pi n}\cdot\left(\frac{n}{e}\right)^n\cdot \left(1 + \Theta\left(\frac{1}{n}\right)\right)$$
+
+per valori di $n$ sufficientemente grandi considero solo la parte dominante, cioè $\large\left(\frac{n}{e}\right)^n$
+
+Considerando solo la parte dominante e notando che nella formula viene fatto il prodotto con valori maggiori o uguali di $1$ possiamo affermare con certezza che sarà una approssimazione minore rispetto al valore reale e quindi possiamo scrivere che
+
+$$h \geq \log_2n! \geq \log_2\left(\frac{n}{e}\right)^n$$
+
+
+possiamo riscrivere: $\log_2\left(\frac{n}{e}\right)^n$ come:
+
+$$\log_2\left(\frac{n}{e}\right)^n = n\log_2\left(\frac{n}{e}\right) = n(\log_2n - \log_2 e)$$
+
+$\log_2 (e)$ è una costante $\Theta(1)$. Inoltre possiamo ignorare la base del logaritmo in quanto siamo interessati all'andamento asintotico. Otteniamo quindi
+
+$$= n\log n$$
+
+Concludiamo quindi che 
+
+$$h \geq n\log n$$
+
+$$h = \Omega(n\log n)$$
+
+Cioè l'altezza dell'albero, che rappresenta il numero di scambi dell'algoritmo di ordinamento nel caso peggiore, è limitato inferiormente da $\Omega(n\log n)$
+
+Da questo teorema deriva un **corollario**: *Heap sort* e *Merge sort* sono degli algoritmi di ordinamento basati sul confronto ottimali, in quanto il loro limite superiore corrisponde con il limite inferiore
+
+
+## Counting sort
+
+Facendo delle opportune assunzioni sull'input è possibile creare degli algoritmi di ordinamento di complessità lineare.
+
+Il primo algoritmo è il **counting sort**
+
+L'assunzione che viene fatta è la seguente: i numeri da ordinare sono interi che vanno da un intervallo $[0, ..., k]$ fissato un $k$
+
+Quindi:
+- in input abbiamo l'array $A[1, ..., n]$ dove $A[j] \in [0, ..., k]$ con $n$ e $k$ come parametri dell'algoritmo
+- in output abbiamo l'array $B[1, ..., n]$ che è una permutazione in cui gli elementi sono ordinati
+- Abbiamo bisogno di memoria ausiliaria, un vettore $C[0, ..., k]$ contenente il numero di occorrenze di ogni valore
+
+```c++
+counting_sort(array A, array B, int n, int k) {
+array C[k];
+for (i = 0 to k) {			// Θ(k)
+	C[i] = 0
+}
+for (j = 1 to n) {			// Θ(n)
+	C[A[j]]++
+}
+for (i = 1 to k) {			// Θ(k)
+	C[i] = C[i] + C[i-1]
+}
+for (j = n down to 1) {		// Θ(n)
+	B[C[A[j]]] = A[j]
+	C[A[j]]--
+}
+```
+
+spiegazione dei cicli for:
+
+1. primo ciclo: inizializza il vettore delle occorrenze a $0$
+2. secondo ciclo: riempie il vettore delle occorrenze inserendo per ogni elemento quante volte è presente (l'elemento stesso viene usato come indice nel vettore delle occorrenze).
+nota che l'indice parte da $0$ in quanto il range di valori che possono assumere gli elementi presenti in $A$ vanno da $0$ a $k$
+3. terzo ciclo: nel vettore delle occorrenze andiamo ad inserire le somme prefisse, cioè quante volte è presente il numero stesso + tutti i numeri più piccoli di quel numero. così sappiamo per ogni numero quanti elementi ci sono prima di lui.
+4. quarto ciclo: riempiamo l'array di output, `C[A[j]]` ci restituirà quanti elementi ci sono prima dell'elemento in posizione `j`, se ad esempio ci restituisce `5` allora sappiamo che ci sono 4 elementi prima di quel elemento e quindi lui sarà in 5° posizione.
+Inoltre decrementiamo le occorrenze così nel caso di elementi uguali nell'array di input, gli elementi non si sovrappongono nell'array risultante.
+Scorriamo l'array dalla fine perché così riusciamo a rendere l'algoritmo **corretto ma anche stabile** (questo sarà molto importante per il prossimo algoritmo di ordinamento che vedremo)
+
+Esempio:
+![enter image description here](https://i.ibb.co/JqJCTqD/esempio-1.png)
+
+### Complessità
+
+Dalle complessità dei singoli cicli che abbiamo trovato nel codice abbiamo che la complessità è 
+$$\Theta(n + k)$$
+
+é conveniente usare questo algoritmo quanto $k = O(n)$, cioè quanto $k \leq n$ in quanto si otterrebbe un tempo lineare $\Theta(n)$
+
+se così non fosse non sarebbe per nulla conveniente, immaginiamo di avere un array in cui gli elementi sono dei numeri molto grandi e molto piccoli, allora la complessità sarà data dalla grandezza del vettore $C$.
+
+Ad esempio
+$A=[0, 10, ..., n^3, n]$ ipotizzando che $n^3$ sia l'elemento massimo del vettore allora il vettore $C$ dovrà essere grande $n^3$ elementi e quindi la complessità dell'algoritmo sarebbe $\Theta(n^3)$
+
+### Traslazione
+
+È possibile lavorare anche con numeri negativi, quello che dobbiamo fare è traslare gli elementi facendoli partire da 0
+
+$[-L, M]$ lo trasliamo come $[0, M + L]$
+di conseguenza anche gli elementi $x$ vanno traslati come $x + L$
+Deve comunque valere il limite superiore $M + L = O(n)$ per risultare efficiente con $\Theta(n)$
