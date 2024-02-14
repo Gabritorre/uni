@@ -224,3 +224,84 @@ $A=[0, 10, ..., n^3, n]$ ipotizzando che $n^3$ sia l'elemento massimo del vettor
 $[-L, M]$ lo trasliamo come $[0, M + L]$
 di conseguenza anche gli elementi $x$ vanno traslati come $x + L$
 Deve comunque valere il limite superiore $M + L = O(n)$ per risultare efficiente con $\Theta(n)$
+
+## Radix sort
+
+**Assunzione**: Tutti i numeri da ordinare sono composti da $d$ cifre. la posizione $1$ è la meno significativa mentre la cifra in posizione $d$ è la più significativa
+
+```c++
+radix_sort(array A, int d) {
+	for (i = 1 to d) {
+		// utilizzo di un ordinamento stabile per ordinare l'array basandosi sulla cifra i-esima
+		//ad esempio il counting_sort
+	}
+}
+```
+
+### Esempio di funzionamento
+
+![enter image description here](https://i.ibb.co/x3Fhx97/esempio.png)
+
+la correttezza dell'algoritmo si basa sul fatto che l'algoritmo di ordinamento sulle singole cifre è **stabile** (come il *counting sort*)
+
+Analizziamo la correttezza:
+lo facciamo per induzione sulla colonna da ordinare
+
+**Caso base**: $i = 1$, se infatti abbiamo solo una colonna che vado ad ordinare, dato che ho solo una colonna allora i numeri saranno composti da una cifra e quindi risulteranno ordinati.
+
+**Passo induttivo**: la nostra ipotesi induttiva sarà che le colonne $1, ..., i-1$ sono ordinate e voglio dimostrare che un algoritmo stabile sulla colonna $i$ rende le colonne $1, ..., i$ ordinate. Distinguo due casi:
+
+1. se 2 cifre nella colonna $i$ sono uguali, per la stabilità essi rimangono nello stesso ordine e per l'ipotesi induttiva sono ordinati
+2. se 2 cifre nella colonna $i$ sono diverse, l'algoritmo le ordina e quindi le mette nella posizione corretta
+
+### Analisi della complessità
+
+**Lemma**: Dati $n$ numeri di $d$ cifre dove ogni cifra può assumere fino a $k$ valori diversi. La procedura `radix_sort` ordina correttamente nel tempo $\Theta(d(n + k))$.
+
+Questo perche:
+- ad ogni iterazione viene chiamato un algoritmo stabile di complessità $\Theta(n + k)$ come il counting sort
+- vendono fatte $d$ iterazioni
+
+quindi in totale abbiamo una complessità $\Theta(d(n + k))$
+
+Se $k = O(n)$, in altre parole, se $k \leq n$ allora la complessità diventa $\Theta(dn)$ e inoltre se $d$ è costante allora la complessità diventa $\Theta(n)$
+
+## Scegliere i valore $d$ e $k$
+
+Vediamo come scegliere i valori dei parametri $d$ e $k$ per riuscire a rendere l'algoritmo con la complessità migliore possibile.
+
+Immaginiamo di avere un valore rappresentato in binario su 32 bit, Abbiamo quindi un valore con 32 cifre in cui ogni cifra può assumere 2 valori, assegnando i valori alle variabili avremo:
+$n = 1$ (lavoriamo con un solo numero per capire)
+$d = 32$
+$k = 2$
+
+La nostra complessità verrebbe calcolata come $\Theta(32(n + 2))$, noi potremmo però lavorare sui due parametri $d$ e $k$ per rendere la complessità migliore, infatti dato che il valore di $d$ viene moltiplicato mentre $k$ viene sommato, sarebbe più conveniente abbassare $d$ e aumentare di conseguenza $k$.
+
+Dividiamo, ad esempio, il nostro numero in blocchi di 8 bit (1 byte). Otterremo così $\frac{32}{8} = 4$ cifre, in cui ogni cifra può assumere $2^8=256$ valori diversi
+
+otteniamo così una complessità $\Theta(4(n + 256)$ che cresce molto più lentamente della precedente (per $n$ molto grande)
+
+### Generalizzazione
+
+Generalizzando questo concetto possiamo dire che:
+
+dati $n$ numeri composti da $b$ bit, avendo un intero $r \leq b$ ho che la procedura `radix_sort` ordina correttamente in tempo $\Theta\left(\frac{b}{r}(n + 2^r)\right)$
+
+La questione che rimane è come scegliere il valore di $r$: abbiamo che $r$ è sia un denominatore (per cui vorremmo che sia abbastanza grande) però è anche un esponente (per cui vorremmo che sia piccolo). Distinguiamo due casi
+
+1. se $b < \log_2 n$ (che sarebbe come scrivere $2^b <n$, ad esempio $b = 4$ e $n = 64$) allora per qualsiasi valore $r\leq b$ si ha che $n + 2^r$ risulta essere $\Theta(n)$, scelgo però il valore di $r$ più grande che mi è possibile, quindi $r = b$. Ottengo quindi:
+
+	$$\Theta\left(\frac{b}{b}\left(n + 2^b\right)\right) = \Theta(n)$$
+
+2. se $b \geq \log_2 n$ (cioè $2^b \geq n$) allora scegliamo $r$ in modo tale che sia massimo  sotto la condizione $n \geq 2^r$, cioè $r = \log_2 n$. ottengo quindi:
+
+	$$\Theta\left(\frac{b}{\log_2n}\left(n + 2^{\log_2n}\right)\right) = \Theta\left(\frac{b}{\log_2n}\left(n +n\right)\right)  =\Theta\left(\frac{nb}{\log_2 n}\right)$$
+
+
+se ad esempio $b = c\log_2n$ con $c$ costante allora ho che le cifre variano da
+$[0, ..., 2^{b}-1] \implies [0, ..., 2^{c\log_2n}-1] \implies [0, ..., n^c-1]$
+
+Abbiamo quindi un tempo di esecuzione del `radix_sort`:
+
+$$\Theta\left(\frac{nc\log_2n}{\log_2 n}\right) = \Theta(nc) = \Theta(n)$$
+
