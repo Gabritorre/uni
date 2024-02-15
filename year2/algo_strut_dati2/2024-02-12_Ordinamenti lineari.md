@@ -298,10 +298,12 @@ La questione che rimane è come scegliere il valore di $r$: abbiamo che $r$ è s
 	$$\Theta\left(\frac{b}{\log_2n}\left(n + 2^{\log_2n}\right)\right) = \Theta\left(\frac{b}{\log_2n}\left(n +n\right)\right)  =\Theta\left(\frac{nb}{\log_2 n}\right)$$
 
 
-se ad esempio $b = c\log_2n$ con $c$ costante allora ho che le cifre variano da
+	se ad esempio $b = c\log_2n$ con $c$ costante allora ho che le cifre variano da
 $[0, ..., 2^{b}-1] \implies [0, ..., 2^{c\log_2n}-1] \implies [0, ..., n^c-1]$
 
-Abbiamo quindi un tempo di esecuzione del `radix_sort`:
+	Abbiamo quindi un tempo di esecuzione del `radix_sort`:
 
-$$\Theta\left(\frac{nc\log_2n}{\log_2 n}\right) = \Theta(nc) = \Theta(n)$$
+	$$\Theta\left(\frac{nc\log_2n}{\log_2 n}\right) = \Theta(nc) = \Theta(n)$$
+
+
 
