@@ -1,5 +1,7 @@
 # Algebra lineare
 
+Insegnante: Giorgia Minello
+
 Lo scopo del corso è quello di presentare le idee fondamentali dell'algebra lineare, abituando gradualmente lo studente ai concetti astratti della matematica. Un'ampia varietà di applicazioni geometriche e pratiche accompagnerà l'introduzione delle nozioni teoriche.
 
 ## Obiettivi
@@ -27,3 +29,5 @@ Capacità di applicare tali conoscenze alla risoluzione di esercizi mirati.
 - Polinomio caratteristico.
 - Diagonalizzazione di una matrice.
 - Basi di autovettori.
+
+

@@ -1,5 +1,8 @@
 ﻿# Programmazione e laboratorio 1-2
 
+Insegnante: Andrea Marin
+Insegnante: Nicola Prezza
+
 Il corso si propone di introdurre gli elementi base della programmazione imperativa per formulare soluzioni algoritmiche a problemi di complessità limitata.
 
 Lo studente acquisirà conoscenza e comprensione dei principi fondanti dell'informatica, relativamente a linguaggi imperativi e algoritmi di base.  

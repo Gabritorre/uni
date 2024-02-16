@@ -1,5 +1,7 @@
 ﻿# Programmazione a oggetti mod.2
 
+Insegnante: Alvise Spanò
+
 complementa i contenuti del primo modulo per fornire una panoramica completa del mondo delle basi di dati dal punto di vista dell'amministratore e del programmatore.
 
 ## Obiettivi

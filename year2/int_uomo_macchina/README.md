@@ -1,5 +1,7 @@
 ﻿# Interazione uomo-macchina
 
+Insegnante: Fabio Pittarello
+
 fornire conoscenze sui fondamenti dell'interazione tra uomo e calcolatore e sui principali paradigmi che si sono sviluppati a partire dell'avvento dei sistemi interattivi.
 Nel corso lo studente verrà guidato a conoscere le metodologie di base per la progettazione e la valutazione di sistemi interattivi, con particolare riferimento alle metodologie di prototipazione, alle euristiche di usabilità e alle metodologie di valutazione. Lo studente verrà guidato a conoscere come queste metodologie possano integrarsi nelle fasi del ciclo di vita del software.
 Le conoscenze acquisite verrano utilizzate come punto di partenza per sviluppare abilità e competenze di progettazione di interfacce utente usabili, attraverso un'attività fondamentale che è il project work del corso, da progettare in gruppo attraverso l'approccio iterativo e interattivo tipico del design thinking.

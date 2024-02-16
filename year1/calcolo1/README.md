@@ -1,5 +1,7 @@
 # Calcolo 1
 
+Insegnante: Damiano Pasetto
+
 Il corso ha lo scopo di illustrare gli strumenti di base dell’Analisi Matematica per funzioni di una variabile reale.
 
 ## Obiettivi

@@ -1,5 +1,7 @@
 # Algoritmi e strutture dati
 
+Insegnante: Marcello Pelillo
+
 fornisce un'introduzione agli algoritmi, ovvero alla formalizzazione dei problemi, all'individuazione di soluzioni computazionali, e all'analisi di tali soluzioni, dal punto di vista della correttezza e dell'efficienza nell'uso di risorse. 
 Inoltre presenta varie strutture dati fondamentali e tecniche di base per la progettazione e l'analisi degli algoritmi.
 

@@ -1,5 +1,7 @@
 ﻿# Sistemi operativi mod.2
 
+Insegnante: Riccardo Focardi
+
 Illustrare la struttura e le funzioni di un moderno sistema operativo multiprogrammato.
 Il corso, dopo aver introdotto i concetti di base relativi ai sistemi operativi moderni,
 illustra i modelli teorici e le tecniche realizzative per la gestione dei processi, della memoria, del file system, dei sistemi di I/O e della memoria secondaria.

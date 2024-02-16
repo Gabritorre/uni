@@ -1,5 +1,7 @@
 # Matematica discreta
 
+Insegnante: Sabina Rossi
+
 Lo scopo è di presentare le idee fondamentali e gli aspetti computazionali della matematica del discreto, in contrapposizione a quella del continuo.
 Lo studente verrà introdotto gradualmente ai concetti astratti della matematica discreta.
 Le idee astratte della matematica discreta vengono introdotte mediante un'ampia varietà di applicazioni con particolare enfasi sugli aspetti formali, algebrici e computazionali.

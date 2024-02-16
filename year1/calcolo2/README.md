@@ -1,5 +1,7 @@
 ﻿# Calcolo 2
 
+Insegnante: Damiano Pasetto
+
 Il corso ha lo scopo di illustrare gli strumenti di base per la soluzione di equazioni differenziali ordinarie di primo e secondo ordine e dell'analisi di finzioni reali di due o più variabili.
 
 ## Obiettivi

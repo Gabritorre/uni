@@ -1,5 +1,7 @@
 # Programmazione a oggetti mod.1
 
+Insegnante: Pietro Ferrara
+
 Acquisire la conoscenza e la comprensione dei principali paradigmi di programmazione e di acquisire la capacità di progettare e implementare software.
 L'obiettivo dell’insegnamento è fornire conoscenze relative al paradigma di programmazione ad oggetti nonché la conoscenza specifica del linguaggio Java.
 

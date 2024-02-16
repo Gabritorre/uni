@@ -1,5 +1,7 @@
 ﻿# Basi di dati mod.1
 
+Insegnante: Alessandra Raffaetà
+
 intende fornire i concetti fondamentali delle basi di dati e le tecniche per la loro progettazione. Si prefigge inoltre di far sperimentare allo studente le nozioni acquisite attraverso l'uso di sistemi di gestione di basi di dati, con particolare attenzione per quelli di tipo relazionale con linguaggio SQL. Il corso fornisce infine i concetti principali per lo sviluppo di applicazioni che utilizzano prevalentemente basi di dati, in particolare applicazioni web, focalizzando l'attenzione sui meccanismi di comunicazione fra linguaggi di programmazione e sistema di gestione di basi di dati.
 
 ## Obiettivi

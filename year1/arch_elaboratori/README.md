@@ -1,5 +1,7 @@
 # Architettura degli elaboratori mod.1
 
+Insegnante: Marta Simeoni
+
 Il corso permette di acquisire i fondamenti teorici e le tecniche per la progettazione di un elaboratore nelle sue componenti principali: Processore - Input/Output - Memoria.
 Permette altresì di approfondire la conoscenza sui livelli macchina/assembler di un calcolatore convenzionale.
 Vengono inoltre fornite le conoscenze sulle misure e le tecniche usate per valutare le prestazioni di un calcolatore.

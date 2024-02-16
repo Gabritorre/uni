@@ -1,5 +1,7 @@
 # Probabilità e statistica
 
+Insegnante: Isadora Antoniano Villalobos
+
 acquisire la conoscenza e la comprensione
 dei principali strumenti del calcolo delle probabilità in uso nelle discipline informatiche.
 L'obiettivo dell’insegnamento è fornire conoscenze di calcolo delle probabilità, nonché abilità nell'utilizzo di programmi specifici per il calcolo, la simulazione e la presentazione dei risultati.
