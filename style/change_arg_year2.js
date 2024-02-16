@@ -8,7 +8,7 @@ let courses = {
 	basi_dati2 : [],
 	int_uomo_macchina : ["L'uomo"],
 	prog_ogg2 : ["Introduzione"],
-	sis_operativi2 : []
+	sis_operativi2 : ["Comunicazione tra processi e thread"]
 };
 
 function show_arguments(subj) {
