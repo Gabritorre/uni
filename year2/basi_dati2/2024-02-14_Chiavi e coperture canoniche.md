@@ -205,3 +205,80 @@ $\text{Cand} = [BD::(ACEF)]$
 	$\text{Keys} = [BDA, BDE]$
 
 Dato che non ci sono candidati rimanenti l'algoritmo termina e le chiavi trovate sono $[BDA, BDE]$
+
+
+## Forma canonica
+
+Rendere in **forma canonica** un insieme di dipendenze funzionali $F$ significa rappresentare tale insieme rispettando delle regole che servono a standardizzare la sua rappresentazione.
+
+Due insiemi di dipendenze $F$ e $G$ sono equivalenti $(F\equiv G)$ se e solo se  $F^+ = G^+$
+
+regole della forma canonica:
+
+1. il **numero di elementi dipendenti** (quelli alla destra) **deve essere 1** per ogni dipendenza
+2. $X$ **non contiene attributi estranei**:
+	gli attributi estranei sono quegli attributi che stanno alla sinistra e che anche se rimossi comunque la dipendenza rimane
+3. **non sono presenti dipendenze ridondanti**
+	una dipendenza è ridondante se essa si può ricavare dalle altre dipendenze
+
+L'algoritmo per trasformare un insieme di dipendenze $F$ in forma canonica (operazione anche detta trovare la **copertura canonica** di $F$) è il seguente
+
+$\text{function Canonize}(F)$
+$\hspace{5mm}G \leftarrow\{X \rightarrow A \mid \exists Y: X \rightarrow Y \in F \wedge A \in Y\}$
+$\hspace{5mm}\textbf{for all } X \rightarrow A \in G$ such that $|X|>1 \textbf{ do}$
+$\hspace{12mm}Z \leftarrow X$
+$\hspace{12mm}\textbf{for all } B \in X \textbf{ do}$
+$\hspace{18mm}\textbf{if } A \in(Z \backslash\{B\})_G^{+}\textbf{ then}$
+$\hspace{24mm}Z \leftarrow Z \backslash\{B\}$
+$\hspace{12mm}G \leftarrow(G \backslash\{X \rightarrow A\}) \cup\{Z \rightarrow A\}$
+$\hspace{5mm}\textbf{for all } X \rightarrow A \in G \textbf{ do}$
+$\hspace{12mm}\textbf{if } A \in X_{G \backslash\{X \rightarrow A\}}^{+}\textbf{ then}$
+$\hspace{18mm}G \leftarrow G \backslash\{X \rightarrow A\}$
+$\hspace{5mm}\textbf{return } G$
+
+consiste sostanzialmente in 3 passi:
+
+1. decomporre le dipendenze in modo da avere attributi singoli alla destra
+2. tra le dipendenze rimanenti considera quelli che hanno più attributi a sinistra e cancelliamo gli attributi estranei, per farlo:
+	- togli un attributo
+	- calcola la chiusura
+	- se $Y$ è compreso nella chiusura allora l'attributo tolto era estraneo
+3. togliamo le dipendenze ridondanti, per farlo:
+	- ipotizziamo di rimuovere una dipendenza
+	- calcoliamo la chiusura rispetta alla $X$ della dipendenza tolta
+	- se la chiusura contiene tutti gli attributi allora la dipendenza rimossa era ridondante
+
+
+Ad esempio, trovare la copertura canonica di 
+$$F = \{A\rightarrow BC, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$$
+
+indichiamo la copertura canonica con $G$
+1. decomponiamo le dipendenze con più attributi a destra
+$$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$$
+
+2. consideriamo le dipendenze con più attributi a sinistra, nel nostro caso abbiamo solo $AB \rightarrow C$, proviamo a rimuovere l'attributo $A$:
+$\{AB\} \backslash \{A\} = B$
+Calcoliamo la chiusura di $B$, $B^+_G = BC$
+dato che nella chiusura è presente l'attributo $Y$ della dipendenza che abbiamo considerato, cioè $C$, allora l'attributo $A$ che abbiamo rimosso è estraneo (è come dire che $C$ dipende da $B$ e non da $A$).
+Quindi al posto di $AB \rightarrow C$ scriviamo $B \rightarrow C$
+$$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C, A \rightarrow B, B \rightarrow C\}$$
+	
+
+3. rimuoviamo le dipendenze ridondanti
+
+	- posso subito eliminare le dipendenze $A \rightarrow B$ e $B \rightarrow C$ in quanto appaiono due volte nell'insieme
+	$$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C\}$$
+	- verifico se $A \rightarrow B$ è ridondante
+
+		$A^+_{G \backslash\{A \rightarrow B\}} = AC \hspace{10mm}$ dato che non riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $A\rightarrow B$ non è ridondante
+	- verifico se $A \rightarrow C$ è ridondante
+
+		$A^+_{G \backslash\{A \rightarrow C\}} = ABC \hspace{10mm}$ dato che riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $A\rightarrow C$ è ridondante
+	
+	- verifico se $B \rightarrow C$ è ridondante
+
+		$B^+_{G \backslash\{B \rightarrow C\}} = B\hspace{10mm}$ dato che non riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $B\rightarrow C$ non è ridondante
+
+Quindi la copertura canonica di $F$ è
+
+$$G =\{A\rightarrow B, B \rightarrow C\}$$

@@ -40,7 +40,9 @@ Realizziamo prima una raccolta delle notazione che utilizziamo successivamente:
 - $r$ è una riga della tabella $R$
 - $t[X]$ è una riga che considera solo l'insieme di attributi $X$
 
-**dipendenza funzionale**: Avendo due insiemi di attributi $X$ e $Y$ la dipendenza funzionale si rappresenta come $X \rightarrow Y$ e sta a significare i valori assunti dagli attributi $Y$ dipendono dal valore degli attributi $X$. Ciò significa che se prendiamo due righe diverse $t_1, t_2$ se queste due righe hanno dei valori uguali sugli attributi $X$ allora devono avere dei valori uguali anche negli attributi $Y$.
+**dipendenza funzionale**: Avendo due insiemi di attributi $X$ e $Y$ la dipendenza funzionale si rappresenta come $X \rightarrow Y$ e sta a significare i valori assunti dagli attributi $Y$ dipendono dal valore degli attributi $X$. 
+
+Ciò significa che per ogni coppia di righe diverse $t_1, t_2$ se queste due righe hanno dei valori uguali sugli attributi $X$ allora devono avere dei valori uguali anche negli attributi $Y$ (quest'ultima proprietà viene chiamata **proprietà di soddisfacibilità**).
 
 ad esempio se in una tabella consideriamo $X = \{\text{Paese}\}$ e $Y = \{\text{LinguaUfficiale}\}$
 
