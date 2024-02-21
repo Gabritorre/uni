@@ -19,6 +19,10 @@
 <li><a href="#linguaggio-orientato-agli-oggetti">Linguaggio orientato agli oggetti</a></li>
 <li><a href="#classe-e-oggetto">Classe e oggetto</a></li>
 <li><a href="#tipi-statici-e-dinamici">Tipi statici e dinamici</a></li>
+<li><a href="#classi-astratte-e-interfacce">Classi astratte e interfacce</a></li>
+<li><a href="#tipi-generici-vs-object">Tipi generici vs Object</a></li>
+<li><a href="#parametri-formali-e-attuali">Parametri formali e attuali</a></li>
+<li><a href="#tipo-argomento-e-tipo-parametro">Tipo argomento e tipo parametro</a></li>
 </ul>
 </li>
 </ul>
@@ -51,6 +55,26 @@ Ad esempio, una istanza della classe Rettangolo può essere sempre usata dove ci
 <li>il tipo dinamico è deciso in <strong>runtime</strong>, cioè il tipo dell’oggetto nella fase di assegnamento</li>
 </ul>
 <p>In Java possiamo dire di avere un <strong>dispatch dinamico sul ricevitore</strong> su cui è chiamata la funzione mentre abbiamo un <strong>dispatch statico sui parametri</strong> delle funzioni.</p>
+<h2 id="classi-astratte-e-interfacce">Classi astratte e interfacce</h2>
+<p>il significato di classi astratte e interfacce è molto simile tra loro, sono entrambi dei sistemi per creare dei sottotipi. La necessità di avere questa distinzione viene dal fatto che Java è un linguaggi in cui <strong>non è presente l’ereditarietà multipla</strong>, quindi puoi ereditare da una sola classe e poi implementare più interfacce.</p>
+<h2 id="tipi-generici-vs-object">Tipi generici vs Object</h2>
+<p>Da una analisi superficiale potrebbe sembrare che usare i tipi generici oppure Object sia la stessa cosa, in parte è vero in quanto entrambi permettono di poter mettere qualsiasi cosa come tipo di dato. Il problema di Object è che se venisse come tipo di dato per una collezione di dati, in tale collezione ci potrebbero finire dentro qualsiasi oggetto però noi saremo abbastanza limitati sulle operazioni che possiamo fare su tali oggetti:</p>
+<ul>
+<li>o utilizziamo solo metodi della classe Object.</li>
+<li>o facciamo dei cast, con il rischio però di fare errori non conoscendo i veri tipi degli oggetti.</li>
+</ul>
+<p>Usando i tipi dinamici questo problema non si pone in quanto al momento della inizializzazione della collezione viene specificato il tipo dei dati che ci andremo ad inserire.</p>
+<p>Nella documentazione di Java ci sono vari metodi che nonostante questo utilizzano comunque Object (vedi il metodo <code>contains</code> di ArrayList), questo perché Java ha introdotto i tipi dinamici svariate versioni dopo il rilascio iniziale e quindi per mantenere la compatibilità con le vecchie versioni Java utilizza ancora Object.</p>
+<h2 id="parametri-formali-e-attuali">Parametri formali e attuali</h2>
+<ul>
+<li>Parametri formali: variabili presenti nella dichiarazione dei parametri dei metodi e che vengono poi utilizzati all’interno del metodo</li>
+<li>parametri attuali: gli argomenti usati nella chiamata della funzione</li>
+</ul>
+<h2 id="tipo-argomento-e-tipo-parametro">Tipo argomento e tipo parametro</h2>
+<ul>
+<li>Tipi parametro: sono i nomi dei tipi generici messi nella fase di dichiarazione della classe o del metodo, che conterranno i tipi reali che verranno passati.</li>
+<li>Tipi argomento: sono i tipi reali che vengono passati nella fase di dichiarazione di una classe oppure di chiamata di un metodo</li>
+</ul>
 
     </div>
   </div>
