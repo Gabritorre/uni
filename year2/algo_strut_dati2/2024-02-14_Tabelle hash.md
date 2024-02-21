@@ -32,6 +32,8 @@ Nell'indice $j$ sarà contenuto un puntatore alla testa della lista, se sono pre
 
 Vediamo come implementare le operazioni di: inserimento, ricerca e cancellazione:
 
+## Operazioni con liste di collisione
+
 ### Inserimento
 
 ```c++
@@ -117,4 +119,172 @@ Dividiamo i casi di ricerca con successo e senza successo:
 Abbiamo capito che nel caso medio la complessità è $\Theta(1 +\alpha)$.
 Se però $n = O(m)$, cioè se ci sono più celle che elementi da salvare, avremo $\alpha = \frac{n}{m} = \frac{O(m)}{m} = O(1)$, e quindi la ricerca sarà costante.
 
+## Funzioni di hash
 
+Prima di passare alla tecnica di indirizzamento aperto vediamo come possono venir realizzate le funzioni di hash
+
+Una funzione hash prende una chiave come input e la manipola con delle operazioni matematiche per restituire in output un numero intero associato a quella chiave. 
+Lo scopo della funzione di hash è quello di riuscire a **distribuire gli elementi in modo uniforme** in tutta la tabella 
+
+Solitamente però le funzioni hash assumono che le chiavi siano dei numeri naturali.
+
+Quindi Tutto quello che vedremo sarà nell'ipotesi di avere delle **chiavi naturali**
+
+Vediamo 2 metodi di hashing:
+
+- metodo della divisione
+- metodo della moltiplicazione
+
+## Metodo della divisione
+
+Nel metodo della divisione la funzione di hash consiste nel prendere il resto della divisione tra chiave ($k$) e grandezza della tabella ($m$) (quindi l'operazione di modulo)
+
+$$h(k) = k \text{ mod } m$$
+
+il vantaggio di questa implementazione è sicuramente la facilità di realizzazione.
+D'altra parte però abbiamo due grandi svantaggi:
+1. La dimensione della tabella viene reso un parametro critico per la funzione di hash
+2. come conseguenza del precedente punto, la dimensione della tabella non va scelta casualmente in quanto alcuni valori di $m$ funzionano peggio di altri. Ad esempio bisognerebbe evitare le potenze di 2 e anche numero vicini alle potenze di 2 come grandezza della tabella (in quanto il risultato dell'hash dipenderebbe solo dagli ultimi $p$ bit della chiave, dove $p$ è l'esponente della potenza di 2).
+
+Una buona scelta per la grandezza della tabella è un **numero primo abbastanza distante dalle potenze di 2 e di 10**
+
+Vediamo un esempio:
+Vogliamo memorizzare $n = 2000$ chiavi, prevedendo una media di 3 collisioni.
+Scelgo un $m$ vicino a $\frac{2000}{3} = 666.\bar6$ ad esempio $m = 701$
+
+
+## Metodo della moltiplicazione
+
+L'idea alla base di questo metodo sta nel fatto che, data una chiave (naturale) la trasformiamo in un numero reale compreso tra $[0, 1[$ per poi applicare la funzione di hash seguente:
+
+$$h(k) = \lfloor m\cdot k\rfloor \hspace{10mm}\text{dove } 0 \leq k < 1$$
+
+
+Gli step sono i seguenti:
+
+1. Fisso una costante $0<A<1$ 
+2. calcolo $A \cdot k$ che genererà un numero con la virgola
+3. estraggo la parte frazionaria facendo il modulo di 1
+
+$(A \cdot k) \text{ mod } 1$
+
+Dunque la funzione di hash calcolerà il risultato con il seguente calcolo
+
+$$h(k) = \lfloor m \cdot(k \cdot A \text{ mod } 1)\rfloor$$
+
+
+### Vantaggi
+
+- la scelta di $m$ non è critica, quindi non ci sono valori peggiori di altri
+- il calcolo funziona bene con qualsiasi valore di $A$
+- È stato trovato però un valore di $A$ che funziona particolarmente bene, questo numero è l'inverso del rapporto aureo:
+	$A \simeq \frac{\sqrt{5} - 1}{2} = 0.618034$
+
+
+### Semplificare il calcolo della funzione hash
+
+Vediamo come semplificare il calcolo della funzione di hash del metodo del prodotto
+
+Sia $w$ la lunghezza di una parola in memoria.
+Assumiamo che una chiave $k$ entri in una singola parola.
+Scegliamo un intero $0 < q < 2^w$ e $m = 2^p$ con $0<p<w$
+
+Poniamo $A = \frac{q}{2^w}$ che sarà sicuramente compreso tra $[0,1[$ per come abbiamo limitato i parametri
+
+Calcolo:
+$$A\cdot k = \frac{k\cdot q}{2^w}$$
+
+che a sua volta sarà un numero frazionario, di questo numero a noi ci interessa solo la parte frazionaria
+
+![enter image description here](https://i.ibb.co/kQpqq5y/image.png)
+
+Quindi la nostra funzione hash originale $h(k) = \lfloor m \cdot(k \cdot A \text{ mod } 1)\rfloor$ la possiamo riscrivere come
+
+$$h(k) = \left\lfloor 2^p\left(\frac{k\cdot q}{2^w} \mod 1\right)\right\rfloor$$
+
+cioè consideriamo i $p$ bit più significativi della parte frazionaria del prodotto.
+Può essere utile fare uno shift a destra in modo da spostare questi bit sulla destra nelle posizioni meno significative (riempiendo con degli 0 le posizioni che si sono liberate a sinistra)
+
+$$h(k) = \left\lfloor 2^p\left(\frac{k\cdot q}{2^w} \mod 1\right)\right\rfloor >> (w - p)$$
+
+
+## Indirizzamento aperto
+
+Vediamo ora il modo di gestire le collisioni con l'indirizzamento aperto. A differenza dell'altro metodo, questo non fa uso di strutture esterne, ma tutto viene salvato nella tabella stessa.
+Ogni cella contiene o una elemento oppure un NIL.
+
+Vediamo come si comporta questa metodo per cercare una chiave $k$:
+
+1. calcola la funzione hash $h(k)$
+2. si **ispeziona** la cella all'indirizzo dato dalla funzione hash
+	- se la cella contiene la chiave $k$ la ricerca ha avuto successo
+	- se la cella contiene NIL la ricerca ha avuto un insuccesso
+	- se la cella contiene una chiave che non è $k$ allora bisogna trovare un altro indice basandosi su $k$ e all'**ordine di ispezione** (cioè il numero di ispezioni fatte fino a quel momento)
+	Si continua ad ispezionare fino a che:
+		- trovo $k$ (successo)	
+		- trovo NIL (insuccesso)
+		- dopo $m$ ispezioni, cioè ho ispezionato tutta la tabella (insuccesso)
+
+In questo caso la funziona hash va modificata in modo da prendere un parametro aggiuntivo (l'ordine di ispezione). Diremo che $h(k, i)$ rappresenta la posizione della chiave $k$ dopo $i$ ispezioni fallite, inizialmente $i=0$
+
+Si richiede che i **valori generati dalle funzioni di hash** $h(k,i)$, dove $i$ varia da $0,...m-1$ e $k$ rimane fisso **siano una permutazione** di $<0, ..., m-1>$ in quanto dobbiamo poter visitare tutte le celle per stabilire se $k$ è presente o meno. Inoltre si tratta di una permutazione in quanto non è detto che si cerchi $k$ in modo sequenziale tra le celle.
+
+
+## Operazioni con indirizzamento aperto
+
+Lavoreremo sotto la seguente ipotesi: gli elementi della tabella contengono direttamente la chiave (quindi non usiamo il puntatore alla chiave)
+
+### Inserimento
+
+postcondizione: il seguente metodo restituisce l'indice della cella dove ha memorizzato $k$, oppure segnala un errore se la tabella è piena
+```c++
+hash_insert(T, k) {
+	i = 0;
+	trovata = false;
+	repeat:
+		j = h(k, i);
+		if (T[j] == NIL) {
+			T[j] = k;
+			trovato = true;
+		}
+		else {
+			i++;
+		}
+	until (trovata == true || i == m);
+	if trovata {
+		return j;
+	}
+	else {
+		err "overflow della tabella"
+	}
+}
+```
+
+
+### Ricerca
+
+postcondizione: ritorna $j$ se la cella $j$ contiene l'elemento $k$ oppure ritorna NIL se la chiave $k$ non è presente nella tabella
+ 
+```c++
+hash_search(T, k) {
+	i = 0;
+	trovata = false;
+	repeat:
+		j = h(k, i);
+		if (T[j] == k) {
+			trovato = true;
+		}
+		else {
+			i++;
+		}
+	until (trovata == true || T[j] == NIL || i == m);
+	if trovata {
+		return j;
+	}
+	else {
+		return NIL
+	}
+}
+```
+
+Nota che la condizione `T[j] == NIL` si deve al fatto che se dopo varie celle occupate da chiavi che non sono $k$ si incontra una cella vuota allora la chiave $k$ dovrebbe essere stata messa in quella posizione, se non c'è significa che non è presente in tutta la tabella
