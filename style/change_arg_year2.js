@@ -7,7 +7,7 @@ let courses = {
 	sis_operativi1 : ["Introduzione", "Esercizi introduzione", "Processi e thread", "Scheduling","Esercizi Processi thread e scheduling", "Gestione della memoria", "Memoria virtuale", "Segmentazione", "File system", "Memoria secondaria", "Caso di studio Linux", "Caso di studio Windows"],
 	basi_dati2 : ["Anomalie e Dipendenze funzionali", "Chiavi e coperture canoniche", "Esercizi dipendenze"],
 	int_uomo_macchina : ["L'uomo"],
-	prog_ogg2 : ["Introduzione"],
+	prog_ogg2 : ["Introduzione", "Classi innestate"],
 	sis_operativi2 : ["Comunicazione tra processi e thread", "Creazione di processi"]
 };
 

@@ -56,3 +56,24 @@ Nella documentazione di Java ci sono vari metodi che nonostante questo utilizzan
 
 - Tipi parametro: sono i nomi dei tipi generici messi nella fase di dichiarazione della classe o del metodo, che conterranno i tipi reali che verranno passati.
 - Tipi argomento: sono i tipi reali che vengono passati nella fase di dichiarazione di una classe oppure di chiamata di un metodo
+
+## Eccezioni checked e unchecked
+
+Quando stiamo implementando delle nostre classi,  facciamo un metodo che può non andare a buon fine, come gestiamo quel caso?
+- ritornare `null`
+- lanciare una eccezione checked
+- lanciare una eccezione unchecked
+
+Prendiamo ad esempio un metodo `get(int indice)` di una collezione di oggetti, esso può fallire nel caso si dia un indice al di fuori del limite della collezione.
+- ritornare `null` non è una buona soluzione in quanto non esprime chiaramente che si è andati fuori dal limite dell'array e soprattutto bisognerebbe fare un `if` ogni volta che si chiama il metodo
+- lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione chekced oppure unckecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.
+Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto sono eccezioni generiche.
+
+Per capire quale usare possiamo chiederci: "Se un utente cattura la mia eccezione checked può fare qualcosa di utile?", "l'eccezione che lancio fa parte di un possibile risultato del metodo oppure rappresenta un errore raro"
+
+Nel nostro caso, se il chiamante fa del codice corretto, è molto inusuale uscire dai limiti della collezione, inoltre se il chiamante prende l'eccezione non può fare niente di utile, inoltre gestire ogni get con dei try-catch risulta essere molto scomodo e allunga inutilmente il codice. Quindi si opta per una eccezione unchecked.
+
+
+### Sottotipo di una eccezione unchecked
+
+potremmo chiederci se ha senso creare un sottotipo di una eccezione unchecked, la risposta è che non ha molto senso in quanto con una eccezione unchecked si prevede che il chiamante non gestirà le eccezioni con un try catch, quindi creare il proprio tipo speciale non avrebbe molto senso perche non verrebbe catturata mai.

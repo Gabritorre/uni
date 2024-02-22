@@ -1,0 +1,205 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-02-22_Classi innestate</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#classi-innestate">Classi innestate</a>
+<ul>
+<li><a href="#classi-static-e-non-static">Classi Static e non static</a></li>
+<li><a href="#inner-class">Inner class</a></li>
+<li><a href="#local-class">Local class</a></li>
+<li><a href="#anonymous-class">Anonymous class</a></li>
+<li><a href="#static-nested-class">static nested class</a></li>
+<li><a href="#shadowing">Shadowing</a></li>
+<li><a href="#come-simulare-una-classe-statica-top-level">Come simulare una classe statica top-level</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="classi-innestate">Classi innestate</h1>
+<p>In Java è possibile definire una classe dentro un’altra, in questo caso la classe più esterna viene chiamata <em>top-level class</em> oppure <em>enclosing class</em> e quella interna viene chiamata <em>nested class</em>.</p>
+<p>Utilità delle classi innestate:</p>
+<ul>
+<li>È un modo per <strong>raggruppare logicamente le classi</strong> che vengono utilizzate in un unico posto</li>
+<li><strong>Migliora l’incapsulamento</strong> Se abbiamo 2 classi <em>top-level</em> A e B in cui B è l’unica classe del nostro universo che ha bisogno di accedere agli attributi/metodi di A, allora A sarà obbligata a dare una visibilità sufficiente a tali attributi/metodi. Se però B fosse una classe innestata allora tali attributi/metodi potrebbero essere messi privati e comunque B potrebbe accederci</li>
+<li><strong>Migliore leggibilità e manutenibilità del codice</strong>: in quanto la creazione del codice risulta posizionato vicino a dove viene utilizzato.</li>
+</ul>
+<p>Nota che non si tratta in alcun modo di ereditarietà e sottotipi</p>
+<h2 id="classi-static-e-non-static">Classi Static e non static</h2>
+<p>Le classi innestate possono essere di due tipi, <em>static</em> oppure <em>non-static</em>. Ricordiamo che le <strong>classi <em>top-level</em> non possono essere statiche</strong></p>
+<ul>
+<li>le classi innestate non statiche vengono chiamate <em><strong>inner classes</strong></em></li>
+<li>le classi innestate statiche vengono chiamate <em><strong>static nested classes</strong></em></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">class</span> <span class="token class-name">InnerClass</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StaticNestedClass</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="inner-class">Inner class</h2>
+<p>Una classe innestata non statica (<em>inner class</em>) <strong>ha accesso ai membri della classe esterna</strong>, anche se questi sono privati.</p>
+<p>Una istanza della <em>inner class</em> può esistere solo all’interno dell’istanza della sua classe esterna.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+
+    String outerField <span class="token operator">=</span> <span class="token string">"Outer field"</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> String staticOuterField <span class="token operator">=</span> <span class="token string">"Static outer field"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">InnerClass</span> <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">accessMembers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>outerField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>staticOuterField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        OuterClass outerObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        OuterClass<span class="token punctuation">.</span>InnerClass innerObject <span class="token operator">=</span> outerObject<span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token class-name">InnerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerObject<span class="token punctuation">.</span><span class="token function">accessMembers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se non si vuole che la classe esterna possa accedere ai membri della <em>inner class</em> allora la si può mettere con visibilità <em>private</em> oppure <em>protected</em> (ricorda che questo non si può fare con la classe esterna)</p>
+<p>Esistono due tipi speciali di <em>inner class</em>:</p>
+<ul>
+<li><em>local classes</em></li>
+<li><em>Anonymous Classes</em></li>
+</ul>
+<h2 id="local-class">Local class</h2>
+<p>Le classi locali sono delle classi che sono <strong>definite all’interno di un blocco di codice</strong>, nella maggior parte dei casi all’interno del corpo di un metodo (ma è anche possibile farlo dentro un <code>if</code> oppure dentro un <code>for</code> ad esempio)</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LocalClassExample</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> String regularExpression <span class="token operator">=</span> <span class="token string">"[^0-9]"</span><span class="token punctuation">;</span>
+  
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">validatePhoneNumber</span><span class="token punctuation">(</span>String phoneNumber1<span class="token punctuation">,</span> String phoneNumber2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">final</span> <span class="token keyword">int</span> numberLength <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">class</span> <span class="token class-name">PhoneNumber</span> <span class="token punctuation">{</span>		<span class="token comment">//local class</span>
+            String formattedPhoneNumber <span class="token operator">=</span> null<span class="token punctuation">;</span>
+
+            <span class="token function">PhoneNumber</span><span class="token punctuation">(</span>String phoneNumber<span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token comment">// verifica se il numero passato in input è valido (utilizzando "regularExpression" e "numberLength")</span>
+				<span class="token comment">// se valido lo salva in "formattedPhoneNumber"</span>
+            <span class="token punctuation">}</span>
+
+            <span class="token keyword">public</span> String <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> formattedPhoneNumber<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		
+	    PhoneNumber myNumber1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhoneNumber</span><span class="token punctuation">(</span>phoneNumber1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	    PhoneNumber myNumber2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhoneNumber</span><span class="token punctuation">(</span>phoneNumber2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	    
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>myNumber1<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> 
+	           System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"First number is "</span> <span class="token operator">+</span> myNumber1<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>myNumber2<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span>
+	           System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Second number is "</span> <span class="token operator">+</span> myNumber2<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">validatePhoneNumber</span><span class="token punctuation">(</span><span class="token string">"123-456-7890"</span><span class="token punctuation">,</span> <span class="token string">"456-7890"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Una classe locale può accedere agli elementi della classe esterna solo se questi sono esplicitamente oppure “effettivamente” <strong>final</strong>, cioè o vengono dichiarati esplicitamente come <em>final</em> oppure non mettendo <em>final</em> e non modificando il loro valore dopo l’inizializzazione.</p>
+<p>Nel caso di classe locale al corpo di un metodo, la classe può accedere anche ai parametri del metodo.</p>
+<h2 id="anonymous-class">Anonymous class</h2>
+<p>Le classi anonime sono esattamente come le classi locali, solo che esse possono essere <strong>dichiarate e istanziate allo stesso momento</strong>. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.</p>
+<p><strong>Sono utili nel caso si voglia utilizzare una classe locale solo una volta</strong></p>
+<p>Dato che non viene fornito un nome, per definire la classe ci si appoggia ad una interfaccia da implementare oppure ad una classe da cui estendere.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">MyInterface</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnonymousClassExample</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        MyInterface anonymousObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Implementazione di myMethod tramite classe anonima"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Chiamata al metodo dell'oggetto della classe anonima</span>
+        anonymousObject<span class="token punctuation">.</span><span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="static-nested-class">static nested class</h2>
+<p>Una classe innestata statica (<em>static nested class</em>) <strong>non ha accesso ai membri della classe esterna</strong></p>
+<p>La classe statica non è legata ad una istanza della classe esterna.<br>
+Possiamo dire che una <em>static nested class</em> si comporta come una classe <em>top-level</em></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+
+    String outerField <span class="token operator">=</span> <span class="token string">"Outer field"</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> String staticOuterField <span class="token operator">=</span> <span class="token string">"Static outer field"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StaticNestedClass</span> <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">accessMembers</span><span class="token punctuation">(</span>OuterClass outer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// Compiler error: Cannot make a static reference to the non-static</span>
+            <span class="token comment">//     field outerField</span>
+            <span class="token comment">// System.out.println(outerField);</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>outer<span class="token punctuation">.</span>outerField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>staticOuterField<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//posso accedere al campo statico esterno</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        StaticNestedClass staticNestedObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StaticNestedClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        OuterClass outerObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+        staticNestedObject<span class="token punctuation">.</span><span class="token function">accessMembers</span><span class="token punctuation">(</span>outerObject<span class="token punctuation">)</span><span class="token punctuation">;</span>              
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se si vuole istanziare <code>StaticNestedClass</code> dall’esterno si deve fare:</p>
+<pre class=" language-java"><code class="prism  language-java">OuterClass<span class="token punctuation">.</span>StaticNestedClass staticNestedObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass<span class="token punctuation">.</span>StaticNestedClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="shadowing">Shadowing</h2>
+<p>Quando in una <em>nested class</em> dichiariamo un membro con lo stesso nome di un membro della classe esterna, allora il nuovo membro nasconde (<em>shadows</em>) il membro della classe esterna. In questo caso dalla classe innestata è possibile riferirsi direttamente ai membri locali, ma per riferirsi ai membri della classe esterna bisogna specificarne il nome.</p>
+<p>Vediamo un esempio in cui si verifica uno <em>shadowing</em> 2 volte</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ShadowTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">FirstLevel</span> <span class="token punctuation">{</span>		<span class="token comment">//inner class</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>		<span class="token comment">//shadowing 1</span>
+
+        <span class="token keyword">void</span> <span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//shadowing 2</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"x = "</span> <span class="token operator">+</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//23</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"this.x = "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//1</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ShadowTest.this.x = "</span> <span class="token operator">+</span> ShadowTest<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//0</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ShadowTest st <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ShadowTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ShadowTest<span class="token punctuation">.</span>FirstLevel fl <span class="token operator">=</span> st<span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token class-name">FirstLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fl<span class="token punctuation">.</span><span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="come-simulare-una-classe-statica-top-level">Come simulare una classe statica top-level</h2>
+<p>Come detto una classe <em>top-level</em> non può essere statica, ma possiamo fare dei magheggi per fare in modo che si comporti come tale:</p>
+<ol>
+<li>dichiarare la classe come <code>final</code> in modo che non possa essere ereditata</li>
+<li>fare il costruttore con visibilità <code>private</code></li>
+<li>rendi tutti i membri statici</li>
+</ol>
+
+    </div>
+  </div>
+</body>
+
+</html>
