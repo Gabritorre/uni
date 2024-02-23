@@ -120,6 +120,31 @@ Nota 2: usando la combinazione <code>Ctrl + c</code> si invia un segnale di term
 <li>se siamo sul padre il valore di ritorno della fork ci da il pid del figlio</li>
 </ul>
 <p>Come si vedeva nel codice, quando il valore di ritorno della <code>fork</code> è negativo significa che la creazione del processo è fallita, questo solitamente accade quando non c’è sufficiente memoria per allocare il processo.</p>
+<p>Un esempio per rappresentare la struttura ad albero è il seguente codice:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  pid_t f1<span class="token punctuation">,</span>f2<span class="token punctuation">,</span>f3<span class="token punctuation">;</span>
+  
+  f1<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  f2<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  f3<span class="token operator">=</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%i%i%i "</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>f1 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>f2 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>f3 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+</code></pre>
+<p>vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).</p>
+<ul>
+<li>il primo fork verrà eseguito dal primo processo, dopo la sua esecuzione si avranno 2 processi</li>
+<li>il secondo fork verrà eseguito dai 2 processi, dopo la sua esecuzione si avranno 4 processi</li>
+<li>il terzo fork verrà eseguito dai 4 processi, dopo la sua esecuzione si avranno 8 processi</li>
+</ul>
+<p>ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove <code>111</code> sarà il processo di partenza.</p>
+<p>L’output sarà di questo tipo</p>
+<p><code>000 001 100 101 010 011 110 111</code></p>
+<p>l’ordine di apparizione dipende dallo scheduling, e quando termina il processo <code>111</code> (cioè il primo processo) la shell è pronta per accettare altri comandi (anche se i figli devono ancora finire)</p>
+<p><img src="https://i.ibb.co/CzKHc43/image.png" alt="enter image description here"></p>
 <h2 id="processi-orfani-e-zombie">Processi orfani e zombie</h2>
 <p>In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l’avvio e l’esecuzione dell’intero sistema. Nelle prime versioni di Unix si usava <strong>SysVinit</strong>, poi si è passati a <strong>Upstart</strong>, ora nei sistemi più recenti viene usato <strong>Systemd</strong></p>
 <p>I sistemi che utilizzano SysVinit e Upstart si riferiscono al processo che inizializza il sistema come <strong>init</strong> mentre i sistemi che utilizzano Systemd si riferiscono a tale processo come <strong>systemd</strong></p>

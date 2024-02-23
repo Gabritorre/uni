@@ -109,6 +109,39 @@ Possiamo utilizzare le funzioni:
 Come si vedeva nel codice, quando il valore di ritorno della `fork` è negativo significa che la creazione del processo è fallita, questo solitamente accade quando non c'è sufficiente memoria per allocare il processo.
 
 
+Un esempio per rappresentare la struttura ad albero è il seguente codice:
+
+```c
+#include <unistd.h>
+#include <stdio.h>
+
+int main() {
+  pid_t f1,f2,f3;
+  
+  f1=fork();
+  f2=fork();
+  f3=fork();
+
+  printf("%i%i%i ", (f1 > 0),(f2 > 0),(f3 > 0)); 
+}
+```
+
+vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).
+- il primo fork verrà eseguito dal primo processo, dopo la sua esecuzione si avranno 2 processi
+- il secondo fork verrà eseguito dai 2 processi, dopo la sua esecuzione si avranno 4 processi
+- il terzo fork verrà eseguito dai 4 processi, dopo la sua esecuzione si avranno 8 processi
+
+ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove `111` sarà il processo di partenza.
+
+L'output sarà di questo tipo
+
+`000 001 100 101 010 011 110 111`
+
+l'ordine di apparizione dipende dallo scheduling, e quando termina il processo `111` (cioè il primo processo) la shell è pronta per accettare altri comandi (anche se i figli devono ancora finire)
+
+![enter image description here](https://i.ibb.co/CzKHc43/image.png)
+
+
 ## Processi orfani e zombie
 
 In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l'avvio e l'esecuzione dell'intero sistema. Nelle prime versioni di Unix si usava **SysVinit**, poi si è passati a **Upstart**, ora nei sistemi più recenti viene usato **Systemd**

@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-02-22_Esecuzione e terminazione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#esecuzione-e-terminazione">Esecuzione e terminazione</a>
+<ul>
+<li><a href="#exec">Exec</a></li>
+<li><a href="#terminazione-dei-processi">Terminazione dei processi</a></li>
+<li><a href="#gestire-lo-stato-di-ritorno">Gestire lo stato di ritorno</a></li>
+<li><a href="#esempio-con-exit-e-wait">Esempio con exit e wait</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="esecuzione-e-terminazione">Esecuzione e terminazione</h1>
+<p>È una situazione comunque che quando creiamo un nuovo processo con la <code>fork</code> vogliamo far eseguire un programma diverso da quello in cui avviene la creazione, la system call <strong>exec</strong> serve proprio a questo.</p>
+<p>Schematicamente possiamo rappresentare l’esecuzione di una <code>exec</code> dopo una <code>fork</code> in questo modo:</p>
+<p><img src="https://i.ibb.co/7pmLNZ6/image.png" alt="enter image description here"></p>
+<p>Spesso la <code>exec</code> viene chiamata subito dopo la <code>fork</code>, e siccome la <code>exec</code> butta via la copia dei dati appena fatta, risulta inutile e inefficiente fare la copia.<br>
+Per ovviare a questo problema viene utilizzata la tecnica <strong>copy-on-write</strong>:</p>
+<ul>
+<li>viene fatta la copia solo della page table (e non dei dati/pagine effettive)</li>
+<li>le pagine vengono messe in modalità <em>read only</em></li>
+<li>Se avviene un tentativo di scrittura da parte di uno dei due processi, viene generato un errore particolare che il kernel gestirà nel seguente modo:
+<ul>
+<li>viene fatta la copia effettiva dei dati e il processo che ha fatto la modifica adesso punterà alla copia dei dati</li>
+<li>vengono ripristinati i permessi a <em>read-write</em> su entrambe le copie</li>
+</ul>
+</li>
+</ul>
+<p>In questo modo se viene fatta una <em>exec</em> subito dopo la <em>fork</em> non avviene nessuna copia dei dati.</p>
+<h2 id="exec">Exec</h2>
+<p>Il comando <code>exec</code> presenta diverse varianti:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">execl</span><span class="token punctuation">(</span><span class="token string">"/bin/ls"</span><span class="token punctuation">,</span> arg0<span class="token punctuation">,</span> arg1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">execlp</span><span class="token punctuation">(</span><span class="token string">"ls"</span><span class="token punctuation">,</span> arg0<span class="token punctuation">,</span> arg1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">execv</span><span class="token punctuation">(</span><span class="token string">"/bin/ls"</span><span class="token punctuation">,</span> argv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">execvp</span><span class="token punctuation">(</span><span class="token string">"ls"</span><span class="token punctuation">,</span> argv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>La presenza della <code>p</code> a fine comando rappresenta che viene utilizzata la <code>$PATH</code> di sistema per cercare il comando</li>
+<li>La presenza della <code>v</code> a fine comando rappresenta che il passaggio degli argomenti viene fatto tramite un array di stringhe (che in C si traduce come un puntatore a <em>char*</em>)</li>
+<li>La presenza della <code>l</code> (si contrappone a <code>v</code>) a fine comando rappresenta che il passaggio degli argomenti viene fatto elencando i parametri con NULL come ultimo parametro (per convenzione il primo argomento è il nome stesso del programma da eseguire)</li>
+</ul>
+<h3 id="errori-con-exec">Errori con exec</h3>
+<p>L’<code>exec</code> restituisce un valore di ritorno solo in caso di errore (con un <code>-1</code>), cioè quando non viene trovato il comando da eseguire.<br>
+Se la <code>exec</code> va a buon fine allora perde ogni riferimento al vecchio codice ed eseguirà solamente il nuovo programma</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Esecuzione di ls\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">execl</span><span class="token punctuation">(</span><span class="token string">"/bin/ls"</span><span class="token punctuation">,</span><span class="token string">"ls"</span><span class="token punctuation">,</span><span class="token string">"-l"</span><span class="token punctuation">,</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	<span class="token comment">//il seguente codice viene eseguito solo se la exec fallisce</span>
+	<span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"Si è verificato un errore nell'esecuzione del codice\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>L’utilizzo di <code>perror</code> per stampare l’errore è particolarmente utile perché oltre alla stringa che gli passiamo, esso stampa anche una variabile globale che rappresenta l’errore effettivo.</p>
+<p>Nel caso in cui passiamo un parametro errato ad un comando esistente, ciò <strong>non ci verrà notificato con il valore di ritorno</strong>, questo perché l’errore viene generato dal nuovo comando, e se il comando è stato eseguito allora il processo ha già perso il riferimento al vecchio programma.</p>
+<h2 id="terminazione-dei-processi">Terminazione dei processi</h2>
+<p>Vediamo il seguente codice che simula il comportamento di una shell:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    pid_t esito<span class="token punctuation">,</span> i<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> comando<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token operator">*</span>pch<span class="token punctuation">;</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"myshell# "</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// il prompt dei comandi</span>
+        <span class="token comment">// il codice che segue separa gli argomenti e</span>
+        <span class="token comment">// salva i puntatori in argv[]</span>
+        <span class="token comment">//non serve comprendere le seguenti 7 righe codice</span>
+        <span class="token function">fgets</span><span class="token punctuation">(</span>comando<span class="token punctuation">,</span> <span class="token number">128</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// legge l'input dell'utente</span>
+        pch <span class="token operator">=</span> <span class="token function">strtok</span> <span class="token punctuation">(</span>comando<span class="token punctuation">,</span><span class="token string">" \n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "parsa" il primo argomento</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> pch <span class="token operator">!=</span> <span class="token constant">NULL</span> <span class="token operator">&amp;&amp;</span> i <span class="token operator">&lt;</span> <span class="token number">127</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            argv<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> pch<span class="token punctuation">;</span>
+            pch <span class="token operator">=</span> <span class="token function">strtok</span> <span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token string">" \n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "parsa" gli argomenti successivi</span>
+        <span class="token punctuation">}</span>
+        argv<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span> <span class="token comment">// termina l'array argv con NULL</span>
+        
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// comando vuoto, ignora</span>
+            esito <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// crea un processo figlio</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span>esito <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"fallimento fork"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>esito <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//processo figlio</span>
+                <span class="token function">execvp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> argv<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// esegue il comando!</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"Errore esecuzione"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>   <span class="token comment">// il processo genitore (shell) torna a leggere un altro comando</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se eseguiamo il codice, notiamo una anomalia, quando lanciamo un comando il prompt del comando successivo appare prima dell’output del comando lanciato.</p>
+<p><img src="https://i.ibb.co/ZB5B01c/image.png" alt="enter image description here"></p>
+<p>questo accade perché il <strong>processo padre</strong> (quello che rimane in attesa dei comandi) <strong>non attende la terminazione dei figli</strong> (i comandi stessi), ed avendo meno codice da eseguire è più veloce dei figli.</p>
+<p>Un ulteriore problema è il fatto che una volta che i processi figli terminano, questi diventano<br>
+<em>zombie</em> (lo notiamo dalla dicitura “defunct” eseguendo il comando <code>ps</code>)</p>
+<p><img src="https://i.ibb.co/9yGXgdF/image.png" alt="enter image description here"></p>
+<p>Capiamo il perché di questi problemi:<br>
+quando un processo termina, esso segnala al genitore la propria terminazione con alcune informazioni che gli possono essere utili. Finché il padre non processa queste informazioni, esse rimangono in memoria in attesa che il padre le processi.</p>
+<p>Alcune di queste informazioni che rimangono in memoria sono:</p>
+<ul>
+<li>PID</li>
+<li>lo stato di terminazione</li>
+<li>il tempo di CPU utilizzato dal processo</li>
+</ul>
+<p>Possiamo risolvere questi problemi utilizzando due chiamate a sistema:</p>
+<ul>
+<li><code>exit(int status)</code> usata per <strong>terminare il processo, restituendo il proprio stato</strong> di terminazione al padre. N<br>
+Normalmente si ritorna <code>1</code> oppure la costante <code>EXIT_FAILURE</code> per ritornare una terminazione fallimentare, mentre si ritorna <code>0</code> oppure la costante <code>EXIT_SUCCESS</code> per ritornare una terminazione con successo</li>
+<li><code>pid = wait(int &amp;status)</code> usata per <strong>attendere la terminazione del figlio</strong>. La funzione ritorna il pid del figlio, e nella  variabile <code>status</code> viene salvato lo stato di terminazione del figlio.<br>
+Se non ci sono figli ritorna <code>-1</code><br>
+è possibile attendere un processo in particolare specificando il suo pid: <code>pid = waitpid(pid_value, &amp;stato)</code></li>
+</ul>
+<h2 id="gestire-lo-stato-di-ritorno">Gestire lo stato di ritorno</h2>
+<p>Per gestire lo stato di ritorno di un processo figlio, vengono utilizzate delle macro.<br>
+Le due principali macro sono <code>WIFEXITED</code> e <code>WIFSIGNALED</code>:</p>
+<ul>
+<li><code>WIFEXITED(status) == true</code> se il figlio è uscito con una <code>exit</code>, in tal caso la macro ritorna il valore della variabile <code>status</code> messa all’interno della <code>exit</code></li>
+<li><code>WIFSIGNALED(status) == true</code> se il figlio è stato terminato in modo anomalo, in tal caso la macro ritorna un valore corrispondente al “segnale” che ha causato l’arresto anomalo</li>
+</ul>
+<p>Per sistema il codice della simulazione della shell basta aggiungere il seguente codice alla fine del ciclo while:</p>
+<pre class=" language-c"><code class="prism  language-c">pid<span class="token operator">=</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>status<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende il processo figlio</span>
+
+<span class="token comment">// esamina lo stato di uscita</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">WIFEXITED</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Exit status = %d\n"</span><span class="token punctuation">,</span> <span class="token function">WEXITSTATUS</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">WIFSIGNALED</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ANOMALO: status = %d\n"</span><span class="token punctuation">,</span> <span class="token function">WTERMSIG</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="esempio-con-exit-e-wait">Esempio con exit e wait</h2>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/wait.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> pid<span class="token punctuation">,</span> status<span class="token punctuation">;</span>
+    pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> pid <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore fork"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token comment">/* figlio 1: esce normalmente inviando al genitore lo stato "42" */</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sono il figlio1! pid=%d ppid=%d\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">getppid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">42</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    pid <span class="token operator">=</span> <span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span> pid <span class="token operator">&lt;</span> <span class="token number">0</span> <span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore fork"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+    <span class="token comment">/* figlio 2: segfault, cerca di accedere alla locazione 0 */</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>pid <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> <span class="token operator">*</span>tmp <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> a<span class="token punctuation">;</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sono il figlio2! pid=%d ppid=%d\n"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">getppid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        a <span class="token operator">=</span> <span class="token operator">*</span>tmp<span class="token punctuation">;</span>	<span class="token comment">// segfault</span>
+    <span class="token punctuation">}</span> 
+
+    <span class="token comment">/* il genitore continua e attende tutti i figli ... */</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>pid <span class="token operator">=</span> <span class="token function">wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ricevuta terminazione di pid=%d\n"</span><span class="token punctuation">,</span> pid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">WIFEXITED</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"OK: status = %d\n"</span><span class="token punctuation">,</span> <span class="token function">WEXITSTATUS</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">WIFSIGNALED</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ANOMALO: status = %d\n"</span><span class="token punctuation">,</span> <span class="token function">WTERMSIG</span><span class="token punctuation">(</span>status<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>l’output è simile al seguente:</p>
+<pre class=" language-bash"><code class="prism  language-bash">Sono il figlio1<span class="token operator">!</span> pid<span class="token operator">=</span>304 ppid<span class="token operator">=</span>303
+Sono il figlio2<span class="token operator">!</span> pid<span class="token operator">=</span>305 ppid<span class="token operator">=</span>303
+ricevuta terminazione di pid<span class="token operator">=</span>304
+OK: status <span class="token operator">=</span> 42
+ricevuta terminazione di pid<span class="token operator">=</span>305
+ANOMALO: status <span class="token operator">=</span> 11
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
