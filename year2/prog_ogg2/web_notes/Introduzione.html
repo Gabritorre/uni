@@ -24,6 +24,7 @@
 <li><a href="#parametri-formali-e-attuali">Parametri formali e attuali</a></li>
 <li><a href="#tipo-argomento-e-tipo-parametro">Tipo argomento e tipo parametro</a></li>
 <li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
+<li><a href="#dimensione-di-un-oggetto">Dimensione di un oggetto</a></li>
 </ul>
 </li>
 </ul>
@@ -93,6 +94,15 @@ Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto 
 <p>Nel nostro caso, se il chiamante fa del codice corretto, è molto inusuale uscire dai limiti della collezione, inoltre se il chiamante prende l’eccezione non può fare niente di utile, inoltre gestire ogni get con dei try-catch risulta essere molto scomodo e allunga inutilmente il codice. Quindi si opta per una eccezione unchecked.</p>
 <h3 id="sottotipo-di-una-eccezione-unchecked">Sottotipo di una eccezione unchecked</h3>
 <p>potremmo chiederci se ha senso creare un sottotipo di una eccezione unchecked, la risposta è che non ha molto senso in quanto con una eccezione unchecked si prevede che il chiamante non gestirà le eccezioni con un try catch, quindi creare il proprio tipo speciale non avrebbe molto senso perche non verrebbe catturata mai.</p>
+<h2 id="dimensione-di-un-oggetto">Dimensione di un oggetto</h2>
+<p>la dimensione in byte di un oggetto è determinata da vari fattori della sua classe:</p>
+<ul>
+<li>la somma della dimensione degli attributi primitivi</li>
+<li>per ogni attributo <em>reference type</em> (oggetto) si aggiunge la dimensione di un puntatore</li>
+<li>per ogni metodo si aggiunge la dimensione di un puntatore</li>
+<li>se si tratta di una sottoclasse si considerano anche gli attributi ereditati e i metodi ereditati non sovrascritti</li>
+<li>attributi e metodi statici non vanno contati</li>
+</ul>
 
     </div>
   </div>

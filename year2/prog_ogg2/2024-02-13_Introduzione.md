@@ -77,3 +77,17 @@ Nel nostro caso, se il chiamante fa del codice corretto, è molto inusuale uscir
 ### Sottotipo di una eccezione unchecked
 
 potremmo chiederci se ha senso creare un sottotipo di una eccezione unchecked, la risposta è che non ha molto senso in quanto con una eccezione unchecked si prevede che il chiamante non gestirà le eccezioni con un try catch, quindi creare il proprio tipo speciale non avrebbe molto senso perche non verrebbe catturata mai.
+
+
+## Dimensione di un oggetto
+
+la dimensione in byte di un oggetto è determinata da vari fattori della sua classe:
+
+- la somma della dimensione degli attributi primitivi
+- per ogni attributo *reference type* (oggetto) si aggiunge la dimensione di un puntatore
+- per ogni metodo si aggiunge la dimensione di un puntatore
+- se si tratta di una sottoclasse si considerano anche gli attributi ereditati e i metodi ereditati non sovrascritti
+- attributi e metodi statici non vanno contati
+
+
+
