@@ -1,6 +1,6 @@
 ﻿# Note introduttive
 
-Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1.
+Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su nuovi aspetti di Java.
 
 ## Classificazione dei linguaggi
 
@@ -90,4 +90,9 @@ la dimensione in byte di un oggetto è determinata da vari fattori della sua cla
 - attributi e metodi statici non vanno contati
 
 
+## Statement vs expression
 
+Vediamo la differenza che c'è tra una espressione e uno statement (vale in generale per i linguaggi di programmazione):
+
+- **Expression**: codice che può essere valutato, cioè che produce un valore che possiede un tipo.
+- **Statement**: codice che non genera un valore e che viene terminato `;` uppure dalla chisura del proprio blocco di codice `{...}`
