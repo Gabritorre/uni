@@ -225,4 +225,83 @@ Vediamo i passaggi dell'inserimento:
 
 Notiamo che con questo metodo abbiamo meno collisioni dell'altro metodo e le chiavi risultano distribuiti più uniformemente. Tale metodo risulta essere migliore dei due precedenti negli usi reali.
 
+### Costruire la funzione di hash
+
+Per costruire una funzione di hash efficiente è necessario che $h_2(k)$ generi un valore **relativamente primo** con la dimensione $m$, cosicché la tabella possa essere ispezionata completamente.
+
+> due numeri **sono relativamente primi o copirmi** se il più grande numero che li divide entrambi è 1
+
+Vediamo due modi di costruire la funzione di hash $h_2(k)$:
+
+1. scegliere $m = 2^p$, questo vuol dire che $m$ è una potenza di 2 e di conseguenza un numero pari.
+Si definisce quindi $h_2(k)$ in modo che produca sempre numeri dispari, così facendo $m$ e $h_2(k)$ saranno sempre relativamente primi.
+Per esempio $h_2(k) = 2h'(k) + 1$ dove $h'$ è una funzione hash qualunque
+
+2. Scegliere $m$ come un numero primo e definire $h_2(k)$ in modo che generi sempre un intero positivo strettamente minore di $m$
+Per esempio
+$h_1(k) = k \mod m$
+$h_2(k) = 1 + (k \mod m')$ dove $m' < m$
+Questa implementazione è esattamente quella utilizzata nell'esempio precedente per confrontare l'hashing lineare con il doppio hashing.
+
+## Analisi dell'indirizzamento aperto
+
+Analizziamo il tempo di esecuzione delle operazioni di ricerca e inserimento. Lavoriamo sotto le seguenti 2 ipotesi:
+
+1. Supponiamo che l'hashing sia uniforme
+2. Assumiamo che non vengano fatte operazioni di cancellazione (in quanto porterebbe un aumento dei tempi di esecuzione)
+
+Copieremo l'analisi basandoci sul fattore di carico $\alpha = \frac{n}{m}$, che nel caso di indirizzamento aperto sappiamo che $0\leq \alpha\leq1$.
+in una tabella grande $m$ possiamo quindi memorizzare al massimo $m$ chiavi, e quando la tabella sarà piena allora $\alpha = 1$ (cioè una sola chiave per ogni cella)
+
+### Ricerca
+
+**Teorema**: Nell'ipotesi di hashing uniforme, con hashing ad indirizzamento aperto con $\alpha = \frac{n}{m} < 1$ il numero atteso di ispezioni in una **ricerca senza successo** (caso peggiore) risulta essere al massimo $\frac{1}{1-\alpha}$
+
+**Dimostrazione**: Se $\alpha < 1$ allora ci sono sicuramente delle celle vuote (quando la tabella è piena $\alpha = 1$), quindi per compiere una ricerca posso fermarmi alla prima cella libera che trovo.
+
+Lavoriamo con le probabilità, indichiamo con $\mathbb{P}[i]$ la probabilità che avvenga l'ispezione $i$-esima
+1. una ispezione viene sicuramente sempre compiuta: $\mathbb{P}[1] = 1$
+2. La probabilità di fare una seconda ispezione equivale alla probabilità che la prima cella sia occupata: $\mathbb{P}[2] = \frac{n}{m}$
+3. La probabilità di fare una terza ispezione equivale alla probabilità che la seconda cella sia occupata: $\mathbb{P}[3] = \frac{n}{m} \cdot \frac{n-1}{m-1}$
+4. La probabilità di fare una quarta ispezione equivale alla probabilità che la terza cella sia occupata: $\mathbb{P}[4] = \frac{n}{m} \cdot \frac{n-1}{m-1} \cdot \frac{n-2}{m-2}$
+5. ...
+
+Notiamo che dal momento che $\alpha = \frac{n}{m}$ possiamo approssimare per eccesso tutte le probabilità:
+
+$\mathbb{P}[1] = 1$
+$\mathbb{P}[2] = \alpha$
+$\mathbb{P}[3] \simeq\alpha^2$
+$\mathbb{P}[4] \simeq \alpha^3$
+
+Di conseguenza possiamo approssimare il valore atteso:
+
+$$1 + \alpha + \alpha^2 + \alpha^3 + ... \leq \sum_{i = 0}^{\infty} \alpha^i$$
+
+serie geometrica in cui la base $|\alpha|$ è minore di 1: 
+$$\sum_{i = 0}^{\infty} \alpha^i = \frac{1}{1-\alpha}$$
+
+**interpretazione**: Se $\alpha$ è costante, una **ricerca senza successo** viene eseguita in tempo medio $O(1)$:
+
+- Se $\alpha = 0.5$ (tabella piena a metà), il numero medio di ispezioni è al massimo $\frac{1}{1 - \frac{1}{2}} = 2$
+- Se $\alpha = 0.9$ (tabella quasi piena), il numero medio di ispezioni è al massimo $\frac{1}{1-\frac{9}{10}} = 10$
+
+Notiamo come **più la tabella è piena più ispezioni sono necessarie**.
+
+### Inserimento
+
+**Corollario**: L'inserimento di un elemento in una tabella hash a indirizzamento aperto con un fattore di carico $\alpha$ richiede in media non più di $\frac{1}{1-\alpha}$ ispezioni, nell'ipotesi di hashing uniforme.
+
+**Dimostrazione**: Un elemento è inserito nella tabella solo se essa non è piena, cioè se $\alpha < 1$.
+L'inserimento di una chiave richiede una ricerca senza successo (cioè dobbiamo trovare una cella vuota), poi di salvare la chiave nella cella vuota trovata.
+Quindi il numero atteso di ispezioni è al massimo $\frac{1}{1-\alpha}$
+
+
+**Teorema**: Data una tabella hash ad indirizzamento aperto con fattore di carico $\alpha < 1$, il numero atteso di ispezioni di una **ricerca con successo** è al massimo $\frac{1}{\alpha}\log\frac{1}{1-\alpha}$, nell'ipotesi di hashing uniforme e indipendente.
+
+**Interpretazione**: Se $\alpha$ è costante, una **ricerca con successo** viene eseguita in tempo medio $O(1)$.
+
+- Se $\alpha = 0.5$ (tabella piena a metà), il numero medio di ispezioni per il successo è al massimo $\frac{1}{0.5}\log\frac{1}{1-0.5} = 1.386$ 
+(supponendo di usare il logaritmo in base $e$)
+- Se $\alpha = 0.9$ (tabella quasi piena), il numero medio di ispezioni per il successo è al massimo $\frac{1}{0.9}\log\frac{1}{1-0.9} = 2.558$
+(supponendo di usare il logaritmo in base $e$)
 
