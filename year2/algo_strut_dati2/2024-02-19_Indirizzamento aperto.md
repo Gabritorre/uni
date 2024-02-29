@@ -247,17 +247,17 @@ Questa implementazione è esattamente quella utilizzata nell'esempio precedente 
 
 Analizziamo il tempo di esecuzione delle operazioni di ricerca e inserimento. Lavoriamo sotto le seguenti 2 ipotesi:
 
-1. Supponiamo che l'hashing sia uniforme
+1. Supponiamo che l'hashing sia uniforme e indipendente
 2. Assumiamo che non vengano fatte operazioni di cancellazione (in quanto porterebbe un aumento dei tempi di esecuzione)
 
 Copieremo l'analisi basandoci sul fattore di carico $\alpha = \frac{n}{m}$, che nel caso di indirizzamento aperto sappiamo che $0\leq \alpha\leq1$.
-in una tabella grande $m$ possiamo quindi memorizzare al massimo $m$ chiavi, e quando la tabella sarà piena allora $\alpha = 1$ (cioè una sola chiave per ogni cella)
+in una tabella grande $m$ possiamo quindi memorizzare al massimo $m$ chiavi, e quando la tabella sarà piena allora $\alpha = 1$ (cioè una sola chiave per ogni cella), mentre quanto la tabella è vuota allora $\alpha = 0$
 
 ### Ricerca
 
-**Teorema**: Nell'ipotesi di hashing uniforme, con hashing ad indirizzamento aperto con $\alpha = \frac{n}{m} < 1$ il numero atteso di ispezioni in una **ricerca senza successo** (caso peggiore) risulta essere al massimo $\frac{1}{1-\alpha}$
+**Teorema**: Rispettando le ipotesi precendeti, con hashing ad indirizzamento aperto con $\alpha = \frac{n}{m} < 1$ il numero atteso di ispezioni in una **ricerca senza successo** (caso peggiore) risulta essere al massimo $\frac{1}{1-\alpha}$
 
-**Dimostrazione**: Se $\alpha < 1$ allora ci sono sicuramente delle celle vuote (quando la tabella è piena $\alpha = 1$), quindi per compiere una ricerca posso fermarmi alla prima cella libera che trovo.
+**Intuizione della dimostrazione**: Se $\alpha < 1$ allora ci sono sicuramente delle celle vuote (quando la tabella è piena $\alpha = 1$), quindi per compiere una ricerca posso fermarmi alla prima cella libera che trovo.
 
 Lavoriamo con le probabilità, indichiamo con $\mathbb{P}[i]$ la probabilità che avvenga l'ispezione $i$-esima
 1. una ispezione viene sicuramente sempre compiuta: $\mathbb{P}[1] = 1$
@@ -289,14 +289,15 @@ Notiamo come **più la tabella è piena più ispezioni sono necessarie**.
 
 ### Inserimento
 
+**L'inserimento è in sostanza una ricerca senza successo.**
+
 **Corollario**: L'inserimento di un elemento in una tabella hash a indirizzamento aperto con un fattore di carico $\alpha$ richiede in media non più di $\frac{1}{1-\alpha}$ ispezioni, nell'ipotesi di hashing uniforme.
 
 **Dimostrazione**: Un elemento è inserito nella tabella solo se essa non è piena, cioè se $\alpha < 1$.
 L'inserimento di una chiave richiede una ricerca senza successo (cioè dobbiamo trovare una cella vuota), poi di salvare la chiave nella cella vuota trovata.
 Quindi il numero atteso di ispezioni è al massimo $\frac{1}{1-\alpha}$
 
-
-**Teorema**: Data una tabella hash ad indirizzamento aperto con fattore di carico $\alpha < 1$, il numero atteso di ispezioni di una **ricerca con successo** è al massimo $\frac{1}{\alpha}\log\frac{1}{1-\alpha}$, nell'ipotesi di hashing uniforme e indipendente.
+**Teorema**: Data una tabella hash ad indirizzamento aperto con fattore di carico $\alpha < 1$, il numero atteso di ispezioni di una **ricerca con successo** è al massimo $\frac{1}{\alpha}\log\frac{1}{1-\alpha}$, sempre nell'ipotesi di hashing uniforme e indipendente.
 
 **Interpretazione**: Se $\alpha$ è costante, una **ricerca con successo** viene eseguita in tempo medio $O(1)$.
 
@@ -305,3 +306,14 @@ Quindi il numero atteso di ispezioni è al massimo $\frac{1}{1-\alpha}$
 - Se $\alpha = 0.9$ (tabella quasi piena), il numero medio di ispezioni per il successo è al massimo $\frac{1}{0.9}\log\frac{1}{1-0.9} = 2.558$
 (supponendo di usare il logaritmo in base $e$)
 
+
+## Confronto tra concatenamento e indirizzamento aperto
+
+![enter image description here](https://i.ibb.co/3ThWRkw/image.png)
+
+$1 + \frac{\alpha}{2}$ **concatenamento ricerca con successo**
+$1 + \alpha$ **concatenamento  ricerca senza successo**
+$(\frac{1}{\alpha}) + \ln(\frac{1}{1-\alpha})$ **indirizzamento aperto ricerca con successo**
+$\frac{1}{1-\alpha}$ **indirizzamento aperto ricerca senza successo**
+
+Notiamo come il concatenamento risulti essere migliore.
