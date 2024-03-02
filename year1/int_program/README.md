@@ -1,5 +1,7 @@
 # INTRODUZIONE ALLA PROGRAMMAZIONE
 
+Insegnante: Claudio Lucchese
+
 Il corso si propone di introdurre gli elementi base della programmazione imperativa per formulare soluzioni algoritmiche a problemi di complessità limitata.
 
 Lo studente acquisirà conoscenza e comprensione dei principi fondanti dell'informatica, relativamente a linguaggi imperativi e algoritmi di base.
