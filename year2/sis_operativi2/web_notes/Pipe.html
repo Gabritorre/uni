@@ -1,0 +1,244 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-05_Pipe</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#pipe">Pipe</a>
+<ul>
+<li><a href="#pipe-senza-nome">Pipe senza nome</a></li>
+<li><a href="#pipe-con-nome">Pipe con nome</a></li>
+<li><a href="#esempio-lettore-e-scrittore">Esempio lettore e scrittore</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="pipe">Pipe</h1>
+<p>Le pipe sono un canale di comunicazione tra i processi, in altre parole la pipe è un buffer (zona di memoria) in cui un processo scrive dei dati e l’altro processo legge i dati.</p>
+<p>Questo meccanismo utilizza una <strong>scrittura asincrona</strong> e una <strong>lettura sincrona</strong> (quindi chi scrive non attende una risposta dall’altro processo. Mentre chi legge rimane in attesa che i dati arrivino)</p>
+<p>Esistono due tipi di pipe in UNIX: <strong>senza nome</strong> e <strong>con nome</strong></p>
+<h2 id="pipe-senza-nome">Pipe senza nome</h2>
+<p>Queste pipe vengono utilizzate da processi che hanno genitori in comune, questo perché le risorse vengono ereditati dai genitori.</p>
+<p>Un classico esempio di questo tipo di pipe è l’uso del simbolo <code>|</code> per collegare due programmi da shell</p>
+<pre><code>$ ls -la | grep 20
+</code></pre>
+<p>In codice invece possiamo usare la <em>system call</em> <code>pipe(int file_descriptor[2])</code>.<br>
+La funzione <code>pipe</code> prende in input un vettore di interi grande 2, in tale vettore la funzione scriverà dei valori numerici chiamati descrittori, tali che:</p>
+<ul>
+<li><code>file_descriptor[0]</code> usato per la lettura</li>
+<li><code>file_descriptor[1]</code> usato per la scrittura</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+ 
+  <span class="token function">pipe</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* crea la pipe */</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//figlio</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>phrase <span class="token operator">=</span> <span class="token string">"prova a inviare questo!"</span><span class="token punctuation">;</span>
+ 
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                         <span class="token comment">/* chiude in lettura */</span>
+    <span class="token function">write</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> phrase<span class="token punctuation">,</span> <span class="token function">strlen</span><span class="token punctuation">(</span>phrase<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">/* invia anche 0x00 (terminatore della stringa) */</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                         <span class="token comment">/* chiude in scrittura */</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">else</span> <span class="token punctuation">{</span>	<span class="token comment">//padre</span>
+    <span class="token keyword">char</span> message<span class="token punctuation">[</span><span class="token number">100</span><span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//alloco spazio per contenere il messaggio letto dalla pipe</span>
+    <span class="token function">memset</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//è importante azzerare la memoria allocata quando si legge dai buffer</span>
+    <span class="token keyword">int</span> bytesread<span class="token punctuation">;</span>
+ 
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                         <span class="token comment">/* chiude in scrittura */</span>
+    bytesread <span class="token operator">=</span> <span class="token function">read</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> message<span class="token punctuation">,</span> <span class="token number">99</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//l'ultimo parametro indica il limite massimo di byte da leggere</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"ho letto dalla pipe %d bytes: '%s' \n"</span><span class="token punctuation">,</span> bytesread<span class="token punctuation">,</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                         <span class="token comment">/* chiude in lettura */</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>osservazioni</strong>:</p>
+<ul>
+<li>Il programma crea due processi collegati da una pipe, un processo (il figlio) scrive dei dati e il padre li legge</li>
+<li>la pipe viene creata prima della fork, ciò significa che il <strong>padre e il figlio avranno una copia ciascuno dell’array</strong> <code>fd</code></li>
+<li>Un processo dovrebbe sempre <strong>scrivere oppure leggere ma mai fare entrambe le cose</strong> con la stessa pipe (se necessaria una comunicazione bidirezionale si possono usare pipe distinte per scrittura e lettura)<br>
+Se un processo leggesse e scrivesse utilizzando la stessa pipe rischierebbe di leggere ciò che lui stesso ha scritto</li>
+<li>Per il punto precedente è quindi raccomandato <strong>chiudere immediatamente il file descriptor che non si utilizza</strong> (infatti il figlio chiude immediatamente la lettura e il padre chiude immediatamente la scrittura)</li>
+<li>nel figlio chiudere la scrittura dopo aver terminato di scrivere è importante in quanto viene avvisto il lettore che non c’è più niente da leggere</li>
+</ul>
+<h3 id="importanza-della-chiusura-dei-descrittori">Importanza della chiusura dei descrittori</h3>
+<p>Il sistema operativo tiene traccia di chi può scrivere o leggere nelle pipe, chiudendo la scrittura e la lettura della pipe mantiene aggiornato il sistema operativo su cosa può fare ancora il nostro processo:</p>
+<ul>
+<li>
+<p>Cosa accade se si fa una <code>read</code> da una pipe vuota in cui la scrittura è stata chiusa?</p>
+<p>Normalmente se ci sono scrittori allora la <code>read</code> rimarrebbe in attesa. Ma dal momento che i processi che condividevano la pipe hanno chiuso la scrittura (nessuno può più scrivere) allora la <code>read</code> termina l’attesa e ritorna <code>0</code>.<br>
+Se gli scrittori si dimenticassero di chiudere la pipe in scrittura allora il lettore rimarrebbe in attesa fino a che i processi scrittori terminano la loro esecuzione (causando un errore al lettore)</p>
+</li>
+<li>
+<p>Cosa accade se si fa una <code>write</code> su una pipe che è stata chiusa in lettura?</p>
+<p>Viene generato un segnale <code>SIGPIPE</code> che di default termina il processo. Questo accade in quanto non ha senso scrive nel buffer se nessun altro processo può leggere i dati.</p>
+</li>
+</ul>
+<p><strong>È quindi molto importante chiudere le risorse in lettura e scrittura quando possibile</strong></p>
+<h3 id="simulazione-della-pipe-da-shell">Simulazione della pipe da shell</h3>
+<p>Cerchiamo di simulare, attraverso un programma, il comportamento della pipe fatta da shell.</p>
+<p>Innanzitutto è importante capire che i descrittori di file in Unix sono dei numeri, e sono presenti 3 descrittori di base:</p>
+<ul>
+<li>0: <em>standard input</em></li>
+<li>1: <em>standard output</em></li>
+<li>2: <em>standard error</em></li>
+</ul>
+<p>Quando viene chiamata la <em>system call</em> <code>pipe</code> vengono selezionati numeri incrementali a partire da 3.</p>
+<p>Sapendo questo vediamo come simulare il seguente comando da shell</p>
+<pre><code>$ prog1 | prog2
+</code></pre>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span> argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> fd<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+ 
+  <span class="token function">pipe</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">fork</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">/* chiude in lettura */</span>
+    <span class="token function">dup2</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">/* fa si che 1 (stdout) sia una copia di fd[1] */</span>
+                        <span class="token comment">/* da qui in poi l'output va sulla pipe */</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">/* chiude il descrittore fd[1] */</span>
+    <span class="token function">execlp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">/* esegue il comando */</span>
+    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore esecuzione primo comando"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">/* chiude in scrittura */</span>
+    <span class="token function">dup2</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">/* fa si che 0 (stdin) sia una copia di fd[0] */</span>
+                        <span class="token comment">/* da qui in poi l'input proviene dalla pipe */</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">/* chiude il descrittore fd[0] */</span>
+    <span class="token function">execlp</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>   <span class="token comment">/* esegue il comando */</span>
+    <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore esecuzione secondo comando"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>possiamo eseguirlo facendo</p>
+<pre><code>$ ./simula_pipe whoami wc
+</code></pre>
+<p>notando come viene generato lo stesso output di</p>
+<pre><code>$ whoami | wc
+</code></pre>
+<h2 id="pipe-con-nome">Pipe con nome</h2>
+<p>Con questo altro metodo le pipe sono dei file presenti nel <em>file system</em> e quindi ogni processo ha il diritto di accesso alla pipe indipendentemente dai genitori.</p>
+<p>Possiamo creare una pipe tramite il comando</p>
+<pre><code>$ mkfifo myPipe
+</code></pre>
+<h2 id="esempio-lettore-e-scrittore">Esempio lettore e scrittore</h2>
+<p>Consideriamo un processo <em>lettore</em> (destinatario) che accetta, su una pipe con nome, messaggi provenienti da più <em>scrittori</em> (mittenti). Gli scrittori mandano 3 messaggi e poi terminano. Quando tutti gli scrittori chiudono la pipe il lettore ottiene 0 come valore di ritorno dalla <code>read</code> ed esce.<br>
+Lettori e scrittori sono processi distinti lanciati indipendentemente (non necessariamente parenti).</p>
+<p><strong>Codice del lettore</strong></p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/stat.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+
+<span class="token macro property">#<span class="token directive keyword">define</span> PNAME "/tmp/aPipe"</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> fd<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> leggi<span class="token punctuation">;</span>
+    
+    <span class="token function">mkfifo</span><span class="token punctuation">(</span>PNAME<span class="token punctuation">,</span> <span class="token number">0666</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// crea la pipe con nome, se esiste già non fa nulla</span>
+
+    fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span>PNAME<span class="token punctuation">,</span> O_RDONLY<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// apre la pipe in sola lettura</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fd <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore apertura pipe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">read</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> <span class="token operator">&amp;</span>leggi<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// legge un carattere alla volta fino a EOF</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>leggi <span class="token operator">==</span> <span class="token string">'\0'</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// a capo dopo ogni stringa</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%c"</span><span class="token punctuation">,</span>leggi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>          <span class="token comment">// chiude il descrittore</span>
+    <span class="token function">unlink</span><span class="token punctuation">(</span>PNAME<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// rimuove la pipe</span>
+
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Codice dello scrittore</strong></p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;fcntl.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/stat.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+
+<span class="token macro property">#<span class="token directive keyword">define</span> PNAME "/tmp/aPipe"</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">int</span> fd<span class="token punctuation">,</span> i<span class="token punctuation">,</span> lunghezza<span class="token punctuation">;</span>
+    <span class="token keyword">char</span> <span class="token operator">*</span>message<span class="token punctuation">;</span>
+    <span class="token function">mkfifo</span><span class="token punctuation">(</span>PNAME<span class="token punctuation">,</span> <span class="token number">0666</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// crea la pipe con nome, se esiste gia' non fa nulla</span>
+    
+    <span class="token comment">// crea la stringa</span>
+    lunghezza <span class="token operator">=</span> <span class="token function">snprintf</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token string">"Saluti dal processo %d"</span><span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    message <span class="token operator">=</span> <span class="token function">malloc</span><span class="token punctuation">(</span>lunghezza <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">snprintf</span><span class="token punctuation">(</span>message<span class="token punctuation">,</span> lunghezza <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token string">"Saluti dal processo %d"</span> <span class="token punctuation">,</span><span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+    
+    fd <span class="token operator">=</span> <span class="token function">open</span><span class="token punctuation">(</span>PNAME<span class="token punctuation">,</span> O_WRONLY<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// apre la pipe in sola scrittura</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fd <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    
+        <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore apertura pipe"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;=</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">{</span>     <span class="token comment">// scrive tre volte la stringa</span>
+        <span class="token function">write</span><span class="token punctuation">(</span>fd<span class="token punctuation">,</span> message<span class="token punctuation">,</span> <span class="token function">strlen</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// +1 perche include terminatore di stringa</span>
+        <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">close</span><span class="token punctuation">(</span>fd<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// chiude il descrittore</span>
+    <span class="token function">free</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Eseguiamo per esempio:</p>
+<pre><code>$ ./lettore &amp; ./scrittore &amp; ./scrittore &amp; ./scrittore
+</code></pre>
+<p>e otteniamo un output simile al seguente:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">[</span>1<span class="token punctuation">]</span> 46998
+<span class="token punctuation">[</span>2<span class="token punctuation">]</span> 46999
+<span class="token punctuation">[</span>3<span class="token punctuation">]</span> 47000
+Saluti dal processo 47000
+Saluti dal processo 46999
+Saluti dal processo 47001
+						/*pausa di 2 secondi*/
+Saluti dal processo 47000
+Saluti dal processo 47001
+Saluti dal processo 46999
+						/*pausa di 2 secondi*/
+Saluti dal processo 47000
+Saluti dal processo 46999
+Saluti dal processo 47001
+<span class="token punctuation">[</span>1<span class="token punctuation">]</span>   Done                    ./lettore
+<span class="token punctuation">[</span>2<span class="token punctuation">]</span>-  Exit 255                ./scrittore
+<span class="token punctuation">[</span>3<span class="token punctuation">]</span>+  Exit 255                ./scrittore
+</code></pre>
+<p>le varie <code>write</code> vengono <strong>accodate nella pipe</strong>, e il lettore legge un carattere alla volta.</p>
+<p>Il fatto che le scritture vengono accodate accade solo quando sono più corti di <code>PIPE_BUF</code>, solitamente 4096 byte.</p>
+<p>Se eseguissimo più lettori contemporaneamente noteremmo delle interferenze nell’output in quanto vari lettori leggono caratteri in modo non sincronizzato dalla stessa pipe.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
