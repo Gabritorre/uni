@@ -1,0 +1,260 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-06_Vincoli di integrità</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#vincoli-di-integrità">Vincoli di integrità</a>
+<ul>
+<li><a href="#not-null">Not null</a></li>
+<li><a href="#unique">Unique</a></li>
+<li><a href="#primary-key">Primary key</a></li>
+<li><a href="#foreign-key">Foreign key</a></li>
+<li><a href="#check">CHECK</a></li>
+<li><a href="#aggiornamento-dei-vincoli">Aggiornamento dei vincoli</a></li>
+<li><a href="#asserzioni">Asserzioni</a></li>
+<li><a href="#schema-riassuntivo-su-check-e-asserzioni">Schema riassuntivo su check e asserzioni</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="vincoli-di-integrità">Vincoli di integrità</h1>
+<p>All’intero di una base di dati ci possono essere dei <strong>vincoli integrità da rispettare</strong>:</p>
+<ul>
+<li>Certi attributi devono avere sempre un valore</li>
+<li>garantire la presenza di una chiave</li>
+<li>l’integrità referenziale</li>
+<li>garantire determinati vincoli sui valori degli attributi</li>
+</ul>
+<h2 id="not-null">Not null</h2>
+<p>Per indicare che un attributo deve sempre possedere un valore possiamo utilizzare il vincolo <code>NOT NULL</code>, nella fase di creazione della tabella</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Movies <span class="token punctuation">(</span>
+	title CHAR<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	year <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	length <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	genre CHAR<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="unique">Unique</h2>
+<p>Possiamo utilizzare il vincolo <code>UNIQUE</code> per indicare che non esistono due righe che hanno lo stesso valore su tale attributo, cioè deve essere unico.</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Movies <span class="token punctuation">(</span>
+	title CHAR<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	year <span class="token keyword">INT</span> <span class="token keyword">UNIQUE</span><span class="token punctuation">,</span>
+	length <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	genre CHAR<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>possiamo anche rendere unica un insieme di più attributi:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Movies <span class="token punctuation">(</span>
+	title CHAR<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+	year <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	length <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	genre CHAR<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token keyword">UNIQUE</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> year<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>In questo caso sono i valori accoppiati a dover essere unici (possono esserci più titoli uguali, basta che siano associati ad anni diversi)<br>
+Se uno dei due attributi è <code>NULL</code> allora l’unicità non può essere infranta.</p>
+<h2 id="primary-key">Primary key</h2>
+<p>Il vincolo di <code>primary key</code> ha lo stesso comportamento di <code>UNIQUE</code>, la principale differenza è che gli attributi che sono primary key non possono essere null (e poi il dbms la tratta in modo particolare, in quanto viene anche usata dalle chiavi esterne)</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Movies <span class="token punctuation">(</span>
+	title CHAR<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	year <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	length <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	genre CHAR<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	<span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> year<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="foreign-key">Foreign key</h2>
+<p>Questo vincolo stabilisce che un attributo della relazione è un riferimento (chiave esterna) alla <code>primary key</code> di un’altra tabella.<br>
+Le foreign key possono assumere il valore <code>NULL</code></p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> MovieExec <span class="token punctuation">(</span>
+	code <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	name CHAR<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	netWorth <span class="token keyword">INT</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Studio <span class="token punctuation">(</span>
+	name <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	president <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	
+	<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>president<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> MovieExec<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Nella dichiarazione del vincolo stiamo dicendo quale attributo è foreign key e su quale attributo di quale tabella riferirsi.</p>
+<p>Possiamo avere dei problemi di integrità referenziale sulla cancellazione e aggiornamento dell’attributo <code>code</code>, vediamo quali sono le politiche di integrità per gestire i casi di cancellazione e aggiornamento:</p>
+<ul>
+<li><code>NO ACTION</code>: Se si tenta di aggiornare/cancellare una riga riferita da una chiave esterna verrà generato un <strong>errore</strong> e l’operazione non viene eseguita (<strong>comportamento di default</strong>)</li>
+<li><code>CASCADE</code>: Se si aggiorna/cancella una riga riferita da una chiave esterna <strong>l’aggiornamento/cancellazione viene propagata</strong> anche alle righe della chiave esterna</li>
+<li><code>SET NULL</code>: Se si tenta di aggiornare/cancellare una riga riferita da una chiave esterna, la chiave <strong>esterna assumerà il valore <code>NULL</code></strong></li>
+<li><code>SET DEFAULT</code>: Se si tenta di aggiornare/cancellare una riga riferita da una chiave esterna, la chiave <strong>esterna assumerà il suo valore di default</strong></li>
+</ul>
+<p>(Le politiche dipendono dal linguaggio SQL utilizzato)</p>
+<p>le politiche vanno specificate nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Studio <span class="token punctuation">(</span>
+	name <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	president <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	
+	<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>president<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> MovieExec<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+		<span class="token keyword">ON</span> <span class="token keyword">DELETE</span> <span class="token keyword">SET</span> <span class="token boolean">NULL</span>
+		<span class="token keyword">ON</span> <span class="token keyword">UPDATE</span> <span class="token keyword">CASCADE</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<h2 id="check">CHECK</h2>
+<p>Tramite dei <code>CHECK</code> si possono imporre dei vincoli sui valori che possono assumere gli attributi.</p>
+<p>Di fianco all’attributo va messo <code>CHECK</code> seguito da una espressione booleana messa tra parentesi.</p>
+<ul>
+<li>Si possono usare tutte le espressioni utilizzate nel costrutto <code>WHERE</code></li>
+<li>si possono utilizzare delle sotto-query (anche se in alcuni DBMS ciò non è supportato)</li>
+<li>Il vincolo viene controllato ad ogni modifica e inserimento</li>
+</ul>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> MovieExec <span class="token punctuation">(</span>
+	code <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span> <span class="token keyword">CHECK</span> <span class="token punctuation">(</span>code <span class="token operator">&gt;=</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	name CHAR<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	netWorth <span class="token keyword">INT</span> <span class="token keyword">CHECK</span> <span class="token punctuation">(</span>netWorth <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Studio <span class="token punctuation">(</span>
+	name <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	president <span class="token keyword">INT</span><span class="token punctuation">,</span>
+	
+	<span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span> <span class="token punctuation">(</span>president<span class="token punctuation">)</span> <span class="token keyword">REFERENCES</span> MovieExec<span class="token punctuation">(</span>code<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Nota che si potrebbe pensare di simulare il comportamento di una foreign key nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> Studio <span class="token punctuation">(</span>
+	name <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	president <span class="token keyword">INT</span> <span class="token keyword">CHECK</span> <span class="token punctuation">(</span>president <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token keyword">select</span> code <span class="token keyword">from</span> MovieExec<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>ciò però non tiene conto di mantenere l’integrità in caso di modifiche o cancellazioni</p>
+<h3 id="check-su-righe">CHECK su righe</h3>
+<p>È anche possibile eseguire dei check sull’intera riga:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> MovieExec <span class="token punctuation">(</span>
+	code <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span>
+	name CHAR<span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	address <span class="token keyword">VARCHAR</span><span class="token punctuation">(</span><span class="token number">255</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+	netWorth <span class="token keyword">INT</span><span class="token punctuation">,</span>
+
+	<span class="token keyword">CHECK</span> <span class="token punctuation">(</span>code <span class="token operator">&gt;=</span> <span class="token number">1000</span> <span class="token operator">AND</span> netWorth <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</code></pre>
+<p>Questo è necessario quando l’espressioni coinvolge più attributi che non sono indipendenti tra loro nell’espressione.</p>
+<p>In questo caso non è necessario il check sulla riga e generalmente check direttamente sugli attributi sono generalmente più efficienti</p>
+<h3 id="equivalenze-logiche">Equivalenze logiche</h3>
+<p>Equivalenze logiche che possono tornare utili:</p>
+
+<table>
+<thead>
+<tr>
+<th align="center">espressione di partenza</th>
+<th align="center">espressione equivalente</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi>  <mo>⟹</mo>  <mi>B</mi></mrow><annotation encoding="application/x-tex">A \implies B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.70733em; vertical-align: -0.024em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">⟹</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span></td>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">¬</mi><mi>A</mi><mo>∨</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">\lnot A \lor B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">¬</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∨</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span></td>
+</tr>
+<tr>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">¬</mi><mo stretchy="false">(</mo><mi>A</mi><mo>∧</mo><mi>B</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\lnot(A \land B)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">¬</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span><span class="mclose">)</span></span></span></span></span></td>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">¬</mi><mi>A</mi><mo>∨</mo><mi mathvariant="normal">¬</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\lnot A \lor \lnot B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">¬</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∨</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">¬</span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span></td>
+</tr>
+<tr>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">¬</mi><mo stretchy="false">(</mo><mi>A</mi><mo>∨</mo><mi>B</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\lnot(A \lor B)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">¬</span><span class="mopen">(</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∨</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span><span class="mclose">)</span></span></span></span></span></td>
+<td align="center"><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">¬</mi><mi>A</mi><mo>∧</mo><mi mathvariant="normal">¬</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">\lnot A \land \lnot B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">¬</span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∧</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">¬</span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span></td>
+</tr>
+</tbody>
+</table><p>l’implicazione a parole si trova scritta come:</p>
+<ul>
+<li>
+<p>"garantire che <strong>tutti</strong> coloro che soddisfano la/le proprietà <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">A</span></span></span></span></span> <strong>devono</strong> soddisfare la/le proprietà <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span>"<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>A</mi>  <mo>⟹</mo>  <mi>B</mi></mrow><annotation encoding="application/x-tex">A \implies B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.70733em; vertical-align: -0.024em;"></span><span class="mord mathnormal">A</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">⟹</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span></span></p>
+</li>
+<li>
+<p>"garantire che <strong>solo</strong> coloro che soddisfano la proprietà <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi></mrow><annotation encoding="application/x-tex">A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">A</span></span></span></span></span> <strong>possono</strong> soddisfare la proprietà <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi></mrow><annotation encoding="application/x-tex">B</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span></span></span></span></span>"<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>B</mi>  <mo>⟹</mo>  <mi>A</mi></mrow><annotation encoding="application/x-tex">B \implies A</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.70733em; vertical-align: -0.024em;"></span><span class="mord mathnormal" style="margin-right: 0.05017em;">B</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">⟹</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">A</span></span></span></span></span></span></p>
+</li>
+</ul>
+<h2 id="aggiornamento-dei-vincoli">Aggiornamento dei vincoli</h2>
+<p>È possibile aggiornare i vincoli, per farlo è necessario dargli un nome quando vengono creati, per fare ciò si utilizza la keyword <code>CONSTRAINT</code>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CONSTRAINT</span> nome_vincolo <span class="token punctuation">[</span><span class="token keyword">FOREIGN</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> <span class="token keyword">UNIQUE</span><span class="token punctuation">,</span> <span class="token keyword">CHECK</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span>
+</code></pre>
+<p>La modifica può essere fatta solo attraverso una cancellazione di un vincolo e il reinserimento della versione aggiornata, cancellazione ed inserimento vengono fatti tramite una <code>ALTER TABLE</code>.</p>
+<p><strong>cancellazione</strong>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> nome_tabella <span class="token keyword">DROP</span> <span class="token keyword">CONSTRAINT</span> nome_vincolo<span class="token punctuation">;</span>
+</code></pre>
+<p><strong>inserimento</strong>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> nome_tabella <span class="token keyword">ADD</span> <span class="token punctuation">[</span><span class="token keyword">CONSTRAINT</span> nome_vincolo<span class="token punctuation">]</span> definizione_vincolo<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">;</span>
+</code></pre>
+<p>Attenzione che al momento dell’inserimento tutti i valori già presenti devono rispettare il nuovo vincolo imposto, altrimenti il vincolo non può venir applicato.</p>
+<h2 id="asserzioni">Asserzioni</h2>
+<p>Le asserzioni esprimono delle <strong>proprietà globali da rispettare sull’interno schema</strong>.</p>
+<p>l’asserzione deve rimanere vera dopo ogni modifica al database.</p>
+<p>I principali DBMS non le supportano in quanto è difficile scriverle in modo efficiente.</p>
+<p>“La durata complessiva dei film prodotto da ogni studio deve essere di almeno 500 minuti”:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> ASSERTION SumLengthCHECK <span class="token punctuation">(</span>
+	<span class="token number">500</span> <span class="token operator">&lt;=</span> <span class="token keyword">ALL</span><span class="token punctuation">(</span>
+		<span class="token keyword">SELECT</span> <span class="token function">SUM</span><span class="token punctuation">(</span>length<span class="token punctuation">)</span>
+		<span class="token keyword">FROM</span> Movies
+		<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> studio
+	<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="schema-riassuntivo-su-check-e-asserzioni">Schema riassuntivo su check e asserzioni</h2>
+
+<table>
+<thead>
+<tr>
+<th>Soggetto</th>
+<th>Dichiarazione</th>
+<th>Controllo</th>
+<th>Validità</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Check su attributo</td>
+<td>Attributo della tabella</td>
+<td>Inserimento oppure modifica dell’attributo</td>
+<td>In assenza di sotto-query</td>
+</tr>
+<tr>
+<td>Check sulla riga</td>
+<td>Tabella</td>
+<td>Inserimento oppure modifica della riga</td>
+<td>In assenza di sotto-query</td>
+</tr>
+<tr>
+<td>Asserzione</td>
+<td>Schema</td>
+<td>Ogni modifica al database</td>
+<td>Sempre</td>
+</tr>
+</tbody>
+</table><p>Ricordiamo ancora che alcuni DBMS non supportano né le asserzioni né i check sulle righe</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
