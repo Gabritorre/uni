@@ -35,7 +35,7 @@ Esempio di tabella:
 Supponiamo che la lunghezza iniziale sia $n = 7$
 
 | Lunghezza $i$ | Prezzo $p_i$ |
-|--|--|
+|:--:|:--:|
 | 1 | 1 |
 | 2 | 5 |
 | 3 | 8 |
@@ -258,7 +258,25 @@ print_positions(p, n) {
 }
 ```
 
+Viene quindi stampato il taglio ottimo per l'asta lunga $n$ usando `s[n]`, dopo aver effettuato il taglio ci rimarrà un pezzo lungo $n1$ di cui sappiamo che il taglio ottimo si trova nella posizione `s[n1]`, e via così fino a che non rimane un asta di lunghezza $0$
+
 **Complessità**:
 $$T(n) = \Theta(n^2) + O(n) = \Theta(n^2)$$
 
 
+Esempio sulla posizione dei tagli:
+
+| Lunghezza $i$ | `s[i]` |
+|:--:|:--:|
+| 1 | 1 |
+| 2 | 2 |
+| 3 | 3 |
+| 4 | 2 |
+| 5 | 2 |
+| 6 | 6 |
+| 7 | 1 |
+
+partiamo da un'asta lunga $7$, `s[7]` ci dice di tagliare in posizione $1$
+ci rimane un'asta lunga $7-1=6$, `s[6]` ci dice di tagliare in posizione $6$
+ci rimane un'asta lunga $6-6=0$, algoritmo termina
+Quindi una soluzione ottima è fare un'asta lunga $1$ e una lunga $6$
