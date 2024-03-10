@@ -176,19 +176,27 @@ Quindi:
 
 ```c++
 counting_sort(array A, array B, int n, int k) {
-array C[k];
-for (i = 0 to k) {			// Θ(k)
-	C[i] = 0
-}
-for (j = 1 to n) {			// Θ(n)
-	C[A[j]]++
-}
-for (i = 1 to k) {			// Θ(k)
-	C[i] = C[i] + C[i-1]
-}
-for (j = n down to 1) {		// Θ(n)
-	B[C[A[j]]] = A[j]
-	C[A[j]]--
+	array C[k];
+	for (i = 0 to k) {			// Θ(k)
+		C[i] = 0
+	}
+	for (j = 1 to n) {			// Θ(n)
+		C[A[j]]++
+	}
+	// per ordinamento crescente:
+	for (i = 1 to k) {			// Θ(k)
+		C[i] = C[i] + C[i-1]
+	}
+	
+	// per ordinamento decrescente:
+	// for (i = k-1 to 1) {			// Θ(k)
+	//	C[i] = C[i] + C[i+1]
+	// }
+	
+	for (j = n down to 1) {		// Θ(n)
+		B[C[A[j]]] = A[j]
+		C[A[j]]--
+	}
 }
 ```
 
@@ -259,8 +267,8 @@ lo facciamo per induzione sulla colonna da ordinare
 **Lemma**: Dati $n$ numeri di $d$ cifre dove ogni cifra può assumere fino a $k$ valori diversi. La procedura `radix_sort` ordina correttamente nel tempo $\Theta(d(n + k))$.
 
 Questo perche:
-- ad ogni iterazione viene chiamato un algoritmo stabile di complessità $\Theta(n + k)$ come il counting sort
-- vendono fatte $d$ iterazioni
+- Ad ogni iterazione viene chiamato un algoritmo stabile di complessità $\Theta(n + k)$ come il counting sort
+- Vendono fatte $d$ iterazioni
 
 quindi in totale abbiamo una complessità $\Theta(d(n + k))$
 
@@ -279,7 +287,9 @@ La nostra complessità verrebbe calcolata come $\Theta(32(n + 2))$, noi potremmo
 
 Dividiamo, ad esempio, il nostro numero in blocchi di 8 bit (1 byte). Otterremo così $\frac{32}{8} = 4$ cifre, in cui ogni cifra può assumere $2^8=256$ valori diversi
 
-otteniamo così una complessità $\Theta(4(n + 256)$ che cresce molto più lentamente della precedente (per $n$ molto grande)
+otteniamo così una complessità $\Theta(4(n + 256))$ che cresce molto più lentamente della precedente (per $n$ molto grande)
+
+Nella maggior parte dei casi si avrà $k$ svariate potenze più grande di $n$, in tal caso basta portare $k = n$ e poi ottenere il numero di cifre facendo $\log_n(k')$ dove $k'$ è il $k$ originale
 
 ### Generalizzazione
 
@@ -287,7 +297,9 @@ Generalizzando questo concetto possiamo dire che:
 
 dati $n$ numeri composti da $b$ bit, avendo un intero $r \leq b$ ho che la procedura `radix_sort` ordina correttamente in tempo $\Theta\left(\frac{b}{r}(n + 2^r)\right)$
 
-La questione che rimane è come scegliere il valore di $r$: abbiamo che $r$ è sia un denominatore (per cui vorremmo che sia abbastanza grande) però è anche un esponente (per cui vorremmo che sia piccolo). Distinguiamo due casi
+La questione che rimane è come scegliere il valore di $r$: abbiamo che $r$ è sia un denominatore (per cui vorremmo che sia abbastanza grande) però è anche un esponente (per cui vorremmo che sia piccolo). 
+
+Distinguiamo due casi (nota che il logaritmo è in base $2$ perché lavoriamo con numeri binari)
 
 1. se $b < \log_2 n$ (che sarebbe come scrivere $2^b <n$, ad esempio $b = 4$ e $n = 64$) allora per qualsiasi valore $r\leq b$ si ha che $n + 2^r$ risulta essere $\Theta(n)$, scelgo però il valore di $r$ più grande che mi è possibile, quindi $r = b$. Ottengo quindi:
 
