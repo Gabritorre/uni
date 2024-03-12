@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-11_Trigger</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#trigger">Trigger</a>
+<ul>
+<li><a href="#trigger-per-riga-e-per-statement">Trigger per riga e per statement</a></li>
+<li><a href="#before-trigger-e-after-trigger">Before trigger e after trigger</a></li>
+<li><a href="#esempio-1">Esempio 1</a></li>
+<li><a href="#esempio-2">Esempio 2</a></li>
+<li><a href="#trigger-attivi-e-passivi">Trigger attivi e passivi</a></li>
+<li><a href="#vantaggi-e-svantaggi">Vantaggi e svantaggi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="trigger">Trigger</h1>
+<p>I Trigger sono una alternativa alla mancanza dei check con sotto-query e alle assertion.</p>
+<p><strong>I trigger sono delle azioni che si attivano automaticamente al verificarsi di una modifica ad una tabella</strong></p>
+<p>I trigger seguono un paradigma <strong>Evento-Condizione-Azione</strong>:</p>
+<ul>
+<li>Il trigger è associato ad un <strong>evento</strong> che ne determina l’attivazione, ad esempio INSERT, DELETE, UPDATE</li>
+<li>Una volta attivato il trigger controlla una <strong>condizione</strong>, se tale condizione è falsa allora il trigger termina</li>
+<li>Se la condizione è vera allora viene eseguita una <strong>azione</strong></li>
+</ul>
+<h2 id="trigger-per-riga-e-per-statement">Trigger per riga e per statement</h2>
+<p>SQL fornisce due tipi di trigger:</p>
+<ul>
+<li><strong>Trigger per riga</strong>: eseguiti per ogniuna delle righe coinvolte dall’evento.<br>
+Ci si riferisce alla riga coinvolta all’evento prima della sua attivazione <code>OLD ROW</code><br>
+Ci si riferisce alla riga coinvolta all’evento dopo della sua attivazione <code>NEW ROW</code></li>
+<li><strong>Trigger per statement</strong>: eseguiti una sola volta per evento.<br>
+Ci si riferisce a tutte le righe coinvolte dall’evento prima della sua attivazione <code>OLD TABLE</code><br>
+Ci si riferisce a tutte le righe coinvolte dall’evento dopo la sua attivazione con <code>NEW TABLE</code></li>
+</ul>
+<h2 id="before-trigger-e-after-trigger">Before trigger e after trigger</h2>
+<p>In fase di definizione del trigger è possibile specificare se l’azione debba essere eseguita prima o dopo l’evento</p>
+<ul>
+<li><strong>Before trigger</strong>: attivati prima dell’evento. Utilizzati solitamente per impedire l’esecuzione di una operazione o per modificarne preventivamente il comportamento</li>
+<li><strong>After trigger</strong>: attivati dopo l’evento. Vedono lo stato dopo l’esecuzione di un’operazione e quindi sono talvolta necessari per motivi di espressività.</li>
+</ul>
+<p>Un AFTER trigger performare un rollback dello stato della base di dati.<br>
+In generale l’uso di BEFORE trigger è preferibile.</p>
+<h2 id="esempio-1">Esempio 1</h2>
+<p>I trigger forniscono un modo indiretto per mantenere <strong>invarianti globali</strong>: senza lo stile dichiarativo delle asserzioni.</p>
+<p>Bisogna porsi certe domande per determinare come definire il trigger:</p>
+<p>Supponiamo di volere utilizzare un trigger per garantire che non sia mai possibile abbassare uno stipendio:</p>
+<ol>
+<li><strong>Quali operazioni possono violare l’invariante?</strong><br>
+L’invariante può essere violata da un’operazione di aggiornamento</li>
+<li><strong>Il mantenimento dell’invariante può essere controllato per ogni riga coinvolta dall’operazione oppure no?</strong><br>
+Si, perché l’informazione è contestuale alla riga modificata</li>
+<li><strong>Cosa bisogna fare prima o dopo dell’operazione per garantire il<br>
+mantenimento dell’invariante?</strong><br>
+Impedire l’aggiornamento della riga (BEFORE) oppure riportare lo stipendio al valore originale (AFTER)</li>
+</ol>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> MyTrigger
+<span class="token keyword">AFTER</span> <span class="token keyword">UPDATE</span> <span class="token keyword">OF</span> stipendio <span class="token keyword">ON</span> MovieExec
+REFERENCING OLD <span class="token keyword">ROW</span> <span class="token keyword">AS</span> OldTuple<span class="token punctuation">,</span> NEW <span class="token keyword">ROW</span> <span class="token keyword">AS</span> NewTuple
+<span class="token keyword">FOR EACH ROW</span>
+<span class="token keyword">WHEN</span> <span class="token punctuation">(</span>OldTuple<span class="token punctuation">.</span>stipendio <span class="token operator">&gt;</span> NewTuple<span class="token punctuation">.</span>stipendio<span class="token punctuation">)</span>
+	<span class="token keyword">UPDATE</span> MovieExec
+	<span class="token keyword">SET</span> stipendio <span class="token operator">=</span> OldTuple<span class="token punctuation">.</span>stipendio
+	<span class="token keyword">WHERE</span> code <span class="token operator">=</span> NewTuple<span class="token punctuation">.</span>code<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="esempio-2">Esempio 2</h2>
+<p>Supponiamo di volere utilizzare un trigger per garantire che la media degli stipendi non scenda mai sotto 500.000:</p>
+<ol>
+<li><strong>Quali operazioni possono violare l’invariante?</strong><br>
+L’invariante può essere violata da un’operazione di inserimento, aggiornamento o cancellazione</li>
+<li><strong>Il mantenimento dell’invariante può essere controllato per ogni riga coinvolta dall’operazione oppure no?</strong><br>
+Visto che la media è un’informazione globale della tabella, non possiamo ricorrere ad un controllo puntuale per riga. Optiamo per un trigger per statement</li>
+<li><strong>Cosa bisogna fare prima o dopo dell’operazione per garantire il<br>
+mantenimento dell’invariante?</strong><br>
+Possiamo mantenere l’invariante annullando l’operazione che l’ha violata, cioè riportando la tabella allo stato originale (AFTER)</li>
+</ol>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> AvgNetWorthTrigger
+<span class="token keyword">AFTER</span> <span class="token keyword">UPDATE</span> <span class="token keyword">ON</span> MovieExec
+REFERENCING OLD <span class="token keyword">TABLE</span> <span class="token keyword">AS</span> OldStuff<span class="token punctuation">,</span> NEW <span class="token keyword">TABLE</span> <span class="token keyword">AS</span> NewStuff
+<span class="token keyword">FOR</span> EACH STATEMENT
+<span class="token keyword">WHEN</span> <span class="token punctuation">(</span><span class="token number">500000</span> <span class="token operator">&gt;</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">AVG</span><span class="token punctuation">(</span>netWorth<span class="token punctuation">)</span> <span class="token keyword">FROM</span> MovieExec<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> MovieExec
+	<span class="token keyword">WHERE</span> <span class="token punctuation">(</span>name<span class="token punctuation">,</span> address<span class="token punctuation">,</span> code<span class="token punctuation">,</span> netWorth<span class="token punctuation">)</span>
+		<span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> NewStuff<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> MovieExec <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> OldStuff<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre>
+<p>questo trigger è per l’operazione di UPDATE, bisognerebbe aggiungere anche quelle per la DELETE e INSERT</p>
+<h2 id="trigger-attivi-e-passivi">Trigger attivi e passivi</h2>
+<ul>
+<li>
+<p><strong>Trigger passivi</strong>: tali trigger provocano il fallimento di un’operazione sotto determinate condizioni.<br>
+Usi tipici:</p>
+<ul>
+<li>Definizione di vincoli di integrità (es. impedire l’abbassamento degli stipendio)</li>
+<li>Controlli dinamici di autorizzazione (es. si possono inserire dati solo se il codice del dipartimento coincide con quello dell’utente che ha richiesto l’operazione)</li>
+</ul>
+</li>
+<li>
+<p><strong>Trigger attivi</strong>: tali trigger modificano, anche in modo complesso, lo stato della base di dati in corrispondenza di certi eventi.<br>
+Usi tipici:</p>
+<ul>
+<li>Definizione di vincoli di integrità (es. CASCADE)</li>
+<li>Meccanismi di auditing e logging</li>
+<li>Definizione di business rules (regole aziendali)</li>
+</ul>
+</li>
+</ul>
+<h2 id="vantaggi-e-svantaggi">Vantaggi e svantaggi</h2>
+<p><strong>Vantaggi</strong>:</p>
+<ul>
+<li>I trigger sono gestite internamente dal DBMS, quindi non è possibile raggirarli</li>
+<li>Per il precedente motivo è più robusto centralizzare un’invariante in un trigger che sparpagliare i controlli all’interno del codice applicativo</li>
+<li>Per fare auditing e logging, i trigger sono l’unico strumento veramente robusto per tali compiti, dato che il DBMS ha completa visibilità delle operazioni effettuate sulle tabelle</li>
+</ul>
+<p><strong>Svantaggi</strong>:</p>
+<ul>
+<li>dato che sono stati implementati prima nei sistemi commerciali e poi nello standard SQL, i sistemi commerciali non seguono lo standard e spesso sono diversi tra loro. (non considerano di cambiare perché romperebbe la compatibilità con le vecchie versioni)</li>
+<li>I trigger sono difficili da debuggare e poco visibili in generale.</li>
+</ul>
+<h3 id="vincoli-vs-trigger">Vincoli vs trigger</h3>
+<p>Generalmente è conveniente fare uso dei vincoli fornite dal DBMS quando possibile al posto dei trigger. I vincoli sono più semplici, brevi e gestiti meglio dal DBMS.</p>
+<p>I trigger sono necessari quando le invarianti coinvolgono più tabelle oppure più righe di una tabella</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
