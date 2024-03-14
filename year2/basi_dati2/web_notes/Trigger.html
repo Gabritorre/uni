@@ -21,6 +21,13 @@
 <li><a href="#esempio-2">Esempio 2</a></li>
 <li><a href="#trigger-attivi-e-passivi">Trigger attivi e passivi</a></li>
 <li><a href="#vantaggi-e-svantaggi">Vantaggi e svantaggi</a></li>
+<li><a href="#trigger-in-postgres">Trigger in Postgres</a></li>
+<li><a href="#trigger-function">Trigger function</a></li>
+<li><a href="#trigger-per-riga">Trigger per riga</a></li>
+<li><a href="#trigger-per-statement">Trigger per statement</a></li>
+<li><a href="#ordine-di-esecuzione">Ordine di esecuzione</a></li>
+<li><a href="#specificità-di-postgres">Specificità di Postgres</a></li>
+<li><a href="#esempio">Esempio</a></li>
 </ul>
 </li>
 </ul>
@@ -136,7 +143,118 @@ Usi tipici:</p>
 </ul>
 <h3 id="vincoli-vs-trigger">Vincoli vs trigger</h3>
 <p>Generalmente è conveniente fare uso dei vincoli fornite dal DBMS quando possibile al posto dei trigger. I vincoli sono più semplici, brevi e gestiti meglio dal DBMS.</p>
-<p>I trigger sono necessari quando le invarianti coinvolgono più tabelle oppure più righe di una tabella</p>
+<p>I trigger sono necessari quando le invarianti coinvolgono più tabelle</p>
+<h2 id="trigger-in-postgres">Trigger in Postgres</h2>
+<p>la sintassi per creare dei trigger in Postgres è la seguente</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> name { BEFORE <span class="token operator">|</span> <span class="token keyword">AFTER</span> } { evt <span class="token punctuation">[</span> <span class="token operator">OR</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> } <span class="token keyword">ON</span> table_name
+<span class="token punctuation">[</span> REFERENCING { { OLD <span class="token operator">|</span> NEW } <span class="token keyword">TABLE</span> <span class="token keyword">AS</span> tab } <span class="token punctuation">[</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> <span class="token punctuation">]</span>
+<span class="token punctuation">[</span> <span class="token keyword">FOR</span> EACH { <span class="token keyword">ROW</span> <span class="token operator">|</span> STATEMENT } <span class="token punctuation">]</span>
+<span class="token punctuation">[</span> <span class="token keyword">WHEN</span> <span class="token punctuation">(</span> condition <span class="token punctuation">)</span> <span class="token punctuation">]</span>
+<span class="token keyword">EXECUTE</span> <span class="token keyword">FUNCTION</span> func <span class="token punctuation">(</span> args <span class="token punctuation">)</span>
+</code></pre>
+<p>Le differenze rispetto alla standard sono:</p>
+<ul>
+<li>La possibilità di usare <code>OR</code> per associare uno stesso trigger a più eventi</li>
+<li>non è possibile riferire <code>OLD ROW</code> e <code>NEW ROW</code> in <code>REFERENCING</code>, ma è presente un modo custom per farlo</li>
+<li>il corpo del trigger deve essere definito in una funzione separata</li>
+</ul>
+<h2 id="trigger-function">Trigger function</h2>
+<p>Postgres supporta vari linguaggi per scrivere le funzioni, il suo linguaggio nativo è <strong>PL/pgSQL</strong>.</p>
+<p>Il comando <code>CREATE TRIGGER</code> accetta solamente delle <strong>trigger function</strong>, cioè funzioni:</p>
+<ul>
+<li>con <code>trigger</code> come tipo di ritorno</li>
+<li>senza argomenti, il passaggio dei parametri avviene in modo custom</li>
+</ul>
+<p>esempio di creazione di una trigger function:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> my_trigger<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">trigger</span> <span class="token keyword">AS</span> $$
+	<span class="token operator">&lt;</span>definition<span class="token operator">&gt;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>All’interno di una funzione si possono scrivere degli <strong>statement</strong>, cioè istruzioni SQL, condizioni (<code>IF</code>) oppure <code>RETURN</code>.</p>
+<p>Quando una trigger function viene invocata vengono create delle variabili speciali, tra cui:</p>
+<ul>
+<li><code>NEW</code>: la nuova riga in caso di operazioni <code>INSERT/UPDATE</code> per trigger per riga (vale NULL in caso di <code>DELETE</code>)</li>
+<li><code>OLD</code>: la vecchia riga in caso di operazioni <code>DELETE/UPDATE</code> per trigger per riga (vale NULL in caso di <code>INSERT</code>)</li>
+<li><code>TG_NARGS</code>: numero di argomenti passati tramite la <code>CREATE TRIGGER</code></li>
+<li><code>TG_ARGV</code>: vettore degli argomenti</li>
+</ul>
+<p>In caso di trigger per statement e di AFTER trigger per riga la funzione ritorna sempre NULL. Mentre per i BEFORE trigger per riga si ha:</p>
+<ul>
+<li>Ritorno NULL per indicare che l’operazione è stata abortita</li>
+<li>Ritornare la riga che sarà inserita/aggiornata nel caso di <code>INSERT</code> o <code>UPDATE</code></li>
+<li>Ritornare NEW in caso di <code>INSERT</code> o <code>UPDATE</code>  e ritornare OLD nel caso di <code>DELETE</code> (così da non interferire che l’operazione)</li>
+</ul>
+<h2 id="trigger-per-riga">Trigger per riga</h2>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> name { BEFORE <span class="token operator">|</span> <span class="token keyword">AFTER</span> } { evt <span class="token punctuation">[</span> <span class="token operator">OR</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> }
+<span class="token keyword">ON</span> table_name
+<span class="token punctuation">[</span> REFERENCING { { OLD <span class="token operator">|</span> NEW } <span class="token keyword">TABLE</span> <span class="token keyword">AS</span> tab } <span class="token punctuation">[</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> <span class="token punctuation">]</span>
+<span class="token keyword">FOR EACH ROW</span>
+<span class="token punctuation">[</span> <span class="token keyword">WHEN</span> <span class="token punctuation">(</span> condition <span class="token punctuation">)</span> <span class="token punctuation">]</span>
+<span class="token keyword">EXECUTE</span> <span class="token keyword">FUNCTION</span> func <span class="token punctuation">(</span> args <span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>Un BEFORE trigger per riga può prevenire operazioni o modificarle</li>
+<li>La clausola WHEN può fare riferimento a OLD e NEW per specificare una condizione di attivazione (non si possono fare sotto-query)</li>
+<li>Con un AFTER trigger si usa REFERRENCING anche per vedere i cambiamenti complessivi nell’intera tabella oltre che ai cambiamenti alle singole righe</li>
+</ul>
+<h2 id="trigger-per-statement">Trigger per statement</h2>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> name { BEFORE <span class="token operator">|</span> <span class="token keyword">AFTER</span> } { evt <span class="token punctuation">[</span> <span class="token operator">OR</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> }
+<span class="token keyword">ON</span> table_name
+<span class="token punctuation">[</span> REFERENCING { { OLD <span class="token operator">|</span> NEW } <span class="token keyword">TABLE</span> <span class="token keyword">AS</span> tab } <span class="token punctuation">[</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> <span class="token punctuation">]</span>
+<span class="token keyword">FOR</span> EACH STATEMENT
+<span class="token keyword">EXECUTE</span> <span class="token keyword">FUNCTION</span> func <span class="token punctuation">(</span> args <span class="token punctuation">)</span>
+</code></pre>
+<ul>
+<li>un trigger per statement viene eseguito una volta anche se nessuna riga è coinvolta nell’operazione scatenante</li>
+<li>Con un AFTER trigger si usa REFERRENCING anche per vedere i cambiamenti complessivi nell’intera tabella</li>
+</ul>
+<h2 id="ordine-di-esecuzione">Ordine di esecuzione</h2>
+<ol>
+<li>I <strong>BEFORE trigger per statement</strong> si attivano per primi, prima che l’evento abbia inizio</li>
+<li>i <strong>BEFORE trigger per riga</strong> si attivano immediatamente prima di operare sulla riga coinvolta</li>
+<li>gli <strong>AFTER trigger per riga</strong> si attivano alla fine dell’evento</li>
+<li>gli <strong>AFTER trigger per statement</strong> si attivano per ultimi</li>
+</ol>
+<h2 id="specificità-di-postgres">Specificità di Postgres</h2>
+<ul>
+<li>I trigger per riga hanno visibilità dei cambiamenti effettuati sulle righe precedenti ma l’ordine di visita non è predicibile.</li>
+<li>Se più trigger sono definiti per lo stesso evento (sulla stessa tabella) essi vengono eseguiti in ordine <strong>alfabetico</strong></li>
+<li>Un trigger può attivare ricorsivamente altri trigger, causando potenziali ricorsioni infinite</li>
+</ul>
+<h2 id="esempio">Esempio</h2>
+<p>dato il seguente modello logico</p>
+<pre><code>Product(maker, model(PK), type)
+PC(model*, speed, ram, hd, price)
+Laptop(model*, speed, ram, hd, screen, price)
+Printer(model*, color, type, price)
+</code></pre>
+<p>creiamo un trigger per gestire l’invariante “Nessun produttore di PC pu`o anche produrre laptop”.</p>
+<p>poniamoci le classiche domande</p>
+<ul>
+<li>Quali operazioni possono violare l’invariante? INSERT o UPDATE su Product</li>
+<li>Il mantenimento dell’invariante può essere controllato per ogni riga coinvolta dall’operazione oppure no? Sì, è un controllo locale</li>
+<li>Cosa bisogna fare prima o dopo dell’operazione per garantire il mantenimento dell’invariante? Bloccare l’operazione (BEFORE)</li>
+</ul>
+<p><strong>trigger</strong>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TRIGGER</span> NoPCLaptop
+BEFORE <span class="token keyword">INSERT</span> <span class="token operator">OR</span> <span class="token keyword">UPDATE</span>
+<span class="token keyword">ON</span> Product
+<span class="token keyword">FOR EACH ROW</span>
+<span class="token keyword">EXECUTE</span> <span class="token keyword">FUNCTION</span> no_pc_laptop<span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>trigger function</strong>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> no_pc_laptop<span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">trigger</span> <span class="token keyword">AS</span> $$
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">IF</span> <span class="token punctuation">(</span>NEW<span class="token punctuation">.</span><span class="token keyword">type</span> <span class="token operator">=</span> ’pc’ <span class="token operator">AND</span> NEW<span class="token punctuation">.</span>maker <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> maker <span class="token keyword">FROM</span> Product <span class="token keyword">WHERE</span> <span class="token keyword">type</span> <span class="token operator">=</span> ’laptop’<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span>
+		<span class="token keyword">RETURN</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token keyword">IF</span> <span class="token punctuation">(</span>NEW<span class="token punctuation">.</span><span class="token keyword">type</span> <span class="token operator">=</span> ’laptop’ <span class="token operator">AND</span> NEW<span class="token punctuation">.</span>maker <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> maker <span class="token keyword">FROM</span> Product <span class="token keyword">WHERE</span> <span class="token keyword">type</span> <span class="token operator">=</span> ’pc’<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">THEN</span>
+		<span class="token keyword">RETURN</span> <span class="token boolean">NULL</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token keyword">RETURN</span> NEW<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
 
     </div>
   </div>
