@@ -6,7 +6,7 @@ let courses = {
 	prog_ogg1 : ["Introduzione", "Classi", "Incapsulamento", "Javadoc", "Ereditarietà", "Subtyping", "Interfacce", "Dispatch dei metodi", "Tipi generici", "Object e tipi nativi", "Eccezioni", "Annotazioni", "Reflection", "Library management"],
 	sis_operativi1 : ["Introduzione", "Esercizi introduzione", "Processi e thread", "Scheduling","Esercizi Processi thread e scheduling", "Gestione della memoria", "Memoria virtuale", "Segmentazione", "File system", "Memoria secondaria", "Caso di studio Linux", "Caso di studio Windows"],
 	basi_dati2 : ["Anomalie e Dipendenze funzionali", "Chiavi e coperture canoniche", "Esercizi dipendenze", "Decomposizione", "Forme normali", "Esercizi normalizzazione", "Vincoli di integrità", "Trigger"],
-	int_uomo_macchina : ["L'uomo", "La memoria", "Il pensiero"],
+	int_uomo_macchina : ["L'uomo", "La memoria", "Il pensiero", "Il computer"],
 	prog_ogg2 : ["Introduzione", "Classi innestate"],
 	sis_operativi2 : ["Comunicazione tra processi e thread", "Creazione di processi", "Esecuzione e terminazione", "Segnali", "Pipe", "Thread"]
 };
