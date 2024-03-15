@@ -8,7 +8,7 @@ let courses = {
 	basi_dati2 : ["Anomalie e Dipendenze funzionali", "Chiavi e coperture canoniche", "Esercizi dipendenze", "Decomposizione", "Forme normali", "Esercizi normalizzazione", "Vincoli di integrità", "Trigger"],
 	int_uomo_macchina : ["L'uomo", "La memoria", "Il pensiero"],
 	prog_ogg2 : ["Introduzione", "Classi innestate"],
-	sis_operativi2 : ["Comunicazione tra processi e thread", "Creazione di processi", "Esecuzione e terminazione", "Segnali", "Pipe"]
+	sis_operativi2 : ["Comunicazione tra processi e thread", "Creazione di processi", "Esecuzione e terminazione", "Segnali", "Pipe", "Thread"]
 };
 
 function show_arguments(subj) {
