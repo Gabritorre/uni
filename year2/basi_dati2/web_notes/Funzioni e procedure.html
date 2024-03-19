@@ -1,0 +1,218 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-18_Funzioni e procedure</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#funzioni-e-procedure">Funzioni e procedure</a>
+<ul>
+<li><a href="#dichiarazione-di-variabili">Dichiarazione di variabili</a></li>
+<li><a href="#ritorno">Ritorno</a></li>
+<li><a href="#condizioni">Condizioni</a></li>
+<li><a href="#cicli">Cicli</a></li>
+<li><a href="#variabile-found">Variabile FOUND</a></li>
+<li><a href="#eccezioni">Eccezioni</a></li>
+<li><a href="#procedure">Procedure</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="funzioni-e-procedure">Funzioni e procedure</h1>
+<p>Oltre ad utilizzare le funzioni all’interno dei trigger, si possono creare funzioni per altri scopi:</p>
+<ul>
+<li>Incapsulare funzionalità di uso comune per facilitarne il riutilizzo</li>
+<li>offrire una interfaccia più semplice per che è ancora alle prime armi</li>
+<li>Raggruppare una sequenza di operazioni di cui non ci interessano i risultati intermedi.</li>
+</ul>
+<p>Vediamo come definire le funzioni nel linguaggio <em>PL/pgSQL</em> di postgres.</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> my_fun <span class="token punctuation">(</span><span class="token operator">&lt;</span>args<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token operator">&lt;</span><span class="token keyword">type</span><span class="token operator">&gt;</span> <span class="token keyword">AS</span> $$
+<span class="token operator">&lt;</span>dichiarazione di variabili<span class="token operator">&gt;</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token operator">&lt;</span>corpo della funzione<span class="token operator">&gt;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>Vediamo un esempio di funzione</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> my_concat<span class="token punctuation">(</span><span class="token number">a</span> <span class="token keyword">text</span><span class="token punctuation">,</span> <span class="token number">b</span> <span class="token keyword">text</span><span class="token punctuation">,</span> uppercase <span class="token keyword">boolean</span> <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> <span class="token keyword">text</span> <span class="token keyword">AS</span> $$
+<span class="token keyword">BEGIN</span> 
+	<span class="token keyword">IF</span> uppercase <span class="token keyword">THEN</span>
+		<span class="token keyword">RETURN</span> UPPER<span class="token punctuation">(</span><span class="token number">a</span> <span class="token operator">||</span> ’ ’ <span class="token operator">||</span> <span class="token number">b</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+	<span class="token keyword">RETURN</span> LOWER<span class="token punctuation">(</span><span class="token number">a</span> <span class="token operator">||</span> ’ ’ <span class="token operator">||</span> <span class="token number">b</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="dichiarazione-di-variabili">Dichiarazione di variabili</h2>
+<p>La dichiarazione delle variabili fa fatta nella posizione apposita, la lista di variabili va messa a seguire della keyword <code>DECLARE</code></p>
+<p>Una variabile si dichiara secondo il seguente costrutto</p>
+<pre class=" language-sql"><code class="prism  language-sql">name <span class="token punctuation">[</span>CONSTANT<span class="token punctuation">]</span> <span class="token keyword">type</span> <span class="token punctuation">[</span><span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">]</span> <span class="token punctuation">[</span>:<span class="token operator">=</span> expr <span class="token operator">OR</span> <span class="token operator">=</span> expr<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Quindi va prima il nome della variabile seguito dal tipo.<br>
+I tipi possono essere tutti quelli supportati di SQL</p>
+<p>l’assegnazione tramite <code>:=</code> è equivalente all’uso di <code>=</code>, lo standard di PL/SQL è <code>:=</code></p>
+<p>Alcuni tipi di dato particolari sono:</p>
+<ul>
+<li><code>variable%TYPE</code> permette di definire il tipo che è lo stesso tipo di una variabile oppure di una colonna del database. Se ad esempio si ha una colonna chiamata <code>user_id</code> nella tabella <code>users</code>, per dichiarare una nuova variabile con lo stesso tipo di <code>user_id</code> si fa:<br>
+<code>my_var users.user_id%TYPE;</code></li>
+<li><code>table_name%ROWTYPE</code> permette di definire il tipo che è il tipo di una riga di una determinata tabella</li>
+<li><code>RECORD</code> come il precedente solo che è più generico e si adatta ad ogni assegnamento (un accesso prima dell’assegnamento causerà un errore)</li>
+</ul>
+<p>Esempi di dichiarazioni:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DECLARE</span>
+	user_id <span class="token keyword">integer</span><span class="token punctuation">;</span>
+	quantity <span class="token keyword">numeric</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	url <span class="token keyword">varchar</span><span class="token punctuation">;</span>
+	myrow tablename<span class="token operator">%</span>ROWTYPE<span class="token punctuation">;</span>
+	myfield tablename<span class="token punctuation">.</span>columnname<span class="token operator">%</span><span class="token keyword">TYPE</span><span class="token punctuation">;</span>
+	arow RECORD<span class="token punctuation">;</span>
+</code></pre>
+<h3 id="assegnamento">Assegnamento</h3>
+<p>L’assegnamento si fa con la sintassi:</p>
+<pre class=" language-sql"><code class="prism  language-sql">var <span class="token operator">=</span> expr
+</code></pre>
+<p>È possibile salvare la prima riga di una query in una variabile, nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> expr <span class="token keyword">INTO</span> var <span class="token keyword">FROM</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+</code></pre>
+<h2 id="ritorno">Ritorno</h2>
+<p>Se la funzione ritorna un singolo valore si può usare la sintassi:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">RETURN</span> expr<span class="token punctuation">;</span>
+</code></pre>
+<p>mentre se si vuole ritornare una riga, è possibile utilizzare dei parametri di output:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> sum_n_product <span class="token punctuation">(</span>x <span class="token keyword">int</span><span class="token punctuation">,</span> y <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">OUT</span> sum <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">OUT</span> prod <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> $$
+<span class="token keyword">BEGIN</span>
+	sum <span class="token operator">=</span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
+	prod <span class="token operator">=</span> x <span class="token operator">*</span> y<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>Una funzione che ritorna un insieme di valori, tale insieme deve essere costruito in maniera incrementale:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">RETURN</span> <span class="token keyword">NEXT</span> expr<span class="token punctuation">;</span> <span class="token comment">-- aggiunge un record al risultato</span>
+<span class="token keyword">RETURN</span> QUERY query<span class="token punctuation">;</span> <span class="token comment">-- aggiunge un insieme al risultato</span>
+<span class="token keyword">RETURN</span> 	<span class="token comment">-- ritorna il risultato</span>
+</code></pre>
+<p>Nel tipo di ritorno della funzione si può usare <code>SETOF t</code> per dire di restituire un insieme di elementi di tipo <code>t</code></p>
+<p>Esempio</p>
+<p>“Data la tabella <code>PC(model, speed, ram, hd, price)</code>, definire una funzione che ritorna un insieme di modelli associati ai rispettivi prezzi, cioè solo la prima e la quinta colonna della tabella.”</p>
+<ul>
+<li>
+<p>un primo modo per costruire la funzione è</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">RETURNS</span> SETOF RECORD <span class="token keyword">AS</span> $$
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">RETURN</span> QUERY <span class="token keyword">SELECT</span> model<span class="token punctuation">,</span> price <span class="token keyword">FROM</span> pc<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>Utilizzo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> m<span class="token punctuation">,</span>p <span class="token keyword">FROM</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> <span class="token punctuation">(</span>m character<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span> p <span class="token keyword">real</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<p>Un secondo modo è</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token keyword">TABLE</span><span class="token punctuation">(</span>m <span class="token keyword">integer</span><span class="token punctuation">,</span> p <span class="token keyword">real</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> $$
+<span class="token keyword">BEGIN</span>
+	<span class="token keyword">RETURN</span> QUERY <span class="token keyword">SELECT</span> model<span class="token punctuation">,</span> price <span class="token keyword">FROM</span> pc<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>Utilizzo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+<p>Nota che la sintassi</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> <span class="token keyword">TABLE</span><span class="token punctuation">(</span>m character<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span> p <span class="token keyword">real</span><span class="token punctuation">)</span>
+</code></pre>
+<p>è equivalente a</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">FUNCTION</span> <span class="token number">f</span><span class="token punctuation">(</span><span class="token keyword">OUT</span> m character<span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">OUT</span> p <span class="token keyword">real</span><span class="token punctuation">)</span>
+<span class="token keyword">RETURNS</span> SETOF RECORD
+</code></pre>
+<h2 id="condizioni">Condizioni</h2>
+<p>La sintassi delle condizioni è la seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">IF</span> <span class="token operator">&lt;</span>boolean_expr<span class="token operator">&gt;</span> <span class="token keyword">THEN</span>
+	statements
+ELSIF <span class="token keyword">boolean</span><span class="token operator">-</span>expr <span class="token keyword">THEN</span>
+	statements
+<span class="token keyword">ELSE</span> 
+	statements
+<span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="cicli">Cicli</h2>
+<p>Il ciclo <strong>while</strong> si fa nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">WHILE</span> <span class="token operator">&lt;</span>boolean_expr<span class="token operator">&gt;</span> LOOP
+	statements
+<span class="token keyword">END</span> LOOP<span class="token punctuation">;</span>
+</code></pre>
+<p>Il ciclo <strong>for</strong> si fa nel seguente modo</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">FOR</span> name <span class="token operator">IN</span> <span class="token punctuation">[</span> REVERSE <span class="token punctuation">]</span> <span class="token operator">&lt;</span>int_expr<span class="token operator">&gt;</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token operator">&lt;</span>int_expr<span class="token operator">&gt;</span> <span class="token punctuation">[</span> <span class="token keyword">BY</span> <span class="token operator">&lt;</span>int_expr<span class="token operator">&gt;</span> <span class="token punctuation">]</span> LOOP
+	statements
+<span class="token keyword">END</span> LOOP<span class="token punctuation">;</span>
+</code></pre>
+<p>Si può usare il for per loopare tra i risultati di una query</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">FOR</span> target <span class="token operator">IN</span> query LOOP
+	statements
+<span class="token keyword">END</span> LOOP<span class="token punctuation">;</span>
+</code></pre>
+<p>Si può usare il for-each per loopare tra gli elementi di un array</p>
+<pre class=" language-sql"><code class="prism  language-sql">FOREACH target <span class="token operator">IN</span> ARRAY expr LOOP
+	statements
+<span class="token keyword">END</span> LOOP
+</code></pre>
+<h2 id="variabile-found">Variabile FOUND</h2>
+<p>Ciascuna funzione possiede una variabile <code>FOUND</code>:</p>
+<ol>
+<li><code>SELECT INTO</code> imposta <code>FOUND</code> a <code>true</code> se viene assegnata una riga alla variabile corrispondente, <code>false</code> altrimenti</li>
+<li><code>UPDATE, INSERT, DELETE</code> impostano <code>FOUND</code> a <code>true</code> se almeno una riga è stata toccata, <code>false</code> altrimenti</li>
+<li>un ciclo FOR imposta <code>FOUND</code> a <code>true</code> se ha iterato almeno una volta, <code>false</code> altrimenti</li>
+<li><code>RETURN QUERY</code> imposta <code>FOUND</code> a <code>true</code> se la query ha ritornato almeno una riga, <code>false</code> altrimenti</li>
+</ol>
+<h2 id="eccezioni">Eccezioni</h2>
+<p>Una funzione può riportare messaggi oppure errori</p>
+<pre class=" language-sql"><code class="prism  language-sql">RAISE <span class="token punctuation">[</span> level <span class="token punctuation">]</span> <span class="token string">'format'</span> <span class="token punctuation">[</span><span class="token punctuation">,</span> expr <span class="token punctuation">[</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token keyword">USING</span> <span class="token keyword">option</span> <span class="token operator">=</span> expr<span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li><code>level</code> indica il livello di severità dell’errore</li>
+<li><code>format</code> rappresenta il messaggio da riportare</li>
+<li>la clausola <code>USING</code> permette di popolare info aggiuntive sull’errore</li>
+</ul>
+<p>Si può rilanciare una eccezione catturata usando <code>RAISE</code> senza parametri</p>
+<p>Nota: tutti i cambiamenti al database effettuati nel blocco che ha sollevato l’eccezione vengono annullati</p>
+<h3 id="catturare-leccezione">Catturare l’eccezione</h3>
+<p>Per catturare una eccezione si usa la seguente sintassi</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">BEGIN</span>
+	statements
+EXCEPTION
+	<span class="token keyword">WHEN</span> cond <span class="token punctuation">[</span> <span class="token operator">OR</span> cond <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> <span class="token keyword">THEN</span> <span class="token keyword">handler</span>
+	<span class="token punctuation">[</span> <span class="token keyword">WHEN</span> cond <span class="token punctuation">[</span> <span class="token operator">OR</span> cond <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span> <span class="token keyword">THEN</span> <span class="token keyword">handler</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">]</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="procedure">Procedure</h2>
+<p>Una procedura è una funzione che non ritorna niente.</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">PROCEDURE</span> my_proc <span class="token punctuation">(</span><span class="token operator">&lt;</span>args<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token keyword">AS</span> $$
+<span class="token operator">&lt;</span>dichiarazione di variabili<span class="token operator">&gt;</span>
+<span class="token keyword">BEGIN</span>
+	<span class="token operator">&lt;</span>corpo della procedura<span class="token operator">&gt;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+$$ LANGUAGE plpgsql<span class="token punctuation">;</span>
+</code></pre>
+<p>Una procedura si può chiamare con il comando <code>CALL</code></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
