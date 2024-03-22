@@ -10,6 +10,9 @@ Dato un qualsiasi nodo $u$ il grado del nodo $u$ si indica come $\deg(u)$
 
 $$0 \leq \deg(u) \leq n-1$$
 
+- i nodi con grado $0$ sono chiamati **nodi isolati**
+- i nodi con grado $1$ sono chiamati **nodi terminali**
+
 ![enter image description here](https://i.ibb.co/BKXtnLc/image.png)
 
 
@@ -158,3 +161,112 @@ $$a_{ij}^{(2)} = \begin{cases}
 \deg(i) & \text{se $i = j$}\\
 \text{numero di cammini lunghi 2 tra $i$ e $j$} & \text{se $i \neq j$}
 \end{cases}$$
+
+**Dimostriamo la diagonale**:
+Date due generiche matrici:
+- $A$ di dimensioni $n \times m$
+- $B$ di dimensioni $m \times k$
+ricordiamo che il prodotto si può fare solo se il numero di colonne di una matrice è uguale al numero di righe dell'altra.
+
+ genericamente gli elementi di una matrice $C$ generata dal prodotto di due matrici $A \times B$ si possono calcolare come:
+$$c_{ij} = \sum_{\ell = 1}^{n} a_{i\ell} \cdot b_{\ell j}$$
+
+Nel nostro caso Abbiamo il prodotto di una matrice per se stessa, nella diagonale cioè quando gli indici sono uguali abbiamo:
+
+$$a_{ii}^{(2)} = \sum_{k = 1}^n a_{ik} \cdot a_{ki}$$
+
+dato che $a_{ik} = a_{ki}$
+
+$$a_{ii}^{(2)} = \sum_{k = 1}^n (a_{ik})^2$$
+
+dato che la matrice è binaria, i valori che può assumere $a_{ik}$ sono 1 e 0 ed entrambi elevati al quadrato rimangono uguali, quindi:
+
+$$a_{ii}^{(2)} = \sum_{k = 1}^n a_{ik} = \deg(i)$$
+
+**Dimostriamo fuori dalla diagonale**:
+
+$$a_{ij}^{(2)} = \sum_{k = 1}^n a_{ik} \cdot a_{kj}$$
+
+Dato che siamo su una matrice binaria: il prodotto $a_{ik} \cdot a_{kj}$ vale 1 solamente quando entrambi i valori sono 1, negli altri casi vale 0.
+
+Quando entrambi valgono 1 significa che esiste un arco tra $i$ e $k$ e anche tra $k$ e $j$ e quindi c'è un cammino tra $i$ e $j$ lungo 2 archi.
+Dato che stiamo facendo una sommatoria stiamo effettivamente contando quanti cammini ci sono tra $i$ e $j$
+
+
+### Generalizzazione
+
+In generale vale che per ogni $i\neq j$ la matrice risultante dal prodotto di una matrice per se stessa $k$ volte, ha degli elementi che rappresentano il numero di cammini di lunghezza $k$ tra i nodi $i$ e $j$.
+
+mentre per $i = j$ si ottengono il numero di cicli di lunghezza $k$ che partono dal nodo $i$ e tornano su se stesso
+
+
+## Esercizio 
+
+Date le seguenti 3 ipotesi:
+
+1. Abbiamo $G=(V, E)$ grafo non orientato
+2. Non esistono nodi isolati (di grado 0)
+4. $|E| = |V|-1$
+
+Vogliamo dimostrare che: esistono almeno 2 vertici con grado 1
+
+$n = |V|$
+$m = |E|$
+
+per l'ipotesi 1 posso applicare il teorema della stretta di mano:
+
+$$2m = \sum_{u \in V}\deg(u)$$
+
+per ipotesi 3:
+
+$$2(n-1) = \sum_{u \in V}\deg(u)$$
+
+per ipotesi 2 so che $1 \leq \deg(u) \leq n-1$
+
+Definisco $V_1$ come l'insieme dei vertici appartenenti a $V$ di grado 1.
+$V_1 = \{u \in V | \deg(u) = 1\}$
+Voglio quindi dimostrare che $|V_1| \geq 2$
+
+Posso riscrivere la sommatoria come la somma tra i nodi di grado 1 e il grado degli altri nodi
+
+$$2(n-1) = \sum_{u \in V_1}\deg(u) + \sum_{u \notin V_1} \deg(u)$$
+
+la prima sommatoria ha tutti i $\deg(u) = 1$ quindi viene sommato 1 esattamente $|V_1|$ volte
+
+$$2(n-1) = |V_1| + \sum_{u \notin V_1} \deg(u)$$
+
+per la seconda sommatoria so di per certo che $\deg(u) \geq 2$, perche gradi 0 non ci sono per ipotesi 2 e i nodi di grado 1 li abbiamo già accorpati nella sommatoria precedente.
+La cardinalità è calcolabile come $|V| - |V_1|$
+
+$$2(n-1) \geq |V_1| + 2 \left(|V| - |V_1|\right)$$
+
+(il 2 che moltiplica è dato dal fatto che stiamo impostando un limite inferiore con $\geq$ non stiamo cercando una quantità precisa)
+
+$$2n-2 \geq |V_1| + 2 |V| - 2|V_1|$$
+
+$$2n-2 \geq 2 |V| - |V_1|$$
+
+ricordiamo che $|V| = n$
+
+$$2n-2 \geq 2n - |V_1|$$
+
+$$-2 \geq -|V_1|$$
+
+$$|V_1| \geq 2$$
+
+
+## Grado nei grafi orientati
+
+Se abbiamo un grafo orientato $G = (V, E)$, abbiamo due tipi di gradi per un nodo $i$:
+
+- $\text{in-deg}(i)$: numero di archi entranti
+- $\text{out-deg}(i)$: numero di archi uscenti 
+
+Risulta che la somma degli archi entranti e la somma degli degli archi uscenti di ogni nodo del grafo è uguale alla cardinalità di $E$, quindi
+
+$$\sum_{i = 1}^n \text{in-deg}(i) = \sum_{i = 1}^n \text{out-deg}(i) = |E| = m$$
+
+Nella matrice di adiacenza è possibile:
+- calcolare $\text{in-deg}(i)$ sommando i valori alla colonna $i$-esima
+- calcolare $\text{out-deg}(i)$ sommando i valori alla riga $i$-esima
+ 
