@@ -1,0 +1,230 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-21_Sicurezza</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#sicurezza-dei-database">Sicurezza dei database</a>
+<ul>
+<li><a href="#autenticazione">Autenticazione</a></li>
+<li><a href="#autorizzazione">Autorizzazione</a></li>
+<li><a href="#assegnare-i-permessi">Assegnare i permessi</a></li>
+<li><a href="#delegare-permessi">Delegare permessi</a></li>
+<li><a href="#diagramma-di-autorizzazione">Diagramma di autorizzazione</a></li>
+<li><a href="#revocare-i-permessi">Revocare i permessi</a></li>
+<li><a href="#ruoli">Ruoli</a></li>
+<li><a href="#sql-injection">SQL injection</a></li>
+<li><a href="#escaping">Escaping</a></li>
+<li><a href="#prepared-statement">Prepared statement</a></li>
+<li><a href="#sanitizzazione">Sanitizzazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="sicurezza-dei-database">Sicurezza dei database</h1>
+<p>Tutti i principali DBMS implementano meccanismi di:</p>
+<ul>
+<li><strong>autenticazione</strong>: cioè identificare che sta operando sul database</li>
+<li><strong>autorizzazione</strong>: determinare chi può fare cosa tramite dei permessi</li>
+</ul>
+<p><strong>controllo degli accessi</strong>: meccanismo con cui viene verificato che chi richiede un’operazione sia effettivamente autorizzato per farla.</p>
+<h2 id="autenticazione">Autenticazione</h2>
+<p>Solitamente l’autenticazione è effettuata tramite l’utilizzo di <strong>username e password</strong></p>
+<p>Vediamo il modo in cui Postgres gestisce gli utenti.<br>
+La creazione  di un utente avviene con il seguente comando:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">USER</span> NomeUtente <span class="token keyword">WITH</span> PASSWORD NuovaPwd
+</code></pre>
+<p>Ulteriori opzioni sono:</p>
+<ul>
+<li><code>SUPERUSER</code>: l’utente supera tutti i controlli di sicurezza</li>
+<li><code>CREATEDB</code>: l’utente può creare nuovi database</li>
+<li><code>VALID UNTIL ts</code>: specifica la scadenza della password</li>
+</ul>
+<p>Postgres gestisce il processo di autenticazione tramite un file <code>pg_hba.conf</code>.<br>
+È possibile modificare il <strong>metodo di autenticazione</strong>, che è definito da 4 opzioni:</p>
+<ul>
+<li>tipo di connessione: locale, remota, cifrata, …</li>
+<li>database: lista di database</li>
+<li>utente: lista di utenti</li>
+<li>indirizzo: hostname, indirizzo IP, range di indirizzi IP</li>
+</ul>
+<p>Esistono tanti metodi di autenticazione: trust, reject, password, MD5, SCRAM, …<br>
+Ce ne sono di più e meno sicuri.</p>
+<p><a href="https://www.postgresql.org/docs/current/auth-pg-hba-conf.html">https://www.postgresql.org/docs/current/auth-pg-hba-conf.html</a></p>
+<h2 id="autorizzazione">Autorizzazione</h2>
+<p>Dopo aver autenticato l’utente il DBMS può applicare le <strong>politiche di autorizzazione</strong>.</p>
+<p>Regole base di autorizzazione:</p>
+<ul>
+<li>quando un oggetto viene creato (ad esempio una tabella), il <strong>creatore ne diventa il proprietario</strong> e ne ha il pieno controllo</li>
+<li>Gli altri utenti possono accedere all’oggetto solamente rispettando i propri permessi</li>
+<li>solo il creatore dell’oggetto può eliminare o alterare la definizione di un oggetto</li>
+</ul>
+<p>I permessi si possono definire su:</p>
+<ul>
+<li>SELECT</li>
+<li>INSERT</li>
+<li>UPDATE</li>
+<li>DELTE</li>
+<li>TRIGGER</li>
+<li>EXECUTE</li>
+</ul>
+<p>Ad esempio nella seguente query</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> Studio<span class="token punctuation">(</span>name<span class="token punctuation">)</span>
+	<span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> studioName
+	<span class="token keyword">FROM</span> Movies
+	<span class="token keyword">WHERE</span> studioName <span class="token operator">NOT</span> <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> name <span class="token keyword">FROM</span> Studio<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>l’utente che la vuole eseguire deve avere i permessi su: INSERT(name), SELECT(studioName) e SELECT(name).</p>
+<h3 id="permesso-trigger">Permesso TRIGGER</h3>
+<p>Per quanto riguarda il <strong>permesso TRIGGER</strong> su una tabella, esso abilita la definizione di nuovi trigger arbitrari su di essa.<br>
+Il creatore del trigger deve avere sia il permesso TRIGGER sia i permessi richiesti per eseguire l’azione del trigger.<br>
+Quando un trigger <strong>si attiva esso viene eseguito con i permessi del suo creatore</strong>, indipendentemente da chi lo ha attivato.</p>
+<p>Per questi motivi bisogna prestare molta attenzione a questo permesso.</p>
+<h3 id="permessi-su-funzioni">Permessi su funzioni</h3>
+<p>Quando si dichiara una funzione è possibile specificarne i permessi attraverso le opzioni:</p>
+<ul>
+<li><code>SECURITY INVOKER</code>: la funzione viene eseguita con i permessi del chiamante (opzione di default)</li>
+<li><code>SECURITY DEFINER</code>: la funzione viene eseguita con i permessi del creatore</li>
+</ul>
+<h2 id="assegnare-i-permessi">Assegnare i permessi</h2>
+<p>Il creatore dello schema relazionale possiede tutti i permessi e può concedere dei permessi ad altri utenti, tramite la seguente sintassi:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">GRANT</span> ListaPermessi <span class="token keyword">ON</span> Elemento <span class="token keyword">TO</span> ListaUtenti
+</code></pre>
+<ul>
+<li>è possibile utilizzare <code>ALL PRIVILEGES</code> per indicare tutti i permessi</li>
+<li>è possibile utilizzare <code>PUBLIC</code> per autorizzare tutti gli utenti (anche quelli non ancora esistenti)</li>
+</ul>
+<h2 id="delegare-permessi">Delegare permessi</h2>
+<p>è possibile anche permettere a degli utenti di concedere un <strong>sottoinsieme dei loro permessi</strong> ad altri utenti, tramite la seguente sintassi</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">GRANT</span> ListaPermessi <span class="token keyword">ON</span> Elemento <span class="token keyword">TO</span> ListaUtenti
+<span class="token keyword">WITH</span> <span class="token keyword">GRANT</span> <span class="token keyword">OPTION</span>
+</code></pre>
+<h2 id="diagramma-di-autorizzazione">Diagramma di autorizzazione</h2>
+<p>Un diagramma di autorizzazione è un grafo orientato in cui i nodi sono etichettati con una tripla <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>(utente,&nbsp;permesso,&nbsp;m)</mtext></mrow><annotation encoding="application/x-tex">\text{(utente, permesso, m)}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">(utente,&nbsp;permesso,&nbsp;m)</span></span></span></span></span></span> dove m può assumere i seguenti significati:</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">⊥</mi></mrow><annotation encoding="application/x-tex">\bot</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord">⊥</span></span></span></span></span> il permesso gli è stato assegnato ma non può essere delegato</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord">⋆</span></span></span></span></span> il permesso è stato assegnato e può essere delegato</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋆</mo><mo>⋆</mo></mrow><annotation encoding="application/x-tex">\star \star</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.46528em; vertical-align: 0em;"></span><span class="mord">⋆</span><span class="mord">⋆</span></span></span></span></span> il permesso è concesso in qualità di proprietario</li>
+</ul>
+<p><img src="https://i.ibb.co/pdVLkwR/image.png" alt="enter image description here"></p>
+<h2 id="revocare-i-permessi">Revocare i permessi</h2>
+<p>È possibile revocare dei permessi assegnati in precedenza tramite la sintassi:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">REVOKE</span> ListaPermessi <span class="token keyword">ON</span> Elemento <span class="token keyword">FROM</span> ListaUtenti
+</code></pre>
+<p>si può aggiungere al comando:</p>
+<ul>
+<li><code>CASCADE</code>: il permesso viene ricorsivamente revocato a tutti gli utenti che lo hanno ricevuto dal target della revoca</li>
+<li><code>RESTRICT</code>: fa fallire la revoca se essa comporterebbe la revoca di permessi ad altri utenti</li>
+</ul>
+<p>È possibile revocare solamente la possibilità di delega tramite il comando:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">REVOKE</span> <span class="token keyword">GRANT</span> <span class="token keyword">OPTION</span> <span class="token keyword">FOR</span> ListaPermessi <span class="token keyword">ON</span> Elemento <span class="token keyword">FROM</span> ListaUtenti
+</code></pre>
+<p>È possibile che un utente possieda un permesso set di permessi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span></span> ma anche una variante più specifica <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mo>−</mo></msup></mrow><annotation encoding="application/x-tex">p^-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.965771em; vertical-align: -0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.771331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span></span></span></span></span> sullo stesso oggetto.<br>
+Revocare <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mo>−</mo></msup></mrow><annotation encoding="application/x-tex">p^-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.965771em; vertical-align: -0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.771331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span></span></span></span></span> non ha alcun effetto su <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span></span>.<br>
+Se invece viene revocato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span></span>, il DBMS può decidere se:</p>
+<ul>
+<li>revocare anche <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mo>−</mo></msup></mrow><annotation encoding="application/x-tex">p^-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.965771em; vertical-align: -0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.771331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span></span></span></span></span></li>
+<li>lasciare <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>p</mi><mo>−</mo></msup></mrow><annotation encoding="application/x-tex">p^-</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.965771em; vertical-align: -0.19444em;"></span><span class="mord"><span class="mord mathnormal">p</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.771331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mbin mtight">−</span></span></span></span></span></span></span></span></span></span></span></span></li>
+</ul>
+<h2 id="ruoli">Ruoli</h2>
+<p>Assegnare ad ogni utente determinati permessi manualmente diventa oneroso.<br>
+Spesso si utilizzano dei <strong>ruoli</strong>, cioè un collettore di permessi etichettato con un nome.<br>
+Tale nome viene assegnato agli utenti che dovrebbero possedere quella collezione di permessi</p>
+<p>Si può creare un nuovo ruolo nel seguente modo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> ROLE NomeRuolo<span class="token punctuation">;</span>
+</code></pre>
+<p>una volta creato è possibile usare:</p>
+<ul>
+<li><code>GRANT</code> per assegnare permessi a ruoli e assegnare ruoli ad utenti</li>
+<li><code>REVOKE</code> per rimuovere permessi a ruoli e rimuovere ruoli ad utenti</li>
+</ul>
+<p>I ruoli assegnati ad un utente non sono attivi di default, per attivarli bisogna fare:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SET</span> ROLE NomeRuolo<span class="token punctuation">;</span>
+</code></pre>
+<p>L’utilizzo degli ruoli porta i seguenti vantaggi</p>
+<ul>
+<li>i ruoli raggruppano insiemi di permessi logicamente collegati</li>
+<li>è molto meno costoso assegnare ruoli che permessi, visto che ce ne sono meno</li>
+<li>è molto più difficile sbagliare l’assegnazione di un ruolo che di un insieme di permessi</li>
+<li>le operazioni di revoca sono analogamente semplificate</li>
+<li>i ruoli non sono attivi di default, contrariamente ai permessi: questo è più fedele al principio del minimo privilegio</li>
+</ul>
+<p>In <strong>Postgres</strong> non c’è una vera distinzione tra Utente e Ruolo, infatti <code>CREATE USER</code> è un alias di <code>CREATE ROLE WITH LOGIN</code></p>
+<p>Alcuni dettagli:</p>
+<ul>
+<li>l’opzione <code>CREATE ROLE</code> consente al ruolo di creare altri ruoli. Questo può condurre a scalate di privilegi, da usare con attenzione!</li>
+<li>ruoli assegnati con <code>WITH ADMIN OPTION</code> possono essere delegati</li>
+<li>è possibile assegnare ruoli ad altri ruoli, introducendo una forma di ereditarietà dei permessi</li>
+<li>il diagramma di autorizzazione è costruito attorno ai ruoli: se un permesso viene assegnato tramite un ruolo, qualsiasi altro utente con quel ruolo può revocarlo</li>
+</ul>
+<p>Le opzioni <code>INHERIT</code> e <code>NOINHERIT</code> permettono di gestire l’ereditarietà dei ruoli:</p>
+<h2 id="sql-injection">SQL injection</h2>
+<p>la SQL injection è un tipo di vulnerabilità che sfrutta la manipolazione di caratteri di una stringa per eseguire delle istruzioni SQL dove non dovrebbe essere possibile.</p>
+<p>Il tipico caso è quello di un form di autenticazione, una pagina web che richiede utente e password per ottenere dei dati dell’utente, nel server otteniamo queste due informazioni e costruiamo una stringa che corrisponde ad una query SQL.</p>
+<pre class=" language-python"><code class="prism  language-python">user <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$u<span class="token punctuation">)</span>		<span class="token comment"># ottine l'username dal form</span>
+password <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$p<span class="token punctuation">)</span>	<span class="token comment"># ottine la password dal form</span>
+statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM users WHERE name = '"</span> <span class="token operator">+</span> user <span class="token operator">+</span> <span class="token string">"' AND pwd = '"</span> <span class="token operator">+</span> password <span class="token operator">+</span> <span class="token string">"';"</span>
+</code></pre>
+<p>se l’attaccante mettesse come password la stringa: <code>' OR '1' = '1</code></p>
+<p>la query diventerebbe</p>
+<pre class=" language-python"><code class="prism  language-python">statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM users WHERE name = ’marco’ AND pwd = ’’ OR ’1’ = ’1’;"</span>
+</code></pre>
+<p>si riuscirebbe a ottenere tutte le informazioni dell’utente anche senza il bisogno della password.</p>
+<p>Per prevenire l’SQL injection ci sono 2 approcci:</p>
+<ul>
+<li><strong>sanitizzazione</strong>: rimuovere caratteri per rendere l’input “sicuro” oppure verificare il contenuto prima di fare la query</li>
+<li><strong>encoding</strong>: rimpiazzare caratteri speciali con il contenuto</li>
+</ul>
+<p>Solitamente è più comune utilizzare l’encoding</p>
+<h2 id="escaping">Escaping</h2>
+<p>L’<strong>escaping</strong> è una tecnica di encoding che converte dei caratteri particolare nella loro versione letterale affidandosi a funzioni di libreria che fanno questo</p>
+<pre class=" language-python"><code class="prism  language-python">userName <span class="token operator">=</span> escape<span class="token punctuation">(</span>get_parameter<span class="token punctuation">(</span>$u<span class="token punctuation">)</span><span class="token punctuation">)</span>	<span class="token comment"># escape dell'username</span>
+pwd <span class="token operator">=</span> escape<span class="token punctuation">(</span>get_parameter<span class="token punctuation">(</span>$p<span class="token punctuation">)</span><span class="token punctuation">)</span>			<span class="token comment"># escape della password</span>
+statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM users WHERE name = ’"</span> <span class="token operator">+</span> userName <span class="token operator">+</span> <span class="token string">"’ AND password = ’"</span> <span class="token operator">+</span> pwd <span class="token operator">+</span> <span class="token string">"’;"</span>
+</code></pre>
+<p>passando come prima la password <code>’ OR ’1’ = ’1</code><br>
+otteniamo la query</p>
+<pre class=" language-python"><code class="prism  language-python">statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM users WHERE name = ’marco’ AND password = ’’’ OR ’’1’’ = ’’1’;"</span>
+</code></pre>
+<p>che non funzionerà</p>
+<h2 id="prepared-statement">Prepared statement</h2>
+<p>un <strong>prepared statement</strong> è un comando SQL contenente dei buchi contrassegnati con il carattere <code>?</code>, e passando come parametro aggiuntivo altri valori essi vengono sostituiti in modo disciplinato al posto di <code>?</code></p>
+<pre class=" language-python"><code class="prism  language-python">userName <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$u<span class="token punctuation">)</span>
+pwd <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$p<span class="token punctuation">)</span>
+statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM users WHERE name = ? AND password = ?;"</span>
+statement<span class="token punctuation">.</span>setString<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> userName<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment"># sostituzione del primo '?'</span>
+statement<span class="token punctuation">.</span>setString<span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> pwd<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment"># sostituzione del secondo '?'</span>
+</code></pre>
+<h2 id="sanitizzazione">Sanitizzazione</h2>
+<p>Immaginiamo di avere un menù a tendina da cui selezionare la tabella del database da cui ottenere dei dati</p>
+<pre class=" language-python"><code class="prism  language-python">table <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$t<span class="token punctuation">)</span>
+statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM "</span> <span class="token operator">+</span> table<span class="token punctuation">;</span>
+</code></pre>
+<p>in questo caso il prepared statement non si può usare per il nome di un tabella, è quindi importante controllare il contenuto della variabile <code>table</code> prima di effettuare la query</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">table</span> <span class="token operator">=</span> get_parameter<span class="token punctuation">(</span>$t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">table</span> <span class="token operator">=</span><span class="token operator">=</span> <span class="token string">"Student"</span> <span class="token operator">||</span> <span class="token keyword">table</span> <span class="token operator">=</span><span class="token operator">=</span> <span class="token string">"Teacher"</span><span class="token punctuation">)</span> {
+	statement <span class="token operator">=</span> <span class="token string">"SELECT * FROM "</span> <span class="token operator">+</span> <span class="token keyword">table</span><span class="token punctuation">;</span>
+}
+<span class="token keyword">else</span> {
+	throw new Exception<span class="token punctuation">(</span><span class="token string">"Unexpected!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+}
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
