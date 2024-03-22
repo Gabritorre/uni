@@ -1,6 +1,6 @@
-﻿# Note introduttive
+﻿# Note generali
 
-Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su nuovi aspetti di Java.
+Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su altri aspetti di Java.
 
 ## Classificazione dei linguaggi
 
@@ -96,3 +96,14 @@ Vediamo la differenza che c'è tra una espressione e uno statement (vale in gene
 
 - **Expression**: codice che può essere valutato, cioè che produce un valore che possiede un tipo.
 - **Statement**: codice che non genera un valore e che viene terminato `;` uppure dalla chisura del proprio blocco di codice `{...}`
+
+## Final
+
+Il significato della keyword **final** in Java è sostanzialmente la disabilitazione dell'operatore di assegnamento sull'oggetto relativo.
+
+il final può essere messo nei seguenti casi:
+- **sui parametri di una funzione**: significa che tali parametri non possono essere riassegnati all'interno del corpo della funzione
+- **dichiarazione di campi o variabili locali**: la variabile dopo essere stata inizializzata non può più essere assegnata
+- **sulla firma dei metodi**: il metodo non è sovrascrivibile
+
+Fare attenzione che un oggetto final significa sempre che non può essere riassegnato con un nuovo oggetto, ma è comunque possibile modificare i suoi campi e chiamare i suoi metodi

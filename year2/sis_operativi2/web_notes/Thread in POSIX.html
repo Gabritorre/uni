@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03_21_Thread in POSIX</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#thread-in-posix">Thread in POSIX</a>
+<ul>
+<li><a href="#esempio-1">Esempio 1</a></li>
+<li><a href="#esempio-2">Esempio 2</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="thread-in-posix">Thread in POSIX</h1>
+<p>Vediamo come utilizzare i thread su un sistema UNIX, utilizzando lo standard POSIX.</p>
+<p>Elenchiamo le principali funzioni che la libreria mette a disposizione:</p>
+<ul>
+<li>
+<p><code>pthread_create(pthread_t *thread, pthread_attr_t *attr, void *(*start_routine)(void *), void *arg)</code><br>
+Serve per creare un nuovo thread e prende i seguente 4 argomenti:</p>
+<ul>
+<li><code>thread</code> è un puntatore ad una variabile di tipo <code>pthread_t</code> che è il corrispettivo di <code>pid_t</code>, cioè un identificativo del thread</li>
+<li><code>attr</code> attributi del nuovo thread per abilitare comportamenti specifici, nella maggior parte dei casi non servono ed è sufficiente passare NULL</li>
+<li><code>start_routine</code>: è il nome della funzione da far eseguire al thread, in C il nome di una funzione è un puntatore ad il suo codice.<br>
+Quella sintassi <code>void *(*start_routine)(void *)</code> indica che si deve passare un indirizzo di funzione che ritorna un puntatore a void e prende in input un puntatore a void</li>
+<li><code>arg</code>: argomenti da passare alla funzione che assegnata al thread, NULL se non sono necessari parametri</li>
+</ul>
+</li>
+<li>
+<p><code>pthread_exit(void *retval)</code><br>
+termina l’esecuzione del thread, verrà restituito al padre del thread un puntatore a void <code>retval</code></p>
+</li>
+<li>
+<p><code>pthread_join(pthread_t th, void **thread_return)</code><br>
+attende la terminazione di un thread specificato da <code>th</code>. Se la chiamata ha successo ritorna 0 e in <code>thread_return</code> sarà contenuto il valore generato dalla <code>pthread_exit</code> del thread</p>
+</li>
+<li>
+<p><code>pthread_detach(pthread_t th)</code><br>
+usato se non si vuole attendere la terminazione del thread, lo si mette in disparte e appena termina le sue risorse verranno rilasciate.<br>
+Se viene fatta una <code>exit()</code> dal processo principale comunque un <em>thread detachato</em> verrà terminato all’istante</p>
+</li>
+<li>
+<p><code>pthread_t pthread_self()</code><br>
+ritorna l’ID del thread assegnato dalla libreria pthread. L’ID che il sistema operativo assegna al thread è diverso</p>
+</li>
+</ul>
+<h2 id="esempio-1">Esempio 1</h2>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/syscall.h&gt;</span>   </span><span class="token comment">/* For SYS_xxx definitions */</span>
+
+<span class="token comment">// codice dei thread. Notare che e' una funzione che prende </span>
+<span class="token comment">// un puntatore e ritorna un puntatore (a void)</span>
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">codice_thread</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    pthread_t tid<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> ptid<span class="token punctuation">;</span>
+    
+    tid  <span class="token operator">=</span> <span class="token function">pthread_self</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// library tid</span>
+    ptid <span class="token operator">=</span> <span class="token function">syscall</span><span class="token punctuation">(</span>SYS_gettid<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// tid assegnato dal SO (funziona solo in Linux)</span>
+
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sono il thread %lu (%i) del processo %i\n"</span><span class="token punctuation">,</span> tid<span class="token punctuation">,</span> ptid<span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    pthread_t tid<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">,</span> err<span class="token punctuation">;</span>
+
+    <span class="token comment">// crea i thread (ritorna 0 quando ha successo, vedere il man!)</span>
+    <span class="token comment">// - gli attributi sono quelli di default (il secondo parametro e' NULL)</span>
+    <span class="token comment">// - codice_thread e' il nome della funzione da eseguire</span>
+    <span class="token comment">// - non vegnono passati parametri (quarto parametro e' NULL)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>tid<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> codice_thread<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore create [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">// attende i thread. Non si legge il valore di ritorno (secondo parametro NULL)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_join</span><span class="token punctuation">(</span>tid<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore join [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"I thread hanno terminato l'esecuzione correttamente\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Compilazione ed esecuzione (nota la presenza dell’opzione <code>-pthread</code> per poter linkare la libreria dei tread di POSIX):</p>
+<pre><code>$ gcc test1.c -pthread -o test1
+$ ./test1
+Sono il thread 140072330872576 (14335) del processo 13793
+Sono il thread 140072322479872 (14336) del processo 13793
+I thread hanno terminato l'esecuzione correttamente
+</code></pre>
+<h2 id="esempio-2">Esempio 2</h2>
+<p>pasare ai 2 thread 2 interi letti dalla linea di comando (<code>argv[1]</code> e <code>argv[2]</code>). I due thread calcolano il quadrato del numero intero e il thread principale, infine, stampa la somma dei due valori ottenuti.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/syscall.h&gt;</span>   </span><span class="token comment">/* For SYS_xxx definitions */</span>
+
+<span class="token keyword">void</span> <span class="token operator">*</span> <span class="token function">codice_thread</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    
+    <span class="token comment">// ottiene un puntatore a int passato dal main</span>
+    <span class="token comment">// *num punta a num[i] dove i è il numero del thread</span>
+    <span class="token keyword">int</span> <span class="token operator">*</span>num <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">int</span> <span class="token operator">*</span><span class="token punctuation">)</span>a<span class="token punctuation">;</span> 
+    
+    pthread_t tid  <span class="token operator">=</span> <span class="token function">pthread_self</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// library tid</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sono il thread %lu del processo %i e ho letto %i\n"</span><span class="token punctuation">,</span> tid<span class="token punctuation">,</span> <span class="token function">getpid</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token operator">*</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// calcola il quadrato di num[i] puntato da num e mette il risultato</span>
+    <span class="token comment">// direttamente in num[i].</span>
+    <span class="token comment">// In questo modo dopo le join il main può trovare il quadrato direttamente in num[i]</span>
+    <span class="token operator">*</span>num <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">*</span>num<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token punctuation">(</span><span class="token operator">*</span>num<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    pthread_t tid<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">int</span> i<span class="token punctuation">,</span> err<span class="token punctuation">;</span>
+    <span class="token keyword">int</span> num<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// array per passaggio parametri</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argc <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Usage: %s num1 num2\n"</span><span class="token punctuation">,</span> argv<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// crea i thread: passa i parametri ai thread copiando argv[i+i]</span>
+    <span class="token comment">// in num[i] e facendo un cast a (void *) di &amp;num[i]. </span>
+    <span class="token comment">// In questo modo ogni thread lavora su una variabile distinta</span>
+    num<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">atoi</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    num<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token function">atoi</span><span class="token punctuation">(</span>argv<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span><span class="token number">2</span><span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// crea i thread passando come parametro (void *)&amp;num[i]</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token operator">=</span><span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>tid<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> codice_thread<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>num<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore create [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">// attende i thread. </span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_join</span><span class="token punctuation">(</span>tid<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore join [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment">// il risultato è direttamente in num[i]!</span>
+    <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"I thread hanno terminato l'esecuzione correttamente: %d + %d = %d\n"</span><span class="token punctuation">,</span> num<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> num<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> num<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">+</span> num<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>

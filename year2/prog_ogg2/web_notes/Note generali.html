@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-02-13_Introduzione</title>
+  <title>2024-02-13_Note generali</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -13,7 +13,7 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#note-introduttive">Note introduttive</a>
+<li><a href="#note-generali">Note generali</a>
 <ul>
 <li><a href="#classificazione-dei-linguaggi">Classificazione dei linguaggi</a></li>
 <li><a href="#linguaggio-orientato-agli-oggetti">Linguaggio orientato agli oggetti</a></li>
@@ -26,6 +26,7 @@
 <li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
 <li><a href="#dimensione-di-un-oggetto">Dimensione di un oggetto</a></li>
 <li><a href="#statement-vs-expression">Statement vs expression</a></li>
+<li><a href="#final">Final</a></li>
 </ul>
 </li>
 </ul>
@@ -34,8 +35,8 @@
   </div>
   <div class="stackedit__right">
     <div class="stackedit__html">
-      <h1 id="note-introduttive">Note introduttive</h1>
-<p>Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su nuovi aspetti di Java.</p>
+      <h1 id="note-generali">Note generali</h1>
+<p>Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su altri aspetti di Java.</p>
 <h2 id="classificazione-dei-linguaggi">Classificazione dei linguaggi</h2>
 <p>differenza tra: inizializzazione, dichiarazione, assegnamento</p>
 <ul>
@@ -110,6 +111,15 @@ Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto 
 <li><strong>Expression</strong>: codice che può essere valutato, cioè che produce un valore che possiede un tipo.</li>
 <li><strong>Statement</strong>: codice che non genera un valore e che viene terminato <code>;</code> uppure dalla chisura del proprio blocco di codice <code>{...}</code></li>
 </ul>
+<h2 id="final">Final</h2>
+<p>Il significato della keyword <strong>final</strong> in Java è sostanzialmente la disabilitazione dell’operatore di assegnamento sull’oggetto relativo.</p>
+<p>il final può essere messo nei seguenti casi:</p>
+<ul>
+<li><strong>sui parametri di una funzione</strong>: significa che tali parametri non possono essere riassegnati all’interno del corpo della funzione</li>
+<li><strong>dichiarazione di campi o variabili locali</strong>: la variabile dopo essere stata inizializzata non può più essere assegnata</li>
+<li><strong>sulla firma dei metodi</strong>: il metodo non è sovrascrivibile</li>
+</ul>
+<p>Fare attenzione che un oggetto final significa sempre che non può essere riassegnato con un nuovo oggetto, ma è comunque possibile modificare i suoi campi e chiamare i suoi metodi</p>
 
     </div>
   </div>
