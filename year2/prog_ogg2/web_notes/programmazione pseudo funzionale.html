@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-26_programmazione pseudo funzionale</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#programmazione-pseudo-funzionale">Programmazione pseudo funzionale</a>
+<ul>
+<li><a href="#espressioni-lambda">Espressioni lambda</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="programmazione-pseudo-funzionale">Programmazione pseudo funzionale</h1>
+<p>Java è un linguaggio orientato agli oggetti ed è detto <em>class-based</em>, cioè sei sempre obbligato a racchiudere il codice all’interno di una classe.</p>
+<p>Possiamo però forzare, limitatamente, il linguaggio ad utilizzare uno stile di programmazione procedurale (come C) per esempio limitandoci a creare classi composte solo da campi e definire solo metodo statici.</p>
+<p>Nel corso del tempo vari linguaggi tra cui Java hanno introdotto un costrutto proveniente dalla programmazione funzionale: le <strong>espressioni lambda</strong></p>
+<h2 id="espressioni-lambda">Espressioni lambda</h2>
+<p>Una funzione lambda possiamo vederla come una funzione anonima, cioè che non possiede un nome per essere invocata.</p>
+<p>Si utilizzano con la seguente sintassi:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token punctuation">(</span>parameter1<span class="token punctuation">,</span> parameter2<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> code block <span class="token punctuation">}</span>
+</code></pre>
+<p>ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// espressione che prende in input due interi e restituisce la somma</span>
+
+<span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> x <span class="token operator">+</span> y
+
+<span class="token comment">// espressione che prende in input una stringa e restituisce la sua lunghezza</span>
+
+s <span class="token operator">-</span><span class="token operator">&gt;</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+
+`<span class="token comment">// espressione che prende in input una stringa e non restituisce nulla`</span>
+
+<span class="token punctuation">(</span>String s<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Benvenuto "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>

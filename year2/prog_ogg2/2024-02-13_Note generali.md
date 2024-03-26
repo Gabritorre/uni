@@ -7,16 +7,21 @@ Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo de
 differenza tra: inizializzazione, dichiarazione, assegnamento
 - dichiarazione: creare una nuova variabile specificando il **tipo** e il **nome**.
 - assegnamento: dare un valore ad una variabile già creata in precedenza
-- Inizializzazione: consiste nel dichiarare una variabile e assegnargli subito un valore
+- Inizializzazione (*binding*): consiste nel dichiarare una variabile e assegnargli subito un valore
 
-I linguaggi di programmazione si dividono principalmente in **imperativi e funzionali**:
-si differenziano dalla presenza o meno dell'operatore di **assegnazione**, infatti nei linguaggi funzionali non è possibile fare assegnazioni, ma solo inizializzazioni.
+I linguaggi di programmazione si dividono principalmente in due **paradigmi** di programmazione:
+- **Imperativi**
+- **Funzionali**
+Si differenziano dalla presenza o meno dell'operatore di **assegnazione**, infatti nei linguaggi funzionali non è possibile fare assegnazioni, ma solo inizializzazioni.
+
+I linguaggi imperativi si dividono poi in diversi stili di programmazione, ad esempio **procedurale** e **orientato agli oggetti**.
+
 
 ## Linguaggio orientato agli oggetti
 
 Java è un linguaggio imperativo orientato agli oggetti e basato sulle classi (sei obbligato a mettere il codice all'interno di una classe, anche se non vuoi utilizzare le classi)
 
-La caratteristica distintiva tra un linguaggio orientato agli oggetti da uno che non è orientato agli oggetti è **il polimorfismo**, in particolare la Subsumption: "qualunque oggetto di una data classe X è anche istanza della superclasse di X."
+La caratteristica distintiva tra un linguaggio orientato agli oggetti da uno che non è orientato agli oggetti è **il polimorfismo**, in particolare dalla presenza della **virtual table** la **Subsumption**: "qualunque oggetto di una data classe X è anche istanza della superclasse di X."
 Ad esempio, una istanza della classe Rettangolo può essere sempre usata dove ci si aspetti una qualunque FiguraGeometrica poiché un rettangolo **è** una figura geometrica.
 
 ## Classe e oggetto
