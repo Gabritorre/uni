@@ -167,3 +167,32 @@ Se `lock` è `false` viene ritornato dalla funzione `false` ma viene comunque se
 Se `lock` è `true` viene ritornato dalla funzione `true` e il valore di `lock` rimane `true`, il thread rimane quindi in attesa nel ciclo while.
 
 Questa soluzione prende il nome di **spin-lock**
+
+## XCHG
+
+Un'altra istruzione che ha la stessa funzionalità del test_and_set è l'istruzione (dell'architettura Intel) XCHG (pronunciata come "exchange"). 
+
+A differenza di test_and_set, l'istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l'implementazione come segue:
+
+```c
+XCHG(boolean *x, *y) {
+    boolean tmp = *x;
+    *x = *y;
+    *y = tmp;
+}
+```
+
+Possiamo immaginare una esecuzione mutualmente esclusiva nel seguente modo
+
+```c
+global bool lock = 1;
+
+thread T0 {                              thread T1 { 
+  ....                                      ....  
+  turno=0;                                  turno=0;
+  while(turno == 0) {XCHG(lock, turno)}         while(turno == 0) {XCHG(lock, turno)}    
+  < sezione critica >                       < sezione critica >   
+  XCHG(lock, turno)                      	XCHG(lock, turno)
+  ....                                      ....  
+}                                         }
+```

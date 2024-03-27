@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-26_Semafori</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#semafori">Semafori</a>
+<ul>
+<li><a href="#semafori-1">Semafori</a></li>
+<li><a href="#produttore-e-consumatore">Produttore e consumatore</a></li>
+<li><a href="#tanti-produttori-e-consumatori">Tanti produttori e consumatori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="semafori">Semafori</h1>
+<p>Fino ad ora abbiamo visto un modo software e istruzioni speciali implementate in hardware per sincronizzare i thread, ma questi metodi presentano dei problemi alla base:</p>
+<ul>
+<li>generano una attesa tramite di cicli che girano a vuoto, sprecando tempo di CPU</li>
+<li>le istruzioni hardware hanno una realizzazione complessa, soprattutto nelle architetture multi-core.</li>
+</ul>
+<p>Il sistema operativo ci fornisce delle soluzioni più semplici ed efficaci, uno dei questi metodi è l’utilizzo dei <strong>semafori</strong></p>
+<h2 id="semafori-1">Semafori</h2>
+<p>Un semaforo è un contatore intero con l’aggiunta di una coda di thread:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">struct</span> semaphore <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> value<span class="token punctuation">;</span>
+	thread <span class="token operator">*</span>queue<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li><code>value &gt; 0</code> indica che l’accesso alla sezione critica è consentito e il suo valore indica il <strong>numero di accessi disponibili</strong> prima di diventare non più accessibile</li>
+<li><code>value &lt;= 0</code> indica che l’accesso alla sezione critica non è consentito e il suo valore indica <strong>quanti thread sono in attesa</strong> di accedere (tali thread saranno nella coda <code>queue</code>)</li>
+</ul>
+<p>Un esempio utile può essere quello di un parcheggio con, ad esempio, 10 posti auto (la risorsa desiderata dai thread).<br>
+inizialmente sarà completamente vuoto, quindi <code>value = 10</code>,<br>
+le prima macchine (i thread) possono entrare senza problemi fino a che <code>value = 0</code>, una volta raggiunto lo <code>0</code> le macchine si accodano e una volta che si libera un parcheggio la macchina arrivata per prima può entrare.</p>
+<p>I semafori vengono incrementati e decrementati attraverso due funzioni speciali:</p>
+<ul>
+<li><code>P(S)</code> o <code>wait(S)</code> decrementa il valore del semaforo, se il semaforo era già rosso allora il thread si accoda</li>
+<li><code>V(S)</code> o <code>post(S)</code> incrementa il valore del semaforo, se il semaforo era rosso viene sbloccato il primo thread in coda</li>
+</ul>
+<p>Possiamo immaginare l’implementazione delle due funzioni nel seguente modo:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">P</span><span class="token punctuation">(</span>semaphore S<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  S<span class="token punctuation">.</span>valore<span class="token operator">--</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>S<span class="token punctuation">.</span>valore<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token operator">&lt;</span> Metti il thread corrente in attesa su S<span class="token punctuation">.</span>queue <span class="token operator">&gt;</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">V</span><span class="token punctuation">(</span>semaphore S<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  S<span class="token punctuation">.</span>valore<span class="token operator">++</span><span class="token punctuation">;</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>S<span class="token punctuation">.</span>valore<span class="token operator">&lt;=</span><span class="token number">0</span><span class="token punctuation">)</span>
+    <span class="token operator">&lt;</span> Sblocca il primo thread in attesa su S<span class="token punctuation">.</span>queue <span class="token operator">&gt;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>All’interno del codice di un thread possiamo utilizzare il semaforo nel seguente modo:</p>
+<pre class=" language-c"><code class="prism  language-c">Semaphore S <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token operator">&lt;</span>empty_queue<span class="token operator">&gt;</span><span class="token punctuation">}</span>	<span class="token comment">//solo un thread alla volta può accedere alla sez. critica</span>
+
+thread T <span class="token punctuation">{</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token function">P</span><span class="token punctuation">(</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token operator">&lt;</span> Sezione critica <span class="token operator">&gt;</span>
+  <span class="token function">V</span><span class="token punctuation">(</span>S<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Vediamo l’esecuzione di 3 thread che girano in parallelo su 3 core diversi</p>
+<p><img src="https://i.ibb.co/CtWdz4b/image.png" alt="enter image description here"></p>
+<p>dove i trattini indicano la normale esecuzione del thread, mentre li due linee continue rappresentano l’esecuzione in sezione critica</p>
+<h2 id="produttore-e-consumatore">Produttore e consumatore</h2>
+<p>Vediamo l’implementazione del produttore e consumatore tramite l’uso di semafori.</p>
+<p>Abbiamo necessariamente bisogno di 2 semafori in quanto:</p>
+<ul>
+<li>quando il buffer è pieno il produttore deve attendere</li>
+<li>quando il buffer è vuoto il consumatore deve attendere</li>
+</ul>
+<p>un semaforo conterà il numero di celle vuote, mentre l’altro conterà quante celle sono piene.</p>
+<p>Assumiamo che la grandezza del buffer sia <code>10</code></p>
+<pre class=" language-c"><code class="prism  language-c">Semaphore piene <span class="token operator">=</span> <span class="token number">0</span>
+Semaphore vuote <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>	<span class="token comment">//inizialmente tutte le celle sono vuote</span>
+
+Produttore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> produce d <span class="token operator">&gt;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// richiede una cella vuota</span>
+    buffer<span class="token punctuation">[</span>inserisci<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+    inserisci <span class="token operator">=</span> <span class="token punctuation">(</span>inserisci<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// rilascia una cella piena</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+ 
+Consumatore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// richiede una cella piena</span>
+    d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>preleva<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    preleva <span class="token operator">=</span> <span class="token punctuation">(</span>preleva<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">:</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// rilascia una cella vuota</span>
+    <span class="token operator">&lt;</span> consuma d <span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="tanti-produttori-e-consumatori">Tanti produttori e consumatori</h2>
+<p>In caso avessimo più produttori e più consumatori potremmo avere delle interferenze dovute al buffer condiviso tra i thread: due consumatori potrebbero leggere dalla stessa cella, oppure due produttori potrebbero scrivere sulla stessa cella sovrascrivendo i dati.<br>
+Anche l’incremento dell’indice <code>inserisci</code> potrebbe causare interferenze.</p>
+<p>La soluzione è utilizzare un ulteriore semaforo per rendere mutualmente esclusivo l’aggiornamento delle variabili condivise:</p>
+<pre class=" language-c"><code class="prism  language-c">Semaphore piene <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">,</span>
+Semaphore vuote <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">,</span>
+Semaphore mutex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+Produttore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> produce d <span class="token operator">&gt;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// richiede una cella vuota</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// entra in sezione critica</span>
+    buffer<span class="token punctuation">[</span>inserisci<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+    inserisci <span class="token operator">=</span> <span class="token punctuation">(</span>inserisci<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// esce dalla sezione critica</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// rilascia una cella piena</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token function">Consumatore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span> <span class="token punctuation">{</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// richiede una cella piena</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// entra in sezione critica</span>
+    d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>preleva<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    preleva <span class="token operator">=</span> <span class="token punctuation">(</span>preleva<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> <span class="token number">10</span><span class="token punctuation">:</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// esce dalla sezione critica</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// rilascia una cella vuota</span>
+    <span class="token operator">&lt;</span> consuma d <span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>

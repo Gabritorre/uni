@@ -22,6 +22,7 @@
 <li><a href="#algoritmo-di-peterson">Algoritmo di Peterson</a></li>
 <li><a href="#conclusione-soluzione-software">Conclusione soluzione software</a></li>
 <li><a href="#soluzioni-hardware">Soluzioni hardware</a></li>
+<li><a href="#xchg">XCHG</a></li>
 </ul>
 </li>
 </ul>
@@ -153,6 +154,27 @@ thread T <span class="token punctuation">{</span>
 <p>Se <code>lock</code> è <code>false</code> viene ritornato dalla funzione <code>false</code> ma viene comunque settato <code>lock</code> a <code>true</code>, il thread riesce quindi a superare il ciclo ed entra in sezione critica.<br>
 Se <code>lock</code> è <code>true</code> viene ritornato dalla funzione <code>true</code> e il valore di <code>lock</code> rimane <code>true</code>, il thread rimane quindi in attesa nel ciclo while.</p>
 <p>Questa soluzione prende il nome di <strong>spin-lock</strong></p>
+<h2 id="xchg">XCHG</h2>
+<p>Un’altra istruzione che ha la stessa funzionalità del test_and_set è l’istruzione (dell’architettura Intel) XCHG (pronunciata come “exchange”).</p>
+<p>A differenza di test_and_set, l’istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l’implementazione come segue:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">XCHG</span><span class="token punctuation">(</span>boolean <span class="token operator">*</span>x<span class="token punctuation">,</span> <span class="token operator">*</span>y<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    boolean tmp <span class="token operator">=</span> <span class="token operator">*</span>x<span class="token punctuation">;</span>
+    <span class="token operator">*</span>x <span class="token operator">=</span> <span class="token operator">*</span>y<span class="token punctuation">;</span>
+    <span class="token operator">*</span>y <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Possiamo immaginare una esecuzione mutualmente esclusiva nel seguente modo</p>
+<pre class=" language-c"><code class="prism  language-c">global bool lock <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+thread T0 <span class="token punctuation">{</span>                              thread T1 <span class="token punctuation">{</span> 
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+  turno<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>                                  turno<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span>turno <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token function">XCHG</span><span class="token punctuation">(</span>lock<span class="token punctuation">,</span> turno<span class="token punctuation">)</span><span class="token punctuation">}</span>         <span class="token keyword">while</span><span class="token punctuation">(</span>turno <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token function">XCHG</span><span class="token punctuation">(</span>lock<span class="token punctuation">,</span> turno<span class="token punctuation">)</span><span class="token punctuation">}</span>    
+  <span class="token operator">&lt;</span> sezione critica <span class="token operator">&gt;</span>                       <span class="token operator">&lt;</span> sezione critica <span class="token operator">&gt;</span>   
+  <span class="token function">XCHG</span><span class="token punctuation">(</span>lock<span class="token punctuation">,</span> turno<span class="token punctuation">)</span>                      	<span class="token function">XCHG</span><span class="token punctuation">(</span>lock<span class="token punctuation">,</span> turno<span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                      <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+<span class="token punctuation">}</span>                                         <span class="token punctuation">}</span>
+</code></pre>
 
     </div>
   </div>
