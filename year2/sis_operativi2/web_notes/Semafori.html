@@ -18,6 +18,8 @@
 <li><a href="#semafori-1">Semafori</a></li>
 <li><a href="#produttore-e-consumatore">Produttore e consumatore</a></li>
 <li><a href="#tanti-produttori-e-consumatori">Tanti produttori e consumatori</a></li>
+<li><a href="#semafori-in-posix">Semafori in POSIX</a></li>
+<li><a href="#implementazione-completa-produttore-e-consumatore">Implementazione completa produttore e consumatore</a></li>
 </ul>
 </li>
 </ul>
@@ -141,6 +143,140 @@ Produttore <span class="token punctuation">{</span>
     <span class="token function">V</span><span class="token punctuation">(</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// rilascia una cella vuota</span>
     <span class="token operator">&lt;</span> consuma d <span class="token operator">&gt;</span>
   <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="semafori-in-posix">Semafori in POSIX</h2>
+<p>Le varie funzioni per utilizzare i semafori dello standard POSIX sono definiti nella libreria <code>semephore.h</code>principalmente i seguenti:</p>
+<ul>
+<li><code>sem_t sem_name</code><br>
+dichiara una variabile di tipo semaforo;</li>
+<li><code>int sem_init(sem_t *sem, int pshared, unsigned int value)</code><br>
+inizializza il semaforo  <code>sem</code>  al valore  <code>value</code>.<br>
+la variabile  <code>pshared</code>  indica se il semaforo è condiviso tra thread (uguale a 0) o processi (diverso da 0), lo useremo quindi sempre con 0.</li>
+<li><code>int sem_wait(sem_t *sem)</code><br>
+esegue una P(sem);</li>
+<li><code>int sem_post(sem_t *sem)</code><br>
+esegue una V(sem);</li>
+<li><code>int sem_getvalue(sem_t *sem, int *val)</code><br>
+legge il valore del semaforo e lo copia in  <code>val</code>;</li>
+<li><code>sem_destroy(sem_t *sem)</code><br>
+elimina il semaforo. Da NON usare se ci sono processi in attesa sul semaforo (comportamento non specificato).</li>
+</ul>
+<h2 id="implementazione-completa-produttore-e-consumatore">Implementazione completa produttore e consumatore</h2>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;pthread.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;semaphore.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+
+<span class="token macro property">#<span class="token directive keyword">define</span> SIZE 10</span>
+
+<span class="token keyword">int</span> buffer<span class="token punctuation">[</span>SIZE<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> inserisci <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> preleva <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+sem_t mutex<span class="token punctuation">;</span> <span class="token comment">// semaforo mutua esclusione</span>
+sem_t vuote<span class="token punctuation">;</span>
+sem_t piene<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">print_buffer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> SIZE<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d "</span><span class="token punctuation">,</span> buffer<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">produttore</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	pthread_t tid <span class="token operator">=</span> <span class="token function">pthread_self</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// library tid</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">13</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> d <span class="token operator">=</span> <span class="token number">22</span><span class="token punctuation">;</span>
+		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">[</span>inserisci<span class="token punctuation">]</span> <span class="token operator">!=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore di sincronizzazione (produttore)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		buffer<span class="token punctuation">[</span>inserisci<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+		inserisci <span class="token operator">=</span> <span class="token punctuation">(</span>inserisci <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> SIZE<span class="token punctuation">;</span>
+
+		<span class="token comment">//decommenta per debug</span>
+		<span class="token comment">//printf("prodotto (thread %ld)\n", tid);</span>
+		<span class="token comment">//print_buffer();</span>
+		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">void</span><span class="token operator">*</span> <span class="token function">consumatore</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token operator">*</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	pthread_t tid <span class="token operator">=</span> <span class="token function">pthread_self</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// library tid</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">13</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> d<span class="token punctuation">;</span>
+		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">sem_wait</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>buffer<span class="token punctuation">[</span>preleva<span class="token punctuation">]</span> <span class="token operator">==</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore di sincronizzazione (consumatore)"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>preleva<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		buffer<span class="token punctuation">[</span>preleva<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+		preleva <span class="token operator">=</span> <span class="token punctuation">(</span>preleva <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> SIZE<span class="token punctuation">;</span>
+
+		<span class="token comment">//decommenta per debug</span>
+		<span class="token comment">//printf("consumato (thread %ld)\n", tid);</span>
+		<span class="token comment">//print_buffer();</span>
+		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">sem_post</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">pthread_exit</span><span class="token punctuation">(</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    pthread_t tid_prod<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//5 produttori</span>
+    pthread_t tid_cons<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//5 consumatori</span>
+    <span class="token keyword">int</span> err<span class="token punctuation">;</span>
+    <span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>piene<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sem_init</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vuote<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> SIZE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+	<span class="token comment">//inizializzazione dei valori del buffer a -1</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> SIZE<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		buffer<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token comment">//lancio produttori e consumatori</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>tid_prod<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> produttore<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore create [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_create</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>tid_cons<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> consumatore<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore create [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+
+    <span class="token comment">// attende i thread. Non si legge il valore di ritorno (secondo parametro NULL)</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_join</span><span class="token punctuation">(</span>tid_prod<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore join [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>err <span class="token operator">=</span> <span class="token function">pthread_join</span><span class="token punctuation">(</span>tid_cons<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"errore join [%i]\n"</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// destroy</span>
+    <span class="token function">sem_destroy</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sem_destroy</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>piene<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">sem_destroy</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>vuote<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
 
