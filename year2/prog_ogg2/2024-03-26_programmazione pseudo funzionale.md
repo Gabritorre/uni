@@ -13,23 +13,137 @@ Una funzione lambda possiamo vederla come una funzione anonima, cioè che non po
 Si utilizzano con la seguente sintassi:
 
 ```java
-(parameter1, parameter2) -> { code block }
+(parameter1, parameter2, ...) -> { code block }
 ```
+
+**è opzionale specificare il tipo dei parametri**
+se ci sono statement nel `code block` allora sono obbligatorie le parentesi graffe, altrimenti no
 
 ad esempio
 
 ```java
 // espressione che prende in input due interi e restituisce la somma
-
 (int x,int y) -> x + y
 
 // espressione che prende in input una stringa e restituisce la sua lunghezza
-
 s -> s.length()
 
-
-`// espressione che prende in input una stringa e non restituisce nulla`
-
+// espressione che prende in input una stringa e non restituisce nulla
 (String s) -> { System.out.println("Benvenuto ");
 				System.out.println(s); }
+```
+
+
+## Confronto tra lambda e classi anonime
+
+La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice rispetto a non usarle)
+
+Prima che Java implementasse le funzioni lambda, venivano utilizzate le **classi anonime**.
+
+Con l'aggiunta delle lambda si sono aggiunte anche le cosiddette **funzioni di ordine superiore**, cioè funzioni che: prendono come parametro una funzione oppure che ritornato una funzione oppure che definiscono un altra funzione al loro interno.
+le normali funzioni vengono chiamate **funzioni di primo ordine**
+
+### Esempio
+
+Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una funzione su ogni elemento di una collezione di dati.
+
+```java
+class Lambda {
+	//creo una interfaccia con un metodo che prende in input un valore e non ritorn nulla.
+	// è utile perche nella firma della prossima funzione voglio specificare che voglio una funzione come input
+	interface MyFunction<T> {
+		void apply(T  x);
+	}
+
+	// questo metodo vuole una collection ed una funzione come parametri.
+	// il suo scopo è di applicare la funzione ad ogni elemento della collezione
+	public static <T> void forEach(Collection<T> c, MyFunction<T> f) {
+		for (T x : c) {
+			f.apply(x);
+		}
+	}
+
+	public static void main(String[] args) {
+		List<Integer> l = List.of(1, 2, 3, 4);
+
+//ESEMPIO 1
+		//chiamata alla funzione con classe anonima
+		forEach(l, new  MyFunction<Integer>() {
+			@Override
+			public  void  apply(Integer  x) {
+				System.out.println(x);
+			}
+		});
+		
+		//chiamata alla funzione con espressione lambda
+		forEach(l, x ->  System.out.println(x));
+
+//ESEMPIO 2
+	
+		//chiamata alla funzione con classe anonima
+		forEach(l, new MyFunction<Integer>() {
+			public void apply(Integer  x) {
+				if (x >  5) {
+					x = x +  1;
+				}
+			}
+		});
+		//chiamata alla funzione con espressione lambda
+		forEach(l, x -> {if (x >  5) x = x+1;});
+	}
+}
+```
+
+
+Notiamo come la chiamata alla funzione `forEach` passando come secondo parametro una funzione anonima (lambda) risulta molto più semplice.
+
+## Classi per le funzioni
+
+Nell'esempio precedente abbiamo creato manualmente una interfaccia contenente il metodo da utilizzare, tale funzione prende in input un dato e non ritorna nulla.
+Se volessimo però fare una funzione che prende in input e genera in output qualcosa dovremmo creare un'altra interfaccia, lo stesso vale per una funzione che non prende input ma genera output.
+
+Java offre delle interfacce già pronte all'interno di `java.util.function.*` da poter usare come tipo di dato nei parametri delle funzioni di primo ordine.
+
+Le interfacce sono le seguenti:
+
+- [`Function`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Function.html) usato per funzioni che prendono qualcosa in **input** e ritornano qualcosa in **output**
+la sua metodo si chiama `apply`
+- [`Consumer`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Consumer.html) usato per funzioni che prendono qualcosa in **input** ma che **non hanno output**
+la sua metodo si chiama `accept`
+- [`Supplier`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Supplier.html) usato per funzioni che **non** prendono **input** ma che ritornano qualcosa in **output**
+la sua metodo si chiama `get`
+- [`Runnable`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Runnable.html) usato per funzioni che **non** prendono niente in **input** e che **non** hanno **output** 
+la sua metodo si chiama `run` 
+
+
+Nell'esempio precedente avremmo potuto usare direttamente `Consumer` al posto di definire `MyFunction`.
+
+Vediamo un esempio di utilizzo con `Function`:
+
+
+```java
+class Lambda {
+
+	//questo metodo riempie un arraylist con dei dati generati dalla funzione 'f' chiamata su ogni elemento della collection 'c'
+	public static <A, B> Collection<B> map(Collection<A> c, Function<A, B> f) {
+		Collection<B> r = new ArrayList<>();
+		for (A x : c) {
+			B value = f.apply(x);
+			r.add(value);
+		}
+		return r;
+	}
+
+	public static void main(String[] args) {
+		List<Integer> l = List.of(1, 2, 3, 4);
+	
+		//per ottenere una collection con tutti gli elementi incrementati di 1
+		Collection<Integer> res1 = map(l, x -> {return x+1;});
+		//equivalente a:
+		Collection<Integer> res1 = map(l, x -> x+1);
+
+		//per ottenere una collection di booleani che indicano se i valori sono positivi
+		Collection<Integer> res1 = map(l, x -> x>0);
+
+}
 ```
