@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-25_Indici e viste materializzate</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#indici-e-viste-materializzate">Indici e viste materializzate</a>
+<ul>
+<li><a href="#indici">Indici</a></li>
+<li><a href="#pro-e-contro-degli-indici">Pro e contro degli indici</a></li>
+<li><a href="#definire-gli-indici">Definire gli indici</a></li>
+<li><a href="#viste-materializzate">Viste materializzate</a></li>
+<li><a href="#ottimizzazioni">Ottimizzazioni</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="indici-e-viste-materializzate">Indici e viste materializzate</h1>
+<h2 id="indici">Indici</h2>
+<p>Lavorare con database contenenti decine o centinaia di migliaia di record può risultare in pessime prestazioni quando dobbiamo andare a ricercare qualcosa di specifico.<br>
+Ad esempio</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Movies
+<span class="token keyword">WHERE</span> studio <span class="token operator">=</span> ’Disney’ <span class="token operator">AND</span> year <span class="token operator">=</span> <span class="token number">2012</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Se nel database ci sono migliaia di film, per ottenere questa query dovremmo controllare per ogni film se rispettano le condizioni del <code>where</code> per poterli selezionare.</p>
+<p>Gli <strong>indici</strong> sono una struttura dati ausiliaria che permette di accedere in maniera più efficiente alle righe rispetto ad una ricerca lineare.</p>
+<p>Per sfruttare gli indici bisogna scegliere degli attributi su cui ordinare tutte le righe. Una volta ottenute le righe ordinate (in modo lessicografico) secondo quegli attributi, viene creato un <em>Binary Search Tree</em> che consente di trovare le righe interessate in tempo logaritmico.</p>
+<p>Nota che il BST è una struttura <strong>ausiliaria</strong> quindi l’ordine originale delle righe nel database non viene modificato.</p>
+<h3 id="tipi-di-indici">Tipi di indici</h3>
+<p>Possiamo creare degli indici per <strong>attributo singolo</strong> oppure con un <strong>insieme di attributi</strong>, in quest’ultimo caso è importante l’ordine in cui si mettono:<br>
+Se ad esempio in un database di film si vuole creare un indice che ordina per anno e per studio di produzione, dobbiamo pensare se ci saranno più film divisi per anno oppure per studio:</p>
+<ul>
+<li>Se ci sono tanti anni diversi e molti studi uguali allora l’indice migliore sarebbe <code>Indice(studio, anno)</code></li>
+<li>Se ci sono tanti studi diversi e molti anni uguali allora l’indice migliore sarebbe <code>Indice(anno, studio)</code></li>
+</ul>
+<h3 id="query-che-ne-traggono-vantaggio">Query che ne traggono vantaggio</h3>
+<p>Le query che traggono vantaggio dagli indici sono quelle che filtrano i risultati con gli stessi attributi in cui sono stati ordinati gli indici (ed è anche l’importante l’ordine in caso di insieme di attributi):</p>
+<p>Se assumiamo di aver fatto un <code>Indice(anno, studio)</code> le query che ne trarranno vantaggio sono del tipo:</p>
+<ul>
+<li><code>SELECT * FROM Movies WHERE year = 2012 AND studio = 'Sony'</code></li>
+<li><code>SELECT * FROM Movies WHERE year = 2012</code></li>
+<li><code>SELECT * FROM Movies WHERE year &gt; 1998 AND year &lt; 2012</code></li>
+<li><code>SELECT * FROM Movies WHERE year = 2012 ORDER BY studio</code></li>
+</ul>
+<p>mentre le query che non ne traggono vantaggio sono ad esempio:</p>
+<ul>
+<li><code>SELECT * FROM Movies WHERE studio = 'Sony'</code><br>
+(perché nell’indice le righe sono prima ordinate per anno, ma in questa query non ci sono filtri sull’anno)</li>
+<li><code>SELECT * FROM Movies WHERE regista = 'Pippo'</code></li>
+</ul>
+<h3 id="comparazione-di-indici">Comparazione di indici</h3>
+<p>Assumiamo che ci siano 10.000 film e che la Disney ne abbia prodotti 200, di cui solo 5 nel 2012.</p>
+<p>Vediamo quanti record la seguente query dovrà controllare con varie possibilità di indici:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span>
+<span class="token keyword">FROM</span> Movies
+<span class="token keyword">WHERE</span> studio <span class="token operator">=</span> ’Disney’ <span class="token operator">AND</span> year <span class="token operator">=</span> <span class="token number">2012</span><span class="token punctuation">;</span>
+</code></pre>
+<ul>
+<li>senza utilizzo degli indici: controllo 10.000 righe</li>
+<li><code>Indice(studio)</code>: controllo 200 righe</li>
+<li><code>Indice(studio, year)</code>: controllo 5 righe</li>
+</ul>
+<h3 id="pagine-in-memoria">Pagine in memoria</h3>
+<p>L’analisi del costo di una query utilizzando solo quante righe deve ispezionare non è molto preciso in quanto la memoria RAM dei computer funziona con le pagine:</p>
+<ul>
+<li>in una pagina tipicamente sono presenti molte tuple</li>
+<li>richiedere una singola tupla comporta che una intera pagina sia caricata in memoria</li>
+<li>Una volta che la pagina è caricata in memoria, accedere a tutti i suoi contenuto è molto poco costoso perché la memoria RAM è molto rapida</li>
+</ul>
+<h2 id="pro-e-contro-degli-indici">Pro e contro degli indici</h2>
+<h3 id="pro">Pro</h3>
+<p>Il principale vantaggio dell’utilizzo degli indici è il grande aumento di performance sulle query che utilizzano l’attributo specificato nell’indice.</p>
+<p>Vediamo quando conviene utilizzare gli indici:</p>
+<ul>
+<li>sulle chiavi</li>
+<li>sulle chiavi esterne</li>
+<li>su attributi raramente modificabili</li>
+</ul>
+<h3 id="contro">Contro</h3>
+<p>Un grande contro è che quando si fanno operazioni di inserimento e cancellazione, oltre che al database normale anche l’albero generato dall’indice va aggiornato.</p>
+<p>Vediamo quando non conviene utilizzare gli indici:</p>
+<ul>
+<li>su tabella piccole</li>
+<li>Su attributi i cui valori hanno poche varianti (ad esempio un attributo booleano)</li>
+<li>su attributi modificati frequentemente</li>
+</ul>
+<h2 id="definire-gli-indici">Definire gli indici</h2>
+<p><strong>Creare un indice</strong></p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">INDEX</span> NomeIndice <span class="token keyword">ON</span> NomeTabella <span class="token punctuation">(</span>Attributi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><strong>Eliminare un indice</strong></p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">DROP</span> <span class="token keyword">INDEX</span> NomeIndice<span class="token punctuation">;</span>
+</code></pre>
+<p>Alcuni DBMS possono suggerire automaticamente degli indici basandosi sulle prestazioni delle query fatte fino a quel momento</p>
+<h2 id="viste-materializzate">Viste materializzate</h2>
+<p>Come abbiamo già visto le viste sono utilizzate principalmente per semplificare la scrittura di query complesse.<br>
+Ogni volta che utilizziamo una vista in una query, questa deve essere rivalutata, il che può essere <strong>inefficiente</strong>.</p>
+<p>Le <strong>viste materializzate</strong> sono delle viste che però non vengono valutate ad ogni query che la coinvolge, Questo <strong>migliore le prestazioni</strong> però ha un costo aggiuntivo dato dal fatto che <strong>va mantenuta aggiornata</strong></p>
+<p>Un esempio di creazione di vista materializzata è il seguente:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">CREATE</span> MATERIALIZED <span class="token keyword">VIEW</span> MovieProd <span class="token keyword">AS</span>
+	<span class="token keyword">SELECT</span> m<span class="token punctuation">.</span>title<span class="token punctuation">,</span> m<span class="token punctuation">.</span>year<span class="token punctuation">,</span> <span class="token number">e</span><span class="token punctuation">.</span>name
+	<span class="token keyword">FROM</span> Movies m<span class="token punctuation">,</span> MovieExec <span class="token number">e</span>
+	<span class="token keyword">WHERE</span> m<span class="token punctuation">.</span>producer <span class="token operator">=</span> <span class="token number">e</span><span class="token punctuation">.</span>code
+</code></pre>
+<p>la vista va aggiornata nei seguenti casi:</p>
+<ul>
+<li>in caso di modifiche all’interno delle tabelle <code>Movies</code>  e <code>MovieExec</code></li>
+<li>in caso di modifiche degli attributi citati all’interno della vista.</li>
+</ul>
+<p>In tutti gli altri casi la vista va ricalcolata.</p>
+<p>POSTGRES delega la responsabilità all’utente di aggiornare le viste con il comando <code>REFRESH MATERIALIZED VIEW</code>.</p>
+<h2 id="ottimizzazioni">Ottimizzazioni</h2>
+<p>È possibile aggiornare manualmente la vista aggiungendo o rimuovendo delle nuove righe, così da non rivalutare l’intera vista da capo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> MovieProd
+<span class="token keyword">VALUES</span> <span class="token punctuation">(</span>’<span class="token keyword">Kill</span> Bill’<span class="token punctuation">,</span> <span class="token number">2003</span><span class="token punctuation">,</span> ’Quentin Tarantino’<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">DELETE</span> <span class="token keyword">FROM</span> MovieProd
+<span class="token keyword">WHERE</span> title <span class="token operator">=</span> ’Il Re Leone’ <span class="token operator">AND</span> year <span class="token operator">=</span> <span class="token number">1994</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Le viste materializzate possono essere <strong>inlined</strong> dal DMBS per migliorare l’efficienza delle query, sfruttando il fatto che parte dell’informazione presente nella query è già stata calcolata in una vista materializzata.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
