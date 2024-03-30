@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-27_Transazioni</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#transazioni">Transazioni</a>
+<ul>
+<li><a href="#transazione">Transazione</a></li>
+<li><a href="#programmare-le-transazioni">Programmare le transazioni</a></li>
+<li><a href="#vincoli-nelle-transazione">Vincoli nelle transazione</a></li>
+<li><a href="#transazioni-read-only">Transazioni read only</a></li>
+<li><a href="#livelli-di-isolamento">Livelli di isolamento</a></li>
+<li><a href="#transazioni-serializable">Transazioni Serializable</a></li>
+<li><a href="#transazioni-read-uncommitted">Transazioni read uncommitted</a></li>
+<li><a href="#transazioni-read-committed">Transazioni read committed</a></li>
+<li><a href="#transazione-repeatable-read">Transazione repeatable read</a></li>
+<li><a href="#schema-riassuntivo">Schema riassuntivo</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="transazioni">Transazioni</h1>
+<p>Nello sviluppo di applicazione che fanno uso di un database è comune raggruppare un insieme di operazioni sul database per implementare una determinata funzione.</p>
+<p>Questo raggruppamento però può portare a dei <strong>problemi sull’integrità dei dati</strong>:</p>
+<ul>
+<li><strong>Concorrenza</strong> tra operazioni provenienti da utenti diversi (più persone contemporaneamente faranno operazioni nel database)</li>
+<li>il <strong>fallimento</strong> di una operazione potrebbe comportare gravi errori alle successive</li>
+</ul>
+<h2 id="transazione">Transazione</h2>
+<p>Una <strong>transazione</strong> è una sequenza di operazioni che soddisfa le seguenti proprietà:</p>
+<ul>
+<li><strong>Serializzabilità</strong>: Assicura che l’esecuzione concorrente di più transazioni sia equivalente ad una esecuzione seriale (senza interferenze)</li>
+<li><strong>atomicità</strong>: Se una operazione all’interno della transazione fallisce allora tutte le modifiche apportate da quella transazione vengono annullate</li>
+<li><strong>persistenza</strong>: Le modifiche effettuate da una transazione terminata correttamente sono permanenti</li>
+</ul>
+<p>In altre parti si dice che una transazione rispetta le proprietà ACID (Atomicity, Consistency, Isolation e Durability)</p>
+<h2 id="programmare-le-transazioni">Programmare le transazioni</h2>
+<p>Possiamo utilizzare le transazioni per raggruppare un insieme di query utilizzando i seguenti comandi:</p>
+<ul>
+<li><code>START TRANSACTION</code> indica l’inizio di una nuova transazione</li>
+<li><code>COMMIT</code> indica la terminazione corretta della transazione, da quel momento tutte le modifiche effettuate dalla transazione devono essere salvata persistentemente in memoria</li>
+<li><code>ROLLBACK</code> indica la terminazione anomale della transazione, tutto ciò che è stato fatto durante la transazione deve essere annullato</li>
+</ul>
+<h2 id="vincoli-nelle-transazione">Vincoli nelle transazione</h2>
+<p>I vincoli che si mettono sugli attributi di una tabella possono essere controllati in momenti diversi nelle transazioni:</p>
+<ul>
+<li><code>NOT DEFERRABLE</code>: vengono controllati dopo ogni operazione della transazione</li>
+<li><code>DEFERRABLE INITIALLY IMMEDIATE</code>: vengono controllati dopo ogni operazione della transazione ma è possibile modificarne il comportamento per controllarli a prima del commit</li>
+<li><code>DEFERRABLE INITIALLY DEFERRED</code>: vengono controllati prima del commit ma è possibile forzare il controllo per ogni operazione della transazione</li>
+</ul>
+<p>è possibile specificare quale comportamento usare con <code>SET CONSTRAINTS</code></p>
+<h2 id="transazioni-read-only">Transazioni read only</h2>
+<p>Una transazione può essere dichiarata <strong>read only</strong></p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SET</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">READ</span> ONLY<span class="token punctuation">;</span>
+</code></pre>
+<p>con i seguenti effetti:</p>
+<ul>
+<li>La transazione può solo leggere dati (con <code>SELECT</code>)</li>
+<li>tutte le query all’interno possono vedere solo le scritture avvenute prima dell’inizio della transazione</li>
+<li>più transazioni read only possono essere eseguite parallelamente senza rischi</li>
+</ul>
+<h2 id="livelli-di-isolamento">Livelli di isolamento</h2>
+<p>Vediamo adesso vari livelli di isolamento che si possono applicare alle transazioni</p>
+<h2 id="transazioni-serializable">Transazioni Serializable</h2>
+<p>Una transazione può essere dichiarata come <strong>serializable</strong>, cioè viene eseguita una transazione alla volta nella sua completezza</p>
+<h2 id="transazioni-read-uncommitted">Transazioni read uncommitted</h2>
+<p>Una transazione può essere dichiarata come <strong>read uncommitted</strong></p>
+<p>con i seguenti effetti:</p>
+<ul>
+<li>consente alla transazione di leggere <strong>dirty data</strong>, cioè dati scritti da altre transazione che non hanno ancora fatto <code>commit</code>. Le letture di questo tipo si chiamano <em>dirty read</em></li>
+<li>è possibile il seguente rischio: nel caso in cui la transazione che ha scritto i dati dovesse abortire allora ciò che ha scritto verrebbe annullato e non è corretto che quei dati cancellati influenzino le altre transazioni.</li>
+</ul>
+<p>SQL limite l’uso di <code>READ UNCOMMITTED</code> alle sole transazioni read only.<br>
+su postgresql non esiste <code>READ UNCOMMITTED</code></p>
+<h2 id="transazioni-read-committed">Transazioni read committed</h2>
+<p>Una transazione dichiarata come <strong>read committed</strong> impedisce il fenomeno delle <em>dirty read</em></p>
+<p>con i seguenti effetti:</p>
+<ul>
+<li>quando una transazione vuole effettuare una scrittura, acquisisce un lock per evitare <em>race condition</em> e lo rilascia alla fine della scrittura</li>
+<li>Si può verificare il fenomeno della <strong>unrepeatable read</strong>: due letture sugli stessi dati in momenti diversi (sempre all’interno della stessa transazione) possono portare a risultati diversi a causa dell’intervento di un’altra transazione che ha modificato le righe interessate</li>
+<li>Si può verificare il fenomeno di <strong>lost update</strong>: cioè la perdita di una modifica causato dalla successiva modifica di un’altra transazione</li>
+</ul>
+<h2 id="transazione-repeatable-read">Transazione repeatable read</h2>
+<p>Una transazione dichiarata come <strong>repeatable read</strong> impedisce il fenomeno delle <em>dirty read</em>, delle <em>unrepeatable read</em> e dei <em>lost update</em></p>
+<p>con i seguenti effetti:</p>
+<ul>
+<li>Quando una transazione vuole fare una lettura o scrittura, acquisisce un lock che viene rilasciato alla terminazione</li>
+<li>per motivi di efficienza i lock solo relativi alle righe, anziché alle tabelle</li>
+<li>si può verificare il fenomeno della <strong>phantom read</strong> (fantasmi): un’altra transazione può aggiungere o cancellare righe ad una tabella prima che la transazione in corso sia stata completata, andando ad influenzarne il risultato</li>
+</ul>
+<h2 id="schema-riassuntivo">Schema riassuntivo</h2>
+
+<table>
+<thead>
+<tr>
+<th align="center">Isolamento</th>
+<th align="center">dirty read</th>
+<th align="center">unrepeatable read</th>
+<th align="center">lost update</th>
+<th align="center">phantom read</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="center">READ UNCOMMITTED</td>
+<td align="center">sì</td>
+<td align="center">sì</td>
+<td align="center">sì</td>
+<td align="center">sì</td>
+</tr>
+<tr>
+<td align="center">READ COMMITTED</td>
+<td align="center">no</td>
+<td align="center">sì</td>
+<td align="center">sì</td>
+<td align="center">sì</td>
+</tr>
+<tr>
+<td align="center">REPEATABLE READ</td>
+<td align="center">no</td>
+<td align="center">no</td>
+<td align="center">no</td>
+<td align="center">sì</td>
+</tr>
+<tr>
+<td align="center">SERIALIZABLE</td>
+<td align="center">no</td>
+<td align="center">no</td>
+<td align="center">no</td>
+<td align="center">no</td>
+</tr>
+</tbody>
+</table><p>Nota che le transazioni possono avere livelli di isolamento diverse tra loro, e tale livello riguarda solo la transazione stessa.</p>
+<p>La scelta del livello di isolamento dipende da quanto è importante l’assenza di errori di lettura/scrittura</p>
+<p>In Postgresql l’isolamento di default è <code>READ COMMITTED</code></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
