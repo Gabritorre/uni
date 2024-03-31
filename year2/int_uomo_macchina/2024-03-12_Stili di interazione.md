@@ -135,3 +135,37 @@ I puntatori servono per identificare la zona attiva, cioè la posizione a cui si
 Al puntatore vengono assegnate forme diverse per differenziare lo stato attuale del sistema.
 
 
+## Componenti di una interfaccia grafica
+I componenti (widget) dell'interfaccia grafica sono i seguenti: 
+
+- **Pulsanti**
+	sono aree cliccabili che attivano una determinata operazione come cambiare lo stato del sistema oppure ottenere informazioni.
+	Fanno parte di questa categoria anche i **radio button** e i **checkbox** 
+- **Toolbar**
+	è una collezione di pulsanti disposta verticalmente o orizzontalmente, utilizzata per attivare in modo rapido determinate funzionalità
+- **Palette**
+	è una collezione di pulstanti in una areaa sollevata dal resto della finestra, spesso risulta una alternativa alla toolbar (che invece rimane fissa)
+- **Tab**
+	è una collezione di pulsanti utilizzati per organizzare delle informazioni raggruppandole in sezioni apposite, Facilita di molto la navigazione. L'utilizzo può portare ambiguità sul tasto conferma in quanto non è chiaro se si confermi la tab corrette o tutta la finestra. La soluzione è attraverso l'uso di due pulsanti (solitamente "applica" e "ok") oppure tramite una progettazione grafica specifica oppure dando effetto immediato alle modifica (in alcuni casi però non è consigliato).
+- **Ribbon**
+	è una evoluzione della toolbar che ospita categoria diverse di entità di interazione organizzate a tab, un esempio è la toolbar di Word
+
+
+## Interfacce WIMP 3D
+
+Nel corso del tempo sono nate proposte di estensione dell'interfacce WIMP in contesti tridimensionali.
+
+Le proposte riguardano:
+- posizionamento delle finestre in uno spazio 3D
+- trasformazione dei widget in uno spazio 3D
+- l'utilizzo di dispositivi di input/output per l'interazione 3D
+
+Sebbene nei comuni dispositivi questa implementazione non ha preso piene nel mondo della realtà virtuale e realtà aumentata ci sono interessanti applicazioni.
+
+
+## Linee guida per le interfacce WIMP
+
+Durante lo sviluppo di una interfaccia sono fondamentali delle linee guida per mantenere la coerenza tra sistema operativo e applicazione e tra le sezioni dell'applicazione stessa.
+
+Le linee guida spesso includono nomenclatura accurata dei diversi elementi che compongono l'interfaccia, questo è importante per la standardizzazione e la documentazione dell'applicazione.
+Sono spesso presenti esempi su cosa fare e cosa non fare, sulle convenzioni grafiche, l'utilizzo appropriato del linguaggio ecc...
