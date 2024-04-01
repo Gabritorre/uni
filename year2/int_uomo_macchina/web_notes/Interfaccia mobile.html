@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-03-20_Interfaccia mobile</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#interfaccia-per-dispositivi-mobili">Interfaccia per dispositivi mobili</a>
+<ul>
+<li><a href="#organizzazione-dellinformazione">Organizzazione dell’informazione</a></li>
+<li><a href="#schemi-organizzativi">Schemi organizzativi</a></li>
+<li><a href="#schemi-organizzativi-esatti">Schemi organizzativi esatti</a></li>
+<li><a href="#schemi-organizzativi-ambigui">Schemi organizzativi ambigui</a></li>
+<li><a href="#schemi-organizzativi-per-argomento">Schemi organizzativi per argomento</a></li>
+<li><a href="#schemi-task-oriented">Schemi task-oriented</a></li>
+<li><a href="#schemi-per-utenza">Schemi per utenza</a></li>
+<li><a href="#schemi-per-metafore">Schemi per metafore</a></li>
+<li><a href="#schemi-ibridi">Schemi ibridi</a></li>
+<li><a href="#struttura-organizzativa">Struttura organizzativa</a></li>
+<li><a href="#sequenza">Sequenza</a></li>
+<li><a href="#gerarchia">Gerarchia</a></li>
+<li><a href="#ipertesto">Ipertesto</a></li>
+<li><a href="#database">Database</a></li>
+<li><a href="#metodi-di-co-design">Metodi di co-design</a></li>
+<li><a href="#free-listing">Free listing</a></li>
+<li><a href="#card-sorting">Card sorting</a></li>
+<li><a href="#tree-testing">Tree testing</a></li>
+<li><a href="#social-classification">Social classification</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="interfaccia-per-dispositivi-mobili">Interfaccia per dispositivi mobili</h1>
+<p>Il processo per fare il design di una applicazione per dispositivi mobili richiede i seguenti step:</p>
+<ul>
+<li>
+<p><strong>identificare</strong> un insieme di <strong>requisiti</strong>: contesto di utilizzo, target, informazioni richieste, tecnologia necessaria</p>
+</li>
+<li>
+<p>progettare l’<strong>architettura dell’informazione</strong> e la <strong>navigazione</strong>:<br>
+cioè una astrazione (schemi e modelli) di come deve essere organizzata l’applicazione, le interazione tra gli utenti dell’app, come cercare una informazione, come raggruppare e organizzare l’informazione.<br>
+c’è una sottile differenza tra:</p>
+<ul>
+<li><strong>dato</strong>: cioè fatti grezzi</li>
+<li><strong>Conoscenza</strong>: è quello che le persone sanno</li>
+<li><strong>informazioni</strong>: una elaborazione dei dati, non sempre restituisce una informazione</li>
+</ul>
+<p>universalmente giusta o sbagliata<br>
+vediamo le definizioni di:</p>
+<ul>
+<li><strong>struttura</strong>: riguarda determinare il livello di granularità della dimensione minima dell’informazione e capire come relazionarle tra loro</li>
+<li><strong>organizzazione</strong>: significa raggruppare le informazioni in categorie distinte</li>
+<li><strong>etichettatura</strong>: riguarda come chiamare le categorie e definire la navigazione che permette di raggiungerle</li>
+</ul>
+</li>
+<li>
+<p>realizzare un <em><strong>wireframe design</strong></em> (delle immagini che rappresentano le parti più importanti dell’interfaccia)</p>
+</li>
+<li>
+<p>implementare un <strong>prototipo</strong></p>
+</li>
+<li>
+<p><strong>valutare il prototipo</strong></p>
+</li>
+<li>
+<p>implementare un <strong>prototipo avanzato</strong></p>
+</li>
+</ul>
+<h2 id="organizzazione-dellinformazione">Organizzazione dell’informazione</h2>
+<p>L’architettura dell’informazione inizia con il capire perché le persone dovrebbero venire sulla propria app, bisogna capire quali bisogni hanno.<br>
+Esistono vari <strong>modelli</strong> per definire cosa accade quando un utente cerca una informazione, il modello più semplice è quello di:<br>
+<span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>richiesta&nbsp;esplicita&nbsp;-&gt;&nbsp;elaborazione&nbsp;-&gt;&nbsp;risposta&nbsp;esplicita</mtext></mrow><annotation encoding="application/x-tex">\text{richiesta esplicita -&gt; elaborazione -&gt; risposta esplicita}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">richiesta&nbsp;esplicita&nbsp;-&gt;&nbsp;elaborazione&nbsp;-&gt;&nbsp;risposta&nbsp;esplicita</span></span></span></span></span></span></span></p>
+<p>Questo è un modello problematica in quanto:</p>
+<ul>
+<li>non sempre le persone sanno cosa vogliono</li>
+<li>spesso gli utenti concludono la propria ricerca con una parziale soddisfazione oppure con frustrazione</li>
+<li>spesso il contesto del bisogno dell’informazione viene tralasciato</li>
+</ul>
+<p>Quindi trovare le informazione tramite un semplice metodo algoritmico non è la scelta migliore.</p>
+<p>Nella <strong>ricerca di informazioni</strong> si potrebbe essere <strong>interessati</strong> a:</p>
+<ul>
+<li>ottenere una risposta specifica (solitamente riconosciuta come quella corretta)</li>
+<li>ottenere un insieme di risposte</li>
+<li>conoscere tutto riguardo ad un argomento</li>
+<li>riuscire a taggare una risposta in modo da poterla ritrovare facilmente in futuro</li>
+</ul>
+<p>le più grandi <strong>difficoltà</strong> nell’organizzare le informazioni sono:</p>
+<ul>
+<li><strong>ambiguità</strong>: la classificazione è realizzata tramite il linguaggio e il linguaggio può essere ambiguo: generalmente le parole hanno più significati</li>
+<li><strong>eterogeneità</strong>: le informazioni sono eterogenee: cioè possono essere classificate in vari modi in base all’aspetto considerato, viene quindi difficile imporre una classificazione specifica</li>
+<li><strong>differenza di prospettiva</strong>: l’organizzazione delle cose è una aspetto altamente soggettivo e questo crea un problema in quanto risulta difficile creare una struttura comoda per tutti gli utilizzatori</li>
+<li><strong>politica interna</strong>: Sono sempre presenti dei compromessi tra i vari reparti che compongono l’organizzazione</li>
+</ul>
+<h2 id="schemi-organizzativi">Schemi organizzativi</h2>
+<p>Gli <strong>schemi</strong> permettono di definire le caratteristiche condivise tra i contenuti in modo da raggrupparli logicamente (classificarli)</p>
+<h2 id="schemi-organizzativi-esatti">Schemi organizzativi esatti</h2>
+<p>L’utilizzo di questi schemi implica che l’utilizzatore sappia cosa sta cercando e sappia dove va cercato, senza presenza di ambiguità.<br>
+Schemi di questo tipo sono facili da mantenere e da progettare e da utilizzare, alcuni esempi sono:</p>
+<ul>
+<li>schemi alfabetici</li>
+<li>schemi cronologici</li>
+<li>schemi geografici</li>
+</ul>
+<h2 id="schemi-organizzativi-ambigui">Schemi organizzativi ambigui</h2>
+<p>sono schemi che dividono l’informazione in modo non oggettivo, risulta quindi difficile fare una classificazione, da usare e da mantenere.</p>
+<p>Risultano però molto utili nel caso in cui l’utilizzatore sta cercando di raccogliere più materiale possibile su un argomento oppure se l’utilizzatore non sa esattamente cosa sta cercando (cercando una cosa anche largamente correlate riesci ad ottenere quello che cercavi)</p>
+<p>l’<strong>associative learning</strong>: processo in cui gli utenti possono creare nuovi connessioni e raggiungere conclusioni più soddisfacenti tramite delle ricerche che influenzano le successive</p>
+<h2 id="schemi-organizzativi-per-argomento">Schemi organizzativi per argomento</h2>
+<p>Si organizzano le informazioni in base al soggetto o all’argomento, i giornali, libri, dipartimenti, corsi, ecc…  sono organizzati in questo modo.</p>
+<p>I raggruppamenti sono spesso associati alla <strong>cultura di riferimento</strong></p>
+<h2 id="schemi-task-oriented">Schemi task-oriented</h2>
+<p>Viene suddiviso il contenuto in collezioni di processi e funzioni. Schema molto presente nelle app mobile e desktop</p>
+<h2 id="schemi-per-utenza">Schemi per utenza</h2>
+<p>Usato quando il servizio ha una netta divisione di tipi di utenti diversi.<br>
+Torna molto utile in quanto si personalizza il contenuto in base al tipo di utente, mettendo solo ciò che può interessargli.</p>
+<p>Questo tipo di schema può essere:</p>
+<ul>
+<li><strong>aperto</strong>: permette agli utenti appartenenti ad una tipologia di accedere al contenuto delle altre categorie</li>
+<li><strong>chiuso</strong>: non permette questo passaggio di categoria</li>
+</ul>
+<h2 id="schemi-per-metafore">Schemi per metafore</h2>
+<p>Usato per introdurre nuovi concetti riferendosi a conoscenze comuni.</p>
+<p>Le metafore devono essere una cosa conosciuta ma che allo stesso tempo può risultare limitante rispetto al concetto da far capire. Oppure l’utente può esageratamente associare il concetto alla metafora pensando a delle funzioni che in realtà non esistono.</p>
+<p>è quindi difficoltoso da progettare e può risultare inconsistente (infatti non è più utilizzato)</p>
+<h2 id="schemi-ibridi">Schemi ibridi</h2>
+<p>In alcune schermate possono essere utilizzati più schemi.<br>
+È importante che gli schemi siano comunque separati per mantenere i propri vantaggi senza causare confusione.</p>
+<p>Torna utile quando si vuole mostrare un insieme di informazioni organizzate in vari modi in base a degli specifici attributi.</p>
+<h2 id="struttura-organizzativa">Struttura organizzativa</h2>
+<p>La struttura organizzativa definisce le relazioni tra i contenuti e i gruppi.</p>
+<p>le strutture includono: sequenze, gerarchie, ipertesti e modelli orientati ai database.</p>
+<p>ogni struttura ha i suoi punti di forza e di debolezza.</p>
+<h2 id="sequenza">Sequenza</h2>
+<p>È il modo più semplice per organizzare informazioni, in modo sequenziale.</p>
+<p>Utilizzato nei siti di educazione deve l’utente deve seguire un percorso (una successione) di materiali</p>
+<h2 id="gerarchia">Gerarchia</h2>
+<p>L’informazione viene suddivisa in una gerarchia di relazioni padre-figlio.</p>
+<p>le gerarchia sono presenti nella vita di tutti i giorni (libri, classi sociali, famiglia) e per questo risulta semplice per l’utente capire la struttura dell’informazione e come navigarla.</p>
+<p>gerarchie in cui i nodi possono avere più padri sono dette <strong>poli gerarchiche</strong></p>
+<p>È importante considerare il <strong>bilanciamento tra larghezza e profondità</strong> della gerarchia:</p>
+<ul>
+<li>troppo profonda implica che l’utente deve passare tra numerose pagine prima di raggiungere quella interessata</li>
+<li>troppo larga implica che l’utente ha troppe opzione tra cui scegliere, il che diventa frustrante</li>
+</ul>
+<h2 id="ipertesto">Ipertesto</h2>
+<p>L’utilizzo degli ipertesti è un modo non lineare per organizzare le informazioni, possiamo pensarlo come ad un grafo.</p>
+<p>Un sistema a ipertesti comprende  due principali componenti:</p>
+<ul>
+<li>un sottoinsieme di informazioni</li>
+<li>dei link che connettono questi sottoinsiemi</li>
+</ul>
+<p>È una organizzazione caratterizzata da una grande flessibilità ma può facilmente creare confusione e diventare complessa da navigare (facile perdersi tra i link)</p>
+<p>Solitamente non viene utilizzato come metodo principale ma come supplemento ad altri tipi di organizzazione (spesso quello gerarchico)ù</p>
+<p><img src="https://i.ibb.co/ZNL5x43/image.png" alt="enter image description here"></p>
+<h2 id="database">Database</h2>
+<p>Un altra possibilità è organizzare le informazioni su un modello relazionale dei database fatto di tabelle (entità), composte da colonne (attributi) e righe (valori degli attributi).</p>
+<p>Risulta particolarmente utile per strutture omogenee.</p>
+<h2 id="metodi-di-co-design">Metodi di co-design</h2>
+<p>Ci sono due interessanti metodi per capire come meglio organizzare le informazioni, il free listing e il card sorting</p>
+<h2 id="free-listing">Free listing</h2>
+<p>Questo modo di organizzare permette agli utenti di <strong>definire le proprie etichette</strong> che definiscono il contenuto di un dominio di informazioni.<br>
+Gli utenti creano una lista di elementi informativi basandosi su un topic fornitogli.</p>
+<h2 id="card-sorting">Card sorting</h2>
+<p>Il card sorting permette agli utenti essere inclusi nella definizione della struttura informativa.<br>
+Gli utenti devono <strong>raggruppare delle etichette già esistenti</strong>.<br>
+Ci sono due tipi di sorting:</p>
+<ul>
+<li><strong>card sorting aperto</strong>: vengono fornite le etichette relative al contenuto del sito/app, ma senza dei gruppi prestabiliti. Gli utenti devono quindi definire anche i gruppi e poi assegnare le etichette al gruppo più adeguato.</li>
+<li><strong>card sorting chiuso</strong>: vengono fornite sia le etichette relative al contenuto del sito/app che i gruppi in cui mettere le etichette. Gli utenti devono solo assegnare le etichette al gruppo più adeguato</li>
+</ul>
+<h2 id="tree-testing">Tree testing</h2>
+<p>È un metodo per testare assieme agli utenti un sistema gerarchico.<br>
+È l’opposto del card sorting in quanto:<br>
+All’utente viene chiesto di trovare, all’interno di una struttura gerarchica già esistente, una determinata informazione.</p>
+<h2 id="social-classification">Social classification</h2>
+<p>I social media sono diventati una forma di classificazione dell’informazione generata da utenti che caricano contenuti.</p>
+<p>L’utilizzo di <strong>tag</strong> per raggruppare il contenuto è una vera e propria forma di classificazione di informazioni</p>
+<p>la folksonomia è il risultato di utilizzo libero da parte degli utenti di taggare contenuti (tutto ciò che è raggiungibile via URL)</p>
+<ul>
+<li><strong>Broad folksonomy</strong>: gli utenti possono dare un tag ad un oggetto anche se esiste già un tag con lo stesso nome allo stesso oggetto. Viene quindi generata una informazione sui tag più utilizzati</li>
+<li><strong>Narrow folksonomy</strong>: gli utenti possono solo dare tag che non sono stati già dati in precedenza</li>
+</ul>
+<p>Nei social network più famosi puoi dare degli <em>hashtag</em> ai tuoi contenuti in modo da farli appartenere a categorie specifiche definite dagli utenti stessi.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
