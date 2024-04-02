@@ -1,0 +1,269 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-02_Problemi risolubili con semafori</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#programmazione-con-i-semafori">Programmazione con i semafori</a>
+<ul>
+<li><a href="#sincronizzazione-molti-a-uno">Sincronizzazione molti a uno</a></li>
+<li><a href="#lettori-e-scrittori">Lettori e scrittori</a></li>
+<li><a href="#filosofi-a-cena">Filosofi a cena</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="programmazione-con-i-semafori">Programmazione con i semafori</h1>
+<p>Vediamo, oltre al problema dei produttori e consumatori, altri classici problemi di sincronizzazione risolubili con i semafori:</p>
+<ul>
+<li>sincronizzazione molti a uno</li>
+<li>lettori e scrittori</li>
+<li>filosofi a cena</li>
+</ul>
+<h2 id="sincronizzazione-molti-a-uno">Sincronizzazione molti a uno</h2>
+<p>Consideriamo una variante del problema produttori e consumatori in cui ci sono <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> produttori e un solo consumatore.<br>
+Ogni produttore avrà una propria coda in cui metterà i suoi dati.<br>
+Il consumatore consumerà un dato alla volta a turno dalle code dei produttori</p>
+<p>Possiamo vedere il problema graficamente nel seguente modo</p>
+<p><img src="https://i.ibb.co/D4vsBD5/image.png" alt="enter image description here"></p>
+<p>Partiamo da un pseudocodice di questo tipo</p>
+<pre class=" language-c"><code class="prism  language-c">queue dato_produttore<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>	<span class="token comment">//array di code</span>
+
+<span class="token function">Produttore</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token operator">&lt;</span> produce d <span class="token operator">&gt;</span>
+		
+		dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+ 
+Consumatore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> N<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+    <span class="token operator">&lt;</span> consuma d<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> d<span class="token punctuation">[</span>N<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Per poter sincronizzarli abbiamo bisogno di:</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> semafori di celle piene (uno per ogni coda)</li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> semafori di celle vuote (uno per ogni coda)</li>
+<li>un mutex (per la versione meno efficiente) oppure <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> mutex (per la versione più efficiente)</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c">queue dato_produttore<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span> 
+semaphore vuote<span class="token punctuation">[</span>N<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>MAX<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> MAX<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+semaphore piene<span class="token punctuation">[</span>N<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+semaphore mutex<span class="token punctuation">[</span>N<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">Produttore</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> produce d <span class="token operator">&gt;</span>
+
+    <span class="token function">P</span><span class="token punctuation">(</span>vuote<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>piene<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+ 
+Consumatore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>piene<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token function">V</span><span class="token punctuation">(</span>vuote<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">&lt;</span> consuma d<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span> d<span class="token punctuation">[</span>N<span class="token number">-1</span><span class="token punctuation">]</span> <span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>L’ottimizzazione del mutex è la seguente:<br>
+utilizzando un solo mutex si è più sicuri della sincronizzazione in quanto avviene sempre o una scrittura o una lettura e mai insieme.<br>
+Sfruttando però il fatto che i produttori scrivono sulla propria coda, l’unica interferenza è che il produttore scriva sulla propria coda e il consumatore legga da quella stessa coda contemporaneamente, quindi possiamo usare un mutex per ogni coda in modo da sincronizzarle singolarmente, così facendo le operazioni su code diverse avverranno parallelamente.</p>
+<h2 id="lettori-e-scrittori">Lettori e scrittori</h2>
+<p>Abbiamo dei dati in memoria condivisa.<br>
+Abbiamo alcuni thread che accedono a questa memoria in sola lettura (thread chiamati <strong>lettori</strong>) e dei thread che modificano i dati in questa memoria (thread chiamati <strong>scrittori</strong>)</p>
+<p>Quello che vogliamo sincronizzare è che se uno scrittore sta modificando i dati non ci deve essere nessun lettore che sta leggendo e nessun altro scrittore che sta scrivendo.<br>
+È invece possibile avere più lettori contemporaneamente in lettura.</p>
+<p>In sostanza vogliamo <strong>un solo scrittore oppure più lettori</strong></p>
+<p>Esistono più soluzioni, alcune più ottimizzate di altre. Quella che vedremo sarà la più semplice, che rispetta la proprietà però potrebbe soffrire di <em>starvation</em>.</p>
+<p>Il codice dello scrittore è una classica sincronizzazione di una sezione critica dove ci accede solo un thread alla volta.<br>
+Codice <strong>scrittore</strong>:</p>
+<pre class=" language-c"><code class="prism  language-c">semaphore scrittura<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+
+Scrittore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">&lt;</span> modifica i dati <span class="token operator">&gt;</span>
+
+    <span class="token function">V</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Per implementare i lettori è utile utilizzare un contatore per tenere traccia di quanti lettori stanno leggendo:<br>
+se non è presente alcun scrittore in zona critica allora:</p>
+<ul>
+<li>il primo lettore che arriva deve bloccare l’entrata di uno scrittore</li>
+<li>l’ultimo lettore ad uscire deve sbloccare lo scrittore</li>
+<li>tutti i lettori nel mezzo possono passare liberamente</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> num_lettori <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+semaphore mutex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+Lettore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge num_lettori e accoda i lettori</span>
+    num_lettori<span class="token operator">++</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment">// primo lettore</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// acquisisce la mutua esclusione in scrittura</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">&lt;</span> legge i dati <span class="token operator">&gt;</span>
+
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge num_lettori</span>
+    num_lettori<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>  <span class="token comment">// ultimo lettore </span>
+      <span class="token function">V</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// rilascia la mutua esclusione in scrittura</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il mutex è necessario per due ragioni:</p>
+<ol>
+<li>l’aggiornamento della variabile num_lettori è una <em>race condition</em></li>
+<li>il primo lettore che arriva si bloccherà su <code>P(scrittura)</code> se c’è uno scrittore attivo, così facendo tutti gli altri lettori rimarranno in attesa su <code>P(mutex)</code>. Solo quando lo scrittore avrà finito allora il lettore eseguirà <code>V(mutex)</code> e lascerà passare tutti gli altri lettori (e se stesso). Vale lo stesso per il decremento finale</li>
+</ol>
+<p>Problema della <em><strong>starvation</strong></em>: se i lettori continuano ad arrivare, non si sbloccherà più il semaforo della scrittura e lo scrittore potrebbe rimanere in una attesa potenzialmente infinita.<br>
+Alcune soluzioni più complesse implementano il fatto che se lo scrittore vuole scrivere allora mette in attesa tutti i nuovi lettori in arrivo e attende che tutti i lettori già entrati in sezione critica finiscano.</p>
+<h2 id="filosofi-a-cena">Filosofi a cena</h2>
+<p>Ci sono 5 filosofi seduti su un tavolo rotondo, ognuno ha davanti a sé un piatto, e tra ogni piatto ci sono 2 bacchette condivise tra i filosofi che sono adiacenti.<br>
+Ogni filosofo ha bisogno di due bacchette per mangiare e quindi non è possibile che due filosofi vicini possano mangiare contemporaneamente.</p>
+<p><img src="https://i.ibb.co/PDz9c5C/image.png" alt="enter image description here"></p>
+<p>Schematizziamo il codice di un filosofo nel seguente modo:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    <span class="token operator">&lt;</span> raccoglie le bacchette sx e dx <span class="token operator">&gt;</span> 
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+    <span class="token operator">&lt;</span> deposita le bacchette sx e dx <span class="token operator">&gt;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Ogni bacchetta è una risorsa condivisa tra due specifici filosofi, non possiamo quindi utilizzare un unico semaforo inizializzato a 5 in quanto significherebbe che a tutti i filosofi andrebbe bene una qualsiasi bacchetta.</p>
+<p>Utilizziamo un array di 5 semafori inizializzati a 1.</p>
+<p>Nota anche che l’<code>i</code>-esimo filosofo utilizza la bacchetta con indice <code>i</code> e quella con indice <code>i+1</code> (ovviamente con modulo 5 in quanto il quinto filosofo utilizzerà la bacchetta <code>0</code>)</p>
+<pre class=" language-c"><code class="prism  language-c">semaphore bacchette<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il codice <strong>sembra</strong> corretto, però può andare in <strong>stallo</strong> (deadlock).<br>
+Uno stallo è uno stato del programma in cui si è permanentemente bloccati in quanto i thread si aspettano a vicenda. In questi casi l’unico modo di uscire dallo stallo è uccidere il processo.</p>
+<p>In questo caso lo stallo si verifica nel caso in cui tutti i filosofi prendono la prima bacchetta contemporaneamente.</p>
+<p>Per prevenire lo stallo in questo caso abbiamo varie soluzioni:</p>
+<h3 id="quattro-filosofi-a-tavola">quattro filosofi a tavola</h3>
+<p>Un primo approccio è quello di limitare il numero di filosofi che possono mangiare a 4. Così facendo ci sarà sempre almeno una bacchetta libera.<br>
+Per implementare questo metodo facciamo uso di altro semaforo <code>posti</code> inizializzato a 4</p>
+<pre class=" language-c"><code class="prism  language-c">semaphore bacchette<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+semaphore posti <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+<span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    <span class="token function">P</span><span class="token punctuation">(</span>posti<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>posti<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se tutti e 5 vogliono prendere la bacchetta di sinistra, solo i primi 4 ci riusciranno mentre l’altro rimarrà in attesa su <code>P(posti)</code></p>
+<h3 id="raccolta-atomica">raccolta atomica</h3>
+<p>possiamo utilizzare un mutex in modo da permettere ad un filosofo alla volta di raccogliere le proprie bacchette</p>
+<pre class=" language-c"><code class="prism  language-c">semaphore bacchette<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+semaphore mutex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+<span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Questa soluzione non è ottimale in quanto sincronizza troppo: se un filosofo ha la seconda bacchetta occupata rimarrà in attesa bloccando anche gli altri filosofi che in realtà potrebbero mangiare.</p>
+<h3 id="filosofo-mancino">Filosofo mancino</h3>
+<p>Una terza opzione è quella forzare un filosofo a prendere prima la bacchetta di destra e poi quella di sinistra.<br>
+Così facendo rompiamo l’attesa circolare (lo stallo) che si verificava inizialmente.</p>
+<p>Supponiamo di mettere il quinto filosofo che prende prima quella di destra.</p>
+<pre class=" language-c"><code class="prism  language-c">semaphore bacchette<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">==</span> <span class="token number">4</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// destra</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// sinistra</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// sinistra</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// destra</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+
+    <span class="token comment">// rilascia le bacchette, non importa l'ordine in quanto la V non è bloccante</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">V</span><span class="token punctuation">(</span>bacchette<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
