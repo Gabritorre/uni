@@ -1,0 +1,116 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-03_Applicazioni di SQL</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#applicazioni-di-sql">Applicazioni di SQL</a>
+<ul>
+<li><a href="#linguaggi-integrati">Linguaggi integrati</a></li>
+<li><a href="#linguaggi-che-ospitano-sql">Linguaggi che ospitano SQL</a></li>
+<li><a href="#utilizzo-di-api">Utilizzo di API</a></li>
+<li><a href="#object-relational-mapping-orm">Object Relational Mapping (ORM)</a></li>
+<li><a href="#riepilogo">Riepilogo</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="applicazioni-di-sql">Applicazioni di SQL</h1>
+<p>Vediamo quali sono i modi per integrare l’interazione con un database all’interno di una reale applicazione.</p>
+<p>Possiamo categorizzare gli approcci in 3 modi:</p>
+<ul>
+<li><strong>Linguaggi integrati</strong>: linguaggi specializzati nel eseguire comandi SQL</li>
+<li><strong>Linguaggi che ospitano SQL</strong>: linguaggi tradizionali, la cui sintassi viene estesa con costrutti SQL all’interno del normale codice</li>
+<li><strong>Utilizzo di API</strong>: linguaggi tradizionali che si appoggiano a librerie esterne per integrare SQL</li>
+</ul>
+<h2 id="linguaggi-integrati">Linguaggi integrati</h2>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>stesso livello di astrazione di SQL</li>
+<li>supporto per controlli a livello di compilazione da parte del <em>type system</em></li>
+</ul>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>costo elevato di apprendimento</li>
+<li>tecnologie proprietarie e non standard</li>
+<li>non adatti per lo sviluppo di applicazioni complesse</li>
+</ul>
+<p>Un esempio di questo approccio è PL/pgSQL</p>
+<h2 id="linguaggi-che-ospitano-sql">Linguaggi che ospitano SQL</h2>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>Costo di apprendimento ridotto</li>
+<li>controlli sulla sintassi SQL in fase di compilazione</li>
+</ul>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (<em>Impedance mismatch</em>)</li>
+<li>è richiesto l’utilizzo di un pre-processore<br>
+che accede a informazioni del tipo: nomi, attributi e tipi delle tabelle.<br>
+Il pre-processore viene sfruttato per garantire che il codice:
+<ul>
+<li>faccia riferimenti a tabelle e attributi esistenti</li>
+<li>soddisfi appropriati controlli sui tipi</li>
+</ul>
+</li>
+</ul>
+<p>Un esempio di questo approccio è SQLJ.</p>
+<p>Viene utilizzata una sintassi particolare per far interagire il codice java con SQL.<br>
+Vie utilizzato un <strong>cursore</strong> per scorrere il risultato delle query</p>
+<h2 id="utilizzo-di-api">Utilizzo di API</h2>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>Costo di apprendimento ridotto</li>
+<li>non è richiesto un pre-processore</li>
+<li>possibilità di utilizzo di SQL dinamico</li>
+</ul>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (<em>Impedance mismatch</em>)</li>
+<li>assenza di controlli in tempo di compilazione</li>
+</ul>
+<p>Un esempio di questo approccio è JDBC.</p>
+<p>Le query sono solitamente delle stringhe passate a funzioni specifiche (e quindi controllate a runtime)</p>
+<p>Una tecnica molto utile per aumentare la robustezza del codice è l’uso di <strong>prepared statement</strong>, cioè l’utilizzo di <em>placeholder</em> (con l’utilizzo del carattere <code>?</code>) all’interno della query da poi riempire come parametri aggiuntivi.</p>
+<p><strong>SQL dinamico</strong>: cioè è possibile costruire le query dinamicamente a runtime, ad esempio in base all’input utente. È una feature che va comunque usata con attenzione</p>
+<h2 id="object-relational-mapping-orm">Object Relational Mapping (ORM)</h2>
+<p>l’ORM è una tecnica di programmazione basata sulle API ma che risolve i problemi dovuti all’<em>impedance mismatch</em> in quanto viene mantenuto una versione del database nel codice realizzata con la programmazione ad oggetti (tabelle sono le classi, i campi sono attributi, ecc…).<br>
+Quindi ogni operazione sul database viene prima applicata al modello ad oggetti per verificarne la correttezza.</p>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>Indipendenza dallo specifico DBMS sottostante</li>
+<li>Non richiede conoscenza approfondita di SQL</li>
+<li>Migliore supporto da parte del compilatore</li>
+<li>Astrazione da dettagli di basso livello (es. sanitizzazione delle query)</li>
+</ul>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>Tipicamente più lento rispetto a SQL</li>
+<li>Poco adatto all’esecuzione di query complesse</li>
+</ul>
+<h2 id="riepilogo">Riepilogo</h2>
+<p>Al giorno d’oggi possiamo affermare che:</p>
+<ul>
+<li>I linguaggi integrati hanno un utilizzo di nicchia molto specializzato e non sono impiegati come linguaggi <em>general purpose</em></li>
+<li>I linguaggi che ospitano SQL hanno un design molto interessante, ma sono sostanzialmente spariti dal mercato</li>
+<li>API ed ORM dominano la scelta per la loro praticità: si può considerare ormai uno standard di fatto</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
