@@ -18,6 +18,7 @@
 <li><a href="#espressioni-lambda">Espressioni lambda</a></li>
 <li><a href="#confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</a></li>
 <li><a href="#classi-per-le-funzioni">Classi per le funzioni</a></li>
+<li><a href="#particolare-polimorfismo-delle-lambda">Particolare polimorfismo delle lambda</a></li>
 </ul>
 </li>
 </ul>
@@ -143,6 +144,28 @@ la sua metodo si chiama <code>run</code></li>
 
 <span class="token punctuation">}</span>
 </code></pre>
+<h2 id="particolare-polimorfismo-delle-lambda">Particolare polimorfismo delle lambda</h2>
+<p>Le lambda in Java sono più polimorfe del normale, questo perché una stessa lambda può avere <strong>più di un tipo associato</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>function<span class="token punctuation">.</span>Function<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
+	<span class="token keyword">interface</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		A <span class="token function">ciccio</span><span class="token punctuation">(</span>B x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">interface</span> <span class="token class-name">MyFunction2</span><span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		A <span class="token function">prova</span><span class="token punctuation">(</span>B x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		MyFunction<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f1 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+		Function<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f2 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+		MyFunction2<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f3 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Si nota nel precedente codice come una stessa lambda può essere assegnata a 3 variabili con tipo diverso.<br>
+Questo perché le lambda sono sostanzialmente una <em>shortcut</em> per creazione di una <strong>classe anonima</strong>, Java riesce a creare questa classe anonima in base al contesto (al tipo della variabile oppure al tipo del parametro).<br>
+È sufficiente che il tipo sia una <strong>interfaccia</strong> con un <strong>unico metodo</strong>, il compilatore si preoccuperà di implementare tale metodo basandosi sulle informazioni presenti nella lambda.</p>
 
     </div>
   </div>

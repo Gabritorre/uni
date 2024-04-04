@@ -147,3 +147,31 @@ class Lambda {
 
 }
 ```
+
+
+## Particolare polimorfismo delle lambda
+
+Le lambda in Java sono più polimorfe del normale, questo perché una stessa lambda può avere **più di un tipo associato**
+
+```java
+import java.util.function.Function;
+public class Lambda {
+	interface MyFunction<A, B> {
+		A ciccio(B x);
+	}
+
+	interface MyFunction2<A, B> {
+		A prova(B x);
+	}
+	
+	public static void main(String[] args) {
+		MyFunction<Integer, Integer> f1 = (a) -> a+1;
+		Function<Integer, Integer> f2 = (a) -> a+1;
+		MyFunction2<Integer, Integer> f3 = (a) -> a+1;
+	}
+}
+```
+
+Si nota nel precedente codice come una stessa lambda può essere assegnata a 3 variabili con tipo diverso.
+Questo perché le lambda sono sostanzialmente una *shortcut* per creazione di una **classe anonima**, Java riesce a creare questa classe anonima in base al contesto (al tipo della variabile oppure al tipo del parametro).
+È sufficiente che il tipo sia una **interfaccia** con un **unico metodo**, il compilatore si preoccuperà di implementare tale metodo basandosi sulle informazioni presenti nella lambda.
