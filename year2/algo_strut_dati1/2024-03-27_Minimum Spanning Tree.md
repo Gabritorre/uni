@@ -63,7 +63,7 @@ Un grafo può avere più alberi di copertura minimi.
 
 Dato un grafo connesso $G = (V, E)$, un **taglio** è una partizione dei vertici del grafo in due sottoinsiemi disgiunti: $S$ e $V \setminus  S$
 
-Dato che il grafo è connesso **esisterà sempre almeno un arco che attraversa il taglio**
+Dato che il grafo è connesso **esisterà sempre almeno un arco che attraversa il taglio** qualunque taglio si consideri.
 Tra gli archi che attraversano il taglio, quello con peso minore viene chiamato **arco leggero** (possono essere molteplici se hanno lo stesso peso)
 
 ![enter image description here](https://i.ibb.co/Q9cPrwN/image.png)
@@ -121,7 +121,7 @@ Sia $T$ un MST di $G$, l'arco $(u, v)$ può stare in due casi:
 
 ## Esercizi dimostrabile con "cuci e taglia"
 
-**Nota** un classico errore potrebbe essere quello di eseguire prima il passo taglia e poi il passo cuci... Questo non funziona.
+**Nota** un classico errore potrebbe essere quello di eseguire prima il passo taglia e poi il passo cuci... Questo non funziona in quanto si potrebbe creare un grafo che non è un albero.
 
 ### Esercizio 1
 
@@ -184,6 +184,8 @@ Valgano le seguenti ipotesi:
 
 Allora esiste un MST che contiene $A \cup \{(u, v)\}$ (si dice "l'arco $(u, v)$ è sicuro per $A$")
 
+**Nota**: Dire che un arco $(u, v)$ è **sicuro** per $A$ significa che se si aggiunge l'arco $(u, v)$ all'insieme $A$, allora l'insieme $A$ continua ad essere un sottoinsieme di un MST
+
 **Dimostrazione**
 
 Sia $T \in MST(G)$ che contiene $A$
@@ -203,3 +205,14 @@ Dato che l'arco $(u, v)$ è un arco leggero allora
 	Adesso dobbiamo dimostrare che anche $A$ appartenga a $T''$.
 	Utilizzando l'ipotesi 2 sappiamo di per certo che l'arco che abbiamo rimosso $(x, y)$ non poteva appartenere ad $A$ (perché l'arco $(x, y)$ attraversava il taglio).
 	Quindi $A$ non è stato toccato e di conseguenza appartiene anch'esso a $T$
+
+### Corollario del teorema fondamentale
+
+Sia $G =(V, E)$ un grafo non orientato e connesso, e valgano le seguenti ipotesi:
+- Sia $A \subseteq E$  è un sottoinsieme di archi contenuto in un qualunque MST.
+- Sia $C = (V_C, E_C)$ una componente connessa della foresta $G_A = (V, A)$ (ricordiamo che una foresta è un insieme di alberi disgiunti, quindi delle componenti connesse).
+- Sia $(u, v)$ un arco leggero che connette $C$ ad un’altra componente connessa della foresta.
+
+Allora esiste un MST che contiene $A \cup \{(u, v)\}$
+
+
