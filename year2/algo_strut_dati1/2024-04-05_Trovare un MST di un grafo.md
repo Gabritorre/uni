@@ -109,7 +109,7 @@ $$T(n, m) = O(n + m\log(m) + m\log(m)) = O(m\log (m))$$
 Dove ricordiamo che $m \geq n-1$
 
 
-### Esecuzione grafica
+## Esecuzione Kruskal
 
 Consideriamo il seguente grafo
 
@@ -129,12 +129,20 @@ Colleghiamo gli alberi tra loro, considerando prima gli **archi con peso minore*
 L'algoritmo di Prim determina un MST di un grafo dato un suo nodo di partenza detto **radice**.
 
 Nell'algoritmo di Kruskal ad ogni iterazione viene memorizzato un insieme di archi (la foresta) che alla fine diventa un albero.
-D'altra parte l'algoritmo di Prim considera il grafo come un albero radicato, e dalla sua radice fa crescere un albero di copertura.
+D'altra parte l'**algoritmo di Prim** considera il grafo come un albero radicato, e **dalla sua radice fa crescere un albero di copertura**.
 La costruzione dell'albero $A$ avviene servendosi di un campo particolare $\pi[u], u \in V$ associato ad ogni vertice, che conterrà un riferimento ad un altro nodo.
 
-L'algoritmo si serve di una **coda di minima priorità** $Q$ che memorizza i vertici del grafo per estrarli, sulla base del campo $\text{Key}[u], u \in V$ che contiene il minore tra i pesi degli archi di $u$ che attraversano il taglio.
+L'algoritmo si serve di una **coda di minima priorità** $Q$ che memorizza i vertici del grafo per estrarli, sulla base del campo $\text{Key}[u], u \in V$ che contiene il minore tra i pesi degli archi di $u$ che **attraversano il taglio.**
 
-Quindi $\text{Key}[u]$ sarà l'arco di peso minore del nodo $u$ mentre $\pi[u]$ rappresenta il vertice di destinazione di tale arco.
+
+
+Quindi:
+- $Q$ è un insieme che contiene i vertici da estrarre
+- $V\setminus Q$ contiene i vertici già estratti
+- inizialmente solo la radice fa parte di $V \setminus Q$
+- implicitamente ci immaginiamo un **taglio** che divide $Q$ da $V\setminus Q$
+- $\text{Key}[u]$ conterrà il peso dell'arco di peso minimo di $u$
+- $\pi[u]$ rappresenta il vertice di destinazione dell'arco di peso minimo di $u$.
 
 Vediamo i passaggi dell'algoritmo
 
@@ -144,9 +152,10 @@ Vediamo i passaggi dell'algoritmo
 	Il campo $\pi$ di ogni nodo viene inizializzato a NIL
 2. **Estrazione**:
 	Finche $Q$ non è vuoto, viene estratto il minimo da $Q$, cioè il vertice del grafo che non è ancora stato estratto avente il campo $\text{Key}$ minore.
+	il valore estratto viene rimosso da $Q$ e entra in $V \setminus Q$.
 	L'estrazione prevede la creazione di un **taglio** che divide i nodi non ancora estratti (cioè quelli in $Q$) da quelli già estratti (cioè quelli in $V \setminus Q$)
 3. **Aggiornamento campi**:
-	Quando si estrae un nodo bisogna aggiornare il campo $\text{Key}$ dei nodi adiacenti al nodo estratto, in quanto viene generato un nuovo taglio
+	Quando si estrae un nodo bisogna aggiornare il campo $\text{Key}$ dei nodi adiacenti al nodo estratto, in quanto viene generato un nuovo taglio (ricorda che il campo $\text{Key}$ dipende dal taglio)
 
 
 $\land$
@@ -176,7 +185,7 @@ L'algoritmo rispetta il teorema fondamentale degli MST:
 **Complessità**
 - il primo ciclo esegue $n$ iterazioni, dove $n$ è il numero di nodi del grafo
 - il ciclo while itera finche $Q$ non è vuoto. Ad ogni iterazione viene estratto un nodo, quindi il ciclo esegue $n$ iterazioni. L'estrazione in sé ha complessità $\log n$ se la immaginiamo implementata con un Heap.
-	Quindi il ciclo + l'estrazione ha complessità $n \log n$
+	Quindi il ciclo + l'estrazione ha complessità: $n \log n$
 - il ciclo for finale esegue per ogni nodo $u$, $\deg(u)$ iterazioni, per un totale quindi di 
 $$\sum_{i = 1}^n \deg(u_i)$$
 che per il lemma della stretta di mano abbiamo visto equivalere a $2m$.
@@ -185,12 +194,29 @@ Quindi questa sezione ha complessità $m\log n$ e in quanto il tuo tempo di esec
 
 $$T(n, m) = n + n\log(n) + m \log(n)$$
 
-Dato che $m \geq n-1$ allora domina $m \log(n)$
+Dato che $m \geq n-1$ (perché il grafo iniziale è connesso) allora domina $m \log(n)$
 
 $$T(n, m) = O(m \log(n))$$
 
 
-### Esecuzione di Prim
+## Esecuzione di Prim
+
+### Esempio 1
+
+Dato il seguente grafo
+
+![enter image description here](https://i.ibb.co/VVW3sCr/image.png)
+
+Vediamo una esecuzione grafica:
+
+![enter image description here](https://i.ibb.co/qrhNr26/esempio-prim.png)
+
+Vediamo come cambiano le strutture dati:
+
+![enter image description here](https://i.ibb.co/X2X87cW/image.png)
+
+
+### Esempio 2
 
 Dato il seguente grafo
 
