@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-02_Modelli di interazione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#modelli-di-interazione">Modelli di interazione</a>
+<ul>
+<li><a href="#ciclo-di-esecuzione-e-di-valutazione-di-norman">Ciclo di esecuzione e di valutazione di Norman</a></li>
+<li><a href="#interaction-framework">Interaction Framework</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="modelli-di-interazione">Modelli di interazione</h1>
+<p><strong>L’interazione</strong> è la comunicazione che avviene tra un utente e il sistema.</p>
+<p>Perché una interazione abbia successo è necessario che vengano tradotti correttamente il linguaggio dell’utente e quello del sistema.<br>
+I modelli di interazione sono utili per identificare le componenti del dialogo e gli eventuali problemi correlati.<br>
+Noi vedremo;</p>
+<ul>
+<li>Il ciclo di esecuzione e di valutazione di Norman</li>
+<li><em>Interaction framework</em></li>
+</ul>
+<p>Definiamo innanzitutto alcuni termini:</p>
+<ul>
+<li><strong>Dominio</strong>: descrive un’area di interesse</li>
+<li><strong>Obiettivo</strong>: il risultato che si desidera ottenere</li>
+<li><strong>Interazione</strong>: descrizione della modalità attraverso la quale si intende raggiungere l’obiettivo</li>
+<li><strong>Compito (task)</strong>: l’articolazione dell’intenzione in azioni</li>
+</ul>
+<h2 id="ciclo-di-esecuzione-e-di-valutazione-di-norman">Ciclo di esecuzione e di valutazione di Norman</h2>
+<p>Si suddivide in 7 fasi:</p>
+<ol>
+<li>Stabilire l’obiettivo</li>
+<li>Concepire l’intenzione</li>
+<li>Formulare una sequenza di azioni</li>
+<li>Eseguire le azioni</li>
+<li>Percepire lo stato del sistema</li>
+<li>Interpretare lo stato del sistema</li>
+<li>Valutare lo stato del sistema rispetto all’obiettivo</li>
+</ol>
+<p><strong>Il modello di Normal si concentra solo sull’interfaccia</strong>, che l’utente percepisce come se fosse il sistema.</p>
+<p>Il alcuni sistemi può capitare che sia difficile far combaciare:</p>
+<ul>
+<li>la formulazione delle azioni con le effettive azioni consentite dal sistema</li>
+<li>le aspettative di cambiamento dello stato del sistema con l’effettiva presentazione dello stato del sistema</li>
+</ul>
+<h2 id="interaction-framework">Interaction Framework</h2>
+<p>Rappresenta una estensione del modello di Norman, nel quale viene esplicitamente considerato il sistema.<br>
+Si considerano 4 componenti:</p>
+<ul>
+<li>l’utente</li>
+<li>interfaccia di input</li>
+<li>interfaccia di output</li>
+<li>il sistema</li>
+</ul>
+<p>Ogni componente ha il proprio linguaggio, l’interazione consiste nel tradurre questi linguaggi.</p>
+<p>Il ciclo di interazione si sviluppa nel seguente modo:</p>
+<ol>
+<li><strong>l’utente</strong> formula l’obiettivo e un compito per raggiungerlo</li>
+<li><strong>l’interfaccia di input</strong> traduce il linguaggio di input in linguaggio di base e porta il sistema in un nuovo stato</li>
+<li><strong>il sistema</strong> renderizza il nuovo stato nel linguaggio di output</li>
+<li><strong>l’utente</strong> interpreta il linguaggio di output</li>
+</ol>
+<p>Le quattro traduzioni sono:</p>
+<ul>
+<li><strong>articolazione</strong>: linguaggio utente <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> linguaggio di input</li>
+<li><strong>performance</strong>: linguaggio di input <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> stimoli per il sistema</li>
+<li><strong>presentazione</strong>: risultato del sistema <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> linguaggio di output</li>
+<li><strong>osservazione</strong>: linguaggio di output <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> linguaggio utente</li>
+</ul>
+<p>Anche in questo modello sono comuni i problemi di traduzione: ambiguità, mancanza di informazioni, poca espressività.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
