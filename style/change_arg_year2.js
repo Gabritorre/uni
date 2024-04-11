@@ -1,5 +1,5 @@
 let courses = {
-	algo_strut_dati1 : ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze", "Esercizi ricorrenze", "Grafi", "Grado nei grafi", "Isomorfismo", "Condizioni di connettività e ciclicità", "Minimum Spanning Tree", "Trovare un MST di un grafo", "Cammini minimi"],
+	algo_strut_dati1 : ["Fibonacci", "Classi asintotiche", "Calcolo della complessità", "Ricorrenze", "Esercizi ricorrenze", "<Algoritmi e strutture dati mod.2>", "Grafi", "Grado nei grafi", "Isomorfismo", "Condizioni di connettività e ciclicità", "Minimum Spanning Tree", "Trovare un MST di un grafo", "Cammini minimi"],
  	algo_strut_dati2 : ["Le strutture dati", "Dizionari", "Esercizi calcolo delle complessità", "Alberi", "Esercizi alberi", "Alberi binari di ricerca", "Esercizi alberi binari di ricerca", "Alberi di ricerca particolari", "Ordinamento", "Quick sort", "Heap sort", "Code di priorità", "Esercizi ordinamento", "Ordinamenti lineari", "Tabelle hash", "Indirizzamento aperto", "Programmazione dinamica", "Longest Common Subsequence"],
  	basi_dati1 : ["Introduzione", "Progettazione e modellazione", "Progettazione logica", "Algebra relazionale", "Calcolo relazionale", "Linguaggio SQL DML", "Linguaggio SQL DDL"],
 	prob_stat : ["Introduzione", "Probabilità elementare", "Esercizi Probabilità elementare", "Esercizi Probabilità elementare 2", "Probabilità condizionata e indipendenza", "Esercizi Probabilità condizionata", "Variabili casuali",  "Esercizi variabili casuali", "Esercizi costanti caratteristiche", "Variabili aleatorie discrete", "Esercizi quantili", "Variabili aleatorie continue", "Esercizi Discrete e continue", "Esercizi Discrete e continue 2", "Variabili congiunte", "Esercizi Variabili congiunte", "Catene di Markov", "Esercizi somme e catene di Markov"],
@@ -21,6 +21,15 @@ function show_arguments(subj) {
 		var link_text = document.createTextNode(selected_subject[i]);
 		let elem = document.createElement("li");
 		arg_link.appendChild(link_text);
+
+		if (selected_subject[i] == "<Algoritmi e strutture dati mod.2>") {
+			let arg_link = document.createElement("p");
+			var link_text = document.createTextNode(selected_subject[i]);
+			arg_link.appendChild(link_text);
+			argument_list.append(arg_link);
+			continue;
+		}
+
 		if (selected_subject[i].includes("Esercizi")){
 			arg_link.classList.add("special");
 		}
