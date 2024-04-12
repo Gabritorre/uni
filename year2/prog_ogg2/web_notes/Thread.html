@@ -1,0 +1,209 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-04_Thread</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#thread">Thread</a>
+<ul>
+<li><a href="#vecchio-modo-di-creare-thread">Vecchio modo di creare thread</a></li>
+<li><a href="#nuovo-modo-di-creare-thread">Nuovo modo di creare thread</a></li>
+<li><a href="#produttore-consumatore">Produttore consumatore</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="thread">Thread</h1>
+<p>I Thread sono la parte esecutiva di un processo.<br>
+I thread condividono la maggior parte delle cose contenute nel processo, tra cui il data-segment e il code-segment. Mentre ogni thread ha il proprio Program Counter e il proprio Stack Pointer.</p>
+<p>Vediamo come si creano e usano i thread in Java, vediamo il metodo “vecchio stile” con cui si sono sempre utilizzati i thread e vediamo anche un modo alternativo introdotto nelle versioni successive di Java.<br>
+Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, in quanto in determinati casi può risultare più comodo il vecchio modo rispetto a quello nuovo (ma generalmente si tratta solo di un discorso di leggibilità e organizzazione di codice).</p>
+<p>In generale ricordiamo che <strong>un processo ha sempre almeno un thread</strong>, nei programmi generalmente quel thread esegue il <strong>main</strong>.</p>
+<h2 id="vecchio-modo-di-creare-thread">Vecchio modo di creare thread</h2>
+<p>Per definire un thread bisogna:</p>
+<ol>
+<li>Creare una nuova classe che estende dalla classe <code>Thread</code></li>
+<li>Sovrascrivere il metodo <code>run()</code> con il codice che il thread deve eseguire durante la sua vita</li>
+</ol>
+<p>Per utilizzare un thread bisogna:</p>
+<ol>
+<li>Istanziare un oggetto di tipo della classe creata precedentemente</li>
+<li>chiamare il metodo <code>start()</code> per far partire il thread</li>
+<li>il creatore del thread deve poi aspettarlo con il metodo <code>join()</code></li>
+</ol>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadExample</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">MyThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		t<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ciao"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		t<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Note:</p>
+<ul>
+<li>Solo al momento della chiamata al metodo <code>t.start()</code> il thread inizia la sua esecuzione, in altre parole da quel momento viene schedulato dalla CPU.</li>
+<li>Un <strong>errore</strong> potrebbe essere quello di chiamare <code>t.run()</code> al posto di <code>t.start()</code>, così facendo però stiamo dicendo al thread che sta eseguendo il main di eseguire il metodo <code>run()</code> definito nella classe <code>MyThread</code> per poi ritornare al main, non stiamo effettivamente creando un nuovo thread che esegue quel codice.</li>
+<li>A basso livello possiamo pensare che un thread è un fork della <em>Java Virtual Machine</em> che interpreta il bytecode specificato nel metodo <code>run()</code></li>
+<li>se al posto dei cicli for mettessimo un <code>while(true)</code> vedremmo delle stampe molto separate (prima tanti “ciao” e poi tanti “hello” e via così) e <strong>non alternati</strong>, questo è dato dal <strong>quanto di tempo</strong> che la CPU fornisce ai thread</li>
+</ul>
+<h2 id="nuovo-modo-di-creare-thread">Nuovo modo di creare thread</h2>
+<p>Con l’introduzione delle lambda è possibile creare i thread in maniera molto più diretta, anche se meno strutturata.</p>
+<p>Non è più necessario creare una nuova classe che estende <code>Thread</code>, ma possiamo direttamente istanziare la classe <code>Thread</code> passando come parametro una istanza di <code>Runnable</code>.</p>
+<p>Vediamo vari modi di farlo:</p>
+<p><strong>Metodo 1</strong> classe anonima</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Metodo 2</strong>: espressione lambda</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Metodo 3</strong>: variabile contenente un Runnable</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Runnable f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>La scelta tra la nuova versione e quella vecchia si base sostanzialmente sulla grandezza del thread, <strong>il vecchio metodo</strong> è più comodo <strong>per thread che hanno un codice lungo</strong>, utilizzano i propri campi.<br>
+Mentre <strong>per thread leggeri</strong> con codici brevi <strong>la nuova versione è decisamente più rapida</strong> da implementare.</p>
+<h2 id="produttore-consumatore">Produttore consumatore</h2>
+<p>Vediamo un classico problema di sincronizzazione multithreading per vedere anche come sincronizzare i thread</p>
+<p>Il problema del produttore e consumatore consiste che un thread produca dei dati in un buffer e un altro thread li consumi dal buffer.<br>
+La sincronizzazione deve avvenire al fine di impedire che un un produttore sovrascriva dei dati nel buffer se il consumatore non li ha ancora consumati.<br>
+Il consumatore deve attendere che il produttore produca dei dati prima di consumarli.</p>
+<p>In questo caso dato che i thread <code>Consumatore</code> e <code>Produttore</code> sono due entità ben distinte, hanno molto codice, è più conveniente utilizzare il vecchio metodo di utilizzo dei thread</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Random<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsumerProducer</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> buff <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//buffer condiviso dai due thread</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Producer</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token function">Producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token string">"Producer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Random rnd <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">int</span> n <span class="token operator">=</span> rnd<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//inserisce un numero random nel buffer</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment">// lock</span>
+                    buff<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: added %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>                       <span class="token comment">// unlock</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Consumer</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token function">Consumer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token string">"Consumer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//lock</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>buff<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                            buff<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token keyword">int</span> n <span class="token operator">=</span> buff<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: removed %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>						<span class="token comment">//unlock</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Thread p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Consumer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            p<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            c<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//in caso di terminazioni anomale dei thread</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Analizziamo le parti più importanti:</p>
+<ul>
+<li><code>synchronized(){}</code>  è una keyword che garantisce che tutto ciò che c’è all’interno delle parentesi graffe viene eseguito in modo atomico, cioè la sua esecuzione non può essere suddivisa.
+<ul>
+<li>All’interno delle parentesi ci va un oggetto che verrà utilizzato come <strong>mutex</strong>.</li>
+<li>Ogni oggetto è figlio della classe <code>Object</code> la quale ha dei metodi particolari per la sincronizzazione: <code>wait()</code> e <code>notify()</code>.</li>
+<li>È possibile quindi utilizzare qualsiasi oggetto a piacimento, l’importante però è che <strong>sia un oggetto condiviso tra i thread che si vuole sincronizzare</strong>. Nel nostro caso abbiamo utilizzato l’oggetto <code>buff</code>.</li>
+<li>Entrare all’interno di un blocco <code>synchronized</code> equivale ad impostare un semaforo a rosso per gli altri thread che utilizzano lo stesso mutex</li>
+</ul>
+</li>
+<li><code>wait()</code> serve per rimanere in attesa all’interno di un blocco <code>synchronized</code> fino a quando un altro thread non lo sblocca</li>
+<li><code>notify()</code> serve a notificare i thread che sono in attesa in un blocco <code>synchronized</code> (cioè che hanno chiamato la <code>wait()</code>) di poter riprendere l’esecuzione</li>
+</ul>
+<p>La buona regola per capire se è necessario sincronizzare è la seguente:<br>
+se lavorando con più thread ho almeno un thread che legge dei dati da una zona di memoria e almeno un thread che scrive dei dati nella stessa zona di memoria, allora è necessario sincronizzare.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

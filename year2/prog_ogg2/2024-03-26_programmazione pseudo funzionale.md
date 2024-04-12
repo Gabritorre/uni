@@ -43,6 +43,15 @@ Prima che Java implementasse le funzioni lambda, venivano utilizzate le **classi
 Con l'aggiunta delle lambda si sono aggiunte anche le cosiddette **funzioni di ordine superiore**, cioè funzioni che: prendono come parametro una funzione oppure che ritornato una funzione oppure che definiscono un altra funzione al loro interno.
 le normali funzioni vengono chiamate **funzioni di primo ordine**
 
+## Command pattern
+
+Il command pattern è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che vorrà in input **i dati** e un **comando** (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.
+La funzione che esegue questo compito non saprà nulla di che cosa fa il comando, saprà solamente il nome della funzione da chiamare all'interno del comando.
+
+Ci sono altri modi per implementare questo pattern, ad esempio definendo una classe che ha al suo interno un attributo che fungerà da comando.
+
+Questa tecnica permette molta flessibilità del codice.
+
 ### Esempio
 
 Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una funzione su ogni elemento di una collezione di dati.

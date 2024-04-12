@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#espressioni-lambda">Espressioni lambda</a></li>
 <li><a href="#confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</a></li>
+<li><a href="#command-pattern">Command pattern</a></li>
 <li><a href="#classi-per-le-funzioni">Classi per le funzioni</a></li>
 <li><a href="#particolare-polimorfismo-delle-lambda">Particolare polimorfismo delle lambda</a></li>
 </ul>
@@ -54,6 +55,11 @@ s <span class="token operator">-</span><span class="token operator">&gt;</span> 
 <p>Prima che Java implementasse le funzioni lambda, venivano utilizzate le <strong>classi anonime</strong>.</p>
 <p>Con l’aggiunta delle lambda si sono aggiunte anche le cosiddette <strong>funzioni di ordine superiore</strong>, cioè funzioni che: prendono come parametro una funzione oppure che ritornato una funzione oppure che definiscono un altra funzione al loro interno.<br>
 le normali funzioni vengono chiamate <strong>funzioni di primo ordine</strong></p>
+<h2 id="command-pattern">Command pattern</h2>
+<p>Il command pattern è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che vorrà in input <strong>i dati</strong> e un <strong>comando</strong> (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.<br>
+La funzione che esegue questo compito non saprà nulla di che cosa fa il comando, saprà solamente il nome della funzione da chiamare all’interno del comando.</p>
+<p>Ci sono altri modi per implementare questo pattern, ad esempio definendo una classe che ha al suo interno un attributo che fungerà da comando.</p>
+<p>Questa tecnica permette molta flessibilità del codice.</p>
 <h3 id="esempio">Esempio</h3>
 <p>Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una funzione su ogni elemento di una collezione di dati.</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
