@@ -92,20 +92,6 @@ Per risolvere "Sorgente singola destinazione multipla" vedremo due algoritmo: qu
 Mentre per risolvere "Sorgente multipla destinazione multipla" vedremo l'algoritmo di **Floyd-Warshall**.
 
 
-## Proprietà cammini
-
-> Sottocammini di cammini minimi sono minimi
-
-Vuol dire che se abbiamo un **cammino minimo** tra i nodi $X$ e $Z$, del tipo:
-
-$<X, Y, N, K, Z>$
-
-allora anche i sottocammini interni, ad esempio $<X, Y, N>$, $<Y, N, K>$,  sono a loro volta minimi.
-
-**Dimostrazione** per assurdo
-
-Considerando l'esempio sopra, supponiamo per assurdo che tra $Y$ e $K$ esista un cammino di costo minore, allora ci sarebbe un cammino che collega $X$ e $Z$ con un peso minore dell'attuale cammino, questo è assurdo perché quel cammino per ipotesi era un cammino minimo, abbiamo contraddetto l'ipotesi iniziale.
-
 
 ## Strutture dati degli algoritmi
 
@@ -117,7 +103,6 @@ Per ogni vertice del grafo $u \in V$:
 - $d[u]$ è la "stima" della distanza tra la sorgente e il nodo $u$, è una stima in quanto essa cambia durante l'esecuzione e solo alla fine rappresenta la distanza vera tra la sorgente e il nodo $u$.
 - $\pi[u]$ è un puntatore ad un altro vertice, utile per ricostruire il cammino minimo finale
 
-$\pi$
 
 ## Funzioni ausiliarie degli algoritmi
 
@@ -157,25 +142,139 @@ Considerazioni sulla `relax`:
 - se la `relax` effettua una modifica, essa migliorerà sicuramente il costo del cammino
 
 
+## Proprietà cammini
 
-## Algoritmo di Dijkstra
+Vediamo delle proprietà relative ai cammini, che ci saranno utili per gli algoritmi.
 
-Possiamo descrivere l'algoritmo di Dijkstra nel seguente modo:
-**Viene estratto un vertice alla volta, ad ogni estrazione si rilassano gli archi uscenti dal vettore estratto.**
+### Sottocammini
 
-Dijkstra fa uso di una coda di priorità $Q$ contenente le informazioni sul campo $d$ per ogni **nodo** del grafo **ancora da estrarre**.
-Utilizza anche un insieme $S$ dove vengono mantenuti i **nodi già estratti**
+> Sottocammini di cammini minimi sono minimi
 
-```c
-dijkstra(G, w, s)
-	init_ss(G, s)
-	Q = V[G]
-	S = ∅ 
-	while Q != ∅
-		u = extract_min(Q)
-		S = S ∪ {u}
-		for-each v in Adj[u]
-			relax(u, v, w(u, v))
-```
+Vuol dire che se abbiamo un **cammino minimo** tra i nodi $X$ e $Z$, del tipo:
+
+$<X, Y, N, K, Z>$
+
+allora anche i sottocammini interni, ad esempio $<X, Y, N>$, $<Y, N, K>$,  sono a loro volta minimi.
+
+**Dimostrazione** per assurdo
+
+Considerando l'esempio sopra, supponiamo per assurdo che tra $Y$ e $K$ esista un cammino di costo minore, allora ci sarebbe un cammino che collega $X$ e $Z$ con un peso minore dell'attuale cammino, questo è assurdo perché quel cammino per ipotesi era un cammino minimo, abbiamo contraddetto l'ipotesi iniziale.
+
+### Grafo dei predecessori
+
+Il grafo dei predecessori si indica con $G_\pi =(V_\pi, E_\pi)$ ed è un sottografo di $G$ che dipende dal campo $\pi$ dei vertici di $G$.
+
+- $V_\pi = \{s\} \cup \{v \in V\, |\, \pi[v] \neq NIL\}$
+- $E_\pi = \{(\pi[v], v) \in E \, |\, v \in V_\pi \setminus \{s\}\}$
+
+È un grafo che si evolve durante l'algoritmo e che ad ogni step è composto solo dai vertici che hanno un predecessore in quel determinato momento (e in più il nodo sorgente)
+
+Vediamo un esempio della sua costruzione in una fase intermedia di un algoritmo per trovare i cammini minimi.
+![enter image description here](https://i.ibb.co/tzGkYdv/image.png)
+
+Al termine degli algoritmi di dei cammini minimi $G_\pi$ farà parte del risultato
+
+### Albero dei cammini minimi
+
+L'albero dei cammini minimi si indica come $G' = (V', E')$ è un sottografo di $G=(V, E, w)$ in cui valgono le seguenti proprietà:
+1. $V' = \{v \in V \, |\, \delta(s, v) < +\infty\}$ cioè i vertici devono essere raggiungibili dalla sorgente
+2. $G'$ forma un albero radicato in $s$
+3. $\forall v \in V'$ l'unico cammino che connette la sorgente $s$ con il nodo $v$ in $G'$ è un cammino minimo in $G$
+
+
+![enter image description here](https://i.ibb.co/Qp1Yc51/image.png)
+
+Alla fine dell'algoritmo vogliamo che il grafo dei predecessori $G_\pi$ sia un albero dei cammini minimi.
+
+### Disuguaglianza triangolare
+
+Considerando un grafo $G = (V, E)$ con nodo sorgente $s \in V$ e un arco $(u, v) \in E$ allora vale che:
+
+$$\delta(s, v) \leq \delta(s, u) + w(u, v)$$
+
+Vediamo due esempi:
+
+![enter image description here](https://i.ibb.co/FmS9QHH/image.png)
+
+**Dimostrazione**
+Suddividiamo 3 casi:
+
+- $\delta(s, u) = +\infty$ cioè $u$ non è raggiungibile da $s$, allora è sicuramente vero che $\delta(s,v)\leq + \infty + w(u, v)$ con $w(u, v)$ valore reale.
+- $\delta(s, u) = -\infty$ cioè è presente un ciclo negativo tra $s$ e $u$ allora varrà che
+	$\delta(s, v) \leq -\infty + w(u, v)$, ma a questo punto anche $\delta(s, v) = -\infty$ a causa del ciclo negativo, quindi è verificata la condizione
+- $\delta(s, v) \in \mathbb{R}$, cioè esiste un cammino senza cicli tra $s$ e $u$, in questo caso rientriamo negli esempi sopra mostrati: se l'unico cammino per arrivare a $v$ è passando per $u$ e l'arco $(u, v)$ allora $\delta(s, v)$ sarà esattamente uguale a $\delta(s, u) + w(u, v)$. Ma è possibile che esistano anche cammini migliori, cioè che $\delta(s, v) < \delta(s, v) + w(u, v)$
+
+### Proprietà del limite inferiore
+
+La proprietà afferma che in qualsiasi algoritmo che:
+1. inizializza i dati con `init_ss`
+2. usa esclusivamente la `relax` pr aggiornare $d$ e $\pi$
+
+vale che 
+
+$$\delta(s, v) \leq d[v]$$
+
+cioè che la distanza stimata tra $s$ e $v$ che noi definiamo come $d[v]$ non andrà mai al di sotto della distanza reale tra $s$ e $v$, che noi definiamo come $\delta(s, v)$, qualunque sia la sequenza o la quantità di `relax` che vengono eseguite.
+
+In altre parole $\delta(s, v)$ rappresenta un **limite inferiore** per $d[v]$
+
+Inoltre se dovesse capitare che $\delta(s, v) = d[v]$, che si dice "la distanza stimata ha agganciato la distanza reale" allora nessuna `relax` potrà modificare il valore di $d[v]$
+
+**Dimostrazione**
+
+Separiamo due casi:
+
+1. Dimostrazione della proprietà subito dopo la `init_ss`:
+	Per i nodi che non sono la sorgente, allora $d[v] = +\infty$, che verifica la proprietà
+	$$\delta(s, v) \leq + \infty$$
+	
+	Per la sorgente invece $d[s] = 0$ e la distanza vale per definizione $\delta(s, s) = 0$ 
+	$$0 \leq 0$$
+	
+	Nel caso in cui la sorgente $s$ sia all'interno di un ciclo negativo la proprietà vale comunque, infatti $\delta(s, s) = -\infty$
+	$$-\infty \leq 0$$
+
+2. Supponiamo per assurdo che dopo una `relax` si ha che $d[v] < \delta(s, v)$ **per la prima volta** durante l'algoritmo. Immaginiamo di trovarci nella seguente situazione
+
+	![enter image description here](https://i.ibb.co/tLs7637/image.png)
+
+	dopo la `relax` avremo che
+	$$d[v] = d[u] + w(u, v)$$
+	Noi però stiamo assumendo per assurdo che
+	$$d[u] + w(u, v) < \delta(s, v)$$
+	e per la disuguaglianza triangolare possiamo scrivere che 
+	$$d[u] + w(u, v) < \delta(s, v) \leq \delta(s, u) + w(u, v)$$
+	
+	allora possiamo scrivere che
+	$$d[u] + \cancel{w(u, v)} <\delta(s, u) + \cancel{w(u, v)}$$
+	
+	$$d[u] < \delta(s, u)$$
+	
+	ma questo è assurdo in quanto l'attuale relax non è la prima ad aver infranto la proprietà come avevamo assunto inizialmente, infatti anche il nodo $u$ l'ha infranta precedentemente.
+
+### Proprietà della convergenza
+
+In un **cammino minimo** $<s, ..., u, v>$ se si arriva al punto in cui $d[u] = \delta(s, u)$ cioè il penultimo nodo del cammino ha già raggiunto come distanza stimata la sua distanza reale allora nella `relax` sul nodo finale si avrà $d[v] = \delta(s, v)$
+
+**Dimostrazione**
+dopo l'ultima `relax`, per la proprietà del limite inferiore abbiamo che 
+
+$$\delta(s, v) \leq d[v]$$
+
+la `relax` assicura che
+$$d[v] \leq d[u] + w(u, v)$$
+
+Per ipotesi possiamo riscrivere come
+$$d[v] \leq \delta(s, u) + w(u, v)$$
+
+Dato che siamo all'interno di un cammino minimo
+
+$$\delta(s, u) + w(u, v) = \delta(s, v)$$
+
+Abbiamo quindi raggiunto la seguente condizione
+
+$$\delta(s, v) \leq d[v] \leq \delta(s, v)$$
+
+$$d[v] = \delta(s, v)$$
 
 
