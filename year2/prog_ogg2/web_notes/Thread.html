@@ -122,7 +122,8 @@ Mentre <strong>per thread leggeri</strong> con codici brevi <strong>la nuova ver
 <p>Il problema del produttore e consumatore consiste che un thread produca dei dati in un buffer e un altro thread li consumi dal buffer.<br>
 La sincronizzazione deve avvenire al fine di impedire che un un produttore sovrascriva dei dati nel buffer se il consumatore non li ha ancora consumati.<br>
 Il consumatore deve attendere che il produttore produca dei dati prima di consumarli.</p>
-<p>In questo caso dato che i thread <code>Consumatore</code> e <code>Produttore</code> sono due entità ben distinte, hanno molto codice, è più conveniente utilizzare il vecchio metodo di utilizzo dei thread</p>
+<p>In questo caso dato che i thread <code>Consumatore</code> e <code>Produttore</code> sono due entità ben distinte, hanno molto codice, è più conveniente utilizzare il vecchio metodo di utilizzo dei thread.</p>
+<p>Nota: Il seguente metodo di sincronizzazione dei thread viene realizzato usando i <strong>monitor</strong></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
 <span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Random<span class="token punctuation">;</span>
@@ -143,7 +144,7 @@ Il consumatore deve attendere che il produttore produca dei dati prima di consum
                 <span class="token keyword">int</span> n <span class="token operator">=</span> rnd<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//inserisce un numero random nel buffer</span>
                 <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment">// lock</span>
                     buff<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//libero eventuali thread che hanno fatto wait()</span>
                     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: added %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token punctuation">}</span>                       <span class="token comment">// unlock</span>
             <span class="token punctuation">}</span>
@@ -159,7 +160,8 @@ Il consumatore deve attendere che il produttore produca dei dati prima di consum
         <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
             <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
                 <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//lock</span>
-                    <span class="token keyword">if</span> <span class="token punctuation">(</span>buff<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	                <span class="token comment">//se entro in zona critica però il buffer è vuoto rimango in attesa.</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>buff<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	
                         <span class="token keyword">try</span> <span class="token punctuation">{</span>
                             buff<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
                         <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -190,14 +192,17 @@ Il consumatore deve attendere che il produttore produca dei dati prima di consum
 <ul>
 <li><code>synchronized(){}</code>  è una keyword che garantisce che tutto ciò che c’è all’interno delle parentesi graffe viene eseguito in modo atomico, cioè la sua esecuzione non può essere suddivisa.
 <ul>
-<li>All’interno delle parentesi ci va un oggetto che verrà utilizzato come <strong>mutex</strong>.</li>
+<li>All’interno delle parentesi ci va un qualsiasi <strong>oggetto</strong> che verrà utilizzato come <strong>mutex</strong>.</li>
 <li>Ogni oggetto è figlio della classe <code>Object</code> la quale ha dei metodi particolari per la sincronizzazione: <code>wait()</code> e <code>notify()</code>.</li>
 <li>È possibile quindi utilizzare qualsiasi oggetto a piacimento, l’importante però è che <strong>sia un oggetto condiviso tra i thread che si vuole sincronizzare</strong>. Nel nostro caso abbiamo utilizzato l’oggetto <code>buff</code>.</li>
-<li>Entrare all’interno di un blocco <code>synchronized</code> equivale ad impostare un semaforo a rosso per gli altri thread che utilizzano lo stesso mutex</li>
+<li>Entrare all’interno di un blocco <code>synchronized</code> equivale diventare il proprietario (<em>owner</em>) dell’oggetto passato come mutex, e gli altri thread devono attendere che il mutex diventi senza proprietario</li>
 </ul>
 </li>
-<li><code>wait()</code> serve per rimanere in attesa all’interno di un blocco <code>synchronized</code> fino a quando un altro thread non lo sblocca</li>
-<li><code>notify()</code> serve a notificare i thread che sono in attesa in un blocco <code>synchronized</code> (cioè che hanno chiamato la <code>wait()</code>) di poter riprendere l’esecuzione</li>
+<li><code>wait()</code> serve per rimanere in attesa all’interno di un blocco <code>synchronized</code> fino a quando un altro thread non lo sblocca. Dopo aver fatto una <code>wait</code> l’accesso all’area synchonized viene liberata.</li>
+<li><code>notify()</code> serve a notificare i thread che sono in attesa in un blocco <code>synchronized</code> (cioè che hanno chiamato la <code>wait()</code>) di poter riprendere l’esecuzione.</li>
+<li>La <code>wait()</code> e la <code>notify()</code> si possono eseguire solo all’interno di un blocco <code>synchronized</code> e vanno chiamati sull’oggetto passato come mutex.</li>
+<li>le <strong>exception</strong> lanciate all’interno di un blocco <code>synchronized</code> rendono libero il blocco.</li>
+<li>Una conseguenza del fatto che solo l’owner del blocco possa lavorare in zona critica, implica che in funzioni ricorsive synchronized (a singolo thread) non generino uno stallo, in quanto è sempre lo stesso thread che esegue la funzione ricorsiva ed è sempre lui l’owner, quindi non rimane mai in attesa.</li>
 </ul>
 <p>La buona regola per capire se è necessario sincronizzare è la seguente:<br>
 se lavorando con più thread ho almeno un thread che legge dei dati da una zona di memoria e almeno un thread che scrive dei dati nella stessa zona di memoria, allora è necessario sincronizzare.</p>
