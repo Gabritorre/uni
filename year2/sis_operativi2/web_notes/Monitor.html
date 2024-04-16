@@ -1,0 +1,187 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-16_Monitor</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#monitor">Monitor</a>
+<ul>
+<li><a href="#produttore-e-consumatore-con-i-monitor">Produttore e consumatore con i monitor</a></li>
+<li><a href="#filosofi-a-cena-con-i-monitor">Filosofi a cena con i monitor</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="monitor">Monitor</h1>
+<p>I monitor sono un <strong>costrutto linguistico</strong> (o un meccanismo di sincronizzazione) atto a risolvere due dei principali problemi che si presentano utilizzando i semafori:</p>
+<ol>
+<li>la sincronizzazione è gestita in modo decentralizzato dai singoli thread.</li>
+<li>La gestione di multipli semafori per gestire situazioni non facilmente logiche da sincronizzare, con la possibilità di creare zone critiche all’interno di zone critiche che facilmente possono creare stalli.</li>
+</ol>
+<p>I monitor possono essere ricondotti a degli oggetti (nel mondo della programmazione ad oggetti) che hanno dei dati (i campi) e delle procedure per accederci (i metodi).<br>
+Possiamo anche immaginarli come semafori solamente con la coda, senza il contatore.</p>
+<p>I monitor permettono di centralizzare tutta la sincronizzazione in un unico punto (il monitor) e facilità la mutua esclusione:</p>
+<ol>
+<li>le <strong>procedure</strong> del monitor vengono eseguite in <strong>mutua esclusione</strong></li>
+<li>I monitor forniscono delle variabili speciali chiamate <em>condition</em> sulle quali sono possibili delle operazioni speciali:
+<ul>
+<li><strong>wait</strong>: il thread si mette in attesa e va in coda, il mutex viene rilasciato per permettere agli altri thread di entrare in zona critica</li>
+<li><strong>signal</strong>: riattiva <strong>immediatamente</strong> il primo thread in attesa sulla coda, e il thread attuale va in attesa nella coda</li>
+<li><strong>notify</strong>: notifica il primo thread in attesa che può continuare, quando la CPU gli assegnerà il suo turno potrà proseguire. Intanto l’attuale thread continua la sua normale esecuzione</li>
+</ul>
+</li>
+</ol>
+<p>La sottile differenza tra <strong>signal</strong> e <strong>notify</strong> può essere importante in determinati casi: con <strong>signal</strong> siamo sicuri che il thread in attesa verrà subito eseguito, mentre con la <strong>notify</strong> non possiamo darlo per certo, infatti altri thread potrebbero rubargli il posto possibilmente intaccando la correttezza del programma senza i giusti controlli.</p>
+<p>La <strong>notify</strong> è quindi meno restrittiva in quanto lascia lo il compito allo scheduler di sbloccare i thread, mentre la <strong>signal</strong> forza un cambio di thread allo scheduler.</p>
+<h2 id="produttore-e-consumatore-con-i-monitor">Produttore e consumatore con i monitor</h2>
+<p>Definiamo una pseudo-classe Monitor come segue</p>
+<pre class=" language-c"><code class="prism  language-c">Monitor mon <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> buffer<span class="token punctuation">[</span>MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	
+	<span class="token keyword">int</span> counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>	<span class="token comment">//conta il numero di celle piene, da consumare</span>
+	<span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+	condition piene<span class="token punctuation">;</span>
+	condition vuote<span class="token punctuation">;</span>
+
+	<span class="token keyword">void</span> <span class="token function">produce</span> <span class="token punctuation">(</span><span class="token keyword">int</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>counter <span class="token operator">==</span> MAX<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">// se non ci sono celle libere in cui scrivere</span>
+			vuote<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		buffer<span class="token punctuation">[</span>write_index<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+		write_index <span class="token operator">=</span> <span class="token punctuation">(</span>write_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX<span class="token punctuation">;</span>
+		counter<span class="token operator">++</span><span class="token punctuation">;</span>
+		piene<span class="token punctuation">.</span><span class="token function">signal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">int</span> <span class="token function">consuma</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>couter <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">// se non ci sono celle da leggere</span>
+			piene<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>read_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		read_index <span class="token operator">=</span> <span class="token punctuation">(</span>read_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX<span class="token punctuation">;</span>
+		counter<span class="token operator">--</span><span class="token punctuation">;</span>
+		vuote<span class="token punctuation">.</span><span class="token function">signal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> d<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Usiamo il monitor appena creato nel codice del Produttore e Consumatore:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">Produttore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">/* produce un elemento d */</span>
+    mon<span class="token punctuation">.</span><span class="token function">produce</span><span class="token punctuation">(</span>d<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token function">Consumatore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    d <span class="token operator">=</span> mon<span class="token punctuation">.</span><span class="token function">consuma</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">/* consuma d */</span>
+ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="signal-vs-notify">Signal vs notify</h3>
+<p>È importante l’uso della <code>signal()</code> e non della <code>notify()</code> in quanto:<br>
+immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da consumare.<br>
+Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>signal</code>, questo fa si che il consumatore che era nella <code>wait</code> riparta immediatamente (correttamente, infatti il counter adesso vale 1, che lui riporterà a 0).</p>
+<p>Se usassimo la <code>notify()</code> potremmo avere il seguente comportamento:<br>
+immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da consumare.<br>
+Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>notify</code>, questo comunica allo scheduler che può avviare il consumatore quando possibile. Se però un altro consumatore entra in esecuzione trova il counter a 1 e quindi esegue tranquillamente portando il counter di nuovo a 0. Ma poi lo scheduler fa ripartire il consumatore che era bloccato, ma adesso non c’è più un dato da leggere! (il counter è a 0 e lui lo porterà erroneamente a -1)</p>
+<h3 id="versione-corretta-con-notify">Versione corretta con notify</h3>
+<p>Una corretta implementazione con la <code>notify</code> richiede le seguenti modifiche</p>
+<pre class=" language-c"><code class="prism  language-c">Monitor mon <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> buffer<span class="token punctuation">[</span>MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	
+	<span class="token keyword">int</span> counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+	condition piene<span class="token punctuation">;</span>
+	condition vuote<span class="token punctuation">;</span>
+
+	<span class="token keyword">void</span> <span class="token function">produce</span> <span class="token punctuation">(</span><span class="token keyword">int</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">while</span> <span class="token punctuation">(</span>counter <span class="token operator">==</span> MAX<span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//MODIFICA</span>
+			vuote<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		buffer<span class="token punctuation">[</span>write_index<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
+		write_index <span class="token operator">=</span> <span class="token punctuation">(</span>write_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX<span class="token punctuation">;</span>
+		counter<span class="token operator">++</span><span class="token punctuation">;</span>
+		piene<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>					<span class="token comment">//MODIFICA</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">int</span> <span class="token function">consuma</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">while</span> <span class="token punctuation">(</span>couter <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>			<span class="token comment">// MODIFICA</span>
+			piene<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>read_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
+		read_index <span class="token operator">=</span> <span class="token punctuation">(</span>read_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX<span class="token punctuation">;</span>
+		counter<span class="token operator">--</span><span class="token punctuation">;</span>
+		vuote<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>					<span class="token comment">//MODIFICA</span>
+		<span class="token keyword">return</span> d<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Fare il controllo in un ciclo <code>while</code> permette di accertarsi che il counter sia effettivamente come richiesto prima di riprendere l’esecuzione.<br>
+Nota che non si tratta di <em>busy waiting</em> in quanto la <code>wait</code> sospende il thread.</p>
+<h2 id="filosofi-a-cena-con-i-monitor">Filosofi a cena con i monitor</h2>
+<p>Vediamo come implementare i filosofi a cena con la soluzione della <strong>raccolta atomica di entrambe le bacchette</strong>, questa soluzione non era facile con i semafori in quanto dovremmo rilasciare il mutex nel caso una delle bacchette non fosse disponibile.<br>
+Con i monitor risolviamo questo problema:</p>
+<pre class=" language-c"><code class="prism  language-c">Monitor tavola <span class="token punctuation">{</span>
+  boolean bacchetta<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// presenza bacchette</span>
+  condition filosofo<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// code di attesa per i filosofi</span>
+
+  <span class="token keyword">void</span> <span class="token function">raccogli</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">!</span>bacchetta<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">||</span> <span class="token operator">!</span>bacchetta<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      filosofo<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende se una delle bacchette non è disponibile</span>
+	<span class="token punctuation">}</span>
+    <span class="token comment">// raccoglie le bacchette in modo atomico</span>
+    bacchetta<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> false<span class="token punctuation">;</span>
+    bacchetta<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> false<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">deposita</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// deposita le bacchette</span>
+    bacchetta<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> true<span class="token punctuation">;</span>
+    bacchetta<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> true<span class="token punctuation">;</span>
+
+    <span class="token comment">// notifica il filosofo a sx e quello a dx</span>
+    filosofo<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    filosofo<span class="token punctuation">[</span><span class="token punctuation">(</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">%</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Utilizzo del monitor</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">Filosofo</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">&lt;</span> pensa <span class="token operator">&gt;</span>
+
+    tavola<span class="token punctuation">.</span><span class="token function">raccogli</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">&lt;</span> mangia <span class="token operator">&gt;</span>
+    
+    tavola<span class="token punctuation">.</span><span class="token function">deposita</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso l’uso di <code>signal</code> o <code>notify</code> non cambia in quanto il ciclo <code>while</code> è sempre necessario metterlo.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
