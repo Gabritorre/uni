@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#produttore-e-consumatore-con-i-monitor">Produttore e consumatore con i monitor</a></li>
 <li><a href="#filosofi-a-cena-con-i-monitor">Filosofi a cena con i monitor</a></li>
+<li><a href="#lettori-e-scrittori-notifyall">Lettori e scrittori, notifyAll</a></li>
 </ul>
 </li>
 </ul>
@@ -178,7 +179,108 @@ Con i monitor risolviamo questo problema:</p>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>In questo caso l’uso di <code>signal</code> o <code>notify</code> non cambia in quanto il ciclo <code>while</code> è sempre necessario metterlo.</p>
+<p>Vediamo come implementare i filosofi a cena con la soluzione di <strong>limitare a 4 i filosofi che possono mangiare contemporaneamente</strong>.<br>
+Dobbiamo simulare un semaforo inizializzato a 4.</p>
+<p>Aggiorniamo il Monitor con 2 procedure: <code>siediti</code> e <code>alzati</code></p>
+<pre class=" language-c"><code class="prism  language-c">Monitor tavola <span class="token punctuation">{</span>
+  boolean bacchetta<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// presenza bacchette</span>
+  condition filosofo<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// code di attesa per i filosofi</span>
+
+  <span class="token keyword">int</span> sedie <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+  condition sedia<span class="token punctuation">;</span>
+
+  <span class="token keyword">void</span> <span class="token function">siediti</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	  <span class="token keyword">while</span><span class="token punctuation">(</span>sedie <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//se non ci sono sedia disponibili ne attende una</span>
+		  sedia<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token punctuation">}</span>
+	  sedie<span class="token operator">--</span><span class="token punctuation">;</span>	<span class="token comment">//occupa una sedia</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">alzati</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	  sedie<span class="token operator">++</span><span class="token punctuation">;</span>	<span class="token comment">//libera la sedia</span>
+	  sedia<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//notifica il primo filosofo in attesa della sedia</span>
+  <span class="token punctuation">}</span>
+  
+	
+	
+  <span class="token keyword">void</span> <span class="token function">raccogli</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">deposita</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Questi due metodi che abbiamo aggiunto simulano il comportamento della <code>sem_post()</code> e <code>sem_wait()</code> dei semafori.</p>
+<h2 id="lettori-e-scrittori-notifyall">Lettori e scrittori, <code>notifyAll</code></h2>
+<p>Possiamo schematizzare il comportamento di lettori e scrittori nel seguente modo</p>
+<pre class=" language-c"><code class="prism  language-c">Lettore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    rw<span class="token punctuation">.</span><span class="token function">ini_leggi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">&lt;</span> legge i dati <span class="token operator">&gt;</span>
+
+    rw<span class="token punctuation">.</span><span class="token function">end_leggi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+Scrittore <span class="token punctuation">{</span>
+  <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    rw<span class="token punctuation">.</span><span class="token function">ini_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token operator">&lt;</span> modifica i dati <span class="token operator">&gt;</span>
+
+    rw<span class="token punctuation">.</span><span class="token function">end_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Lo scopo è sempre quello di garantire l’accesso o a più lettori o ad un solo scrittore.</p>
+<p>Le informazioni di cui abbiamo bisogno sono:</p>
+<ul>
+<li>Il numero di lettori all’interno della sezione critica</li>
+<li>Se uno scrittore è all’interno della zona critica</li>
+</ul>
+<pre class=" language-c"><code class="prism  language-c">Monitor rw <span class="token punctuation">{</span>
+  <span class="token keyword">int</span> n_lettori <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// n. lettori in sezione critica</span>
+  boolean scrittore <span class="token operator">=</span> false<span class="token punctuation">;</span> <span class="token comment">// scrittore in sezione critica</span>
+  condition c<span class="token punctuation">;</span> <span class="token comment">// coda di attesa</span>
+
+  <span class="token keyword">void</span> <span class="token function">ini_leggi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>scrittore<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      c<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende se c'è uno scrittore</span>
+    <span class="token punctuation">}</span>
+    n_lettori<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token comment">// il lettore entra</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">end_leggi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    n_lettori<span class="token operator">--</span><span class="token punctuation">;</span> <span class="token comment">// il lettore esce</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>n_lettori <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      c<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// l'ultimo lettore sblocca eventuali scrittori in attesa</span>
+	<span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">ini_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">while</span><span class="token punctuation">(</span>scrittore <span class="token operator">||</span> n_lettori <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      c<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende se c'è uno scrittore o qualche lettore</span>
+    <span class="token punctuation">}</span>
+    scrittore <span class="token operator">=</span> true<span class="token punctuation">;</span> <span class="token comment">// lo scrittore entra</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">end_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    scrittore <span class="token operator">=</span> false<span class="token punctuation">;</span> <span class="token comment">// lo scrittore esce</span>
+    c<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// lo scrittore sblocca tutti i thread in attesa</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in <code>end_scrivi</code> abbiamo per la prima volta una <code>notifyAll()</code>, questa funzione permette di sbloccare tutti i thread che sono in una <code>wait</code>.<br>
+In questo contesto specifico viene fatto perchè se il primo ad entrare è un altro scrittore allora non ci sarebbero problemi: infatti tutti i lettori si riboccherebbero.<br>
+Se invece entra un lettore allora anche i successivi lettori possono entrare. Se in quest’ultima situazione avessimo semplicemente usato <code>notify</code> il primo lettore potrebbe entrare ma gli altri sono ancora bloccati dalla <code>wait</code>, c’è quindi il bisogno di sbloccare indistintamente tutti.</p>
+<p>Sarà lo <em>scheduler</em> a decidere il prossimo thread da far eseguire.</p>
 
     </div>
   </div>
