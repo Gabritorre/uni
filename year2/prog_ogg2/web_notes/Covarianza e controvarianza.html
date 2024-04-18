@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-18_Covarianza e controvarianza</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#covarianza-e-controvarianza">Covarianza e controvarianza</a></li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="covarianza-e-controvarianza">Covarianza e controvarianza</h1>
+<p>La covarianza e la controvarianza sono due concetti applicabili nell’<em>override</em> dei metodi</p>
+<ul>
+<li><strong>override</strong>: quanto si ridefinisce il corpo di un metodo esistente mantenendone la firma</li>
+<li><strong>overload</strong>: quando si ridefinisce la firma e il corpo di un metodo mantenendo lo stesso nome del metodo da ridefinire</li>
+</ul>
+<p>Ricordiamo che la <strong>firma</strong> di un metodo comprende: nome, tipo e ordine dei parametri.<br>
+È importante sottolineare che il <strong>tipo di ritorno non fa parte della firma</strong>.</p>
+<p>La <strong>covarianza e controvarianza</strong> si applica ai <strong>tipi di ritorno</strong> dei metodi.<br>
+<strong>covariare</strong> significa “variare assieme a qualcosa”<br>
+<strong>controvariare</strong> significa “variare inversamente a qualcosa”</p>
+<ul>
+<li>
+<p>Si parla di <strong>covarianza</strong> quando il tipo di ritorno diventa più specifico assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica</p>
+</li>
+<li>
+<p>Si parla di <strong>controvarianza</strong> quando il tipo di ritorno diventa più generale, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica.</p>
+<p>In java la <strong>covarianza sul tipo di ritorno è ammessa</strong>, mentre la <strong>controvarianza sul tipo di ritorno non è ammessa</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Overload</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
+
+		<span class="token keyword">public</span> A <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token keyword">public</span> Number <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token number">1.9</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
+
+		<span class="token comment">//il tipo di ritorno può covariare con il tipo di this (cioè con la classe in cui è sovrascritto)</span>
+		<span class="token comment">//il tipo di ritorno non può controvariare con il tipo di this. Il compilatore se ne accorge e da un errore di compilazione</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> B <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> Integer <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		
+		A a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//tipo statico A, tipo dinamico B</span>
+		Number n <span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//viene chiamato il metodo di B per il dynamic dispatch</span>
+		<span class="token comment">//il compilatore non da errore perche il tipo di ritorno a runtime è un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se applicassimo la controvarianza dovremmo invertire <code>Integer</code> con <code>Number</code>, ma in quel caso nel main dovremmo mettere il risultato in un <code>Integer</code>, però a <em>runtime</em> ci verrebbe ritornato un <code>Number</code>.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
