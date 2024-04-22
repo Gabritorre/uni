@@ -95,3 +95,51 @@ possiamo sostituire i campi ed ottenere:
 $$d[v] \leq d[u]+ w(u, v)$$
 
 ### Dimostrazione cicli negativi
+
+Dimostriamo che in presenza di un ciclo negativo raggiungibile dalla sorgente viene ritornato `False`.
+
+Supponiamo **per assurdo** che invece venga ritornato `True`.
+Guardando il significato della parte finale dell'algoritmo possiamo dire che il corpo dell'`if` non viene mai eseguito se
+
+$$\forall (u, v) \in E \hspace{10mm} d[v] \leq d[u] + w(u, v)$$
+
+Sia $c = <x_0, x_1, ..., x_q>$ un ciclo negativo raggiungibile dalla sorgente, cioè in cui 
+- $$x_0 = x_q$$
+- $$\sum_{i = 1}^{q}w(x_{i-1}, x_i) < 0$$
+
+Se l'algoritmo (per assurdo) ritornasse `true` allora varrebbe la precedente proprietà anche per i nodi del ciclo
+
+$$\forall i = 1...q \hspace{10mm} d[x_i] \leq d[x_{i-1}] + w(x_{i-1}, x_i)$$
+
+Scrivendo la disequazione come sommatorie, otteniamo
+
+$$\sum_{i=1}^{q} d[x_i] \leq \sum_{i=1}^{q} d[x_{i-1}] + \sum_{i=1}^{q} w(x_{i-1}, x_i)$$
+
+esplicitando le prime due sommatorie notiamo che sono esattamente identiche (ricordando che $x_0 = x_q \to d[x_0] = d[x_q]$)
+
+$\sum_{i=1}^{q} d[x_i] = d[x_1] + d[x_2] + d[x_3] + ... + d[x_{q-1}] + d[x_q]$
+$\sum_{i=1}^{q} d[x_{i-1}] = d[x_0] + d[x_1] + d[x_2] + ... + d[x_{q-1}]$
+
+Quindi possiamo rimuoverle dalla disequazione
+
+$$\cancel{\sum_{i=1}^{q} d[x_i]} \leq \cancel{\sum_{i=1}^{q} d[x_{i-1}]} + \sum_{i=1}^{q} w(x_{i-1}, x_i)$$
+
+otteniamo così l'assurdo:
+
+$$0 \leq \sum_{i=1}^{q} w(x_{i-1}, x_i)$$
+
+ci risulta che la somma dei pesi è positiva ma per ipotesi avevamo assunto che fossimo in un ciclo negativo, cioè con la somma dei pesi minore di $0$
+
+
+## Confronto tra Dijkstra e Bellman-ford
+
+ricordiamo che in caso di:
+- grafo sparso: $m \approx n$
+- grafo denso: $m \approx n^2$
+
+|  | Dijkstra| Bellman-ford|
+|:--:|:--:|:--:|
+| **Grafo sparso** | $n\log(n)$ | $n^2$ | 
+| **Grafo denso** | $n^2$ | $n^3$ |
+
+Dijkstra risulta essere sempre migliore di Bellman-ford, ma il vantaggio di quest'ultimo è il suo funzionamento anche in presenza di pesi negativi.
