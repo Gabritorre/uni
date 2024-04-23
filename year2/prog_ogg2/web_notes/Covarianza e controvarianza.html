@@ -13,7 +13,11 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#covarianza-e-controvarianza">Covarianza e controvarianza</a></li>
+<li><a href="#covarianza-e-controvarianza">Covarianza e controvarianza</a>
+<ul>
+<li><a href="#wildcard">Wildcard</a></li>
+</ul>
+</li>
 </ul>
 
     </div>
@@ -75,6 +79,102 @@
 <p>Se applicassimo la controvarianza dovremmo invertire <code>Integer</code> con <code>Number</code>, ma in quel caso nel main dovremmo mettere il risultato in un <code>Integer</code>, però a <em>runtime</em> ci verrebbe ritornato un <code>Number</code>.</p>
 </li>
 </ul>
+<h2 id="wildcard">Wildcard</h2>
+<p>Le <em>Wildcard</em> rappresentano un tipo generico sconosciuto.</p>
+<ul>
+<li>è possibile utilizzarle nei parametri dei metodi, nei campi, variabili locali ma <strong>non</strong> nella intestazione di interfacce e classi</li>
+</ul>
+<p>spesso è possibile utilizzare i generics e le wildcard per fare la stessa cosa, ad esempio vediamo definire la firma di un metodo “swap” con generics e wildcard:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> des<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> des<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>seppur entrambi siano corretti e accettino un qualsiasi oggetto come tipo, il secondo sarebbe migliore in quanto al momento della chiamata non dobbiamo preoccuparci impostare il <em>type parameter</em>.</p>
+<p>In generale vale che dato che se il tipo generico (in questo caso <code>E</code>) viene utilizzato solamente una volta nella firma del metodo allora è più comodo usare un <em>wildcard</em></p>
+<p>Mentre i generics li posso limitare al fine che siano <strong>un sottotipo</strong> di qualche oggetto. Le wildcard le posso limitare anche al fine che siano <strong>un supertipo</strong> di qualche oggetto</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token operator">&gt;</span> list1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// upper bound</span>
+List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Integer<span class="token operator">&gt;</span> list2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// lower bound</span>
+</code></pre>
+<ul>
+<li>nel primo caso accetto solo sottotipi di <code>Number</code> (oppure un oggetto <code>Number</code>).<br>
+permette quindi la <strong>covarianza</strong></li>
+<li>Nel secondo caso accesso solo supertipi di <code>Integer</code> (oppure un oggetto <code>Integer</code>)<br>
+permette quindi la <strong>controvarianza</strong></li>
+</ul>
+<h3 id="uso-combinato-con-i-generics">Uso combinato con i generics</h3>
+<p>Un potente utilizzo delle wildcard è quello di utilizzarle insieme ai generics per rilassare o restringere i tipi in base ad un tipo generico.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">sort</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> list<span class="token punctuation">,</span> Comparator<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">&gt;</span> c<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<h3 id="tipo-di-ritorno">Tipo di ritorno</h3>
+<p>Quando si vuole ritornare un tipo generico bisognerebbe usare i generics rispetto alle wildcard: vediamo un esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> <span class="token function">merge</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listOne<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listTwo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//restituisce una lista che concatena le due in input</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Con questa definizione <strong>non</strong> è possibile salvare la lista di ritorno in questo modo:</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbers1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbers2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">20.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//errore di compilazione</span>
+List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbersMerged <span class="token operator">=</span> CollectionUtils<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span>numbers1<span class="token punctuation">,</span> numbers2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>questo perché il tipo di ritorno è sconosciuto al compilatore (sa solo che è un sottotipo di E) anche se in realtà i tipi sono corretti.</p>
+<p>Per sistemare questo problema basta usare il generic come tipo di ritorno</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> List<span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> <span class="token function">merge</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listOne<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listTwo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token comment">//restituisce una lista che concatena le due in input</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="esempio">Esempio</h3>
+<p>Vediamo un esempio in cui si nota la flessibilità delle <em>wildcard</em> rispetto ai <em>generics</em></p>
+<p>Vediamo un metodo <code>copy</code> che prende in input due liste e copia il contenuto della seconda nella prima</p>
+<p>Vediamo prima l’implementazione con solo <em>generics</em></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>questa implementazione è fin troppo restrittiva: le due liste devono avere lo stesso identico tipo,  se volessimo copiare una lista di <code>Integer</code> in una lista di <code>Number</code> non compilerebbe.</p>
+<p>Proviamo ad usare le wildcard senza imporre alcun limite</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso c’è un errore di compilazione nella riga all’interno del <code>for</code>:</p>
+<p><code>src.get()</code> ritorna un riferimento ad un oggetto di tipo sconosciuto, questa cosa è lecita e viene espressa come il riferimento ad un oggetto di tipo <code>Object</code><br>
+D’altra parte <code>dest.set()</code> richiede un oggetto di tipo sconosciuto e non <code>Object</code>. Il tipo sconosciuto può essere qualsiasi tipo (anche <code>Object</code>) ma questo a tempo di compilazione non è conosciuto.</p>
+<p>Stiamo chiaramente utilizzando una firma di funzione troppo libera, proviamo a restringerla in po’</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">T</span><span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo modo voglio che gli elementi in input siano un sottotipo di <code>T</code> e tali elementi li posso inserire in una lista contenente anche tipi più generali di <code>T</code>.</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+List<span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span> input <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+Collections<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>output<span class="token punctuation">,</span> input<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//corretto</span>
+</code></pre>
+<p>In questo caso <code>Object</code> è un supertipo di <code>Long</code></p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>String<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+List<span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span> input <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+Collections<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>output<span class="token punctuation">,</span> input<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// errore</span>
+</code></pre>
+<p>In questo caso <code>String</code> non è un supertipo di <code>Long</code></p>
 
     </div>
   </div>

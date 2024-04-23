@@ -27,6 +27,7 @@
 <li><a href="#dimensione-di-un-oggetto">Dimensione di un oggetto</a></li>
 <li><a href="#statement-vs-expression">Statement vs expression</a></li>
 <li><a href="#final">Final</a></li>
+<li><a href="#type-parameter-e-type-argument">Type parameter e Type argument</a></li>
 </ul>
 </li>
 </ul>
@@ -125,6 +126,24 @@ Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto 
 <li><strong>sulla firma dei metodi</strong>: il metodo non è sovrascrivibile</li>
 </ul>
 <p>Fare attenzione che un oggetto final significa sempre che non può essere riassegnato con un nuovo oggetto, ma è comunque possibile modificare i suoi campi e chiamare i suoi metodi</p>
+<h2 id="type-parameter-e-type-argument">Type parameter e Type argument</h2>
+<p>Nell’ambito dei <em>generics</em>:</p>
+<ul>
+<li>il <em>type parameter</em> rappresenta la <strong>dichiarazione</strong> dei tipi generici che verranno usati dalla classe/metodo, si trovano tra parentesi angolari e appaiono prima dell’utilizzo effettivo dei tipi:<br>
+<code>public class MyClass&lt;T&gt; {}</code><br>
+<code>public static &lt;MyType&gt; void f() {}</code></li>
+<li>il <em>type argument</em> rappresenta l’utilizzo dei tipi generici e anche “l’assegnazione” di quale tipo utilizzare<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyClass</span><span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	T ciao<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="prism  language-java">  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>MyType<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>MyType a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="prism  language-java">MyClass<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> mc<span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
 
     </div>
   </div>

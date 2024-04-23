@@ -112,3 +112,25 @@ il final può essere messo nei seguenti casi:
 - **sulla firma dei metodi**: il metodo non è sovrascrivibile
 
 Fare attenzione che un oggetto final significa sempre che non può essere riassegnato con un nuovo oggetto, ma è comunque possibile modificare i suoi campi e chiamare i suoi metodi
+
+
+## Type parameter e Type argument
+
+Nell'ambito dei *generics*:
+- il *type parameter* rappresenta la **dichiarazione** dei tipi generici che verranno usati dalla classe/metodo, si trovano tra parentesi angolari e appaiono prima dell'utilizzo effettivo dei tipi:
+`public class MyClass<T> {}`
+`public static <MyType> void f() {}`
+- il *type argument* rappresenta l'utilizzo dei tipi generici e anche "l'assegnazione" di quale tipo utilizzare
+	```java
+	public class MyClass<T> {
+		T ciao;
+	}
+  ```
+  ```java
+	public static <MyType> void f(MyType a) {
+		...
+	}
+  ```
+    ```java
+	MyClass<String> mc;
+  ```
