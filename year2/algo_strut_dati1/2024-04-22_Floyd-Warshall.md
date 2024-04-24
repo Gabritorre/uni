@@ -65,14 +65,15 @@ Si tratta solamente di 3 cicli for annidati che eseguono $n$ iterazioni, sono so
 
 $$T(n) = \Theta(n^3)$$
 
-L'algoritmo utilizza la matrice iniziale per crearne una nuova, questo comportamento si ripete $n$ volte (ad ogni iterazione del ciclo for più esterno si lavora su una matrice nuova)
+L'algoritmo utilizza la matrice iniziale per crearne una nuova, poi utilizza quella appena creata per creare la successiva, questo comportamento si ripete $n$ volte (ad ogni iterazione del ciclo for più esterno si lavora su una matrice nuova).
+L'algoritmo produce quindi un totale di $n$ matrici:
 
 $$W = D^{(0)} \to D^{(1)} \to D^{(2)} \to D^{(3)} \to ... \to D^{(n)}$$
 
 
 ## Correttezza
 
-Definiamo
+Definiamo l'insieme
 
 $$\mathscr{D}_{ij}^{(k)}  = \{p \,| p\text{ è un cammino semplice tra i nodi $i$ e $j$ in cui i valori dei vertici intermedi sono $\leq k$} \}$$
 
@@ -95,17 +96,125 @@ $\mathscr{D}_{2, 7}^{(5)} = {<2, 1, 4, 3, 7>, <2, 5, 3, 7>}$
 
 Alla fine dell'algoritmo noi vogliamo ottenere i cammini **minimi** tra le coppie dei nodi,
 
-Definiamo $d_{ij}^{(k)}$ come il peso del cammino **minimo** tra $i$ e $j$ dove i valori dei vertici intermedi hanno valore minore o uguale a $k$, cioè:
+Definiamo l'elemento della matrice $D^{(k)}$, chiamati $d_{ij}^{(k)}$ come il peso del cammino **minimo** tra $i$ e $j$ dove i valori dei vertici intermedi hanno valore minore o uguale a $k$, cioè:
 
-$$\large d_{ij}^{(k)} = \underset{p \in \mathscr{D_{ij}^{(k)}}}{\min} w(p)$$
+$$\large d_{ij}^{(k)} = \underset{p \in \mathscr{D}_{ij}^{(k)}}{\min} w(p)$$
 
-alla fine dell'algoritmo $k = n$, e abbiamo visto che $\mathscr{D}_{}ij^{(n)}$ contiene i cammini semplici da $i$ a $j$ (senza più limitazioni sui nodi intermedi)
+Alla fine dell'algoritmo $k = n$, e abbiamo visto che $\mathscr{D}_{}ij^{(n)}$ contiene i cammini semplici da $i$ a $j$ (senza più limitazioni sui nodi intermedi), quindi gli elementi della matrice finale $D^{(n)}$ sono
 
-$$\large d_{ij}^{(n)} = \underset{p \in \mathscr{D_{ij}^{(n)}}}{\min} w(p)$$
+$$\large d_{ij}^{(n)} = \underset{p \in \mathscr{D}_{ij}^{(n)}}{\min} w(p)$$
 
-ma considerare il minimo tra i pesi dei cammini semplici da $i$ a $j$ corrisponde alla distanza reale tra i due nodi (cioè ad un cammino minimo)
+Ma considerare il minimo tra i pesi dei cammini semplici da $i$ a $j$ corrisponde alla distanza reale tra i due nodi (cioè ad un cammino minimo)
 
 
 $$\large d_{ij}^{(n)} = \underset{p \in \mathscr{D_{ij}^{(n)}}}{\min} w(p) = \delta(i, j)$$
 
 $$\large d_{ij}^{(n)} = \delta(i, j)$$
+
+### Correttezza della formula per creare la matrice
+
+Dimostriamo la correttezza della formula
+
+$$d_{i j}^{(k)}=\min \left\{d_{i j}^{(k-1)}, d_{i k}^{(k-1)}+d_{k j}^{(k-1)}\right\}$$
+
+Partiamo definendo un concetto basilare:
+Se abbiamo un insieme $X$ diviso in due partizioni: $X_1, X_2$
+Se vogliamo determinare il valore minimo presente in $X$ possiamo farlo nel seguente modo
+
+$$\min\{\min X_1, \min X_2\}$$
+
+quindi facendo il minimo tra i minimi delle due partizioni.
+
+trasportando questo esempio nel nostro problema immaginiamo che dati due nodi $i$ e $j$ e l'insieme dei cammini **semplici** che li collegano $\mathscr{D}_{ij}^{(k)}$, dividiamo questo insiemi in due partizioni:
+- i cammini passanti per il nodo $k$, che indichiamo con $\bar{\mathscr{D}}_{ij}^{(k)}$
+- i cammini non passanti per il nodo $k$, che possiamo chiamare $\mathscr{D}_{ij}^{(k-1)}$, questo perché se stiamo dicendo che i cammini hanno nodi interni con valori minori o uguali a $k$ ma non passano per $k$ allora saranno minori o uguali a $k-1$
+
+![enter image description here](https://i.ibb.co/vkHPZkM/image.png)
+
+Vogliamo raggiungere questa formula
+
+$$d_{i j}^{(k)}=\min \left\{d_{i j}^{(k-1)}, d_{i k}^{(k-1)}+d_{k j}^{(k-1)}\right\}$$
+
+Sappiamo che la definizione di $d_{i j}^{(k)}$ è la seguente
+
+$$\large d_{ij}^{(k)} = \underset{p \in \mathscr{D}_{ij}^{(k)}}{\min} w(p) =$$
+
+ma dato che $\mathscr{D}_{ij}^{(k)}$ lo abbiamo partizionato, possiamo riscrivere l'equivalenza come
+
+
+$$\large= \min\left\{\underset{p \in \mathscr{D}_{ij}^{(k-1)}}{\min} w(p), \underset{p \in \bar{\mathscr{D}}_{ij}^{(k)}}{\min} w(p)\right\}$$
+
+Il primo membro sappiamo già essere $d_{ij}^{(k-1)}$
+
+$$\large= \min\left\{d_{ij}^{(k-1)}, \underset{p \in \bar{\mathscr{D}}_{ij}^{(k)}}{\min} w(p)\right\}$$
+
+Il secondo membra rappresenta i cammini semplici passanti per $k$, e proprio perché sono **semplici** sappiamo che all'interno del cammino $k$ può apparire solo una volta.
+Possiamo quindi scomporre ulteriormente questo insieme in due sottoinsiemi:
+- uno che va da $i$ a $k$
+- uno che va da $k$ a $j$
+
+Entrambi avranno quindi nodi interni minori o uguali a $k-1$ per lo stesso ragionamento applicato ai cammini non passanti per $k$
+
+![enter image description here](https://i.ibb.co/yYvM1zD/image.png)
+
+$$\large= \min\left\{d_{ij}^{(k-1)}, \underset{p \in \mathscr{D}_{ik}^{(k-1)}}{\min} w(p) + \underset{p \in \mathscr{D}_{jk}^{(k-1)}}{\min} w(p)\right\}$$
+
+
+Riusciamo quindi a riconoscere i due valori di minimo
+
+- $\large d_{ik}^{(k-1)} = \underset{p \in \mathscr{D}_{ik}^{(k-1)}}{\min} w(p)$
+
+- $\large d_{kj}^{(k-1)} = \underset{p \in \mathscr{D}_{jk}^{(k-1)}}{\min} w(p)$
+
+
+Ci siamo, infine, ricongiunti alla formula che volevamo dimostrare 
+
+$$d_{i j}^{(k)}=\min \left\{d_{i j}^{(k-1)}, d_{i k}^{(k-1)}+d_{k j}^{(k-1)}\right\}$$
+
+## Ottimizzazioni
+
+È possibile limitare l'uso spaziale dell'algoritmo ad una sola matrice anziché $n$ matrici, purché vengano soddisfatte due condizioni:
+
+### Prima condizione
+
+Se non esistono cicli negativi allora per ogni matrice $k$ vale che la diagonale principale è tutta uguale a $0$
+
+$$\forall k = 1, ..., n : d_{ii}^{(k)} = 0 \hspace{5mm} \forall i = 1, ..., n$$
+
+**Dimostrazione per induzione** su $k$
+
+- Caso base: $k = 0$
+	la matrice $D^{(0)}$ è uguale alla matrice passata in input $W$, e quest'ultima per definizione ha la diagonale principale inizializzata a $0$
+- Passo induttivo: $k > 0$
+	assumiamo che la proprietà valga fino a $k-1$, dimostriamo la proprietà per $k$
+	Sappiamo che gli elementi della matrice (tra cui anche la diagonale principale) sono definiti come segue
+	$$d_{ii}^{(k)} = \min \left\{d_{i i}^{(k-1)}, d_{i k}^{(k-1)}+d_{k i}^{(k-1)}\right\}$$
+	
+	per ipotesi induttiva $d_{i i}^{(k-1)} = 0$
+	mentre $d_{i k}^{(k-1)}+d_{k i}^{(k-1)} \geq 0\,\,\,$ se non fosse così significa che il cammino per andare da $i$ a se stesso passando da $k$ avrebbe un peso negativo e quindi ci sarebbe un ciclo negativo.
+
+	il minimo tra $0$ e un valore $\geq 0$ sarà quindi sempre $0$
+
+Nota: Posso quindi determinare la presenza di un ciclo negativo se appare un numero negativo sulla diagonale principale
+
+
+### Seconda condizione
+
+Dati tre vertici $i$, $j$ e $k$ vale che
+
+$$\begin{cases}
+d_{ik}^{(k)} = d_{ik}^{(k-1)} \\
+d_{kj}^{(k)} = d_{kj}^{(k-1)} 
+\end{cases}$$ 
+
+Cioè la riga e la colonna $k$-esima della matrice $D^{(k)}$ rimangono invariate rispetto alla matrice precedente
+
+**Dimostrazione** per definizione di $d_{ik}^{(k)}$ si ha che
+
+$$d_{ik}^{(k)} = \min \left\{d_{i k}^{(k-1)}, d_{i k}^{(k-1)} + d_{k k}^{(k-1)}\right\}$$
+
+Dato che $d_{k k}^{(k-1)} = 0$ perché si trova sulla diagonale allora rimane che 
+
+$$d_{ik}^{(k)} = d_{i k}^{(k-1)}$$
+
+
