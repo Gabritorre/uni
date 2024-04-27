@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-10_Applicazioni web</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#applicazioni-web">Applicazioni web</a>
+<ul>
+<li><a href="#url">URL</a></li>
+<li><a href="#dns">DNS</a></li>
+<li><a href="#http">HTTP</a></li>
+<li><a href="#cookie">Cookie</a></li>
+<li><a href="#https">HTTPS</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="applicazioni-web">Applicazioni web</h1>
+<p>Le applicazioni web sono i principali sistemi che fanno uso di basi di dati.</p>
+<p>Una applicazione web si divide in 3 sezioni:</p>
+<ul>
+<li>Front-end:
+<ul>
+<li>HTML (<em>HyperText Markup Language</em>) usato per definire la struttura della pagina web tramite una struttura ad albero. Il linguaggio si basa su <strong>tag</strong> e <strong>attributi</strong></li>
+<li>CSS (<em>Cascading Style Sheets</em>) linugaggio per aggiungere stile alle pagine HTML, è basato su un mapping tra elementi HTMl e regole di stile. Fa un forte utilizzo di ereditarietà</li>
+</ul>
+</li>
+<li>Logica: Flask, PHP</li>
+<li>back-end: MySQL, Postgres</li>
+</ul>
+<p>la parte di front-end è compiuta dal <strong>client</strong>, mentre la logica e il back-end sono compiute dal <strong>server</strong></p>
+<h2 id="url">URL</h2>
+<p>Una risorsa WEB è identifica da un URL (<em>Uniform Resource Locator</em>) la cui forma è simile a</p>
+<pre><code>schema://hostname[:port]/path[?query][#fragment]
+</code></pre>
+<ul>
+<li><code>schema</code>: è il protocollo http/https</li>
+<li><code>hostname</code>: indica il server che ospita la risorsa</li>
+<li><code>port</code>: è un numero che identifica il servizio che il server utilizza</li>
+<li><code>path</code>: indica il percorso in cui trovare la risorsa all’interno del server</li>
+<li><code>query</code>: utilizzata per passare dei dati al server assieme alla richiesta della risorsa</li>
+<li><code>fragment</code>: indica una parte specifica della pagina HTML</li>
+</ul>
+<h2 id="dns">DNS</h2>
+<p>DNS (<em>Domain Name System</em>) è un protocollo utilizzato per tradurre i nomi di dominio testuali in indirizzi ip.</p>
+<h2 id="http">HTTP</h2>
+<p>Il protocollo HTTP (<em>HyperText Transfer Protocol</em>) è quel protocollo che permette di far comunicare client e server, tramite un sistema di <strong>richiesta e risposta</strong>. La sua versione sicura è chiamata HTTPS (<em>HTTP Secure</em>).</p>
+<p>Le <strong>richieste HTTP</strong> sono struttura come segue:</p>
+<ul>
+<li><code>request line</code> che include un <strong>metodo</strong>, una <strong>risorsa</strong> e la versione del protocollo</li>
+<li>una lista di <code>request header</code></li>
+<li>un linea vuota che fa da separatore</li>
+<li>il corpo della richiesta</li>
+</ul>
+<p>I <strong>metodi HTTP</strong> sono i seguenti</p>
+<ul>
+<li><code>GET</code>: per leggere informazioni dal server</li>
+<li><code>HEAD</code>: come <code>GET</code> ma chiede solo gli <em>header</em> della risposta</li>
+<li><code>POST</code>: per inviare informazioni al server</li>
+<li><code>PUT</code>: per caricare file sul server</li>
+<li><code>DELETE</code>: per rimuovere file dal server</li>
+<li><code>OPTIONS</code>: richiede la lista dei metodi supportati</li>
+</ul>
+<p>Le <strong>risposte HTTP</strong> sono strutturate come segue:</p>
+<ul>
+<li>linea di stato, che include uno <em>status code</em> e un messaggio</li>
+<li>una lista di <em>response headers</em></li>
+<li>una linea vuota che fa da separatore</li>
+<li>il corpo della risposta</li>
+</ul>
+<p>Gli <em><strong>status code</strong></em> sono i seguenti:</p>
+
+<table>
+<thead>
+<tr>
+<th>range di codici</th>
+<th>categoria</th>
+<th>esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200-299</td>
+<td>successo</td>
+<td>200 OK</td>
+</tr>
+<tr>
+<td>300-399</td>
+<td>reindirizzamento</td>
+<td>301 Moved permanently</td>
+</tr>
+<tr>
+<td>400-499</td>
+<td>client error</td>
+<td>404 Not found</td>
+</tr>
+<tr>
+<td>500-599</td>
+<td>server error</td>
+<td>503 Service unavailable</td>
+</tr>
+</tbody>
+</table><h2 id="cookie">Cookie</h2>
+<p>HTTP è un protocollo senza <strong>stato</strong>, cioè due richieste HTTP inviate dallo stesso client risultano sempre scorrelate tra loro.</p>
+<p>In HTTP la gestione dello stato viene delegata ai <strong>cookie</strong> cioè un insieme di dati sotto forma di <strong>chiave-valore</strong>.<br>
+I cookie vengono generati dal server e vengono salvati nel client.<br>
+Il client ad ogni richiesta che farà al server si occuperà di allegare anche i cookie.</p>
+<p>I cookie vengono detti <strong>opachi</strong>, cioè il server può salvare ciò che vuole sui cookie, è suo compito interpretare i dati al suo interno in modo corretto</p>
+<h2 id="https">HTTPS</h2>
+<p>La controparte sicura di HTTP è l’HTTPS:</p>
+<ul>
+<li>utilizza TLS (<em>Transport Layer Security</em>)</li>
+<li>assicura la <strong>confidenzialità</strong> e l’<strong>integrità</strong> dei messaggi</li>
+<li>consente l’<strong>autenticazione</strong> del server tramite certificati firmati</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
