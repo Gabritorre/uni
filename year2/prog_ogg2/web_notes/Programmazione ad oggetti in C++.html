@@ -15,6 +15,7 @@
 <ul>
 <li><a href="#programmazione-ad-oggetti-in-c">Programmazione ad oggetti in C++</a>
 <ul>
+<li><a href="#concetto-di-dichiarazione-in-c">Concetto di “dichiarazione” in C++</a></li>
 <li><a href="#costruttori">Costruttori</a></li>
 <li><a href="#passaggio-dei-parametri-valore-e-reference">Passaggio dei parametri, valore e reference</a></li>
 <li><a href="#copy-constructor">Copy constructor</a></li>
@@ -22,6 +23,7 @@
 <li><a href="#const">Const</a></li>
 <li><a href="#virtual">Virtual</a></li>
 <li><a href="#ereditarietà">Ereditarietà</a></li>
+<li><a href="#modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</a></li>
 </ul>
 </li>
 </ul>
@@ -50,6 +52,23 @@
 <li><strong>protected</strong>: visibile solo all’interno della classe e ai propri figli</li>
 <li><strong>private</strong>: visibile solo all’interno della classe</li>
 </ul>
+<h2 id="concetto-di-dichiarazione-in-c">Concetto di “dichiarazione” in C++</h2>
+<p>In C++ non esiste un vero e proprio concetto di dichiarazione di variabili come avviene in C:</p>
+<ul>
+<li>in C si può parlare di dichiarazione perché quello che accade è che una zona di memoria viene riservata e gli viene dato un nome</li>
+<li>in C++ ogni volta che si crea una variabile la si “costruisce” tramite il proprio costruttore di default (questo vale anche per i tipi primitivi), quindi oltre a riservare la zona di memoria tale zona viene anche inizializzata ad un valore di default</li>
+</ul>
+<p>Scrivere la seguente cosa in C++</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+</code></pre>
+<p>equivale a chiamare il costruttore di default sulla variabile:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In C++ si chiama <strong>oggetto</strong> una area di memoria dotata di un tipo.</p>
+<p>Quindi nel caso precedente <code>a</code> è un <strong>oggetto di tipo int</strong><br>
+è quindi possibile fare anche</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">var</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//viene chiamato il copy constructor di int</span>
+</code></pre>
 <h2 id="costruttori">Costruttori</h2>
 <p>I costruttori vanno realizzati con le <strong>liste di inizializzazione</strong> quando possibile:</p>
 <pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
@@ -68,11 +87,11 @@
 <p>L’utilizzo delle liste di inizializzazione è consigliato per due motivi principali:</p>
 <ul>
 <li>
-<p><strong>Ottimizzazione</strong>: Nel primo caso quando viene chiamato il costruttore prima vengono create le variabile inizializzate con il loro valore di default e successivamente gli vengono assegnati i valori da noi decisi.<br>
-Nel secondo caso invece le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi.</p>
+<p><strong>Ottimizzazione</strong>: Nel primo caso quando viene chiamato il costruttore prima vengono create le variabile inizializzate con il loro valore di default (tramite il <em>default constructor</em>) e successivamente gli vengono assegnati i valori da noi decisi.<br>
+Nel secondo caso invece le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi (utilizzando il <em>copy constructor</em> della variabile).</p>
 </li>
 <li>
-<p><strong>Inizializzazione di costanti</strong>: se nel codice di prima al posto di  <code>int a</code>  fosse stato  <code>const int a</code>  in quel caso solo il secondo metodo funzionerebbe.</p>
+<p><strong>Inizializzazione di costanti</strong>: se nel codice di prima al posto di  <code>int a</code>  fosse stato  <code>const int a</code>  in quel caso solo il secondo metodo funzionerebbe, in quanto una assegnazione successiva all’inizializzazione tramite il <em>default constructor</em> non sarebbe permessa.</p>
 </li>
 </ul>
 <h2 id="passaggio-dei-parametri-valore-e-reference">Passaggio dei parametri, valore e reference</h2>
@@ -124,6 +143,26 @@ la reference è necessaria perché altrimenti si genererebbe una ricorsione infi
 <p>Una buona regola quando si dichiarano le funzioni è di partire sempre da metodi <code>const variabile&amp;</code> questo perché è l’approccio più restrittivo.<br>
 Nel caso si avesse bisogno di modificare la variabile allora si toglie il <code>const</code>.<br>
 Qual ora si volesse una copia e non la variabile originale si toglie la <code>&amp;</code>.</p>
+<p>il <code>const</code> si può anche mettere alla fine della firma di un metodo, e sta ad indicare che all’interno di quel metodo non si modificano i campi della classe.</p>
+<p>Questo ci porta a definire <strong>due tipi di getter</strong> in C++, uno passato in sola lettura e uno anche in scrittura</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>		<span class="token comment">//constructor</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//copy constructor</span>
+	
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>		<span class="token comment">//getter che restituisce il campo in sola lettura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>					<span class="token comment">//getter che restituisce il campo anche in scrittura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il const alla fine della firma permette di separare le due firme e quindi di fare un <strong>overload</strong></p>
 <h2 id="virtual">Virtual</h2>
 <p>I metodi che si vuole permettere di far sovrascrivere ai propri figli si devono marcare come <code>virtual</code></p>
 <pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
@@ -134,9 +173,12 @@ Qual ora si volesse una copia e non la variabile originale si toglie la <code>&a
 	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>
 	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 	
-	<span class="token keyword">int</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		animal<span class="token operator">*</span> a <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-		<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>weight<span class="token punctuation">;</span>
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>		<span class="token comment">//getter che restituisce il campo in sola lettura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>					<span class="token comment">//getter che restituisce il campo anche in scrittura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 	
 	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo overridabile dai figli</span>
@@ -156,6 +198,84 @@ Qual ora si volesse una copia e non la variabile originale si toglie la <code>&a
 <li>se <strong>protected</strong> significa che solo i miei figli sono al corrente che sono figlio di quella classe e quindi solo loro possono sostituirmi al posto di mio padre</li>
 <li>se <strong>private</strong> significa che nessuno può sostituirmi al posto di mio padre</li>
 </ul>
+<p>La classe figlio ha un puntatore al padre come campo privato.</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">dog</span> <span class="token operator">:</span> <span class="token keyword">public</span> animal <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		<span class="token keyword">bool</span> has_pedigree<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">dog</span><span class="token punctuation">(</span><span class="token keyword">int</span> w<span class="token punctuation">,</span> <span class="token keyword">double</span> sp<span class="token punctuation">,</span> <span class="token keyword">bool</span> ped<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">animal</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> sp<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">has_pedigree</span><span class="token punctuation">(</span>ped<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		<span class="token comment">//in c++11 si può mettere "override" alla fine della firma per specificare che si tratta di override</span>
+		<span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> override <span class="token punctuation">{</span>
+			<span class="token comment">// weight += a.weight / 2;			//il weight di a non è accessibile perche è esterno e non è quello ereditato</span>
+			weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>		<span class="token comment">//modifica diretta</span>
+			<span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>	<span class="token comment">//modifica tramite il getter in scrittura</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Nota: diversamente da Java, se ricevi come parametro un oggetto dello stesso tipo della classe in cui stai lavorando non è comunque possibile accedere ai suoi campi privati, vanno usati i getter.</p>
+<p>Se si vuole permettere ai propri figli di sovrascrivere un metodo già sovrascritto va aggiunto ancora il <code>virtual</code></p>
+<h2 id="modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</h2>
+<p>Vediamo 3 modi per istanziare un oggetto</p>
+<ol>
+<li>tramite la keyword <code>new</code>, che ritorna un puntatore al nuovo oggetto che è stato creato nell’heap</li>
+<li>istanziamento direttamente nello stack</li>
+<li>instanziamento tramite <em>reference</em> di un altro oggetto</li>
+</ol>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span>weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">dog</span> <span class="token operator">:</span> <span class="token keyword">public</span> animal <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		<span class="token keyword">bool</span> has_pedigree<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">dog</span><span class="token punctuation">(</span><span class="token keyword">int</span> w<span class="token punctuation">,</span> <span class="token keyword">double</span> sp<span class="token punctuation">,</span> <span class="token keyword">bool</span> ped<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">animal</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> sp<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">has_pedigree</span><span class="token punctuation">(</span>ped<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		<span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> override <span class="token punctuation">{</span>
+			weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	animal<span class="token operator">*</span> a1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">animal</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//istanziamento nell'heap</span>
+	animal <span class="token function">a2</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>					<span class="token comment">//istanziamento nello stack</span>
+
+	animal <span class="token function">a3</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span>						<span class="token comment">//copy constructor</span>
+	animal a4<span class="token punctuation">;</span>						<span class="token comment">//default constructor</span>
+
+	dog <span class="token function">fido</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">45.2</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	animal <span class="token function">a5</span><span class="token punctuation">(</span>fido<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	a5<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//no dynamic dispatch</span>
+
+	animal<span class="token operator">&amp;</span> a6 <span class="token operator">=</span> fido<span class="token punctuation">;</span>					<span class="token comment">//instanziamento tramite reference</span>
+	a6<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//si dynamic dispatch</span>
+
+	animal<span class="token operator">*</span> a7 <span class="token operator">=</span> <span class="token operator">&amp;</span>fido<span class="token punctuation">;</span>
+	a7<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//si dynamic dispatch</span>
+	
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nota che il dynamic dispatch si ha solo con puntatori e reference, questo perche con l’istanziazione di <code>a5</code> vengono copiati i valori dei campi ma il suo tipo rimane sempre un animal, anche a <em>runtime</em>.</p>
+<p>Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona</p>
 
     </div>
   </div>
