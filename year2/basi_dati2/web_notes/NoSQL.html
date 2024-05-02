@@ -1,0 +1,93 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-04-22_NoSQL</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#nosql">NoSQL</a>
+<ul>
+<li><a href="#base-vs-acid">BaSE vs ACID</a></li>
+<li><a href="#approcci-nosql">Approcci NoSQL</a></li>
+<li><a href="#orientato-al-documento">Orientato al documento</a></li>
+<li><a href="#a-grafo">A grafo</a></li>
+<li><a href="#chiave-valore">Chiave-valore</a></li>
+<li><a href="#colonnare">Colonnare</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="nosql">NoSQL</h1>
+<p>Il NoSQL è un approccio che cerca una alternativa all’immaginamento dei dati in un modello relazionale (<strong>RDBMS</strong>, <em>Relational DataBase Management System</em>)</p>
+<p>NoSQL che sta per <em>Not only SQL</em> è usato per gestire degli archivi di dati che non richiedono uno schema fisso (<em>schemeless</em>), evitano spesso le operazioni di giunzione (<em>join</em>) e puntano a <strong>scalare</strong> in modo orizzontale.</p>
+<ul>
+<li>
+<p>Schemaless:<br>
+in grado di memorizzare informazioni eterogenee (non aventi la stessa struttura/formato) all’interno della stessa entità</p>
+</li>
+<li>
+<p>Scalare in modo orizzontale:<br>
+Quando aggiungi memoria ai database SQL, puoi eseguirne la scalabilità solo verticalmente, il che significa che la capacità di aggiungere più memoria è limitata all’hardware disponibile.<br>
+In NoSQL se un singolo server di database non è sufficiente per archiviare tutti i tuoi dati o gestire tutte le query, il carico di lavoro può essere suddiviso su due o più server (anche remoti).<br>
+In caso di distribuzione di server remoti si parla di <strong>DDBMS</strong> ( <em>Distributed DBMS</em>) è il suo utilizzo comporta si un miglioramento delle <strong>prestazioni</strong> all’aumento degli utenti, sia una migliore <strong>tolleranza ai guasti</strong></p>
+</li>
+</ul>
+<h2 id="base-vs-acid">BaSE vs ACID</h2>
+<p>I database relazionali seguono le proprietà ACID:</p>
+<ul>
+<li><strong>Atomicity</strong>: richiede che una transazione venga eseguita completamente o non venga eseguita affatto.</li>
+<li><strong>Consistency</strong>: richiede che, una volta confermata una transazione, i dati devono essere conformi allo schema del database.</li>
+<li><strong>Isolation</strong>: richiede che le transazioni simultanee siano eseguite separatamente l’una dall’altra.</li>
+<li><strong>Durability</strong>: richiede la capacità di ripristinare i dati all’ultimo stato conosciuto in seguito a un guasto del sistema o a un’interruzione dell’alimentazione imprevisti.</li>
+</ul>
+<p>Mentre i database non relazionali seguono le proprietà BaSE:</p>
+<ul>
+<li><strong>Basically Available</strong>: (disponibilità nella maggior parte dei casi) indica l’accessibilità simultanea del database da parte degli utenti in ogni momento.</li>
+<li><strong>Soft state</strong>: (stato instabile) rimanda all’idea che i dati possono avere stati transitori o temporanei che possono cambiare nel tempo, anche in assenza di trigger o input esterni</li>
+<li><strong>Eventually consistent</strong>: (coerenza finale) significa che il record raggiungerà la coerenza quando tutti gli aggiornamenti simultanei saranno completati.</li>
+</ul>
+<h2 id="approcci-nosql">Approcci NoSQL</h2>
+<p>Esistono 4 approcci principali per implementare un archivio di dati non relazionale:</p>
+<ul>
+<li><strong>Orientato al documento</strong> (esempio di DBMS: MongoDB)</li>
+<li><strong>A grafo</strong> (esempio di DBMS: Neo4j)</li>
+<li><strong>Chiave-Valore</strong> (esempio di DBMS: redis)</li>
+<li><strong>Colonnare</strong> (esempio di DBMS: Cassandra)</li>
+</ul>
+<h2 id="orientato-al-documento">Orientato al documento</h2>
+<p>ma ogni record è memorizzato come un documento che possiede determinate caratteristiche, qualsiasi numero di campi con qualsiasi lunghezza può essere aggiunto al documento.<br>
+Spesso i documenti sono dei file JSON oppure XML.</p>
+<p>Funziona correttamente con cataloghi, profili utente e sistemi di gestione del contenuto in cui ogni documento è unico e si evolve nel tempo.</p>
+<h2 id="a-grafo">A grafo</h2>
+<p>Una base di dati a grafo usa nodi e archi per rappresentare e archiviare l’informazione.<br>
+Sono spesso più veloci di quelli relazionali nell’associazione di set di dati, scalano più facilmente a grandi quantità di dati e non richiedono le tipiche e onerose operazioni di unione (le join).</p>
+<p>Essi usano i <strong>nodi</strong> per archiviare le entità (Qualsiasi oggetto, luogo o persona) e gli <strong>archi</strong> per archiviare le relazioni tra le entità.</p>
+<p>Casi d’uso tipici per i database a grafo includono social network, motori di raccomandazione, rilevamento delle frodi e grafici di conoscenze.</p>
+<h2 id="chiave-valore">Chiave-valore</h2>
+<p>Un database chiave-valore immagazzina i dati come un insieme di coppie di chiave-valore dove una chiave rappresenta un identificatore univoco, mentre il valore è solitamente un array di dati.<br>
+Le chiavi e i valori possono essere qualsiasi cosa, da un oggetto semplice ad articolati oggetti composti.<br>
+Particolarmente utilizzato per la memorizzazione nella cache e l’archiviazione delle informazioni sulla sessione utente.</p>
+<p>Il modello di dati chiave-valore è particolarmente adatto per casi d’uso quali i videogiochi, le tecnologie pubblicitarie e l’IoT.</p>
+<h2 id="colonnare">Colonnare</h2>
+<p>Questi database memorizzano le informazioni in colonne, consentendo agli utenti di accedere solo alle specifiche colonne di cui hanno bisogno senza allocare memoria aggiuntiva per dati irrilevanti.<br>
+Si utilizzano tabelle, colonne e righe, ma diversamente dai database relazionali, il nome e il formato delle colonne può variare da riga in riga all’interno della stessa tabella.<br>
+Nell’approccio più estremo di questo tipo di DB ogni colonna andrebbe salvata separatamente su disco, tuttavia esiste il concetto di <strong>famiglia di colonne</strong> in cui più colonne vengono salvate insieme</p>
+<p>È stato utilizzato in diversi casi di utilizzo, come ad esempio per siti web di social network e analytics dei dati in tempo reale.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
