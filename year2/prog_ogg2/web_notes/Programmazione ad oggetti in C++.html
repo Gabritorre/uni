@@ -18,12 +18,14 @@
 <li><a href="#concetto-di-dichiarazione-in-c">Concetto di “dichiarazione” in C++</a></li>
 <li><a href="#costruttori">Costruttori</a></li>
 <li><a href="#passaggio-dei-parametri-valore-e-reference">Passaggio dei parametri, valore e reference</a></li>
+<li><a href="#costruttori-di-conversione-e-explicit">Costruttori di conversione e “explicit”</a></li>
 <li><a href="#copy-constructor">Copy constructor</a></li>
 <li><a href="#this">This</a></li>
 <li><a href="#const">Const</a></li>
 <li><a href="#virtual">Virtual</a></li>
 <li><a href="#ereditarietà">Ereditarietà</a></li>
 <li><a href="#modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</a></li>
+<li><a href="#template">Template</a></li>
 </ul>
 </li>
 </ul>
@@ -107,6 +109,58 @@ Nel secondo caso invece le variabili vengono dichiarate e inizializzate direttam
 </code></pre>
 </li>
 </ul>
+<h2 id="costruttori-di-conversione-e-explicit">Costruttori di conversione e “explicit”</h2>
+<p>Un costruttore con un singolo parametro che non ha un valore di default  e che <strong>non</strong> viene dichiarato <code>explicit</code> è chiamato <strong>costruttore di conversione</strong>.</p>
+<p>Un costruttore di conversione esegue una conversione implicita che converte un oggetto cha ha il tipo del primo parametro del costruttore di conversione in un oggetto del tipo della classe a cui il costruttore di conversione appartiene.</p>
+<p>La keyword <em>explicit</em> associata ad un costruttore di conversione impedisce il comportamento appena descritto, forzando il chiamante ad usare i costruttori con i tipi corretti.</p>
+<p>Vediamo il comportamento dei costruttori di conversione:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">Y</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span><span class="token operator">:</span>
+	  <span class="token keyword">int</span> a<span class="token punctuation">,</span> b<span class="token punctuation">;</span>
+	  <span class="token keyword">char</span> <span class="token operator">*</span> name<span class="token punctuation">;</span>
+  <span class="token keyword">public</span><span class="token operator">:</span>
+	  <span class="token function">Y</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>	<span class="token comment">//converte int a oggetti di tipo Y</span>
+	  <span class="token function">Y</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>	<span class="token comment">//converte stringhe a oggetti di tipo Y</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Y<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>		<span class="token comment">//metodo che apparentemente prende solo oggetti di tipo Y</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// equivalente a Y obj1 = Y(2)</span>
+  Y obj1 <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// equivalente a Y obj2 = Y("somestring",0)</span>
+  Y obj2 <span class="token operator">=</span> <span class="token string">"somestring"</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// equivalente a add(Y(5))</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>È interessante la chiamata al metodo <code>add</code> che nonostante chieda un oggetto di tipo Y, passandogli un intero la chiamata avviene correttamente comunque in quanto il compilatore chiama implicitamente il costruttore di <code>Y</code> che prende un intero, creando così un oggetto di tipo <code>Y</code></p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">struct</span> A <span class="token punctuation">{</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>      <span class="token comment">// converting constructor</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span> <span class="token comment">// converting constructor (C++11)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">struct</span> B <span class="token punctuation">{</span>
+    <span class="token keyword">explicit</span> <span class="token function">B</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">explicit</span> <span class="token function">B</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    A a1 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>      <span class="token comment">// OK: copy-initialization selects A::A(int)</span>
+    A <span class="token function">a2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// OK: direct-initialization selects A::A(int)</span>
+    A a3 <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment">// OK: direct-list-initialization selects A::A(int, int)</span>
+    A a4 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// OK: copy-list-initialization selects A::A(int, int)</span>
+    A a5 <span class="token operator">=</span> <span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">// OK: explicit cast performs static_cast</span>
+ 
+<span class="token comment">//  B b1 = 1;      // error: copy-initialization does not consider B::B(int)</span>
+    B <span class="token function">b2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// OK: direct-initialization selects B::B(int)</span>
+    B b3 <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment">// OK: direct-list-initialization selects B::B(int, int)</span>
+<span class="token comment">//  B b4 = {4, 5}; // error: copy-list-initialization does not consider B::B(int, int)</span>
+    B b5 <span class="token operator">=</span> <span class="token punctuation">(</span>B<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">// OK: explicit cast performs static_cast</span>
+<span class="token punctuation">}</span>
+</code></pre>
 <h2 id="copy-constructor">Copy constructor</h2>
 <p>Il copy constructor è un costruttore che utilizza una altro oggetto gemello inizializzare i propri valori con i suoi.</p>
 <p>Si realizza nel seguente modo</p>
@@ -276,6 +330,9 @@ Qual ora si volesse una copia e non la variabile originale si toglie la <code>&a
 </code></pre>
 <p>Nota che il dynamic dispatch si ha solo con puntatori e reference, questo perche con l’istanziazione di <code>a5</code> vengono copiati i valori dei campi ma il suo tipo rimane sempre un animal, anche a <em>runtime</em>.</p>
 <p>Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona</p>
+<h2 id="template">Template</h2>
+<p>approfondimento: <a href="https://gabritorre.github.io/uni/year1/prog_lab/web_notes/Templates.html">template (corso PEL)</a></p>
+<p>I template sono la trasposizione dei tipi generici visti in Java.</p>
 
     </div>
   </div>

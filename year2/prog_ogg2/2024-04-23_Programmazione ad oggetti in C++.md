@@ -75,6 +75,8 @@ Nel secondo caso invece le variabili vengono dichiarate e inizializzate direttam
 
 - **Inizializzazione di costanti**: se nel codice di prima al posto di  `int a`  fosse stato  `const int a`  in quel caso solo il secondo metodo funzionerebbe, in quanto una assegnazione successiva all'inizializzazione tramite il *default constructor* non sarebbe permessa.
 
+
+
 ## Passaggio dei parametri, valore e reference
 
 Vediamo 3 modi in cui si può passare un oggetto ad una funzione
@@ -90,6 +92,69 @@ Vediamo 3 modi in cui si può passare un oggetto ad una funzione
 	```cpp
 	void f (my_obj&) {}
 	```
+
+## Costruttori di conversione e "explicit"
+
+Un costruttore con un singolo parametro che non ha un valore di default  e che **non** viene dichiarato `explicit` è chiamato **costruttore di conversione**.
+
+Un costruttore di conversione esegue una conversione implicita che converte un oggetto cha ha il tipo del primo parametro del costruttore di conversione in un oggetto del tipo della classe a cui il costruttore di conversione appartiene.
+
+La keyword *explicit* associata ad un costruttore di conversione impedisce il comportamento appena descritto, forzando il chiamante ad usare i costruttori con i tipi corretti.
+
+Vediamo il comportamento dei costruttori di conversione:
+```cpp
+class Y {
+  private:
+	  int a, b;
+	  char * name;
+  public:
+	  Y(int i) {};	//converte int a oggetti di tipo Y
+	  Y(const char* n, int j = 0) {};	//converte stringhe a oggetti di tipo Y
+};
+
+void add(Y) {};		//metodo che apparentemente prende solo oggetti di tipo Y
+
+int main() {
+  // equivalente a Y obj1 = Y(2)
+  Y obj1 = 2;
+
+  // equivalente a Y obj2 = Y("somestring",0)
+  Y obj2 = "somestring";
+
+  // equivalente a add(Y(5))
+  add(5);
+}
+```
+È interessante la chiamata al metodo `add` che nonostante chieda un oggetto di tipo Y, passandogli un intero la chiamata avviene correttamente comunque in quanto il compilatore chiama implicitamente il costruttore di `Y` che prende un intero, creando così un oggetto di tipo `Y`
+
+
+```cpp
+struct A {
+    A(int) { }      // converting constructor
+    A(int, int) { } // converting constructor (C++11)
+};
+ 
+struct B {
+    explicit B(int) { }
+    explicit B(int, int) { }
+};
+ 
+int main() {
+    A a1 = 1;      // OK: copy-initialization selects A::A(int)
+    A a2(2);       // OK: direct-initialization selects A::A(int)
+    A a3 {4, 5};   // OK: direct-list-initialization selects A::A(int, int)
+    A a4 = {4, 5}; // OK: copy-list-initialization selects A::A(int, int)
+    A a5 = (A)1;   // OK: explicit cast performs static_cast
+ 
+//  B b1 = 1;      // error: copy-initialization does not consider B::B(int)
+    B b2(2);       // OK: direct-initialization selects B::B(int)
+    B b3 {4, 5};   // OK: direct-list-initialization selects B::B(int, int)
+//  B b4 = {4, 5}; // error: copy-list-initialization does not consider B::B(int, int)
+    B b5 = (B)1;   // OK: explicit cast performs static_cast
+}
+```
+
+
 
 ## Copy constructor
 
@@ -302,4 +367,12 @@ int main() {
 Nota che il dynamic dispatch si ha solo con puntatori e reference, questo perche con l'istanziazione di `a5` vengono copiati i valori dei campi ma il suo tipo rimane sempre un animal, anche a *runtime*.
 
 Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona
+
+
+## Template
+
+approfondimento: [template (corso PEL)](https://gabritorre.github.io/uni/year1/prog_lab/web_notes/Templates.html)
+
+I template sono la trasposizione dei tipi generici visti in Java.
+
 
