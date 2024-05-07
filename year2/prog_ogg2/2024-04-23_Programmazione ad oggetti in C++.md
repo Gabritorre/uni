@@ -375,4 +375,53 @@ approfondimento: [template (corso PEL)](https://gabritorre.github.io/uni/year1/p
 
 I template sono la trasposizione dei tipi generici visti in Java.
 
+Una particolarità dei template è che posticipano la compilazione del codice che usa i template fino a quando non verrà utilizzato tale codice passandogli il tipo reale.
 
+Ad esempio se definiamo una funzione che fa uso di template, tale funzione non verrà compilata fino a che non viene chiamata da qualcuno che gli passerà il tipo da sostituire al tipo generico, a quel punto viene compilata.
+
+
+## Override degli operatori
+
+In C++ tutti gli operatori: `+ - * / < <= > >= != () =` ecc... eseguiti su oggetti non *built-in*
+sono in realtà delle **chiamate a funzioni** e come tali si possono overridare.
+
+Vediamo un esempio:
+
+```cpp
+template <class T>
+class matrix {
+	private:
+		size_t cols;
+		vector<T> v;
+	public:
+		matrix() : v() {}
+		matrix(const matrix<T>& m) : v(m.v) {}
+
+		matrix<T>& operator=(const matrix<T>& m) {
+			cols = m.cols;
+			v = m.v;
+			return *this;
+		}
+}; 
+
+
+void main() {
+	matrix<int> m(20, 30);
+
+	matrix<int> m2(40, 50);
+	m = m2; 	//equivalente a: m.operator=(m2);
+
+	m = m2 = m; //	m.operator=(m2.operator=(m));
+}
+```
+
+Per sovrascrivere un operatore bisogna ridefinire la funzione chiamata "operator" concatenato al simbolo dell'operatore, nel caso precedente `operator=`
+
+Quando facciamo `m = m2` implicitamente stiamo facendo `m.operator=(m2)`, cioè una chiamata a funzione che prende in input il membro di sinistra dell'operatore di assegnamento.
+
+Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare `void`, però restituire una reference dell'oggetto stesso ci permette di annestare le chiamate a tale funzione, cioè rende possibile fare:
+
+```c++
+m = m2 = m; //equivalente a:	m.operator=(m2.operator=(m));
+```
+funziona in quanto `m2.operator=(m)` ritorna un oggetto che viene usato a sua volta nella successiva chiamata alla funzione.
