@@ -1,0 +1,72 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-05-08_Deadlock</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#deadlock">Deadlock</a>
+<ul>
+<li><a href="#condizioni-per-generare-uno-stallo">Condizioni per generare uno stallo</a></li>
+<li><a href="#gestire-le-situazioni-di-stallo">Gestire le situazioni di stallo</a></li>
+<li><a href="#prevenzione">Prevenzione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="deadlock">Deadlock</h1>
+<p>Nel tentativo di sincronizzare processi o thread ci si può imbattere in degli stalli o <strong>deadlock</strong> cioè delle situazioni in cui dei thread rimangono in attesa reciproca gli uni degli altri, non riuscendo mai a sbloccarsi perché colui che dovrebbe causare l’evento di sblocco è in attesa (si forma quindi una <strong>attesa circolare</strong>).</p>
+<p>Più formalmente possiamo dire che:<br>
+Un insieme <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> di processi o thread è in stallo se ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span></span> in <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> attende un evento che può essere causato solo da processi o thread appartenenti ad <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span>.</p>
+<h2 id="condizioni-per-generare-uno-stallo">Condizioni per generare uno stallo</h2>
+<p>Uno stallo può avvenire sotto il verificarsi ti tutte le seguenti condizioni:</p>
+<ul>
+<li><strong>Mutua esclusione</strong><br>
+In assenza di mutua esclusione: se una risorsa può essere utilizzata contemporaneamente da più processi o thread non è necessario attendere quindi non si forma una situazione di stallo. Ad esempio la lettura simultanea di dati condivisi.</li>
+<li><strong>Possesso e attesa</strong><br>
+Se i processi o thread non allocano mai le risorse in modo incrementale, cioè acquisendo una risorsa (possesso) e poi chiedendone altre in seguito (attesa) allora non può succedere che si formi un attesa circolare (e quindi uno stallo).</li>
+<li><strong>Assenza di preemption</strong><br>
+Se il sistema può far rilasciare in modo forzato le risorse a thread o processi, allora è possibile risolvere situazioni di stallo tramite preemption.</li>
+<li><strong>Attesa circolare</strong><br>
+Per definizione, lo stallo avviene quando c’è una attesa circolare che fa sì che nessun processo o thread uscirà mai dallo stato di attesa.</li>
+</ul>
+<h2 id="gestire-le-situazioni-di-stallo">Gestire le situazioni di stallo</h2>
+<p>Lo stallo può essere gestito in vari modi a seconda di se e quando si evidenziano (potenziali) situazioni si attesa circolare.</p>
+<ul>
+<li><strong>Prevenzione</strong>: vengono messe in atto alcune strategie che prevengono la formazione di stalli</li>
+<li><strong>Controllo</strong>: l’assegnamento delle risorse è consentito solo nel caso in cui il sistema possa garantire che tale assegnamento non porterà a una situazione di stallo;</li>
+<li><strong>Riconoscimento</strong>: il sistema individua situazioni di stallo e cerca di ripristinare uno stato precedente senza stallo;</li>
+<li><strong>Nessuna azione</strong>: il sistema ignora lo stallo e lascia ai programmatori l’onere di evitarlo o gestirlo.</li>
+</ul>
+<h2 id="prevenzione">Prevenzione</h2>
+<p>Analizziamo il caso di prevenzione dello stallo, per prevenire uno stallo dobbiamo negare almeno una delle condizioni necessaria di prima:</p>
+<h3 id="negare-la-mutua-esclusione">Negare la mutua esclusione</h3>
+<p>Il fatto che l’accesso a una risorsa sia in mutua esclusione dipende dalla risorsa stessa e dal tipo di accesso, quando è necessaria non possiamo evitarla per prevenire lo stallo, ne risentirebbe la correttezza del programma.</p>
+<h3 id="evitare-il-possesso-e-attesa">Evitare il possesso e attesa</h3>
+<p>Possiamo evitare possesso e attesa allocando tutte le risorse assieme (vedi la raccolta atomica nei filosofi a cena). Questo non è però sempre possibile perché non è detto che si conoscano tutte le risorse necessarie a un thread o processo a priori.<br>
+Inoltre allocare tutte le risorse all’inizio può essere <strong>inefficiente</strong> in quanto priva gli altri thread o processi di tali risorse.<br>
+Questa soluzione può anche provocare <strong>starvation</strong>.</p>
+<h3 id="preemption">Preemption</h3>
+<p>La preemption, come la mutua esclusione, dipende dal tipo di risorsa. Ci sono risorse per loro natura preemptable e altre no. Tipicamente, se la risorsa può salvare completamente il proprio stato e ripristinarlo può essere preemptable come la CPU.<br>
+Non possiamo quindi imporre la preemption a priori.</p>
+<h3 id="prevenire-lattesa-circolare">Prevenire l’attesa circolare</h3>
+<p>È possibile evitare l’attesa circolare con opportune strategie di allocazione delle risorse.<br>
+Ne è un esempio la soluzione dei filosofi a cena con un filosofo mancino</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
