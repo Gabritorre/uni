@@ -374,6 +374,7 @@ Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello sta
 approfondimento: [template (corso PEL)](https://gabritorre.github.io/uni/year1/prog_lab/web_notes/Templates.html)
 
 I template sono la trasposizione dei tipi generici visti in Java.
+Si possono applicare a classi, metodi, funzioni globali e typedef.
 
 Una particolarità dei template è che posticipano la compilazione del codice che usa i template fino a quando non verrà utilizzato tale codice passandogli il tipo reale.
 
@@ -419,9 +420,101 @@ Per sovrascrivere un operatore bisogna ridefinire la funzione chiamata "operator
 
 Quando facciamo `m = m2` implicitamente stiamo facendo `m.operator=(m2)`, cioè una chiamata a funzione che prende in input il membro di sinistra dell'operatore di assegnamento.
 
-Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare `void`, però restituire una reference dell'oggetto stesso ci permette di annestare le chiamate a tale funzione, cioè rende possibile fare:
+Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare `void`, però restituire una reference dell'oggetto stesso ci permette di innestare le chiamate a tale funzione, cioè rende possibile fare:
 
 ```c++
 m = m2 = m; //equivalente a:	m.operator=(m2.operator=(m));
 ```
 funziona in quanto `m2.operator=(m)` ritorna un oggetto che viene usato a sua volta nella successiva chiamata alla funzione.
+
+
+
+## Conversion operator
+
+Se abbiamo una classe templetizzata, possiamo convertirci in base ad una struttura simile alla nostra tramite un costruttore particolare, oppure possiamo restituire una nostra versione convertita tramite un *conversion operator*
+
+Prendiamo l'esempio della matrice poco sopra, possiamo creare una sorta di *copy constructor* che al posto di prendere esattamente una classe dello stesso nostro tipo ne prende una con  un parametro diverso:
+
+```cpp
+template <class T>
+class matrix {
+	private:
+		size_t cols;
+		vector<T> v;
+	public:
+		matrix() : v() {}
+		matrix(const matrix<T>& m) : v(m.v) {}
+
+		matrix<T>& operator=(const matrix<T>& m) {
+			cols = m.cols;
+			v = m.v;
+			return *this;
+		}
+
+		size_t get_cols() const {return cols;}
+		size_t get_rows() const {v.size() / cols;}
+	
+		//costruttore che costuisce la matrice di classe che ha tipo T partendo dalla matrice passata per input che ha tipo S
+		// il corpo del metodo assume che il tipo T abbia un costruttore che converta il tipo partendo da un S.
+		//Questo è possibile e non da errori in quanto non viene compilato
+		//fino a che non viene chiamato questo costruttore,
+		//sarà compito del chiamante assicurarsi che i tipi siano convertibili tra loro
+		template<class S>
+		matrix(const matrix<S>& m): cols(m.get_cols()), v(m.get_rows() * m.get_cols()) {
+			for(int i =  0; i <  v.size(); i++) {
+				v[i] =  T(m.v[i]); //chiamo il costruttore del tipo T, passandogli un S
+			}
+		}
+}; 
+```
+
+
+Inoltre posso fare una funzione chiamata *conversion operator*, cioè una sorta di cast della nostra classe in qualche altro tipo.
+Questo metodo non deve avere un tipo di ritorno e dopo la parola "operator" si mette il tipo in cui convertire
+
+```cpp
+template <class T>
+class matrix {
+	private:
+		size_t cols;
+		vector<T> v;
+	public:
+		matrix() : v() {}
+		matrix(const matrix<T>& m) : v(m.v) {}
+
+		matrix<T>& operator=(const matrix<T>& m) {
+			cols = m.cols;
+			v = m.v;
+			return *this;
+		}
+
+		size_t get_cols() const {return cols;}
+		size_t get_rows() const {v.size() / cols;}
+		
+		//restituisce una versione della nostra classe convertita in un altro tipo (un vector<T> in questo caso)
+		operator const vector<T>() const {
+			return v;	//dato che la matrice viene implementata usando un vettore posso ritornarlo direttamente
+		}
+}; 
+```
+
+## Iteratori
+
+Gli iteratori in c++ sono dei particolari tipi di dato che sono definiti all'interno del tipo di dato più esterno.
+Gli iteratori si utilizzano proprio come se fossero dei puntatori. 
+vediamo un esempio con la classe vector
+
+```c++
+void f(vector<int> v) {
+	for (typename vector<int>::iterator it = v.begin(); it != v.end(); it++) {
+		cout<<*it<<endl;
+	}
+}
+```
+
+- `typename vector<int>::iterator` rappresenta un tipo di dato
+	- `typename` è una keyword necessaria (fino a c++20) per dire al compilatore che la parte successiva è un tipo di dato
+	- `vector<int>::iterator` la sintassi con i `::` viene utilizzata per accedere a dei tipi definiti all'interno di una classe, in questo caso il tipo `iterator` è definito dentro la classe `vector`
+- Il vector avrà poi dei metodi per utilizzare l'iteratore, in particolare:
+	- `begin()` restituisce il primo elemento
+	- `end()` restituisce l'elemento successivo all'ultimo

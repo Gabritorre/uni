@@ -18,6 +18,10 @@
 <li><a href="#condizioni-per-generare-uno-stallo">Condizioni per generare uno stallo</a></li>
 <li><a href="#gestire-le-situazioni-di-stallo">Gestire le situazioni di stallo</a></li>
 <li><a href="#prevenzione">Prevenzione</a></li>
+<li><a href="#controllo">Controllo</a></li>
+<li><a href="#grafo-di-assegnazione">Grafo di assegnazione</a></li>
+<li><a href="#algoritmo-con-grafo-di-assegnazione">Algoritmo con grafo di assegnazione</a></li>
+<li><a href="#algoritmo-del-banchiere">Algoritmo del banchiere</a></li>
 </ul>
 </li>
 </ul>
@@ -64,6 +68,93 @@ Non possiamo quindi imporre la preemption a priori.</p>
 <h3 id="prevenire-lattesa-circolare">Prevenire l’attesa circolare</h3>
 <p>È possibile evitare l’attesa circolare con opportune strategie di allocazione delle risorse.<br>
 Ne è un esempio la soluzione dei filosofi a cena con un filosofo mancino</p>
+<h2 id="controllo">Controllo</h2>
+<p>Analizziamo il caso di controllo a <em>run-time</em> dello stallo.<br>
+Per poter controllare ed evitare la formazione degli stalli a run-time l’idea è di consentire l’assegnamento delle risorse solo nel caso in cui il sistema possa garantire che tale assegnamento non porterà a una situazione di stallo.</p>
+<h2 id="grafo-di-assegnazione">Grafo di assegnazione</h2>
+<p>Per svolgere il controllo è necessario memorizzare lo <strong>stato di una risorsa</strong>, cioè se è assegnata o libera, e la presenza di <strong>richieste</strong> da parte dei thread (o processi).<br>
+Il grafo di assegnazione mantiene queste informazioni</p>
+<ul>
+<li>arco da P a R: il processo richiede la risorsa</li>
+<li>arco da R a P: la risorsa è assegnata al processo</li>
+<li>arco tratteggiato da P a R: il processo potrà richiedere in futuro la risorsa</li>
+</ul>
+<p>Una risorsa può avere più istanze di se stessa così da poter soddisfare più processi contemporaneamente.</p>
+<p>Vediamo un esempio grafico</p>
+<p><img src="https://i.ibb.co/1rzKJz7/image.png" alt="enter image description here"></p>
+<p>Descrizione:</p>
+<ul>
+<li>P1 richiede la risorsa R1</li>
+<li>R2 è assegnata a P1</li>
+<li>R1 è assegnata a P2 e P3</li>
+<li>P3 richiede la risorsa R2</li>
+<li>P2 potrebbe richiedere la risorsa R2 in futuro</li>
+</ul>
+<h3 id="grafo-sicuro">Grafo sicuro</h3>
+<p>Un grafo di assegnazione è detto <strong>sicuro</strong> se è privo di stalli anche considerando le richieste future.<br>
+Per determinare se in un grafo esiste una situazione di stallo bisogna:</p>
+<ul>
+<li>Se ogni risorsa ha <strong>una sola istanza</strong>: <strong>se il grafo ha un ciclo allora esiste uno stallo</strong>.</li>
+<li>Se le risorse hanno <strong>più istanze</strong>: <strong>la presenza dello stallo implica la presenza di un ciclo</strong>, ma la presenza di un ciclo non basta per dire se ci può essere uno stallo o meno. Bisogna usare un particolare algoritmo</li>
+</ul>
+<h2 id="algoritmo-con-grafo-di-assegnazione">Algoritmo con grafo di assegnazione</h2>
+<p>Analizziamo prima il caso con risorse a istanza singola: basta verificare la presenza di un ciclo</p>
+<p>Per ogni richiesta, se la risorsa non è disponibile il processo va in attesa, altrimenti:</p>
+<ol>
+<li>simula sul grafo, l’assegnamento della risorsa al processo</li>
+<li>verifica la presenza di cicli, considerando anche le richieste future:
+<ul>
+<li>se viene trovato un ciclo: il processo viene messo in attesa</li>
+<li>altrimenti: la risorsa viene assegnata</li>
+</ul>
+</li>
+</ol>
+<p>Esempio con i filosofi a cena:</p>
+<p><img src="https://i.ibb.co/cL6pf7q/image.png" alt="enter image description here"></p>
+<p>Immaginiamo di trovarci nella situazione sopra descritta, in cui i primi 4 filosofi hanno preso la bacchetta di sinistra e l’ultimo filosofo vorrebbe la sua bacchetta sinistra, in quanto quell’assegnamento creerebbe un ciclo l’assegnazione non viene fatta e il filosofo viene messo in attesa.</p>
+<h2 id="algoritmo-del-banchiere">Algoritmo del banchiere</h2>
+<p>Analizziamo ora il caso in cui le risorse hanno più istanze, in questo caso verificare la presenza di un ciclo non basta, ne è un esempio il seguente grafo, che, pur avendo un ciclo non ha uno stallo (si tratta quindi di un <strong>grafo sicuro</strong>)</p>
+<p><img src="https://i.ibb.co/h9TJkXZ/image.png" alt="enter image description here"></p>
+<p>In questo caso un possibile ordine di terminazione dei processi è &lt;P2, P0, P1&gt;, tale sequenza viene detta <strong>sicura</strong>.</p>
+<p>In generale una sequenza di terminazione di processi è detta <strong>sicura</strong> se ogni processo della sequenza può ottenere tutte le risorse che necessita tra quelle disponibili inizialmente e quelle possedute dai processi che lo precedono (cioè quelli che terminano prima di lui)</p>
+<p>Quindi la sequenza deve garantire che ogni processo abbia le risorse che necessita per poi rilasciarle ai processi successivi.</p>
+<p>Per verificare se esiste una sequenza sicura si utilizza il seguente algoritmo:</p>
+<ol>
+<li>Cerca un processo che possa ottenere tutte le risorse necessarie (incluse quelle future) da quelle disponibili. Se tale processo non c’è allora non esiste una sequenza sicura</li>
+<li>Rilascia tutte le risorse possedute dal processo, aggiungilo alla sequenza sicura e toglilo dal grafo</li>
+<li>Se ci sono ancora processi nel grafo ripeti il punto 1, altrimenti dai in output la sequenza sicura</li>
+</ol>
+<p><strong>L’algoritmo del banchiere</strong> utilizza la non esistenza di una sequenza sicura per individuare potenziali stalli:</p>
+<p>Per ogni richiesta, se la risorsa non è disponibile il processo attende, altrimenti:</p>
+<ol>
+<li>simula sul grafo l’assegnamento della risorsa al processo</li>
+<li>verifica se il grafo contiene uno stallo, verificando che non esista una sequenza sicura
+<ul>
+<li>in caso di stallo il processo viene messo in attesa</li>
+<li>altrimenti: la risorsa viene assegnata e la modifica sul grafo viene confermata</li>
+</ul>
+</li>
+</ol>
+<h3 id="esempio">Esempio</h3>
+<p>Partiamo da una situazione di questo tipo, con 3 processi e 2 risorse.</p>
+<p>Una istanza di R1 viene assegnata a P2.<br>
+Le future richieste sono segnate tramite archi tratteggiati</p>
+<p><img src="https://i.ibb.co/XzS7TPZ/image.png" alt="enter image description here"></p>
+<p>Se lasciamo l’assegnamento incontrollato potrebbe verificarsi uno stallo.<br>
+Simuliamo invece l’algoritmo del banchiere.</p>
+<p>P1 richiede R1, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura e &lt;P1, P2, P3&gt; lo è in quanto: P1 può ottenere R2, rilasciando le proprie risorse permette a P2 di ottenere R2, che a sua volta può rilasciare le risorse permettendo a P3 di ottenere R1 e R2.</p>
+<p>aggiorniamo il grafo<br>
+<img src="https://i.ibb.co/zJPp1sT/image.png" alt="enter image description here"></p>
+<p>P3 richiede R2, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura ma in questo caso non esiste in quanto nessuno dei tre processi può ottenere tutte le risorse necessarie.<br>
+L’algoritmo mette P3 in attesa</p>
+<p>aggiorniamo il grafo</p>
+<p><img src="https://i.ibb.co/JmPpMBs/image.png" alt="enter image description here"></p>
+<p>P1 richiede R2, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura e &lt;P1, P2, P3&gt; lo è.<br>
+aggiorniamo quindi il grafo.</p>
+<p>successivamente</p>
+<p>P2 richiede R2, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura e &lt;P1, P2, P3&gt; lo è.<br>
+aggiorniamo quindi il grafo e otteniamo il seguente risultato</p>
+<p><img src="https://i.ibb.co/71YJgjr/image.png" alt="enter image description here"></p>
 
     </div>
   </div>

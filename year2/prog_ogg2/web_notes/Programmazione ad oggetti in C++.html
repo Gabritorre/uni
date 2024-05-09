@@ -27,6 +27,8 @@
 <li><a href="#modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</a></li>
 <li><a href="#template">Template</a></li>
 <li><a href="#override-degli-operatori">Override degli operatori</a></li>
+<li><a href="#conversion-operator">Conversion operator</a></li>
+<li><a href="#iteratori">Iteratori</a></li>
 </ul>
 </li>
 </ul>
@@ -333,7 +335,8 @@ Qual ora si volesse una copia e non la variabile originale si toglie la <code>&a
 <p>Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona</p>
 <h2 id="template">Template</h2>
 <p>approfondimento: <a href="https://gabritorre.github.io/uni/year1/prog_lab/web_notes/Templates.html">template (corso PEL)</a></p>
-<p>I template sono la trasposizione dei tipi generici visti in Java.</p>
+<p>I template sono la trasposizione dei tipi generici visti in Java.<br>
+Si possono applicare a classi, metodi, funzioni globali e typedef.</p>
 <p>Una particolarità dei template è che posticipano la compilazione del codice che usa i template fino a quando non verrà utilizzato tale codice passandogli il tipo reale.</p>
 <p>Ad esempio se definiamo una funzione che fa uso di template, tale funzione non verrà compilata fino a che non viene chiamata da qualcuno che gli passerà il tipo da sostituire al tipo generico, a quel punto viene compilata.</p>
 <h2 id="override-degli-operatori">Override degli operatori</h2>
@@ -368,10 +371,94 @@ sono in realtà delle <strong>chiamate a funzioni</strong> e come tali si posson
 </code></pre>
 <p>Per sovrascrivere un operatore bisogna ridefinire la funzione chiamata “operator” concatenato al simbolo dell’operatore, nel caso precedente <code>operator=</code></p>
 <p>Quando facciamo <code>m = m2</code> implicitamente stiamo facendo <code>m.operator=(m2)</code>, cioè una chiamata a funzione che prende in input il membro di sinistra dell’operatore di assegnamento.</p>
-<p>Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare <code>void</code>, però restituire una reference dell’oggetto stesso ci permette di annestare le chiamate a tale funzione, cioè rende possibile fare:</p>
+<p>Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare <code>void</code>, però restituire una reference dell’oggetto stesso ci permette di innestare le chiamate a tale funzione, cioè rende possibile fare:</p>
 <pre class=" language-c"><code class="prism ++ language-c">m <span class="token operator">=</span> m2 <span class="token operator">=</span> m<span class="token punctuation">;</span> <span class="token comment">//equivalente a:	m.operator=(m2.operator=(m));</span>
 </code></pre>
 <p>funziona in quanto <code>m2.operator=(m)</code> ritorna un oggetto che viene usato a sua volta nella successiva chiamata alla funzione.</p>
+<h2 id="conversion-operator">Conversion operator</h2>
+<p>Se abbiamo una classe templetizzata, possiamo convertirci in base ad una struttura simile alla nostra tramite un costruttore particolare, oppure possiamo restituire una nostra versione convertita tramite un <em>conversion operator</em></p>
+<p>Prendiamo l’esempio della matrice poco sopra, possiamo creare una sorta di <em>copy constructor</em> che al posto di prendere esattamente una classe dello stesso nostro tipo ne prende una con  un parametro diverso:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">matrix</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		size_t cols<span class="token punctuation">;</span>
+		vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> v<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			cols <span class="token operator">=</span> m<span class="token punctuation">.</span>cols<span class="token punctuation">;</span>
+			v <span class="token operator">=</span> m<span class="token punctuation">.</span>v<span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		size_t <span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span><span class="token keyword">return</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		size_t <span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	
+		<span class="token comment">//costruttore che costuisce la matrice di classe che ha tipo T partendo dalla matrice passata per input che ha tipo S</span>
+		<span class="token comment">// il corpo del metodo assume che il tipo T abbia un costruttore che converta il tipo partendo da un S.</span>
+		<span class="token comment">//Questo è possibile e non da errori in quanto non viene compilato</span>
+		<span class="token comment">//fino a che non viene chiamato questo costruttore,</span>
+		<span class="token comment">//sarà compito del chiamante assicurarsi che i tipi siano convertibili tra loro</span>
+		<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">S</span><span class="token operator">&gt;</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>S<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">cols</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> m<span class="token punctuation">.</span><span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span>  <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span>  v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				v<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span>  <span class="token function">T</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//chiamo il costruttore del tipo T, passandogli un S</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+</code></pre>
+<p>Inoltre posso fare una funzione chiamata <em>conversion operator</em>, cioè una sorta di cast della nostra classe in qualche altro tipo.<br>
+Questo metodo non deve avere un tipo di ritorno e dopo la parola “operator” si mette il tipo in cui convertire</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">matrix</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		size_t cols<span class="token punctuation">;</span>
+		vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> v<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			cols <span class="token operator">=</span> m<span class="token punctuation">.</span>cols<span class="token punctuation">;</span>
+			v <span class="token operator">=</span> m<span class="token punctuation">.</span>v<span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		size_t <span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span><span class="token keyword">return</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		size_t <span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		
+		<span class="token comment">//restituisce una versione della nostra classe convertita in un altro tipo (un vector&lt;T&gt; in questo caso)</span>
+		<span class="token keyword">operator</span> <span class="token keyword">const</span> vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> v<span class="token punctuation">;</span>	<span class="token comment">//dato che la matrice viene implementata usando un vettore posso ritornarlo direttamente</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+</code></pre>
+<h2 id="iteratori">Iteratori</h2>
+<p>Gli iteratori in c++ sono dei particolari tipi di dato che sono definiti all’interno del tipo di dato più esterno.<br>
+Gli iteratori si utilizzano proprio come se fossero dei puntatori.<br>
+vediamo un esempio con la classe vector</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span>typename vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> v<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span>it<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>typename vector&lt;int&gt;::iterator</code> rappresenta un tipo di dato
+<ul>
+<li><code>typename</code> è una keyword necessaria (fino a c++20) per dire al compilatore che la parte successiva è un tipo di dato</li>
+<li><code>vector&lt;int&gt;::iterator</code> la sintassi con i <code>::</code> viene utilizzata per accedere a dei tipi definiti all’interno di una classe, in questo caso il tipo <code>iterator</code> è definito dentro la classe <code>vector</code></li>
+</ul>
+</li>
+<li>Il vector avrà poi dei metodi per utilizzare l’iteratore, in particolare:
+<ul>
+<li><code>begin()</code> restituisce il primo elemento</li>
+<li><code>end()</code> restituisce l’elemento successivo all’ultimo</li>
+</ul>
+</li>
+</ul>
 
     </div>
   </div>
