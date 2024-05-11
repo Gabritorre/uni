@@ -4,7 +4,7 @@ Vediamo un altro problema dove la programmazione dinamica torna molto utile, il 
 
 In questo capitolo faremo degli esempi in riferimento alle stringhe di DNA che hanno come alfabeto le lettere $\{A, G, C, T\}$
 
-Definizione di **sottosequenza**: una sottosequenza di una stringa $S_1$ è un'altra stringa $S_2$ contenente le stesse lettere di $S_1$ nello stesso ordine ma non necessariamente adiacenti.
+Definizione di **sottosequenza**: una sottosequenza di una stringa $S$ è un'altra stringa $S'$ contenente le stesse lettere di $S$ nello stesso ordine ma non necessariamente adiacenti.
 
 (da non confondere con sottostringa la quale richiede che i caratteri siano adiacenti)
 
@@ -13,7 +13,7 @@ Ad esempio date le due stringhe:
 - $S_1 = \text{ACTACCTG}$
 - $S_2 = \text{ATCACC}$
 
-delle possibili sottosequenze sono
+delle possibili sottosequenze comuni sono
 - $ACACC$
 - $ACC$
 - $ATA$
@@ -22,7 +22,7 @@ delle possibili sottosequenze sono
 
 **Il problema LCS consiste nel trovare la sottosequenza più lunga**.
 
-formalmente:
+Formalmente:
 Date due stringhe 
 - $X$ composta dai caratteri  $x_1...x_m$
 - $Y$ composta dai caratteri $y_1...y_n$
@@ -31,11 +31,12 @@ Vogliamo trovare una sottosequenza $W$ comune a $X$ e $Y$ che sia di lunghezza m
 **Generalmente si possono avere più sottosequenze comuni di lunghezza massima uguale**, per cui non esiste sempre una soluzione unica.
 Per questo motivo indicheremo con $LCS(X, Y)$ un **insieme** di sottosequenze comuni di lunghezza massima
 
-Anche in questo caso l'utilizzo di un algoritmo di forza bruta (che trova tutte le possibili sottosequnze e poi mantiene quelli di massima lunghezza) risulterebbe in una **complessità esponenziale** $2^n$
+Anche in questo caso l'utilizzo di un algoritmo di forza bruta (che trova tutte le possibili sottosequnze e poi mantiene quelle di massima lunghezza) risulterebbe in una **complessità esponenziale** $2^n$
 
 
 ## Costruzione algoritmo attraverso programmazione dinamica
 
+Costruiamo passo passo un algoritmo risolutivo utilizzando la programmazione dinamica
 
 ## Passo 1 - Caratterizzazione della sottostruttura ottima
 
@@ -65,7 +66,7 @@ Partendo dall'ipotesi $x_m=y_n$, assumiamo per assurdo che $w_k \neq x_m$ (e di 
 
 Se $x_m \neq y_n$ e $w_k \neq x_m$ vorremmo dimostrare che $W \in LCS(X^{m-1}, Y)$.
 
-Se per assurdo ci fosse una sottosequenza $W'$ comune a $X^m-1$ e $Y$ più lunga di $W$ significherebbe che $W'$ sarebbe sottosequenza di $X$ e $Y$, ma questo contraddice l'ipotesi non rendendo più $W \in LCS(X, Y)$ in quanto ce ne sarebbe una più lunga.
+Se per assurdo ci fosse una sottosequenza $W'$ comune a $X^{m-1}$ e $Y$ più lunga di $W$ significherebbe che $W'$ sarebbe sottosequenza di $X$ e $Y$, ma questo contraddice l'ipotesi non rendendo più vero $W \in LCS(X, Y)$ in quanto ce ne sarebbe una più lunga.
 
 
 ## Passo 2 - Soluzione ricorsiva per il valore della soluzione ottima
@@ -98,9 +99,9 @@ $c[4,3] = \max(c[3,3], c[4,2])$
 Partiamo da un algoritmo **bottom-up**:
 
 Utilizziamo due strutture ausiliarie (la sintassi `c[i, j]` sarebbe equivalente a `c[i][j]` in codice):
-- matrice `c` $(m+1) \times (n+1)$, il +1 è dato dal fatto che contiamo la stringa vuota. 
-	In cui `c[i, j]` memorizza la lungh3ezza delle sottosequenze appartenenti a $LCS(X^i, Y^j)$
-- matrice `b` $m \times n$. In cui `b[i, j]` contiene delle informazioni utili per recuperare la soluzione (cioè la sottosequenza massima effettiva), in particolare:
+- matrice `c` grande $(m+1) \times (n+1)$, il +1 è dato dal fatto che contiamo la stringa vuota. 
+	In cui `c[i, j]` memorizza la lunghezza delle sottosequenze appartenenti a $LCS(X^i, Y^j)$
+- matrice `b` grande $m \times n$. In cui `b[i, j]` contiene delle informazioni utili per recuperare la soluzione (cioè la sottosequenza massima effettiva), in particolare:
 	- `b[i, j]` $=\,\nwarrow$ se $x_i = y_j\implies LCS(X^i, Y^j)$ si riduce al sottoproblema $LCS(X^{i-1}, Y^{j-1})$ 
 	- `b[i, j]` $=\,\uparrow$ se $x_i \neq y_j\implies LCS(X^i, Y^j)$ si riduce al sottoproblema $LCS(X^{i-1}, Y^{j})$ 
 	- `b[i, j]` $=\,\leftarrow$ se $x_i \neq y_j\implies LCS(X^i, Y^j)$ si riduce al sottoproblema $LCS(X^{i}, Y^{j-1})$ 
@@ -178,7 +179,7 @@ printLCSaux(X, b, i, j) {
 ```
 
 **Complessità**:
-Il tempo di esecuzione di `printLCSaux` è $O(i + j)$ perche ad ogni chiamata decremento **almeno** uno tra i e j.
+Il tempo di esecuzione di `printLCSaux` è $O(i + j)$ perché ad ogni chiamata decremento **almeno** uno tra i e j.
 
 Il tempo di esecuzione della `printLCS` è:
 
@@ -193,20 +194,20 @@ dato che i possibili valori da cui dipende $c[i, j]$ sono solamente 3:
 - $c[i-1, j]$
 - $c[i, j-1]$
 
-possiamo evitare di utilizzare la matrice $b$ e basarmi sui 3 valori da cui dipende $c[i, j]$ per trovare la prossima cella:
+possiamo evitare di utilizzare la matrice $b$ e basarci sui 3 valori da cui dipende $c[i, j]$ per trovare la prossima cella:
 
 ```c++
-printLCSaux(X, b, i, j) {
+printLCSaux(X, c, i, j) {
 	if (i > 0 && j > 0) {
 		if (c[i, j] == c[i-1, j) {
-			printLCSaux(X, b, i-1, j)
+			printLCSaux(X, c, i-1, j)
 		}
 		else {
 			if (c[i, j] == c[i, j-1]) {
-				printLCSaux(X, b, i, j-1)
+				printLCSaux(X, c, i, j-1)
 			}
 			else {
-				printLCSaux(X, b, i-1, j-1)
+				printLCSaux(X, c, i-1, j-1)
 				print(X[i])
 			}
 		}

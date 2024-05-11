@@ -8,9 +8,11 @@ In tale situazione un algoritmo *Divide et Impera* computerebbe da capo un sotto
 La programmazione dinamica serve proprio come soluzione a questo problema:
 **Si risolve il sottoproblema e si salva la sua soluzione, quando si rincontra lo stesso sottoproblema si utilizza direttamente la soluzione già calcolata.**
 
-La programmazione dinamica torna utile per problemi in cui bisogna ottimizzare qualcosa, in cui ogni possibile soluzione ha un costo vogliamo trovare una **soluzione ottima** (in termini di tempo) per massimizzare o minimizzare tale costo (in base allo scopo del problema).
+La programmazione dinamica torna utile per problemi in cui bisogna ottimizzare qualcosa, in cui ogni possibile soluzione ha un costo, vogliamo trovare una **soluzione ottima** (in termini di tempo) per massimizzare o minimizzare tale costo (in base allo scopo del problema).
 
 Va detto che spesso la soluzione ottima non è unica, e la programmazione dinamica tiene conto anche di questo.
+
+L'aumento di performance portato dalla programmazione dinamica ha come lato negativo l'aumento notevole di utilizzo di memoria (sono necessarie strutture dati ausiliarie per salvare i risultati dei sottoproblemi)
 
 ## Sviluppare un algoritmo di programmazione dinamica
 
@@ -24,15 +26,15 @@ Va detto che spesso la soluzione ottima non è unica, e la programmazione dinami
 
 ## Esempio taglio delle aste
 
-Un'azienda produce delle aste che vende a pezzi. Le aste prodotto hanno una certa lunghezza $n$ e i prezzi delle aste dipendono dalla loro lunghezza.
-Il problema nel tagliare le aste in modo da massimizzare il guadagno (si assume che il costo per eseguire il taglio sia irrilevante)
+Un'azienda produce delle aste che vende a pezzi. Le aste prodotte hanno una certa lunghezza $n$ e i prezzi delle aste dipendono dalla loro lunghezza.
+Il problema sta nel tagliare le aste in modo da massimizzare il guadagno (si assume che il costo per eseguire il taglio sia irrilevante)
 
-**Input**: data un'asta di lunghezza $n$ e una tabella di prezzi $p_i$, con $i = 1, ..., m$
+**Input**: un'asta di lunghezza $n$ e una tabella di prezzi $p_i$, con $i = 1, ..., m$
 
-**output**: determinare il ricavo $r_n$, cioè il ricavo massimo per un'asta di lunghezza $n$ che si può ricavare tagliando l'asta e vendendo i singoli pezzi.
+**output**: il ricavo $r_n$, cioè il ricavo massimo per un'asta di lunghezza $n$ che si può ottenere tagliando l'asta e vendendo i singoli pezzi.
 
 Esempio di tabella:
-Supponiamo che la lunghezza iniziale sia $n = 7$
+Supponiamo che la lunghezza iniziale dell'asta sia $n = 7$
 
 | Lunghezza $i$ | Prezzo $p_i$ |
 |:--:|:--:|
@@ -44,7 +46,7 @@ Supponiamo che la lunghezza iniziale sia $n = 7$
 | 6 | 17 |
 | 7 | 17 |
 
-Vediamo varie combinazioni di tagli:
+Vediamo alcuni esempi di tagli:
 
 - 7 pezzi lunghi 1:
 	- $1 + 1 + 1 + 1 + 1 + 1 + 1 = 7$
@@ -55,7 +57,7 @@ Vediamo varie combinazioni di tagli:
 - 1 pezzo lungo 6 e un pezzo lungo 1
 	- $17 + 1 = 18$ (ottimale)
 
-Un metodo *Divide et Impera* risolverebbe questo problema tentando tutti i possibili modi di tagliare l'asta e ottenere quello che ha il costo più alto.
+Un metodo *Divide et Impera* risolverebbe questo problema tentando tutti i possibili modi di tagliare l'asta.
 Ma In quanti possibili modi si potrebbe tagliare un'asta lunga $n$? (assumendo che si possa tagliare solo ogni metro)
 Se pensiamo che ad ogni metro possiamo decidere se tagliare o meno abbiamo $2 \cdot 2 \cdot 2...\cdot 2$ per $n-1$ volte, quindi $2^{n-1}$ possibili modi di fare i tagli. Avremmo quindi un algoritmo esponenziale
 
@@ -75,7 +77,7 @@ Tale condizione è la condizione esistenziale per poter elaborare algoritmi di p
 
 Possiamo però trovare una soluzione più semplice: tagliare un pezzo in modo definitivo, e suddividendo ulteriormente la parte rimanente in modo ottimale.
 
-$\left\{\begin{array}{l}r_0=0 \\ r_n=\max_{1\leq i \leq n} \{\underbrace{p_i}_{\begin{array}{c}\text { Prezzo del taglio} \\ \text { non ulteriormente diviso }\end{array}}+\underbrace{r_{n-i}}_{\text {suddivido in modo ottimo }}\}, \quad 1 \leq i \leq n\end{array}\right.$
+$\left\{\begin{array}{l}r_0=0 \\ r_n=\max_{1\leq i \leq n} \{\underbrace{p_i}_{\begin{array}{c}\text { Prezzo del taglio} \\ \text { non ulteriormente diviso }\end{array}}+\underbrace{r_{n-i}}_{\text {suddivido in modo ottimo }}\}\end{array}\right.$
 
 L'algoritmo prende in input i seguenti parametri:
 
@@ -103,7 +105,7 @@ cut_rod(p, n) {
 
 Analizziamo il costo:
 
-Sia $T(n)$ il numero di chiamate ricorsivi con il secondo parametro uguale a $n$:
+Sia $T(n)$ il numero di chiamate ricorsive con il secondo parametro uguale a $n$:
 
 $$T(n) = \begin{cases} 1 & n = 0\\
 1 + \sum_{i = 1}^{n}T(n-i) & n > 0\end{cases}$$
@@ -148,18 +150,20 @@ Possiamo dire che se:
 - il numero di sottoproblemi distinti è polinomiale
 - ciascun sottoproblema si risolve in tempo polinomiale
 
-allora si può ottenere un **algoritmo di risoluzione polinomiale** (al costo di usare della memoria ausiliaria).
+allora si può ottenere un **algoritmo di risoluzione polinomiale** (al costo di usare della memoria aggiuntiva).
 
 In generale abbiamo 2 modi di costruire un algoritmo con la programmazione dinamica:
 
-1. **Top-down**: salva in una tabella (array o tabella hash) le soluzioni dei sottoproblemi già risolti
-2. **Bottom-up**: ordina i sottoproblemi in base alla loro dimensione, partendo da quelli più piccoli e memorizza le soluzioni ottenuti
+1. **Top-down**: salva in una tabella (array o tabella hash) le soluzioni dei sottoproblemi già risolti.
+	Questa tecnica richiede l'uso della ricorsione
+2. **Bottom-up**: ordina i sottoproblemi in base alla loro dimensione, partendo da quelli più piccoli e memorizza le soluzioni ottenute.
+	Questa tecnica solitamente non richiede l'uso della ricorsione
 
 ## Tecnica top-down
 
 ```c
 top_down_cut_rod(p, n) {
-	r[0 ... n]
+	r[0 ... n]		//vettore con i risultati parziali
 	for (i = 0 to n) {	//inizializzazione dell'array
 		r[i] = -1
 	}
@@ -167,13 +171,13 @@ top_down_cut_rod(p, n) {
 }
 
 top_down_cut_rod_aux(p, j, r) {
-	if (r[j] < 0) {
+	if (r[j] < 0) {		// se l'attuale sottoproblema non è stato già calcolato
 		if (j == 0) {	// questo controllo si potrebbe fare nel metodo precedente durante l'inizializzazione
-			r[j] = 0
+			r[j] = 0		//il costo di un'asta lunga 0 è 0
 		}
 		else {
 			q = -1
-			for (i = 0 to j) {
+			for (i = 1 to j) {
 				q = max(q, p[i] + top_down_cut_rod_aux(p, j-i, r))
 			}
 			r[j] = q
@@ -194,9 +198,9 @@ Per risolvere un sottoproblema di dimensione $j$ viene eseguito un ciclo for che
 $$\sum_{j = 1}^{n}j = \frac{n(n+1)}{2} = \Theta(n^2)$$
 
 
-Quindi alla complessità dell'algoritmo totale dobbiamo aggiungerci anche il tempo dell'inizializzazione del vettore:
+Alla complessità dell'algoritmo totale dobbiamo aggiungerci anche il tempo dell'inizializzazione del vettore:
 
-$$T(n) = \Theta(n) = \Theta(n^2) = \Theta(n^2)$$
+$$T(n) = \Theta(n) + \Theta(n^2) = \Theta(n^2)$$
 
 ## Tecnica bottom-up
 
@@ -226,7 +230,7 @@ Quindi entrambi i metodi hanno la stessa complessità (generalmente la tecnica t
 
 ## Dove tagliare?
 
-Siamo riuscite ad ottenere il ricavo massimo possibile, però non sappiamo ancora dove vanno fatti i tagli per ottenere tali risultati.
+Siamo riuscite ad ottenere il ricavo massimo possibile, però non sappiamo ancora dove vanno fatti i tagli per ottenere tale ricavo massimo.
 
 Estendiamo l'algoritmo bottom-up per fargli restituire anche questa informazione, ci serveremo di un altro vettore `s[1 ... n]` in cui nella $i$-esima posizione memorizza la posizione del primo taglio che determina la soluzione ottima per il sottoproblema di dimensione $i$
 

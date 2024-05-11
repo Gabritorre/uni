@@ -1,12 +1,12 @@
 ﻿# Tabelle hash
 
-Le **Tabelle hash** sono una struttura dati fatta nel modo: **indice (o cella)->elemento (o chiave)**, in cui ogni elemento $k$ viene memorizzato nella posizione $h(k)$ dove $h$ è una funzione, detta funzione di **hasing**, che calcola l'indice tramite delle operazioni matematica sull'elemento.
+Le **Tabelle hash** sono una struttura dati fatta nel modo: **indice (o cella)->elemento (o chiave)**, in cui ogni elemento $k$ viene memorizzato nella posizione $h(k)$ dove $h$ è una funzione, detta funzione di **hashing**, che calcola l'indice tramite delle operazioni matematiche sull'elemento.
 
 Indichiamo matematicamente la funzione $h$ come:
 
 $$h: U \rightarrow \{0, ..., m-1\}$$
 
-dove $U$ è l'universo degli elementi, mentre il range in cui la funzione produce l'output è limitato in $[0,m-1]$ quindi $m$ possibili valori.
+Dove $U$ è l'universo degli elementi, mentre il range in cui la funzione produce l'output è limitato in $[0,m-1]$ quindi $m$ possibili valori.
 $m$ risulta essere la grandezza della tabella hash, generalmente $m$ è molto più piccolo del numero di elementi in $U$
 
 Graficamente possiamo rappresentare la tabella hash nel seguente modo
@@ -28,7 +28,7 @@ Ci sono due tecniche per gestire le collisioni:
 ## Liste di collisione / concatenamento
 
 In questa implementazione viene utilizzata una lista (generalmente doppiamente linkata) per ogni indice, contenente tutti gli elementi che vengono mappati sullo stesso indice.
-Nell'indice $j$ sarà contenuto un puntatore alla testa della lista, se sono presenti elementi mappati in quel indice, altrimenti ci sarà NIL.
+Nell'indice $j$, se sono presenti elementi mappati in quel indice, sarà contenuto un puntatore alla testa della lista, altrimenti, ci sarà NIL.
 
 Vediamo come implementare le operazioni di: inserimento, ricerca e cancellazione:
 
@@ -36,7 +36,7 @@ Vediamo come implementare le operazioni di: inserimento, ricerca e cancellazione
 
 ### Inserimento
 
-```c++
+```cpp
 chaining_hash_insert(T, x) {
 	// inserimento in testa alla lista T[h(x.key)]
 }
@@ -48,7 +48,7 @@ chaining_hash_insert(T, x) {
 
 ### Ricerca
 
-```c++
+```cpp
 chaining_hash_search(T, k) {
 	// ricerca un elemento con chiave k nella lista T[h(k)]
 }
@@ -58,13 +58,13 @@ chaining_hash_search(T, k) {
 
 ### Cancellazione
 
-```c++
+```cpp
 chaining_hash_delete(T, x) {
 	// cancella x dalla lista T[h(x.key)]
 }
 ```
 
-- supponendo che `x` sia un puntatore all'elemento da cancellare, non è necessaria una fase di ricerca dell'elemento nella lista. Di conseguenza è sufficiente aggiornare i puntatori, per cui la complessità è costante (ricordando che stiamo usando una lista doppiamente linkata, altrimenti sarebbe $O(n)$ perchè andrebbe trovato il predecessore di `x`)
+- supponendo che `x` sia un puntatore all'elemento da cancellare, non è necessaria una fase di ricerca dell'elemento nella lista. Di conseguenza è sufficiente aggiornare i puntatori, per cui la complessità è costante (ricordando che stiamo usando una lista doppiamente linkata, altrimenti sarebbe $O(n)$ perché andrebbe trovato il predecessore di `x`)
 
 - Nelle situazioni reali non è detto di possedere il puntatore all'elemento, quindi andrebbe ottenuto tramite una `search` e quindi la complessità sarebbe quella della `search`
 
@@ -75,7 +75,7 @@ Analizziamo la complessità della ricerca nel caso medio e pessimo.
 
 Sia $T$ una tabella di hash con $m$ celle che memorizza $n$ chiavi
 
-Il **caso pessimo** si ha quando tutte le chiavi sono mappate nello stessa cella, in questo caso avremmo una unica lista grande $n$, quindi la complessità della ricerca nel caso peggiore è $O(n)$
+Il **caso pessimo** si ha quando tutte le chiavi sono mappate nella stessa cella, in questo caso avremmo una unica lista grande $n$, quindi la complessità della ricerca nel caso peggiore è $O(n)$
 
 Il **caso medio** dipende fortemente da quanto è buona la funzione di hashing, cioè quanto bene riesce a distribuire gli elementi nelle varie celle.
 Per determinare la complessità supponiamo di essere sotto l'ipotesi di **Hashing uniforme indipendente**, e l'ipotesi è la seguente:
@@ -92,17 +92,17 @@ Definiamo il **fattore di carico** che ci servirà nella dimostrazione:
 il **fattore di carico** è definito come 
 $$\alpha=\frac{n}{m}$$
 
-cioè il numero di elementi mappati diviso la grandezza della tabella hash, in altre parole possiamo vederlo come la **lunghezza media delle liste** dell'hash table.
+Cioè il numero di elementi mappati diviso la grandezza della tabella hash, in altre parole possiamo vederlo come la **lunghezza media delle liste** dell'hash table.
 
-Ovviamente il valore di $\alpha$ può essere minore, maggiore oppure uguale a 1, ma per ottenere le migliori prestazioni è più conveniente che si $\alpha \leq 1$, avendo così delle liste molto piccole e quindi il tempo di accesso ad ogni elemento sarebbe immediato.
+Ovviamente il valore di $\alpha$ può essere minore, maggiore oppure uguale a 1, ma per ottenere le migliori prestazioni è più conveniente che si abbia $\alpha \leq 1$, avendo così delle liste molto piccole e quindi il tempo di accesso ad ogni elemento sarebbe immediato.
 
 Dividiamo i casi di ricerca con successo e senza successo:
 
 1. **Teorema**: In una tabella hash in cui le collisioni sono risolte con il metodo del concatenamento, una ricerca **senza successo** (l'elemento non è presente) richiede tempo $\Theta(1 + \alpha)$ nel **caso medio**, nell'ipotesi di hashing uniforme indipendente
 
 	Dimostrazione: Intuitivamente possiamo dividere la ricerca in:
-	- calcolo di `j = h(k)`	$\hspace{36.6mm} O(1)$
-	- accesso a `T[j]`	$\hspace{42.4mm} O(1)$
+	- calcolo della funzione di hash `j = h(k)`	$\hspace{11.6mm} O(1)$
+	- accesso alla lista in posizione `T[j]`	$\hspace{18mm} O(1)$
 	- scorrimento della lista `T[j]` fino al fondo $\hspace{10mm} \Theta(\alpha)$
 
 	Nota che il $"1+"$ nella complessità (dato dalla funzione hash) è necessario specificarlo in quanto $\alpha$ potrebbe essere minore di $1$
@@ -110,8 +110,8 @@ Dividiamo i casi di ricerca con successo e senza successo:
 2. **Teorema**: In una tabella hash in cui le collisioni sono risolte con il metodo del concatenamento, una ricerca **con successo** (l'elemento viene trovato) richiede tempo $\Theta(1 + \alpha)$ nel **caso medio**, nell'ipotesi di hashing uniforme indipendente
 
 	Dimostrazione: Intuitivamente possiamo dividere la ricerca in:
-	- calcolo di `j = h(k)`	$\hspace{36.6mm} O(1)$
-	- accesso a `T[j]`	$\hspace{42.4mm} O(1)$
+	- calcolo della funzione di hash `j = h(k)`	$\hspace{26.6mm} O(1)$
+	- accesso alla lista in posizione `T[j]`	$\hspace{33.3mm} O(1)$
 	- scorrimento della lista `T[j]` fino al trovamento del valore cercato, che mediamente sarà posto a metà lista, quindi $\frac{\alpha}{2}\hspace{61mm} \Theta(\frac{\alpha}{2}) = \Theta(\alpha)$
 
 	Nota che il $"1+"$ nella complessità (dato dalla funzione hash) è necessario specificarlo in quanto $\alpha$ potrebbe essere minore di $1$
@@ -124,11 +124,11 @@ Se però $n = O(m)$, cioè se ci sono più celle che elementi da salvare, avremo
 Prima di passare alla tecnica di indirizzamento aperto vediamo come possono venir realizzate le funzioni di hash
 
 Una funzione hash prende una chiave come input e la manipola con delle operazioni matematiche per restituire in output un numero intero associato a quella chiave. 
-Lo scopo della funzione di hash è quello di riuscire a **distribuire gli elementi in modo uniforme** in tutta la tabella 
+Lo scopo della funzione di hash nel nostro caso è quello utilizzarle per riuscire a **distribuire gli elementi in modo uniforme** in tutta la tabella.
 
 Solitamente però le funzioni hash assumono che le chiavi siano dei numeri naturali.
 
-Quindi Tutto quello che vedremo sarà nell'ipotesi di avere delle **chiavi naturali**
+Quindi tutto quello che vedremo sarà nell'ipotesi di avere delle **chiavi naturali**
 
 Vediamo 2 metodi di hashing:
 
@@ -137,14 +137,14 @@ Vediamo 2 metodi di hashing:
 
 ## Metodo della divisione
 
-Nel metodo della divisione la funzione di hash consiste nel prendere il resto della divisione tra chiave ($k$) e grandezza della tabella ($m$) (quindi l'operazione di modulo)
+Nel metodo della divisione la funzione di hash consiste nel prendere il resto della divisione tra chiave $k$ e grandezza della tabella $m$ (quindi l'operazione di modulo)
 
 $$h(k) = k \text{ mod } m$$
 
 il vantaggio di questa implementazione è sicuramente la facilità di realizzazione.
 D'altra parte però abbiamo due grandi svantaggi:
 1. La dimensione della tabella viene reso un parametro critico per la funzione di hash
-2. come conseguenza del precedente punto, la dimensione della tabella non va scelta casualmente in quanto alcuni valori di $m$ funzionano peggio di altri. Ad esempio bisognerebbe evitare le potenze di 2 e anche numero vicini alle potenze di 2 come grandezza della tabella (in quanto il risultato dell'hash dipenderebbe solo dagli ultimi $p$ bit della chiave, dove $p$ è l'esponente della potenza di 2).
+2. come conseguenza del precedente punto, la dimensione della tabella non va scelta casualmente in quanto alcuni valori di $m$ funzionano peggio di altri. Ad esempio bisognerebbe evitare le potenze di 2 e anche numeri vicini alle potenze di 2 come grandezza della tabella (in quanto il risultato dell'hash dipenderebbe solo dagli ultimi $p$ bit della chiave, dove $p$ è l'esponente della potenza di 2).
 
 Una buona scelta per la grandezza della tabella è un **numero primo abbastanza distante dalle potenze di 2 e di 10**
 
@@ -155,7 +155,7 @@ Scelgo un $m$ vicino a $\frac{2000}{3} = 666.\bar6$ ad esempio $m = 701$
 
 ## Metodo della moltiplicazione
 
-L'idea alla base di questo metodo sta nel fatto che, data una chiave (naturale) la trasformiamo in un numero reale compreso tra $[0, 1[$ per poi applicare la funzione di hash seguente:
+L'idea alla base di questo metodo sta nel fatto che, data una chiave (naturale) $k$ la trasformiamo in un numero reale compreso tra $[0, 1[$ per poi applicare la funzione di hash seguente:
 
 $$h(k) = \lfloor m\cdot k\rfloor \hspace{10mm}\text{dove } 0 \leq k < 1$$
 
@@ -164,9 +164,8 @@ Gli step sono i seguenti:
 
 1. Fisso una costante $0<A<1$ 
 2. calcolo $A \cdot k$ che genererà un numero con la virgola
-3. estraggo la parte frazionaria facendo il modulo di 1
+3. estraggo la parte frazionaria (facendo il modulo di 1)
 
-$(A \cdot k) \text{ mod } 1$
 
 Dunque la funzione di hash calcolerà il risultato con il seguente calcolo
 
@@ -187,11 +186,12 @@ Vediamo come semplificare il calcolo della funzione di hash del metodo del prodo
 
 Sia $w$ la lunghezza di una parola in memoria.
 Assumiamo che una chiave $k$ entri in una singola parola.
-Scegliamo un intero $0 < q < 2^w$ e $m = 2^p$ con $0<p<w$
+Scegliamo un intero $0 < q < 2^w$
+e una potenza di due $m = 2^p$ con $0<p<w$
 
-Poniamo $A = \frac{q}{2^w}$ che sarà sicuramente compreso tra $[0,1[$ per come abbiamo limitato i parametri
+Poniamo $\large A = \frac{q}{2^w}$ che sarà sicuramente compreso tra $[0,1[$ per come abbiamo limitato i parametri
 
-Calcolo:
+Calcolo $A \cdot k$:
 $$A\cdot k = \frac{k\cdot q}{2^w}$$
 
 che a sua volta sarà un numero frazionario, di questo numero a noi ci interessa solo la parte frazionaria

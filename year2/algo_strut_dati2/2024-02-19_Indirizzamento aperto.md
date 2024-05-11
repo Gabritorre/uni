@@ -6,19 +6,18 @@ Ogni cella contiene o una elemento oppure un NIL.
 Vediamo come si comporta questa metodo per cercare una chiave $k$:
 
 1. calcola la funzione hash $h(k)$
-2. si **ispeziona** la cella all'indirizzo dato dalla funzione hash
+2. si **ispeziona** la cella all'indirizzo restituito dalla funzione hash
 	- se la cella contiene la chiave $k$ la ricerca ha avuto successo
 	- se la cella contiene NIL la ricerca ha avuto un insuccesso
-	- se la cella contiene una chiave che non è $k$ allora bisogna trovare un altro indice basandosi su $k$ e all'**ordine di ispezione** (cioè il numero di ispezioni fatte fino a quel momento)
+	- se la cella contiene una chiave che non è $k$ allora bisogna trovare un altro indice basandosi su $k$ e sull'**ordine di ispezione** (cioè il numero di ispezioni fatte fino a quel momento)
 	Si continua ad ispezionare fino a che:
 		- trovo $k$ (successo)	
 		- trovo NIL (insuccesso)
-		- dopo $m$ ispezioni, cioè ho ispezionato tutta la tabella (insuccesso)
+		- eseguo $m$ ispezioni, cioè ho ispezionato tutta la tabella (insuccesso)
 
-In questo caso la funziona hash va modificata in modo da prendere un parametro aggiuntivo (l'ordine di ispezione). Diremo che $h(k, i)$ rappresenta la posizione della chiave $k$ dopo $i$ ispezioni fallite, inizialmente $i=0$
+In questo caso la funzione di hash va modificata in modo da prendere un parametro aggiuntivo (l'ordine di ispezione). Diremo che $h(k, i)$ rappresenta la posizione della chiave $k$ dopo $i$ ispezioni fallite, inizialmente $i=0$
 
-Si richiede che i **valori generati dalle funzioni di hash** $h(k,i)$, dove $i$ varia da $0,...m-1$ e $k$ rimane fisso **siano una permutazione** di $<0, ..., m-1>$ in quanto dobbiamo poter visitare tutte le celle per stabilire se $k$ è presente o meno. Inoltre si tratta di una permutazione in quanto non è detto che si cerchi $k$ in modo sequenziale tra le celle.
-
+Si richiede che i **valori generati dalle funzioni di hash** $h(k,i)$, dove $i$ varia da $[0,...m-1]$ e $k$ rimane fisso, **siano una permutazione** di $<0, ..., m-1>$ in quanto dobbiamo poter visitare tutte le celle per stabilire se $k$ è presente o meno. Inoltre si tratta di una permutazione in quanto non è detto che si cerchi $k$ in modo sequenziale tra le celle.
 
 ## Operazioni con indirizzamento aperto
 
@@ -27,17 +26,17 @@ Lavoreremo sotto la seguente ipotesi: gli elementi della tabella contengono dire
 ### Inserimento
 
 postcondizione: il seguente metodo restituisce l'indice della cella dove ha memorizzato $k$, oppure segnala un errore se la tabella è piena
-```c++
+```cpp
 hash_insert(T, k) {
 	i = 0;
 	trovata = false;
 	repeat:
-		j = h(k, i);
-		if (T[j] == NIL OR T[j] == DELETED) {
+		j = h(k, i);		//calcola la funzione di hash
+		if (T[j] == NIL OR T[j] == DELETED) {		//trovo una cella libera
 			T[j] = k;
 			trovato = true;
 		}
-		else {
+		else {		//riprovo con un'altra cella
 			i++;
 		}
 	until (trovata == true || i == m);
@@ -77,7 +76,7 @@ hash_search(T, k) {
 }
 ```
 
-Nota che la condizione `T[j] == NIL` si deve al fatto che se dopo varie celle occupate da chiavi che non sono $k$ si incontra una cella vuota allora la chiave $k$ dovrebbe essere stata messa in quella posizione, se non c'è significa che non è presente in tutta la tabella
+Nota che la condizione `T[j] == NIL` si deve al fatto che se dopo varie celle occupate da chiavi che non sono $k$ si incontra una cella vuota allora la chiave $k$ dovrebbe essere stata messa in quella posizione, se non c'è significa che non è presente in tabella
 
 
 ### Cancellazione
@@ -103,26 +102,25 @@ supponiamo di avere la seguente tabella
 Questo però ci crea un problema: 
 se adesso volessimo cercare l'elemento $12$ dovremmo fare gli stessi step che abbiamo fatto per il suo inserimento, quindi:
 	- $h(12, 0) = 4$ ma in posizione 4 non c'è la chiave 12 quindi proseguiamo
-	- $h(12, 0) = 1$ ma in tale posizione si trova `NIL` e per le nostre ipotesi sulla ricerca quando si trova `NIL` significa che l'elemento da cercare non è presente nella tabella (ma questo non è vero in quanto il $12$ è presente)
+	- $h(12, 1) = 1$ ma in tale posizione si trova `NIL` e per le nostre ipotesi sulla ricerca quando si trova `NIL` significa che l'elemento da cercare non è presente nella tabella (ma questo non è vero in quanto il $12$ è presente)
 
 Per risolvere questo problema, invece di porre a `NIL` l'elemento rimosso, utilizziamo un altro valore, `DELETED`. 
 Riusciamo così a distinguere il caso in cui l'elemento non è presente nella tabella quando raggiungiamo `NIL`, mentre il caso in cui l'elemento può essere presente in una altra posizione quando raggiungiamo `DELETED`.
 Questo è il motivo per cui nella `insert` controlliamo anche il caso in cui la cella contiene `DELETED` per inserire l'elemento
 
-Svantaggio di `DELETED`: l'utilizzo di questo valore comporta il fatto che il tempo della `search` non dipende più dal fattore di carico $\alpha$: dopo tanti inserimenti e cancellazioni nella tabella si avranno solo chiavi valide e `DELETED`, non ci saranno più `NIL` e di conseguenza la `search` si scorre tutta la tabella per cercare un elementi non presenti.
-
+Svantaggio di `DELETED`: l'utilizzo di questo valore comporta il fatto che il tempo della `search` non dipende più dal fattore di carico $\alpha$: dopo tanti inserimenti e cancellazioni nella tabella si avranno solo chiavi valide e `DELETED`, non ci saranno più `NIL`, e di conseguenza la `search` si scorre tutta la tabella per cercare un elemento non presente.
 
 ## Metodi di scansione/ispezione
 
-La situazione ideale per l'indirizzamento aperto è l'**hashing uniforme indipendente**, cioè ogni chiave ha la stessa probabilità di avere come sequenza di ispezioni una delle $m!$ permutazioni.
+Vediamo in che modo si può implementare una scansione della tabella per cercare un determinato elemento.
 
+La situazione ideale per l'indirizzamento aperto è l'**hashing uniforme indipendente**, cioè ogni chiave ha la stessa probabilità di avere come sequenza di ispezioni una delle $m!$ permutazioni.
 
 Vediamo delle tecniche che cercano di approssimare questa situazione:
 
 - Ispezione lineare
 - Ispezione quadratica
 - Doppio hashing
-
 
 ## Ispezione lineare
 
@@ -169,7 +167,7 @@ Vediamo i passaggi dell'inserimento:
 
 **Vantaggi**: Facilità di implementazione
 
-**Svantaggi**: si possono formare lunghe file di chiavi adiacenti, che rallentano l'inserimento (nell'esempio precedente si nota che per il 4 elemento ci sono stati tanti tentativi)
+**Svantaggi**: si possono formare lunghe file di chiavi adiacenti, che rallentano l'inserimento (nell'esempio precedente si nota che per l'elemento $43$ ci sono stati tanti tentativi nonostante c'erano 10 celle libere)
 
 ## Ispezione quadratica
 
@@ -178,7 +176,7 @@ Questo metodo si calcola come:
 
 $$h(k, i) = (h'(k) + c_1 \cdot i + c_2 \cdot i^2)\mod m$$
 
-dove $c_1, c_2$ sono due costanti ausiliarie i cui valori sono compresi tra $[1, m-1]$ e devono essere diverse da $i$
+dove $c_1, c_2$ sono due costanti reali ausiliarie con valore diverso da $0$
 
 Se ad esempio consideriamo $c_1 = c_2 = \frac{1}{2}$ e $m = 2^p$ per qualunque $p$, l'hashing quadratico soffre dello stesso problema dell'ispezione lineare: se due chiavi sono mappate (tramite la funzione di hash ausiliaria) nella stessa cella allora le due chiavi generano la stessa identica sequenza di ispezione (si creano quindi lunghe file di chiavi adiacenti)
 
@@ -188,7 +186,7 @@ La formula per questo metodo è la seguente:
 
 $$h(k, i) = (h_1(k) + i \cdot h_2(k)) \mod m$$
 
-dove $h_1$ e $h_2$ sono due funzioni di hash ausiliarie e $i$ può assumere tutti i valori da $0$ a $m-1$.
+dove $h_1$ e $h_2$ sono due funzioni di hash ausiliarie.
 
 $h_1$ serve per determinare il punto di partenza (è indipendente dal valore di $i$)
 $h_2$ serve per determinare il passo delle ispezioni
@@ -223,7 +221,7 @@ Vediamo i passaggi dell'inserimento:
 	non c'è collisione, quindi $T[2] = 43$
 
 
-Notiamo che con questo metodo abbiamo meno collisioni dell'altro metodo e le chiavi risultano distribuiti più uniformemente. Tale metodo risulta essere migliore dei due precedenti negli usi reali.
+Notiamo che con questo metodo abbiamo meno collisioni dell'altro metodo e le chiavi risultano distribuite più uniformemente. Tale metodo risulta essere migliore dei due precedenti negli usi reali.
 
 ### Costruire la funzione di hash
 
@@ -233,7 +231,7 @@ Per costruire una funzione di hash efficiente è necessario che $h_2(k)$ generi 
 
 Vediamo due modi di costruire la funzione di hash $h_2(k)$:
 
-1. scegliere $m = 2^p$, questo vuol dire che $m$ è una potenza di 2 e di conseguenza un numero pari.
+1. Scegliere $m = 2^p$, questo vuol dire che $m$ (la grandezza della tabella hash) è una potenza di 2 e di conseguenza un numero pari.
 Si definisce quindi $h_2(k)$ in modo che produca sempre numeri dispari, così facendo $m$ e $h_2(k)$ saranno sempre relativamente primi.
 Per esempio $h_2(k) = 2h'(k) + 1$ dove $h'$ è una funzione hash qualunque
 
@@ -250,20 +248,20 @@ Analizziamo il tempo di esecuzione delle operazioni di ricerca e inserimento. La
 1. Supponiamo che l'hashing sia uniforme e indipendente
 2. Assumiamo che non vengano fatte operazioni di cancellazione (in quanto porterebbe un aumento dei tempi di esecuzione)
 
-Copieremo l'analisi basandoci sul fattore di carico $\alpha = \frac{n}{m}$, che nel caso di indirizzamento aperto sappiamo che $0\leq \alpha\leq1$.
-in una tabella grande $m$ possiamo quindi memorizzare al massimo $m$ chiavi, e quando la tabella sarà piena allora $\alpha = 1$ (cioè una sola chiave per ogni cella), mentre quanto la tabella è vuota allora $\alpha = 0$
+Compieremo l'analisi basandoci sul fattore di carico $\alpha = \frac{n}{m}$, che nel caso di indirizzamento aperto sappiamo valere $0\leq \alpha\leq1$.
+In una tabella grande $m$ possiamo quindi memorizzare al massimo $m$ chiavi, e quando la tabella sarà piena allora $\alpha = 1$ (cioè una sola chiave per ogni cella), mentre quanto la tabella è vuota allora $\alpha = 0$
 
 ### Ricerca
 
-**Teorema**: Rispettando le ipotesi precendeti, con hashing ad indirizzamento aperto con $\alpha = \frac{n}{m} < 1$ il numero atteso di ispezioni in una **ricerca senza successo** (caso peggiore) risulta essere al massimo $\frac{1}{1-\alpha}$
+**Teorema**: Rispettando le ipotesi precedenti, con hashing ad indirizzamento aperto con $\alpha = \frac{n}{m} < 1$ il numero atteso di ispezioni in una **ricerca senza successo** (caso peggiore) risulta essere al massimo $\frac{1}{1-\alpha}$
 
 **Intuizione della dimostrazione**: Se $\alpha < 1$ allora ci sono sicuramente delle celle vuote (quando la tabella è piena $\alpha = 1$), quindi per compiere una ricerca posso fermarmi alla prima cella libera che trovo.
 
 Lavoriamo con le probabilità, indichiamo con $\mathbb{P}[i]$ la probabilità che avvenga l'ispezione $i$-esima
 1. una ispezione viene sicuramente sempre compiuta: $\mathbb{P}[1] = 1$
 2. La probabilità di fare una seconda ispezione equivale alla probabilità che la prima cella sia occupata: $\mathbb{P}[2] = \frac{n}{m}$
-3. La probabilità di fare una terza ispezione equivale alla probabilità che la seconda cella sia occupata: $\mathbb{P}[3] = \frac{n}{m} \cdot \frac{n-1}{m-1}$
-4. La probabilità di fare una quarta ispezione equivale alla probabilità che la terza cella sia occupata: $\mathbb{P}[4] = \frac{n}{m} \cdot \frac{n-1}{m-1} \cdot \frac{n-2}{m-2}$
+3. La probabilità di fare una terza ispezione equivale alla probabilità che anche la seconda cella sia occupata: $\mathbb{P}[3] = \frac{n}{m} \cdot \frac{n-1}{m-1}$
+4. La probabilità di fare una quarta ispezione equivale alla probabilità che anche la terza cella sia occupata: $\mathbb{P}[4] = \frac{n}{m} \cdot \frac{n-1}{m-1} \cdot \frac{n-2}{m-2}$
 5. ...
 
 Notiamo che dal momento che $\alpha = \frac{n}{m}$ possiamo approssimare per eccesso tutte le probabilità:
@@ -294,7 +292,7 @@ Notiamo come **più la tabella è piena più ispezioni sono necessarie**.
 **Corollario**: L'inserimento di un elemento in una tabella hash a indirizzamento aperto con un fattore di carico $\alpha$ richiede in media non più di $\frac{1}{1-\alpha}$ ispezioni, nell'ipotesi di hashing uniforme.
 
 **Dimostrazione**: Un elemento è inserito nella tabella solo se essa non è piena, cioè se $\alpha < 1$.
-L'inserimento di una chiave richiede una ricerca senza successo (cioè dobbiamo trovare una cella vuota), poi di salvare la chiave nella cella vuota trovata.
+L'inserimento di una chiave richiede una ricerca senza successo (cioè dobbiamo trovare una cella vuota), e poi di salvare la chiave nella cella vuota trovata.
 Quindi il numero atteso di ispezioni è al massimo $\frac{1}{1-\alpha}$
 
 **Teorema**: Data una tabella hash ad indirizzamento aperto con fattore di carico $\alpha < 1$, il numero atteso di ispezioni di una **ricerca con successo** è al massimo $\frac{1}{\alpha}\log\frac{1}{1-\alpha}$, sempre nell'ipotesi di hashing uniforme e indipendente.

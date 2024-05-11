@@ -7,31 +7,31 @@ Dimostriamo che $\Omega(n\log n)$ è il limite inferiore della complessità di q
 
 Dimostriamolo servendoci di **alberi decisionali**, cioè una struttura dati basata su alberi binari che ci permette di evidenziare i passaggi che farebbero gli algoritmi di ordinamento basati sul confronto.
 
-Lavoriamo sotto l'assumiamo gli **elementi da ordinare siano tutti distinti**.
+Lavoriamo sotto l'assunzione che gli **elementi da ordinare siano tutti distinti**.
 
-con un array di 3 elementi l'albero decisionale è il seguente:
-
+Con un array di 3 elementi l'albero decisionale è il seguente:
 ![enter image description here](https://i.ibb.co/4MNy7CZ/albero-decisionale.png)
 
-in generale per un input di dimensione $<a_1, ..., a_n>$ abbiamo che 
+Spiegazione:
+In generale per un input di dimensione $<a_1, ..., a_n>$ abbiamo che 
 - nei nodi interni sono etichettati dagli indici del vettore $i:j$
 	- confronto quindi l'elemento $a_i$ con l'elemento $a_j$
 	- se $a_i \leq a_j$ allora vado nel sottoalbero sinistro
 	- se $a_i > a_j$ allora vado nel sottoalbero destro
 - nelle foglie ci sono le permutazioni del vettore tali che i valori risultano essere ordinati
 
-ad esempio con l'array `A = [6, 8, 5]`
+Ad esempio con l'array `A = [6, 8, 5]`
 
 ![enter image description here](https://i.ibb.co/w47rc0c/esempio.png)
 
-
+**Osservazioni**:
 - Dato un qualsiasi algoritmo di ordinamento basato sul confronto è possibile costruire l'albero decisionale corrispondente.
 - In base alla lunghezza dell'input si avrà un albero diverso.
 - I cammini rappresentano tutti i possibili confronti che fa l'algoritmo per raggiungere la soluzione (quindi l'albero contiene tutte le permutazioni dell'input).
 - Il tempo di esecuzione dell'algoritmo è dato dalla lunghezza del cammino (cioè il numero di confronti che fa).
-- Nel caso peggiore, il tempo di esecuzione è **l'altezza dell'albero** (dalla radice alla foglia più profonda).
+- Nel caso peggiore, il tempo di esecuzione è **l'altezza dell'albero** (dalla radice alla foglia più profonda dell'albero).
 
-Vogliamo cercare un **limite inferiore** sulle altezze di tutti gli alberi di decisione, ciò infatti corrisponderà al limite inferiore al tempo di esecuzione di qualsiasi algoritmo di ordinamento basato sul confronto.
+Vogliamo cercare un **limite inferiore** sulle altezze di tutti gli alberi di decisione, ciò infatti corrisponderà al limite inferiore del tempo di esecuzione di qualsiasi algoritmo di ordinamento basato sul confronto.
 
 Dalla definizione di permutazione sappiamo che dati $n$ elementi, esistono $n!$ permutazioni (cioè modi di disporre gli elementi in modo diverso).
 Di conseguenza il numero di foglie $f \geq n!$ (maggiore o uguale perché in alcuni algoritmi è possibile avere più permutazioni (foglie) uguali, ma ogni permutazione deve comparire **almeno** una volta)
@@ -39,9 +39,11 @@ Di conseguenza il numero di foglie $f \geq n!$ (maggiore o uguale perché in alc
 
 ## Dimostrazione del limite inferiore
 
+Per la dimostrazione del limite inferiore dobbiamo prima introdurre un lemma che ci tornerà utile
+
 ## Dimostrazione del lemma
 
-Per la dimostrazione del limite inferiore ci serviamo del seguente **lemma**:
+Ci serviamo del seguente **lemma**:
 
 "Un qualsiasi albero binario di altezza $h$ ha al più $2^h$ foglie"
 
@@ -60,25 +62,27 @@ $$1 \leq 1$$
 
 **Passo induttivo**
 Assumiamo che la proprietà valga per tutti gli alberi di altezza $k < h$.
-Quindi assumo che valga $f\leq2^k$ (**ipotesi induttiva**)
-Io voglio dimostrare la proprietà per $h$, cioè che vale
+Cioè assumo che valga $f\leq2^k$ (**ipotesi induttiva**).
+Voglio dimostrare la proprietà per $h$, cioè che vale
 
 $$f\leq2^h$$
 
-dividiamo la dimostrazione in due casistiche, Sia $r$ la radice dell'albero $T$ con altezza $h$:
+Dividiamo la dimostrazione in due casistiche, Sia $r$ la radice dell'albero $T$ con altezza $h$:
 - Se $r$ ha un solo figlio
 
 	![enter image description here](https://i.ibb.co/C5HRkKw/caso1.png)
 	allora il numero di foglie dell'albero $T$ è uguale al numero di foglie del sottoalbero $T_1$
 
-	$f = f_{T_1}$
+	$$f = f_{T_1}$$
 
 	$f_{T_1} \leq 2^{h-1}$ per la nostra ipotesi induttiva (è come se $k = h-1$)
 
 	ma ovviamente $2^{h-1}\leq 2^h$
 	quindi abbiamo raggiunto che 
 
-	$$f \leq 2^h$$
+	$$f = f_{T_1} \leq 2^{h-1}\leq2^h$$
+	
+	$$f \leq2^h$$
 
 - Se $r$ ha entrambi i figli
 
@@ -91,11 +95,11 @@ dividiamo la dimostrazione in due casistiche, Sia $r$ la radice dell'albero $T$ 
 
 	$f_{T_1} + f_{T_2} \leq 2^{h_1} + 2^{h_2}$
 
-	$2^{h_1} + 2^{h_2} \leq 2\cdot 2^{\max(h_1, h_2)}$
+	$\hspace{18mm}2^{h_1} + 2^{h_2} \leq 2\cdot 2^{\max(h_1, h_2)}$
 
-	$2\cdot 2^{\max(h_1, h_2)} = 2^{1 + \max(h_1, h_2)} = 2^h$
+	$\hspace{36mm}2\cdot 2^{\max(h_1, h_2)} = 2^{1 + \max(h_1, h_2)} = 2^h$
 
-	quindi abbiamo raggiunto che 
+	Quindi abbiamo raggiunto che 
 
 	$$f \leq 2^h$$
 
@@ -158,25 +162,25 @@ $$h = \Omega(n\log n)$$
 
 Cioè l'altezza dell'albero, che rappresenta il numero di scambi dell'algoritmo di ordinamento nel caso peggiore, è limitato inferiormente da $\Omega(n\log n)$
 
-Da questo teorema deriva un **corollario**: *Heap sort* e *Merge sort* sono degli algoritmi di ordinamento basati sul confronto ottimali, in quanto il loro limite superiore corrisponde con il limite inferiore
+Da questo teorema deriva un **corollario**: *Heap sort* e *Merge sort* sono degli algoritmi di ordinamento basati sul confronto **ottimali**, in quanto il loro limite superiore corrisponde con il limite inferiore, cioè $n \log n$
 
 
 ## Counting sort
 
 Facendo delle opportune assunzioni sull'input è possibile creare degli algoritmi di ordinamento di complessità lineare.
 
-Il primo algoritmo è il **counting sort**
+Il primo algoritmo che vediamo è il **counting sort**
 
 L'assunzione che viene fatta è la seguente: i numeri da ordinare sono interi che vanno da un intervallo $[0, ..., k]$ fissato un $k$
 
 Quindi:
 - in input abbiamo l'array $A[1, ..., n]$ dove $A[j] \in [0, ..., k]$ con $n$ e $k$ come parametri dell'algoritmo
-- in output abbiamo l'array $B[1, ..., n]$ che è una permutazione in cui gli elementi sono ordinati
+- in output abbiamo l'array $B[1, ..., n]$ che è una permutazione dell'input in cui gli elementi sono ordinati
 - Abbiamo bisogno di memoria ausiliaria, un vettore $C[0, ..., k]$ contenente il numero di occorrenze di ogni valore
 
-```c++
+```cpp
 counting_sort(array A, array B, int n, int k) {
-	array C[k];
+	array C[0...k];
 	for (i = 0 to k) {			// Θ(k)
 		C[i] = 0
 	}
@@ -206,7 +210,7 @@ spiegazione dei cicli for:
 2. secondo ciclo: riempie il vettore delle occorrenze inserendo per ogni elemento quante volte è presente (l'elemento stesso viene usato come indice nel vettore delle occorrenze).
 nota che l'indice parte da $0$ in quanto il range di valori che possono assumere gli elementi presenti in $A$ vanno da $0$ a $k$
 3. terzo ciclo: nel vettore delle occorrenze andiamo ad inserire le somme prefisse, cioè quante volte è presente il numero stesso + tutti i numeri più piccoli di quel numero. così sappiamo per ogni numero quanti elementi ci sono prima di lui.
-4. quarto ciclo: riempiamo l'array di output, `C[A[j]]` ci restituirà quanti elementi ci sono prima dell'elemento in posizione `j`, se ad esempio ci restituisce `5` allora sappiamo che ci sono 4 elementi prima di quel elemento e quindi lui sarà in 5° posizione.
+4. quarto ciclo: riempie l'array di output. `C[A[j]]` ci restituirà quanti elementi ci sono prima dell'elemento in posizione `j`, se ad esempio ci restituisce `5` allora sappiamo che ci sono 4 elementi prima di quel elemento e quindi lui sarà in 5° posizione.
 Inoltre decrementiamo le occorrenze così nel caso di elementi uguali nell'array di input, gli elementi non si sovrappongono nell'array risultante.
 Scorriamo l'array dalla fine perché così riusciamo a rendere l'algoritmo **corretto ma anche stabile** (questo sarà molto importante per il prossimo algoritmo di ordinamento che vedremo)
 
@@ -215,12 +219,12 @@ Esempio:
 
 ### Complessità
 
-Dalle complessità dei singoli cicli che abbiamo trovato nel codice abbiamo che la complessità è 
+Dalle complessità dei singoli cicli che abbiamo scritto nel codice abbiamo che la complessità è 
 $$\Theta(n + k)$$
 
-é conveniente usare questo algoritmo quanto $k = O(n)$, cioè quanto $k \leq n$ in quanto si otterrebbe un tempo lineare $\Theta(n)$
+È conveniente usare questo algoritmo quanto $k = O(n)$, cioè quanto $k \leq n$ in quanto si otterrebbe un tempo lineare $\Theta(n)$.
 
-se così non fosse non sarebbe per nulla conveniente, immaginiamo di avere un array in cui gli elementi sono dei numeri molto grandi e molto piccoli, allora la complessità sarà data dalla grandezza del vettore $C$.
+Se così non fosse non sarebbe per nulla conveniente, immaginiamo di avere un **array relativamente piccolo** in cui gli **elementi sono dei numeri molto grandi e molto piccoli**, allora la complessità sarà data dalla grandezza del vettore $C$.
 
 Ad esempio
 $A=[0, 10, ..., n^3, n]$ ipotizzando che $n^3$ sia l'elemento massimo del vettore allora il vettore $C$ dovrà essere grande $n^3$ elementi e quindi la complessità dell'algoritmo sarebbe $\Theta(n^3)$
@@ -235,8 +239,11 @@ Deve comunque valere il limite superiore $M + L = O(n)$ per risultare efficiente
 
 ## Radix sort
 
-**Assunzione**: Tutti i numeri da ordinare sono composti da $d$ cifre. la posizione $1$ è la meno significativa mentre la cifra in posizione $d$ è la più significativa
+Vediamo un altro algoritmo, il Radix sort.
+ 
+**Assunzione**: **Tutti i numeri** da ordinare sono composti da $d$ cifre. la posizione $1$ è la meno significativa mentre la cifra in posizione $d$ è la più significativa
 
+Il codice è il seguente:
 ```c++
 radix_sort(array A, int d) {
 	for (i = 1 to d) {
@@ -250,17 +257,18 @@ radix_sort(array A, int d) {
 
 ![enter image description here](https://i.ibb.co/x3Fhx97/esempio.png)
 
-la correttezza dell'algoritmo si basa sul fatto che l'algoritmo di ordinamento sulle singole cifre è **stabile** (come il *counting sort*)
+la correttezza dell'algoritmo si basa sul fatto che l'algoritmo di ordinamento usato sulle singole cifre è **stabile** (come il *counting sort*)
 
 Analizziamo la correttezza:
 lo facciamo per induzione sulla colonna da ordinare
 
-**Caso base**: $i = 1$, se infatti abbiamo solo una colonna che vado ad ordinare, dato che ho solo una colonna allora i numeri saranno composti da una cifra e quindi risulteranno ordinati.
+**Caso base**: $i = 1$, ordino l’unica colonna e non devo fare altro, perché i numeri sono costituiti da una sola cifra.
 
-**Passo induttivo**: la nostra ipotesi induttiva sarà che le colonne $1, ..., i-1$ sono ordinate e voglio dimostrare che un algoritmo stabile sulla colonna $i$ rende le colonne $1, ..., i$ ordinate. Distinguo due casi:
+**Passo induttivo**: la nostra ipotesi induttiva sarà che le colonne $1, ..., i-1$ sono ordinate e voglio dimostrare che un algoritmo stabile sulla colonna $i$ rende le colonne $1, ..., i$ ordinate.
+Distinguo due casi:
 
-1. se 2 cifre nella colonna $i$ sono uguali, per la stabilità essi rimangono nello stesso ordine e per l'ipotesi induttiva sono ordinati
-2. se 2 cifre nella colonna $i$ sono diverse, l'algoritmo le ordina e quindi le mette nella posizione corretta
+1. se due cifre nella colonna $i$ sono uguali, per la stabilità essi rimangono nello stesso ordine e per l'ipotesi induttiva sono ordinati
+2. se due cifre nella colonna $i$ sono diverse, l'algoritmo le ordina e quindi le mette nelle posizioni corrette
 
 ### Analisi della complessità
 
@@ -270,8 +278,6 @@ Questo perche:
 - Ad ogni iterazione viene chiamato un algoritmo stabile di complessità $\Theta(n + k)$ come il counting sort
 - Vendono fatte $d$ iterazioni
 
-quindi in totale abbiamo una complessità $\Theta(d(n + k))$
-
 Se $k = O(n)$, in altre parole, se $k \leq n$ allora la complessità diventa $\Theta(dn)$ e inoltre se $d$ è costante allora la complessità diventa $\Theta(n)$
 
 ## Scegliere i valore $d$ e $k$
@@ -279,7 +285,7 @@ Se $k = O(n)$, in altre parole, se $k \leq n$ allora la complessità diventa $\T
 Vediamo come scegliere i valori dei parametri $d$ e $k$ per riuscire a rendere l'algoritmo con la complessità migliore possibile.
 
 Immaginiamo di avere un valore rappresentato in binario su 32 bit, Abbiamo quindi un valore con 32 cifre in cui ogni cifra può assumere 2 valori, assegnando i valori alle variabili avremo:
-$n = 1$ (lavoriamo con un solo numero per capire)
+$n = 1$ (lavoriamo con un solo numero per semplicità)
 $d = 32$
 $k = 2$
 
@@ -289,7 +295,7 @@ Dividiamo, ad esempio, il nostro numero in blocchi di 8 bit (1 byte). Otterremo 
 
 otteniamo così una complessità $\Theta(4(n + 256))$ che cresce molto più lentamente della precedente (per $n$ molto grande)
 
-Nella maggior parte dei casi si avrà $k$ svariate potenze più grande di $n$, in tal caso basta portare $k = n$ e poi ottenere il numero di cifre facendo $\log_n(k')$ dove $k'$ è il $k$ originale
+Nella maggior parte dei casi si avrà $k$ svariate potenze più grande di $n$, in tal caso basta portare $k = n$ e poi ottenere il numero di cifre facendo $\log_n(k')$ dove $k'$ è il valore originale di $k$ (prima di portarlo uguale a $n$) 
 
 ### Generalizzazione
 
@@ -301,9 +307,12 @@ La questione che rimane è come scegliere il valore di $r$: abbiamo che $r$ è s
 
 Distinguiamo due casi (nota che il logaritmo è in base $2$ perché lavoriamo con numeri binari)
 
-1. se $b < \log_2 n$ (che sarebbe come scrivere $2^b <n$, ad esempio $b = 4$ e $n = 64$) allora per qualsiasi valore $r\leq b$ si ha che $n + 2^r$ risulta essere $\Theta(n)$, scelgo però il valore di $r$ più grande che mi è possibile, quindi $r = b$. Ottengo quindi:
+1. se $b < \log_2 n$ (che sarebbe come scrivere $2^b <n$, ad esempio $b = 4$ e $n = 64$) allora per qualsiasi valore $r\leq b$ si ha che $n + 2^r$ risulta essere $\Theta(n)$, scelgo quindi il valore di $r$ più grande che mi è possibile, quindi $r = b$. Ottengo quindi:
 
 	$$\Theta\left(\frac{b}{b}\left(n + 2^b\right)\right) = \Theta(n)$$
+
+	Nota che $\log_2 n$ rappresenta il numero di bit che mi servono per rappresentare valori da $0$ a $n-1$.
+Quindi avere che l'attuale numero di bit $b$ è minore di questo numero significa che il numero di elementi da ordinare è maggiore rispetto al range di valori che tali elementi assumono. Riferendoci alla formula vecchia stiamo ribadendo il concetto che se $k \leq n$ (dove adesso per noi $k = 2^b$) allora la complessità dipende da $n$ e non da $k$
 
 2. se $b \geq \log_2 n$ (cioè $2^b \geq n$) allora scegliamo $r$ in modo tale che sia massimo  sotto la condizione $n \geq 2^r$, cioè $r = \log_2 n$. ottengo quindi:
 
