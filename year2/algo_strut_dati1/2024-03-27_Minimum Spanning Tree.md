@@ -2,16 +2,18 @@
 
 Partiamo col dare delle informazioni generali sugli alberi:
 
-Con alberi ci riferiamo ad **alberi liberi**, cioè grafi aciclici connessi non gerarchici (quindi dove non è presente un nodo radice),
+Con alberi ci riferiamo ad **alberi liberi**, cioè grafi aciclici connessi non gerarchici (quindi dove non è presente un nodo radice).
 
 Se $G = (V, E)$ è un albero allora
 
 $$|E| = |V| - 1$$
 
-Ciò deriva dalle proprietà di grafo connesso e aciclico, infatti unendole:
+Ciò deriva dalle proprietà di grafo connesso e aciclico, infatti unendo le due caratteristiche:
 
 - Se connesso allora vale che $|E| \geq |V| -1$
 - Se aciclico allora vale che $|E| \leq |V| - 1$
+
+Nota che si tratta di una implicazione: avere $|E| = |V| - 1$ non significa automaticamente che si tratta di un albero.
 
 ## Teorema della caratterizzazione degli alberi
 
@@ -25,31 +27,32 @@ Dato un grafo $G = (V, E)$ non orientato, affermare che $G$ è un albero è equi
 
 ## Spanning Tree
 
-*Spanning Tree* (o Albero di copertura) di un grafo $G$ connesso e non orientato è un sottoinsieme di archi tale che:
-- formano un albero
-- tutti i nodi di $G$ vengono toccati
+*Spanning Tree* (o Albero di copertura) di un grafo $G$ connesso e non orientato è un **sottoinsieme di archi** tale che:
+- Gli archi del sottoinsieme formano un albero
+- Gli archi del sottoinsieme toccato tutti i nodi di $G$
 
 Un grafo può avere più alberi di copertura, e se è connesso ne avrà sicuramente almeno uno.
 
-$ST(G)$ è l'insieme degli *spanning tree* del grafo $G$
+$ST(G)$ è l'insieme degli *spanning tree* del grafo $G$.
 
 Formalmente scriveremo che un albero di copertura è 
 
 $T \subseteq E$ tale che il grafo $(V, T)$ è un albero
 
 ![enter image description here](https://i.ibb.co/2km22hN/image.png)
+Vediamo come l'albero di copertura è: aciclico, connesso e tocca tutti i nodi di $G$
 
 ## Minimum Spanning Tree
 
 Un *Minimum Spanning Tree* (MST) o albero di copertura minimo riguarda **grafi pesati sugli archi**.
 
-Dato un grafo $G = (V, E, w)$ connesso e pesato sugli archi con pesi $w$.
+Dato un grafo $G = (V, E, w)$ connesso e pesato sugli archi con pesi definiti dalla funzione $w$.
 
 Rappresentiamo il **peso di un albero di copertura** $T$ come la somma dei pesi sui suoi archi
 
 $$W(T) = \sum_{(u_1, u_2)\in T}w(u_1, u_2)$$
 
-Quindi il MST di un grafo $G$ è un sottoinsieme di archi $T$ tale che:
+Quindi l'MST di un grafo $G$ è un sottoinsieme di archi $T$ tale che:
 
 - $T$ è un albero di copertura
 - $W(T)$ sia il minimo tra tutti i possibili alberi di copertura
@@ -77,7 +80,7 @@ Il **fatto cruciale** è il seguente
 
 **Dimostrazione** del fatto cruciale tramite la tecnica "**cuci e taglia**".
 
-Sia $T$ un MST di $G$, l'arco $(u, v)$ può stare in due casi:
+Sia $T$ un MST di $G$, l'arco leggero che attraversa il taglio $(u, v)$ può ricadere in due casi:
 
 1. l'arco $(u, v) \in T$ allora la condizione è già verificata
 2. l'arco $(u, v) \notin T$ in questo caso utilizziamola tecnica "cuci e taglia" per cercare un altro MST che lo contenga:
@@ -86,10 +89,10 @@ Sia $T$ un MST di $G$, l'arco $(u, v)$ può stare in due casi:
 
 		$$T' = T \cup \{(u, v)\}$$
 	
-		Dato che $T$ era per definizione connesso allora l'aggiunta del nuovo arco creerà sicuramente un ciclo.
-		Questo significa che esisteva già un altro arco $(x,y)$ che attraversava il taglio e che adesso fa parte del ciclo.
+		Dato che $T$ è per definizione connesso e aciclico allora l'aggiunta del nuovo arco creerà sicuramente un ciclo.
+		Questo significa che esisteva già un altro arco $(x,y)$ che attraversava il taglio e che adesso fa parte del ciclo creato.
 
-	- passo "taglia": rimuoviamo da $T'$ l'altro arco che attraversa il taglio e che fa parte del ciclo
+	- passo "taglia": rimuoviamo da $T'$ l'altro arco già presente che attraversa il taglio e che fa parte del ciclo
 		
 		$$T'' = T' \setminus \{(x, y)\}$$
 		
@@ -119,7 +122,7 @@ Sia $T$ un MST di $G$, l'arco $(u, v)$ può stare in due casi:
 
 		**Nota**: dopo aver dimostrato questa proprietà, possiamo applicarla nella sua stessa dimostrazione, infatti essendo $T$ un MST allora il suo arco $(x, y)$ sarà un arco leggero, di conseguenza $w(u, v) = w(x, y)$ che sottratti fanno $0$ e quindi si raggiunge che $W(T'') = W(T)$
 
-## Esercizi dimostrabile con "cuci e taglia"
+## Esercizi dimostrabili con "cuci e taglia"
 
 **Nota** un classico errore potrebbe essere quello di eseguire prima il passo taglia e poi il passo cuci... Questo non funziona in quanto si potrebbe creare un grafo che non è un albero.
 
@@ -129,7 +132,7 @@ Se $(u, v)$ **è l'unico arco leggero** che attraversa il taglio fatto su un gra
 
 **Dimostrazione** per assurdo utilizzando "cuci e taglia"
 
-Supponiamo per assurdo che esista un MST che chiamiamo $T$ che non contenga l'arco $(u, v)$
+Supponiamo per assurdo che esista un MST, che chiamiamo $T$, che non contenga l'arco $(u, v)$
 
 - passo "cuci": 
 
@@ -145,6 +148,8 @@ $W(T'') = W(T) + w(u, v) - w(x, y)$
 Dato che c'è un **unico arco leggero** per nostra ipotesi allora $w(x, y)$ sarà maggiore di $w(u, v)$
 Di conseguenza: $w(u, v) - w(x, y) < 0$ 
 
+$W(T'') < W(T)$ 
+
 Questo è assurdo in quanto avremmo trovato un albero di copertura con un peso minore dell'albero di partenza che era un MST.
 
 
@@ -153,7 +158,6 @@ Questo è assurdo in quanto avremmo trovato un albero di copertura con un peso m
 Sia $G = (V, E, w)$ un grafo non orientato connesso e pesato sugli archi.
 Se $(u, v) \in E$ è l'arco di peso minimo in tutto il grafo (nota che non è detto che sia unico)
 allora esiste un MST che contiene quell'arco
-
 
 **Dimostrazione** utilizzando "cuci e taglia"
 
@@ -165,9 +169,11 @@ Sia $T$ il nostro MST.
 	- "taglia": $T'' = T' \setminus \{(x, y)\}$
 
 	$T''$ è un albero di copertura per come è stato costruito, $W(T) \leq W(T'')$.
+	
 	$W(T'') = W(T) + w(u, v) - w(x, y)$
-	Dato che l'arco $(u, v)$ ha il peso minore di tutto il grafo allora 
-	$w(u, v) - w(x, y) \leq 0$
+	Dato che l'arco $(u, v)$ ha il peso minore di tutto il grafo allora  $w(u, v) - w(x, y) \leq 0$
+	
+	$W(T'') \leq W(T)$
 
 	 $$W(T) \leq W(T'') \leq W(T) \implies W(T'') = W(T)$$
 
@@ -178,7 +184,7 @@ Quindi $T''$ è un MST
 Sia $G = (V, E, w)$ non orientato, connesso e pesato sugli archi.
 Valgano le seguenti ipotesi:
 
-1. $A \subseteq E$ è un sottoinsieme di archi contenuto in un qualunque MST
+1. $A \subseteq E$ è un sottoinsieme di archi contenuto in un qualunque MST di $G$
 2. Sia $(S, V \setminus S)$ un taglio del grafo $G$ che "rispetta" A, cioè in cui gli archi di A non attraversano il taglio
 3. Sia $(u, v) \in E$ un arco leggero che attraversa il taglio
 

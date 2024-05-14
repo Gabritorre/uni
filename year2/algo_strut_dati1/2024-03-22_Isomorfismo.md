@@ -4,14 +4,13 @@ Siano $G_1 = (V_1, E_1)$ e $G_2=(V_2, E_2)$ due grafi non orientati (ma vale anc
 Come possiamo stabilire se due grafi sono uguali?
 Per stabilirlo introduciamo il concetto di **isomorfismo**.
 
-L'isomorfismo è una funzione $\Phi$ che mappa ai vertici di $V_1$ dei vertici di $V_2$ rispettando le seguenti proprietà
-- la funzione $\Phi$ deve essere biiettiva, cioè deve essere un mapping 1 a 1
-- deve preservare l'adiacenza tra i vertici, cioè se due nodi sono adiacenti nel grafo $G_1$ lo devono essere anche i nodi corrispondenti mappati in $G_2$
+L'isomorfismo è una funzione $\Phi$ che mappa i vertici di $V_1$ in vertici di $V_2$ rispettando le seguenti proprietà
+- La funzione $\Phi$ deve essere biiettiva, cioè deve essere un mapping 1 a 1
+- Deve preservare l'adiacenza tra i vertici, cioè se due nodi sono adiacenti nel grafo $G_1$ lo devono essere anche i nodi corrispondenti mappati in $G_2$
 
 Due grafi sono **isomorfi** $G_1 \simeq G_2$ se **esiste almeno un isomorfismo** tra di loro
 
 **Due grafi sono uguali se sono isomorfi**
-
 
 ### Esempio
 
@@ -43,9 +42,9 @@ Un grafo è detto autocomplementare se è isomorfo al suo complemento.
 
 $$G \simeq \bar G$$
 
-## Condizioni necessarie ma non sufficienti isomorfismo
+## Condizioni necessarie ma non sufficienti
 
-Vediamo una serie di condizioni necessarie ma non sufficienti per determinare se due grafi sono isomorfi.
+Vediamo una serie di condizioni necessarie **ma non sufficienti** per determinare se due grafi sono isomorfi.
 Nota: non è ancora stato trovato un algoritmo in tempo polinomiale per determinare se dati due grafi essi sono isomorfi
 
 Dati $G_1 = (V_1, E_1)$ e $G_2 = (V_2, E_2)$

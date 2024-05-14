@@ -14,6 +14,7 @@ bellman-ford(G, w, s) {
 		for-each (u, v) in E[G]
 			relax(u, v, w(u, v))
 
+	// l'algoritmo teoricamente è finito ma scriviamo un pezzo in più per
 	// riconoscere la presenza di cicli negativi
 	for-each(u, v) in E[G]
 		if (d[v] > d[u] + w(u, v))
@@ -23,29 +24,26 @@ bellman-ford(G, w, s) {
 ```
 
 L'algoritmo potrebbe concludersi alla fine dei due cicli innestati, però è necessario controllare se il grafo presenta cicli negativi prima di ritornare il risultato, se infatti fossero presenti allora i risultati calcolati non sarebbero affidabili.
-Il controllo per verificare la presenza di cicli negativi avviene passando ogni arco del grafo, se viene trovato che un nodo può essere raggiunto con un cammino migliore nonostante tutte le passate, allora è presente un ciclo negativo.
-
+Il controllo per verificare la presenza di cicli negativi avviene passando ogni arco del grafo, se viene trovato che un nodo può essere raggiunto con un cammino migliore rispetto a quello trovato dopo tutte le passate fatte, allora è presente un ciclo negativo.
 
 ## Complessità
 
 - la `init_ss()` ha complessità lineare $n$
-- il primo ciclo viene fatto $n-1$ volte, il ciclo innestato viene fatto $m$ volte. la complessità della `relax` è costante in quanto non vengono usate code di priorità. $\Theta(m(n-1))$
+- il primo ciclo viene fatto $n-1$ volte, il ciclo innestato viene fatto $m$ volte. la complessità della `relax` è costante in quanto non vengono usate code di priorità. Questa parte ha complessità $\Theta(m(n-1))$
 - il ciclo finale esegue $m$ iterazioni
 
 $$T(n) = n + m(n-1) + m$$
 
 $$T(n) = m\cdot n$$
 
-
 ## Correttezza
 
 Sia $G = (V, E, w)$ orientato pesato sugli archi con sorgente $s\in V$.
-Se $G$ contiene cicli negativi **raggiungibili dalla sorgente** ritorna `false`.
-Se $G$ non contiene cicli negativi **raggiungibili dalla sorgente** allora alla fine dell'algoritmo vale che:
-
-1. $d[u] = \delta(s, u)\, \forall u \in V$ 
-2. $G_\pi$ è un albero di cammini minimi
-3. L'algoritmo restituisce `true`
+- Se $G$ contiene cicli negativi **raggiungibili dalla sorgente** ritorna `false`.
+- Se $G$ non contiene cicli negativi **raggiungibili dalla sorgente** allora alla fine dell'algoritmo vale che:
+	1. $d[u] = \delta(s, u)\, \forall u \in V$ 
+	2. $G_\pi$ è un albero di cammini minimi
+	3. L'algoritmo restituisce `true`
 
 Dimostreremo solo i punti 1, 3 e il comportamento in caso di cicli negativi
 
@@ -62,10 +60,10 @@ Se si verifica allora esisterà un cammino minimo tra $s$ e $u$.
 Sia $p = <x_0, x_1, ..., x_q>$ un cammino minimo **semplice**.
 Osservazioni:
 - Se due nodi sono raggiungibili e in assenza di cicli negativi **esiste sempre un ciclo minimo semplice**.
-- potrebbero esistere comunque cammini minimi non semplici in presenza di cicli il cui peso somma $0$
-- è possibile ottenere un cammino semplice da uno non semplice rimuovendo tali cicli
+- Potrebbero esistere comunque cammini minimi non semplici in presenza di cicli il cui peso somma $0$
+- È possibile ottenere un cammino semplice da uno non semplice rimuovendo tali cicli
 
-**Osservazione più importante**: un cammino semplice composto da $n$ nodi avrà al massimo $n-1$ archi
+**Osservazione più importante**: un cammino semplice composto da $n$ nodi avrà al massimo $n-1$ archi.
 È proprio per questo motivo che l'algoritmo fa $n-1$ passate.
 
 Dato che il cammino è minimo possiamo sfruttare il fatto che anche i suoi sottocammini sono minimi e applicare la proprietà della convergenza per ogni passata: questo ci permette di ottenere che ad ogni passata almeno un nodo verrà agganciato alla sua distanza minima dalla sorgente.
@@ -77,14 +75,16 @@ Dato che il cammino è minimo possiamo sfruttare il fatto che anche i suoi sotto
 - dopo la seconda passata: $d[x_2] = \delta(x_0, x_2)$
 - dopo la k-esima passata: $d[x_k] = \delta(x_0, x_k)$
 
-dopo la $(n-1)$-esima passata tutti gli archi avranno raggiunto la loro distanza minima, questo perché ad ogni passata viene agganciata la distanza di un arco e in un cammino minimo semplice ci sono al massimo $n-1$ archi.
+Dopo la $(n-1)$-esima passata tutti gli archi avranno raggiunto la loro distanza minima, questo perché ad ogni passata viene agganciata la distanza di un arco e in un cammino minimo semplice ci sono al massimo $n-1$ archi.
 
 ### Dimostrazione punto 3
 Se alla fine l'algoritmo restituisce `true` allora vale che 
 
 $$\forall (u, v) \in E, \hspace{5mm} d[v] \leq d[u] + w(u, v)$$
 
-dopo $n-1$ passate abbiamo visto che $d[u] = \delta(s, u)$ per ogni $u$
+Cioè non viene mai eseguito l'`if` nell'ultimo ciclo `for`.
+
+Dopo $n-1$ passate abbiamo visto che $d[u] = \delta(s, u)$ per ogni $u$
 Possiamo usare questa conseguenza all'interno della proprietà di disuguaglianza triangolare
 
 ricordiamo la formula della disuguaglianza triangolare:
@@ -99,7 +99,7 @@ $$d[v] \leq d[u]+ w(u, v)$$
 Dimostriamo che in presenza di un ciclo negativo raggiungibile dalla sorgente viene ritornato `False`.
 
 Supponiamo **per assurdo** che invece venga ritornato `True`.
-Guardando il significato della parte finale dell'algoritmo possiamo dire che il corpo dell'`if` non viene mai eseguito se
+Guardando il significato della parte finale dell'algoritmo possiamo dire che il corpo dell'`if` non viene mai eseguito (cioè l'algoritmo ritorna `true`) se
 
 $$\forall (u, v) \in E \hspace{10mm} d[v] \leq d[u] + w(u, v)$$
 
@@ -107,7 +107,7 @@ Sia $c = <x_0, x_1, ..., x_q>$ un ciclo negativo raggiungibile dalla sorgente, c
 - $$x_0 = x_q$$
 - $$\sum_{i = 1}^{q}w(x_{i-1}, x_i) < 0$$
 
-Se l'algoritmo (per assurdo) ritornasse `true` allora varrebbe la precedente proprietà anche per i nodi del ciclo
+Se l'algoritmo (per assurdo) ritornasse `true` allora varrebbe la precedente proprietà anche per i nodi all'interno del ciclo negativo
 
 $$\forall i = 1...q \hspace{10mm} d[x_i] \leq d[x_{i-1}] + w(x_{i-1}, x_i)$$
 
@@ -120,7 +120,7 @@ esplicitando le prime due sommatorie notiamo che sono esattamente identiche (ric
 $\sum_{i=1}^{q} d[x_i] = d[x_1] + d[x_2] + d[x_3] + ... + d[x_{q-1}] + d[x_q]$
 $\sum_{i=1}^{q} d[x_{i-1}] = d[x_0] + d[x_1] + d[x_2] + ... + d[x_{q-1}]$
 
-Quindi possiamo rimuoverle dalla disequazione
+Quindi possiamo eliderle dalla disequazione
 
 $$\cancel{\sum_{i=1}^{q} d[x_i]} \leq \cancel{\sum_{i=1}^{q} d[x_{i-1}]} + \sum_{i=1}^{q} w(x_{i-1}, x_i)$$
 
@@ -128,8 +128,14 @@ otteniamo così l'assurdo:
 
 $$0 \leq \sum_{i=1}^{q} w(x_{i-1}, x_i)$$
 
-ci risulta che la somma dei pesi è positiva ma per ipotesi avevamo assunto che fossimo in un ciclo negativo, cioè con la somma dei pesi minore di $0$
+Cioè ci risulta che la somma dei pesi è positiva ma per ipotesi avevamo assunto che fossimo in un ciclo negativo, cioè con la somma dei pesi minore di $0$
 
+
+## Esempio esecuzione Bellman-ford
+
+Fare un esempio passo passo all'interno di una immagine risulta un po' scomodo... un video è decisamente migliore: https://www.youtube.com/watch?v=obWXjtg0L64
+
+Nota: l'ordine con cui si estraggono gli archi è casuale e non impatta sulla correttezza dell'algoritmo
 
 ## Confronto tra Dijkstra e Bellman-ford
 
@@ -143,3 +149,6 @@ ricordiamo che in caso di:
 | **Grafo denso** | $n^2$ | $n^3$ |
 
 Dijkstra risulta essere sempre migliore di Bellman-ford, ma il vantaggio di quest'ultimo è il suo funzionamento anche in presenza di pesi negativi.
+
+
+

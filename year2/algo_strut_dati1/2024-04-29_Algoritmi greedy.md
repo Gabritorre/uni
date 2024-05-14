@@ -1,19 +1,18 @@
 ﻿# Algoritmi greedy
 
 Gli algoritmi greedy sono una categoria di algoritmi che utilizzano il seguente approccio:
-Durante l'esecuzione è possibile si presentano un insieme di scelte e ad ogni scelta si cerca sempre di scegliere l'opzione ottimale, con lo scopo che tutte le scelte ottimali portino ad una soluzione ottimale.
+Durante l'esecuzione è possibile che si presentino un insieme di scelte e ad ogni scelta si cerca sempre di scegliere l'opzione ottimale, con lo scopo che tutte le scelte ottimali portino ad una soluzione ottimale.
 
-Algoritmi come **Kruskal** (sceglie sempre l'arco più leggero), **Prim** (sceglie sempre il vercite con campo `key` minore) e **Dijkstra** (sceglie sempre il vertice con campo `d` minore) sono algoritmi greedy
+Algoritmi come **Kruskal** (sceglie sempre l'arco più leggero), **Prim** (sceglie sempre il vertice con campo `key` minore) e **Dijkstra** (sceglie sempre il vertice con campo `d` minore) sono algoritmi greedy
 
 D'altra parte Bellman-ford e Floyd-Warshall non sono algoritmi greedy
 
-
 ## Problema della selezione delle attività
 
-Vediamo un problema risolvibile tramite un algoritmo greedy che ci porterà a formulare una struttura generale di un algoritmo greedy.
+Vediamo un problema risolvibile tramite un algoritmo greedy che ci porterà a formulare la struttura generale di un algoritmo greedy.
 
 Supponiamo di avere $n$ attività, indicizzate da $1$ a $n$.
-Ogni attività $i$-esima ha un tempo di inizio $s_i$, e un tempo di fine $f_i$.
+L'attività $i$-esima ha un tempo di inizio $s_i$, e un tempo di fine $f_i$.
 Due attività $i$ e $j$ si dicono **compatibili** se i tempi delle attività non si intersecano
 
 $$[s_i, f_i[\,  \cap \,[s_j, f_j[ = \emptyset$$
@@ -26,11 +25,12 @@ Nel nostro algoritmo la scelta ottima sarà quella di estrarre l'attività con i
 
 ```cpp
 greedy_selector(s, f)		//s, f sono due vettori contenenti i tempi di inizo e fine
-
 	n = length(s)		//ottengo il numero di attività
 	/*ordina le n attività rispetto al tempo di fine in modo crescente*/
 	A = {1} 	//inserisco in A la prima attività (che rispetta l'ordinamento)
 	j = 1		// memorizza l'ultima attività inserita
+	// scorro le attività, se il tempo di inizio dell'attività considerata
+	// avviene dopo il tempo di fine dell'ultima attività inserita allora considero l'attività
 	for i = 2 to n
 		if s[i] >= f[j]
 		A = A U {i}
@@ -40,14 +40,12 @@ greedy_selector(s, f)		//s, f sono due vettori contenenti i tempi di inizo e fin
 
 La complessità dell'algoritmo è data dall'ordinamento, che assumiamo essere $n\log n$
 
-
 Altri tipi di scelta ottimale che potrebbero venire in mente sono:
 
-- estrarre le attività con durata minore: sarebbe sbagliato, immaginiamo 4 attività compatibili ma di lunga durata e 3 attività compatibili di breve durata, il risultato sarebbe erroneamente 3
-- estrarre le attività con tempo di inizio minore: sarebbe sbagliato, immaginiamo un'attività che inizia per prima e che prende tantissimo tempo, all'interno di questo lungo intervallo ci sono tante attività compatibili, ma il risultato sarebbe erroneamente 1
+- Estrarre le attività con durata minore: sarebbe sbagliato, immaginiamo 4 attività compatibili ma di lunga durata e 3 attività compatibili di breve durata, il risultato sarebbe erroneamente 3
+- Estrarre le attività con tempo di inizio minore: sarebbe sbagliato, immaginiamo un'attività che inizia per prima e che prende tantissimo tempo, all'interno di questo lungo intervallo ci sono tante attività compatibili, il risultato sarebbe erroneamente 1
 
-Questo ci porta a concludere che decidere quale è la scelta ottimale di un algoritmo greedy determina la sua correttezza
-
+Questo ci porta a concludere che decidere qual è la scelta ottimale di un algoritmo greedy determina la sua correttezza
 
 ## Struttura generale di un algoritmo greedy
 
@@ -107,7 +105,7 @@ La complessità di questo algoritmo è $O(n^2)$, ma questo algoritmo restituisce
 
 ![enter image description here](https://i.ibb.co/rpNwcv0/image.png)
 
-la clique massima restituita dall'algoritmo è $\{d, b\}$ mentre quella reale sarebbe $\{b, a, c\}$
+La clique massima restituita dall'algoritmo è $\{d, b\}$ mentre quella reale sarebbe $\{b, a, c\}$
 
 In realtà questo problema non è risolvibile con un algoritmo greedy, e in generale non è risolvibile in tempo polinomiale.
 

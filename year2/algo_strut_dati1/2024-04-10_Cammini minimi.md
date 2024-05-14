@@ -3,9 +3,9 @@
 Affrontiamo il problema dei **cammini minimi**.
 
 Lavoreremo con grafi **orientati**, non necessariamente connessi e pesati sugli archi:
-- è possibile utilizzare anche grafi non orientati, trasformando un arco singolo in due archi di orientamento opposto
+- È possibile utilizzare anche grafi non orientati, trasformando un arco singolo in due archi di orientamento opposto
 		![enter image description here](https://i.ibb.co/3SNN5zN/image.png)
-- Inizialmente assumiamo che il peso sia un numero reale, quindi sia positivo che negativo. Successivamente faremo assunzioni specifiche.
+- Inizialmente assumiamo che il peso sia un numero reale, sia positivo che negativo. Successivamente faremo assunzioni più specifiche.
 
 ## Terminologie
 
@@ -21,7 +21,7 @@ il nodo in cui finisce il cammino si chiamerà **destinazione**.
 
 Due nodi possono avere più cammini che li connettono, indicheremo **l'insieme dei cammini** che connettono due nodi $u, v \in V$ nel seguente modo:
 
-$$\mathscr{C}(u, v) = \{\phi \text{ t.c. } \phi \text{ è un cammino tra $u$ e $v$}\}$$
+$$\mathscr{C}(u, v) = \{\phi | \phi \text{ è un cammino tra $u$ e $v$}\}$$
 
 ### Costo di un cammino
 
@@ -33,14 +33,14 @@ dove $q$ è l'ultimo vertice del cammino.
 
 ### Ciclo negativo
 
-Un **ciclo negativo** è un ciclo il cui peso è negativo, ad esempio:
+Un **ciclo negativo** è un ciclo il cui peso totale è negativo, ad esempio:
 
 ![enter image description here](https://i.ibb.co/dfhqVjq/image.png)
 
 
 ### Distanza
 
-Definiamo la distanza tra due nodi $u, v \in V$ nel seguente modo:
+Definiamo la **distanza** tra due nodi $u, v \in V$ nel seguente modo:
 
 $$\delta(u, v) = \begin{cases}
 \underset{\phi \in \mathscr{C}(u, v)}{\min} w(\phi) & \text{se } \mathscr{C}(u, v) \neq \emptyset \\
@@ -50,8 +50,7 @@ $$\delta(u, v) = \begin{cases}
 
 - La **distanza** tra due nodi è quindi il **cammino di costo minimo tra i due nodi** (quando esiste).
 - Il $+\infty$ si mette quando il nodo di **destinazione non è raggiungibile**
-- Mentre il $-\infty$ si mette quando non esiste un cammino che è minimo, in quanto avendo cicli negativi esisterà sempre un cammino minore. Infatti ciclando su un ciclo negativo si decrementa continuamente il costo del cammino.
-
+- Mentre il $-\infty$ si mette quando non esiste un cammino che è minimo, in quanto in presenza di cicli negativi esisterà sempre un cammino minore. Infatti ciclando su un ciclo negativo si decrementa all'infinito il costo del cammino.
 
 **Nota** la distanza di un vertice con se stesso è $0$ **solo se non appartiene ad un ciclo negativo**. Altrimenti il suo costo è $-\infty$.
 
@@ -85,24 +84,21 @@ Non ci occuperemo di tutti i problemi, ci focalizzeremo su "Sorgente singola des
 
 - L'algoritmo per risolvere "Sorgente singola destinazione multipla" si può applicare anche per risolvere il problema "Sorgente multipla destinazione singola" **invertendo l'orientamento degli archi**
 - L'algoritmo per risolvere "Sorgente singola destinazione singola" ha una complessità paragonabile a "Sorgente singola destinazione multipla", quindi tanto vale riapplicare quello
-- Iterando l'algoritmo per "Sorgente singola destinazione multipla" si può risolvere "Sorgente multipla destinazione multipla", ma questo metodo non è efficiente. Vedremo un algoritmo specifico per risolvere questo problema
+- Iterando l'algoritmo per "Sorgente singola destinazione multipla" si può risolvere "Sorgente multipla destinazione multipla", ma questo metodo non è il più efficiente. Vedremo un algoritmo specifico per risolvere questo problema
 
 
 Per risolvere "Sorgente singola destinazione multipla" vedremo due algoritmo: quello di **Dijkstra** e quello di **Bellman-Ford**.
 Mentre per risolvere "Sorgente multipla destinazione multipla" vedremo l'algoritmo di **Floyd-Warshall**.
 
-
-
 ## Strutture dati degli algoritmi
 
 Vediamo le strutture dati utilizzate dagli algoritmi che vedremo successivamente.
-Ricordiamo che il risultato che vogliamo ottenere dagli algoritmo è un valore che corrisponde al **costo del cammino minimo**, e vogliamo anche l'**insieme dei nodi attraversati dal cammino minimo**.
+Ricordiamo che il risultato che vogliamo ottenere dagli algoritmi è un valore che corrisponde al **costo del cammino minimo**, e vogliamo anche l'**insieme dei nodi attraversati dal cammino minimo**.
 
 Per ogni vertice del grafo $u \in V$:
 
 - $d[u]$ è la "stima" della distanza tra la sorgente e il nodo $u$, è una stima in quanto essa cambia durante l'esecuzione e solo alla fine rappresenta la distanza vera tra la sorgente e il nodo $u$.
 - $\pi[u]$ è un puntatore ad un altro vertice, utile per ricostruire il cammino minimo finale
-
 
 ## Funzioni ausiliarie degli algoritmi
 
@@ -118,7 +114,8 @@ init_ss(G, s) {
 ```
 Il suo tempo di esecuzione è lineare rispetto al numero di nodi del grafo
 
-La seconda funzione si occupa dell'aggiornamento delle strutture dati, dati due nodi
+La seconda funzione si occupa dell'aggiornamento delle strutture dati.
+Prende in input due nodi e il peso dell'arco che li collega
 
 ```c
 relax(u, v, w(u, v)) {
@@ -128,7 +125,7 @@ relax(u, v, w(u, v)) {
 }
 ```
 
-Il tempo di esecuzione dipende dalla implementazione.
+Il tempo di esecuzione dipende dall'implementazione.
 
 Soffermiamoci un attimo sulla `relax`:
 Ricordiamoci che durante l'esecuzione $d[v]$ rappresenta il costo del cammino migliore trovato fino a quel momento.
@@ -140,7 +137,6 @@ Considerazioni sulla `relax`:
 
 - la `relax` può modificare solo il suo secondo parametro
 - se la `relax` effettua una modifica, essa migliorerà sicuramente il costo del cammino
-
 
 ## Proprietà cammini
 
@@ -158,7 +154,7 @@ allora anche i sottocammini interni, ad esempio $<X, Y, N>$, $<Y, N, K>$,  sono 
 
 **Dimostrazione** per assurdo
 
-Considerando l'esempio sopra, supponiamo per assurdo che tra $Y$ e $K$ esista un cammino di costo minore, allora ci sarebbe un cammino che collega $X$ e $Z$ con un peso minore dell'attuale cammino, questo è assurdo perché quel cammino per ipotesi era un cammino minimo, abbiamo contraddetto l'ipotesi iniziale.
+Considerando l'esempio, supponiamo per assurdo che tra $Y$ e $K$ esista un cammino di costo minore, allora ci sarebbe un cammino che collega $X$ e $Z$ con un peso minore dell'attuale cammino, questo è assurdo perché quel cammino per ipotesi era un cammino minimo, abbiamo contraddetto l'ipotesi iniziale.
 
 ### Grafo dei predecessori
 
@@ -172,19 +168,19 @@ Il grafo dei predecessori si indica con $G_\pi =(V_\pi, E_\pi)$ ed è un sottogr
 Vediamo un esempio della sua costruzione in una fase intermedia di un algoritmo per trovare i cammini minimi.
 ![enter image description here](https://i.ibb.co/tzGkYdv/image.png)
 
-Al termine degli algoritmi di dei cammini minimi $G_\pi$ farà parte del risultato
+Al termine degli algoritmi di dei cammini minimi $G_\pi$ farà parte del risultato, in quanto conterrà il cammino minimo effettivo
 
 ### Albero dei cammini minimi
 
 L'albero dei cammini minimi si indica come $G' = (V', E')$ è un sottografo di $G=(V, E, w)$ in cui valgono le seguenti proprietà:
-1. $V' = \{v \in V \, |\, \delta(s, v) < +\infty\}$ cioè i vertici devono essere raggiungibili dalla sorgente
+1. $V' = \{v \in V \, |\, \delta(s, v) < +\infty\}$ cioè i vertici considerati devono essere raggiungibili dalla sorgente
 2. $G'$ forma un albero radicato in $s$
 3. $\forall v \in V'$ l'unico cammino che connette la sorgente $s$ con il nodo $v$ in $G'$ è un cammino minimo in $G$
 
 
 ![enter image description here](https://i.ibb.co/Qp1Yc51/image.png)
 
-Alla fine dell'algoritmo vogliamo che il grafo dei predecessori $G_\pi$ sia un albero dei cammini minimi.
+Alla fine dell'algoritmo vogliamo che il grafo dei predecessori $G_\pi$ sia un **albero dei cammini minimi.**
 
 ### Disuguaglianza triangolare
 
@@ -192,9 +188,14 @@ Considerando un grafo $G = (V, E)$ con nodo sorgente $s \in V$ e un arco $(u, v)
 
 $$\delta(s, v) \leq \delta(s, u) + w(u, v)$$
 
+cioè il costo del cammino minimo tra $s$ e $v$ è limitato superiormente dalla distanza tra $s$ e $u +$ il peso dell'arco che connette $u$ con $v$
+
 Vediamo due esempi:
 
 ![enter image description here](https://i.ibb.co/FmS9QHH/image.png)
+
+Nel grafo di sinistra la distanza $\delta(s, v)$ tocca il suo limite, cioè $3+1$.
+Nel secondo caso c'è un percorso migliore, cioè l'arco diretto di costo $2$
 
 **Dimostrazione**
 Suddividiamo 3 casi:
@@ -202,19 +203,19 @@ Suddividiamo 3 casi:
 - $\delta(s, u) = +\infty$ cioè $u$ non è raggiungibile da $s$, allora è sicuramente vero che $\delta(s,v)\leq + \infty + w(u, v)$ con $w(u, v)$ valore reale.
 - $\delta(s, u) = -\infty$ cioè è presente un ciclo negativo tra $s$ e $u$ allora varrà che
 	$\delta(s, v) \leq -\infty + w(u, v)$, ma a questo punto anche $\delta(s, v) = -\infty$ a causa del ciclo negativo, quindi è verificata la condizione
-- $\delta(s, v) \in \mathbb{R}$, cioè esiste un cammino senza cicli tra $s$ e $u$, in questo caso rientriamo negli esempi sopra mostrati: se l'unico cammino per arrivare a $v$ è passando per $u$ e l'arco $(u, v)$ allora $\delta(s, v)$ sarà esattamente uguale a $\delta(s, u) + w(u, v)$. Ma è possibile che esistano anche cammini migliori, cioè che $\delta(s, v) < \delta(s, v) + w(u, v)$
+- $\delta(s, v) \in \mathbb{R}$, cioè esiste un cammino senza cicli tra $s$ e $v$, in questo caso rientriamo negli esempi sopra mostrati: se l'unico cammino per arrivare a $v$ è passando per $u$ allora $\delta(s, v)$ sarà esattamente uguale a $\delta(s, u) + w(u, v)$. Ma è possibile che esistano anche cammini migliori, cioè che $\delta(s, v) < \delta(s, v) + w(u, v)$
 
 ### Proprietà del limite inferiore
 
 La proprietà afferma che in qualsiasi algoritmo che:
 1. inizializza i dati con `init_ss`
-2. usa esclusivamente la `relax` pr aggiornare $d$ e $\pi$
+2. usa esclusivamente la `relax` per aggiornare $d$ e $\pi$
 
-vale che 
+vale che
 
 $$\delta(s, v) \leq d[v]$$
 
-cioè che la distanza stimata tra $s$ e $v$ che noi definiamo come $d[v]$ non andrà mai al di sotto della distanza reale tra $s$ e $v$, che noi definiamo come $\delta(s, v)$, qualunque sia la sequenza o la quantità di `relax` che vengono eseguite.
+Cioè che la distanza stimata tra $s$ e $v$ che noi definiamo come $d[v]$ non andrà mai al di sotto della distanza reale tra $s$ e $v$, che noi definiamo come $\delta(s, v)$, qualunque sia la sequenza o la quantità di `relax` che vengono eseguite.
 
 In altre parole $\delta(s, v)$ rappresenta un **limite inferiore** per $d[v]$
 
@@ -225,24 +226,28 @@ Inoltre se dovesse capitare che $\delta(s, v) = d[v]$, che si dice "la distanza 
 Separiamo due casi:
 
 1. Dimostrazione della proprietà subito dopo la `init_ss`:
-	Per i nodi che non sono la sorgente, allora $d[v] = +\infty$, che verifica la proprietà
+	Per i nodi che non sono la sorgente, $d[v] = +\infty$, che verifica la proprietà:
 	$$\delta(s, v) \leq + \infty$$
 	
-	Per la sorgente invece $d[s] = 0$ e la distanza vale per definizione $\delta(s, s) = 0$ 
+	Per la sorgente invece $d[s] = 0$ e la distanza vale, per definizione, $\delta(s, s) = 0$ 
 	$$0 \leq 0$$
 	
 	Nel caso in cui la sorgente $s$ sia all'interno di un ciclo negativo la proprietà vale comunque, infatti $\delta(s, s) = -\infty$
 	$$-\infty \leq 0$$
 
-2. Supponiamo per assurdo che dopo una `relax` si ha che $d[v] < \delta(s, v)$ **per la prima volta** durante l'algoritmo. Immaginiamo di trovarci nella seguente situazione
+2. Supponiamo per assurdo che dopo una `relax` si abbia che $d[v] < \delta(s, v)$ **per la prima volta** durante l'algoritmo. Immaginiamo di trovarci nella seguente situazione
 
 	![enter image description here](https://i.ibb.co/tLs7637/image.png)
 
 	dopo la `relax` avremo che
 	$$d[v] = d[u] + w(u, v)$$
+	
 	Noi però stiamo assumendo per assurdo che
+		$$d[v]< \delta(s, v)$$
+		
 	$$d[u] + w(u, v) < \delta(s, v)$$
-	e per la disuguaglianza triangolare possiamo scrivere che 
+	
+	 per la disuguaglianza triangolare possiamo scrivere che 
 	$$d[u] + w(u, v) < \delta(s, v) \leq \delta(s, u) + w(u, v)$$
 	
 	allora possiamo scrivere che
@@ -250,7 +255,7 @@ Separiamo due casi:
 	
 	$$d[u] < \delta(s, u)$$
 	
-	ma questo è assurdo in quanto l'attuale relax non è la prima ad aver infranto la proprietà come avevamo assunto inizialmente, infatti anche il nodo $u$ l'ha infranta precedentemente.
+	ma questo è assurdo in quanto l'attuale relax non è la prima ad aver infranto la proprietà come avevamo assunto inizialmente, infatti il risultato che abbiamo ottenuto dimostra che anche il nodo $u$ l'ha infranta precedentemente.
 
 ### Proprietà della convergenza
 

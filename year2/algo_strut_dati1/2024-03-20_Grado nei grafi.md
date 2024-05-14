@@ -15,29 +15,27 @@ $$0 \leq \deg(u) \leq n-1$$
 
 ![enter image description here](https://i.ibb.co/BKXtnLc/image.png)
 
-
-l'**intorno** di un nodo $u$ è il numero di nodi ad esso adiacenti e formalmente è definito come
+L'**intorno** di un nodo $u$ è l'insieme di nodi ad esso adiacenti e formalmente è definito come
 
 $$N(u) = \{v \in V | (u, v) \in E\}$$
 
 Possiamo quindi dire che il **grado di un nodo è pari alla cardinalità del suo intorno**
 
-
 **Lemma** non è possibile costruire un grafo con tutti i gradi distinti, cioè esistono almeno due nodi che hanno lo stesso grado
 
-**Dimostrazione**: Supponiamo per assurdo che il grafo $G=(V, E)$ abbia nodi con tutti i gradi distinti, 
-cioè abbiamo:
-un nodo di grado 0
-un nodo di grado 1
-un nodo di grado 2
+**Dimostrazione**: Supponiamo per assurdo che il grafo $G=(V, E)$ abbia nodi con tutti i gradi distinti...
+abbiamo quindi:
+un nodo di grado $0$
+un nodo di grado $1$
+un nodo di grado $2$
 ...
-un nodo di grado n-1
+un nodo di grado $n-1$
 
-é assurdo perché stiamo dicendo che esiste contemporaneamente un nodo che non è collegato con nessuno e un nodo che è collegato con tutti
-
+é assurdo perché stiamo dicendo che esiste contemporaneamente un nodo che non è collegato con nessuno (cioè con grado $0$) e un nodo che è collegato con tutti (cioè con grado $n-1$)
 
 ### Lemma della stretta di mano
-Sia $G=(V, E)$ un grafo non orientato, allora la somma dei gradi del grafo è un numero pari, in particolare è uguale al doppio del numero di archi.
+
+Sia $G=(V, E)$ un **grafo non orientato**, allora la somma dei gradi del grafo è un numero pari, in particolare è uguale al doppio del numero di archi.
 
 $$\sum_{u\in V} \deg(u) = 2m$$
 
@@ -59,7 +57,7 @@ Dato che $P$ e $D$ sono una partizione di $V$:
 
 $$= \sum_{u \in P}\deg(u) + \sum_{u \in D}\deg(u)$$
 
-il grado di un numero pari lo posso scrivere come $2 \cdot h(u)$, mentre il grado di un numero dispari lo posso scrivere come $2 \cdot h(u) + 1$
+i gradi pari li posso scrivere come $2 \cdot h(u)$, mentre i gradi dispari li posso scrivere come $2 \cdot h(u) + 1$
 Dove $h(u)$ è un numero che dipende dal nodo
 
 $$= \sum_{u \in P}2 \cdot h(u)+ \sum_{u \in D}(2 \cdot h(u) + 1)$$
@@ -70,12 +68,13 @@ $$= 2\left(\sum_{u \in P}h(u) + \sum_{u \in D}h(u)\right) + |D|$$
 
 $$= 2\sum_{u \in V}h(u) + |D|$$
 
-isoliamo $|D|$
+isoliamo $|D|$:
 
+$2m= 2\sum_{u \in V}h(u) + |D|$
 $|D| = 2m - 2\sum_{u \in V} h(u)$
 $|D| = 2\left(m - \sum_{u \in V} h(u)\right)$
 
-da questo notiamo che il numero di nodi con grado dispari sarà sicuramente un numero pari.
+da questo notiamo che il numero di nodi con grado dispari sarà sicuramente un numero pari in quanto viene tutto moltiplicato per 2.
 
 ## Grafi regolari
 
@@ -114,7 +113,7 @@ Il lemma della stretta di mano ci permette di fare delle considerazioni:
 
 ## Grado nelle matrici di adiacenza
 
-Nelle matrici di adiacenza (il metodo che useremo di più) per calcolare il grado di un nodo $i$ basterà sommare i valori corrispondenti alla sua riga (o colonna, dato che la matrice è simmetrica)
+Nelle matrici di adiacenza per calcolare il grado di un nodo $i$ basterà sommare i valori corrispondenti alla sua riga (o colonna, dato che la matrice è simmetrica)
 
 Consideriamo il seguente grafo
 
@@ -168,14 +167,14 @@ Date due generiche matrici:
 - $B$ di dimensioni $m \times k$
 ricordiamo che il prodotto si può fare solo se il numero di colonne di una matrice è uguale al numero di righe dell'altra.
 
- genericamente gli elementi di una matrice $C$ generata dal prodotto di due matrici $A \times B$ si possono calcolare come:
+ Generalmente gli elementi di una matrice $C$ generata dal prodotto di due matrici $A \times B$ si possono calcolare come:
 $$c_{ij} = \sum_{\ell = 1}^{n} a_{i\ell} \cdot b_{\ell j}$$
 
 Nel nostro caso Abbiamo il prodotto di una matrice per se stessa, nella diagonale cioè quando gli indici sono uguali abbiamo:
 
 $$a_{ii}^{(2)} = \sum_{k = 1}^n a_{ik} \cdot a_{ki}$$
 
-dato che $a_{ik} = a_{ki}$
+dato che per la simmetria $a_{ik} = a_{ki}$
 
 $$a_{ii}^{(2)} = \sum_{k = 1}^n (a_{ik})^2$$
 
@@ -195,10 +194,23 @@ Dato che stiamo facendo una sommatoria stiamo effettivamente contando quanti cam
 
 ### Generalizzazione
 
-In generale vale che per ogni $i\neq j$ la matrice risultante dal prodotto di una matrice per se stessa $k$ volte, ha degli elementi che rappresentano il numero di cammini di lunghezza $k$ tra i nodi $i$ e $j$.
+In generale vale che per ogni $i\neq j$ la matrice risultante dal prodotto per se stessa $k$ volte, ha degli elementi che rappresentano il numero di cammini di lunghezza $k$ tra i nodi $i$ e $j$.
 
 mentre per $i = j$ si ottengono il numero di cicli di lunghezza $k$ che partono dal nodo $i$ e tornano su se stesso
 
+**Dimostrazione** per induzione su $k$
+Scriviamo $A^k = A^{k-1}\times A$
+
+**Caso base**: per $k = 1$ la condizione è già verificata in quanto i valori della matrice sono i cammini di lunghezza 1 tra i nodi $i$ e $j$, ma questi cammini sono esattamente gli archi.
+per $k = 2$ vale la dimostrazione fatta in precedenza
+
+**passo induttivo**: assumiamo che l'ipotesi valga per $k-1$ e verifichiamo per $k$.
+
+$$a_{ij}^k = \sum_{\ell = 1}^{n} a_{i\ell}^{k-1} \cdot a_{\ell j}$$
+
+per ipotesi induttiva $a_{i\ell}^{k-1}$ è il numero di cammini di lunghezza $k-1$ tra $i$ e $\ell$.
+$a_{\ell j}$ vale 1 se e solo se esiste un arco tra $\ell$ e $j$, se infatti risultasse così allora $a_{ij}^k$ sarebbe il numero di cammini di lunghezza $k$ da $i$ a $j$
+dunque la condizione è verificata
 
 ## Esercizio 
 
@@ -235,12 +247,12 @@ la prima sommatoria ha tutti i $\deg(u) = 1$ quindi viene sommato 1 esattamente 
 
 $$2(n-1) = |V_1| + \sum_{u \notin V_1} \deg(u)$$
 
-per la seconda sommatoria so di per certo che $\deg(u) \geq 2$, perche gradi 0 non ci sono per ipotesi 2 e i nodi di grado 1 li abbiamo già accorpati nella sommatoria precedente.
+per la seconda sommatoria so di per certo che $\deg(u) \geq 2$, perché gradi 0 non ci sono per ipotesi 2 e i nodi di grado 1 li abbiamo già accorpati nella sommatoria precedente.
 La cardinalità è calcolabile come $|V| - |V_1|$
 
 $$2(n-1) \geq |V_1| + 2 \left(|V| - |V_1|\right)$$
 
-(il 2 che moltiplica è dato dal fatto che stiamo impostando un limite inferiore con $\geq$ non stiamo cercando una quantità precisa)
+(il 2 che moltiplica è dato dal fatto che stiamo impostando un limite inferiore con $\geq$ non stiamo cercando una quantità precisa e dato che il grado è almeno 2 allora mettiamo 2)
 
 $$2n-2 \geq |V_1| + 2 |V| - 2|V_1|$$
 
@@ -262,7 +274,7 @@ Se abbiamo un grafo orientato $G = (V, E)$, abbiamo due tipi di gradi per un nod
 - $\text{in-deg}(i)$: numero di archi entranti
 - $\text{out-deg}(i)$: numero di archi uscenti 
 
-Risulta che la somma degli archi entranti e la somma degli degli archi uscenti di ogni nodo del grafo è uguale alla cardinalità di $E$, quindi
+Risulta che la somma di tutti gli archi entranti del grafo è uguale alla somma di tutti gli archi uscenti del grafo, inoltre questa quantità è uguale alla cardinalità di $E$, quindi
 
 $$\sum_{i = 1}^n \text{in-deg}(i) = \sum_{i = 1}^n \text{out-deg}(i) = |E| = m$$
 
