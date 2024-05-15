@@ -63,7 +63,7 @@ Osservazioni:
 - Potrebbero esistere comunque cammini minimi non semplici in presenza di cicli il cui peso somma $0$
 - È possibile ottenere un cammino semplice da uno non semplice rimuovendo tali cicli
 
-**Osservazione più importante**: un cammino semplice composto da $n$ nodi avrà al massimo $n-1$ archi.
+**Osservazione più importante**: un cammino semplice che collega due nodi avrà al massimo $n-1$ archi, cioè potrebbe essere semplicemente un arco unico diretto, oppure un percorso che tocca tutti i nodi del grafo.
 È proprio per questo motivo che l'algoritmo fa $n-1$ passate.
 
 Dato che il cammino è minimo possiamo sfruttare il fatto che anche i suoi sottocammini sono minimi e applicare la proprietà della convergenza per ogni passata: questo ci permette di ottenere che ad ogni passata almeno un nodo verrà agganciato alla sua distanza minima dalla sorgente.
