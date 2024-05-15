@@ -66,7 +66,8 @@ Osservazioni:
 **Osservazione più importante**: un cammino semplice che collega due nodi avrà al massimo $n-1$ archi, cioè potrebbe essere semplicemente un arco unico diretto, oppure un percorso che tocca tutti i nodi del grafo.
 È proprio per questo motivo che l'algoritmo fa $n-1$ passate.
 
-Dato che il cammino è minimo possiamo sfruttare il fatto che anche i suoi sottocammini sono minimi e applicare la proprietà della convergenza per ogni passata: questo ci permette di ottenere che ad ogni passata almeno un nodo verrà agganciato alla sua distanza minima dalla sorgente.
+Dato un cammino minimo semplice che tocca tutti gli $n$ nodi del grafo possiamo dire che:
+poiché il cammino è minimo, possiamo sfruttare il fatto che anche i suoi sottocammini sono minimi per applicare la **proprietà della convergenza ad ogni passata**: questo ci permette di ottenere che ad ogni passata almeno un nodo verrà agganciato alla sua distanza minima dalla sorgente.
 
 ![enter image description here](https://i.ibb.co/d29qzwt/image.png)
 
@@ -75,7 +76,7 @@ Dato che il cammino è minimo possiamo sfruttare il fatto che anche i suoi sotto
 - dopo la seconda passata: $d[x_2] = \delta(x_0, x_2)$
 - dopo la k-esima passata: $d[x_k] = \delta(x_0, x_k)$
 
-Dopo la $(n-1)$-esima passata tutti gli archi avranno raggiunto la loro distanza minima, questo perché ad ogni passata viene agganciata la distanza di un arco e in un cammino minimo semplice ci sono al massimo $n-1$ archi.
+Alla $(n-1)$-esima passata l'ultimo arco raggiungerà la sua distanza minima, questo perché ad ogni passata viene agganciata la distanza di un arco e tutti i nodi precedenti sono già stati agganciati alla loro distanza minima.
 
 ### Dimostrazione punto 3
 Se alla fine l'algoritmo restituisce `true` allora vale che 
