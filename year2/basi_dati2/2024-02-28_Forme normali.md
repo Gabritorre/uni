@@ -55,6 +55,7 @@ Sia $R(T, F)$ lo schema di partenza
 	- $F_1 = \pi_{T_1}(F)$
 	- $F_2 = \pi_{T_2}(F)$
 	nota che la proiezione va fatta su tutte le combinazioni di $T_1$ e $T_2$, ad esempio se $T_1 = \{A, B, C\}$ bisogna calcolare le chiusure $A^+, B^+, C^+, AB^+, AC^+, BC^+$
+	se però noti che ad esempio $A$ è una superchiave per $T_1$ allora non serve calcolare i sovrainsiemi di $A$ ($AB^+, AC^+$)
 4. decomponi ricorsivamente $R_1(T_1, F_1)$ e $R_2(T_2, F_2)$ in $\rho_1$ e $\rho_2$
 5. ritorna l'unione $\rho_1 \cup \rho_2$
 
