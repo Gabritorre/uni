@@ -1,36 +1,34 @@
 ﻿# Anomalie e Dipendenze funzionali
 
-Spesso esistono diversi modi per modellare la realtà di riferimento della base di dati, vediamo come riconoscere quali modelli sono i migliori e come trovare delle problematiche in una modellazione.
-La **normalizzazione** si occupa di definire formalmente la qualità degli schemi e degli algoritmi per trasformare un schema in un altro equivalente ma privo di **anomalie**
+Esistono diversi modi per modellare la realtà di riferimento della base di dati, vediamo come riconoscere quali modelli sono i migliori e come trovare delle problematiche in una modellazione.
+La **normalizzazione** si occupa di definire formalmente la qualità degli schemi e degli algoritmi utilizzati per trasformare un schema in un altro equivalente ma privo di **anomalie**
 
 ## Le anomalie
 
-I due due anomalie principali che si possono presentare in una modellazione sono:
+Le anomalie principali che si possono presentare in una modellazione sono:
 - **ripetizione di dati**
 - **impossibilità di rappresentare certe informazioni**
 - **perdita di informazione**
 
-Consideriamo il seguente esempio per la rappresentazione dei prestiti di una biblioteca: Vogliamo rappresentare gli utenti che nel momento attuale hanno in possesso un libro in prestito (non siamo interessati allo storico dei prestiti)
+Consideriamo il seguente esempio che rappresenta dei prestiti di una biblioteca: Vogliamo rappresentare gli utenti che nel momento attuale hanno in possesso un libro in prestito (non siamo interessati allo storico dei prestiti)
 
 Abbiamo una unica tabella fatta nel seguente modo
-
 ![enter image description here](https://i.ibb.co/7bQjdPN/image.png)
 
-Abbiamo della **ripetizione di dati** in quanto ogni volta che uno stesso utente prende in prestito un nuovo libro vengono ripetuti i dati quali residenza e telefono (inoltre creerebbe delle difficoltà in fase di aggiornamento dei dati).
-D'altra parte ci è **impossibile rappresentare** informazioni sugli utenti se questi non hanno un libro in prestito nel momento attuale
+Abbiamo **ripetizione di dati** in quanto ogni volta che uno stesso utente prende in prestito un nuovo libro vengono ripetuti i dati quali residenza e telefono (inoltre creerebbe delle difficoltà in fase di aggiornamento dei dati).
+D'altra parte è **impossibile rappresentare** informazioni sugli utenti se questi non hanno un libro in prestito nel momento attuale.
 
-un'altra anomalia è la **perdita di informazione**, ad esempio potremmo modificare lo schema precedente nel seguente modo
-
+Un'altra anomalia è la **perdita di informazione**, ad esempio potremmo modificare lo schema precedente nel seguente modo
 ![enter image description here](https://i.ibb.co/Bgd01fg/image.png)
 
-abbiamo risolto il problema della ridondanza dei dati, però la scelta di usare `Telefono` come chiave esterna è un problema in quanto non identifica univocamente un utente e questo può portare ad avere dei risultati non corretti dalle query.
-Bisognerebbe usare `NomeUtente` come chiave esterna
+Abbiamo risolto il problema della ridondanza dei dati, però la scelta di usare `Telefono` come chiave esterna è un problema in quanto non identifica univocamente un utente e questo può portare ad avere dei risultati non corretti dalle query, abbiamo perso l'informazione su chi è effettivamente l'utente che ha preso in prestito il libro.
+Bisognerebbe usare `NomeUtente` come chiave esterna, in quanto è una chiave primaria sulla tabella `Utenti`.
 
 Abbiamo poi **anomalie di inserimento e cancellazione** dove viene reso impossibile inserire o cancellare certi dati.
 
 ## Dipendenze funzionali
 
-Vediamo alcuni concetti che la teoria della normalizzazione utilizza per definite una schema come "normalizzato".
+Vediamo alcuni concetti che la teoria della normalizzazione utilizza per definite uno schema come "normalizzato".
 
 Realizziamo prima una raccolta delle notazione che utilizziamo successivamente:
 
@@ -70,7 +68,7 @@ possiamo scrivere che $F \models \text{CodiceLibro} \rightarrow \text{Titolo, No
 
 ### Assiomi di Armstrong
 
-L'implicazione logica (essendo appunto fatta tramite la logica) non fornisce un modo algoritmico per determinare le dipendenze, per questo occorre utilizzare la **derivazione**
+L'implicazione logica (essendo appunto fatta tramite la logica) non fornisce un modo algoritmico per determinare le dipendenze, per questo occorre utilizzare la **derivazione**.
 
 Dato un insieme di regole di inferenza (deduzione) $RI$ che possono essere usate per **derivare nuove dipendenza dato un insieme di dipendenze** $F$, indichiamo con $F \vdash X \rightarrow Y$ il fatto che la dipendenza $X \rightarrow Y$ sia **derivabile** da $F$ usando le regole $RI$
 
@@ -78,11 +76,11 @@ Un insieme di regole viene definito *corretto e completo* se vale:
 
 $$F \vdash X \rightarrow Y \iff F \models X \rightarrow Y$$
 
-Gli **assiomi di Armstrong** un insieme di regole *corrette e complete* e le regole sono le seguenti:
+Gli **assiomi di Armstrong** un insieme di regole *corrette e complete* e sono le seguenti:
 
 1. **Riflessività**: Se l'insieme di attributi $Y$ è sottoinsieme di $X$ allora i valori di $Y$ dipendono da $X$
 	$$Y \subseteq X \implies X \rightarrow Y$$
-2. **Arricchimento**: Se $Y$ dipende da $X$ e consideriamo $W$ come un sottoinsieme di attributi di $T$ allora aggiungendo ad $Y$ gli attributi $W$ essi (messi insieme) dipenderanno dagli attributi $X$ uniti agli attributi $W$
+2. **Arricchimento**: Se $Y$ dipende da $X$ e consideriamo $W$ come un sottoinsieme di attributi di $T$, allora aggiungendo ad $Y$ gli attributi $W$, essi dipenderanno dagli attributi $X$ uniti agli attributi $W$
 
 	$$X \rightarrow Y \land W \subseteq T \implies X \cup W \rightarrow Y \cup W$$
 
@@ -90,7 +88,7 @@ Gli **assiomi di Armstrong** un insieme di regole *corrette e complete* e le reg
 
 	$$X \rightarrow Y \land Y \rightarrow Z \implies X \rightarrow Z$$
 
-Definizione di **Derivazione** una derivazione di $X \rightarrow Y$ da $F$ è una sequenza di dipendenze $f_1, ..., f_n$ dove $f_n = X \rightarrow Y$ e ogni elemento è ottenuto da una regola di inferenza oppure dalle dipendenze precedenti.
+Definizione di **Derivazione**: una derivazione di $X \rightarrow Y$ da $F$ è una sequenza di dipendenze $f_1, ..., f_n$ dove $f_n = X \rightarrow Y$ e ogni elemento è una dipendenza funzionale in $F$ oppure è ottenuto da una regola di inferenza applicata alle dipendenze precedenti.
 
 Vediamo alcune regole che derivano dagli assiomi di Armstrong:
 - **Unione**: $\{X \rightarrow Y, X \rightarrow Z\} \vdash X \rightarrow Y\cup Z$
@@ -100,14 +98,13 @@ Vediamo alcune regole che derivano dagli assiomi di Armstrong:
 
 Nel contesto degli assiomi di Armstrong **l'implicazione logica** $(\models)$ e la **derivazione** $(\vdash)$ **sono equivalenti**. Quindi d'ora in avanti i due termini (e i simboli) possono essere intercambiati a piacere
 
-
 ## Chiusura
 
 Definiamo cosa è la **chiusura di un insieme di dipendenze funzionali** e che cosa è la **chiusura di un insieme di attributi rispetto ad un insieme dipendenze funzionali**
 
-**chiusura di un insieme di dipendenze**: Data un insieme di dipendenze $F$, la **chiusura** (indicata come $F^+$) è l'insieme delle dipendenze funzionali che sono implicate logicamente (o derivate) da $F$
+**chiusura di un insieme di dipendenze**: Dato un insieme di dipendenze $F$, la **chiusura** (indicata come $F^+$) è l'insieme delle dipendenze funzionali che sono implicate logicamente (o derivate) da $F$
 
-$$F^+ = \{X \rightarrow Y | F \vdash X \rightarrow Y\}$$
+$$F^+ = \{X \rightarrow Y \, | \,F \vdash X \rightarrow Y\}$$
 
 ### Problema dell'implicazione
 
@@ -117,7 +114,7 @@ Avendo $X$ come sottoinsieme degli attributi, la chiusura di $X$ (indicata come 
 
 $$X^+ = \{A \in T | F \vdash X \rightarrow A\}$$
 
-tramite il seguente teorema,
+Tramite il seguente teorema,
 
 $$F \vdash X \rightarrow Y \iff Y \subseteq X^+$$
 
@@ -139,7 +136,7 @@ $\begin{aligned}
 
 Vediamo un esempio di esecuzione con:
 - $X = AB$
-- $G = \{A \rightarrow C, AC \rightarrow D, E \rightarrow F\}$
+- insieme delle dipendenze funzionali: $G = \{A \rightarrow C, AC \rightarrow D, E \rightarrow F\}$
 
 Seguiamo la variabile $X_{\text{new}}^+$ durante la l'esecuzione del codice:
 
@@ -152,7 +149,7 @@ Seguiamo la variabile $X_{\text{new}}^+$ durante la l'esecuzione del codice:
 - seconda iterazione: 
 	1. dato che $ABC \neq AB$ viene eseguita l'iterazione
 	2. vengono scorsi tutti gli elementi di $G$
-	3. gli elementi che entra nell'if sono $\{A \rightarrow C, AC \rightarrow D\}$ in quanto $A$ è contenuto in $ABC$ e anche $AC$ è contenuto in $ABC$
+	3. gli elementi che entrano nell'if sono $\{A \rightarrow C, AC \rightarrow D\}$ in quanto $A$ è contenuto in $ABC$ e anche $AC$ è contenuto in $ABC$
 	4. $X_{\text{new}}^+ = ABC \cup C \cup D = ABCD$
 - terza iterazione: 
 	1. dato che $ABCD \neq ABC$ viene eseguita l'iterazione

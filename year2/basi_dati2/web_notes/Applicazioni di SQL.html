@@ -29,7 +29,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="applicazioni-di-sql">Applicazioni di SQL</h1>
-<p>Vediamo quali sono i modi per integrare l’interazione con un database all’interno di una reale applicazione.</p>
+<p>Vediamo quali sono i modi per integrare l’interazione con un database all’interno di una applicazione.</p>
 <p>Possiamo categorizzare gli approcci in 3 modi:</p>
 <ul>
 <li><strong>Linguaggi integrati</strong>: linguaggi specializzati nel eseguire comandi SQL</li>
@@ -52,7 +52,7 @@
 <h2 id="linguaggi-che-ospitano-sql">Linguaggi che ospitano SQL</h2>
 <p><strong>Vantaggi</strong></p>
 <ul>
-<li>Costo di apprendimento ridotto</li>
+<li>costo di apprendimento ridotto</li>
 <li>controlli sulla sintassi SQL in fase di compilazione</li>
 </ul>
 <p><strong>Svantaggi</strong></p>
@@ -67,27 +67,41 @@ Il pre-processore viene sfruttato per garantire che il codice:
 </ul>
 </li>
 </ul>
-<p>Un esempio di questo approccio è SQLJ.</p>
-<p>Viene utilizzata una sintassi particolare per far interagire il codice java con SQL.<br>
-Vie utilizzato un <strong>cursore</strong> per scorrere il risultato delle query</p>
+<p>Un esempio di questo approccio è SQLJ.<br>
+Viene utilizzata una sintassi particolare per far interagire il codice java con SQL.<br>
+In fase di compilazione vengono forniti i dati per l’autenticazione.<br>
+Viene utilizzato un <strong>cursore</strong> per scorrere il risultato delle query</p>
+<p>Le parti coinvolte per di una applicazione SQLJ sono, in ordine di esecuzione:</p>
+<ul>
+<li>pre-processore SQLJ</li>
+<li>compilatore Java</li>
+<li>runtime Java</li>
+<li>DBMS</li>
+</ul>
 <h2 id="utilizzo-di-api">Utilizzo di API</h2>
 <p><strong>Vantaggi</strong></p>
 <ul>
 <li>Costo di apprendimento ridotto</li>
-<li>non è richiesto un pre-processore</li>
-<li>possibilità di utilizzo di SQL dinamico</li>
+<li>Non è richiesto un pre-processore</li>
+<li>Possibilità di utilizzo di SQL dinamico</li>
 </ul>
 <p><strong>Svantaggi</strong></p>
 <ul>
-<li>possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (<em>Impedance mismatch</em>)</li>
-<li>assenza di controlli in tempo di compilazione</li>
+<li>Possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (<em>Impedance mismatch</em>)</li>
+<li>Assenza di controlli in tempo di compilazione</li>
 </ul>
 <p>Un esempio di questo approccio è JDBC.</p>
 <p>Le query sono solitamente delle stringhe passate a funzioni specifiche (e quindi controllate a runtime)</p>
-<p>Una tecnica molto utile per aumentare la robustezza del codice è l’uso di <strong>prepared statement</strong>, cioè l’utilizzo di <em>placeholder</em> (con l’utilizzo del carattere <code>?</code>) all’interno della query da poi riempire come parametri aggiuntivi.</p>
+<p>Una tecnica molto utile per aumentare la robustezza del codice è l’uso di <strong>prepared statement</strong>, cioè l’utilizzo di <em>placeholder</em> (con l’utilizzo del carattere <code>?</code>) all’interno della query da poi sostituire con parametri aggiuntivi.</p>
 <p><strong>SQL dinamico</strong>: cioè è possibile costruire le query dinamicamente a runtime, ad esempio in base all’input utente. È una feature che va comunque usata con attenzione</p>
+<p>Le parti coinvolte per di una applicazione JDBC sono, in ordine di esecuzione:</p>
+<ul>
+<li>compilatore Java</li>
+<li>runtime Java</li>
+<li>DBMS</li>
+</ul>
 <h2 id="object-relational-mapping-orm">Object Relational Mapping (ORM)</h2>
-<p>l’ORM è una tecnica di programmazione basata sulle API ma che risolve i problemi dovuti all’<em>impedance mismatch</em> in quanto viene mantenuto una versione del database nel codice realizzata con la programmazione ad oggetti (tabelle sono le classi, i campi sono attributi, ecc…).<br>
+<p>l’ORM è una tecnica di programmazione basata sulle API ma che risolve i problemi dovuti all’<em>impedance mismatch</em> in quanto viene mantenuta una versione del database nel codice realizzata con la programmazione ad oggetti (tabelle sono le classi, i campi sono attributi, ecc…).<br>
 Quindi ogni operazione sul database viene prima applicata al modello ad oggetti per verificarne la correttezza.</p>
 <p><strong>Vantaggi</strong></p>
 <ul>

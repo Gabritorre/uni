@@ -11,17 +11,18 @@ FROM Movies
 WHERE studio = ’Disney’ AND year = 2012;
 ```
 
-Se nel database ci sono migliaia di film, per ottenere questa query dovremmo controllare per ogni film se rispettano le condizioni del `where` per poterli selezionare.
+Se nel database ci sono migliaia di film, per ottenere questa query dovremmo controllare, per ogni film, le condizioni del `where` per poterli selezionare o meno.
 
 Gli **indici** sono una struttura dati ausiliaria che permette di accedere in maniera più efficiente alle righe rispetto ad una ricerca lineare.
 
 Per sfruttare gli indici bisogna scegliere degli attributi su cui ordinare tutte le righe. Una volta ottenute le righe ordinate (in modo lessicografico) secondo quegli attributi, viene creato un *Binary Search Tree* che consente di trovare le righe interessate in tempo logaritmico.
 
 Nota che il BST è una struttura **ausiliaria** quindi l'ordine originale delle righe nel database non viene modificato.
+Il BST conterrà infatti dei puntatori alle righe della tabella.
 
 ### Tipi di indici
 
-Possiamo creare degli indici per **attributo singolo** oppure con un **insieme di attributi**, in quest'ultimo caso è importante l'ordine in cui si mettono:
+Possiamo creare degli indici per **attributo singolo** oppure per un **insieme di attributi**, in quest'ultimo caso è importante l'ordine in cui si mettono:
 Se ad esempio in un database di film si vuole creare un indice che ordina per anno e per studio di produzione, dobbiamo pensare se ci saranno più film divisi per anno oppure per studio:
 
 - Se ci sono tanti anni diversi e molti studi uguali allora l'indice migliore sarebbe `Indice(studio, anno)`
@@ -42,6 +43,7 @@ mentre le query che non ne traggono vantaggio sono ad esempio:
 - `SELECT * FROM Movies WHERE studio = 'Sony'`
 	(perché nell'indice le righe sono prima ordinate per anno, ma in questa query non ci sono filtri sull'anno)
 - `SELECT * FROM Movies WHERE regista = 'Pippo'`
+	non abbiamo nessun ordinamento per il `regista`
 
 ### Comparazione di indici
 
@@ -59,33 +61,30 @@ WHERE studio = ’Disney’ AND year = 2012;
 - `Indice(studio)`: controllo 200 righe
 - `Indice(studio, year)`: controllo 5 righe
 
-
 ### Pagine in memoria
 
 L'analisi del costo di una query utilizzando solo quante righe deve ispezionare non è molto preciso in quanto la memoria RAM dei computer funziona con le pagine:
 - in una pagina tipicamente sono presenti molte tuple
 - richiedere una singola tupla comporta che una intera pagina sia caricata in memoria
-- Una volta che la pagina è caricata in memoria, accedere a tutti i suoi contenuto è molto poco costoso perché la memoria RAM è molto rapida
+- Una volta che la pagina è caricata in memoria, accedere a tutti i suoi contenuti è molto poco costoso perché la memoria RAM è molto rapida
 
 ## Pro e contro degli indici
 
 ### Pro
  Il principale vantaggio dell'utilizzo degli indici è il grande aumento di performance sulle query che utilizzano l'attributo specificato nell'indice.
 
-Vediamo quando conviene utilizzare gli indici:
-- sulle chiavi
-- sulle chiavi esterne
-- su attributi raramente modificabili
+In generale conviene utilizzare gli indici:
+- Sulle chiavi
+- Sulle chiavi esterne
+- Su attributi raramente modificabili
 
-
- ### Contro
+### Contro
 Un grande contro è che quando si fanno operazioni di inserimento e cancellazione, oltre che al database normale anche l'albero generato dall'indice va aggiornato.
 
-Vediamo quando non conviene utilizzare gli indici:
-- su tabella piccole
+In generale non conviene utilizzare gli indici:
+- Su tabella piccole (in quanto il guadagno di performance sarebbe impercettibile)
 - Su attributi i cui valori hanno poche varianti (ad esempio un attributo booleano)
-- su attributi modificati frequentemente
-
+- Su attributi modificati frequentemente
 
 ## Definire gli indici
 
@@ -119,12 +118,12 @@ CREATE MATERIALIZED VIEW MovieProd AS
 	WHERE m.producer = e.code
 ```
 
-la vista va aggiornata nei seguenti casi:
+La vista va ricalcolata nei seguenti casi:
 
 - in caso di modifiche all'interno delle tabelle `Movies`  e `MovieExec`
 - in caso di modifiche degli attributi citati all'interno della vista.
 
-In tutti gli altri casi la vista va ricalcolata.
+In tutti gli altri casi la non c'è bisogno.
 
 POSTGRES delega la responsabilità all'utente di aggiornare le viste con il comando `REFRESH MATERIALIZED VIEW`.
 

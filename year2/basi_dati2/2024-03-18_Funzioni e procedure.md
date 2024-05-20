@@ -3,7 +3,7 @@
 Oltre ad utilizzare le funzioni all'interno dei trigger, si possono creare funzioni per altri scopi:
 
 - Incapsulare funzionalità di uso comune per facilitarne il riutilizzo
-- offrire una interfaccia più semplice per che è ancora alle prime armi
+- Offrire una interfaccia più semplice per chi è ancora alle prime armi
 - Raggruppare una sequenza di operazioni di cui non ci interessano i risultati intermedi.
 
 Vediamo come definire le funzioni nel linguaggio *PL/pgSQL* di postgres.
@@ -30,7 +30,6 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-
 ## Dichiarazione di variabili
 
 La dichiarazione delle variabili fa fatta nella posizione apposita, la lista di variabili va messa a seguire della keyword `DECLARE`
@@ -42,9 +41,9 @@ name [CONSTANT] type [NOT NULL] [:= expr OR = expr];
 ```
 
 Quindi va prima il nome della variabile seguito dal tipo.
-I tipi possono essere tutti quelli supportati di SQL
+I tipi possono essere tutti quelli supportati di SQL.
 
-l'assegnazione tramite `:=` è equivalente all'uso di `=`, lo standard di PL/SQL è `:=`
+L'assegnazione tramite `:=` è equivalente all'uso di `=`, lo standard di PL/SQL è `:=`
 
 Alcuni tipi di dato particolari sono:
 
@@ -63,7 +62,6 @@ DECLARE
 	myfield tablename.columnname%TYPE;
 	arow RECORD;
 ```
-
 
 ### Assegnamento
 
@@ -98,7 +96,7 @@ END;
 $$ LANGUAGE plpgsql;
 ```
 
-Una funzione che ritorna un insieme di valori, tale insieme deve essere costruito in maniera incrementale:
+Se una funzione ritorna un insieme di valori, l'insieme deve essere costruito in maniera incrementale:
 
 ```sql
 RETURN NEXT expr; -- aggiunge un record al risultato
@@ -107,8 +105,6 @@ RETURN 	-- ritorna il risultato
 ```
 
 Nel tipo di ritorno della funzione si può usare `SETOF t` per dire di restituire un insieme di elementi di tipo `t`
-
-
 
 Esempio
 
@@ -172,7 +168,6 @@ ELSE
 END IF;
 ```
 
-
 ## Cicli
 
 Il ciclo **while** si fa nel seguente modo
@@ -216,7 +211,6 @@ Ciascuna funzione possiede una variabile `FOUND`:
 3. un ciclo FOR imposta `FOUND` a `true` se ha iterato almeno una volta, `false` altrimenti
 4. `RETURN QUERY` imposta `FOUND` a `true` se la query ha ritornato almeno una riga, `false` altrimenti
 
-
 ## Eccezioni
 
 Una funzione può riportare messaggi oppure errori
@@ -246,7 +240,6 @@ EXCEPTION
 END;
 ```
 
-
 ## Procedure
 
 Una procedura è una funzione che non ritorna niente.
@@ -261,3 +254,4 @@ $$ LANGUAGE plpgsql;
 ```
 
 Una procedura si può chiamare con il comando `CALL`
+

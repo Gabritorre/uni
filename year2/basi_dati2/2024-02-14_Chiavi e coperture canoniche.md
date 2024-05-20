@@ -4,7 +4,7 @@ Definiamo i concetti di *superchiave, chiave e attributi primi* utilizzando le n
 
 - **Superchiave**: (sottoinsieme di attributi che renderebbero ogni riga univoca all'interno della tabella)
 	Data la relazione $R(T, F)$, un insieme di attributi $X\subseteq T$ è superchiave se e solo se $X \rightarrow T \in F^+$
-- **Chiave**: è una superchiave composta dal minor numero di attributi possibile (cioè superchiave minimale) ma che continuano ad identificare le righe
+- **Chiave**: è una superchiave composta dal minor numero di attributi possibile (detta anche superchiave minimale) ma che continua ad identificare le righe della tabella
 	
 - Un attributo viene definito **primo** se appartiene ad almeno una chiave.
 	Dato che nella modellazione ci possono essere più chiavi, ne viene scelta una (quella con il numero di attributi minore) chiamata *chiave primaria*
@@ -37,8 +37,8 @@ Dato che $X^+ = T$ allora $X$ è una superchiave
 
 Vediamo un algoritmo per  verificare se un insieme di attributi $X\subseteq T$ è **chiave**:
 
-1. Verificare se $X$ è superchiave, se non lo è allora non può essere nemmeno una chiave
-2. Verificare che per ogni attributo di $A \in X$ si abbia $(X \backslash \{A\})^+ \neq T$
+1. Verificare che $X$ è superchiave (se non lo è allora non può essere nemmeno una chiave)
+2. Verificare che per ogni attributo $A \in X$ si abbia $(X \backslash \{A\})^+ \neq T$
 
 Vediamo un esempio
 
@@ -54,7 +54,6 @@ Abbiamo già verificato prima che $X$ è una superchiave, quindi passiamo subito
 - rimuovendo $D$ avremmo $AB^+ = ABCEF$ che è diverso da $T$
 
 Quindi $X$ è una chiave
-
 
 ## Trovare una chiave
 
@@ -89,7 +88,6 @@ Vediamo un esempio
 
 Quindi abbiamo trovato che gli attributi $BDE$ rappresentano una chiave
 
-
 ## Trovare tutte le chiavi
 
 Vediamo un algoritmo che ci permette di ricercare tutte le chiavi di una relazione $R(T, F)$
@@ -113,17 +111,16 @@ $\begin{aligned}
 & \hspace{25mm}\text {Cand }=\text { Cand }+X A_i::\left(A_{i+1}, \ldots, A_n\right)
 \end{aligned}$
 
+L'intuizione è la seguente:
 
-l'intuizione è la seguente:
-
-- generiamo tutte le possibili chiavi  dalle più piccole alle più grandi
+- generiamo tutte le possibili chiavi dalle più piccole alle più grandi
 - rappresentiamo le chiavi candidate come $X :: (Y)$ dove $X$ è l'insieme degli attributi da testare come chiave, e $Y$ l'insieme dei possibili attributi da aggiungere a $X$ qualora $X^+ \neq T$
 - Se $X^+ = T$, allora $X$ è già una chiave e possiamo scartare $X :: (Y)$ (cioè tutti i sovrainsiemi di $X$)
 - Altrimenti calcoliamo $Y \backslash X^+ = \{A_1, ..., A_n\}$ e generiamo i nuovi candidati
  $X\cup A_1 :: (A_2, ..., A_n), X\cup A_2 :: (A_3, ..., A_n), ..., X\cup A_n :: ()$
  - Nota che se un attributo non compare mai alla destra di una dipendenza, allora esso deve fare parte di tutte le chiavi.
 
-Un esempio del significato$X :: (Y)$ è il seguente
+Un esempio del significato di $X :: (Y)$ è il seguente
 $AB :: (CD)$ rappresenta gli insiemi di attributi $\{AB, ABC, ABD, ABCD\}$
 
 Vediamo un esempio
@@ -132,9 +129,9 @@ Vediamo un esempio
 - $T = ABCDEF$
 - $G = \{AB \rightarrow C, E \rightarrow A, A \rightarrow E, B \rightarrow F\}$
 
-partiamo inizializzando $Z$, in $Z$ dobbiamo mettere gli attributi che non dipendono da altri all'interno di $G$, nel nostro caso:
+partiamo inizializzando $Z$, in $Z$ dobbiamo mettere gli attributi presenti in $G$ che non dipendono da altri, nel nostro caso:
 $Z = BD$
-Avendo $Z$ possiamo inizializzare i candidati, mettendo a sinitra $Z$ mentre a destra gli altri attributi:
+Avendo $Z$ possiamo inizializzare i candidati, mettendo a sinistra $Z$ mentre a destra gli altri attributi:
 $\text{Cand} = [BD::(ACEF)]$
 
 - STEP 1
@@ -206,22 +203,25 @@ $\text{Cand} = [BD::(ACEF)]$
 
 Dato che non ci sono candidati rimanenti l'algoritmo termina e le chiavi trovate sono $[BDA, BDE]$
 
+## Attributo primo
+
+Verificare che un attributo è primo ha costo esponenziale, è quindi più conveniente generare tutte le chiavi e quindi vedere quali sono gli attributi presenti.
 
 ## Forma canonica
 
-Rendere in **forma canonica** un insieme di dipendenze funzionali $F$ significa rappresentare tale insieme rispettando delle regole che servono a standardizzare la sua rappresentazione.
+Rendere in **forma canonica** un insieme di dipendenze funzionali $F$ significa rappresentare tale insieme in modo che rispetti delle regole che servono a standardizzarlo.
 
 Due insiemi di dipendenze $F$ e $G$ sono equivalenti $(F\equiv G)$ se e solo se  $F^+ = G^+$
 
-regole della forma canonica:
+Regole della forma canonica:
 
 1. il **numero di elementi dipendenti** (quelli alla destra) **deve essere 1** per ogni dipendenza
-2. $X$ **non contiene attributi estranei**:
-	gli attributi estranei sono quegli attributi che stanno alla sinistra e che anche se rimossi comunque la dipendenza rimane
+2. gli elementi alla sinistra **non contengono attributi estranei**:
+	gli attributi estranei sono quegli attributi che stanno alla sinistra e che anche se rimossi non intaccano la dipendenza
 3. **non sono presenti dipendenze ridondanti**
 	una dipendenza è ridondante se essa si può ricavare dalle altre dipendenze
 
-L'algoritmo per trasformare un insieme di dipendenze $F$ in forma canonica (operazione anche detta trovare la **copertura canonica** di $F$) è il seguente
+L'algoritmo per trasformare un insieme di dipendenze $F$ in forma canonica (operazione anche detta "trovare la **copertura canonica** di $F$") è il seguente
 
 $\text{function Canonize}(F)$
 $\hspace{5mm}G \leftarrow\{X \rightarrow A \mid \exists Y: X \rightarrow Y \in F \wedge A \in Y\}$
@@ -236,30 +236,29 @@ $\hspace{12mm}\textbf{if } A \in X_{G \backslash\{X \rightarrow A\}}^{+}\textbf{
 $\hspace{18mm}G \leftarrow G \backslash\{X \rightarrow A\}$
 $\hspace{5mm}\textbf{return } G$
 
-consiste sostanzialmente in 3 passi:
+Consiste sostanzialmente in 3 passi:
 
 1. decomporre le dipendenze in modo da avere attributi singoli alla destra
 2. tra le dipendenze rimanenti considera quelli che hanno più attributi a sinistra e cancelliamo gli attributi estranei, per farlo:
 	- togli un attributo
 	- calcola la chiusura
-	- se $Y$ è compreso nella chiusura allora l'attributo tolto era estraneo
+	- se gli elementi sulla destra sono compresi nella chiusura allora l'attributo tolto era estraneo
 3. togliamo le dipendenze ridondanti, per farlo:
 	- ipotizziamo di rimuovere una dipendenza
-	- calcoliamo la chiusura rispetta alla $X$ della dipendenza tolta
-	- se la chiusura contiene tutti gli attributi allora la dipendenza rimossa era ridondante
-
+	- calcoliamo la chiusura rispetto alla parte sinistra della dipendenza tolta
+	- se la chiusura contiene gli attributi alla destra della dipendenza rimossa, allora la dipendenza rimossa era ridondante
 
 Ad esempio, trovare la copertura canonica di 
 $$F = \{A\rightarrow BC, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$$
 
-indichiamo la copertura canonica con $G$
+Indichiamo la copertura canonica con $G$
 1. decomponiamo le dipendenze con più attributi a destra
 $$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C, A \rightarrow B, AB \rightarrow C\}$$
 
 2. consideriamo le dipendenze con più attributi a sinistra, nel nostro caso abbiamo solo $AB \rightarrow C$, proviamo a rimuovere l'attributo $A$:
 $\{AB\} \backslash \{A\} = B$
 Calcoliamo la chiusura di $B$, $B^+_G = BC$
-dato che nella chiusura è presente l'attributo $Y$ della dipendenza che abbiamo considerato, cioè $C$, allora l'attributo $A$ che abbiamo rimosso è estraneo (è come dire che $C$ dipende da $B$ e non da $A$).
+Dato che nella chiusura è presente l'attributo $Y$ della dipendenza che abbiamo considerato, cioè $C$, allora l'attributo $A$ che abbiamo rimosso è estraneo (è come dire che $C$ dipende da $B$ e non da $A$).
 Quindi al posto di $AB \rightarrow C$ scriviamo $B \rightarrow C$
 $$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C, A \rightarrow B, B \rightarrow C\}$$
 	
@@ -270,14 +269,14 @@ $$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C, A \rightarrow B, B \rig
 	$$G =\{A\rightarrow B, A \rightarrow C, B \rightarrow C\}$$
 	- verifico se $A \rightarrow B$ è ridondante
 
-		$A^+_{G \backslash\{A \rightarrow B\}} = AC \hspace{10mm}$ dato che non riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $A\rightarrow B$ non è ridondante
+		$A^+_{G \backslash\{A \rightarrow B\}} = AC \hspace{10mm}$ dato che $B$ non è presente nella chiusura allora $A\rightarrow B$ non è ridondante
 	- verifico se $A \rightarrow C$ è ridondante
 
-		$A^+_{G \backslash\{A \rightarrow C\}} = ABC \hspace{10mm}$ dato che riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $A\rightarrow C$ è ridondante
+		$A^+_{G \backslash\{A \rightarrow C\}} = ABC \hspace{10mm}$ dato $C$ appartiene alla chiusura allora $A\rightarrow C$ è ridondante
 	
 	- verifico se $B \rightarrow C$ è ridondante
 
-		$B^+_{G \backslash\{B \rightarrow C\}} = B\hspace{10mm}$ dato che non riesco ad ottenere tutti gli attributi dalle dipendenze rimanenti allora $B\rightarrow C$ non è ridondante
+		$B^+_{G \backslash\{B \rightarrow C\}} = B\hspace{10mm}$ dato $C$ non appartiene alla chiusura allora $B\rightarrow C$ non è ridondante
 
 Quindi la copertura canonica di $F$ è
 

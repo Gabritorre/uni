@@ -11,8 +11,9 @@ Le principali forme normali sono:
 
 la prima e la seconda hanno solo una rilevanza storia, negli ultimi anni sono nati nuovi modelli relazionali che non richiedono di rispettare queste due proprietà.
 
-Ci concentreremo invece sulle altre due forme normali
+Ci concentreremo invece sulle altre due forme normali, la **terza forma normale** e la **forma normale Boyce-Codd**
 
+Nota: in generale **non si può garantire contemporaneamente** assenza di anomalie, preservazione dei dati e preservazione delle dipendenze
 
 ## Forma normale di Boyce-Codd
 
@@ -23,7 +24,6 @@ In altri termini: $\forall X \rightarrow Y \in F^+, Y \nsubseteq X$ si ha che $X
 è stato dimostrato che è possibile mantenere la proprietà anche sostituendo $F^+$ con $F$, così da rendere la verifica di uno schema in BCNF in tempo polinomiale
 
 Nel seguente esempio:
-
 ![enter image description here](https://i.ibb.co/kmgMz2D/image.png)
 
 Immaginiamo di avere le seguenti dipendenze funzionali:
@@ -41,23 +41,22 @@ Inoltre la modifica di un indirizzo di un magazzino deve essere riportata per og
 2. **difficoltà di gestione**: per inserire un nuovo magazzino è necessario che ci sia almeno un articolo al suo interno.
 Inoltre se si elimina l'ultimo articolo da un magazzino si perde anche il magazzino
 
-
 ## Conversione in BCNF
 
 Gli algoritmi per rendere uno schema privo di anomalie sono chiamati algoritmi di **normalizzazione**.
 Gli algoritmi di normalizzazione per rendere uno schema in BCNF sono detti algoritmi di **analisi** e si sviluppano nel seguente modo:
 
 Sia $R(T, F)$ lo schema di partenza
-1. Se $R$ è già in forma BCNF allora si ritorna $R$
+1. Se $R$ è già in forma BCNF (a sinistra si hanno tutte superchiavi) allora si ritorna $R$
 2. altrimenti seleziona la dipendenza $X \rightarrow Y \in F$ che viola BCNF e calcoli:
 	- $T_1 = X_F^+$
 	- $T_2 = X \cup (T \backslash T_1)$ 
 3. calcoli:
 	- $F_1 = \pi_{T_1}(F)$
 	- $F_2 = \pi_{T_2}(F)$
+	nota che la proiezione va fatta su tutte le combinazioni di $T_1$ e $T_2$, ad esempio se $T_1 = \{A, B, C\}$ bisogna calcolare le chiusure $A^+, B^+, C^+, AB^+, AC^+, BC^+$
 4. decomponi ricorsivamente $R_1(T_1, F_1)$ e $R_2(T_2, F_2)$ in $\rho_1$ e $\rho_2$
 5. ritorna l'unione $\rho_1 \cup \rho_2$
-
 
 ### Esempio
 
@@ -72,17 +71,22 @@ $$\text{Località}^+_F = \{\text{Località, Prefisso}\}$$
 Cioè $\text{Località}$ non è una superchiave.
 
 Applichiamo l'algoritmo di conversione:
+- $T_1 = X_F^+ = \{\text{Località, Prefisso}\}$
+- $T_2 = X \cup (T \backslash T_1) = \{\text{Località, Numero}\}$
+
+Da cui:
+
 - $R_1(\{\text{Località, Prefisso}\}, F_1)$
 - $R_2(\{\text{Località, Numero}\}, F_2)$
 
-Calcoliamo le proiezioni delle dipendenze per $R_1$:
-- $\text{Località}^+_F = \{\text{Località, Prefisso}\}$ da cui ottengo $\text{Località} \rightarrow \text{Prefisso} \in F_1$
+Calcoliamo le proiezioni delle dipendenze $F_1$ usando le combinazioni di $T_1$:
+- $\text{Località}^+_F = \{\text{Località, Prefisso}\}$ da cui ottengo $\text{Località} \rightarrow \text{Prefisso}$
 - $\text{Prefisso}^+_F = \{\text{Prefisso}\}$ nessuna nuova dipendenza
 
 Quindi $F_1 = \{\text{Località}\rightarrow \text{Prefisso}\}$
 
-Calcoliamo le proiezioni delle dipendenze per $R_2$:
-- $\text{Località}^+_F = \{\text{Località, Prefisso}\}$ nessuna nuova dipendenza
+Calcoliamo le proiezioni delle dipendenze $F_2$ usando le combinazioni di $T_2$:
+- $\text{Località}^+_F = \{\text{Località, Prefisso}\}$ nessuna nuova dipendenza (nota che Prefisso non è in T_2)
 - $\text{Numero}^+_F = \{\text{Numero}\}$ nessuna nuova dipendenza
 
 Quindi $F_2 = \emptyset$
@@ -112,15 +116,17 @@ Questo caso è utile per mostrare come **non esistono algoritmi di decomposizion
 
 ## Terza forma normale
 
-Una normalizzazione che **preserva sia i dati che le dipendenze** si utilizza una forma normale meno restrittiva, la **terza forma normale** (3FN)
+Una normalizzazione che **preserva sia i dati che le dipendenze** e che è meno restrittiva, è la **terza forma normale** (3FN)
 
-Uno schema relazionale $R(T, F)$ si dice in terza forma normale di se e solo se per ogni dipendenza funzionale derivabile da $F$ (escluse le dipendenze banali) si ha che **l'insieme a sinistra è una superchiave** oppure che gli **attributi di destra meno quelli a sinistra** sono **primi**.
+Uno schema relazionale $R(T, F)$ si dice in terza forma normale se e solo se per ogni dipendenza funzionale derivabile da $F$ (escluse le dipendenze banali) si ha che **l'insieme a sinistra è una superchiave** oppure che gli **attributi di destra meno quelli a sinistra** sono **primi**.
 
-(Ricordiamo che un attributo è **primo** se esso fa parte della chiave)
+(Ricordiamo che un attributo è **primo** se esso fa parte di una chiave)
 
 In altri termini: $\forall X \rightarrow Y \in F^+, Y \nsubseteq X$ si ha che $X$ è superchiave oppure $Y \backslash X$ sono primi
 
 È stato dimostrato che è possibile mantenere la proprietà anche sostituendo $F^+$ con $F$, ma la verifica richiede comunque tempo **esponenziale**
+
+Quindi per **verificare** che uno schema è in 3NF bisogna **calcolare le tutte le chiavi** e **per ogni elemento** di $F$ dobbiamo controllare o se $X$ è superchiave o se $Y$ fa parte di una delle chiave
 
 Si può osservare dalla definizione che **ogni schema in BCNF è anche in 3FN** (non vale il contrario)
 
@@ -134,13 +140,13 @@ Sia $R(T, F)$ lo schema di partenza
 2. in $G$ sostituisci ciascun insieme di dipendenze formato nel seguente modo $\{X \rightarrow A_1,  ..., X \rightarrow A_n\}$ in $X \rightarrow A_1, A_2, ..., A_n$
 3. Per ogni $X \rightarrow Y \in G$ creare uno schema $S_i(X\cup Y)$
 4. Eliminare eventuali schemi che sono contenuti in altri
-5. Se la decomposizione non contiene alcun schema $S_i$ in cui gli attributi costituiscono la superchiave per $R$, allora aggiungi un nuovo schema $S(W)$ dove $W$ è una chiave di $R$
+5. Se la decomposizione non contiene alcuno schema $S_i$ in cui gli attributi costituiscono una superchiave per $R$, allora aggiungi un nuovo schema $S(W)$ dove $W$ è una chiave di $R$
 
 ### Esempio
 
-$R(\{A, B, C, D\}, \{AB \rightarrow C, C \rightarrow D, D \rightarrow B\})$
+$R(\,T=\{A, B, C, D\}, \, F=\{AB \rightarrow C, C \rightarrow D, D \rightarrow B\})$
 
-le dipendenze sono già in forma canonica, otteniamo quindi:
+Le dipendenze sono già in forma canonica, otteniamo quindi:
 
 - $S_1(\{A, B, C\})$ tramite $AB \rightarrow C$
 - $S_2(\{C, D\})$ tramite $C \rightarrow D$
@@ -151,7 +157,6 @@ $AB$ è una superchiave (perche $AB^+ = ABCD$) e di conseguenza anche  $\{A, B, 
 
 Una importante nota da considerare è che l'algoritmo per convertire in 3FN **non garantisce assenza di anomalie**
 
-
 ## Proprietà della 3FN
 
 **Vantaggi**:
@@ -161,7 +166,6 @@ Una importante nota da considerare è che l'algoritmo per convertire in 3FN **no
 **Svantaggi**:
 - la verifica ha costo esponenziale
 - non garantisce assenza di anomalie
-
 
 ## Cosa scegliere per normalizzare
 

@@ -5,11 +5,12 @@ Le applicazioni web sono i principali sistemi che fanno uso di basi di dati.
 Una applicazione web si divide in 3 sezioni:
 - Front-end: 
 	- HTML (*HyperText Markup Language*) usato per definire la struttura della pagina web tramite una struttura ad albero. Il linguaggio si basa su **tag** e **attributi**
-	- CSS (*Cascading Style Sheets*) linugaggio per aggiungere stile alle pagine HTML, è basato su un mapping tra elementi HTMl e regole di stile. Fa un forte utilizzo di ereditarietà
+	- CSS (*Cascading Style Sheets*) linguaggio per aggiungere stile alle pagine HTML, è basato su un mapping tra elementi HTML e regole di stile. Fa un forte utilizzo di ereditarietà
+	- JavaScript linguaggio di scripting per aggiungere interattività all'applicazione web
 - Logica: Flask, PHP
 - back-end: MySQL, Postgres
 
-la parte di front-end è compiuta dal **client**, mentre la logica e il back-end sono compiute dal **server**
+La parte di front-end è compiuta dal **client**, mentre la logica e il back-end sono compiute dal **server**
 
 ## URL
 
@@ -24,11 +25,9 @@ Una risorsa WEB è identifica da un URL (*Uniform Resource Locator*) la cui form
 - `query`: utilizzata per passare dei dati al server assieme alla richiesta della risorsa
 - `fragment`: indica una parte specifica della pagina HTML
 
-
 ## DNS
 
 DNS (*Domain Name System*) è un protocollo utilizzato per tradurre i nomi di dominio testuali in indirizzi ip.
-
 
 ## HTTP
 
@@ -57,7 +56,6 @@ Le **risposte HTTP** sono strutturate come segue:
 - una linea vuota che fa da separatore
 - il corpo della risposta
 
-
 Gli ***status code*** sono i seguenti:
 
 | range di codici | categoria |esempio
@@ -66,7 +64,6 @@ Gli ***status code*** sono i seguenti:
 | 300-399 | reindirizzamento | 301 Moved permanently
 | 400-499 | client error | 404 Not found
 | 500-599 | server error | 503 Service unavailable
-
 
 ## Cookie
 
@@ -77,7 +74,6 @@ I cookie vengono generati dal server e vengono salvati nel client.
 Il client ad ogni richiesta che farà al server si occuperà di allegare anche i cookie.
 
 I cookie vengono detti **opachi**, cioè il server può salvare ciò che vuole sui cookie, è suo compito interpretare i dati al suo interno in modo corretto
-
 
 ## HTTPS
 

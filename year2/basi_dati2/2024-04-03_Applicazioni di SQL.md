@@ -1,6 +1,6 @@
 ﻿# Applicazioni di SQL
 
-Vediamo quali sono i modi per integrare l'interazione con un database all'interno di una reale applicazione.
+Vediamo quali sono i modi per integrare l'interazione con un database all'interno di una applicazione.
 
 Possiamo categorizzare gli approcci in 3 modi:
 
@@ -21,11 +21,10 @@ Possiamo categorizzare gli approcci in 3 modi:
 
 Un esempio di questo approccio è PL/pgSQL
 
-
 ## Linguaggi che ospitano SQL
 
 **Vantaggi**
-- Costo di apprendimento ridotto
+- costo di apprendimento ridotto
 - controlli sulla sintassi SQL in fase di compilazione
 
 **Svantaggi**
@@ -37,34 +36,43 @@ Un esempio di questo approccio è PL/pgSQL
 	- soddisfi appropriati controlli sui tipi
 
 Un esempio di questo approccio è SQLJ.
-
 Viene utilizzata una sintassi particolare per far interagire il codice java con SQL.
-Vie utilizzato un **cursore** per scorrere il risultato delle query
+In fase di compilazione vengono forniti i dati per l'autenticazione.
+Viene utilizzato un **cursore** per scorrere il risultato delle query
 
+Le parti coinvolte per di una applicazione SQLJ sono, in ordine di esecuzione:
+- pre-processore SQLJ
+- compilatore Java
+- runtime Java
+- DBMS
 
 ## Utilizzo di API
 
 **Vantaggi**
 - Costo di apprendimento ridotto
-- non è richiesto un pre-processore
-- possibilità di utilizzo di SQL dinamico
+- Non è richiesto un pre-processore
+- Possibilità di utilizzo di SQL dinamico
 
 **Svantaggi**
-- possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (*Impedance mismatch*)
-- assenza di controlli in tempo di compilazione
+- Possibili problemi dovuti alla differenza di tipi tra il linguaggio e SQL (*Impedance mismatch*)
+- Assenza di controlli in tempo di compilazione
 
 Un esempio di questo approccio è JDBC.
 
 Le query sono solitamente delle stringhe passate a funzioni specifiche (e quindi controllate a runtime)
 
-Una tecnica molto utile per aumentare la robustezza del codice è l'uso di **prepared statement**, cioè l'utilizzo di *placeholder* (con l'utilizzo del carattere `?`) all'interno della query da poi riempire come parametri aggiuntivi.
+Una tecnica molto utile per aumentare la robustezza del codice è l'uso di **prepared statement**, cioè l'utilizzo di *placeholder* (con l'utilizzo del carattere `?`) all'interno della query da poi sostituire con parametri aggiuntivi.
 
 **SQL dinamico**: cioè è possibile costruire le query dinamicamente a runtime, ad esempio in base all'input utente. È una feature che va comunque usata con attenzione
 
+Le parti coinvolte per di una applicazione JDBC sono, in ordine di esecuzione:
+- compilatore Java
+- runtime Java
+- DBMS
 
 ## Object Relational Mapping (ORM)
 
-l'ORM è una tecnica di programmazione basata sulle API ma che risolve i problemi dovuti all’*impedance mismatch* in quanto viene mantenuto una versione del database nel codice realizzata con la programmazione ad oggetti (tabelle sono le classi, i campi sono attributi, ecc...).
+l'ORM è una tecnica di programmazione basata sulle API ma che risolve i problemi dovuti all’*impedance mismatch* in quanto viene mantenuta una versione del database nel codice realizzata con la programmazione ad oggetti (tabelle sono le classi, i campi sono attributi, ecc...).
 Quindi ogni operazione sul database viene prima applicata al modello ad oggetti per verificarne la correttezza.
 
 **Vantaggi**
@@ -83,3 +91,5 @@ Al giorno d’oggi possiamo affermare che:
 - I linguaggi integrati hanno un utilizzo di nicchia molto specializzato e non sono impiegati come linguaggi *general purpose*
 - I linguaggi che ospitano SQL hanno un design molto interessante, ma sono sostanzialmente spariti dal mercato
 - API ed ORM dominano la scelta per la loro praticità: si può considerare ormai uno standard di fatto
+
+

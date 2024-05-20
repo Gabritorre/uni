@@ -48,7 +48,7 @@
 <h2 id="trigger-per-riga-e-per-statement">Trigger per riga e per statement</h2>
 <p>SQL fornisce due tipi di trigger:</p>
 <ul>
-<li><strong>Trigger per riga</strong>: eseguiti per ogniuna delle righe coinvolte dall’evento.<br>
+<li><strong>Trigger per riga</strong>: eseguiti per ognuna delle righe coinvolte dall’evento.<br>
 Ci si riferisce alla riga coinvolta all’evento prima della sua attivazione <code>OLD ROW</code><br>
 Ci si riferisce alla riga coinvolta all’evento dopo della sua attivazione <code>NEW ROW</code></li>
 <li><strong>Trigger per statement</strong>: eseguiti una sola volta per evento.<br>
@@ -108,7 +108,7 @@ REFERENCING OLD <span class="token keyword">TABLE</span> <span class="token keyw
 	<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> MovieExec <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> OldStuff<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">END</span><span class="token punctuation">;</span>
 </code></pre>
-<p>questo trigger è per l’operazione di UPDATE, bisognerebbe aggiungere anche quelle per la DELETE e INSERT</p>
+<p>questo trigger è per l’operazione di UPDATE, bisognerebbe aggiungere anche quelli per la DELETE e INSERT</p>
 <h2 id="trigger-attivi-e-passivi">Trigger attivi e passivi</h2>
 <ul>
 <li>
@@ -132,13 +132,14 @@ Usi tipici:</p>
 <h2 id="vantaggi-e-svantaggi">Vantaggi e svantaggi</h2>
 <p><strong>Vantaggi</strong>:</p>
 <ul>
-<li>I trigger sono gestite internamente dal DBMS, quindi non è possibile raggirarli</li>
+<li>I trigger sono gestiti internamente dal DBMS, quindi non è possibile raggirarli</li>
+<li>anche chi utilizza la base di dati senza usare un codice applicativo è soggetto al controllo dei trigger</li>
 <li>Per il precedente motivo è più robusto centralizzare un’invariante in un trigger che sparpagliare i controlli all’interno del codice applicativo</li>
 <li>Per fare auditing e logging, i trigger sono l’unico strumento veramente robusto per tali compiti, dato che il DBMS ha completa visibilità delle operazioni effettuate sulle tabelle</li>
 </ul>
 <p><strong>Svantaggi</strong>:</p>
 <ul>
-<li>dato che sono stati implementati prima nei sistemi commerciali e poi nello standard SQL, i sistemi commerciali non seguono lo standard e spesso sono diversi tra loro. (non considerano di cambiare perché romperebbe la compatibilità con le vecchie versioni)</li>
+<li>dato che sono stati implementati prima nei sistemi commerciali e poi nello standard SQL, i sistemi commerciali non seguono lo standard e spesso sono diversi tra loro. (non considerano di adattarsi allo standard perché romperebbe la compatibilità con le vecchie versioni)</li>
 <li>I trigger sono difficili da debuggare e poco visibili in generale.</li>
 </ul>
 <h3 id="vincoli-vs-trigger">Vincoli vs trigger</h3>
@@ -178,7 +179,8 @@ $$ LANGUAGE plpgsql<span class="token punctuation">;</span>
 <li><code>TG_NARGS</code>: numero di argomenti passati tramite la <code>CREATE TRIGGER</code></li>
 <li><code>TG_ARGV</code>: vettore degli argomenti</li>
 </ul>
-<p>In caso di trigger per statement e di AFTER trigger per riga la funzione ritorna sempre NULL. Mentre per i BEFORE trigger per riga si ha:</p>
+<p>In caso di trigger per statement e di AFTER trigger per riga la funzione ritorna sempre NULL.<br>
+Mentre per i BEFORE trigger per riga si ha:</p>
 <ul>
 <li>Ritorno NULL per indicare che l’operazione è stata abortita</li>
 <li>Ritornare la riga che sarà inserita/aggiornata nel caso di <code>INSERT</code> o <code>UPDATE</code></li>
@@ -228,7 +230,7 @@ PC(model*, speed, ram, hd, price)
 Laptop(model*, speed, ram, hd, screen, price)
 Printer(model*, color, type, price)
 </code></pre>
-<p>creiamo un trigger per gestire l’invariante “Nessun produttore di PC pu`o anche produrre laptop”.</p>
+<p>Creiamo un trigger per gestire l’invariante “Nessun produttore di PC può anche produrre laptop”.</p>
 <p>poniamoci le classiche domande</p>
 <ul>
 <li>Quali operazioni possono violare l’invariante? INSERT o UPDATE su Product</li>

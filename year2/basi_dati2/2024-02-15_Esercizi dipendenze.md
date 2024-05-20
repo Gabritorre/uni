@@ -34,7 +34,7 @@ $s=\{(X = 1, Y = 2)\}$
 
 Si consideri lo schema di relazione $R(A, B, C, D)$ con dipendenze $F = \{AB \rightarrow C, C \rightarrow D, D \rightarrow A\}$. Si trovino tutte le dipendenze non banali derivabili da $F$ e tutte le chiavi di $R$.
 
-(le dipendenze banali sono quelli in cui $X \rightarrow Y$ con $Y$ che è un sottoinsieme degli elementi di $X$)
+(le dipendenze banali sono quelle in cui $X \rightarrow Y$ con $Y$ che è un sottoinsieme degli elementi di $X$)
 
 per trovare tutte le dipendenze derivabili da $F$ calcoliamo la chiusura per ogni sottoinsieme di $R$
 

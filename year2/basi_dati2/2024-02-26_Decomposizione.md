@@ -1,12 +1,12 @@
 ﻿# Decomposizione
 
-Il modo per risolvere le anomalie di uno schema è attraverso la **decomposizione** dello schema in più tabelle che rispettano delle proprietà chiamate *forme normali* e che allo stesso tempo sono equivalenti allo schema originale.
+Il modo per risolvere le anomalie di uno schema è attraverso la **decomposizione** dello schema in più tabelle, che rispettano delle proprietà chiamate *forme normali*, e che allo stesso tempo sono equivalenti allo schema originale.
 
-Definizione formale di decomposizione (viene omessa l'insieme delle dipendenze $F$ per brevità):
+Definizione formale di decomposizione (viene omesso l'insieme delle dipendenze $F$ da $R(T, F)$ per brevità):
 
-> Dato uno schema $R(T)$, $\rho = \{R_1(T_1), ..., R_n(T_n)\}$ è una decomposizione $R$ se e solo se l'unione di tutte le $T_i$ è uguale a $T$
+> Dato uno schema $R(T)$, $\rho = \{R_1(T_1), ..., R_n(T_n)\}$ è una decomposizione di $R$ se e solo se l'unione di tutte le $T_i$ è uguale a $T$
 
-In un altro modo può essere definita come: le righe della tabella originale $R$ **sono sottoinsieme** delle righe generate dalla giunzione naturale di tutte le $R_i$ 
+Può essere interpretata anche come: le righe della tabella originale $R$ **sono sottoinsieme** delle righe generate dalla giunzione naturale tra tutte le righe in $R_i$ 
 
 Inoltre per essere valida, una decomposizione deve soddisfare due condizioni:
 
@@ -19,13 +19,13 @@ Una decomposizione preserva i dati se e solo se le righe della tabella originale
 
 ### Verificare se una decomposizione preserva i dati
 
-> Sia $\rho = {R_1(T_1), R_2(T_2)}$ una decomposizione di $R(T, F)$. $ρ$ e una decomposizione ` che preserva i dati se e solo se $T_1 \cap T_2 \to T_1 \in F^+$ oppure $T_1 \cap T_2 \to T_2 \in F^+$
+> Sia $\rho = {R_1(T_1), R_2(T_2)}$ una decomposizione di $R(T, F)$. $ρ$ è una decomposizione  che preserva i dati se e solo se $T_1 \cap T_2 \to T_1 \in F^+$ oppure $T_1 \cap T_2 \to T_2 \in F^+$
 
-Quindi basta dimostrare che $T_1$ che dipende da $T_1 \cap T_2$ si può derivare da $F$, oppure che $T_1$ che dipende da $T_1 \cap T_2$ si può derivare da $F$
+Quindi basta dimostrare che $T_1$ che dipende da $T_1 \cap T_2$ si può derivare da $F$, oppure che $T_2$ che dipende da $T_1 \cap T_2$ si può derivare da $F$
 
 Questo sappiamo già farlo, infatti in generale vale: $F \vdash X \to Y$ se e solo se $Y \subseteq X^+_F$
 
-**esempio**
+**Esempio**
 
 Relazione originale: $R(A,B,C,D)$
 Dipendenze: $F = \{A \to BC\}$
@@ -49,7 +49,7 @@ Per introdurre la definizione formale abbiamo bisogno prima di definire cosa si 
 
 > $$\pi_{T_i}(F) = \{X \to Y \in F^+ | X, Y \subseteq T_i\}$$
 
-Cioè l'insieme delle dipendenze derivabili da $F$ tra gli attributi presenti nel sottoinsieme $T_i$
+Cioè l'insieme delle dipendenze derivabili da $F$ considerando solo gli attributi presenti nel sottoinsieme $T_i$
 
 Formalmente possiamo definire una decomposizione che preserva le dipendenze come:
 
@@ -78,7 +78,6 @@ $\textbf{function } \operatorname{PreserveDeps}(R(T, F), \rho)$
 $\hspace{5mm}\textbf{for all } X \rightarrow Y \in F \textbf{ do }$
 $\hspace{10mm}\textbf{if } Y \not \subseteq \mathrm{FC}(X, F, \rho) \textbf{ then return} \text{ False}$
 $\hspace{5mm}\textbf{return} \text{ True}$
-
 
 **Vediamo un esempio:**
 

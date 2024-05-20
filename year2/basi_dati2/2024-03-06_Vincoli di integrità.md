@@ -3,9 +3,9 @@
 All'intero di una base di dati ci possono essere dei **vincoli integrità da rispettare**:
 
 - Certi attributi devono avere sempre un valore
-- garantire la presenza di una chiave
-- l'integrità referenziale
-- garantire determinati vincoli sui valori degli attributi
+- Garantire la presenza di una chiave
+- L'integrità referenziale
+- Garantire determinati vincoli sui valori degli attributi
 
 ## Not null
 
@@ -20,7 +20,6 @@ CREATE TABLE Movies (
 )
 ```
 
-
 ## Unique
 
 Possiamo utilizzare il vincolo `UNIQUE` per indicare che non esistono due righe che hanno lo stesso valore su tale attributo, cioè deve essere unico.
@@ -34,7 +33,7 @@ CREATE TABLE Movies (
 )
 ```
 
-possiamo anche rendere unica un insieme di più attributi:
+possiamo anche rendere unico un insieme di più attributi:
 
 ```sql
 CREATE TABLE Movies (
@@ -51,7 +50,7 @@ Se uno dei due attributi è `NULL` allora l'unicità non può essere infranta.
 
 ## Primary key
 
-Il vincolo di `primary key` ha lo stesso comportamento di `UNIQUE`, la principale differenza è che gli attributi che sono primary key non possono essere null (e poi il dbms la tratta in modo particolare, in quanto viene anche usata dalle chiavi esterne)
+Il vincolo di `primary key` ha lo stesso comportamento di `UNIQUE`, la principale differenza è che gli attributi che sono primary key non possono essere null (e poi il dbms tratta la primary key in modo particolare, in quanto viene anche usata dalle chiavi esterne)
 
 ```sql
 CREATE TABLE Movies (
@@ -67,7 +66,6 @@ CREATE TABLE Movies (
 
 Questo vincolo stabilisce che un attributo della relazione è un riferimento (chiave esterna) alla `primary key` di un'altra tabella.
 Le foreign key possono assumere il valore `NULL`
-
 
 ```sql
 CREATE TABLE MovieExec (
@@ -117,7 +115,7 @@ Tramite dei `CHECK` si possono imporre dei vincoli sui valori che possono assume
 
 Di fianco all'attributo va messo `CHECK` seguito da una espressione booleana messa tra parentesi.
 - Si possono usare tutte le espressioni utilizzate nel costrutto `WHERE`
-- si possono utilizzare delle sotto-query (anche se in alcuni DBMS ciò non è supportato)
+- Si possono utilizzare delle sotto-query (anche se in alcuni DBMS ciò non è supportato, tra cui Postgresql)
 - Il vincolo viene controllato ad ogni modifica e inserimento
 
 ```sql
@@ -147,7 +145,7 @@ CREATE TABLE Studio (
 )
 ```
 
-ciò però non tiene conto di mantenere l'integrità in caso di modifiche o cancellazioni
+ciò però non tiene conto dell'integrità in caso di modifiche o cancellazioni
 
 ### CHECK su righe
 
@@ -166,7 +164,7 @@ CREATE TABLE MovieExec (
 
 Questo è necessario quando l'espressioni coinvolge più attributi che non sono indipendenti tra loro nell'espressione.
 
-In questo caso non è necessario il check sulla riga e generalmente check direttamente sugli attributi sono generalmente più efficienti
+Nell'esempio precedente non è necessario il check sulla riga e generalmente check direttamente sugli attributi sono più efficienti
 
 ### Equivalenze logiche 
 
@@ -179,12 +177,11 @@ Equivalenze logiche che possono tornare utili:
 | $\lnot(A \lor B)$ | $\lnot A \land \lnot B$ |
 
 l'implicazione a parole si trova scritta come:
-- "garantire che **tutti** coloro che soddisfano la/le proprietà $A$ **devono** soddisfare la/le proprietà $B$"
+- "Garantire che **tutti** coloro che soddisfano la/le proprietà $A$ **devono** soddisfare la/le proprietà $B$"
 $$A \implies B$$
 
-- "garantire che **solo** coloro che soddisfano la proprietà $A$ **possono** soddisfare la proprietà $B$"
+- "Garantire che **solo** coloro che soddisfano la proprietà $A$ **possono** soddisfare la proprietà $B$"
 $$B \implies A$$
-
 
 ## Aggiornamento dei vincoli
 
@@ -194,7 +191,8 @@ $$B \implies A$$
 CONSTRAINT nome_vincolo [FOREIGN KEY, UNIQUE, CHECK, ...]
 ```
 
-La modifica può essere fatta solo attraverso una cancellazione di un vincolo e il reinserimento della versione aggiornata, cancellazione ed inserimento vengono fatti tramite una `ALTER TABLE`.
+La modifica può essere fatta solo attraverso una cancellazione di un vincolo e il reinserimento della versione aggiornata.
+Cancellazione ed inserimento vengono fatti tramite una `ALTER TABLE`.
 
 **cancellazione**:
 ```sql
@@ -208,16 +206,14 @@ ALTER TABLE nome_tabella ADD [CONSTRAINT nome_vincolo] definizione_vincolo... ;
 
 Attenzione che al momento dell'inserimento tutti i valori già presenti devono rispettare il nuovo vincolo imposto, altrimenti il vincolo non può venir applicato.
 
-
 ## Asserzioni
 
 Le asserzioni esprimono delle **proprietà globali da rispettare sull'interno schema**.
 
-l'asserzione deve rimanere vera dopo ogni modifica al database.
-
+L'asserzione deve rimanere vera dopo ogni modifica al database.
 I principali DBMS non le supportano in quanto è difficile scriverle in modo efficiente.
 
-"La durata complessiva dei film prodotto da ogni studio deve essere di almeno 500 minuti":
+Esempio: "La durata complessiva dei film prodotto da ogni studio deve essere di almeno 500 minuti":
 
 ```sql
 CREATE ASSERTION SumLengthCHECK (
@@ -229,7 +225,6 @@ CREATE ASSERTION SumLengthCHECK (
 );
 ```
 
-
 ## Schema riassuntivo su check e asserzioni
 
 | Soggetto | Dichiarazione | Controllo | Validità |
@@ -238,4 +233,5 @@ CREATE ASSERTION SumLengthCHECK (
 | Check sulla riga| Tabella | Inserimento oppure modifica della riga | In assenza di sotto-query |
 | Asserzione | Schema | Ogni modifica al database | Sempre |
 
-Ricordiamo ancora che alcuni DBMS non supportano né le asserzioni né i check sulle righe
+Ricordiamo ancora che alcuni DBMS non supportano né le asserzioni né i check con le sotto-query
+

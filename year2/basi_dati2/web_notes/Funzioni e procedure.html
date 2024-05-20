@@ -34,7 +34,7 @@
 <p>Oltre ad utilizzare le funzioni all’interno dei trigger, si possono creare funzioni per altri scopi:</p>
 <ul>
 <li>Incapsulare funzionalità di uso comune per facilitarne il riutilizzo</li>
-<li>offrire una interfaccia più semplice per che è ancora alle prime armi</li>
+<li>Offrire una interfaccia più semplice per chi è ancora alle prime armi</li>
 <li>Raggruppare una sequenza di operazioni di cui non ci interessano i risultati intermedi.</li>
 </ul>
 <p>Vediamo come definire le funzioni nel linguaggio <em>PL/pgSQL</em> di postgres.</p>
@@ -61,8 +61,8 @@ $$ LANGUAGE plpgsql<span class="token punctuation">;</span>
 <pre class=" language-sql"><code class="prism  language-sql">name <span class="token punctuation">[</span>CONSTANT<span class="token punctuation">]</span> <span class="token keyword">type</span> <span class="token punctuation">[</span><span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">]</span> <span class="token punctuation">[</span>:<span class="token operator">=</span> expr <span class="token operator">OR</span> <span class="token operator">=</span> expr<span class="token punctuation">]</span><span class="token punctuation">;</span>
 </code></pre>
 <p>Quindi va prima il nome della variabile seguito dal tipo.<br>
-I tipi possono essere tutti quelli supportati di SQL</p>
-<p>l’assegnazione tramite <code>:=</code> è equivalente all’uso di <code>=</code>, lo standard di PL/SQL è <code>:=</code></p>
+I tipi possono essere tutti quelli supportati di SQL.</p>
+<p>L’assegnazione tramite <code>:=</code> è equivalente all’uso di <code>=</code>, lo standard di PL/SQL è <code>:=</code></p>
 <p>Alcuni tipi di dato particolari sono:</p>
 <ul>
 <li><code>variable%TYPE</code> permette di definire il tipo che è lo stesso tipo di una variabile oppure di una colonna del database. Se ad esempio si ha una colonna chiamata <code>user_id</code> nella tabella <code>users</code>, per dichiarare una nuova variabile con lo stesso tipo di <code>user_id</code> si fa:<br>
@@ -98,7 +98,7 @@ I tipi possono essere tutti quelli supportati di SQL</p>
 <span class="token keyword">END</span><span class="token punctuation">;</span>
 $$ LANGUAGE plpgsql<span class="token punctuation">;</span>
 </code></pre>
-<p>Una funzione che ritorna un insieme di valori, tale insieme deve essere costruito in maniera incrementale:</p>
+<p>Se una funzione ritorna un insieme di valori, l’insieme deve essere costruito in maniera incrementale:</p>
 <pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">RETURN</span> <span class="token keyword">NEXT</span> expr<span class="token punctuation">;</span> <span class="token comment">-- aggiunge un record al risultato</span>
 <span class="token keyword">RETURN</span> QUERY query<span class="token punctuation">;</span> <span class="token comment">-- aggiunge un insieme al risultato</span>
 <span class="token keyword">RETURN</span> 	<span class="token comment">-- ritorna il risultato</span>

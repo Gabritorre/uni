@@ -30,7 +30,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="nosql">NoSQL</h1>
-<p>Il NoSQL è un approccio che cerca una alternativa all’immaginamento dei dati in un modello relazionale (<strong>RDBMS</strong>, <em>Relational DataBase Management System</em>)</p>
+<p>Il NoSQL è un approccio che cerca una alternativa al salvare i dati in un modello relazionale (<strong>RDBMS</strong>, <em>Relational DataBase Management System</em>)</p>
 <p>NoSQL che sta per <em>Not only SQL</em> è usato per gestire degli archivi di dati che non richiedono uno schema fisso (<em>schemeless</em>), evitano spesso le operazioni di giunzione (<em>join</em>) e puntano a <strong>scalare</strong> in modo orizzontale.</p>
 <ul>
 <li>
@@ -39,9 +39,9 @@ in grado di memorizzare informazioni eterogenee (non aventi la stessa struttura/
 </li>
 <li>
 <p>Scalare in modo orizzontale:<br>
-Quando aggiungi memoria ai database SQL, puoi eseguirne la scalabilità solo verticalmente, il che significa che la capacità di aggiungere più memoria è limitata all’hardware disponibile.<br>
+Quando aggiungi memoria ai database relazionali SQL, puoi eseguirne la scalabilità solo verticalmente, il che significa che la capacità di aggiungere più memoria è limitata all’hardware disponibile.<br>
 In NoSQL se un singolo server di database non è sufficiente per archiviare tutti i tuoi dati o gestire tutte le query, il carico di lavoro può essere suddiviso su due o più server (anche remoti).<br>
-In caso di distribuzione di server remoti si parla di <strong>DDBMS</strong> ( <em>Distributed DBMS</em>) è il suo utilizzo comporta si un miglioramento delle <strong>prestazioni</strong> all’aumento degli utenti, sia una migliore <strong>tolleranza ai guasti</strong></p>
+In caso di distribuzione di server remoti si parla di <strong>DDBMS</strong> ( <em>Distributed DBMS</em>) e il suo utilizzo comporta sia un miglioramento delle <strong>prestazioni</strong> all’aumento degli utenti, sia una migliore <strong>tolleranza ai guasti</strong></p>
 </li>
 </ul>
 <h2 id="base-vs-acid">BaSE vs ACID</h2>
@@ -52,10 +52,10 @@ In caso di distribuzione di server remoti si parla di <strong>DDBMS</strong> ( <
 <li><strong>Isolation</strong>: richiede che le transazioni simultanee siano eseguite separatamente l’una dall’altra.</li>
 <li><strong>Durability</strong>: richiede la capacità di ripristinare i dati all’ultimo stato conosciuto in seguito a un guasto del sistema o a un’interruzione dell’alimentazione imprevisti.</li>
 </ul>
-<p>Mentre i database non relazionali seguono le proprietà BaSE:</p>
+<p>Mentre i database non relazionali seguono le proprietà <strong>BaSE</strong>:</p>
 <ul>
 <li><strong>Basically Available</strong>: (disponibilità nella maggior parte dei casi) indica l’accessibilità simultanea del database da parte degli utenti in ogni momento.</li>
-<li><strong>Soft state</strong>: (stato instabile) rimanda all’idea che i dati possono avere stati transitori o temporanei che possono cambiare nel tempo, anche in assenza di trigger o input esterni</li>
+<li><strong>Soft state</strong>: (stato instabile) rimanda all’idea che i dati possono avere stati transitori o temporanei, che possono quindi cambiare nel tempo anche in assenza di trigger o input esterni</li>
 <li><strong>Eventually consistent</strong>: (coerenza finale) significa che il record raggiungerà la coerenza quando tutti gli aggiornamenti simultanei saranno completati.</li>
 </ul>
 <h2 id="approcci-nosql">Approcci NoSQL</h2>
@@ -67,12 +67,12 @@ In caso di distribuzione di server remoti si parla di <strong>DDBMS</strong> ( <
 <li><strong>Colonnare</strong> (esempio di DBMS: Cassandra)</li>
 </ul>
 <h2 id="orientato-al-documento">Orientato al documento</h2>
-<p>ma ogni record è memorizzato come un documento che possiede determinate caratteristiche, qualsiasi numero di campi con qualsiasi lunghezza può essere aggiunto al documento.<br>
+<p>Ogni record è memorizzato come un documento che possiede determinate caratteristiche, qualsiasi numero di campi con qualsiasi lunghezza può essere aggiunto al documento.<br>
 Spesso i documenti sono dei file JSON oppure XML.</p>
 <p>Funziona correttamente con cataloghi, profili utente e sistemi di gestione del contenuto in cui ogni documento è unico e si evolve nel tempo.</p>
 <h2 id="a-grafo">A grafo</h2>
 <p>Una base di dati a grafo usa nodi e archi per rappresentare e archiviare l’informazione.<br>
-Sono spesso più veloci di quelli relazionali nell’associazione di set di dati, scalano più facilmente a grandi quantità di dati e non richiedono le tipiche e onerose operazioni di unione (le join).</p>
+Sono spesso più veloci di quelli relazionali nell’associazione di set di dati, scalano più facilmente su grandi quantità di dati e non richiedono le tipiche e onerose operazioni di unione (le join).</p>
 <p>Essi usano i <strong>nodi</strong> per archiviare le entità (Qualsiasi oggetto, luogo o persona) e gli <strong>archi</strong> per archiviare le relazioni tra le entità.</p>
 <p>Casi d’uso tipici per i database a grafo includono social network, motori di raccomandazione, rilevamento delle frodi e grafici di conoscenze.</p>
 <h2 id="chiave-valore">Chiave-valore</h2>
@@ -84,7 +84,7 @@ Particolarmente utilizzato per la memorizzazione nella cache e l’archiviazione
 <p>Questi database memorizzano le informazioni in colonne, consentendo agli utenti di accedere solo alle specifiche colonne di cui hanno bisogno senza allocare memoria aggiuntiva per dati irrilevanti.<br>
 Si utilizzano tabelle, colonne e righe, ma diversamente dai database relazionali, il nome e il formato delle colonne può variare da riga in riga all’interno della stessa tabella.<br>
 Nell’approccio più estremo di questo tipo di DB ogni colonna andrebbe salvata separatamente su disco, tuttavia esiste il concetto di <strong>famiglia di colonne</strong> in cui più colonne vengono salvate insieme</p>
-<p>È stato utilizzato in diversi casi di utilizzo, come ad esempio per siti web di social network e analytics dei dati in tempo reale.</p>
+<p>È utilizzato in diversi casi di utilizzo, come ad esempio per siti web di social network e analytics dei dati in tempo reale.</p>
 
     </div>
   </div>

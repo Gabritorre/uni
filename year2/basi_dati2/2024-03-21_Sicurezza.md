@@ -11,7 +11,7 @@ Tutti i principali DBMS implementano meccanismi di:
 Solitamente l'autenticazione è effettuata tramite l'utilizzo di **username e password**
 
 Vediamo il modo in cui Postgres gestisce gli utenti.
-La creazione  di un utente avviene con il seguente comando:
+La creazione di un utente avviene con il seguente comando:
 
 ```sql
 CREATE USER NomeUtente WITH PASSWORD NuovaPwd
@@ -40,15 +40,15 @@ https://www.postgresql.org/docs/current/auth-pg-hba-conf.html
 Dopo aver autenticato l'utente il DBMS può applicare le **politiche di autorizzazione**.
 
 Regole base di autorizzazione:
-- quando un oggetto viene creato (ad esempio una tabella), il **creatore ne diventa il proprietario** e ne ha il pieno controllo
+- Quando un oggetto viene creato (ad esempio una tabella), il **creatore ne diventa il proprietario** e ne ha il pieno controllo
 - Gli altri utenti possono accedere all'oggetto solamente rispettando i propri permessi
-- solo il creatore dell'oggetto può eliminare o alterare la definizione di un oggetto
+- Solo il creatore dell'oggetto può eliminare o alterare la definizione di un oggetto
 
-I permessi si possono definire su:
+I **permessi** si possono definire su:
 - SELECT
 - INSERT
 - UPDATE
-- DELTE
+- DELETE
 - TRIGGER
 - EXECUTE
 
@@ -60,7 +60,12 @@ INSERT INTO Studio(name)
 	FROM Movies
 	WHERE studioName NOT IN (SELECT name FROM Studio);
 ```
-l'utente che la vuole eseguire deve avere i permessi su: INSERT(name), SELECT(studioName) e SELECT(name).
+l'utente che la vuole eseguire deve avere i permessi su:
+- `INSERT(name)` sulla tabella `Studio`
+- `SELECT(studioName)` sulla tabella `Movies`
+- `SELECT(name)` sulla tabella `Studio`
+
+Nota che i permessi si possono restringere su un sottoinsiemi di attributi, oppure permettere l'esecuzione del comando in generale
 
 ### Permesso TRIGGER
 
@@ -87,16 +92,15 @@ GRANT ListaPermessi ON Elemento TO ListaUtenti
 - è possibile utilizzare `ALL PRIVILEGES` per indicare tutti i permessi
 - è possibile utilizzare `PUBLIC` per autorizzare tutti gli utenti (anche quelli non ancora esistenti)
 
-
 ## Delegare permessi
 
-è possibile anche permettere a degli utenti di concedere un **sottoinsieme dei loro permessi** ad altri utenti, tramite la seguente sintassi
+È possibile anche permettere a degli utenti di concedere un **sottoinsieme dei loro permessi** ad altri utenti, tramite la seguente sintassi
 
 ```sql
 GRANT ListaPermessi ON Elemento TO ListaUtenti
 WITH GRANT OPTION
 ```
-
+Con `WITH GRANT OPTION` si permette a `ListaUtenti` di delegare a loro volta i permessi
 
 ## Diagramma di autorizzazione
 
@@ -115,17 +119,17 @@ Un diagramma di autorizzazione è un grafo orientato in cui i nodi sono etichett
 REVOKE ListaPermessi ON Elemento FROM ListaUtenti
 ```
 
-si può aggiungere al comando:
-- `CASCADE`: il permesso viene ricorsivamente revocato a tutti gli utenti che lo hanno ricevuto dal target della revoca
+Si può aggiungere al comando:
+- `CASCADE`: il permesso viene ricorsivamente revocato a tutti gli utenti che lo hanno ricevuto **solamente** dal target della revoca
 - `RESTRICT`: fa fallire la revoca se essa comporterebbe la revoca di permessi ad altri utenti
-
+	
 È possibile revocare solamente la possibilità di delega tramite il comando:
 
 ```sql
 REVOKE GRANT OPTION FOR ListaPermessi ON Elemento FROM ListaUtenti
 ```
 
-È possibile che un utente possieda un permesso set di permessi $p$ ma anche una variante più specifica $p^-$ sullo stesso oggetto.
+È possibile che un utente possieda un permesso $p$ ma anche una variante più specifica $p^-$ sullo stesso oggetto.
 Revocare $p^-$ non ha alcun effetto su $p$.
 Se invece viene revocato $p$, il DBMS può decidere se:
 - revocare anche $p^-$
@@ -143,8 +147,8 @@ Si può creare un nuovo ruolo nel seguente modo:
 CREATE ROLE NomeRuolo;
 ```
 una volta creato è possibile usare:
-- `GRANT` per assegnare permessi a ruoli e assegnare ruoli ad utenti
-- `REVOKE` per rimuovere permessi a ruoli e rimuovere ruoli ad utenti
+- `GRANT` per assegnare permessi al ruolo e assegnare ruoli ad utenti
+- `REVOKE` per rimuovere permessi al ruolo e rimuovere ruoli ad utenti
 
 I ruoli assegnati ad un utente non sono attivi di default, per attivarli bisogna fare:
 
@@ -152,30 +156,29 @@ I ruoli assegnati ad un utente non sono attivi di default, per attivarli bisogna
 SET ROLE NomeRuolo;
 ```
 
-L'utilizzo degli ruoli porta i seguenti vantaggi
-- i ruoli raggruppano insiemi di permessi logicamente collegati
+L'utilizzo degli ruoli porta i seguenti vantaggi:
+- i ruoli raggruppano permessi logicamente collegati
 - è molto meno costoso assegnare ruoli che permessi, visto che ce ne sono meno
 - è molto più difficile sbagliare l’assegnazione di un ruolo che di un insieme di permessi
 - le operazioni di revoca sono analogamente semplificate
 - i ruoli non sono attivi di default, contrariamente ai permessi: questo è più fedele al principio del minimo privilegio
 
-
 In **Postgres** non c'è una vera distinzione tra Utente e Ruolo, infatti `CREATE USER` è un alias di `CREATE ROLE WITH LOGIN`
 
 Alcuni dettagli:
 
-- l’opzione `CREATE ROLE` consente al ruolo di creare altri ruoli. Questo può condurre a scalate di privilegi, da usare con attenzione!
-- ruoli assegnati con `WITH ADMIN OPTION` possono essere delegati
-- è possibile assegnare ruoli ad altri ruoli, introducendo una forma di ereditarietà dei permessi
+- l’opzione `CREATEROLE` consente al ruolo di creare altri ruoli. Questo può condurre a scalate di privilegi, da usare con attenzione!
+- ruoli assegnati con `WITH ADMIN OPTION`, permette agli utenti con tale ruolo di assegnare il ruolo ad altri utenti.
+- è possibile assegnare ruoli ad altri ruoli, introducendo una forma di ereditarietà nei permessi
 - il diagramma di autorizzazione è costruito attorno ai ruoli: se un permesso viene assegnato tramite un ruolo, qualsiasi altro utente con quel ruolo può revocarlo
 
-Le opzioni `INHERIT` e `NOINHERIT` permettono di gestire l'ereditarietà dei ruoli:
+Le opzioni `INHERIT` e `NOINHERIT` permettono di gestire l'ereditarietà dei ruoli.
 
 ## SQL injection
 
-la SQL injection è un tipo di vulnerabilità che sfrutta la manipolazione di caratteri di una stringa per eseguire delle istruzioni SQL dove non dovrebbe essere possibile.
+La SQL injection è un tipo di vulnerabilità che sfrutta la manipolazione di caratteri di una stringa per eseguire delle istruzioni SQL dove non dovrebbe essere possibile.
 
-Il tipico caso è quello di un form di autenticazione, una pagina web che richiede utente e password per ottenere dei dati dell'utente, nel server otteniamo queste due informazioni e costruiamo una stringa che corrisponde ad una query SQL.
+Il tipico caso è quello di un form di autenticazione: una pagina web che richiede utente e password per ottenere dei dati dell'utente, nel server otteniamo queste due informazioni e costruiamo una stringa che corrisponde ad una query SQL.
 
 ```python
 user = get_parameter($u)		# ottine l'username dal form
@@ -185,17 +188,17 @@ statement = "SELECT * FROM users WHERE name = '" + user + "' AND pwd = '" + pass
 
 se l'attaccante mettesse come password la stringa: `' OR '1' = '1`
 
-la query diventerebbe
+la query diventerebbe:
 
 ```python
 statement = "SELECT * FROM users WHERE name = ’marco’ AND pwd = ’’ OR ’1’ = ’1’;"
 ```
 
-si riuscirebbe a ottenere tutte le informazioni dell'utente anche senza il bisogno della password.
+La condizione sul `WHERE` sarebbe vera e quindi si riuscirebbe a ottenere tutte le informazioni dell'utente anche senza il bisogno della password.
 
 Per prevenire l'SQL injection ci sono 2 approcci:
 - **sanitizzazione**: rimuovere caratteri per rendere l'input "sicuro" oppure verificare il contenuto prima di fare la query
-- **encoding**: rimpiazzare caratteri speciali con il contenuto
+- **encoding**: rimpiazzare caratteri speciali
 
 Solitamente è più comune utilizzare l'encoding
 
@@ -208,7 +211,6 @@ userName = escape(get_parameter($u))	# escape dell'username
 pwd = escape(get_parameter($p))			# escape della password
 statement = "SELECT * FROM users WHERE name = ’" + userName + "’ AND password = ’" + pwd + "’;"
 ```
-
 passando come prima la password `’ OR ’1’ = ’1`
 otteniamo la query
 
@@ -218,10 +220,9 @@ statement = "SELECT * FROM users WHERE name = ’marco’ AND password = ’’�
 
 che non funzionerà
 
-
 ## Prepared statement
 
-un **prepared statement** è un comando SQL contenente dei buchi contrassegnati con il carattere `?`, e passando come parametro aggiuntivo altri valori essi vengono sostituiti in modo disciplinato al posto di `?`
+Un **prepared statement** è un comando SQL contenente dei buchi contrassegnati con il carattere `?`, e passando come parametro aggiuntivo altri valori essi vengono sostituiti in modo disciplinato al posto di `?`
 
 ```python
 userName = get_parameter($u)
@@ -230,7 +231,6 @@ statement = "SELECT * FROM users WHERE name = ? AND password = ?;"
 statement.setString(1, userName);	# sostituzione del primo '?'
 statement.setString(2, pwd);		# sostituzione del secondo '?'
 ```
-
 
 ## Sanitizzazione
 
@@ -241,7 +241,7 @@ table = get_parameter($t)
 statement = "SELECT * FROM " + table;
 ```
 
-in questo caso il prepared statement non si può usare per il nome di un tabella, è quindi importante controllare il contenuto della variabile `table` prima di effettuare la query
+In questo caso il *prepared statement* non si può usare per il nome di un tabella, è quindi importante controllare il contenuto della variabile `table` prima di effettuare la query
 
 ```sql
 table = get_parameter($t);
