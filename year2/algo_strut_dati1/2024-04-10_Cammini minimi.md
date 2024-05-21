@@ -25,7 +25,7 @@ $$\mathscr{C}(u, v) = \{\phi | \phi \text{ è un cammino tra $u$ e $v$}\}$$
 
 ### Costo di un cammino
 
-Definiamo il **costo di un cammino** come la somma dei pesi sugli archi che lo compongono.
+Definiamo il **costo (o lunghezza) di un cammino**, in grafi pesati, come la somma dei pesi sugli archi che lo compongono.
 
 $$w(\phi) = \sum_{i = 1}^{q}w(x_{i-1}, x_i)$$
 
@@ -184,14 +184,13 @@ Alla fine dell'algoritmo vogliamo che il grafo dei predecessori $G_\pi$ sia un *
 
 ### Disuguaglianza triangolare
 
-Considerando un grafo $G = (V, E)$ con nodo sorgente $s \in V$ e un arco $(u, v) \in E$ allora vale che:
+Considerando un grafo $G = (V, E)$ con nodi $s,u,v \in V$ e un arco $(u, v) \in E$ allora vale che:
 
 $$\delta(s, v) \leq \delta(s, u) + w(u, v)$$
 
-cioè il costo del cammino minimo tra $s$ e $v$ è limitato superiormente dalla distanza tra $s$ e $u +$ il peso dell'arco che connette $u$ con $v$
+Cioè il costo del cammino minimo tra $s$ e $v$ è limitato superiormente dalla distanza tra $s$ e $u$ sommata al  peso dell'arco che connette $u$ con $v$
 
 Vediamo due esempi:
-
 ![enter image description here](https://i.ibb.co/FmS9QHH/image.png)
 
 Nel grafo di sinistra la distanza $\delta(s, v)$ tocca il suo limite, cioè $3+1$.

@@ -75,7 +75,6 @@ Il **fatto cruciale** è il seguente
 
 > Se $(u, v)$ è un arco leggero che attraversa il taglio, allora $(u, v)$ appartiene a un MST
 
-
 ### Cuci e taglia
 
 **Dimostrazione** del fatto cruciale tramite la tecnica "**cuci e taglia**".
@@ -96,31 +95,31 @@ Sia $T$ un MST di $G$, l'arco leggero che attraversa il taglio $(u, v)$ può ric
 		
 		$$T'' = T' \setminus \{(x, y)\}$$
 		
-		![enter image description here](https://i.ibb.co/Qjj9Kvd/image.png)
+	![enter image description here](https://i.ibb.co/Qjj9Kvd/image.png)
 
-		Per come è stato costruito $T''$ sarà sicuramente un **albero di copertura**.
+	Per come è stato costruito $T''$ sarà sicuramente un **albero di copertura**.
 
-		Verifichiamo che sia anche un MST:
-		Dato che $T$ è un MST possiamo sicuramente dire che
+	Verifichiamo che sia anche un MST:
+	Dato che $T$ è un MST possiamo sicuramente dire che
 
-		$$W(T) \leq W (T'')$$
+	$$W(T) \leq W (T'')$$
 
-		però il peso di $T''$ lo possiamo scrivere come
+	però il peso di $T''$ lo possiamo scrivere come
 
-		$$W(T'') = W(T) + w(u, v) - w(x, y)$$
+	$$W(T'') = W(T) + w(u, v) - w(x, y)$$
 
-		Possiamo dire che $w(u, v) - w(x,y) \leq 0$ in quanto l'arco $(u, v)$ è un arco leggero (quindi l'arco $(x, y)$ o è a sua volta un arco leggero oppure ha un peso maggiore)
-		Possiamo quindi scriverlo come:
+	Possiamo dire che $w(u, v) - w(x,y) \leq 0$ in quanto l'arco $(u, v)$ è un arco leggero (quindi l'arco $(x, y)$ o è a sua volta un arco leggero oppure ha un peso maggiore)
+	Possiamo quindi scriverlo come:
 
-		$$W(T'') \leq W(T)$$
+	$$W(T'') \leq W(T)$$
 
-		Quindi unendo le due disequazioni otteniamo che
+	Quindi unendo le due disequazioni otteniamo che
 
-		$$W(T)\leq W(T'') \leq W(T) \implies W(T'') = W(T)$$
+	$$W(T)\leq W(T'') \leq W(T) \implies W(T'') = W(T)$$
 
-		**Questo dimostra che anche $T''$ è un MST in quanto è un albero di copertura e ha lo stesso peso di un MST**
+	**Questo dimostra che anche $T''$ è un MST in quanto è un albero di copertura e ha lo stesso peso di un MST**
 
-		**Nota**: dopo aver dimostrato questa proprietà, possiamo applicarla nella sua stessa dimostrazione, infatti essendo $T$ un MST allora il suo arco $(x, y)$ sarà un arco leggero, di conseguenza $w(u, v) = w(x, y)$ che sottratti fanno $0$ e quindi si raggiunge che $W(T'') = W(T)$
+	**Nota**: dopo aver dimostrato questa proprietà, possiamo applicarla nella sua stessa dimostrazione, infatti essendo $T$ un MST allora il suo arco $(x, y)$ sarà un arco leggero, di conseguenza $w(u, v) = w(x, y)$ che sottratti fanno $0$ e quindi si raggiunge che $W(T'') = W(T)$
 
 ## Esercizi dimostrabili con "cuci e taglia"
 
@@ -151,7 +150,6 @@ Di conseguenza: $w(u, v) - w(x, y) < 0$
 $W(T'') < W(T)$ 
 
 Questo è assurdo in quanto avremmo trovato un albero di copertura con un peso minore dell'albero di partenza che era un MST.
-
 
 ### Esercizio 2
 
@@ -210,7 +208,7 @@ Dato che l'arco $(u, v)$ è un arco leggero allora
 	
 	Adesso dobbiamo dimostrare che anche $A$ appartenga a $T''$.
 	Utilizzando l'ipotesi 2 sappiamo di per certo che l'arco che abbiamo rimosso $(x, y)$ non poteva appartenere ad $A$ (perché l'arco $(x, y)$ attraversava il taglio).
-	Quindi $A$ non è stato toccato e di conseguenza appartiene anch'esso a $T$
+	Quindi $A$ non è stato toccato e di conseguenza appartiene anch'esso a $T''$
 
 ### Corollario del teorema fondamentale
 

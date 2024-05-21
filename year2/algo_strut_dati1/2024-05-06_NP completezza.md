@@ -119,7 +119,7 @@ La definizione dice che un problema è NP completo se:
 
 Nota: se un problema soddisfa la seconda condizione si dice che appartiene alla classe **NP-hard**.
 
-### Teorema fondamentale della NP-completezza
+## Teorema fondamentale della NP-completezza
 
 L'intrattabilità di un problema appartenente alla classe NPC è data proprio da questo teorema:
 
@@ -128,8 +128,8 @@ $$P \cap NPC \neq \emptyset \implies P = NP$$
 Cioè, se esistesse un problema $Q$ risolvibile in tempo polinomiale ($Q \in P$) e in cui ogni problema in NP può essere mappato a $Q$ ($Q \in NPC$) allora si avrebbe che $P = NP$
 
 Al momento nessuno è riuscito a trovare un problema che rende vera l'ipotesi.
-Possiamo però dimostrare la correttezza del teorema:
 
+Possiamo però dimostrare la correttezza del teorema:
 Supponiamo che esista un problema $Q$ per cui $Q \in P \land Q \in NPC$
 Per dimostrare che $P = NP$ dovremmo dimostrare che:
 

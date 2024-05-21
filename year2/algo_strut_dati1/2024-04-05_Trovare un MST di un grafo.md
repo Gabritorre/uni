@@ -67,7 +67,6 @@ L'algoritmo si comporta nel seguente modo:
 | secondo ciclo: it. 3 | $\{1, 2, 3\},\{4, 5\},\{6\}$ | $(1, 3)$ |
 | secondo ciclo: it. 4 | $\{1, 2, 3\},\{4, 5\},\{6\}$ | $(2, 3)$ |
 
-
 ## Algoritmo di Kruskal
 
 Vediamo un algoritmo pratico per trovare un MST dato un grafo, **l'algoritmo di Kruskal**.
@@ -88,12 +87,13 @@ kruskal(G, w)
 
 L’idea consiste nell’isolare inizialmente tutti i vertici del grafo, definendo alberi disgiunti formati da un singolo vertice.
 A partire da tale condizione Kruskal suggerisce di considerare, iterativamente, tutti gli archi del grafo in ordine di peso non decrescente (prima i più leggeri e poi i più pesanti) e di applicare ad ogni iterazione la seguente regola:
-**se i vertici dell’arco non appartengono allo stesso albero allora unisci i due alberi, altrimenti ignora l’arco** (è anche possibile vederla come: se aggiungendo l'arco estratto ad $A$ si forma un ciclo allora ignori l'arco)
+**se i vertici dell’arco non appartengono allo stesso albero allora unisci i due alberi, altrimenti ignora l’arco** (è anche possibile vederla come: se aggiungendo ad $A$ l'arco estratto si forma un ciclo allora ignori l'arco)
 
 **Correttezza**
+L'algoritmo rispetta il **corollario del teorema fondamentali degli MST**:
 L'algoritmo è corretto in quanto A per tutto l'algoritmo rimane sempre un sottoinsiemi di un MST (anche l'insieme vuoto è un sottoinsieme di ogni MST).
-Ordinare gli archi ci porta a considerare prima gli archi di peso minore.
-L'algoritmo rispetta il corollario del teorema fondamentali degli MST: la foresta $G_A = (V, A)$ è costituita da sempre meno componenti connesse, man mano che si avanza con l'algoritmo rimarrà una sola componente connessa, cioè sono stati estratti tutti gli $|V|-1$ archi necessari per formare un MST
+Ordinare gli archi in modo non decrescente ci porta a considerare prima gli archi leggeri che connettono le componenti connesse.
+La foresta $G_A = (V, A)$ inizialmente è formata da $n$ componenti connesse, e man mano che si avanza con l'algoritmo le componenti saranno connesse tramite gli archi leggeri fino a che non rimarrà una sola componente connessa, cioè sono stati estratti tutti gli $|V|-1$ archi necessari per formare un MST
 
 **Complessità**
 Il primo ciclo for compie $n$ iterazioni, dove $n$ è il numero di nodi del grafo.
@@ -119,9 +119,7 @@ Partendo dalla seguente foresta formata da alberi composti da un solo nodo:
 ![enter image description here](https://i.ibb.co/bJQW9w8/image.png)
 
 Colleghiamo gli alberi tra loro, considerando prima gli **archi con peso minore**
-
 ![enter image description here](https://i.ibb.co/w4Jp84M/image.png)
-
 
 ## Algoritmo di Prim
 
@@ -132,8 +130,6 @@ D'altra parte l'**algoritmo di Prim** considera il grafo come un albero radicato
 La costruzione dell'albero $A$ avviene servendosi di un campo particolare $\pi[u], u \in V$ associato ad ogni vertice, che conterrà un riferimento ad un altro nodo (**il predecessore**).
 
 L'algoritmo si serve di una **coda di minima priorità** $Q$ che memorizza i vertici del grafo per estrarli, uno alla volta, sulla base del campo $\text{Key}[u], u \in V$ che contiene il minore tra i pesi degli archi di $u$ che **attraversano il taglio.**
-
-
 
 Quindi:
 - $Q$ è un insieme che contiene i vertici da estrarre
@@ -177,13 +173,11 @@ Prim(G, w, r)
 **Correttezza**
 L'algoritmo rispetta il teorema fondamentale degli MST, cioè ad ogni istante vale che:
 
-$$A = \left\{(\pi_u, u) \in E \text{ t.c. } u \in V \setminus Q \setminus r\right\}$$
+$$A = \left\{(\pi_u, u) \in E\hspace{2mm} | \hspace{2mm} u \in V \setminus Q \setminus \{r\}\right\}$$
 
-Cioè è composto da archi $(\pi_u, u)$, e dato che $u$ è il nodo estratto in quel momento allora fa parte di $V \setminus Q$ e $\pi_u$ è il suo predecessore che è già stato estratto prima di lui, quindi faceva già parte di $V \setminus Q$
+Cioè l'insieme $A$ è composto da archi $(\pi_u, u)$, e dato che $u$ è il nodo appena estratto allora fa parte di $V \setminus Q$ e $\pi_u$ è il suo predecessore che è già stato estratto prima di lui, quindi faceva già parte di $V \setminus Q$.
 
-un volta estratto un vertice $u$, viene scelto come successivo il vertice in modo che faccia parte di un arco leggero che attraversa il taglio.
-
-
+Una volta estratto un vertice $u$, viene scelto come successivo un vertice in modo che faccia parte di un arco leggero che attraversa il taglio tra i nodi estratti e quelli ancora da estrarre.
 
 **Complessità**
 - il primo ciclo esegue $n$ iterazioni, dove $n$ è il numero di nodi del grafo
@@ -201,38 +195,31 @@ Quindi questa sezione ha complessità $m\log n$
 
 	$$T(n, m) = O(m \log(n))$$
 
-
 ## Esecuzione di Prim
 
 ### Esempio 1
 
 Dato il seguente grafo
-
 ![enter image description here](https://i.ibb.co/VVW3sCr/image.png)
 
 Vediamo una esecuzione grafica:
-
 ![enter image description here](https://i.ibb.co/qrhNr26/esempio-prim.png)
 
 Vediamo come cambiano le strutture dati:
-
 ![enter image description here](https://i.ibb.co/rZTVr53/image.png)
-
 
 ### Esempio 2
 
 Dato il seguente grafo
-
 ![enter image description here](https://i.ibb.co/YkVrqz5/image.png)
 
 Considera il nodo 1 come radice.
 
 L'ordine di estrazione dei vertici è il seguente
-
 $$1 \to 4 \to 2 \to 3 \to 5 \to 6$$
 
 Gli archi che compongono l'MST sono 
-
 $$(1, 4) (1, 2) (2, 3) (1, 5) (2, 6)$$
 
 ![enter image description here](https://i.ibb.co/bQxvbCd/image.png)
+

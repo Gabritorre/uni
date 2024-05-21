@@ -151,7 +151,7 @@ Il primo membro sappiamo già essere $d_{ij}^{(k-1)}$, cioè il valore sulla mat
 
 $$\large= \min\left\{d_{ij}^{(k-1)}, \underset{p \in \bar{\mathscr{D}}_{ij}^{(k)}}{\min} w(p)\right\}$$
 
-Il secondo membra rappresenta i cammini semplici passanti per $k$, e proprio perché sono **semplici** sappiamo che all'interno del cammino $k$ può apparire solo una volta.
+Il secondo membro rappresenta i cammini semplici passanti per $k$, e proprio perché sono **semplici** sappiamo che all'interno del cammino $k$ può apparire solo una volta.
 Possiamo quindi scomporre ulteriormente questo insieme in due sottoinsiemi:
 - uno contenente i cammini da $i$ a $k$
 - uno contenente i cammini da $k$ a $j$
@@ -160,21 +160,20 @@ Entrambi avranno quindi nodi interni minori o uguali a $k-1$, in quanto $k$ non 
 
 ![enter image description here](https://i.ibb.co/yYvM1zD/image.png)
 Esplicitiamo l'ulteriore partizionamento che abbiamo fatto, e usiamo lo stesso ragionamento applicato ai cammini non passanti per $k$
-$$\large= \min\left\{d_{ij}^{(k-1)}, \underset{p \in \mathscr{D}_{ik}^{(k-1)}}{\min} w(p) + \underset{p \in \mathscr{D}_{jk}^{(k-1)}}{\min} w(p)\right\}$$
+$$\large= \min\left\{d_{ij}^{(k-1)}, \underset{p \in \mathscr{D}_{ik}^{(k-1)}}{\min} w(p) + \underset{p \in \mathscr{D}_{kj}^{(k-1)}}{\min} w(p)\right\}$$
 
 Adesso riusciamo a riconoscere i due valori di minimo come valori presi dalla matrice precedente
 
 - $\large d_{ik}^{(k-1)} = \underset{p \in \mathscr{D}_{ik}^{(k-1)}}{\min} w(p)$
 
-- $\large d_{kj}^{(k-1)} = \underset{p \in \mathscr{D}_{jk}^{(k-1)}}{\min} w(p)$
-
+- $\large d_{kj}^{(k-1)} = \underset{p \in \mathscr{D}_{kj}^{(k-1)}}{\min} w(p)$
 
 Ci siamo infine ricongiunti alla formula che volevamo dimostrare 
 
 $$\large d_{i j}^{(k)}=\min \left\{d_{i j}^{(k-1)}, \hspace{2mm}d_{i k}^{(k-1)}+d_{k j}^{(k-1)}\right\}\large$$
 
 Abbiamo quindi capito che il significato di questa formula è: 
-"è minore l'attuale cammino che ho per andare da $i$ a $j$ oppure è più breve il cammino per andare da $i$ a $j$ passando per il nodo $k$ (cioè il cammino da $i$ a $k\, +$ il cammino tra $k$ e $j$)?"
+"Prendo il minore tra l'attuale cammino che ho per andare da $i$ a $j$ e più breve il cammino per andare da $i$ a $j$ passando per il nodo $k$ (cioè il cammino da $i$ a $k\, +$ il cammino tra $k$ e $j$)"
 
 ## Ottimizzazioni
 

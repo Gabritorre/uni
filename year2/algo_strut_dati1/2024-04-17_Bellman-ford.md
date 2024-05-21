@@ -85,7 +85,7 @@ $$\forall (u, v) \in E, \hspace{5mm} d[v] \leq d[u] + w(u, v)$$
 
 Cioè non viene mai eseguito l'`if` nell'ultimo ciclo `for`.
 
-Dopo $n-1$ passate abbiamo visto che $d[u] = \delta(s, u)$ per ogni $u$
+Dopo $n-1$ passate abbiamo visto che $d[u] = \delta(s, u)$ per ogni $u$.
 Possiamo usare questa conseguenza all'interno della proprietà di disuguaglianza triangolare
 
 ricordiamo la formula della disuguaglianza triangolare:
@@ -108,7 +108,7 @@ Sia $c = <x_0, x_1, ..., x_q>$ un ciclo negativo raggiungibile dalla sorgente, c
 - $$x_0 = x_q$$
 - $$\sum_{i = 1}^{q}w(x_{i-1}, x_i) < 0$$
 
-Se l'algoritmo (per assurdo) ritornasse `true` allora varrebbe la precedente proprietà anche per i nodi all'interno del ciclo negativo
+Se l'algoritmo (per assurdo) ritornasse `true` allora la precedente proprietà varrebbe anche per i nodi all'interno del ciclo negativo
 
 $$\forall i = 1...q \hspace{10mm} d[x_i] \leq d[x_{i-1}] + w(x_{i-1}, x_i)$$
 
