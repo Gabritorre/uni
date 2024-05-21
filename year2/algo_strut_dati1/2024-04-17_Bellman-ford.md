@@ -9,7 +9,7 @@ Possiamo sintetizzare il comportamento dell'algoritmo di bellman-ford in
 
 ```c
 bellman-ford(G, w, s) {
-	init_ss(G)
+	init_ss(G, s)
 	for i = 1 to n-1	// n-1 passate
 		for-each (u, v) in E[G]
 			relax(u, v, w(u, v))

@@ -327,4 +327,41 @@ $[0, ..., 2^{b}-1] \implies [0, ..., 2^{c\log_2n}-1] \implies [0, ..., n^c-1]$
 	$$\Theta\left(\frac{nc\log_2n}{\log_2 n}\right) = \Theta(nc) = \Theta(n)$$
 
 
+## Algoritmo completo
 
+```cpp
+radix_sort(array A[])
+	//inizializzazione di d e k in base allo specifico esercizio
+	int d = ?	// numero di cifre
+	int k = ?	// numero di elementi che assume una cifra
+	int n = A.size()
+	for i = 1 to d
+		counting_sort(A, n, k, i)
+
+counting_sort(array A[], int n, int k, int i)
+	B[1... n]		//array su cui andrò a salvare il risultato
+	C[0... k-1]		//array delle occorrenze
+
+	for j = 0 to k
+		C[j] = 0
+	for j = 1 to n
+		C[cifra(A[j], k, i)]++
+
+	//per ordinamento crescente
+	for j = 1 down to k
+		C[j] = C[j] + C[j-1]
+
+	//per ordinamento decrescente
+	for j = k-2 to 0
+		C[j] = C[j] + C[j+1]
+
+	for j = n down to 1
+		B[C[cifra(A[j], k, i)]] = A[j]
+		C[cifra(A[j], k, i)]--
+
+	A = B
+
+//ritorna l'i-esima cifra del numero x in base k
+cifra(int x, int k, int i)
+	return (x / k^(i-1))) % k
+```
