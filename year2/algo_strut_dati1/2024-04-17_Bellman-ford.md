@@ -59,7 +59,7 @@ Approfondiamo il secondo caso:
 Se si verifica allora esisterà un cammino minimo tra $s$ e $u$.
 Sia $p = <x_0, x_1, ..., x_q>$ un cammino minimo **semplice**.
 Osservazioni:
-- Se due nodi sono raggiungibili e in assenza di cicli negativi **esiste sempre un ciclo minimo semplice**.
+- Se due nodi sono raggiungibili e in assenza di cicli negativi **esiste sempre un cammino minimo semplice**.
 - Potrebbero esistere comunque cammini minimi non semplici in presenza di cicli il cui peso somma $0$
 - È possibile ottenere un cammino semplice da uno non semplice rimuovendo tali cicli
 
