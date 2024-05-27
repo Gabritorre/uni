@@ -348,11 +348,11 @@ counting_sort(array A[], int n, int k, int i)
 		C[cifra(A[j], k, i)]++
 
 	//per ordinamento crescente
-	for j = 1 down to k
+	for j = 1 to k
 		C[j] = C[j] + C[j-1]
 
 	//per ordinamento decrescente
-	for j = k-2 to 0
+	for j = k-2 down to 0
 		C[j] = C[j] + C[j+1]
 
 	for j = n down to 1

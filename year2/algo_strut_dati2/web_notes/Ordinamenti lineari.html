@@ -297,11 +297,11 @@ Quindi avere che l’attuale numero di bit <span class="katex--inline"><span cla
 		C<span class="token punctuation">[</span><span class="token function">cifra</span><span class="token punctuation">(</span>A<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">,</span> k<span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token operator">++</span>
 
 	<span class="token comment">//per ordinamento crescente</span>
-	<span class="token keyword">for</span> j <span class="token operator">=</span> <span class="token number">1</span> down to k
+	<span class="token keyword">for</span> j <span class="token operator">=</span> <span class="token number">1</span> to k
 		C<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> C<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> C<span class="token punctuation">[</span>j<span class="token number">-1</span><span class="token punctuation">]</span>
 
 	<span class="token comment">//per ordinamento decrescente</span>
-	<span class="token keyword">for</span> j <span class="token operator">=</span> k<span class="token number">-2</span> to <span class="token number">0</span>
+	<span class="token keyword">for</span> j <span class="token operator">=</span> k<span class="token number">-2</span> down to <span class="token number">0</span>
 		C<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">=</span> C<span class="token punctuation">[</span>j<span class="token punctuation">]</span> <span class="token operator">+</span> C<span class="token punctuation">[</span>j<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span>
 
 	<span class="token keyword">for</span> j <span class="token operator">=</span> n down to <span class="token number">1</span>

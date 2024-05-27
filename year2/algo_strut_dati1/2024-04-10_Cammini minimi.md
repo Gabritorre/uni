@@ -202,7 +202,7 @@ Suddividiamo 3 casi:
 - $\delta(s, u) = +\infty$ cioè $u$ non è raggiungibile da $s$, allora è sicuramente vero che $\delta(s,v)\leq + \infty + w(u, v)$ con $w(u, v)$ valore reale.
 - $\delta(s, u) = -\infty$ cioè è presente un ciclo negativo tra $s$ e $u$ allora varrà che
 	$\delta(s, v) \leq -\infty + w(u, v)$, ma a questo punto anche $\delta(s, v) = -\infty$ a causa del ciclo negativo, quindi è verificata la condizione
-- $\delta(s, v) \in \mathbb{R}$, cioè esiste un cammino senza cicli tra $s$ e $v$, in questo caso rientriamo negli esempi sopra mostrati: se l'unico cammino per arrivare a $v$ è passando per $u$ allora $\delta(s, v)$ sarà esattamente uguale a $\delta(s, u) + w(u, v)$. Ma è possibile che esistano anche cammini migliori, cioè che $\delta(s, v) < \delta(s, v) + w(u, v)$
+- $\delta(s, u) \in \mathbb{R}$, cioè esiste un cammino senza cicli tra $s$ e $u$, in questo caso rientriamo negli esempi sopra mostrati: se l'unico cammino per arrivare a $v$ è passando per $u$ allora $\delta(s, v)$ sarà esattamente uguale a $\delta(s, u) + w(u, v)$. Ma è possibile che esistano anche cammini migliori, cioè che $\delta(s, v) < \delta(s, v) + w(u, v)$
 
 ### Proprietà del limite inferiore
 
