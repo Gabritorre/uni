@@ -170,7 +170,7 @@ ricordiamo che il prodotto si può fare solo se il numero di colonne di una matr
  Generalmente gli elementi di una matrice $C$ generata dal prodotto di due matrici $A \times B$ si possono calcolare come:
 $$c_{ij} = \sum_{\ell = 1}^{n} a_{i\ell} \cdot b_{\ell j}$$
 
-Nel nostro caso Abbiamo il prodotto di una matrice per se stessa, nella diagonale cioè quando gli indici sono uguali abbiamo:
+Nel nostro caso abbiamo il prodotto di una matrice per se stessa, nella diagonale cioè quando gli indici sono uguali abbiamo:
 
 $$a_{ii}^{(2)} = \sum_{k = 1}^n a_{ik} \cdot a_{ki}$$
 

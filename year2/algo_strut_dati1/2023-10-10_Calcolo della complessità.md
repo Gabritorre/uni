@@ -2,7 +2,7 @@
 
 Concentriamoci sul calcolare la complessità temporale di un dato algoritmo, indicato con $T(n)$ .
 Ci interessiamo in particolare al **caso peggiore** su cui un determinato algoritmo deve lavorare, lo indichiamo con $O(f(n))$ , in generale O-grande di una funzione.
-Generalmente vogliamo vedere come si comporta un algoritmo su un gran input
+Generalmente vogliamo vedere come si comporta un algoritmo su un gran input.
 
 ## Complessità dei principali costrutti
 
@@ -18,7 +18,7 @@ Andiamo a vedere la complessità dei costrutti di programmazione più comuni
 
 ### if-then-else
 
-``` C
+```c
 if <cond> then
 	ramo-then
 else
@@ -33,7 +33,7 @@ $$T(n) = O\big(f(n) + \max\{g(n), h(n)\}\big)$$
 
 ### Ciclo for
 
-``` C
+```c
 for i = 1 to k
 	<body>
 ```
@@ -44,21 +44,32 @@ $$T(n) = O\big(k \cdot f(n)\big)$$
 
 possiamo avere anche più cicli for innestati, ad esempio avendo due cicli for innestati:
 
-``` C
+```c
 for i = 1 to k
 	for j = 1 to m
 		<body>
-
 ```
 
 anche in questo caso la complessità del `body` $(O(f(n))$ però viene ripetuto `k * m` volte quindi:
 
 $$T(n) = O\big(k \cdot m \cdot f(n)\big)$$
 
+possiamo avere due cicli particolari fatti in questo modo:
+
+```c
+for i = 1 to k
+	for j = 1 to i
+		<body>
+```
+
+Il numero di iterazioni del ciclo for interno dipende dall'iterazione del ciclo esterno.
+Diciamo che viene eseguito $k$ volte un ciclo che fa $i$ iterazioni:
+
+$$T(n)=\sum_{i=1}^{k}i = \frac{k(k+1)}{2} = \Theta(k^2)$$
 
 ### Ciclo while
 
-``` C
+```c
 while <cond> do
 	<body>
 ```
@@ -70,14 +81,13 @@ Indicando con $N(n)$ il numero massimo di iterazioni del ciclo la complessità e
 
 $$O\big(N(n) \cdot (f(n) + g(n))\big)$$
 
-
 ## Esempio di algoritmo
 
 
 ![enter image description here](https://i.ibb.co/VpBgPzv/algo-example.png)
 
-Indichiamo con **c** le istruzioni costanti, di cui non siamo interessati. 
-guardando i primi 2 cicli for innestati notiamo che vengono entrambi eseguiti $n$ volte quindi la complessità di quel blocco è $n^2$, il corpo del ciclo interno è comunque una istruzione costante che rispetto a $n^2$ è inconsiderabile.
+Indichiamo con **C** le istruzioni costanti, di cui non siamo interessati. 
+Guardando i primi 2 cicli for innestati notiamo che vengono entrambi eseguiti $n$ volte quindi la complessità di quel blocco è $n^2$, il corpo del ciclo interno è comunque una istruzione costante che rispetto a $n^2$ è inconsiderabile.
 
 Nel secondo blocco abbiamo un ciclo con una chiamata ricorsiva, per il momento anche il nostro calcolo della complessità sarà ricorsivo.
 

@@ -22,11 +22,11 @@ $$c + \left[c + T\left(\frac{n}{2^2}\right)\right] = $$
 
 $$c + \left[c + \left[c + T\left(\frac{n}{2^3}\right)\right]\right] = $$
 
-a questo punto ci accorgiamo che il numero di $c$ è lo stesso valore dell'esponente di $2$ quindi potremmo scrivere l'espressione come:
+a questo punto ci accorgiamo che il numero di occorrenze di $c$ è lo stesso valore dell'esponente di $2$ quindi potremmo scrivere l'espressione come:
 
 $$3c + T\left(\frac{n}{2^3}\right) = $$
 
-è evidente il pattern che continua a proseguire:
+è evidente il pattern che continua a proseguire, generalizziamo con $k$:
 
 $$= kc + T\left(\frac{n}{2^k}\right)$$
 
@@ -68,7 +68,7 @@ $$\text{riscrivendo}$$
 
 $$9^3\cdot T\left(\frac{n}{3^3}\right) + 9n + 3n + n$$
 
-A questo punto possiamo già vedere il pattern, nella parte sinistra l'esponente del 9 e del 3 crescono ugualmente quindi 
+A questo punto possiamo già vedere il pattern, nella parte sinistra l'esponente del $9$ e del $3$ crescono ugualmente quindi generalizziamo con $k$
 
 $$9^k\cdot T\left(\frac{n}{3^k}\right) + 9n + 3n + n$$
 
@@ -187,7 +187,7 @@ quindi considerando sia il risultato del caso base che del passo induttivo concl
 
 ### Algoritmi divide et impera
 
-prima di considerare il teorema master che generalizza ciò il calcolo della complessità degli algoritmi *divide et impera* andiamo prima a vedere cosa sono quest'ultimi.
+Prima di considerare il teorema master che generalizza il calcolo della complessità degli algoritmi *divide et impera* andiamo prima a vedere cosa sono quest'ultimi.
 
 Un algoritmo divide et impera si compone di tre fasi:
 
@@ -237,15 +237,13 @@ $$T(n) = \Theta(n^d)$$
 
 Quindi se il tempo di *split* + *merge* cresce più lentamente del tempo di esecuzione dei sottoproblemi allora la complessità dell'algoritmo si comporta come la complessità dell'esecuzione dei sottoproblemi
 
-
 ### Caso 2
 
 Se $f(n) = \Theta(n^d)$ allora
 
 $$T(n) = \Theta(n^d\log n)$$
 
-quindi se il tempo di *split* + *merge* è nello stesso ordine di grandezza del tempo di esecuzione dei sottoproblemi allora la complessità dell'algoritmo è anch'essa simile ad essi.
-
+quindi se il tempo di *split* + *merge* è nello stesso ordine di grandezza del tempo di esecuzione dei sottoproblemi allora la complessità dell'algoritmo è simile ad essi.
 
 ### Caso 3
 
@@ -256,7 +254,6 @@ allora
 $$T(n) = \Theta(f(n))$$
 
 Quindi se il tempo di *split* + *merge* cresce più velocemente del tempo di esecuzione dei sottoproblemi allora la complessità dell'algoritmo si comporta come il tempo di *split* + *merge*
-
 
 ### Esempi
 
@@ -358,7 +355,7 @@ $$3\cdot \frac{n}{9} \leq c\cdot n$$
 
 $$\frac{n}{3} \leq c\cdot n$$
 
-$$\frac{1}{c} \leq c$$
+$$\frac{1}{3} \leq c$$
 
 Scelgo $c = \frac{1}{3}$ che è compreso tra 0 e 1 e quindi ho dimostrato il caso 3.
 $T(n) = \Theta(n)$
@@ -438,7 +435,7 @@ $$\frac{2^{\frac{n}{2}+2}}{2^n} \leq c$$
 
 $$\frac{2^{\frac{n}{2}+2}}{2^n} \leq c < 1$$
 
-dobbiamo trovare il valore di $n_0$ in modo tale che "n sia sufficientemente grande" per di trovare un valore di $c$
+dobbiamo trovare il valore di $n_0$ in modo tale che "n sia sufficientemente grande" per trovare un valore di $c$
 
 Possiamo risolvere la disequazione $\frac{2^{\frac{n}{2}+2}}{2^n} < 1$ oppure possiamo andare a tentativi sostituendo valori interi di $n$ fino a che non otteniamo un valore minore di $1$.
 In questo caso troviamo che il primo valore di $n$ per cui vale tale condizione è $n=5$
@@ -591,7 +588,7 @@ $$= O\left(n^{d}\right)$$
 Dato che l'algoritmo dovrà passare per tutti i $n^d$ nodi foglia quindi l'algoritmo è limitato inferiormente da $n^d$, quindi $T(n) = \Omega(n^d)$
 
 Possiamo quindi concludere che un algoritmo che ricade in questo caso avrà complessità simile a $n^d$, quindi 
-$$T(n)\Theta(n^d)$$
+$$T(n)=\Theta(n^d)$$
 
 ### Caso 2
 
@@ -626,15 +623,15 @@ $$\Theta\left(\sum_{i = 0}^{\log_b n}n^d\right)$$
 
 la sommatoria esegue $(\log_b n + 1)$ somme di $n^d$ (il $+1$ è dato dal fatto che i parte da 0 e non da 1)
 
-$$\Theta\left(n^d \log n\right)$$
+$$T(n) = \Theta\left(n^d \log n\right)$$
 
 
 ### Caso 3
 
-Dall'ipotesi sappiamo che $f(n) = \Omega(n^{d + \epsilon})$ e che
+Dall'ipotesi sappiamo che $\exist \epsilon > 0,f(n) = \Omega(n^{d + \epsilon})$ e che
 $\exist 0<c<1 \hspace{3mm} af(\frac{n}{b}) \leq c \cdot f(n)$
 
-La seconda condizione ci sta dicendo che la complessità temporale del livello 0 (la radice) dell'albero è più dispendiosa della complessità dei livelli successivi. Questo accade perche il tempo di *split* + *merge* domina sulla risoluzione effettiva dei sottoproblemi.
+La seconda condizione ci sta dicendo che la complessità temporale del livello 0 (la radice dell'albero) è più dispendiosa della complessità dei livelli successivi. Questo accade perché il tempo di *split* + *merge* domina sulla risoluzione effettiva dei sottoproblemi.
 La **formula più generale** sarebbe:
 
 $$\forall i\geq 0 \hspace{3mm} a^if\left(\frac{n}{b^i}\right) \leq c^i \cdot f(n)$$

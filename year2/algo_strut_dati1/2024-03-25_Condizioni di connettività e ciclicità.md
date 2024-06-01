@@ -115,7 +115,6 @@ $$n \geq n+1$$
 
 che è assurdo
 
-
 ## Condizione necessaria per l'aciclicità
 
 Se un grafo $G= (V, E)$ non orientato è aciclico allora
@@ -133,17 +132,17 @@ $n = 2$, il grafo con due nodi ha al massimo un arco e quindi non possiede cicli
 **Passo induttivo** per $n\geq 3$
 Assumiamo che la proprietà valga fino a $n-1$ e voglio dimostrare per $n$
 
-Consideriamo un grafo con $n$ nodi, ne individuiamo uno e lo rimuoviamo dal grafo ottenendo il grafo $G'$.
+Consideriamo un grafo con $n$ nodi, ne individuiamo uno, che chiamiamo $z$ e lo rimuoviamo dal grafo ottenendo il grafo $G'$.
 Il grafo $G'$ sarà composto da $k$ componenti connesse $V_1, V_2, ..., V_k$
-Le componenti sono acicliche in quanto sono sottoalberi di un grafo aciclico.
-Sono anche connesse per definizione di "componenti connesse".
-Le componenti connesse saranno sicuramente composte da un numero di nodi inferiore  a $n-1$
+Osservazioni:
+- Le componenti sono acicliche in quanto sono sottoalberi di un grafo aciclico.
+- Sono anche connesse per definizione di "componenti connesse".
+- Le componenti connesse saranno sicuramente composte da un numero di nodi inferiore  a $n-1$
 
 Quindi posso applicare l'ipotesi induttiva sulle componenti connesse:
 
-$$|E_i| \leq |V_i| - 1$$
 
-per ogni $i = 1...k$
+$$\forall i = 1...k\hspace{5mm} |E_i| \leq |V_i| - 1$$
 
 Ricordiamo che voglio dimostrare che $|E| \leq |V| - 1$
 partiamo dalla parte di sinistra (i passaggi sono analoghi alla dimostrazione per la condizione necessaria della connettività):
@@ -156,7 +155,7 @@ $$|E| \leq \sum_{i =1}^k \Big(|V_i|\Big) - k + \deg(z)$$
 
 $$|E| \leq (|V| - 1) - k + \deg(z)$$
 
-Sicuramente $\deg(z) \leq k$, se non fosse così significherebbe che $z$ è collegato con una componente connessa tramite più di un nodo e questo significherebbe che il grafo originale avrebbe avuto un ciclico, ma per nostra ipotesi di partenza non lo deve avere.
+Sicuramente $\deg(z) \leq k$, se non fosse così significherebbe che $z$ è collegato con una componente connessa tramite più di un nodo e questo significherebbe che il grafo originale avrebbe avuto un ciclo, ma per nostra ipotesi di partenza non lo deve avere.
 
 $\deg(z) -k \leq 0$
 
