@@ -77,7 +77,6 @@ public class LocalClassExample {
 				// verifica se il numero passato in input è valido (utilizzando "regularExpression" e "numberLength")
 				// se valido lo salva in "formattedPhoneNumber"
             }
-
             public String getNumber() {
                 return formattedPhoneNumber;
             }
@@ -105,7 +104,7 @@ Nel caso di classe locale al corpo di un metodo, la classe può accedere anche a
 
 ## Anonymous class
 
-Le classi anonime sono esattamente come le classi locali, solo che esse possono essere **dichiarate e istanziate allo stesso momento**. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.
+Le classi anonime sono esattamente come le classi locali, solo che queste possono essere **dichiarate e istanziate allo stesso momento**. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.
 
 **Sono utili nel caso si voglia utilizzare una classe locale solo una volta**
 
@@ -175,15 +174,15 @@ Quando in una *nested class* dichiariamo un membro con lo stesso nome di un memb
 Vediamo un esempio in cui si verifica uno *shadowing* 2 volte
 ```java
 public class ShadowTest {
-    public int x = 0;
+    public int x = 10;
 
     class FirstLevel {		//inner class
-        public int x = 1;		//shadowing 1
+        public int x = 15;		//primo shadowing
 
-        void methodInFirstLevel(int x) {		//shadowing 2
-            System.out.println("x = " + x);		//23
-            System.out.println("this.x = " + this.x);	//1
-            System.out.println("ShadowTest.this.x = " + ShadowTest.this.x);		//0
+        void methodInFirstLevel(int x) {				//secondo shadowing
+            System.out.println("x = " + x);				// = 23
+            System.out.println("this.x = " + this.x);	// = 15
+            System.out.println("ShadowTest.this.x = " + ShadowTest.this.x); // = 10
         }
     }
 

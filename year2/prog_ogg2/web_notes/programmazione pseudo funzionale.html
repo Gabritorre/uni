@@ -19,7 +19,7 @@
 <li><a href="#confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</a></li>
 <li><a href="#command-pattern">Command pattern</a></li>
 <li><a href="#classi-per-le-funzioni">Classi per le funzioni</a></li>
-<li><a href="#particolare-polimorfismo-delle-lambda">Particolare polimorfismo delle lambda</a></li>
+<li><a href="#il-particolare-polimorfismo-delle-lambda">Il particolare polimorfismo delle lambda</a></li>
 </ul>
 </li>
 </ul>
@@ -41,29 +41,30 @@
 se ci sono statement nel <code>code block</code> allora sono obbligatorie le parentesi graffe, altrimenti no</p>
 <p>ad esempio</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token comment">// espressione che prende in input due interi e restituisce la somma</span>
-<span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span><span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> x <span class="token operator">+</span> y
+<span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> x <span class="token operator">+</span> y
 
 <span class="token comment">// espressione che prende in input una stringa e restituisce la sua lunghezza</span>
 s <span class="token operator">-</span><span class="token operator">&gt;</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token comment">// espressione che prende in input una stringa e non restituisce nulla</span>
 <span class="token punctuation">(</span>String s<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Benvenuto "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			  <span class="token punctuation">}</span>
 </code></pre>
 <h2 id="confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</h2>
-<p>La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice rispetto a non usarle)</p>
+<p>La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice scritto)</p>
 <p>Prima che Java implementasse le funzioni lambda, venivano utilizzate le <strong>classi anonime</strong>.</p>
 <p>Con l’aggiunta delle lambda si sono aggiunte anche le cosiddette <strong>funzioni di ordine superiore</strong>, cioè funzioni che: prendono come parametro una funzione oppure che ritornato una funzione oppure che definiscono un altra funzione al loro interno.<br>
 le normali funzioni vengono chiamate <strong>funzioni di primo ordine</strong></p>
 <h2 id="command-pattern">Command pattern</h2>
-<p>Il command pattern è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che vorrà in input <strong>i dati</strong> e un <strong>comando</strong> (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.<br>
+<p>Il <em>command pattern</em> è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che prenderà in input <strong>i dati</strong> e un <strong>comando</strong> (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.<br>
 La funzione che esegue questo compito non saprà nulla di che cosa fa il comando, saprà solamente il nome della funzione da chiamare all’interno del comando.</p>
 <p>Ci sono altri modi per implementare questo pattern, ad esempio definendo una classe che ha al suo interno un attributo che fungerà da comando.</p>
 <p>Questa tecnica permette molta flessibilità del codice.</p>
 <h3 id="esempio">Esempio</h3>
 <p>Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una funzione su ogni elemento di una collezione di dati.</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
-	<span class="token comment">//creo una interfaccia con un metodo che prende in input un valore e non ritorn nulla.</span>
+	<span class="token comment">//creo una interfaccia con un metodo che prende in input un valore e non ritorna nulla.</span>
 	<span class="token comment">// è utile perche nella firma della prossima funzione voglio specificare che voglio una funzione come input</span>
 	<span class="token keyword">interface</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
 		<span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>T  x<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -82,15 +83,15 @@ La funzione che esegue questo compito non saprà nulla di che cosa fa il comando
 
 <span class="token comment">//ESEMPIO 1</span>
 		<span class="token comment">//chiamata alla funzione con classe anonima</span>
-		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> <span class="token keyword">new</span>  <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 			<span class="token annotation punctuation">@Override</span>
-			<span class="token keyword">public</span>  <span class="token keyword">void</span>  <span class="token function">apply</span><span class="token punctuation">(</span>Integer  x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>Integer x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
 			<span class="token punctuation">}</span>
 		<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		
 		<span class="token comment">//chiamata alla funzione con espressione lambda</span>
-		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span>  System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">//ESEMPIO 2</span>
 	
@@ -111,17 +112,17 @@ La funzione che esegue questo compito non saprà nulla di che cosa fa il comando
 <h2 id="classi-per-le-funzioni">Classi per le funzioni</h2>
 <p>Nell’esempio precedente abbiamo creato manualmente una interfaccia contenente il metodo da utilizzare, tale funzione prende in input un dato e non ritorna nulla.<br>
 Se volessimo però fare una funzione che prende in input e genera in output qualcosa dovremmo creare un’altra interfaccia, lo stesso vale per una funzione che non prende input ma genera output.</p>
-<p>Java offre delle interfacce già pronte all’interno di <code>java.util.function.*</code> da poter usare come tipo di dato nei parametri delle funzioni di primo ordine.</p>
+<p>Java offre delle interfacce già pronte all’interno di <code>java.util.function.*</code> da poter usare come tipo di dato nei parametri delle funzioni di ordine superiore.</p>
 <p>Le interfacce sono le seguenti:</p>
 <ul>
 <li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Function.html"><code>Function</code></a> usato per funzioni che prendono qualcosa in <strong>input</strong> e ritornano qualcosa in <strong>output</strong><br>
-la sua metodo si chiama <code>apply</code></li>
+la sua metodo si chiama <code>apply()</code></li>
 <li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Consumer.html"><code>Consumer</code></a> usato per funzioni che prendono qualcosa in <strong>input</strong> ma che <strong>non hanno output</strong><br>
-la sua metodo si chiama <code>accept</code></li>
+la sua metodo si chiama <code>accept()</code></li>
 <li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Supplier.html"><code>Supplier</code></a> usato per funzioni che <strong>non</strong> prendono <strong>input</strong> ma che ritornano qualcosa in <strong>output</strong><br>
-la sua metodo si chiama <code>get</code></li>
+la sua metodo si chiama <code>get()</code></li>
 <li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Runnable.html"><code>Runnable</code></a> usato per funzioni che <strong>non</strong> prendono niente in <strong>input</strong> e che <strong>non</strong> hanno <strong>output</strong><br>
-la sua metodo si chiama <code>run</code></li>
+la sua metodo si chiama <code>run()</code></li>
 </ul>
 <p>Nell’esempio precedente avremmo potuto usare direttamente <code>Consumer</code> al posto di definire <code>MyFunction</code>.</p>
 <p>Vediamo un esempio di utilizzo con <code>Function</code>:</p>
@@ -143,14 +144,14 @@ la sua metodo si chiama <code>run</code></li>
 		<span class="token comment">//per ottenere una collection con tutti gli elementi incrementati di 1</span>
 		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res1 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token keyword">return</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token comment">//equivalente a:</span>
-		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res1 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res2 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 		<span class="token comment">//per ottenere una collection di booleani che indicano se i valori sono positivi</span>
-		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res1 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		Collection<span class="token operator">&lt;</span>Boolean<span class="token operator">&gt;</span> res3 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token punctuation">}</span>
 </code></pre>
-<h2 id="particolare-polimorfismo-delle-lambda">Particolare polimorfismo delle lambda</h2>
+<h2 id="il-particolare-polimorfismo-delle-lambda">Il particolare polimorfismo delle lambda</h2>
 <p>Le lambda in Java sono più polimorfe del normale, questo perché una stessa lambda può avere <strong>più di un tipo associato</strong></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>function<span class="token punctuation">.</span>Function<span class="token punctuation">;</span>
 <span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>

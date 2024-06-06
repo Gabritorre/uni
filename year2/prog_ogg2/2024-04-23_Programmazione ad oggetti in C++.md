@@ -46,8 +46,6 @@ Quindi nel caso precedente `a` è un **oggetto di tipo int**
 int var(10);		//viene chiamato il copy constructor di int
 ```
 
-
-
 ## Costruttori
 
 I costruttori vanno realizzati con le **liste di inizializzazione** quando possibile:
@@ -58,29 +56,26 @@ private:
 	int weight;
 	int speed;
 public:
-	animal()  {		//senza lista di inizalizzazione
-		weight =  10;
-		speed =  0;
+	animal() {		//senza lista di inizalizzazione
+		weight = 10;
+		speed = 0;
 	}
-	animal(): weight(10),  speed(0)  {}		//con lista di inizializzazione
+	animal(): weight(10), speed(0) {}		//con lista di inizializzazione
 }
 ```
 
 Entrambi i costruttori fanno la stessa cosa, il secondo però fa utilizzo delle liste di inizializzazione.
-
 L'utilizzo delle liste di inizializzazione è consigliato per due motivi principali:
 
-- **Ottimizzazione**: Nel primo caso quando viene chiamato il costruttore prima vengono create le variabile inizializzate con il loro valore di default (tramite il *default constructor*) e successivamente gli vengono assegnati i valori da noi decisi.
-Nel secondo caso invece le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi (utilizzando il *copy constructor* della variabile).
+- **Ottimizzazione**: senza le liste di inizializzazione quando viene chiamato il costruttore prima vengono create le variabile inizializzate con il loro valore di default (tramite il *default constructor*) e successivamente gli vengono assegnati i valori da noi decisi.
+Utilizzando le liste di inizializzazione invece le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi (utilizzando il *copy constructor* della variabile).
 
-- **Inizializzazione di costanti**: se nel codice di prima al posto di  `int a`  fosse stato  `const int a`  in quel caso solo il secondo metodo funzionerebbe, in quanto una assegnazione successiva all'inizializzazione tramite il *default constructor* non sarebbe permessa.
-
-
+- **Inizializzazione di costanti**: se nel codice di prima al posto di  `int a`  fosse stato  `const int a`  in quel caso solo il costruttore con le liste funzionerebbe, in quanto una assegnazione successiva all'inizializzazione tramite il *default constructor* non sarebbe permessa a causa del `const`.
 
 ## Passaggio dei parametri, valore e reference
 
 Vediamo 3 modi in cui si può passare un oggetto ad una funzione
-- passaggio per copia: viene creato un nuovo oggetto creato tramite il **copy constructor** dell'oggetto originale
+- passaggio per copia: viene creato un nuovo oggetto creato tramite il **copy constructor**
 	```cpp
 	void f (my_obj) {}
 	```
@@ -88,7 +83,7 @@ Vediamo 3 modi in cui si può passare un oggetto ad una funzione
 	```cpp
 	void f (my_obj*) {}
 	```
-- passaggio della reference: viene passato la reference, cioè un alias, della variabile originale. In questo caso si sta usando direttamente l'oggetto originale
+- passaggio della reference: viene passata la reference, cioè un alias della variabile originale. In questo caso si sta usando direttamente l'oggetto originale, non una copia
 	```cpp
 	void f (my_obj&) {}
 	```
@@ -97,7 +92,7 @@ Vediamo 3 modi in cui si può passare un oggetto ad una funzione
 
 Un costruttore con un singolo parametro che non ha un valore di default  e che **non** viene dichiarato `explicit` è chiamato **costruttore di conversione**.
 
-Un costruttore di conversione esegue una conversione implicita che converte un oggetto cha ha il tipo del primo parametro del costruttore di conversione in un oggetto del tipo della classe a cui il costruttore di conversione appartiene.
+Un costruttore di conversione esegue una conversione implicita che converte un oggetto cha ha il tipo del primo parametro in un oggetto dal tipo della classe a cui il costruttore di conversione appartiene.
 
 La keyword *explicit* associata ad un costruttore di conversione impedisce il comportamento appena descritto, forzando il chiamante ad usare i costruttori con i tipi corretti.
 
@@ -106,7 +101,7 @@ Vediamo il comportamento dei costruttori di conversione:
 class Y {
   private:
 	  int a, b;
-	  char * name;
+	  char* name;
   public:
 	  Y(int i) {};	//converte int a oggetti di tipo Y
 	  Y(const char* n, int j = 0) {};	//converte stringhe a oggetti di tipo Y
@@ -115,18 +110,17 @@ class Y {
 void add(Y) {};		//metodo che apparentemente prende solo oggetti di tipo Y
 
 int main() {
-  // equivalente a Y obj1 = Y(2)
+  // equivalente a: Y obj1 = Y(2)
   Y obj1 = 2;
 
-  // equivalente a Y obj2 = Y("somestring",0)
+  // equivalente a: Y obj2 = Y("somestring",0)
   Y obj2 = "somestring";
 
-  // equivalente a add(Y(5))
+  // equivalente a: add(Y(5))
   add(5);
 }
 ```
 È interessante la chiamata al metodo `add` che nonostante chieda un oggetto di tipo Y, passandogli un intero la chiamata avviene correttamente comunque in quanto il compilatore chiama implicitamente il costruttore di `Y` che prende un intero, creando così un oggetto di tipo `Y`
-
 
 ```cpp
 struct A {
@@ -154,12 +148,9 @@ int main() {
 }
 ```
 
-
-
 ## Copy constructor
 
-Il copy constructor è un costruttore che utilizza una altro oggetto gemello inizializzare i propri valori con i suoi.
-
+Il copy constructor è un costruttore che utilizza un altro oggetto gemello per inizializzare i propri valori con i suoi.
 
 Si realizza nel seguente modo
 
@@ -174,9 +165,8 @@ public:
 }
 ```
 
-Il `const` sta ad indicare che il parametro non viene modificato all'interno della funzione
-la reference è necessaria perché altrimenti si genererebbe una ricorsione infinita, se venisse passato per copia verrebbe chiamato il copy constructor, ma noi in questo lo stiamo definendo in questo momento.
-
+Il `const` sta ad indicare che il parametro non viene modificato all'interno della funzione.
+La reference è necessaria perché altrimenti si genererebbe una ricorsione infinita, se venisse passato per copia verrebbe chiamato il copy constructor, ma noi lo stiamo definendo in questo momento.
 
 ## This
 
@@ -200,16 +190,15 @@ public:
 }
 ```
 
-
 ## Const
 
-Il `const` ha sia il significato che non è modificabile sia che può interagire solo con costrutti a loro volta dichiarati `const`.
+Il `const` ha sia il significato che un costrutto non è modificabile sia che può interagire solo con costrutti a loro volta dichiarati `const`.
 
-Una buona regola quando si dichiarano le funzioni è di partire sempre da metodi `const variabile&` questo perché è l'approccio più restrittivo.
+Una buona regola quando si dichiarano le funzioni è di partire sempre da metodi `const variabile&`, perché è l'approccio più restrittivo.
 Nel caso si avesse bisogno di modificare la variabile allora si toglie il `const`.
 Qual ora si volesse una copia e non la variabile originale si toglie la `&`.
 
-il `const` si può anche mettere alla fine della firma di un metodo, e sta ad indicare che all'interno di quel metodo non si modificano i campi della classe.
+il `const` si può anche mettere alla fine della firma di un metodo, per indicare che all'interno di quel metodo non si modificano i campi della classe.
 
 Questo ci porta a definire **due tipi di getter** in C++, uno passato in sola lettura e uno anche in scrittura
 
@@ -235,9 +224,7 @@ public:
 Il const alla fine della firma permette di separare le due firme e quindi di fare un **overload**
 
 ## Virtual
-
-I metodi che si vuole permettere di far sovrascrivere ai propri figli si devono marcare come `virtual`
-
+Se si vuole permettere alle sottoclassi di sovrascrivere (fare *override*) un metodo, allora esso va marcato come `virtual`
 
 ```cpp
 class animal{
@@ -262,7 +249,6 @@ public:
 }
 ```
 
-
 ## Ereditarietà
 
 La sintassi per ereditare da una classe è la seguente
@@ -279,8 +265,7 @@ Il tag della visibilità ha il seguente significato:
 - se **protected** significa che solo i miei figli sono al corrente che sono figlio di quella classe e quindi solo loro possono sostituirmi al posto di mio padre
 - se **private** significa che nessuno può sostituirmi al posto di mio padre
 
-
-La classe figlio ha un puntatore al padre come campo privato.
+La classe figlio ha un puntatore al padre come campo privato, chiamato come la superclasse.
 
 ```cpp
 class dog : public animal {
@@ -291,7 +276,8 @@ class dog : public animal {
 
 		//in c++11 si può mettere "override" alla fine della firma per specificare che si tratta di override
 		void eat(const animal& a) override {
-			// weight += a.weight / 2;			//il weight di a non è accessibile perche è esterno e non è quello ereditato
+			// weight += a.weight / 2;			//il weight di a non è accessibile perche è privato.
+						//nota che si tratta di un attributo esterno e non è quello ereditato
 			weight += a.get_weight() / 2;		//modifica diretta
 			get_weight() += a.get_weight() / 2;	//modifica tramite il getter in scrittura
 		}
@@ -300,15 +286,14 @@ class dog : public animal {
 
 Nota: diversamente da Java, se ricevi come parametro un oggetto dello stesso tipo della classe in cui stai lavorando non è comunque possibile accedere ai suoi campi privati, vanno usati i getter.
 
-Se si vuole permettere ai propri figli di sovrascrivere un metodo già sovrascritto va aggiunto ancora il `virtual`
-
+Se si vuole permettere ai propri figli di sovrascrivere un metodo già sovrascritto va specificato ancora il `virtual`
 
 ## Modi di istanziare un oggetto
 
 Vediamo 3 modi per istanziare un oggetto
 1. tramite la keyword `new`, che ritorna un puntatore al nuovo oggetto che è stato creato nell'heap
 2. istanziamento direttamente nello stack
-3. instanziamento tramite *reference* di un altro oggetto
+3. istanziamento tramite *reference* di un altro oggetto
 
 ```cpp
 class animal{
@@ -348,26 +333,24 @@ int main() {
 	animal a2(1, 2.5);					//istanziamento nello stack
 
 	animal a3(a2);						//copy constructor
-	animal a4;						//default constructor
+	animal a4;							//default constructor
 
 	dog fido(60, 45.2, false);
 	
 	animal a5(fido);
-	a5.eat(a2); 	//no dynamic dispatch
+	a5.eat(a2); 	//no dynamic dispatch, viene chiamato il metodo di animal
 
 	animal& a6 = fido;					//instanziamento tramite reference
-	a6.eat(a2); 	//si dynamic dispatch
+	a6.eat(a2); 	//si dynamic dispatch, viene chiamato il metodo di dog
 
 	animal* a7 = &fido;
-	a7->eat(a2); 	//si dynamic dispatch
-	
+	a7->eat(a2); 	//si dynamic dispatch, viene chiamato il metodo di dog
 }
 ```
 
 Nota che il dynamic dispatch si ha solo con puntatori e reference, questo perche con l'istanziazione di `a5` vengono copiati i valori dei campi ma il suo tipo rimane sempre un animal, anche a *runtime*.
 
 Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona
-
 
 ## Template
 
@@ -378,13 +361,11 @@ Si possono applicare a classi, metodi, funzioni globali e typedef.
 
 Una particolarità dei template è che posticipano la compilazione del codice che usa i template fino a quando non verrà utilizzato tale codice passandogli il tipo reale.
 
-Ad esempio se definiamo una funzione che fa uso di template, tale funzione non verrà compilata fino a che non viene chiamata da qualcuno che gli passerà il tipo da sostituire al tipo generico, a quel punto viene compilata.
-
+Ad esempio se definiamo una funzione che fa uso di template, tale funzione non verrà compilata fino a che non viene invocata da qualcuno che gli passerà il tipo da sostituire al tipo generico, a quel punto viene compilata con il tipo corretto.
 
 ## Override degli operatori
 
-In C++ tutti gli operatori: `+ - * / < <= > >= != () =` ecc... eseguiti su oggetti non *built-in*
-sono in realtà delle **chiamate a funzioni** e come tali si possono overridare.
+In C++ tutti gli operatori: `+ - * / < <= > >= != () =` ecc... eseguiti su oggetti non *built-in*, sono in realtà delle **chiamate a funzioni** e come tali si possono overridare.
 
 Vediamo un esempio:
 
@@ -408,26 +389,23 @@ class matrix {
 
 void main() {
 	matrix<int> m(20, 30);
-
 	matrix<int> m2(40, 50);
-	m = m2; 	//equivalente a: m.operator=(m2);
-
-	m = m2 = m; //	m.operator=(m2.operator=(m));
+	
+	m = m2; 	// equivalente a: m.operator=(m2);
+	m = m2 = m; // equivalente a: m.operator=(m2.operator=(m));
 }
 ```
 
 Per sovrascrivere un operatore bisogna ridefinire la funzione chiamata "operator" concatenato al simbolo dell'operatore, nel caso precedente `operator=`
 
-Quando facciamo `m = m2` implicitamente stiamo facendo `m.operator=(m2)`, cioè una chiamata a funzione che prende in input il membro di sinistra dell'operatore di assegnamento.
+Quando facciamo `m = m2` implicitamente stiamo invocando `m.operator=(m2)`, cioè una chiamata a funzione che prende in input il membro di destra dell'operatore di assegnamento.
 
-Nota il tipo di ritorno è arbitrario, si potrebbe anche lasciare `void`, però restituire una reference dell'oggetto stesso ci permette di innestare le chiamate a tale funzione, cioè rende possibile fare:
+Nota che il tipo di ritorno è arbitrario, si potrebbe anche lasciare `void`, però restituire una reference dell'oggetto stesso ci permette di innestare le chiamate alla funzione, cioè rende possibile fare:
 
 ```c++
 m = m2 = m; //equivalente a:	m.operator=(m2.operator=(m));
 ```
 funziona in quanto `m2.operator=(m)` ritorna un oggetto che viene usato a sua volta nella successiva chiamata alla funzione.
-
-
 
 ## Conversion operator
 
@@ -454,8 +432,8 @@ class matrix {
 		size_t get_cols() const {return cols;}
 		size_t get_rows() const {v.size() / cols;}
 	
-		//costruttore che costuisce la matrice di classe che ha tipo T partendo dalla matrice passata per input che ha tipo S
-		// il corpo del metodo assume che il tipo T abbia un costruttore che converta il tipo partendo da un S.
+		//la funzione seguente è un costruttore che costuisce la matrice di classe che ha tipo T partendo dalla matrice passata per input che ha tipo S
+		// il corpo del metodo assume che il tipo T abbia un costruttore che converta partendo da un S.
 		//Questo è possibile e non da errori in quanto non viene compilato
 		//fino a che non viene chiamato questo costruttore,
 		//sarà compito del chiamante assicurarsi che i tipi siano convertibili tra loro
@@ -467,7 +445,6 @@ class matrix {
 		}
 }; 
 ```
-
 
 Inoltre posso fare una funzione chiamata *conversion operator*, cioè una sorta di cast della nostra classe in qualche altro tipo.
 Questo metodo non deve avere un tipo di ritorno e dopo la parola "operator" si mette il tipo in cui convertire
@@ -500,7 +477,7 @@ class matrix {
 
 ## Iteratori
 
-Gli iteratori in c++ sono dei particolari tipi di dato che sono definiti all'interno del tipo di dato più esterno.
+Gli iteratori in C++ sono dei particolari tipi di dato che sono definiti all'interno del tipo di dato più esterno.
 Gli iteratori si utilizzano proprio come se fossero dei puntatori. 
 vediamo un esempio con la classe vector
 
@@ -518,3 +495,5 @@ void f(vector<int> v) {
 - Il vector avrà poi dei metodi per utilizzare l'iteratore, in particolare:
 	- `begin()` restituisce il primo elemento
 	- `end()` restituisce l'elemento successivo all'ultimo
+
+

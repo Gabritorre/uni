@@ -31,16 +31,16 @@
 <li><strong>overload</strong>: quando si ridefinisce la firma e il corpo di un metodo mantenendo lo stesso nome del metodo da ridefinire</li>
 </ul>
 <p>Ricordiamo che la <strong>firma</strong> di un metodo comprende: nome, tipo e ordine dei parametri.<br>
-È importante sottolineare che il <strong>tipo di ritorno non fa parte della firma</strong>.</p>
+È importante sottolineare che il <strong>tipo di ritorno e la dichiarazione di eventuali eccezioni non fanno parte della firma</strong>.</p>
 <p>La <strong>covarianza e controvarianza</strong> si applica ai <strong>tipi di ritorno</strong> dei metodi.<br>
 <strong>covariare</strong> significa “variare assieme a qualcosa”<br>
 <strong>controvariare</strong> significa “variare inversamente a qualcosa”</p>
 <ul>
 <li>
-<p>Si parla di <strong>covarianza</strong> quando il tipo di ritorno diventa più specifico assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica</p>
+<p>Si parla di <strong>covarianza</strong> quando il tipo di ritorno diventa <strong>più specifico</strong> assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè <strong>più specifica</strong></p>
 </li>
 <li>
-<p>Si parla di <strong>controvarianza</strong> quando il tipo di ritorno diventa più generale, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica.</p>
+<p>Si parla di <strong>controvarianza</strong> quando il tipo di ritorno diventa <strong>più generale</strong>, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè <strong>più specifica</strong>.</p>
 <p>In java la <strong>covarianza sul tipo di ritorno è ammessa</strong>, mentre la <strong>controvarianza sul tipo di ritorno non è ammessa</strong></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Overload</span> <span class="token punctuation">{</span>
 	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
@@ -56,14 +56,16 @@
 
 	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
 
-		<span class="token comment">//il tipo di ritorno può covariare con il tipo di this (cioè con la classe in cui è sovrascritto)</span>
-		<span class="token comment">//il tipo di ritorno non può controvariare con il tipo di this. Il compilatore se ne accorge e da un errore di compilazione</span>
+		<span class="token comment">//il tipo di ritorno può covariare assieme a this</span>
+		
+		<span class="token comment">//il tipo di ritorno non può controvariare rispetto a this.</span>
+		<span class="token comment">//Il compilatore se ne accorge e da un errore di compilazione</span>
 		<span class="token annotation punctuation">@Override</span>
-		<span class="token keyword">public</span> B <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">public</span> B <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//valido</span>
 			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">}</span>
 		<span class="token annotation punctuation">@Override</span>
-		<span class="token keyword">public</span> Integer <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">public</span> Integer <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//valido</span>
 			<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
 		<span class="token punctuation">}</span>
 	<span class="token punctuation">}</span>
@@ -72,7 +74,8 @@
 		
 		A a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//tipo statico A, tipo dinamico B</span>
 		Number n <span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//viene chiamato il metodo di B per il dynamic dispatch</span>
-		<span class="token comment">//il compilatore non da errore perche il tipo di ritorno a runtime è un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza</span>
+		<span class="token comment">//il compilatore non da errore perche il tipo di ritorno a runtime è</span>
+		<span class="token comment">// un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza</span>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
@@ -90,7 +93,7 @@
 </code></pre>
 <p>seppur entrambi siano corretti e accettino un qualsiasi oggetto come tipo, il secondo sarebbe migliore in quanto al momento della chiamata non dobbiamo preoccuparci impostare il <em>type parameter</em>.</p>
 <p>In generale vale che dato che se il tipo generico (in questo caso <code>E</code>) viene utilizzato solamente una volta nella firma del metodo allora è più comodo usare un <em>wildcard</em></p>
-<p>Mentre i generics li posso limitare al fine che siano <strong>un sottotipo</strong> di qualche oggetto. Le wildcard le posso limitare anche al fine che siano <strong>un supertipo</strong> di qualche oggetto</p>
+<p>Mentre i generics li posso limitare solo come <strong>un sottotipo</strong> di qualche oggetto. Le wildcard le posso limitare anche come <strong>un supertipo</strong> di qualche oggetto</p>
 <pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token operator">&gt;</span> list1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// upper bound</span>
 List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Integer<span class="token operator">&gt;</span> list2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// lower bound</span>
 </code></pre>
@@ -107,7 +110,7 @@ permette quindi la <strong>controvarianza</strong></li>
 <h3 id="tipo-di-ritorno">Tipo di ritorno</h3>
 <p>Quando si vuole ritornare un tipo generico bisognerebbe usare i generics rispetto alle wildcard: vediamo un esempio</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> <span class="token function">merge</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listOne<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listTwo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token comment">//restituisce una lista che concatena le due in input</span>
+    <span class="token comment">//restituisce una lista che concatena le due liste in input</span>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Con questa definizione <strong>non</strong> è possibile salvare la lista di ritorno in questo modo:</p>
@@ -120,7 +123,7 @@ numbers2<span class="token punctuation">.</span><span class="token function">add
 numbers2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">20.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token comment">//errore di compilazione</span>
-List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbersMerged <span class="token operator">=</span> CollectionUtils<span class="token punctuation">.</span><span class="token function">merge</span><span class="token punctuation">(</span>numbers1<span class="token punctuation">,</span> numbers2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbersMerged <span class="token operator">=</span> <span class="token function">merge</span><span class="token punctuation">(</span>numbers1<span class="token punctuation">,</span> numbers2<span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>questo perché il tipo di ritorno è sconosciuto al compilatore (sa solo che è un sottotipo di E) anche se in realtà i tipi sono corretti.</p>
 <p>Per sistemare questo problema basta usare il generic come tipo di ritorno</p>

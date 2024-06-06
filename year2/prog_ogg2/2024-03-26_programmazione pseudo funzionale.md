@@ -23,20 +23,20 @@ ad esempio
 
 ```java
 // espressione che prende in input due interi e restituisce la somma
-(int x,int y) -> x + y
+(int x, int y) -> x + y
 
 // espressione che prende in input una stringa e restituisce la sua lunghezza
 s -> s.length()
 
 // espressione che prende in input una stringa e non restituisce nulla
 (String s) -> { System.out.println("Benvenuto ");
-				System.out.println(s); }
+			System.out.println(s);
+			  }
 ```
-
 
 ## Confronto tra lambda e classi anonime
 
-La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice rispetto a non usarle)
+La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice scritto)
 
 Prima che Java implementasse le funzioni lambda, venivano utilizzate le **classi anonime**.
 
@@ -45,7 +45,7 @@ le normali funzioni vengono chiamate **funzioni di primo ordine**
 
 ## Command pattern
 
-Il command pattern è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che vorrà in input **i dati** e un **comando** (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.
+Il *command pattern* è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che prenderà in input **i dati** e un **comando** (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.
 La funzione che esegue questo compito non saprà nulla di che cosa fa il comando, saprà solamente il nome della funzione da chiamare all'interno del comando.
 
 Ci sono altri modi per implementare questo pattern, ad esempio definendo una classe che ha al suo interno un attributo che fungerà da comando.
@@ -58,7 +58,7 @@ Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una fu
 
 ```java
 class Lambda {
-	//creo una interfaccia con un metodo che prende in input un valore e non ritorn nulla.
+	//creo una interfaccia con un metodo che prende in input un valore e non ritorna nulla.
 	// è utile perche nella firma della prossima funzione voglio specificare che voglio una funzione come input
 	interface MyFunction<T> {
 		void apply(T  x);
@@ -77,15 +77,15 @@ class Lambda {
 
 //ESEMPIO 1
 		//chiamata alla funzione con classe anonima
-		forEach(l, new  MyFunction<Integer>() {
+		forEach(l, new MyFunction<Integer>() {
 			@Override
-			public  void  apply(Integer  x) {
+			public void apply(Integer x) {
 				System.out.println(x);
 			}
 		});
 		
 		//chiamata alla funzione con espressione lambda
-		forEach(l, x ->  System.out.println(x));
+		forEach(l, x -> System.out.println(x));
 
 //ESEMPIO 2
 	
@@ -103,7 +103,6 @@ class Lambda {
 }
 ```
 
-
 Notiamo come la chiamata alla funzione `forEach` passando come secondo parametro una funzione anonima (lambda) risulta molto più semplice.
 
 ## Classi per le funzioni
@@ -111,24 +110,22 @@ Notiamo come la chiamata alla funzione `forEach` passando come secondo parametro
 Nell'esempio precedente abbiamo creato manualmente una interfaccia contenente il metodo da utilizzare, tale funzione prende in input un dato e non ritorna nulla.
 Se volessimo però fare una funzione che prende in input e genera in output qualcosa dovremmo creare un'altra interfaccia, lo stesso vale per una funzione che non prende input ma genera output.
 
-Java offre delle interfacce già pronte all'interno di `java.util.function.*` da poter usare come tipo di dato nei parametri delle funzioni di primo ordine.
+Java offre delle interfacce già pronte all'interno di `java.util.function.*` da poter usare come tipo di dato nei parametri delle funzioni di ordine superiore.
 
 Le interfacce sono le seguenti:
 
 - [`Function`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Function.html) usato per funzioni che prendono qualcosa in **input** e ritornano qualcosa in **output**
-la sua metodo si chiama `apply`
+la sua metodo si chiama `apply()`
 - [`Consumer`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Consumer.html) usato per funzioni che prendono qualcosa in **input** ma che **non hanno output**
-la sua metodo si chiama `accept`
+la sua metodo si chiama `accept()`
 - [`Supplier`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Supplier.html) usato per funzioni che **non** prendono **input** ma che ritornano qualcosa in **output**
-la sua metodo si chiama `get`
+la sua metodo si chiama `get()`
 - [`Runnable`](https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Runnable.html) usato per funzioni che **non** prendono niente in **input** e che **non** hanno **output** 
-la sua metodo si chiama `run` 
-
+la sua metodo si chiama `run()` 
 
 Nell'esempio precedente avremmo potuto usare direttamente `Consumer` al posto di definire `MyFunction`.
 
 Vediamo un esempio di utilizzo con `Function`:
-
 
 ```java
 class Lambda {
@@ -149,16 +146,15 @@ class Lambda {
 		//per ottenere una collection con tutti gli elementi incrementati di 1
 		Collection<Integer> res1 = map(l, x -> {return x+1;});
 		//equivalente a:
-		Collection<Integer> res1 = map(l, x -> x+1);
+		Collection<Integer> res2 = map(l, x -> x+1);
 
 		//per ottenere una collection di booleani che indicano se i valori sono positivi
-		Collection<Integer> res1 = map(l, x -> x>0);
+		Collection<Boolean> res3 = map(l, x -> x>0);
 
 }
 ```
 
-
-## Particolare polimorfismo delle lambda
+## Il particolare polimorfismo delle lambda
 
 Le lambda in Java sono più polimorfe del normale, questo perché una stessa lambda può avere **più di un tipo associato**
 

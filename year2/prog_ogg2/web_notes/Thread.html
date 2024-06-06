@@ -28,9 +28,9 @@
     <div class="stackedit__html">
       <h1 id="thread">Thread</h1>
 <p>I Thread sono la parte esecutiva di un processo.<br>
-I thread condividono la maggior parte delle cose contenute nel processo, tra cui il data-segment e il code-segment. Mentre ogni thread ha il proprio Program Counter e il proprio Stack Pointer.</p>
+I thread condividono la maggior parte delle cose contenute nel processo, tra cui il <em>data-segment</em> e il <em>code-segment</em>. Mentre ogni thread ha il proprio <em>Program Counter</em> e il proprio <em>Stack Pointer</em>.</p>
 <p>Vediamo come si creano e usano i thread in Java, vediamo il metodo “vecchio stile” con cui si sono sempre utilizzati i thread e vediamo anche un modo alternativo introdotto nelle versioni successive di Java.<br>
-Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, in quanto in determinati casi può risultare più comodo il vecchio modo rispetto a quello nuovo (ma generalmente si tratta solo di un discorso di leggibilità e organizzazione di codice).</p>
+Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, in quanto in determinati casi può risultare più comodo il vecchio modo (ma generalmente si tratta solo di un discorso di leggibilità e organizzazione di codice).</p>
 <p>In generale ricordiamo che <strong>un processo ha sempre almeno un thread</strong>, nei programmi generalmente quel thread esegue il <strong>main</strong>.</p>
 <h2 id="vecchio-modo-di-creare-thread">Vecchio modo di creare thread</h2>
 <p>Per definire un thread bisogna:</p>
@@ -40,7 +40,7 @@ Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, 
 </ol>
 <p>Per utilizzare un thread bisogna:</p>
 <ol>
-<li>Istanziare un oggetto di tipo della classe creata precedentemente</li>
+<li>Istanziare un oggetto del tipo della classe creata precedentemente</li>
 <li>chiamare il metodo <code>start()</code> per far partire il thread</li>
 <li>il creatore del thread deve poi aspettarlo con il metodo <code>join()</code></li>
 </ol>
@@ -86,7 +86,6 @@ Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, 
 		<span class="token punctuation">}</span>
 	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	
 	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
@@ -98,7 +97,6 @@ Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, 
 		<span class="token punctuation">}</span>
 	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-	
 	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
@@ -111,11 +109,10 @@ Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, 
 	<span class="token punctuation">}</span><span class="token punctuation">;</span>
 	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
 	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
 	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>La scelta tra la nuova versione e quella vecchia si base sostanzialmente sulla grandezza del thread, <strong>il vecchio metodo</strong> è più comodo <strong>per thread che hanno un codice lungo</strong>, utilizzano i propri campi.<br>
+<p>La scelta tra la nuova versione e quella vecchia si base sostanzialmente sulla grandezza del thread, <strong>il vecchio metodo</strong> è più comodo <strong>per thread che hanno un codice lungo</strong>, utilizzano altri campi o altri metodi.<br>
 Mentre <strong>per thread leggeri</strong> con codici brevi <strong>la nuova versione è decisamente più rapida</strong> da implementare.</p>
 <h2 id="produttore-consumatore">Produttore consumatore</h2>
 <p>Vediamo un classico problema di sincronizzazione multithreading per vedere anche come sincronizzare i thread</p>
@@ -144,7 +141,7 @@ Il consumatore deve attendere che il produttore produca dei dati prima di consum
                 <span class="token keyword">int</span> n <span class="token operator">=</span> rnd<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//inserisce un numero random nel buffer</span>
                 <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment">// lock</span>
                     buff<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//libero eventuali thread che hanno fatto wait()</span>
+                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//sblocco eventuali thread che hanno fatto wait()</span>
                     System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: added %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
                 <span class="token punctuation">}</span>                       <span class="token comment">// unlock</span>
             <span class="token punctuation">}</span>

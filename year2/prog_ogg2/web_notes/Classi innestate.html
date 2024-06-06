@@ -93,7 +93,6 @@
 				<span class="token comment">// verifica se il numero passato in input è valido (utilizzando "regularExpression" e "numberLength")</span>
 				<span class="token comment">// se valido lo salva in "formattedPhoneNumber"</span>
             <span class="token punctuation">}</span>
-
             <span class="token keyword">public</span> String <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
                 <span class="token keyword">return</span> formattedPhoneNumber<span class="token punctuation">;</span>
             <span class="token punctuation">}</span>
@@ -117,7 +116,7 @@
 <p>Una classe locale può accedere agli elementi della classe esterna solo se questi sono esplicitamente oppure “effettivamente” <strong>final</strong>, cioè o vengono dichiarati esplicitamente come <em>final</em> oppure non mettendo <em>final</em> e non modificando il loro valore dopo l’inizializzazione.</p>
 <p>Nel caso di classe locale al corpo di un metodo, la classe può accedere anche ai parametri del metodo.</p>
 <h2 id="anonymous-class">Anonymous class</h2>
-<p>Le classi anonime sono esattamente come le classi locali, solo che esse possono essere <strong>dichiarate e istanziate allo stesso momento</strong>. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.</p>
+<p>Le classi anonime sono esattamente come le classi locali, solo che queste possono essere <strong>dichiarate e istanziate allo stesso momento</strong>. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.</p>
 <p><strong>Sono utili nel caso si voglia utilizzare una classe locale solo una volta</strong></p>
 <p>Dato che non viene fornito un nome, per definire la classe ci si appoggia ad una interfaccia da implementare oppure ad una classe da cui estendere.</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">MyInterface</span> <span class="token punctuation">{</span>
@@ -171,15 +170,15 @@ Possiamo dire che una <em>static nested class</em> si comporta come una classe <
 <p>Quando in una <em>nested class</em> dichiariamo un membro con lo stesso nome di un membro della classe esterna, allora il nuovo membro nasconde (<em>shadows</em>) il membro della classe esterna. In questo caso dalla classe innestata è possibile riferirsi direttamente ai membri locali, ma per riferirsi ai membri della classe esterna bisogna specificarne il nome.</p>
 <p>Vediamo un esempio in cui si verifica uno <em>shadowing</em> 2 volte</p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ShadowTest</span> <span class="token punctuation">{</span>
-    <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
 
     <span class="token keyword">class</span> <span class="token class-name">FirstLevel</span> <span class="token punctuation">{</span>		<span class="token comment">//inner class</span>
-        <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>		<span class="token comment">//shadowing 1</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">15</span><span class="token punctuation">;</span>		<span class="token comment">//primo shadowing</span>
 
-        <span class="token keyword">void</span> <span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//shadowing 2</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"x = "</span> <span class="token operator">+</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//23</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"this.x = "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//1</span>
-            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ShadowTest.this.x = "</span> <span class="token operator">+</span> ShadowTest<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//0</span>
+        <span class="token keyword">void</span> <span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>				<span class="token comment">//secondo shadowing</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"x = "</span> <span class="token operator">+</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>				<span class="token comment">// = 23</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"this.x = "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// = 15</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ShadowTest.this.x = "</span> <span class="token operator">+</span> ShadowTest<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// = 10</span>
         <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
 

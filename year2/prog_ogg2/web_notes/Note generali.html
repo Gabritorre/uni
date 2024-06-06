@@ -22,7 +22,6 @@
 <li><a href="#classi-astratte-e-interfacce">Classi astratte e interfacce</a></li>
 <li><a href="#tipi-generici-vs-object">Tipi generici vs Object</a></li>
 <li><a href="#parametri-formali-e-attuali">Parametri formali e attuali</a></li>
-<li><a href="#tipo-argomento-e-tipo-parametro">Tipo argomento e tipo parametro</a></li>
 <li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
 <li><a href="#dimensione-di-un-oggetto">Dimensione di un oggetto</a></li>
 <li><a href="#statement-vs-expression">Statement vs expression</a></li>
@@ -80,11 +79,6 @@ Ad esempio, una istanza della classe Rettangolo può essere sempre usata dove ci
 <li>Parametri formali: variabili presenti nella dichiarazione dei parametri dei metodi e che vengono poi utilizzati all’interno del metodo</li>
 <li>parametri attuali: gli argomenti usati nella chiamata della funzione</li>
 </ul>
-<h2 id="tipo-argomento-e-tipo-parametro">Tipo argomento e tipo parametro</h2>
-<ul>
-<li>Tipi parametro: sono i nomi dei tipi generici messi nella fase di dichiarazione della classe o del metodo, che conterranno i tipi reali che verranno passati.</li>
-<li>Tipi argomento: sono i tipi reali che vengono passati nella fase di dichiarazione di una classe oppure di chiamata di un metodo</li>
-</ul>
 <h2 id="eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</h2>
 <p>Quando stiamo implementando delle nostre classi,  facciamo un metodo che può non andare a buon fine, come gestiamo quel caso?</p>
 <ul>
@@ -95,7 +89,7 @@ Ad esempio, una istanza della classe Rettangolo può essere sempre usata dove ci
 <p>Prendiamo ad esempio un metodo <code>get(int indice)</code> di una collezione di oggetti, esso può fallire nel caso si dia un indice al di fuori del limite della collezione.</p>
 <ul>
 <li>ritornare <code>null</code> non è una buona soluzione in quanto non esprime chiaramente che si è andati fuori dal limite dell’array e soprattutto bisognerebbe fare un <code>if</code> ogni volta che si chiama il metodo</li>
-<li>lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione chekced oppure unckecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.<br>
+<li>lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione checked oppure unchecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.<br>
 Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto sono eccezioni generiche.</li>
 </ul>
 <p>Per capire quale usare possiamo chiederci: “Se un utente cattura la mia eccezione checked può fare qualcosa di utile?”, “l’eccezione che lancio fa parte di un possibile risultato del metodo oppure rappresenta un errore raro”</p>

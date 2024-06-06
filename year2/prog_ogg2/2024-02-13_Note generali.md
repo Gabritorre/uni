@@ -57,11 +57,6 @@ Nella documentazione di Java ci sono vari metodi che nonostante questo utilizzan
 - Parametri formali: variabili presenti nella dichiarazione dei parametri dei metodi e che vengono poi utilizzati all'interno del metodo
 - parametri attuali: gli argomenti usati nella chiamata della funzione
 
-## Tipo argomento e tipo parametro
-
-- Tipi parametro: sono i nomi dei tipi generici messi nella fase di dichiarazione della classe o del metodo, che conterranno i tipi reali che verranno passati.
-- Tipi argomento: sono i tipi reali che vengono passati nella fase di dichiarazione di una classe oppure di chiamata di un metodo
-
 ## Eccezioni checked e unchecked
 
 Quando stiamo implementando delle nostre classi,  facciamo un metodo che può non andare a buon fine, come gestiamo quel caso?
@@ -71,7 +66,7 @@ Quando stiamo implementando delle nostre classi,  facciamo un metodo che può no
 
 Prendiamo ad esempio un metodo `get(int indice)` di una collezione di oggetti, esso può fallire nel caso si dia un indice al di fuori del limite della collezione.
 - ritornare `null` non è una buona soluzione in quanto non esprime chiaramente che si è andati fuori dal limite dell'array e soprattutto bisognerebbe fare un `if` ogni volta che si chiama il metodo
-- lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione chekced oppure unckecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.
+- lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione checked oppure unchecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.
 Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto sono eccezioni generiche.
 
 Per capire quale usare possiamo chiederci: "Se un utente cattura la mia eccezione checked può fare qualcosa di utile?", "l'eccezione che lancio fa parte di un possibile risultato del metodo oppure rappresenta un errore raro"

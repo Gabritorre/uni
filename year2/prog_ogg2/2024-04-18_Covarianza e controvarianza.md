@@ -6,15 +6,15 @@ La covarianza e la controvarianza sono due concetti applicabili nell'*override* 
 - **overload**: quando si ridefinisce la firma e il corpo di un metodo mantenendo lo stesso nome del metodo da ridefinire
 
 Ricordiamo che la **firma** di un metodo comprende: nome, tipo e ordine dei parametri.
-È importante sottolineare che il **tipo di ritorno non fa parte della firma**.
+È importante sottolineare che il **tipo di ritorno e la dichiarazione di eventuali eccezioni non fanno parte della firma**.
 
 La **covarianza e controvarianza** si applica ai **tipi di ritorno** dei metodi.
 **covariare** significa "variare assieme a qualcosa"
 **controvariare** significa "variare inversamente a qualcosa"
 
 
-- Si parla di **covarianza** quando il tipo di ritorno diventa più specifico assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica
-- Si parla di **controvarianza** quando il tipo di ritorno diventa più generale, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè più specifica.
+- Si parla di **covarianza** quando il tipo di ritorno diventa **più specifico** assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè **più specifica**
+- Si parla di **controvarianza** quando il tipo di ritorno diventa **più generale**, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè **più specifica**.
 
 	In java la **covarianza sul tipo di ritorno è ammessa**, mentre la **controvarianza sul tipo di ritorno non è ammessa**
 	
@@ -33,14 +33,16 @@ La **covarianza e controvarianza** si applica ai **tipi di ritorno** dei metodi.
 
 		public static class B extends A {
 
-			//il tipo di ritorno può covariare con il tipo di this (cioè con la classe in cui è sovrascritto)
-			//il tipo di ritorno non può controvariare con il tipo di this. Il compilatore se ne accorge e da un errore di compilazione
+			//il tipo di ritorno può covariare assieme a this
+			
+			//il tipo di ritorno non può controvariare rispetto a this.
+			//Il compilatore se ne accorge e da un errore di compilazione
 			@Override
-			public B f() {
+			public B f() {		//valido
 				return new B();
 			}
 			@Override
-			public Integer g() {
+			public Integer g() {	//valido
 				return 1;
 			}
 		}
@@ -49,7 +51,8 @@ La **covarianza e controvarianza** si applica ai **tipi di ritorno** dei metodi.
 			
 			A a = new B();	//tipo statico A, tipo dinamico B
 			Number n = a.g();	//viene chiamato il metodo di B per il dynamic dispatch
-			//il compilatore non da errore perche il tipo di ritorno a runtime è un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza
+			//il compilatore non da errore perche il tipo di ritorno a runtime è
+			// un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza
 		}
 	}
 	```
@@ -72,7 +75,7 @@ seppur entrambi siano corretti e accettino un qualsiasi oggetto come tipo, il se
 
 In generale vale che dato che se il tipo generico (in questo caso `E`) viene utilizzato solamente una volta nella firma del metodo allora è più comodo usare un *wildcard* 
 
-Mentre i generics li posso limitare al fine che siano **un sottotipo** di qualche oggetto. Le wildcard le posso limitare anche al fine che siano **un supertipo** di qualche oggetto
+Mentre i generics li posso limitare solo come **un sottotipo** di qualche oggetto. Le wildcard le posso limitare anche come **un supertipo** di qualche oggetto
 
 ```java
 List<? extends Number> list1 = new ArrayList<>();  // upper bound
@@ -96,7 +99,7 @@ Quando si vuole ritornare un tipo generico bisognerebbe usare i generics rispett
 
 ```java
 public static <E> List<? extends E> merge(List<? extends E> listOne, List<? extends E> listTwo) {
-    //restituisce una lista che concatena le due in input
+    //restituisce una lista che concatena le due liste in input
 }
 ```
 
@@ -112,7 +115,7 @@ numbers2.add(15);
 numbers2.add(20.0);
 
 //errore di compilazione
-List<Number> numbersMerged = CollectionUtils.merge(numbers1, numbers2);
+List<Number> numbersMerged = merge(numbers1, numbers2);
 ```
 
 questo perché il tipo di ritorno è sconosciuto al compilatore (sa solo che è un sottotipo di E) anche se in realtà i tipi sono corretti.
