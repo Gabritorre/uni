@@ -4,10 +4,9 @@
 
 Perché una interazione abbia successo è necessario che vengano tradotti correttamente il linguaggio dell'utente e quello del sistema.
 I modelli di interazione sono utili per identificare le componenti del dialogo e gli eventuali problemi correlati.
-Noi vedremo;
+Noi vedremo:
 - Il ciclo di esecuzione e di valutazione di Norman
 - *Interaction framework*
-
 
 Definiamo innanzitutto alcuni termini:
 
@@ -31,8 +30,8 @@ Si suddivide in 7 fasi:
 **Il modello di Normal si concentra solo sull'interfaccia**, che l'utente percepisce come se fosse il sistema.
 
 Il alcuni sistemi può capitare che sia difficile far combaciare:
-- la formulazione delle azioni con le effettive azioni consentite dal sistema
-- le aspettative di cambiamento dello stato del sistema con l'effettiva presentazione dello stato del sistema
+- la **formulazione delle azioni** con le **effettive azioni** consentite dal sistema
+- le **aspettative** di cambiamento dello stato del sistema con **l'effettiva presentazione** dello stato del sistema
 
 ## Interaction Framework
 
@@ -58,7 +57,6 @@ Le quattro traduzioni sono:
 - **performance**: linguaggio di input $\to$ stimoli per il sistema
 - **presentazione**: risultato del sistema $\to$ linguaggio di output
 - **osservazione**: linguaggio di output $\to$ linguaggio utente
-
 
 Anche in questo modello sono comuni i problemi di traduzione: ambiguità, mancanza di informazioni, poca espressività.
 

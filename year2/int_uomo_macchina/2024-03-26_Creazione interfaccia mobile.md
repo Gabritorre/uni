@@ -12,7 +12,7 @@
 	- integrati nella pagina
 - **Supplemental Navigation Systems**
 	Si tratta di sistemi esterni alla gerarchia delle pagine del sito che forniscono strumenti supplementari di accesso ai contenuti.
-	Forniscono diverse modi di accedere alla stessa informazione.
+	Forniscono diversi modi di accedere alla stessa informazione.
 	- sitemaps
 	- indici
 	- guide
@@ -20,40 +20,36 @@
 ## Sistemi di navigazione globali
 
 Un sistema di navigazione globale dovrebbe essere presente in ogni pagina.
-Permettono all'utente di accedere ad aree indipendentemente da dove l'utente si trovi nella gerarchia.
+Permettono all'utente di accedere ad aree indipendentemente dal punto della gerarchia in cui si trova l'utente.
 
 Possiamo distinguere due categorie:
-- **Navigazione verticale**: navigazione da padre a figlio, anche con salti più grandi di uno. Spesso implementato sotto forma di **barra di navigazione**. Si utilizzano poi **shortcut**, **back arrow** per risalire la gerarchia, **breadcrumbs technique** (tecnica a briciole di pane) usato per mostrare in che punto della gerarchia ci si trova (immagina il percorso di un *file system*)
+- **Navigazione verticale**: navigazione da padre a figlio, anche con salti più grandi di uno. Spesso implementato sotto forma di **barra di navigazione**. Si utilizzano poi **shortcut**, **back arrow** per risalire la gerarchia, la **breadcrumbs technique** (tecnica a briciole di pane) viene usata per mostrare in che punto della gerarchia ci si trova (immagina il percorso di un *file system*)
 - **Navigazione orizzontale**: navigazione tra fratelli (pagine appartenenti allo stesso padre) senza tornare indietro nella gerarchia
-
 
 ## Sistemi di navigazione locali
 
-Il sistema di navigazione globale spesso è composto da uno o più **sistemi di navigazione locali**, che permettono di accedere a funzioni specifiche all'interno dell'app
+Il sistema di navigazione globale spesso è composto da uno o più **sistemi di navigazione locali**, che permettono di accedere a funzioni specifiche all'interno dell'app.
 
 ## Sistemi di navi trasversale
 
-In alcuni casi delle relazioni non rientrano nelle navigazioni locali e globali, c'è quindi bisogno di un sistema di navigazione che connette differenti zone dell'app appartenenti a rami della gerarchia diversi
+Alcune relazioni non rientrano nelle navigazioni locali e globali, c'è quindi bisogno di un sistema di navigazione che connette differenti zone dell'app appartenenti a rami della gerarchia diversi, questa viene chiamata navigazione trasversale
 
 ![enter image description here](https://i.ibb.co/gFfrPwG/image.png)
 
 Una applicazione spesso ha bisogno di utilizzare tutti i sistemi di navigazione.
 
-
 ## Punti di accesso
 
 Mentre una normale progettazione prevede un unico punto di accesso all'app, corrispondente alla radice della gerarchia, spesso è necessario creare dei nuovi punti di accesso in altre parti.
-L'utilizzo di questi ulteriori accesso può essere dovuto ad eventi interni o esterni (come il passaggio di un certo intervallo di tempo, riconoscimento vocale, posizionarsi in un determinato luogo geografico...) e spesso si accede attraverso delle **notifiche**. 
+L'utilizzo di questi ulteriori accessi può essere dovuto ad eventi interni o esterni (come il passaggio di un certo intervallo di tempo, riconoscimento vocale, posizionarsi in un determinato luogo geografico...) e spesso si accede attraverso delle **notifiche**. 
 Immagina Whatsapp in cui se aperta normalmente mostra tutte le chat, mentre cliccando una specifica notifica apre direttamente la chat associata.
-
 
 ## Ecosistema di strutture
 
 I punti di accesso possono anche far parte di più strutture gerarchiche indipendenti tra loro.
 Immagina le app in cui appena aperta una notifica si apre una specifica sezione e dopo aver dato un "ok" l'app si chiude.
 
-Oltretutto l'app può far parte di un ecosistema di app che può essere progettato per dispositivi diversi che possono interagire (smartphone, smartwatch, laptop, tablet, ...), termine detto **cross-device interaction**
-
+Oltretutto l'app può far parte di un ecosistema di app che può essere progettato per dispositivi diversi che possono interagire (smartphone, smartwatch, laptop, tablet, ...), questo si chiama **cross-device interaction**
 
 ## Implementazione di una embedded navigation
 
@@ -66,7 +62,7 @@ Bisogna permettere all'utente di identificare facilmente i diversi tipi di navig
 Un menu è una collezione di collegamenti tra pagine diverse dell'app.
 Possono essere usati per navigazione globale, locale e trasversale.
 
-indicazioni da rispettare:
+Indicazioni da rispettare:
 - Le voci del menu devono sempre rappresentare pagine che appartengono alla stessa struttura.
 - Un menu deve rappresentare un solo sistema di navigazione.
 - Mantenere sempre l'ordine degli elementi nel menu, indipendentemente da dove ci si trova.
@@ -76,14 +72,13 @@ indicazioni da rispettare:
 
 Utilizzate per navigazione verticale e orizzontale.
 
-Spesso posizionati in modo orizzontale nella parte superiore o inferiore dello schermo,
-Ci sono casi in cui sono presenti in entrambi i posti, in quel caso quella inferiore rappresenta un livello di navigazione più generico mentre quello superiore è più specifico all'interno della gerarchia
+Spesso posizionati in modo orizzontale nella parte superiore o inferiore dello schermo.
+Ci sono casi in cui sono presenti in entrambi i posti, in quel caso quella inferiore rappresenta un livello di navigazione più generico mentre quello superiore è più specifico all'interno della gerarchia.
 
 ### Tab
 
-Utilizzati per la navigazione orizzontale
-
-permette di spostarsi tra le specifiche sezioni di un nodo
+Utilizzati per la navigazione orizzontale.
+Permette di spostarsi tra le specifiche sezioni di un nodo.
 
 ### Dashboard
 
@@ -99,21 +94,18 @@ Permette facilmente di raggiungere i livelli precedenti, cliccando sul livello d
 
 visualizzato sostanzialmente nel seguente modo:
 
-    Home / Coding / Expert / Introduction
+    Home / Coding / Expert / Chapter1
 
-Solitamente posizionato nella parte alta a sinistra dell'interfaccia
+Solitamente posizionato nella parte alta a sinistra dell'interfaccia.
 
 Un altro utilizzo è quello di avere una visualizzazione (e anche interazione) con gli step di una struttura sequenziale (fase di registrazione, fase di acquisto, tutorial).
-In questo caso i livelli precedenti permettono di tornare indietro nella procedura, mentre i livelli successivi non sono interagibili ma permettono di capire quanto manca alla fine
-
+In questo caso i livelli precedenti permettono di tornare indietro nella procedura, mentre i livelli successivi non sono interagibili ma permettono di capire quanto manca alla fine.
 
 ### Back arrow
 
 Nelle interfaccia su schemi piccoli come smartphone, implementare una interfaccia a briciole di pane non è conveniente (semplicemente perché non ci sta).
-In questi casi si utilizza semplicemente un bottone con una freccia verso sinistra per poter risalire la gerarchia nodo per nodo
-
-Solitamente posizionato nella parte alta a sinistra dell'interfaccia
-
+In questi casi si utilizza semplicemente un bottone con una freccia verso sinistra per poter risalire la gerarchia nodo per nodo.
+Solitamente viene posizionata nella parte alta a sinistra dell'interfaccia.
 
 ### Hamburger menu
 
@@ -129,12 +121,11 @@ Per determinati target di utenza potrebbe non essere intuitivo il loro utilizzo.
 Sono una versione minimizzata degli hamburger menu.
 Permette un accesso più immediato senza occupare troppo spazio.
 Può essere espanso in un hamburger menu tramite un tasto specifico.
-é utile per utenti già pratici con l'interfaccia ma non è intuitivo per che si approccia per la prima volta.
-
+È utile per utenti già pratici con l'interfaccia ma non è intuitivo per chi si approccia per la prima volta.
 
 ### Liste
 
-Sono una implementazione di navigazione verticale
+Sono una implementazione di navigazione verticale.
 Utilizzato per elencare elementi che condividono una struttura comune.
 
 ### Caroselli
@@ -147,7 +138,7 @@ Spesso usato negli siti di e-commerce, ma anche utilizzato nella fase di introdu
 
 ### Bottoni fluttuanti
 
-Sono dei bottoni circolare che si posizionano sopra l'interfaccia, spesso chiamati "call to action buttons" perché rappresentano una azione che gli utenti utilizzano di più in quella schermata.
+Sono dei bottoni circolari che si posizionano sopra l'interfaccia, spesso chiamati "call to action buttons" perché rappresentano una azione che gli utenti utilizzano di più in quella schermata.
 
 Non sono relazionati ad un particolare tipo di navigazione.
 
@@ -158,16 +149,16 @@ Seppur molto utili, hanno degli svantaggi:
 
 ### Splash screen
 
-Una schermata che appare all'avvio dell'app per pochi istanti, utile per il caricamento dell'interfaccia principale e per il riconoscimento dell'applicazione
+Una schermata che appare all'avvio dell'app per pochi istanti, utile per il caricamento dell'interfaccia principale e per il riconoscimento dell'applicazione.
 
 ### Notifiche
 
-Seppur non facenti parte dell'interfaccia principale possono impattare molto sull'esperienza utente permettendo di avvisare la presenza di eventi o situazione che richiedono l'attenzione dell'utente.
+Seppur non facenti parte dell'interfaccia principale possono impattare molto sull'esperienza utente permettendo di avvisare la presenza di eventi o situazioni che richiedono l'attenzione dell'utente.
 
 ### Switchers
 
 Sono dei bottoni toggle per abilitare o disabilitare una funzione.
-È possibile interagire sia tramite trascinamento sia verso singola pressione.
+È possibile interagire sia tramite trascinamento sia con singola pressione.
 Deve avere una chiara interfaccia per capire in quale stato si trova il toggle (attivo o disattivo)
 
 ### Selettori di data
@@ -185,7 +176,6 @@ Sono realizzati su una schermata a parte in quanto con molte opzioni sarebbe dif
 Per liste di scelte piccole si può integrare un menu a discesa, all'interno della stessa schermata.
 Può causare selezioni non volute mentre si naviga nell'interfaccia
 
-
 ## Supplemental Navigation Systems
 
 Sono interfacce esterne alla gerarchia principale e provvedono un modo alternativo per trovare del contenuto o per completare delle attività.
@@ -199,7 +189,7 @@ Sono un rafforzamento della gerarchia, in modo che l'utente abbia sempre più ch
 
 ### Indici
 
-presenta parole chiave o frasi ordinate alfabeticamente, senza presentare il rispettivo livello gerarchico.
+Presenta parole chiave o frasi ordinate alfabeticamente, senza presentare il rispettivo livello gerarchico.
 Gli indici alfabetici permettono un accesso diretto ai contenuti e funzionano bene per quegli utenti che sanno già cosa cercare.
 
 ### Guide
@@ -217,7 +207,6 @@ La navigazione avviene tramite un sistema di tag utilizzato dagli altri utenti, 
 In entrambi i casi il tag porta ad una pagina intermedia dove sono presenti tutte le pagine che contengono quel tag.
 
 Gli utenti possono sia usufruire di questa rete di tag sia contribuire creando nuovi contenuti aggiungendo nuovi tag oppure quelli esistenti
-
 
 ## Wireframes
 

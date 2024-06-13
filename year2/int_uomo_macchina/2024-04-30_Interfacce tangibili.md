@@ -1,9 +1,9 @@
 ﻿# Interfacce tangibili
 
-Una interfaccia tangibile (tangible user interface, TUI) è un tipo di interfaccia utente nella quale l'utente interagisce con l'informazione digitale attraverso oggetti fisici.
+Una interfaccia tangibile (*tangible user interface*, TUI) è un tipo di interfaccia utente nella quale l'utente interagisce con l'informazione digitale attraverso oggetti fisici.
 
 Si introduce un concetto molto importante:
-**affordance**: cioè la capacità di un oggetto di comunicare attraverso la sua forma le possibili attività che possono essere compiute attraverso di esso
+**affordance**: cioè la capacità di un oggetto di comunicare attraverso la sua forma le possibili attività che possono essere compiute attraverso di esso.
 
 Le TUI forniscono rappresentazioni tangibili dell’informazione e dei controlli digitali, permettendo letteralmente agli utenti di afferrare i dati con le loro mani.
 Le TUI associano oggetti fisici a dati digitali.
@@ -17,7 +17,6 @@ Alcuni campi di applicazione per queste interfacce sono:
 - interrogare basi di dati
 - programmazione
 - intrattenimento
-
 
 ## Vantaggi e svantaggi
 
@@ -35,24 +34,23 @@ mentre possiamo elencare i seguenti **punti di debolezza**:
 
 - Scalabilità
 - Rischio di perdere gli oggetti fisici
-- Versalità e malleabilità
+- Versatilità e malleabilità
 - Affaticamento dell’utente
-- difficoltà nella realizzazione
-- costi
+- Difficoltà nella realizzazione
+- Costi
 
 ## Categorie
 
 Possiamo categorizzare la realizzazione di interfacce tangibili in 3 categorie:
-1. oggetti tangibili che si appoggiano su superfici interattive
-	tali oggetti vengono chiamati *Pyfo* e solitamente l'oggetto in se non è collegato ad alcuno informazione particolare
-2. sistemi basati su token e vincoli
+1. Oggetti tangibili che si appoggiano su superfici interattive
+	tali oggetti vengono chiamati *Pyfo* e solitamente l'oggetto in se non è collegato ad alcuna informazione particolare
+2. Sistemi basati su token e vincoli
 	un token è un oggetto reale a cui è collegata una informazione digitale
 	un vincolo è un oggetto reale che limita il comportamento di un token
-3. assemblaggi di blocchi modulare che si connettono
-
-
+3. Assemblaggi di blocchi modulare che si connettono
 
 ## Esempio di TUI
 https://www.youtube.com/watch?v=ouP9xNujkNo
 https://www.youtube.com/watch?v=Mgy1S8qymx0
 https://www.youtube.com/watch?v=04v_v1gnyO8
+

@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-03-26_Creazione interfaccia modible</title>
+  <title>2024-03-26_Creazione interfaccia mobile</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -48,7 +48,7 @@ il sistema è composto da vari elementi di base o sotto-sistemi:
 </li>
 <li><strong>Supplemental Navigation Systems</strong><br>
 Si tratta di sistemi esterni alla gerarchia delle pagine del sito che forniscono strumenti supplementari di accesso ai contenuti.<br>
-Forniscono diverse modi di accedere alla stessa informazione.
+Forniscono diversi modi di accedere alla stessa informazione.
 <ul>
 <li>sitemaps</li>
 <li>indici</li>
@@ -58,33 +58,33 @@ Forniscono diverse modi di accedere alla stessa informazione.
 </ul>
 <h2 id="sistemi-di-navigazione-globali">Sistemi di navigazione globali</h2>
 <p>Un sistema di navigazione globale dovrebbe essere presente in ogni pagina.<br>
-Permettono all’utente di accedere ad aree indipendentemente da dove l’utente si trovi nella gerarchia.</p>
+Permettono all’utente di accedere ad aree indipendentemente dal punto della gerarchia in cui si trova l’utente.</p>
 <p>Possiamo distinguere due categorie:</p>
 <ul>
-<li><strong>Navigazione verticale</strong>: navigazione da padre a figlio, anche con salti più grandi di uno. Spesso implementato sotto forma di <strong>barra di navigazione</strong>. Si utilizzano poi <strong>shortcut</strong>, <strong>back arrow</strong> per risalire la gerarchia, <strong>breadcrumbs technique</strong> (tecnica a briciole di pane) usato per mostrare in che punto della gerarchia ci si trova (immagina il percorso di un <em>file system</em>)</li>
+<li><strong>Navigazione verticale</strong>: navigazione da padre a figlio, anche con salti più grandi di uno. Spesso implementato sotto forma di <strong>barra di navigazione</strong>. Si utilizzano poi <strong>shortcut</strong>, <strong>back arrow</strong> per risalire la gerarchia, la <strong>breadcrumbs technique</strong> (tecnica a briciole di pane) viene usata per mostrare in che punto della gerarchia ci si trova (immagina il percorso di un <em>file system</em>)</li>
 <li><strong>Navigazione orizzontale</strong>: navigazione tra fratelli (pagine appartenenti allo stesso padre) senza tornare indietro nella gerarchia</li>
 </ul>
 <h2 id="sistemi-di-navigazione-locali">Sistemi di navigazione locali</h2>
-<p>Il sistema di navigazione globale spesso è composto da uno o più <strong>sistemi di navigazione locali</strong>, che permettono di accedere a funzioni specifiche all’interno dell’app</p>
+<p>Il sistema di navigazione globale spesso è composto da uno o più <strong>sistemi di navigazione locali</strong>, che permettono di accedere a funzioni specifiche all’interno dell’app.</p>
 <h2 id="sistemi-di-navi-trasversale">Sistemi di navi trasversale</h2>
-<p>In alcuni casi delle relazioni non rientrano nelle navigazioni locali e globali, c’è quindi bisogno di un sistema di navigazione che connette differenti zone dell’app appartenenti a rami della gerarchia diversi</p>
+<p>Alcune relazioni non rientrano nelle navigazioni locali e globali, c’è quindi bisogno di un sistema di navigazione che connette differenti zone dell’app appartenenti a rami della gerarchia diversi, questa viene chiamata navigazione trasversale</p>
 <p><img src="https://i.ibb.co/gFfrPwG/image.png" alt="enter image description here"></p>
 <p>Una applicazione spesso ha bisogno di utilizzare tutti i sistemi di navigazione.</p>
 <h2 id="punti-di-accesso">Punti di accesso</h2>
 <p>Mentre una normale progettazione prevede un unico punto di accesso all’app, corrispondente alla radice della gerarchia, spesso è necessario creare dei nuovi punti di accesso in altre parti.<br>
-L’utilizzo di questi ulteriori accesso può essere dovuto ad eventi interni o esterni (come il passaggio di un certo intervallo di tempo, riconoscimento vocale, posizionarsi in un determinato luogo geografico…) e spesso si accede attraverso delle <strong>notifiche</strong>.<br>
+L’utilizzo di questi ulteriori accessi può essere dovuto ad eventi interni o esterni (come il passaggio di un certo intervallo di tempo, riconoscimento vocale, posizionarsi in un determinato luogo geografico…) e spesso si accede attraverso delle <strong>notifiche</strong>.<br>
 Immagina Whatsapp in cui se aperta normalmente mostra tutte le chat, mentre cliccando una specifica notifica apre direttamente la chat associata.</p>
 <h2 id="ecosistema-di-strutture">Ecosistema di strutture</h2>
 <p>I punti di accesso possono anche far parte di più strutture gerarchiche indipendenti tra loro.<br>
 Immagina le app in cui appena aperta una notifica si apre una specifica sezione e dopo aver dato un “ok” l’app si chiude.</p>
-<p>Oltretutto l’app può far parte di un ecosistema di app che può essere progettato per dispositivi diversi che possono interagire (smartphone, smartwatch, laptop, tablet, …), termine detto <strong>cross-device interaction</strong></p>
+<p>Oltretutto l’app può far parte di un ecosistema di app che può essere progettato per dispositivi diversi che possono interagire (smartphone, smartwatch, laptop, tablet, …), questo si chiama <strong>cross-device interaction</strong></p>
 <h2 id="implementazione-di-una-embedded-navigation">Implementazione di una embedded navigation</h2>
 <p>La sfida sta nel trovare il bilanciamento tra una progettazione flessibile ma senza sopraffare l’utente con troppe opzioni e troppe scelte.</p>
 <p>Bisogna permettere all’utente di identificare facilmente i diversi tipi di navigazione, vediamo quali sono i widget più comuni per la navigazione.</p>
 <h3 id="menu">menu</h3>
 <p>Un menu è una collezione di collegamenti tra pagine diverse dell’app.<br>
 Possono essere usati per navigazione globale, locale e trasversale.</p>
-<p>indicazioni da rispettare:</p>
+<p>Indicazioni da rispettare:</p>
 <ul>
 <li>Le voci del menu devono sempre rappresentare pagine che appartengono alla stessa struttura.</li>
 <li>Un menu deve rappresentare un solo sistema di navigazione.</li>
@@ -93,11 +93,11 @@ Possono essere usati per navigazione globale, locale e trasversale.</p>
 </ul>
 <h3 id="barre-di-navigazione">Barre di navigazione</h3>
 <p>Utilizzate per navigazione verticale e orizzontale.</p>
-<p>Spesso posizionati in modo orizzontale nella parte superiore o inferiore dello schermo,<br>
-Ci sono casi in cui sono presenti in entrambi i posti, in quel caso quella inferiore rappresenta un livello di navigazione più generico mentre quello superiore è più specifico all’interno della gerarchia</p>
+<p>Spesso posizionati in modo orizzontale nella parte superiore o inferiore dello schermo.<br>
+Ci sono casi in cui sono presenti in entrambi i posti, in quel caso quella inferiore rappresenta un livello di navigazione più generico mentre quello superiore è più specifico all’interno della gerarchia.</p>
 <h3 id="tab">Tab</h3>
-<p>Utilizzati per la navigazione orizzontale</p>
-<p>permette di spostarsi tra le specifiche sezioni di un nodo</p>
+<p>Utilizzati per la navigazione orizzontale.<br>
+Permette di spostarsi tra le specifiche sezioni di un nodo.</p>
 <h3 id="dashboard">Dashboard</h3>
 <p>La Dashboard dovrebbe permettere di raggiungere tutti i primi livelli della gerarchia.<br>
 Viene spesso utilizzata come interfaccia per la home page.</p>
@@ -106,15 +106,15 @@ Viene spesso utilizzata come interfaccia per la home page.</p>
 <p>Mostra la localizzazione della pagina corrente all’interno della gerarchia.<br>
 Permette facilmente di raggiungere i livelli precedenti, cliccando sul livello desiderato</p>
 <p>visualizzato sostanzialmente nel seguente modo:</p>
-<pre><code>Home / Coding / Expert / Introduction
+<pre><code>Home / Coding / Expert / Chapter1
 </code></pre>
-<p>Solitamente posizionato nella parte alta a sinistra dell’interfaccia</p>
+<p>Solitamente posizionato nella parte alta a sinistra dell’interfaccia.</p>
 <p>Un altro utilizzo è quello di avere una visualizzazione (e anche interazione) con gli step di una struttura sequenziale (fase di registrazione, fase di acquisto, tutorial).<br>
-In questo caso i livelli precedenti permettono di tornare indietro nella procedura, mentre i livelli successivi non sono interagibili ma permettono di capire quanto manca alla fine</p>
+In questo caso i livelli precedenti permettono di tornare indietro nella procedura, mentre i livelli successivi non sono interagibili ma permettono di capire quanto manca alla fine.</p>
 <h3 id="back-arrow">Back arrow</h3>
 <p>Nelle interfaccia su schemi piccoli come smartphone, implementare una interfaccia a briciole di pane non è conveniente (semplicemente perché non ci sta).<br>
-In questi casi si utilizza semplicemente un bottone con una freccia verso sinistra per poter risalire la gerarchia nodo per nodo</p>
-<p>Solitamente posizionato nella parte alta a sinistra dell’interfaccia</p>
+In questi casi si utilizza semplicemente un bottone con una freccia verso sinistra per poter risalire la gerarchia nodo per nodo.<br>
+Solitamente viene posizionata nella parte alta a sinistra dell’interfaccia.</p>
 <h3 id="hamburger-menu">Hamburger menu</h3>
 <p>Sono dei menu a scomparsa attivabili tramite un bottone solitamente posto agli angoli superiori dello schermo.</p>
 <p>Permettono di implementare una navigazione globale sugli elementi principali dell’app.<br>
@@ -124,16 +124,16 @@ Se questi menu mappano un determinato livello di gerarchia devono offrire access
 <p>Sono una versione minimizzata degli hamburger menu.<br>
 Permette un accesso più immediato senza occupare troppo spazio.<br>
 Può essere espanso in un hamburger menu tramite un tasto specifico.<br>
-é utile per utenti già pratici con l’interfaccia ma non è intuitivo per che si approccia per la prima volta.</p>
+È utile per utenti già pratici con l’interfaccia ma non è intuitivo per chi si approccia per la prima volta.</p>
 <h3 id="liste">Liste</h3>
-<p>Sono una implementazione di navigazione verticale<br>
+<p>Sono una implementazione di navigazione verticale.<br>
 Utilizzato per elencare elementi che condividono una struttura comune.</p>
 <h3 id="caroselli">Caroselli</h3>
 <p>Utilizzato per elencare elementi che condividono una struttura comune.</p>
 <p>C’è un elemento predominante e un insieme di puntini che mostrano la presenza di altri elementi accessibili trascinando a destra o sinistra l’elemento predominante.</p>
 <p>Spesso usato negli siti di e-commerce, ma anche utilizzato nella fase di introduzione all’uso di una nuova applicazione.</p>
 <h3 id="bottoni-fluttuanti">Bottoni fluttuanti</h3>
-<p>Sono dei bottoni circolare che si posizionano sopra l’interfaccia, spesso chiamati “call to action buttons” perché rappresentano una azione che gli utenti utilizzano di più in quella schermata.</p>
+<p>Sono dei bottoni circolari che si posizionano sopra l’interfaccia, spesso chiamati “call to action buttons” perché rappresentano una azione che gli utenti utilizzano di più in quella schermata.</p>
 <p>Non sono relazionati ad un particolare tipo di navigazione.</p>
 <p>Seppur molto utili, hanno degli svantaggi:</p>
 <ul>
@@ -141,12 +141,12 @@ Utilizzato per elencare elementi che condividono una struttura comune.</p>
 <li>potrebbe nascondere delle possibili interazioni che si posizionano sotto il bottone</li>
 </ul>
 <h3 id="splash-screen">Splash screen</h3>
-<p>Una schermata che appare all’avvio dell’app per pochi istanti, utile per il caricamento dell’interfaccia principale e per il riconoscimento dell’applicazione</p>
+<p>Una schermata che appare all’avvio dell’app per pochi istanti, utile per il caricamento dell’interfaccia principale e per il riconoscimento dell’applicazione.</p>
 <h3 id="notifiche">Notifiche</h3>
-<p>Seppur non facenti parte dell’interfaccia principale possono impattare molto sull’esperienza utente permettendo di avvisare la presenza di eventi o situazione che richiedono l’attenzione dell’utente.</p>
+<p>Seppur non facenti parte dell’interfaccia principale possono impattare molto sull’esperienza utente permettendo di avvisare la presenza di eventi o situazioni che richiedono l’attenzione dell’utente.</p>
 <h3 id="switchers">Switchers</h3>
 <p>Sono dei bottoni toggle per abilitare o disabilitare una funzione.<br>
-È possibile interagire sia tramite trascinamento sia verso singola pressione.<br>
+È possibile interagire sia tramite trascinamento sia con singola pressione.<br>
 Deve avere una chiara interfaccia per capire in quale stato si trova il toggle (attivo o disattivo)</p>
 <h3 id="selettori-di-data">Selettori di data</h3>
 <p>Servono per selezionare una precisa data (anno, mese, giorno).<br>
@@ -164,7 +164,7 @@ Può causare selezioni non volute mentre si naviga nell’interfaccia</p>
 <p>Presenta la lista dei primi livelli gerarchici dei contenuti del sito, fornendo una visione d’insieme, un po’ come il sommario dei contenuti di un libro.<br>
 Sono un rafforzamento della gerarchia, in modo che l’utente abbia sempre più chiaro il modo in cui il contenuto è organizzato sul sito.</p>
 <h3 id="indici">Indici</h3>
-<p>presenta parole chiave o frasi ordinate alfabeticamente, senza presentare il rispettivo livello gerarchico.<br>
+<p>Presenta parole chiave o frasi ordinate alfabeticamente, senza presentare il rispettivo livello gerarchico.<br>
 Gli indici alfabetici permettono un accesso diretto ai contenuti e funzionano bene per quegli utenti che sanno già cosa cercare.</p>
 <h3 id="guide">Guide</h3>
 <p>Possono assumere forme diverse come i tutorial o visite guidate al sito. Sono spesso utilizzate con una finalità di marketing per introdurre nuovi utenti a contenuti e funzionalità a pagamento sul sito.<br>
