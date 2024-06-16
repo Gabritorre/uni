@@ -16,7 +16,7 @@
 <li><a href="#creazione-di-processi">Creazione di processi</a>
 <ul>
 <li><a href="#processi-in-unix">Processi in Unix</a></li>
-<li><a href="#la-system-call-fork">La system call “Fork”</a></li>
+<li><a href="#la-system-call-fork">La system call “fork”</a></li>
 <li><a href="#processi-orfani-e-zombie">Processi orfani e zombie</a></li>
 </ul>
 </li>
@@ -33,12 +33,13 @@
 <li>Allocare la memoria richiesta dal processo</li>
 <li>Allocare altre risorse (come dispositivi di IO)</li>
 <li>Decidere le varie informazioni del processo che saranno contenute nel PCB</li>
-<li>Creare il PCB</li>
+<li>Creare il PCB (<em>Process Control Block</em>)</li>
 </ul>
 <h2 id="processi-in-unix">Processi in Unix</h2>
 <p>Vediamo la fase di creazione di un processo in un sistema Unix:</p>
 <p>Un processo viene sempre creato da un altro processo, tramite una chiamata a sistema.</p>
-<p>Il processo creante viene detto <strong>parent</strong> (genitore oppure padre), mentre il processo creato viene detto <strong>child</strong> (figlio). Le varie creazioni di processi creano una <strong>struttura ad albero</strong> che rappresenta le relazioni di parentela tra i processi.</p>
+<p>Il processo creante viene detto <strong>parent</strong> (genitore oppure padre), mentre il processo creato viene detto <strong>child</strong> (figlio).<br>
+Le varie creazioni di processi creano una <strong>struttura ad albero</strong> che rappresenta le relazioni di parentela tra i processi.</p>
 <h3 id="relazioni-dinamiche">Relazioni dinamiche</h3>
 <ul>
 <li>
@@ -49,20 +50,20 @@
 Durante l’attesa noi non possiamo lanciare altri comandi, questo perché il processo padre (bash) sta attendendo la terminazione del figlio</p>
 </li>
 <li>
-<p>Un altro tipo di relazione è quella dell’esecuzione in <em>background</em>, quindi dopo la creazione del processo, <strong>padre e figlio continuano la loro normale esecuzione parallelamente</strong>, ad esempio eseguendo il seguente comando da shell in questo modo</p>
+<p>Un altro tipo di relazione è quella dell’esecuzione in <em>background</em>, quindi dopo la creazione del processo, <strong>padre e figlio continuano la loro normale esecuzione parallelamente</strong>, ad esempio eseguendo il seguente comando da shell</p>
 <pre><code>  $ sleep 5 &amp;
 </code></pre>
 <p>Come prima il processo padre (<code>bash</code>) crea il processo <code>sleep</code> me lo esegue in <em>background</em> quindi anche durante l’esecuzione della <code>sleep</code> possiamo comunque interagire con il terminale.<br>
-mentre la <code>sleep</code> è in esecuzione possiamo lanciare il comando <code>ps</code> che ci mostra i processi attualmente attivi nella specifica istanza di quel terminale. Si dovrebbe ottenere un output di questo tipo</p>
+Mentre la <code>sleep</code> è in esecuzione possiamo lanciare il comando <code>ps</code> che ci mostra i processi attualmente attivi nella specifica istanza di quel terminale. Si dovrebbe ottenere un output di questo tipo</p>
 <pre class=" language-bash"><code class="prism  language-bash">PID TTY          TIME CMD
 14695 pts/1    00:00:00 <span class="token function">bash</span>
 17589 pts/1    00:00:00 <span class="token function">sleep</span>
 17590 pts/1    00:00:00 <span class="token function">ps</span>
 </code></pre>
-<p>Una volta che il processo <code>sleep</code> termina, viene notificata la cosa al padre tramite un messaggio di questo tipo:</p>
+<p>Una volta che il processo <code>sleep</code> termina, viene notificata la terminazione al padre tramite un messaggio di questo tipo:</p>
 <pre><code>  [1]+  Done                    sleep 5
 </code></pre>
-<p>possiamo venere meglio la relazione di parentela tra questi processi modificando il comando <code>ps</code> con il seguenti parametri</p>
+<p>Possiamo vedere meglio la relazione di parentela tra questi processi modificando il comando <code>ps</code> con il seguenti parametri</p>
 <ul>
 <li><code>pid</code>: id del processo</li>
 <li><code>ppid</code>: id del processo padre</li>
@@ -79,7 +80,14 @@ mentre la <code>sleep</code> è in esecuzione possiamo lanciare il comando <code
 </code></pre>
 </li>
 </ul>
-<h2 id="la-system-call-fork">La system call “Fork”</h2>
+<h3 id="relazioni-di-contenuto">Relazioni di contenuto</h3>
+<p>Due possibilità:</p>
+<ul>
+<li>Il figlio è un duplicato del genitore (ad esempio in UNIX)</li>
+<li>Il figlio esegue un programma differente (ad esempio nei sistemi Windows)</li>
+</ul>
+<p>Questo è il comportamento standard ma ovviamente è possibile anche l’altra modalità in entrambi i sistemi.</p>
+<h2 id="la-system-call-fork">La system call “fork”</h2>
 <p><code>fork</code> è una chiamata a sistema nel sistema Unix che appartiene allo standard POSIX e che si occupa di creare un nuovo processo.</p>
 <p>Dopo una chiamata a <code>fork</code> il processo figlio:</p>
 <ul>
@@ -90,7 +98,7 @@ mentre la <code>sleep</code> è in esecuzione possiamo lanciare il comando <code
 <p>Dato che padre e figlio lavorano sullo stesso codice, si può riconoscere padre e figlio in base al valore di ritorno della funzione <code>fork</code>:</p>
 <ul>
 <li>se ritorna 0 allora si tratta del processo figlio</li>
-<li>se ritorna un valore maggiore di 0 allora si tratta del processo padre (il valore di ritorno è esattamente PID del processo figlio)</li>
+<li>se ritorna un valore maggiore di 0 allora si tratta del processo padre</li>
 </ul>
 <p>Ad esempio (fatto in C)</p>
 <pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;sys/types.h&gt;</span></span>
@@ -111,13 +119,13 @@ mentre la <code>sleep</code> è in esecuzione possiamo lanciare il comando <code
 	<span class="token comment">// codice del genitore e del figlio: da usare con cautela!</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Nota 1: che il tipo di dato <code>pid_t</code> è un intero la cui dimensione varia in base al sistema.<br>
-Nota 2: usando la combinazione <code>Ctrl + c</code> si invia un segnale di terminazione al processo.</p>
-<p>Possiamo utilizzare le funzioni:</p>
+<p>Nota 1: il tipo di dato <code>pid_t</code> è un intero la cui dimensione varia in base al sistema.<br>
+Nota 2: usando la combinazione <code>Ctrl + c</code> durante l’esecuzione del programma si invia un segnale di terminazione al processo.<br>
+Nota 3: se siamo sul padre il valore di ritorno della fork ci da il pid del figlio</p>
+<p>Nel codice possiamo utilizzare le funzioni:</p>
 <ul>
 <li><code>getpid()</code> per ottenere il pid del processo stesso</li>
 <li><code>getppid()</code> per ottenere il pid del processo padre</li>
-<li>se siamo sul padre il valore di ritorno della fork ci da il pid del figlio</li>
 </ul>
 <p>Come si vedeva nel codice, quando il valore di ritorno della <code>fork</code> è negativo significa che la creazione del processo è fallita, questo solitamente accade quando non c’è sufficiente memoria per allocare il processo.</p>
 <p>Un esempio per rappresentare la struttura ad albero è il seguente codice:</p>
@@ -134,21 +142,21 @@ Nota 2: usando la combinazione <code>Ctrl + c</code> si invia un segnale di term
   <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%i%i%i "</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>f1 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>f2 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token punctuation">(</span>f3 <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
 <span class="token punctuation">}</span>
 </code></pre>
-<p>vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).</p>
+<p>Vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).</p>
 <ul>
 <li>il primo fork verrà eseguito dal primo processo, dopo la sua esecuzione si avranno 2 processi</li>
 <li>il secondo fork verrà eseguito dai 2 processi, dopo la sua esecuzione si avranno 4 processi</li>
 <li>il terzo fork verrà eseguito dai 4 processi, dopo la sua esecuzione si avranno 8 processi</li>
 </ul>
-<p>ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove <code>111</code> sarà il processo di partenza.</p>
+<p>Ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove <code>111</code> sarà il processo di partenza.</p>
 <p>L’output sarà di questo tipo</p>
 <p><code>000 001 100 101 010 011 110 111</code></p>
 <p>l’ordine di apparizione dipende dallo scheduling, e quando termina il processo <code>111</code> (cioè il primo processo) la shell è pronta per accettare altri comandi (anche se i figli devono ancora finire)</p>
 <p><img src="https://i.ibb.co/CzKHc43/image.png" alt="enter image description here"></p>
 <h2 id="processi-orfani-e-zombie">Processi orfani e zombie</h2>
-<p>In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l’avvio e l’esecuzione dell’intero sistema. Nelle prime versioni di Unix si usava <strong>SysVinit</strong>, poi si è passati a <strong>Upstart</strong>, ora nei sistemi più recenti viene usato <strong>Systemd</strong></p>
-<p>I sistemi che utilizzano SysVinit e Upstart si riferiscono al processo che inizializza il sistema come <strong>init</strong> mentre i sistemi che utilizzano Systemd si riferiscono a tale processo come <strong>systemd</strong></p>
-<p>Quando il processo padre termina prima del figlio, allora il figlio viene definito <strong>orfano</strong>. I processi orfani vengono adottati da <em>init</em> oppure da <em>systemd</em> (in base al sistema)<br>
+<p>In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l’avvio e l’esecuzione dell’intero sistema. Nelle prime versioni di Unix si usava <strong>SysVinit</strong>, poi si è passati a <strong>Upstart</strong>, ora nei sistemi più recenti viene usato <strong>Systemd</strong>.</p>
+<p>I sistemi che utilizzano SysVinit e Upstart si riferiscono al processo che inizializza il sistema come <strong>init</strong> mentre i sistemi che utilizzano Systemd si riferiscono a tale processo come <strong>systemd</strong>.</p>
+<p>Quando il processo padre termina prima del figlio, allora il figlio viene definito <strong>orfano</strong>. I processi orfani vengono adottati da <em>init</em> oppure da <em>systemd</em> (in base al sistema).<br>
 Un processo orfano non viene più terminato dalla combinazione <code>Ctrl + c</code></p>
 <p>I processi <strong>Zombie</strong> sono processi terminati ma in attesa che il genitore rilevi la loro terminazione e quindi che il padre riceveva il suo valore di uscita.<br>
 I processi zombie possiedono ancora un PID e il PCB mentre sono in questo stato.</p>

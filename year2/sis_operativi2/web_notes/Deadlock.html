@@ -35,12 +35,12 @@
 <p>Più formalmente possiamo dire che:<br>
 Un insieme <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> di processi o thread è in stallo se ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi></mrow><annotation encoding="application/x-tex">p</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.625em; vertical-align: -0.19444em;"></span><span class="mord mathnormal">p</span></span></span></span></span> in <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> attende un evento che può essere causato solo da processi o thread appartenenti ad <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span>.</p>
 <h2 id="condizioni-per-generare-uno-stallo">Condizioni per generare uno stallo</h2>
-<p>Uno stallo può avvenire sotto il verificarsi ti tutte le seguenti condizioni:</p>
+<p>Uno stallo può avvenire sotto il verificarsi di tutte le seguenti condizioni:</p>
 <ul>
 <li><strong>Mutua esclusione</strong><br>
-In assenza di mutua esclusione: se una risorsa può essere utilizzata contemporaneamente da più processi o thread non è necessario attendere quindi non si forma una situazione di stallo. Ad esempio la lettura simultanea di dati condivisi.</li>
+In assenza di mutua esclusione: se una risorsa può essere utilizzata senza problemi contemporaneamente da più processi o thread non è necessario attendere e quindi non si forma una situazione di stallo. Ad esempio la lettura simultanea di dati condivisi.</li>
 <li><strong>Possesso e attesa</strong><br>
-Se i processi o thread non allocano mai le risorse in modo incrementale, cioè acquisendo una risorsa (possesso) e poi chiedendone altre in seguito (attesa) allora non può succedere che si formi un attesa circolare (e quindi uno stallo).</li>
+Se i processi o thread non allocano mai le risorse in modo incrementale, cioè acquisendo una risorsa (possesso) e poi chiedendone altre in seguito (attesa). Se ciò non si verifica allora non può succedere che si formi un attesa circolare (e quindi uno stallo).</li>
 <li><strong>Assenza di preemption</strong><br>
 Se il sistema può far rilasciare in modo forzato le risorse a thread o processi, allora è possibile risolvere situazioni di stallo tramite preemption.</li>
 <li><strong>Attesa circolare</strong><br>
@@ -63,7 +63,7 @@ Per definizione, lo stallo avviene quando c’è una attesa circolare che fa sì
 Inoltre allocare tutte le risorse all’inizio può essere <strong>inefficiente</strong> in quanto priva gli altri thread o processi di tali risorse.<br>
 Questa soluzione può anche provocare <strong>starvation</strong>.</p>
 <h3 id="preemption">Preemption</h3>
-<p>La preemption, come la mutua esclusione, dipende dal tipo di risorsa. Ci sono risorse per loro natura preemptable e altre no. Tipicamente, se la risorsa può salvare completamente il proprio stato e ripristinarlo può essere preemptable come la CPU.<br>
+<p>La preemption, come la mutua esclusione, dipende dal tipo di risorsa. Ci sono risorse per loro natura sono preemptable e altre no. Tipicamente, se la risorsa può salvare completamente il proprio stato e ripristinarlo può essere preemptable come la CPU.<br>
 Non possiamo quindi imporre la preemption a priori.</p>
 <h3 id="prevenire-lattesa-circolare">Prevenire l’attesa circolare</h3>
 <p>È possibile evitare l’attesa circolare con opportune strategie di allocazione delle risorse.<br>
@@ -73,15 +73,15 @@ Ne è un esempio la soluzione dei filosofi a cena con un filosofo mancino</p>
 Per poter controllare ed evitare la formazione degli stalli a run-time l’idea è di consentire l’assegnamento delle risorse solo nel caso in cui il sistema possa garantire che tale assegnamento non porterà a una situazione di stallo.</p>
 <h2 id="grafo-di-assegnazione">Grafo di assegnazione</h2>
 <p>Per svolgere il controllo è necessario memorizzare lo <strong>stato di una risorsa</strong>, cioè se è assegnata o libera, e la presenza di <strong>richieste</strong> da parte dei thread (o processi).<br>
-Il grafo di assegnazione mantiene queste informazioni</p>
+Il <strong>grafo di assegnazione</strong> mantiene queste informazioni</p>
 <ul>
 <li>arco da P a R: il processo richiede la risorsa</li>
 <li>arco da R a P: la risorsa è assegnata al processo</li>
 <li>arco tratteggiato da P a R: il processo potrà richiedere in futuro la risorsa</li>
 </ul>
 <p>Una risorsa può avere più istanze di se stessa così da poter soddisfare più processi contemporaneamente.</p>
-<p>Vediamo un esempio grafico</p>
-<p><img src="https://i.ibb.co/1rzKJz7/image.png" alt="enter image description here"></p>
+<p>Vediamo un esempio grafico<br>
+<img src="https://i.ibb.co/1rzKJz7/image.png" alt="enter image description here"></p>
 <p>Descrizione:</p>
 <ul>
 <li>P1 richiede la risorsa R1</li>
@@ -92,10 +92,10 @@ Il grafo di assegnazione mantiene queste informazioni</p>
 </ul>
 <h3 id="grafo-sicuro">Grafo sicuro</h3>
 <p>Un grafo di assegnazione è detto <strong>sicuro</strong> se è privo di stalli anche considerando le richieste future.<br>
-Per determinare se in un grafo esiste una situazione di stallo bisogna:</p>
+Per determinare se in un grafo esiste una situazione di stallo bisogna controllare le seguenti condizioni:</p>
 <ul>
-<li>Se ogni risorsa ha <strong>una sola istanza</strong>: <strong>se il grafo ha un ciclo allora esiste uno stallo</strong>.</li>
-<li>Se le risorse hanno <strong>più istanze</strong>: <strong>la presenza dello stallo implica la presenza di un ciclo</strong>, ma la presenza di un ciclo non basta per dire se ci può essere uno stallo o meno. Bisogna usare un particolare algoritmo</li>
+<li>ogni risorsa ha <strong>una sola istanza</strong>: <strong>se il grafo ha un ciclo allora esiste uno stallo</strong>.</li>
+<li>le risorse hanno <strong>più istanze</strong>: <strong>la presenza dello stallo implica la presenza di un ciclo</strong>, ma la presenza di un ciclo non basta per dire se ci può essere uno stallo o meno. Bisogna usare un particolare algoritmo</li>
 </ul>
 <h2 id="algoritmo-con-grafo-di-assegnazione">Algoritmo con grafo di assegnazione</h2>
 <p>Analizziamo prima il caso con risorse a istanza singola: basta verificare la presenza di un ciclo</p>
@@ -109,9 +109,9 @@ Per determinare se in un grafo esiste una situazione di stallo bisogna:</p>
 </ul>
 </li>
 </ol>
-<p>Esempio con i filosofi a cena:</p>
-<p><img src="https://i.ibb.co/cL6pf7q/image.png" alt="enter image description here"></p>
-<p>Immaginiamo di trovarci nella situazione sopra descritta, in cui i primi 4 filosofi hanno preso la bacchetta di sinistra e l’ultimo filosofo vorrebbe la sua bacchetta sinistra, in quanto quell’assegnamento creerebbe un ciclo l’assegnazione non viene fatta e il filosofo viene messo in attesa.</p>
+<p>Esempio con i filosofi a cena:<br>
+<img src="https://i.ibb.co/cL6pf7q/image.png" alt="enter image description here"></p>
+<p>Immaginiamo di trovarci nella situazione sopra descritta, in cui i primi 4 filosofi hanno preso la bacchetta di sinistra e l’ultimo filosofo <code>F4</code> vorrebbe la sua bacchetta sinistra, in quanto quell’assegnamento creerebbe un ciclo l’assegnazione non viene fatta e il filosofo viene messo in attesa.</p>
 <h2 id="algoritmo-del-banchiere">Algoritmo del banchiere</h2>
 <p>Analizziamo ora il caso in cui le risorse hanno più istanze, in questo caso verificare la presenza di un ciclo non basta, ne è un esempio il seguente grafo, che, pur avendo un ciclo non ha uno stallo (si tratta quindi di un <strong>grafo sicuro</strong>)</p>
 <p><img src="https://i.ibb.co/h9TJkXZ/image.png" alt="enter image description here"></p>
@@ -138,7 +138,7 @@ Per determinare se in un grafo esiste una situazione di stallo bisogna:</p>
 <h3 id="esempio">Esempio</h3>
 <p>Partiamo da una situazione di questo tipo, con 3 processi e 2 risorse.</p>
 <p>Una istanza di R1 viene assegnata a P2.<br>
-Le future richieste sono segnate tramite archi tratteggiati</p>
+Le future richieste sono segnate tramite archi tratteggiati (non sappiamo a prescindere l’ordine delle richieste)</p>
 <p><img src="https://i.ibb.co/XzS7TPZ/image.png" alt="enter image description here"></p>
 <p>Se lasciamo l’assegnamento incontrollato potrebbe verificarsi uno stallo.<br>
 Simuliamo invece l’algoritmo del banchiere.</p>
@@ -148,7 +148,7 @@ Simuliamo invece l’algoritmo del banchiere.</p>
 <p>P3 richiede R2, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura ma in questo caso non esiste in quanto nessuno dei tre processi può ottenere tutte le risorse necessarie.<br>
 L’algoritmo mette P3 in attesa</p>
 <p>aggiorniamo il grafo</p>
-<p><img src="https://i.ibb.co/JmPpMBs/image.png" alt="enter image description here"></p>
+<p><img src="https://i.ibb.co/Y2DLCMm/image.png" alt="enter image description here"></p>
 <p>P1 richiede R2, simuliamo l’assegnamento sul grafo: dobbiamo verificare che esista una sequenza sicura e &lt;P1, P2, P3&gt; lo è.<br>
 aggiorniamo quindi il grafo.</p>
 <p>successivamente</p>

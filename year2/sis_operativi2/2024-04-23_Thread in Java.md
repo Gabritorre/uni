@@ -21,7 +21,7 @@ public class CreaThread extends Thread {
 ```
 
 Alternativamente è possibile creare un thread usando il costruttore di `Thread` che prende in input un oggetto che implementa `Runnable`, tramite classe anonima, lambda oppure esplicitamente istanziando la nuova classe che implementa `Runnable` e passarla al costruttore di `Thread`
-
+[Appunti Programmazione ad oggetti 2 (Thread)](https://gabritorre.github.io/uni/year2/prog_ogg2/web_notes/Thread.html)
 
 ## Creazione, Interruzione e attesa
 
@@ -51,7 +51,8 @@ public class CreaTantiThread extends Thread {
     }
 
     /* main: crea i NTHREAD thread ne interrompe alcuni e attende la
-       terminazione. NOTA: con join devo gestire InterruptedException,
+       terminazione.
+       NOTA: con join devo gestire InterruptedException,
        ma nessuno interrompera' mai le join di questo main quindi la 
        ignoriamo */
     public static void main(String args[]) throws InterruptedException {
@@ -77,7 +78,6 @@ public class CreaTantiThread extends Thread {
 }
 ```
 
-
 ## Monitor
 
 Java implementa una versione semplificata dei monitor:
@@ -92,10 +92,7 @@ Java implementa una versione semplificata dei monitor:
         //codice sincronizzato
     }
 	```
-	dove "mutex" è un qualsiasi oggetto utilizzato per fare il **lock** del blocco di codice.
-
-per ulteriore approfondimento: [Programmazione ad oggetti mod.2 - Thread](https://gabritorre.github.io/uni/year2/prog_ogg2/web_notes/Thread.html)
-
+	dove "mutex" è un qualsiasi `Object` utilizzato per fare il **lock** del blocco di codice.
 
 ## Esempio
 
@@ -109,11 +106,11 @@ public class Interferenze extends Thread {
         c = cont;
     }
     //   i thread incrementano MAX volte il contatore
-    //   NOTA: non possono fare c.count++ perche' e' privato! 
+    //   NOTA: non possono fare c.count++ perché è privato! 
     public void run() {
         int i;
         for (i = 0; i < MAX; i++)
-            c.incrementa();     // questo metodo e' in MUTEX perche' synchronized
+            c.incrementa();     // questo metodo è in MUTEX perché synchronized
     }
 
     //   il main crea i thread, attende la terminazione e stampa il contatore 
@@ -142,18 +139,21 @@ public class Interferenze extends Thread {
  *  provare a togliere il 'synchronized' dal metodo incrementa per osservare 
  *  le interferenze */
 class Contatore {
-    private int count=0;    // privato: no accessi diretti!
+    private int count=0;    // privato: no accessi diretti
 
     // il metodo synchronized garantisce mutua esclusione sullo stesso oggetto
     synchronized void incrementa() {
         count++;
     }
 
-    // non serve sincronizzarlo visto che lo usiamo alla fine dal main: gli altri
-    // thread sono gia' terminati (la join garantisce che il main e' l'unico 
-    // thread in esecuzione) inoltre la lettura non crea mai interferenze
+    /* non serve sincronizzarlo visto che lo usiamo alla fine dal main: gli altri
+    thread sono già terminati (la join garantisce che il main e' l'unico 
+     thread in esecuzione)
+     inoltre la lettura non crea mai interferenze
+     */
     int valore() {
         return(count);
     }
 }
 ```
+

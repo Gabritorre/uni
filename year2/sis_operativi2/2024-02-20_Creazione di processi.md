@@ -6,7 +6,7 @@ Quando si crea un nuovo processo il sistema operativo di occupa di:
 - Allocare la memoria richiesta dal processo
 - Allocare altre risorse (come dispositivi di IO)
 - Decidere le varie informazioni del processo che saranno contenute nel PCB
-- Creare il PCB
+- Creare il PCB (*Process Control Block*)
 
 ## Processi in Unix
 
@@ -14,7 +14,8 @@ Vediamo la fase di creazione di un processo in un sistema Unix:
 
 Un processo viene sempre creato da un altro processo, tramite una chiamata a sistema.
 
-Il processo creante viene detto **parent** (genitore oppure padre), mentre il processo creato viene detto **child** (figlio). Le varie creazioni di processi creano una **struttura ad albero** che rappresenta le relazioni di parentela tra i processi.
+Il processo creante viene detto **parent** (genitore oppure padre), mentre il processo creato viene detto **child** (figlio).
+Le varie creazioni di processi creano una **struttura ad albero** che rappresenta le relazioni di parentela tra i processi.
 
 ### Relazioni dinamiche
 
@@ -25,12 +26,12 @@ Il processo creante viene detto **parent** (genitore oppure padre), mentre il pr
 	il processo padre è il processo `bash` che gestire i vari comandi che gli diamo. Quando lanciamo `sleep 5` viene creato un processo figlio che esegue il programma `sleep` (che semplicemente aspetta per una data quantità di secondi).
 Durante l'attesa noi non possiamo lanciare altri comandi, questo perché il processo padre (bash) sta attendendo la terminazione del figlio
 
-- Un altro tipo di relazione è quella dell'esecuzione in *background*, quindi dopo la creazione del processo, **padre e figlio continuano la loro normale esecuzione parallelamente**, ad esempio eseguendo il seguente comando da shell in questo modo
+- Un altro tipo di relazione è quella dell'esecuzione in *background*, quindi dopo la creazione del processo, **padre e figlio continuano la loro normale esecuzione parallelamente**, ad esempio eseguendo il seguente comando da shell
 
 		$ sleep 5 &
 
 	Come prima il processo padre (`bash`) crea il processo `sleep` me lo esegue in *background* quindi anche durante l'esecuzione della `sleep` possiamo comunque interagire con il terminale.
-mentre la `sleep` è in esecuzione possiamo lanciare il comando `ps` che ci mostra i processi attualmente attivi nella specifica istanza di quel terminale. Si dovrebbe ottenere un output di questo tipo
+Mentre la `sleep` è in esecuzione possiamo lanciare il comando `ps` che ci mostra i processi attualmente attivi nella specifica istanza di quel terminale. Si dovrebbe ottenere un output di questo tipo
 
 	```bash
 	PID TTY          TIME CMD
@@ -39,11 +40,11 @@ mentre la `sleep` è in esecuzione possiamo lanciare il comando `ps` che ci most
 	17590 pts/1    00:00:00 ps
 	```
 
-	Una volta che il processo `sleep` termina, viene notificata la cosa al padre tramite un messaggio di questo tipo:
+	Una volta che il processo `sleep` termina, viene notificata la terminazione al padre tramite un messaggio di questo tipo:
 
 		[1]+  Done                    sleep 5
 
-	possiamo venere meglio la relazione di parentela tra questi processi modificando il comando `ps` con il seguenti parametri 
+	Possiamo vedere meglio la relazione di parentela tra questi processi modificando il comando `ps` con il seguenti parametri 
 	- `pid`: id del processo
 	- `ppid`: id del processo padre
 	- `comm`: nome del comando
@@ -60,8 +61,16 @@ mentre la `sleep` è in esecuzione possiamo lanciare il comando `ps` che ci most
 	 23    11 sleep
 	 24    11 ps
 	```
+### Relazioni di contenuto
 
-## La system call "Fork"
+Due possibilità:
+
+-   Il figlio è un duplicato del genitore (ad esempio in UNIX)
+-   Il figlio esegue un programma differente (ad esempio nei sistemi Windows)
+
+Questo è il comportamento standard ma ovviamente è possibile anche l’altra modalità in entrambi i sistemi.
+
+## La system call "fork"
 
 `fork` è una chiamata a sistema nel sistema Unix che appartiene allo standard POSIX e che si occupa di creare un nuovo processo.
 
@@ -73,11 +82,11 @@ Dopo una chiamata a `fork` il processo figlio:
 
 Dato che padre e figlio lavorano sullo stesso codice, si può riconoscere padre e figlio in base al valore di ritorno della funzione `fork`:
 - se ritorna 0 allora si tratta del processo figlio
-- se ritorna un valore maggiore di 0 allora si tratta del processo padre (il valore di ritorno è esattamente PID del processo figlio)
+- se ritorna un valore maggiore di 0 allora si tratta del processo padre
 
 Ad esempio (fatto in C)
 
-```C
+```c
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdio.h>
@@ -97,17 +106,15 @@ int main(){
 }
 ```
 
-Nota 1: che il tipo di dato `pid_t` è un intero la cui dimensione varia in base al sistema.
-Nota 2: usando la combinazione `Ctrl + c` si invia un segnale di terminazione al processo.
+Nota 1: il tipo di dato `pid_t` è un intero la cui dimensione varia in base al sistema.
+Nota 2: usando la combinazione `Ctrl + c` durante l'esecuzione del programma si invia un segnale di terminazione al processo.
+Nota 3: se siamo sul padre il valore di ritorno della fork ci da il pid del figlio
 
-Possiamo utilizzare le funzioni:
+Nel codice possiamo utilizzare le funzioni:
 - `getpid()` per ottenere il pid del processo stesso
 - `getppid()` per ottenere il pid del processo padre
-- se siamo sul padre il valore di ritorno della fork ci da il pid del figlio
-
 
 Come si vedeva nel codice, quando il valore di ritorno della `fork` è negativo significa che la creazione del processo è fallita, questo solitamente accade quando non c'è sufficiente memoria per allocare il processo.
-
 
 Un esempio per rappresentare la struttura ad albero è il seguente codice:
 
@@ -126,12 +133,12 @@ int main() {
 }
 ```
 
-vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).
+Vengono eseguite 3 fork da ogni processo che creiamo (non facciamo il controllo sul valore di ritorno per separare codice figlio dal codice padre).
 - il primo fork verrà eseguito dal primo processo, dopo la sua esecuzione si avranno 2 processi
 - il secondo fork verrà eseguito dai 2 processi, dopo la sua esecuzione si avranno 4 processi
 - il terzo fork verrà eseguito dai 4 processi, dopo la sua esecuzione si avranno 8 processi
 
-ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove `111` sarà il processo di partenza.
+Ci aspettiamo quindi 8 stampe a schermo, che rappresentano tutte le permutazioni di 3 bit, dove `111` sarà il processo di partenza.
 
 L'output sarà di questo tipo
 
@@ -141,16 +148,13 @@ l'ordine di apparizione dipende dallo scheduling, e quando termina il processo `
 
 ![enter image description here](https://i.ibb.co/CzKHc43/image.png)
 
-
 ## Processi orfani e zombie
 
-In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l'avvio e l'esecuzione dell'intero sistema. Nelle prime versioni di Unix si usava **SysVinit**, poi si è passati a **Upstart**, ora nei sistemi più recenti viene usato **Systemd**
+In base alla versione del sistema Unix possiamo avere diversi processi che gestiscono l'avvio e l'esecuzione dell'intero sistema. Nelle prime versioni di Unix si usava **SysVinit**, poi si è passati a **Upstart**, ora nei sistemi più recenti viene usato **Systemd**.
 
+I sistemi che utilizzano SysVinit e Upstart si riferiscono al processo che inizializza il sistema come **init** mentre i sistemi che utilizzano Systemd si riferiscono a tale processo come **systemd**.
 
-I sistemi che utilizzano SysVinit e Upstart si riferiscono al processo che inizializza il sistema come **init** mentre i sistemi che utilizzano Systemd si riferiscono a tale processo come **systemd**
-
-
-Quando il processo padre termina prima del figlio, allora il figlio viene definito **orfano**. I processi orfani vengono adottati da *init* oppure da *systemd* (in base al sistema)
+Quando il processo padre termina prima del figlio, allora il figlio viene definito **orfano**. I processi orfani vengono adottati da *init* oppure da *systemd* (in base al sistema).
 Un processo orfano non viene più terminato dalla combinazione `Ctrl + c`
 
 I processi **Zombie** sono processi terminati ma in attesa che il genitore rilevi la loro terminazione e quindi che il padre riceveva il suo valore di uscita. 

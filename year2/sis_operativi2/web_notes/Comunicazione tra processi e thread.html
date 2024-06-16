@@ -32,16 +32,17 @@
       <h1 id="comunicazione-tra-processi-e-thread">Comunicazione tra processi e thread</h1>
 <p>Nel sistema operativo girano molti processi e tra di loro ci possono essere casi di <strong>competizione e cooperazione</strong></p>
 <h2 id="competizione">Competizione</h2>
-<p><strong>la competizione</strong> si ha quando più processo vogliono la stessa risorsa (sia hardware che software).<br>
-queste competizioni posso creare delle interferenze con il normale funzionamento del sistema come cali di prestazioni e nei casi più estremi il crash del sistema.</p>
-<p>Il sistema operativo deve gestire le competizioni al fine di rendere il sistema più fluido possibile all’utente e deve illudere i processi di avere tutto il sistema disponibile per loro.</p>
+<p><strong>La competizione</strong> si ha quando più processi vogliono la stessa risorsa (sia hardware che software).<br>
+Queste competizioni posso creare delle interferenze con il normale funzionamento del sistema come cali di prestazioni e nei casi più estremi il crash del sistema.</p>
+<p>Il sistema operativo deve gestire le competizioni al fine di rendere il sistema più fluido possibile all’utente e allo stesso tempo deve illudere i processi di avere tutto il sistema disponibile per loro.</p>
 <h2 id="cooperazione">Cooperazione</h2>
 <p>In altri casi abbiamo la cooperazione tra processi, cioè processi che contribuiscono e comunicano tra loro per raggiungere un obiettivo in comunque.</p>
-<p>in questo caso abbiamo dei vantaggi quali:</p>
+<p>In questo caso abbiamo dei vantaggi quali:</p>
 <ul>
-<li><strong>condivisione</strong>, i processo comunicano, si sincronizzano e si scambiano informazioni</li>
+<li><strong>condivisione</strong>: i processo comunicano, si sincronizzano e si scambiano informazioni</li>
 <li><strong>parallelismo</strong>: sfruttare un sistema multi-core per eseguire in parallelo un programma</li>
 <li><strong>modularità</strong>: suddividere un compito complesso in attività più semplici che verranno eseguite da processi diversi</li>
+<li><strong>multitasking</strong>: può risultare comodo eseguire un’attività mentre un’altra continua in background.</li>
 <li><strong>replicazione</strong>: quando è necessaria l’esecuzione simultanea su istanze diverse, è possibile replicare l’istanza su più processi</li>
 </ul>
 <h2 id="modelli-di-comunicazione">Modelli di comunicazione</h2>
@@ -58,9 +59,9 @@ queste competizioni posso creare delle interferenze con il normale funzionamento
 <li><code>receive(&amp;messaggio)</code></li>
 </ul>
 <p>esse vengono realizzate tramite delle <em>system call</em> al sistema operativo dette <strong>IPC</strong> (InterProcess Communication)</p>
-<p>il mittente e il destinatario possono essere indicati direttamente o indirettamente:</p>
+<p>Il mittente e il destinatario del messaggio possono essere indicati direttamente o indirettamente:</p>
 <h3 id="nominazione-diretta">Nominazione diretta</h3>
-<p>il mittente e il destinatario sono indicati esplicitamente:</p>
+<p>Il mittente e il destinatario sono indicati esplicitamente:</p>
 <ul>
 <li><code>send(destinatario, messaggio)</code></li>
 <li><code>receive(mittente, &amp;message)</code></li>
@@ -75,34 +76,35 @@ queste competizioni posso creare delle interferenze con il normale funzionamento
 </ul>
 <p>In Unix le <strong>pipe</strong> utilizzano questa implementazione</p>
 <h2 id="comunicazione-sincrona-e-asincrona">Comunicazione sincrona e asincrona</h2>
-<p>le operazioni di invio e ricezione possono essere di tipo sincrono o asincrono:</p>
+<p>Le operazioni di invio e ricezione possono essere di tipo sincrono o asincrono:</p>
 <ul>
 <li><strong>send sincrona</strong>: la <em>send</em> attende fino a quando non avviene una <em>receive</em> dal destinatario</li>
 <li><strong>send asincrona</strong>: la <em>send</em> non attende che avvenga una <em>receive</em></li>
-<li><strong>receive sincrona</strong>: la <em>receive</em> attende attivamente la ricezione di messaggi</li>
+<li><strong>receive sincrona</strong>: la <em>receive</em> attende attivamente l’arrivo di messaggi</li>
 <li><strong>receive asicrona</strong>: la <em>receive</em> controlla ad intervalli regolari la presenza di nuovi messaggi (ritornando NULL se non ce ne sono di nuovi)</li>
 </ul>
 <h2 id="produttore-consumatore">Produttore-consumatore</h2>
 <p>La tecnica di scambio di messaggi è utile nella situazione in cui un programma “produce” un dato e un altro programma “consuma” il dato.</p>
 <p>Vediamo degli esempi con la shell di linux:</p>
-<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span> -la <span class="token operator">|</span> <span class="token function">grep</span> <span class="token operator">&lt;</span>termine<span class="token operator">&gt;</span>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span> -la <span class="token operator">|</span> <span class="token function">grep</span> <span class="token operator">&lt;</span>stringa<span class="token operator">&gt;</span>
 </code></pre>
 <p>Il precedente comando utilizza due programmi (<code>ls</code> e <code>grep</code>) e utilizza una <em>pipe</em> per far comunicare i due processi. In questo particolare esempio abbiamo una <strong>comunicazione con nominazione indiretta con send asincrona e receive sincrona</strong>.</p>
 <p>La <em>pipe</em> viene creata dal processo padre prima di avviare i due processi, in modo che possa essere referenziata da entrambi i processi durante la loro creazione.<br>
-il processo che esegue <code>ls -la</code> genera un output che mette nel buffer della <em>pipe</em>, successivamente il processo che esegue <code>grep &lt;termine&gt;</code> legge il dato e genera un nuovo output.</p>
+Il processo che esegue <code>ls -la</code> genera un output che mette nel buffer della <em>pipe</em>, successivamente il processo che esegue <code>grep &lt;stringa&gt;</code> legge il dato e genera un nuovo output.</p>
 <p>Per mostrare visivamente che la send è asincrona modifichiamo il comando nel seguente modo:</p>
-<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>ls -al<span class="token punctuation">;</span> <span class="token keyword">echo</span> <span class="token string">"DONE ls"</span>  1<span class="token operator">&gt;</span><span class="token operator">&amp;</span>2<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>sleep 10<span class="token punctuation">;</span><span class="token function">grep</span> parola<span class="token punctuation">)</span>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>ls -al<span class="token punctuation">;</span> <span class="token keyword">echo</span> <span class="token string">"DONE ls"</span>  1<span class="token operator">&gt;</span><span class="token operator">&amp;</span>2<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>sleep 10<span class="token punctuation">;</span> <span class="token function">grep</span> <span class="token operator">&lt;</span>stringa<span class="token operator">&gt;</span><span class="token punctuation">)</span>
 </code></pre>
-<p>descrizione: subito dopo l’esecuzione di <code>ls</code> viene fatta una stampa “DONE ls” che viene deviata sullo standard error con la sintassi <code>1&gt;&amp;2</code> perche vogliamo stamparla e non darla in pasto a <code>grep</code>.<br>
-contemporaneamente nel blocco destro di istruzioni avviene uno sleep di 10 secondi e poi viene fatta la <code>grep</code>.</p>
-<p>il comportamento che otteniamo eseguendo il comando è quello della stampa immediata di “DONE ls”, una attesa di 10 secondi e poi l’output della grep.<br>
+<p>Descrizione: subito dopo l’esecuzione di <code>ls</code> viene fatta una stampa “DONE ls” che viene deviata sullo <em>standard error</em> con la sintassi <code>1&gt;&amp;2</code> perché vogliamo stamparla e non darla in pasto a <code>grep</code>.<br>
+Contemporaneamente nel blocco destro di istruzioni avviene uno sleep di 10 secondi e poi viene fatta la <code>grep</code>.<br>
+Il comportamento che otteniamo eseguendo il comando è quello della stampa immediata di “DONE ls”, una attesa di 10 secondi e poi l’output della grep.<br>
 Questo significa che il comando <code>ls</code> non ha atteso che la <code>grep</code> ricevesse il messaggio (questo lo intuiamo perché viene eseguita la stampa di <code>DONE ls</code> immediatamente), concludiamo quindi che il comando <code>ls</code> fa una send asincrona.</p>
 <p>La pipe, di default, rende la <strong>ricezione sincrona</strong>: il processo ricevente attende attivamente la presenza di messaggi in arrivo.</p>
-<p>ad esempio, la seguente riga si comporta nel seguente modo</p>
+<p>ad esempio, la seguente riga:</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>sleep 2<span class="token punctuation">;</span><span class="token function">ls</span> -al<span class="token punctuation">)</span> <span class="token operator">|</span> <span class="token punctuation">(</span>echo <span class="token string">"START"</span><span class="token punctuation">;</span> <span class="token function">grep</span> parola<span class="token punctuation">;</span> <span class="token keyword">echo</span> <span class="token string">"DONE"</span><span class="token punctuation">)</span>
 </code></pre>
 <p>dobbiamo immaginare che i due blocchi di istruzioni vengono eseguiti contemporaneamente, e quando il blocco di destra necessità di un input si interrompe la sua esecuzione e rimane in attesa.</p>
-<p>Infatti quello che accade è la stampa immediata di “START” <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> la <code>grep</code> rimane in attesa di un input <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> attesa di 2 secondi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> esecuzione della <code>ls</code> che scrive nel buffer il dato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> la <code>grep</code> viene eseguita <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> l’esecuzione può proseguire e viene stampato “DONE”</p>
+<p>Infatti quello che accade è:<br>
+la stampa immediata di “START” <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> la <code>grep</code> rimane in attesa di un input <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> attesa di 2 secondi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> esecuzione della <code>ls</code> che scrive nel buffer il dato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> la <code>grep</code> viene eseguita <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> l’esecuzione può proseguire e viene stampato “DONE”</p>
 
     </div>
   </div>

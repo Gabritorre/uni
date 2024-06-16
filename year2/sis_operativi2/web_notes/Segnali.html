@@ -31,7 +31,7 @@
 <p>I <strong>segnali</strong> sono una forma di <strong>comunicazione tra processi</strong> realizzati tramite interruzioni software causate da vari eventi.<br>
 Gli eventi generalmente sono:</p>
 <ul>
-<li>Generati dal terminale (ad esempio <code>Ctrc + c</code>)</li>
+<li>Generati dal terminale (ad esempio <code>Ctrl + c</code>)</li>
 <li>Generati da errori di esecuzione (divisione per 0)</li>
 <li>Segnali inviati da un altro processo</li>
 <li>Eventi asincroni notificati al processo</li>
@@ -42,18 +42,18 @@ Gli eventi generalmente sono:</p>
 <li>Gestirlo</li>
 <li>Lasciare che il sistema operativo lo gestisca</li>
 </ul>
-<p>Vediamo alcune dei segnali supportati in Linux (lista consultabile eseguendo <code>man 7 signal</code>)</p>
-<p><img src="https://i.ibb.co/Lt6Sp4z/image.png" alt="enter image description here"></p>
+<p>Vediamo alcune dei segnali supportati in Linux (lista consultabile eseguendo <code>man 7 signal</code>)<br>
+<img src="https://i.ibb.co/Lt6Sp4z/image.png" alt="enter image description here"></p>
 <p>Descriviamo brevemente alcuni dei segnali:</p>
 <ul>
-<li><code>SIGHUP</code>  viene inviato a un processo quando il terminale a cui è associato viene chiuso</li>
-<li><code>SIGINT</code>  viene inviato a un processo digitando  <code>ctrl-C</code>  per interromperlo</li>
-<li><code>SIGQUIT</code>, meno conosciuto del precedente, viene inviato per far terminare un processo tramite la sequenza  <code>ctrl-\</code></li>
-<li><code>SIGILL</code>,  <code>SIGABRT</code>,  <code>SIGFPE</code>  e  <code>SIGSEGV</code>  corrispondono ad azioni del processo stesso: istruzione illegale, invocazione di  <code>abort</code>, errore aritmetico, riferimento a memoria illegale</li>
-<li><code>SIGKILL</code>,  <code>SIGTERM</code>  sono esempi di segnale inviati da un processo a un altro, che vengono utilizzati per terminare un processo. Questi segnali si possono inviare dalla shell tramite i comando  <code>kill -9 pid</code>  oppure  <code>kill pid</code>. Si noti che  <code>SIGKILL</code>  termina sempre il processo che riceve il segnale mentre  <code>SIGTERM</code>  può essere gestito o ignorato dal processo</li>
-<li><code>SIGPIPE</code>  viene inviato a un processo che prova a scrivere su una pipe che non ha lettori</li>
-<li><code>SIGALRM</code>  è un timer che “sveglia” un processo, simile al timer usato dallo scheduler per implementare il time-sharing</li>
-<li><code>SIGCHLD</code>  viene inviato a un processo quando un suo processo figlio termina (il segnale viene utilizzato per svegliare un processo che ha invocato la  <code>wait</code>, altrimenti viene ingnorato)</li>
+<li><code>SIGHUP</code> viene inviato a un processo quando il terminale a cui è associato viene chiuso</li>
+<li><code>SIGINT</code> viene inviato a un processo digitando  <code>Ctrl-c</code>  per interromperlo</li>
+<li><code>SIGQUIT</code> viene inviato per far terminare un processo tramite la sequenza  <code>ctrl-\</code></li>
+<li><code>SIGILL</code>,  <code>SIGABRT</code>,  <code>SIGFPE</code>  e  <code>SIGSEGV</code> corrispondono ad azioni del processo stesso: istruzione illegale, invocazione di  <code>abort</code>, errore aritmetico, riferimento a memoria illegale</li>
+<li><code>SIGKILL</code>,  <code>SIGTERM</code> sono esempi di segnale inviati da un processo a un altro, che vengono utilizzati per terminare un processo. Questi segnali si possono inviare dalla shell tramite i comando  <code>kill -9 pid</code>  oppure  <code>kill pid</code>. Si noti che  <code>SIGKILL</code> termina sempre il processo che riceve il segnale mentre  <code>SIGTERM</code>  può essere gestito o ignorato dal processo</li>
+<li><code>SIGPIPE</code> viene inviato a un processo che prova a scrivere su una pipe che non ha lettori</li>
+<li><code>SIGALRM</code> è un timer che “sveglia” un processo, simile al timer usato dallo scheduler per implementare il time-sharing</li>
+<li><code>SIGCHLD</code> viene inviato a un processo quando un suo processo figlio termina (il segnale viene utilizzato per svegliare un processo che ha invocato la  <code>wait</code>, altrimenti viene ignorato)</li>
 </ul>
 <p>Nella tabella precedente è presente una colonna <code>Action</code> che rappresenta l’azione di default per ogni segnale:</p>
 <ul>
@@ -64,7 +64,7 @@ Gli eventi generalmente sono:</p>
 <li><code>Cont</code>: fa continuare un processo che è stato fermato in precedenza</li>
 </ul>
 <h2 id="esempio-di-utilizzo-di-un-segnale">Esempio di utilizzo di un segnale</h2>
-<p>L’esempio più semplice di segnale è <code>SIGALRM</code> che viene generato tramite la funzione <code>alarm(unsigned int)</code> la quale prende in input la quantità di secondi prima di lanciare il segnale <code>SIGALRM</code>. Quanto questo segnale viene ricevuto il processo viene terminato (per comportamento di default).<br>
+<p>L’esempio più semplice di segnale è <code>SIGALRM</code> che viene generato tramite la funzione <code>alarm(unsigned int)</code> la quale prende in input la quantità di secondi prima di lanciare il segnale <code>SIGALRM</code>. Quando questo segnale viene ricevuto, il processo viene terminato (come comportamento di default).<br>
 Equivale a tutti gli effetti a impostare una sveglia che termina il processo quando scade il suo tempo.</p>
 <pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -84,7 +84,8 @@ Nota anche che dopo la terminazione viene stampato <code>Alarm clock</code> sul 
 <span class="token keyword">void</span> <span class="token function">alarmHandler</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">{</span>
     <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"questo me lo gestisco io!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token function">alarm</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ri-setta il timer a 3 secondi e riprende l'esecuzione dal punto in cui si era interrotto (il ciclo while in questo caso)</span>
+    <span class="token function">alarm</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// ri-setta il timer a 3 secondi e riprende l'esecuzione dal punto</span>
+			  <span class="token comment">//in cui si era interrotto (il ciclo while in questo caso)</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
@@ -117,7 +118,8 @@ Nota anche che dopo la terminazione viene stampato <code>Alarm clock</code> sul 
 </code></pre>
 <p>Il comportamento che otteniamo è che per i primi 3 secondi fare <code>ctrl + c</code> non avrà effetto, mentre nei 3 secondi successivi torna normale.</p>
 <h2 id="syscall-kill">Syscall “kill”</h2>
-<p>Sebbene il nome si un po’ fuorviante, la <em>system call</em> <strong>kill</strong> si occupa solamente di <strong>mandare un qualsiasi segnale ad un processo (specificandone il pid)</strong> (il nome è rimasto “kill” per ragioni storiche). Ad esempio possiamo usarlo per sospendere, ripristinare o terminare un processo</p>
+<p>Sebbene il nome si un po’ fuorviante, la <em>system call</em> <strong>kill</strong> si occupa solamente di <strong>mandare un qualsiasi segnale ad un processo (specificandone il pid)</strong> (il nome è rimasto “kill” per ragioni storiche).<br>
+Ad esempio possiamo usarlo per sospendere, ripristinare o terminare un processo</p>
 <pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
 <span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;unistd.h&gt;</span></span>
 <span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
@@ -156,17 +158,17 @@ Nota anche che dopo la terminazione viene stampato <code>Alarm clock</code> sul 
 <p><strong>Mascherare i segnali significa posticiparli momentaneamente</strong>.<br>
 Questo può essere utile se il programma sta facendo delle operazioni importanti come lunghe scritture su disco, o operazioni su strutture dati e non si vuole che dei segnali interferiscano con tali operazioni. Si mascherano quindi i segnali fino al termine delle operazioni critiche e successivamente i segnali posticipati vengono notificati al processo.</p>
 <p>Solitamente quanto più segnali uguali vengono posticipati solamente 1 ne viene recapitato una volta sbloccati i segnali.</p>
-<p>Il mascheramento dei segnali viene fatto attraverso degli <strong>insiemi di segnali</strong> possiamo fare svariate operazioni su tali insiemi</p>
-<p><strong>creare un insieme</strong></p>
+<p>Il mascheramento dei segnali viene fatto attraverso degli <strong>insiemi di segnali</strong>, possiamo fare svariate operazioni su tali insiemi</p>
+<h3 id="creare-un-insieme">Creare un insieme</h3>
 <p><code>sigemptyset(sigset_t *set)</code></p>
 <p>inizializza l’insieme vuoto <code>set</code></p>
-<p><strong>Aggiunta di elementi</strong></p>
+<h3 id="aggiunta-di-elementi">Aggiunta di elementi</h3>
 <p><code>sigaddset(sigset_t *set, int signum)</code></p>
 <p>Aggiunge il segnale <code>signum</code> all’insieme <code>set</code></p>
-<p><strong>Rimozione di elementi</strong></p>
+<h3 id="rimozione-di-elementi">Rimozione di elementi</h3>
 <p><code>sigdelset(sigset_t *set, int signum)</code></p>
 <p>Rimuove il segnale <code>signum</code> dall’insieme <code>set</code></p>
-<p><strong>Mascheramento</strong></p>
+<h3 id="mascheramento">Mascheramento</h3>
 <p>Tramite la <em>system call</em> <code>sigprocmask(int action, sigset_t *newmask, sigset_t *oldmask)</code> possiamo gestire il mascheramento, che avviane in base al valore passato al parametro <code>action</code>:</p>
 <ul>
 <li><code>SIG_BLOCK</code>: l’insieme dei segnali  <code>newmask</code>  viene  <strong>unito</strong>  all’insieme dei segnali attualmente mascherati, che sono restituiti in  <code>oldmask</code>;</li>
@@ -185,7 +187,8 @@ Questo può essere utile se il programma sta facendo delle operazioni importanti
         <span class="token function">sigaddset</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>newmask<span class="token punctuation">,</span> SIGINT<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// aggiunge SIGINT alla "maschera"</span>
         <span class="token comment">// setta la nuova maschera e memorizza la vecchia</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">sigprocmask</span><span class="token punctuation">(</span>SIG_BLOCK<span class="token punctuation">,</span> <span class="token operator">&amp;</span>newmask<span class="token punctuation">,</span> <span class="token operator">&amp;</span>oldmask<span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore settaggio maschera"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore settaggio maschera"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">}</span>
 
         <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Sono protetto!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -193,14 +196,15 @@ Questo può essere utile se il programma sta facendo delle operazioni importanti
 
         <span class="token comment">// reimposta la vecchia maschera</span>
         <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">sigprocmask</span><span class="token punctuation">(</span>SIG_SETMASK<span class="token punctuation">,</span> <span class="token operator">&amp;</span>oldmask<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">)</span> <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore settaggio maschera"</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">perror</span><span class="token punctuation">(</span><span class="token string">"errore settaggio maschera"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token punctuation">}</span>
 
         <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Non sono piu' protetto!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
         <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Quello che otteniamo è che nei primi 3 secondi i <code>ctrl + c</code> vengono posticipati, appena scadono i 3 secondi, l’eventuale <code>ctrl + c</code> precedentemente mandato viene subito notificato il processo, il quale terminerà la sua esecuzione.</p>
+<p>Quello che otteniamo è che nei primi 3 secondi i <code>ctrl + c</code> vengono posticipati, appena scadono i 3 secondi, l’eventuale <code>ctrl + c</code> precedentemente mandato, viene subito notificato il processo il quale terminerà la sua esecuzione.</p>
 <p>Tramite <code>sigpending</code> è possibile vedere i segnali che attualmente sono in attesa di essere notificati al processo.</p>
 
     </div>

@@ -12,7 +12,6 @@ Ogni produttore avrà una propria coda in cui metterà i suoi dati.
 Il consumatore consumerà un dato alla volta a turno dalle code dei produttori
 
 Possiamo vedere il problema graficamente nel seguente modo
-
 ![enter image description here](https://i.ibb.co/D4vsBD5/image.png)
 
 Partiamo da un pseudocodice di questo tipo
@@ -28,7 +27,7 @@ Produttore(i) {
   }
 }
  
-Consumatore {
+Consumatore() {
   while(1) {
     for (i = 0; i < N; i++) {
 		d[i] = dato_produttore[i].remove();
@@ -60,10 +59,10 @@ Produttore(i) {
     V(piene[i]);
   }
 }
- 
-Consumatore {
+
+Consumatore() {
   while(1) {
-    for (i=0;i<N;i++) {
+    for (i = 0; i < N; i++) {
       P(piene[i]);
       P(mutex[i]);
       d[i] = dato_produttore[i].remove();
@@ -78,8 +77,7 @@ Consumatore {
 
 L'ottimizzazione del mutex è la seguente:
 utilizzando un solo mutex si è più sicuri della sincronizzazione in quanto avviene sempre o una scrittura o una lettura e mai insieme.
-Sfruttando però il fatto che i produttori scrivono sulla propria coda, l'unica interferenza è che il produttore scriva sulla propria coda e il consumatore legga da quella stessa coda contemporaneamente, quindi possiamo usare un mutex per ogni coda in modo da sincronizzarle singolarmente, così facendo le operazioni su code diverse avverranno parallelamente.
-
+Sfruttando però il fatto che i produttori scrivono sulla propria coda, l'unica interferenza è che il produttore scriva sulla propria coda e il consumatore legga da quella stessa coda contemporaneamente, quindi possiamo usare un mutex per ogni coda in modo da sincronizzarle singolarmente, così facendo le scritture su code diverse avverranno parallelamente.
 
 ## Lettori e scrittori
 
@@ -91,15 +89,15 @@ Quello che vogliamo sincronizzare è che se uno scrittore sta modificando i dati
 
 In sostanza vogliamo **un solo scrittore oppure più lettori**
 
-Esistono più soluzioni, alcune più ottimizzate di altre. Quella che vedremo sarà la più semplice, che rispetta la proprietà però potrebbe soffrire di *starvation*.
+Esistono più soluzioni, alcune più ottimizzate di altre. Quella che vedremo sarà la più semplice, che rispetta la proprietà ma che potrebbe soffrire di *starvation*.
 
 Il codice dello scrittore è una classica sincronizzazione di una sezione critica dove ci accede solo un thread alla volta. 
-Codice **scrittore**:
 
+Codice **scrittore**:
 ```c
 semaphore scrittura=1;
 
-Scrittore {
+Scrittore() {
   while(1) {
     ...
     P(scrittura);
@@ -114,7 +112,7 @@ Scrittore {
 
 Per implementare i lettori è utile utilizzare un contatore per tenere traccia di quanti lettori stanno leggendo:
 se non è presente alcun scrittore in zona critica allora:
-- il primo lettore che arriva deve bloccare l'entrata di uno scrittore
+- il primo lettore che arriva deve impedire l'entrata di uno scrittore
 - l'ultimo lettore ad uscire deve sbloccare lo scrittore
 - tutti i lettori nel mezzo possono passare liberamente
 
@@ -122,21 +120,21 @@ se non è presente alcun scrittore in zona critica allora:
 int num_lettori = 0;
 semaphore mutex = 1;
 
-Lettore {
+Lettore() {
   while(1) {
     ...
-    P(mutex);              // protegge num_lettori e accoda i lettori
+    P(mutex);              // protegge l'aggiornamento di num_lettori e accoda i lettori
     num_lettori++;
-    if (num_lettori == 1)  // primo lettore
-      P(scrittura);        // acquisisce la mutua esclusione in scrittura
+    if (num_lettori == 1)  // se è il primo lettore
+      P(scrittura);        // blocca lo scrittore
     V(mutex);
 
     < legge i dati >
 
-    P(mutex);              // protegge num_lettori
+    P(mutex);              // protegge l'aggiornamento di num_lettori
     num_lettori--;
-    if (num_lettori == 0)  // ultimo lettore 
-      V(scrittura);        // rilascia la mutua esclusione in scrittura
+    if (num_lettori == 0)  // se è l'ultimo lettore 
+      V(scrittura);        // sblocca lo scrittore
     V(mutex);
     ...
   }
@@ -144,12 +142,11 @@ Lettore {
 ```
 
 Il mutex è necessario per due ragioni:
-1. l'aggiornamento della variabile num_lettori è una *race condition*
+1. l'aggiornamento della variabile `num_lettori` è una *race condition*
 2. il primo lettore che arriva si bloccherà su `P(scrittura)` se c'è uno scrittore attivo, così facendo tutti gli altri lettori rimarranno in attesa su `P(mutex)`. Solo quando lo scrittore avrà finito allora il lettore eseguirà `V(mutex)` e lascerà passare tutti gli altri lettori (e se stesso). Vale lo stesso per il decremento finale
 
 Problema della ***starvation***: se i lettori continuano ad arrivare, non si sbloccherà più il semaforo della scrittura e lo scrittore potrebbe rimanere in una attesa potenzialmente infinita.
 Alcune soluzioni più complesse implementano il fatto che se lo scrittore vuole scrivere allora mette in attesa tutti i nuovi lettori in arrivo e attende che tutti i lettori già entrati in sezione critica finiscano.
-
 
 ## Filosofi a cena
 
@@ -172,7 +169,7 @@ Filosofo(i) {
 }
 ```
 
-Ogni bacchetta è una risorsa condivisa tra due specifici filosofi, non possiamo quindi utilizzare un unico semaforo inizializzato a 5 in quanto significherebbe che a tutti i filosofi andrebbe bene una qualsiasi bacchetta.
+Ogni bacchetta è una risorsa condivisa tra due specifici filosofi, non possiamo quindi utilizzare un unico semaforo inizializzato a 5 in quanto significherebbe ai filosofi andrebbero bene due qualsiasi bacchette.
 
 Utilizziamo un array di 5 semafori inizializzati a 1.
 
@@ -227,7 +224,6 @@ Filosofo(i) {
 
 Se tutti e 5 vogliono prendere la bacchetta di sinistra, solo i primi 4 ci riusciranno mentre l'altro rimarrà in attesa su `P(posti)`
 
-
 ### raccolta atomica
 
 possiamo utilizzare un mutex in modo da permettere ad un filosofo alla volta di raccogliere le proprie bacchette
@@ -251,7 +247,7 @@ Filosofo(i) {
 }
 ```
 
-Questa soluzione non è ottimale in quanto sincronizza troppo: se un filosofo ha la seconda bacchetta occupata rimarrà in attesa bloccando anche gli altri filosofi che in realtà potrebbero mangiare.
+Questa soluzione non è ottimale in quanto sincronizza troppo: se un filosofo prende la prima bacchetta ma ha la seconda bacchetta occupata rimarrà in attesa bloccando anche gli altri filosofi che in realtà potrebbero mangiare.
 
 ### Filosofo mancino
 
@@ -282,3 +278,4 @@ Filosofo(i) {
   }
 }
 ```
+

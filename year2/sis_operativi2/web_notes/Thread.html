@@ -43,7 +43,7 @@ Con i thread la comunicazione non avviene in questo modo.</p>
 <p>Vediamo un esempio di un problema implementato con i processi e poi con i thread analizzando i vari aspetti da tenere in considerazione quando si utilizzano i thread.</p>
 <p>Il problema del produttore e consumatore consiste che un processo/thread produca un dato e un altro processo/thread lo consumi:</p>
 <h2 id="implementazione-con-i-processi">Implementazione con i processi</h2>
-<p>Implementiamo ad un livello astratto il codice per implementare questo problema utilizzando i processi:</p>
+<p>Implementiamo ad un livello astratto il codice per implementare la comunicazione utilizzando i processi:</p>
 <pre class=" language-c"><code class="prism  language-c">pipe A<span class="token punctuation">;</span>
 
 <span class="token function">Produttore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -62,7 +62,7 @@ Con i thread la comunicazione non avviene in questo modo.</p>
 </code></pre>
 <p>Utilizzando una <strong>send asincrona</strong> (invia il dato senza aspettare una risposta) e una <strong>receive sincrona</strong> (attendendo che arrivi il dato prima di leggere) otteniamo una soluzione soddisfacente</p>
 <h2 id="implementazione-con-i-thread">Implementazione con i thread</h2>
-<p>Adiamo ad implementare una soluzione <em>step-by-step</em> utilizzando i thread.</p>
+<p>Andiamo ad implementare una soluzione <em>step-by-step</em> utilizzando i thread.</p>
 <p>La memoria condivisa tra i thread si implementa solitamente tramite delle <strong>variabili globali</strong>.<br>
 Avremo bisogno di:</p>
 <ul>
@@ -70,8 +70,8 @@ Avremo bisogno di:</p>
 <li>un <strong>indice</strong> che tiene conto di dove il produttore è arrivato a scrivere i dati nel buffer</li>
 <li>un <strong>indice</strong> che tiene conto di dove il consumatore è arrivato a leggere i dati nel buffer</li>
 </ul>
-<p>Inizialmente immaginiamo che il nostro <strong>buffer sia di dimensione illimitata</strong></p>
-<p><img src="https://i.ibb.co/dJy2FYn/image.png" alt="enter image description here"></p>
+<p>Inizialmente immaginiamo che il nostro <strong>buffer sia di dimensione illimitata</strong><br>
+<img src="https://i.ibb.co/dJy2FYn/image.png" alt="enter image description here"></p>
 <pre class=" language-c"><code class="prism  language-c">data_t buffer<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//buffer illimitato</span>
 <span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -92,8 +92,8 @@ Avremo bisogno di:</p>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Il problema di questa implementazione è che se il consumatore è più veloce del produttore esso non attende che ci siano dei dati validi nel buffer prima di leggere.</p>
-<p>Un approccio potrebbe essere di creare una attesa attiva (<em>busy waiting</em>) che il buffer si riempia con dati validi:</p>
+<p>Il problema di questa implementazione è che se il consumatore fosse più veloce del produttore esso non attenderebbe che ci siano dei dati validi nel buffer prima di leggere.</p>
+<p>Un approccio potrebbe essere di creare una attesa attiva (<em>busy waiting</em>) cosicché il buffer si riempia con dati validi:</p>
 <pre class=" language-c"><code class="prism  language-c">data_t buffer<span class="token punctuation">[</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//buffer illimitato</span>
 <span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -108,16 +108,18 @@ Avremo bisogno di:</p>
 
 <span class="token function">Consumatore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		<span class="token keyword">while</span><span class="token punctuation">(</span>read_index <span class="token operator">==</span> write_index<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//impedisco che l'indice di lettura superi quello della scrittura</span>
+		<span class="token comment">//impedisco che l'indice di lettura superi quello della scrittura</span>
+		<span class="token keyword">while</span><span class="token punctuation">(</span>read_index <span class="token operator">==</span> write_index<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
 		d <span class="token operator">=</span> buffer<span class="token punctuation">[</span>read_index<span class="token punctuation">]</span><span class="token punctuation">;</span>
 		read_index<span class="token operator">++</span><span class="token punctuation">;</span>
 		<span class="token comment">//consuma il dato 'd'</span>
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Questo approccio sistema le cose, però adesso dobbiamo risolvere il fatto che abbiamo assunto di avere un buffer di dimensione illimitata, ciò non è realistico.<br>
-Possiamo implementare una soluzione che utilizza un <strong>buffer circolare con una dimensione prefissata</strong></p>
-<p><img src="https://i.ibb.co/svDDVBg/image.png" alt="enter image description here"></p>
+<p>Questo approccio sistema le cose, però adesso dobbiamo risolvere il fatto che abbiamo assunto di avere un buffer di dimensione illimitata, che non è realistico.<br>
+Possiamo implementare una soluzione che utilizza un <strong>buffer circolare con una dimensione prefissata</strong><br>
+<img src="https://i.ibb.co/svDDVBg/image.png" alt="enter image description here"></p>
 <pre class=" language-c"><code class="prism  language-c">data_t buffer<span class="token punctuation">[</span>MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//buffer di dimensione MAX</span>
 <span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -139,9 +141,9 @@ Possiamo implementare una soluzione che utilizza un <strong>buffer circolare con
 	<span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>in questo modo il produttore quando raggiunge l’ultima cella (in posizione <code>MAX -1</code>) ripartirà a scrivere dalla posizione <code>0</code>.<br>
+<p>In questo modo il produttore quando raggiunge l’ultima cella (in posizione <code>MAX - 1</code>) ripartirà a scrivere dalla posizione <code>0</code>.<br>
 Il problema è che se il <strong>produttore è più veloce del consumatore rischia di sovrascrivere delle celle ancora non lette dal consumatore</strong></p>
-<p>Per ovviare a questo problema possiamo fermare mettere in attesa il produttore quando i due indici sono a una cella di distanza:</p>
+<p>Per ovviare a questo problema possiamo mettere in attesa il produttore quando i due indici sono a una cella di distanza:</p>
 <pre class=" language-c"><code class="prism  language-c">data_t buffer<span class="token punctuation">[</span>MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//buffer di dimensione MAX</span>
 <span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 <span class="token keyword">int</span> write_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -149,7 +151,7 @@ Il problema è che se il <strong>produttore è più veloce del consumatore risch
 <span class="token function">Produttore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		<span class="token comment">// produce il dato 'd'</span>
-		<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>write_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX <span class="token operator">==</span> read_index<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> 	<span class="token comment">//se la scrittura corrente mi porterebbe allo stesso indice della lettura allora attendo</span>
+		<span class="token keyword">while</span><span class="token punctuation">(</span><span class="token punctuation">(</span>write_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX <span class="token operator">==</span> read_index<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> 	<span class="token comment">//se fare la scrittura corrente mi porterebbe allo stesso indice della lettura allora attendo</span>
 		buffer<span class="token punctuation">[</span>write_index<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
 		write_index <span class="token operator">=</span> <span class="token punctuation">(</span>write_index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">%</span> MAX<span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
@@ -167,11 +169,11 @@ Il problema è che se il <strong>produttore è più veloce del consumatore risch
 <p>Questa soluzione seppure accettabile ha dei difetti:</p>
 <ul>
 <li>spreca una cella del buffer (per sapere quando mettere in attesa il produttore)</li>
-<li>spreca tempo di CPU con i cicli a vuoto</li>
+<li>spreca tempo di CPU con i cicli a vuoto (a causa del ciclo while)</li>
 <li>non scala con più produttori e consumatori, in quanto interferirebbero tra loro con gli indici</li>
 </ul>
 <h2 id="interferenza">Interferenza</h2>
-<p>Per risolvere il primo problema potremmo pensare di utilizzare una variabile condivisa tra i due thread che si occupa di contare quante celle sono presenti nel buffer e non sono ancora state lette.<br>
+<p>Per risolvere il primo problema potremmo pensare di utilizzare una variabile condivisa tra i due thread che si occupa di contare quante celle sono presenti nel buffer che non sono ancora state lette.<br>
 Quindi il produttore incrementa questo contatore mentre il consumatore lo decrementa:</p>
 <pre class=" language-c"><code class="prism  language-c">data_t buffer<span class="token punctuation">[</span>MAX<span class="token punctuation">]</span><span class="token punctuation">;</span>		<span class="token comment">//buffer di dimensione MAX</span>
 <span class="token keyword">int</span> read_index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
@@ -199,12 +201,12 @@ Quindi il produttore incrementa questo contatore mentre il consumatore lo decrem
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Questo codice seppur sembri corretto non lo è.<br>
-Infatti è possibile che la variabile counter venga aggiornata contemporaneamente dal consumatore e dal lettore, generando una <strong>race condition</strong> che può portare ad aggiornare la variabile in modo errato:</p>
+Infatti è possibile che la variabile counter venga aggiornata contemporaneamente dal consumatore e dal produttore, generando una <strong>race condition</strong> che può portare ad aggiornare la variabile in modo errato:</p>
 <p>Se andiamo ad analizzare a basso livello come funziona l’aggiornamento di una variabile, possiamo dividere l’operazione in 3 punti:</p>
 <ol>
 <li>lettura dalla memoria del valore attuale della variabile (viene salvato il valore in un registro)</li>
 <li>aggiornamento al nuovo valore	(viene modificato il registro)</li>
-<li>salvataggio del nuovo valore in memoria	(viene salvato il valore del registro in memoria)</li>
+<li>salvataggio del nuovo valore in memoria	(viene salvato il valore nel registro nella memoria)</li>
 </ol>
 <p>Se immaginiamo che <code>counter = 10</code> e ipotizziamo che sia il produttore che il consumatore facciano una modifica, possiamo avere 3 comportamenti diversi in base allo scheduling dei thread:</p>
 <ol>
@@ -223,7 +225,7 @@ Infatti è possibile che la variabile counter venga aggiornata contemporaneament
 <li>infine il consumatore esegue i 2 passi rimanenti: <code>counter: 10 - 1 = 9</code></li>
 <li>valore finale <code>counter = 9</code></li>
 <li>Questo caso non è corretto in quanto un incremento e un decremento generano un risultato diverso da quello iniziale.<br>
-Questo accade perche il consumatore ha letto il dato iniziale e poi si è fermato, intanto però il produttore ha aggiornato il valore del <code>counter</code>. Quando poi il consumatore riprende l’esecuzione possiede un dato ormai obsoleto</li>
+Questo accade perché il consumatore ha letto il dato iniziale e poi si è fermato, intanto però il produttore ha aggiornato il valore del <code>counter</code>. Quando poi il consumatore riprende l’esecuzione possiede un dato ormai obsoleto e continua a lavorare su di esso.</li>
 </ul>
 </li>
 <li>Terzo caso (simmetrico al secondo):
@@ -233,7 +235,7 @@ Questo accade perche il consumatore ha letto il dato iniziale e poi si è fermat
 <li>infine il produttore esegue i 2 passi rimanenti: <code>counter: 10 + 1 = 11</code></li>
 <li>valore finale <code>counter = 11</code></li>
 <li>Questo caso non è corretto in quanto un incremento e un decremento generano un risultato diverso da quello iniziale.<br>
-Questo accade perche il produttore ha letto il dato iniziale e poi si è fermato, intanto però il consumatore ha aggiornato il valore del <code>counter</code>. Quando poi il produttore riprende l’esecuzione possiede un dato ormai obsoleto</li>
+Questo accade perche il produttore ha letto il dato iniziale e poi si è fermato, intanto però il consumatore ha aggiornato il valore del <code>counter</code>. Quando poi il produttore riprende l’esecuzione possiede un dato ormai obsoleto e continua a lavorare su di esso.</li>
 </ul>
 </li>
 </ol>

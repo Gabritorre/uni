@@ -37,8 +37,8 @@
 <p>Consideriamo una variante del problema produttori e consumatori in cui ci sono <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> produttori e un solo consumatore.<br>
 Ogni produttore avrà una propria coda in cui metterà i suoi dati.<br>
 Il consumatore consumerà un dato alla volta a turno dalle code dei produttori</p>
-<p>Possiamo vedere il problema graficamente nel seguente modo</p>
-<p><img src="https://i.ibb.co/D4vsBD5/image.png" alt="enter image description here"></p>
+<p>Possiamo vedere il problema graficamente nel seguente modo<br>
+<img src="https://i.ibb.co/D4vsBD5/image.png" alt="enter image description here"></p>
 <p>Partiamo da un pseudocodice di questo tipo</p>
 <pre class=" language-c"><code class="prism  language-c">queue dato_produttore<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>	<span class="token comment">//array di code</span>
 
@@ -50,7 +50,7 @@ Il consumatore consumerà un dato alla volta a turno dalle code dei produttori</
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
  
-Consumatore <span class="token punctuation">{</span>
+<span class="token function">Consumatore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> N<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -81,10 +81,10 @@ semaphore mutex<span class="token punctuation">[</span>N<span class="token punct
     <span class="token function">V</span><span class="token punctuation">(</span>piene<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
- 
-Consumatore <span class="token punctuation">{</span>
+
+<span class="token function">Consumatore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>i<span class="token operator">&lt;</span>N<span class="token punctuation">;</span>i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> N<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
       <span class="token function">P</span><span class="token punctuation">(</span>piene<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
       <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
       d<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> dato_produttore<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -98,19 +98,19 @@ Consumatore <span class="token punctuation">{</span>
 </code></pre>
 <p>L’ottimizzazione del mutex è la seguente:<br>
 utilizzando un solo mutex si è più sicuri della sincronizzazione in quanto avviene sempre o una scrittura o una lettura e mai insieme.<br>
-Sfruttando però il fatto che i produttori scrivono sulla propria coda, l’unica interferenza è che il produttore scriva sulla propria coda e il consumatore legga da quella stessa coda contemporaneamente, quindi possiamo usare un mutex per ogni coda in modo da sincronizzarle singolarmente, così facendo le operazioni su code diverse avverranno parallelamente.</p>
+Sfruttando però il fatto che i produttori scrivono sulla propria coda, l’unica interferenza è che il produttore scriva sulla propria coda e il consumatore legga da quella stessa coda contemporaneamente, quindi possiamo usare un mutex per ogni coda in modo da sincronizzarle singolarmente, così facendo le scritture su code diverse avverranno parallelamente.</p>
 <h2 id="lettori-e-scrittori">Lettori e scrittori</h2>
 <p>Abbiamo dei dati in memoria condivisa.<br>
 Abbiamo alcuni thread che accedono a questa memoria in sola lettura (thread chiamati <strong>lettori</strong>) e dei thread che modificano i dati in questa memoria (thread chiamati <strong>scrittori</strong>)</p>
 <p>Quello che vogliamo sincronizzare è che se uno scrittore sta modificando i dati non ci deve essere nessun lettore che sta leggendo e nessun altro scrittore che sta scrivendo.<br>
 È invece possibile avere più lettori contemporaneamente in lettura.</p>
 <p>In sostanza vogliamo <strong>un solo scrittore oppure più lettori</strong></p>
-<p>Esistono più soluzioni, alcune più ottimizzate di altre. Quella che vedremo sarà la più semplice, che rispetta la proprietà però potrebbe soffrire di <em>starvation</em>.</p>
-<p>Il codice dello scrittore è una classica sincronizzazione di una sezione critica dove ci accede solo un thread alla volta.<br>
-Codice <strong>scrittore</strong>:</p>
+<p>Esistono più soluzioni, alcune più ottimizzate di altre. Quella che vedremo sarà la più semplice, che rispetta la proprietà ma che potrebbe soffrire di <em>starvation</em>.</p>
+<p>Il codice dello scrittore è una classica sincronizzazione di una sezione critica dove ci accede solo un thread alla volta.</p>
+<p>Codice <strong>scrittore</strong>:</p>
 <pre class=" language-c"><code class="prism  language-c">semaphore scrittura<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
 
-Scrittore <span class="token punctuation">{</span>
+<span class="token function">Scrittore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     <span class="token function">P</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -125,28 +125,28 @@ Scrittore <span class="token punctuation">{</span>
 <p>Per implementare i lettori è utile utilizzare un contatore per tenere traccia di quanti lettori stanno leggendo:<br>
 se non è presente alcun scrittore in zona critica allora:</p>
 <ul>
-<li>il primo lettore che arriva deve bloccare l’entrata di uno scrittore</li>
+<li>il primo lettore che arriva deve impedire l’entrata di uno scrittore</li>
 <li>l’ultimo lettore ad uscire deve sbloccare lo scrittore</li>
 <li>tutti i lettori nel mezzo possono passare liberamente</li>
 </ul>
 <pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> num_lettori <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
 semaphore mutex <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
 
-Lettore <span class="token punctuation">{</span>
+<span class="token function">Lettore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
-    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge num_lettori e accoda i lettori</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge l'aggiornamento di num_lettori e accoda i lettori</span>
     num_lettori<span class="token operator">++</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment">// primo lettore</span>
-      <span class="token function">P</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// acquisisce la mutua esclusione in scrittura</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">1</span><span class="token punctuation">)</span>  <span class="token comment">// se è il primo lettore</span>
+      <span class="token function">P</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// blocca lo scrittore</span>
     <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token operator">&lt;</span> legge i dati <span class="token operator">&gt;</span>
 
-    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge num_lettori</span>
+    <span class="token function">P</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// protegge l'aggiornamento di num_lettori</span>
     num_lettori<span class="token operator">--</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>  <span class="token comment">// ultimo lettore </span>
-      <span class="token function">V</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// rilascia la mutua esclusione in scrittura</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>num_lettori <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>  <span class="token comment">// se è l'ultimo lettore </span>
+      <span class="token function">V</span><span class="token punctuation">(</span>scrittura<span class="token punctuation">)</span><span class="token punctuation">;</span>        <span class="token comment">// sblocca lo scrittore</span>
     <span class="token function">V</span><span class="token punctuation">(</span>mutex<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
   <span class="token punctuation">}</span>
@@ -154,7 +154,7 @@ Lettore <span class="token punctuation">{</span>
 </code></pre>
 <p>Il mutex è necessario per due ragioni:</p>
 <ol>
-<li>l’aggiornamento della variabile num_lettori è una <em>race condition</em></li>
+<li>l’aggiornamento della variabile <code>num_lettori</code> è una <em>race condition</em></li>
 <li>il primo lettore che arriva si bloccherà su <code>P(scrittura)</code> se c’è uno scrittore attivo, così facendo tutti gli altri lettori rimarranno in attesa su <code>P(mutex)</code>. Solo quando lo scrittore avrà finito allora il lettore eseguirà <code>V(mutex)</code> e lascerà passare tutti gli altri lettori (e se stesso). Vale lo stesso per il decremento finale</li>
 </ol>
 <p>Problema della <em><strong>starvation</strong></em>: se i lettori continuano ad arrivare, non si sbloccherà più il semaforo della scrittura e lo scrittore potrebbe rimanere in una attesa potenzialmente infinita.<br>
@@ -174,7 +174,7 @@ Ogni filosofo ha bisogno di due bacchette per mangiare e quindi non è possibile
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Ogni bacchetta è una risorsa condivisa tra due specifici filosofi, non possiamo quindi utilizzare un unico semaforo inizializzato a 5 in quanto significherebbe che a tutti i filosofi andrebbe bene una qualsiasi bacchetta.</p>
+<p>Ogni bacchetta è una risorsa condivisa tra due specifici filosofi, non possiamo quindi utilizzare un unico semaforo inizializzato a 5 in quanto significherebbe ai filosofi andrebbero bene due qualsiasi bacchette.</p>
 <p>Utilizziamo un array di 5 semafori inizializzati a 1.</p>
 <p>Nota anche che l’<code>i</code>-esimo filosofo utilizza la bacchetta con indice <code>i</code> e quella con indice <code>i+1</code> (ovviamente con modulo 5 in quanto il quinto filosofo utilizzerà la bacchetta <code>0</code>)</p>
 <pre class=" language-c"><code class="prism  language-c">semaphore bacchette<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
@@ -235,7 +235,7 @@ semaphore mutex <span class="token operator">=</span> <span class="token number"
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Questa soluzione non è ottimale in quanto sincronizza troppo: se un filosofo ha la seconda bacchetta occupata rimarrà in attesa bloccando anche gli altri filosofi che in realtà potrebbero mangiare.</p>
+<p>Questa soluzione non è ottimale in quanto sincronizza troppo: se un filosofo prende la prima bacchetta ma ha la seconda bacchetta occupata rimarrà in attesa bloccando anche gli altri filosofi che in realtà potrebbero mangiare.</p>
 <h3 id="filosofo-mancino">Filosofo mancino</h3>
 <p>Una terza opzione è quella forzare un filosofo a prendere prima la bacchetta di destra e poi quella di sinistra.<br>
 Così facendo rompiamo l’attesa circolare (lo stallo) che si verificava inizialmente.</p>

@@ -1,8 +1,8 @@
 ﻿# Sezione critica
 
-La **sezione critica** è una parte del codice soggette a **race condition**, cioè parti in cui più thread accedono a variabili condivise tra loro.
+La **sezione critica** è una parte del codice soggetta a **race condition**, cioè parti in cui più thread accedono e modificano a variabili condivise.
 
-Per evitare che i thread interferiscano tra di loro nella modifica delle variabili condivise dobbiamo sincronizzare i thread in modo la sezione critica sia eseguita in **mutua esclusione**: cioè un thread alla volta accede alla sezione critica.
+Per evitare che i thread interferiscano tra di loro nella modifica delle variabili condivise dobbiamo sincronizzare i thread in modo che la sezione critica sia eseguita in **mutua esclusione**: cioè un thread alla volta accede alla sezione critica.
 
 **La mutua esclusione va garantita a prescindere dalla schedulazione dei thread**
 
@@ -19,8 +19,7 @@ Nelle implementazioni reali solitamente non si usano implementazioni software.
 
 ## Tentativo 1: Lock
 
-Utilizziamo una variabile booleana globale chiamata `lock`. Tale variabile indica, quando è `true` che la sezione critica è occupata da un thread, mentre quando è `false`indica che la sezione critica è libera.
-
+Utilizziamo una variabile booleana globale chiamata `lock`. Tale variabile indica, quando è `true`, che la sezione critica è occupata da un thread, mentre quando è `false`indica che la sezione critica è libera.
 
 ```c
 global bool lock;
@@ -34,8 +33,8 @@ thread T {
 }
 ```
 
-**Problema**: può accadere che i due thread riescano a superare entrambi il ciclo while, questo perché il primo thread che entra non fa in tempo a settare `lock = true`.
-Per questo motivo la mutua esclusione non è garantita
+**Problema**: può accadere che i due thread riescano a superare entrambi il ciclo while, questo perché il primo thread che entra non fa in tempo a settare `lock = true` e un altro thread supera il while.
+Per questo motivo la mutua esclusione non è garantita.
 
 ## Tentativo 2: Turno
 
@@ -53,7 +52,7 @@ thread T0 {                        thread T1 {
 }                                   }
 ```
 
-Quinti il thread `T0` entra solo quando la variabile turno è `0` mentre `T1` entra solo quando turno è `1`
+Quindi il thread `T0` entra solo quando la variabile turno è `0` mentre `T1` entra solo quando turno è `1`
 
 La **mutua esclusione** è garantita in quanto la variabile turno non può valere `0` e `1` contemporaneamente.
 
@@ -62,10 +61,9 @@ Otteniamo che il thread `T0` si troverà spesso ad aspettare il turno di `T1` an
 
 Dobbiamo quindi garantire una proprietà chiamata **progresso**: se la sezione critica è libera e un thread vuole entrarci allora ci deve accedere subito.
 
-
 ## Tentativo 3: Pronto
 
-Utilizziamo un array booleano globale con valori inizializzati a `false`, come nel tentivo precedente anche in questo caso gli elementi dell'array indica che il thread i-esimo può accedere alla sezione critica
+Utilizziamo un array booleano globale con valori inizializzati a `false`, come nel tentativo 1 anche in questo caso gli elementi dell'array indicano che il thread i-esimo può accedere alla sezione critica
 
 ```c
 global boolean pronto[2] = false
@@ -89,12 +87,11 @@ La **mutua esclusione** è garantita in quanto se un thread è in sezione critic
 
 **Problema**: potrebbe capitare che entrambi impostino simultaneamente il proprio valore nell'array a true, se ciò accadesse rimarrebbero bloccati entrambi i thread nel while (si attendono a vicenda ma in realtà nessuno dei due è riuscito ad entrare in sezione critica)
 
-
 ## Algoritmo di Peterson
 
 Una soluzione funzionante è un algoritmo chiamato **algoritmo di Peterson** che è una combinazione dei due precedenti tentativi (turno e pronto)
 
-il tentativo con pronto è quasi buono se non fosse per lo stallo, ma integrando il tentativo con turno lo possiamo evitare: effettuiamo una turnazione solamente quando siamo nel caso problematico (entrambi i thread sono pronti). Mentre se un solo thread è pronto allora può procedere tranquillamente.
+Il tentativo con pronto sarebbe buono se non fosse per lo stallo, ma integrando il tentativo con turno lo possiamo evitare: effettuiamo una turnazione solamente quando siamo nel caso problematico (entrambi i thread sono pronti). Mentre se un solo thread è pronto allora può procedere tranquillamente.
 
 ```c
 global bool lock;
@@ -118,11 +115,9 @@ Analizziamo per esempio il thread `T0`:
 - se tale condizione non vale allora entro nella sezione 
 
 La mutua esclusione è garantita in quanto se un thread riesce ad entrare nella sezione critica allora il suo valore nell'array è `true` e il turno sarà del thread che è in sezione critica (altrimenti non avrebbe superato il while).
-La varibile `turno` ci garantisce che in caso di entrambi i thread pronti solamente uno dei due possa entrare in quanto non può valere `0` e `1` contemporaneamente
+La varibile `turno` ci garantisce che in caso di entrambi i thread pronti solamente uno dei due possa entrare in quanto non può valere `0` e `1` contemporaneamente.
 
-
-Nota che se la sezione critica è libera allora il thread che ci vuole accedere può entrare immediatamente in quanto la prima condizione del while risulterà falsa e quindi la seconda condizione viene direttamente ignorata
-
+Nota che se la sezione critica è libera allora il thread che ci vuole accedere può entrare immediatamente in quanto la prima condizione del while risulterà falsa e quindi la seconda condizione viene direttamente ignorata.
 
 ## Conclusione soluzione software
 
@@ -130,14 +125,14 @@ In generale seppur fattibili le soluzioni software presentano dei problemi:
 
 1. i cicli a vuoto consumano tempo di CPU
 2. Sono richieste variabili globali ed è necessaria una precisa sequenza di istruzioni.
-	I moderni compilatori spesso riordinano le istruzioni per ottimizzare le prestazioni, ma non tengono conto della possibile esecuzione parallela del codice, una riordinazione potrebbe portare e non sincronizzare più i thread correttamente.
+	I moderni compilatori spesso riordinano le istruzioni per ottimizzare le prestazioni, ma non tengono conto della possibile esecuzione parallela del codice, un riordinamento potrebbe portare e non sincronizzare più i thread correttamente.
 	Tali ottimizzazioni fatte dal compilatore andrebbero quindi disattivate per mantenere la correttezza, perdendo però delle possibili performance in più.
 
 ## Soluzioni hardware
 
 Esistono delle istruzioni speciali implementate in linguaggio macchina in modo che sia garantita la mutua esclusione su un pezzo di codice.
 
-Un esempio potrebbe essere l'istruzione **test_and_set**, che permette di testare un valore ed assegnarlo tramite una sequenza di istruzioni indivisibili. 
+Un esempio potrebbe essere l'istruzione **test_and_set**, che permette di testare un valore ed assegnarlo tramite una sequenza di istruzioni indivisibili.
 Possiamo immaginare che sia implementata in un modo del genere:
 
 ```c
@@ -150,7 +145,7 @@ boolean test_and_set(boolean *x) {
 
 Pone a true la variabile `x` (che viene passata per indirizzo) e poi ritorna il suo vecchio valore.
 
-potremmo usare questa istruzione per implementare il nostro primo tentativo con `lock` nella soluzione software:
+Potremmo usare questa istruzione per implementare il nostro primo tentativo con `lock` nella soluzione software:
 
 ```c
 global boolean lock;
@@ -170,9 +165,9 @@ Questa soluzione prende il nome di **spin-lock**
 
 ## XCHG
 
-Un'altra istruzione che ha la stessa funzionalità del test_and_set è l'istruzione (dell'architettura Intel) XCHG (pronunciata come "exchange"). 
+Un'altra istruzione che ha la stessa funzionalità del `test_and_set` è l'istruzione (dell'architettura Intel) XCHG (pronunciata come "exchange"). 
 
-A differenza di test_and_set, l'istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l'implementazione come segue:
+A differenza di `test_and_set`, l'istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l'implementazione come segue:
 
 ```c
 XCHG(boolean *x, *y) {

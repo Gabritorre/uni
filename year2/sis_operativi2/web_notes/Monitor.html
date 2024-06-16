@@ -30,7 +30,7 @@
 <p>I monitor sono un <strong>costrutto linguistico</strong> (o un meccanismo di sincronizzazione) atto a risolvere due dei principali problemi che si presentano utilizzando i semafori:</p>
 <ol>
 <li>la sincronizzazione è gestita in modo decentralizzato dai singoli thread.</li>
-<li>La gestione di multipli semafori per gestire situazioni non facilmente logiche da sincronizzare, con la possibilità di creare zone critiche all’interno di zone critiche che facilmente possono creare stalli.</li>
+<li>gestire multipli semafori in certe situazioni non è comodo, è comune la possibilità di creare stalli.</li>
 </ol>
 <p>I monitor possono essere ricondotti a degli oggetti (nel mondo della programmazione ad oggetti) che hanno dei dati (i campi) e delle procedure per accederci (i metodi).<br>
 Possiamo anche immaginarli come semafori solamente con la coda, senza il contatore.</p>
@@ -46,7 +46,7 @@ Possiamo anche immaginarli come semafori solamente con la coda, senza il contato
 </li>
 </ol>
 <p>La sottile differenza tra <strong>signal</strong> e <strong>notify</strong> può essere importante in determinati casi: con <strong>signal</strong> siamo sicuri che il thread in attesa verrà subito eseguito, mentre con la <strong>notify</strong> non possiamo darlo per certo, infatti altri thread potrebbero rubargli il posto possibilmente intaccando la correttezza del programma senza i giusti controlli.</p>
-<p>La <strong>notify</strong> è quindi meno restrittiva in quanto lascia lo il compito allo scheduler di sbloccare i thread, mentre la <strong>signal</strong> forza un cambio di thread allo scheduler.</p>
+<p>La <strong>notify</strong> è quindi meno restrittiva in quanto lascia il compito allo scheduler di sbloccare i thread, mentre la <strong>signal</strong> forza un cambio di thread allo scheduler.</p>
 <h2 id="produttore-e-consumatore-con-i-monitor">Produttore e consumatore con i monitor</h2>
 <p>Definiamo una pseudo-classe Monitor come segue</p>
 <pre class=" language-c"><code class="prism  language-c">Monitor mon <span class="token punctuation">{</span>
@@ -59,8 +59,8 @@ Possiamo anche immaginarli come semafori solamente con la coda, senza il contato
 	condition piene<span class="token punctuation">;</span>
 	condition vuote<span class="token punctuation">;</span>
 
-	<span class="token keyword">void</span> <span class="token function">produce</span> <span class="token punctuation">(</span><span class="token keyword">int</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-		<span class="token keyword">if</span> <span class="token punctuation">(</span>counter <span class="token operator">==</span> MAX<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">// se non ci sono celle libere in cui scrivere</span>
+	<span class="token keyword">void</span> <span class="token function">produce</span><span class="token punctuation">(</span><span class="token keyword">int</span> d<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>counter <span class="token operator">==</span> MAX<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">// se non ci sono celle libere</span>
 			vuote<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">}</span>
 		buffer<span class="token punctuation">[</span>write_index<span class="token punctuation">]</span> <span class="token operator">=</span> d<span class="token punctuation">;</span>
@@ -69,7 +69,7 @@ Possiamo anche immaginarli come semafori solamente con la coda, senza il contato
 		piene<span class="token punctuation">.</span><span class="token function">signal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	<span class="token punctuation">}</span>
 
-	<span class="token keyword">int</span> <span class="token function">consuma</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> <span class="token function">consuma</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		<span class="token keyword">if</span> <span class="token punctuation">(</span>couter <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">// se non ci sono celle da leggere</span>
 			piene<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 		<span class="token punctuation">}</span>
@@ -98,11 +98,11 @@ Possiamo anche immaginarli come semafori solamente con la coda, senza il contato
 </code></pre>
 <h3 id="signal-vs-notify">Signal vs notify</h3>
 <p>È importante l’uso della <code>signal()</code> e non della <code>notify()</code> in quanto:<br>
-immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da consumare.<br>
+immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da leggere.<br>
 Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>signal</code>, questo fa si che il consumatore che era nella <code>wait</code> riparta immediatamente (correttamente, infatti il counter adesso vale 1, che lui riporterà a 0).</p>
 <p>Se usassimo la <code>notify()</code> potremmo avere il seguente comportamento:<br>
-immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da consumare.<br>
-Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>notify</code>, questo comunica allo scheduler che può avviare il consumatore quando possibile. Se però un altro consumatore entra in esecuzione trova il counter a 1 e quindi esegue tranquillamente portando il counter di nuovo a 0. Ma poi lo scheduler fa ripartire il consumatore che era bloccato, ma adesso non c’è più un dato da leggere! (il counter è a 0 e lui lo porterà erroneamente a -1)</p>
+immaginiamo un consumatore che lancia una <code>wait</code> perché non ci sono celle da leggere.<br>
+Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>notify</code>, questo comunica allo scheduler che può avviare il consumatore quando possibile. Se però un altro consumatore entra in esecuzione trova il counter a 1 e quindi esegue tranquillamente portando il counter di nuovo a 0. Poi lo scheduler fa ripartire il consumatore che era bloccato, ma adesso non c’è più un dato da leggere (il counter è a 0 e lui lo porterà erroneamente a -1)</p>
 <h3 id="versione-corretta-con-notify">Versione corretta con notify</h3>
 <p>Una corretta implementazione con la <code>notify</code> richiede le seguenti modifiche</p>
 <pre class=" language-c"><code class="prism  language-c">Monitor mon <span class="token punctuation">{</span>
@@ -138,7 +138,7 @@ Arriva un produttore che incrementa il <code>counter</code> e lancia una <code>n
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Fare il controllo in un ciclo <code>while</code> permette di accertarsi che il counter sia effettivamente come richiesto prima di riprendere l’esecuzione.<br>
-Nota che non si tratta di <em>busy waiting</em> in quanto la <code>wait</code> sospende il thread.</p>
+Nota che <strong>non</strong> si tratta di <em>busy waiting</em> in quanto la <code>wait</code> sospende il thread.</p>
 <h2 id="filosofi-a-cena-con-i-monitor">Filosofi a cena con i monitor</h2>
 <p>Vediamo come implementare i filosofi a cena con la soluzione della <strong>raccolta atomica di entrambe le bacchette</strong>, questa soluzione non era facile con i semafori in quanto dovremmo rilasciare il mutex nel caso una delle bacchette non fosse disponibile.<br>
 Con i monitor risolviamo questo problema:</p>
@@ -181,7 +181,7 @@ Con i monitor risolviamo questo problema:</p>
 </code></pre>
 <p>Vediamo come implementare i filosofi a cena con la soluzione di <strong>limitare a 4 i filosofi che possono mangiare contemporaneamente</strong>.<br>
 Dobbiamo simulare un semaforo inizializzato a 4.</p>
-<p>Aggiorniamo il Monitor con 2 procedure: <code>siediti</code> e <code>alzati</code></p>
+<p>Aggiorniamo il Monitor con due procedure: <code>siediti</code> e <code>alzati</code></p>
 <pre class=" language-c"><code class="prism  language-c">Monitor tavola <span class="token punctuation">{</span>
   boolean bacchetta<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">{</span>true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">,</span> true<span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// presenza bacchette</span>
   condition filosofo<span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// code di attesa per i filosofi</span>
@@ -200,9 +200,7 @@ Dobbiamo simulare un semaforo inizializzato a 4.</p>
 	  sedie<span class="token operator">++</span><span class="token punctuation">;</span>	<span class="token comment">//libera la sedia</span>
 	  sedia<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//notifica il primo filosofo in attesa della sedia</span>
   <span class="token punctuation">}</span>
-  
-	
-	
+ 
   <span class="token keyword">void</span> <span class="token function">raccogli</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
   <span class="token punctuation">}</span>
@@ -215,7 +213,8 @@ Dobbiamo simulare un semaforo inizializzato a 4.</p>
 <p>Questi due metodi che abbiamo aggiunto simulano il comportamento della <code>sem_post()</code> e <code>sem_wait()</code> dei semafori.</p>
 <h2 id="lettori-e-scrittori-notifyall">Lettori e scrittori, <code>notifyAll</code></h2>
 <p>Possiamo schematizzare il comportamento di lettori e scrittori nel seguente modo</p>
-<pre class=" language-c"><code class="prism  language-c">Lettore <span class="token punctuation">{</span>
+<p>(<code>rw</code> è il monitor)</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">Lettore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     rw<span class="token punctuation">.</span><span class="token function">ini_leggi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -227,7 +226,7 @@ Dobbiamo simulare un semaforo inizializzato a 4.</p>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-Scrittore <span class="token punctuation">{</span>
+<span class="token function">Scrittore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
     rw<span class="token punctuation">.</span><span class="token function">ini_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -266,7 +265,7 @@ Scrittore <span class="token punctuation">{</span>
 
   <span class="token keyword">void</span> <span class="token function">ini_scrivi</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">while</span><span class="token punctuation">(</span>scrittore <span class="token operator">||</span> n_lettori <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      c<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende se c'è uno scrittore o qualche lettore</span>
+      c<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// attende se c'è uno scrittore o dei lettori</span>
     <span class="token punctuation">}</span>
     scrittore <span class="token operator">=</span> true<span class="token punctuation">;</span> <span class="token comment">// lo scrittore entra</span>
   <span class="token punctuation">}</span>

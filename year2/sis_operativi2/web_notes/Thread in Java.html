@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-04-23_Therad in Java</title>
+  <title>2024-04-23_Thread in Java</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -43,7 +43,8 @@ All’interno della nostra classe va sovrascritto il metodo <code>run()</code> c
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Alternativamente è possibile creare un thread usando il costruttore di <code>Thread</code> che prende in input un oggetto che implementa <code>Runnable</code>, tramite classe anonima, lambda oppure esplicitamente istanziando la nuova classe che implementa <code>Runnable</code> e passarla al costruttore di <code>Thread</code></p>
+<p>Alternativamente è possibile creare un thread usando il costruttore di <code>Thread</code> che prende in input un oggetto che implementa <code>Runnable</code>, tramite classe anonima, lambda oppure esplicitamente istanziando la nuova classe che implementa <code>Runnable</code> e passarla al costruttore di <code>Thread</code><br>
+<a href="https://gabritorre.github.io/uni/year2/prog_ogg2/web_notes/Thread.html">Appunti Programmazione ad oggetti 2 (Thread)</a></p>
 <h2 id="creazione-interruzione-e-attesa">Creazione, Interruzione e attesa</h2>
 <p>Vediamo un programma in cui creiamo dei thread, li facciamo “dormire” tramite una <code>sleep()</code>, li svegliamo tramite un <code>interrupt()</code>e attendiamo la loro terminazione con <code>join()</code></p>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">CreaTantiThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
@@ -69,7 +70,8 @@ All’interno della nostra classe va sovrascritto il metodo <code>run()</code> c
     <span class="token punctuation">}</span>
 
     <span class="token comment">/* main: crea i NTHREAD thread ne interrompe alcuni e attende la
-       terminazione. NOTA: con join devo gestire InterruptedException,
+       terminazione.
+       NOTA: con join devo gestire InterruptedException,
        ma nessuno interrompera' mai le join di questo main quindi la 
        ignoriamo */</span>
     <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String args<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> InterruptedException <span class="token punctuation">{</span>
@@ -105,9 +107,8 @@ All’interno della nostra classe va sovrascritto il metodo <code>run()</code> c
     <span class="token comment">//codice sincronizzato</span>
 <span class="token punctuation">}</span>
 </code></pre>
-dove “mutex” è un qualsiasi oggetto utilizzato per fare il <strong>lock</strong> del blocco di codice.</li>
+dove “mutex” è un qualsiasi <code>Object</code> utilizzato per fare il <strong>lock</strong> del blocco di codice.</li>
 </ul>
-<p>per ulteriore approfondimento: <a href="https://gabritorre.github.io/uni/year2/prog_ogg2/web_notes/Thread.html">Programmazione ad oggetti mod.2 - Thread</a></p>
 <h2 id="esempio">Esempio</h2>
 <pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Interferenze</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
     <span class="token keyword">static</span> <span class="token keyword">final</span> <span class="token keyword">int</span> MAX<span class="token operator">=</span><span class="token number">1000000</span><span class="token punctuation">;</span>           <span class="token comment">// iterazioni massime</span>
@@ -118,11 +119,11 @@ dove “mutex” è un qualsiasi oggetto utilizzato per fare il <strong>lock</st
         c <span class="token operator">=</span> cont<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
     <span class="token comment">//   i thread incrementano MAX volte il contatore</span>
-    <span class="token comment">//   NOTA: non possono fare c.count++ perche' e' privato! </span>
+    <span class="token comment">//   NOTA: non possono fare c.count++ perché è privato! </span>
     <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">int</span> i<span class="token punctuation">;</span>
         <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> MAX<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-            c<span class="token punctuation">.</span><span class="token function">incrementa</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// questo metodo e' in MUTEX perche' synchronized</span>
+            c<span class="token punctuation">.</span><span class="token function">incrementa</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// questo metodo è in MUTEX perché synchronized</span>
     <span class="token punctuation">}</span>
 
     <span class="token comment">//   il main crea i thread, attende la terminazione e stampa il contatore </span>
@@ -151,16 +152,18 @@ dove “mutex” è un qualsiasi oggetto utilizzato per fare il <strong>lock</st
  *  provare a togliere il 'synchronized' dal metodo incrementa per osservare 
  *  le interferenze */</span>
 <span class="token keyword">class</span> <span class="token class-name">Contatore</span> <span class="token punctuation">{</span>
-    <span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>    <span class="token comment">// privato: no accessi diretti!</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>    <span class="token comment">// privato: no accessi diretti</span>
 
     <span class="token comment">// il metodo synchronized garantisce mutua esclusione sullo stesso oggetto</span>
     <span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">incrementa</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         count<span class="token operator">++</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 
-    <span class="token comment">// non serve sincronizzarlo visto che lo usiamo alla fine dal main: gli altri</span>
-    <span class="token comment">// thread sono gia' terminati (la join garantisce che il main e' l'unico </span>
-    <span class="token comment">// thread in esecuzione) inoltre la lettura non crea mai interferenze</span>
+    <span class="token comment">/* non serve sincronizzarlo visto che lo usiamo alla fine dal main: gli altri
+    thread sono già terminati (la join garantisce che il main e' l'unico 
+     thread in esecuzione)
+     inoltre la lettura non crea mai interferenze
+     */</span>
     <span class="token keyword">int</span> <span class="token function">valore</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
         <span class="token keyword">return</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
     <span class="token punctuation">}</span>

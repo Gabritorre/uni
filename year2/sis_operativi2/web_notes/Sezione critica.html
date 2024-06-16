@@ -32,8 +32,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="sezione-critica">Sezione critica</h1>
-<p>La <strong>sezione critica</strong> è una parte del codice soggette a <strong>race condition</strong>, cioè parti in cui più thread accedono a variabili condivise tra loro.</p>
-<p>Per evitare che i thread interferiscano tra di loro nella modifica delle variabili condivise dobbiamo sincronizzare i thread in modo la sezione critica sia eseguita in <strong>mutua esclusione</strong>: cioè un thread alla volta accede alla sezione critica.</p>
+<p>La <strong>sezione critica</strong> è una parte del codice soggetta a <strong>race condition</strong>, cioè parti in cui più thread accedono e modificano a variabili condivise.</p>
+<p>Per evitare che i thread interferiscano tra di loro nella modifica delle variabili condivise dobbiamo sincronizzare i thread in modo che la sezione critica sia eseguita in <strong>mutua esclusione</strong>: cioè un thread alla volta accede alla sezione critica.</p>
 <p><strong>La mutua esclusione va garantita a prescindere dalla schedulazione dei thread</strong></p>
 <p>Ottenere la mutua esclusione possiamo tentare 2 diversi approcci:</p>
 <ul>
@@ -45,7 +45,7 @@
 Consideriamo per semplicità la concorrenza con solamente 2 thread.<br>
 Nelle implementazioni reali solitamente non si usano implementazioni software.</p>
 <h2 id="tentativo-1-lock">Tentativo 1: Lock</h2>
-<p>Utilizziamo una variabile booleana globale chiamata <code>lock</code>. Tale variabile indica, quando è <code>true</code> che la sezione critica è occupata da un thread, mentre quando è <code>false</code>indica che la sezione critica è libera.</p>
+<p>Utilizziamo una variabile booleana globale chiamata <code>lock</code>. Tale variabile indica, quando è <code>true</code>, che la sezione critica è occupata da un thread, mentre quando è <code>false</code>indica che la sezione critica è libera.</p>
 <pre class=" language-c"><code class="prism  language-c">global bool lock<span class="token punctuation">;</span>
 thread T <span class="token punctuation">{</span>
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
@@ -56,8 +56,8 @@ thread T <span class="token punctuation">{</span>
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p><strong>Problema</strong>: può accadere che i due thread riescano a superare entrambi il ciclo while, questo perché il primo thread che entra non fa in tempo a settare <code>lock = true</code>.<br>
-Per questo motivo la mutua esclusione non è garantita</p>
+<p><strong>Problema</strong>: può accadere che i due thread riescano a superare entrambi il ciclo while, questo perché il primo thread che entra non fa in tempo a settare <code>lock = true</code> e un altro thread supera il while.<br>
+Per questo motivo la mutua esclusione non è garantita.</p>
 <h2 id="tentativo-2-turno">Tentativo 2: Turno</h2>
 <p>Utilizziamo una variabile booleana globale chiamata <code>turno</code> inizializzata a <code>true</code>. Questa variabile indica quale thread può accedere alla sezione critica</p>
 <pre class=" language-c"><code class="prism  language-c">global turno <span class="token operator">=</span> <span class="token number">0</span>
@@ -70,13 +70,13 @@ thread T0 <span class="token punctuation">{</span>                        thread
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>                                <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
 <span class="token punctuation">}</span>                                   <span class="token punctuation">}</span>
 </code></pre>
-<p>Quinti il thread <code>T0</code> entra solo quando la variabile turno è <code>0</code> mentre <code>T1</code> entra solo quando turno è <code>1</code></p>
+<p>Quindi il thread <code>T0</code> entra solo quando la variabile turno è <code>0</code> mentre <code>T1</code> entra solo quando turno è <code>1</code></p>
 <p>La <strong>mutua esclusione</strong> è garantita in quanto la variabile turno non può valere <code>0</code> e <code>1</code> contemporaneamente.</p>
 <p><strong>Problema</strong>: immaginiamo che il thread <code>T0</code> voglia entrare molto spesso in sezione critica mentre il thread <code>T1</code> ci accede raramente.<br>
 Otteniamo che il thread <code>T0</code> si troverà spesso ad aspettare il turno di <code>T1</code> anche se la sezione critica è effettivamente libera (perché <code>T1</code> sta facendo altro)</p>
 <p>Dobbiamo quindi garantire una proprietà chiamata <strong>progresso</strong>: se la sezione critica è libera e un thread vuole entrarci allora ci deve accedere subito.</p>
 <h2 id="tentativo-3-pronto">Tentativo 3: Pronto</h2>
-<p>Utilizziamo un array booleano globale con valori inizializzati a <code>false</code>, come nel tentivo precedente anche in questo caso gli elementi dell’array indica che il thread i-esimo può accedere alla sezione critica</p>
+<p>Utilizziamo un array booleano globale con valori inizializzati a <code>false</code>, come nel tentativo 1 anche in questo caso gli elementi dell’array indicano che il thread i-esimo può accedere alla sezione critica</p>
 <pre class=" language-c"><code class="prism  language-c">global boolean pronto<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> false
 
 thread T0 <span class="token punctuation">{</span>                        thread T1 <span class="token punctuation">{</span> 
@@ -98,7 +98,7 @@ thread T0 <span class="token punctuation">{</span>                        thread
 <p><strong>Problema</strong>: potrebbe capitare che entrambi impostino simultaneamente il proprio valore nell’array a true, se ciò accadesse rimarrebbero bloccati entrambi i thread nel while (si attendono a vicenda ma in realtà nessuno dei due è riuscito ad entrare in sezione critica)</p>
 <h2 id="algoritmo-di-peterson">Algoritmo di Peterson</h2>
 <p>Una soluzione funzionante è un algoritmo chiamato <strong>algoritmo di Peterson</strong> che è una combinazione dei due precedenti tentativi (turno e pronto)</p>
-<p>il tentativo con pronto è quasi buono se non fosse per lo stallo, ma integrando il tentativo con turno lo possiamo evitare: effettuiamo una turnazione solamente quando siamo nel caso problematico (entrambi i thread sono pronti). Mentre se un solo thread è pronto allora può procedere tranquillamente.</p>
+<p>Il tentativo con pronto sarebbe buono se non fosse per lo stallo, ma integrando il tentativo con turno lo possiamo evitare: effettuiamo una turnazione solamente quando siamo nel caso problematico (entrambi i thread sono pronti). Mentre se un solo thread è pronto allora può procedere tranquillamente.</p>
 <pre class=" language-c"><code class="prism  language-c">global bool lock<span class="token punctuation">;</span>
 global boolean pronto<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span> <span class="token operator">=</span> false
 
@@ -120,14 +120,14 @@ thread T0 <span class="token punctuation">{</span>                              
 <li>se tale condizione non vale allora entro nella sezione</li>
 </ul>
 <p>La mutua esclusione è garantita in quanto se un thread riesce ad entrare nella sezione critica allora il suo valore nell’array è <code>true</code> e il turno sarà del thread che è in sezione critica (altrimenti non avrebbe superato il while).<br>
-La varibile <code>turno</code> ci garantisce che in caso di entrambi i thread pronti solamente uno dei due possa entrare in quanto non può valere <code>0</code> e <code>1</code> contemporaneamente</p>
-<p>Nota che se la sezione critica è libera allora il thread che ci vuole accedere può entrare immediatamente in quanto la prima condizione del while risulterà falsa e quindi la seconda condizione viene direttamente ignorata</p>
+La varibile <code>turno</code> ci garantisce che in caso di entrambi i thread pronti solamente uno dei due possa entrare in quanto non può valere <code>0</code> e <code>1</code> contemporaneamente.</p>
+<p>Nota che se la sezione critica è libera allora il thread che ci vuole accedere può entrare immediatamente in quanto la prima condizione del while risulterà falsa e quindi la seconda condizione viene direttamente ignorata.</p>
 <h2 id="conclusione-soluzione-software">Conclusione soluzione software</h2>
 <p>In generale seppur fattibili le soluzioni software presentano dei problemi:</p>
 <ol>
 <li>i cicli a vuoto consumano tempo di CPU</li>
 <li>Sono richieste variabili globali ed è necessaria una precisa sequenza di istruzioni.<br>
-I moderni compilatori spesso riordinano le istruzioni per ottimizzare le prestazioni, ma non tengono conto della possibile esecuzione parallela del codice, una riordinazione potrebbe portare e non sincronizzare più i thread correttamente.<br>
+I moderni compilatori spesso riordinano le istruzioni per ottimizzare le prestazioni, ma non tengono conto della possibile esecuzione parallela del codice, un riordinamento potrebbe portare e non sincronizzare più i thread correttamente.<br>
 Tali ottimizzazioni fatte dal compilatore andrebbero quindi disattivate per mantenere la correttezza, perdendo però delle possibili performance in più.</li>
 </ol>
 <h2 id="soluzioni-hardware">Soluzioni hardware</h2>
@@ -141,7 +141,7 @@ Possiamo immaginare che sia implementata in un modo del genere:</p>
 <span class="token punctuation">}</span>
 </code></pre>
 <p>Pone a true la variabile <code>x</code> (che viene passata per indirizzo) e poi ritorna il suo vecchio valore.</p>
-<p>potremmo usare questa istruzione per implementare il nostro primo tentativo con <code>lock</code> nella soluzione software:</p>
+<p>Potremmo usare questa istruzione per implementare il nostro primo tentativo con <code>lock</code> nella soluzione software:</p>
 <pre class=" language-c"><code class="prism  language-c">global boolean lock<span class="token punctuation">;</span>
 thread T <span class="token punctuation">{</span>
   <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
@@ -155,8 +155,8 @@ thread T <span class="token punctuation">{</span>
 Se <code>lock</code> è <code>true</code> viene ritornato dalla funzione <code>true</code> e il valore di <code>lock</code> rimane <code>true</code>, il thread rimane quindi in attesa nel ciclo while.</p>
 <p>Questa soluzione prende il nome di <strong>spin-lock</strong></p>
 <h2 id="xchg">XCHG</h2>
-<p>Un’altra istruzione che ha la stessa funzionalità del test_and_set è l’istruzione (dell’architettura Intel) XCHG (pronunciata come “exchange”).</p>
-<p>A differenza di test_and_set, l’istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l’implementazione come segue:</p>
+<p>Un’altra istruzione che ha la stessa funzionalità del <code>test_and_set</code> è l’istruzione (dell’architettura Intel) XCHG (pronunciata come “exchange”).</p>
+<p>A differenza di <code>test_and_set</code>, l’istruzione XCHG scambia in modo atomico il contenuto di due variabili booleane, possiamo immaginare l’implementazione come segue:</p>
 <pre class=" language-c"><code class="prism  language-c"><span class="token function">XCHG</span><span class="token punctuation">(</span>boolean <span class="token operator">*</span>x<span class="token punctuation">,</span> <span class="token operator">*</span>y<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     boolean tmp <span class="token operator">=</span> <span class="token operator">*</span>x<span class="token punctuation">;</span>
     <span class="token operator">*</span>x <span class="token operator">=</span> <span class="token operator">*</span>y<span class="token punctuation">;</span>
