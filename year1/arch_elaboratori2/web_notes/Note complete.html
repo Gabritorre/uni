@@ -1,0 +1,1525 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#nozioni-introduttive">Nozioni introduttive</a>
+<ul>
+<li><a href="#isa">ISA</a></li>
+<li><a href="#mips-e-arm">MIPS e ARM</a></li>
+<li><a href="#cisc-e-risc">CISC e RISC</a></li>
+</ul>
+</li>
+<li><a href="#cpu-pipeline">CPU pipeline</a>
+<ul>
+<li><a href="#funzionamento">Funzionamento</a></li>
+<li><a href="#hazard">Hazard</a></li>
+<li><a href="#schema-riassuntivo">Schema riassuntivo</a></li>
+<li><a href="#branch-prediction">Branch prediction</a></li>
+<li><a href="#eccezioni-ed-interruzioni">Eccezioni ed interruzioni</a></li>
+<li><a href="#ottimizzazione-istruzioni">Ottimizzazione istruzioni</a></li>
+<li><a href="#processori-superscalari">Processori superscalari</a></li>
+</ul>
+</li>
+<li><a href="#memoria-cache">Memoria cache</a>
+<ul>
+<li><a href="#memorie-sram">Memorie SRAM</a></li>
+<li><a href="#memorie-dram">Memorie DRAM</a></li>
+<li><a href="#memoria-flash">Memoria flash</a></li>
+<li><a href="#hard-disk">Hard disk</a></li>
+<li><a href="#gerarchia-delle-memoria">Gerarchia delle memoria</a></li>
+<li><a href="#cache-ad-accesso-diretto">Cache ad accesso diretto</a></li>
+<li><a href="#conflitti">Conflitti</a></li>
+<li><a href="#prestazioni">Prestazioni</a>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><a href="#cache-associative">Cache associative</a>
+<ul>
+<li></li>
+<li><a href="#gestione-dei-miss-nelle-cache-associative">Gestione dei miss nelle cache associative</a></li>
+<li><a href="#esempio-di-confronto-tra-tipi-cache">Esempio di confronto tra tipi cache</a></li>
+</ul>
+</li>
+<li><a href="#cache-a-più-livelli">Cache a più livelli</a></li>
+</ul>
+</li>
+<li><a href="#memoria-virtuale">Memoria virtuale</a>
+<ul>
+<li><a href="#vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</a></li>
+<li><a href="#traduzione-da-virtuale-a-fisico">Traduzione da virtuale a fisico</a></li>
+<li><a href="#page-fault">Page fault</a></li>
+<li><a href="#integrazione-della-memoria-cache">Integrazione della memoria cache</a></li>
+<li><a href="#gestione-della-memoria-virtuale-del-so">Gestione della memoria virtuale del SO</a></li>
+<li><a href="#context-switch">Context switch</a></li>
+<li><a href="#page-table-multilivello">Page table multilivello</a></li>
+</ul>
+</li>
+<li><a href="#armv8-isa">ARMv8 ISA</a>
+<ul>
+<li><a href="#simple-sequential-execution-sse">Simple Sequential Execution (SSE)</a></li>
+<li><a href="#registri">Registri</a></li>
+<li><a href="#formato-istruzioni">Formato istruzioni</a></li>
+<li><a href="#branches">Branches</a></li>
+<li><a href="#load-e-store">Load e Store</a></li>
+<li><a href="#system-calls">System calls</a></li>
+</ul>
+</li>
+<li><a href="#assembly-1">Assembly</a>
+<ul>
+<li><a href="#compilazione">Compilazione</a></li>
+<li><a href="#linking">Linking</a></li>
+<li><a href="#loading">Loading</a></li>
+<li><a href="#labels">Labels</a></li>
+<li><a href="#classici-costrutti">Classici costrutti</a></li>
+<li><a href="#array">Array</a></li>
+<li><a href="#stringhe">Stringhe</a></li>
+<li><a href="#funzioni">Funzioni</a></li>
+<li><a href="#stack">Stack</a></li>
+</ul>
+</li>
+<li><a href="#input-e-output">Input e output</a>
+<ul>
+<li><a href="#bus-sincrono">BUS sincrono</a></li>
+<li><a href="#bus-asincrono">Bus asincrono</a></li>
+<li><a href="#arbitraggio-a-daisy-chain">Arbitraggio a Daisy chain</a></li>
+<li><a href="#gestione-dellio-i-controller">Gestione dell’IO (I controller)</a></li>
+<li><a href="#dma">DMA</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="nozioni-introduttive">Nozioni introduttive</h1>
+<h2 id="isa">ISA</h2>
+<p><strong>l’Istruction Set Architecture</strong> si occupa principalmente di definire il formato e le istruzioni disponibili nel linguaggio macchina. Descrive inoltre:</p>
+<ul>
+<li>i registri disponibili</li>
+<li>i tipi di dato</li>
+<li>input e output</li>
+<li>gestione della memoria</li>
+</ul>
+<p>la realizzazione hardware di un ISA viene detta <strong>implementazione</strong>, ogni implementazione di ISA può variare in costi, performance e dimensioni.</p>
+<h3 id="assembly">Assembly</h3>
+<p>Il linguaggio assembly è un linguaggio a basso livello che associa alle sequenze di bit le relative istruzioni in un formato più  comprensibile per il programmatore.</p>
+<p>Il codice assembly dipende dall’ISA implementato dal processore.</p>
+<h2 id="mips-e-arm">MIPS e ARM</h2>
+<p>MIPS e ARM sono due architetture diverse, nella prima ci soffermeremo a livello teorico mentre nella secondo la affronteremo a livello più pratico.</p>
+<h3 id="mips">MIPS</h3>
+<ul>
+<li>Presenta 32 registri lunghi una <em>word</em> (4byte = 32bit)</li>
+<li>Tutte le istruzioni sono anche lunghe una <em>word</em> e seguono i seguenti formati:
+<ul>
+<li>R-type (istruzioni aritmetico logiche)<br>
+<img src="https://i.ibb.co/pLnQYk4/rtype.png" alt=""></li>
+<li>I-type (load word, store word e salto condizionato)<br>
+<img src="https://i.ibb.co/sq3qGc4/itype.png" alt=""></li>
+<li>J-type (salto non condizionato)<br>
+<img src="https://i.ibb.co/k6kFS5v/jtype.png" alt=""></li>
+</ul>
+</li>
+<li>Ogni registro del MIPS ha un nominativo associato e ha un utilizzo specifico:<br>
+<img src="https://i.ibb.co/6RtjHqL/registers.png" alt=""></li>
+<li><strong>Modi di indirizzamento</strong> rappresentano l’utilizzo degli operatori di una istruzione.<br>
+<img src="https://i.ibb.co/nQjt4Qz/add-mode.png" alt=""></li>
+</ul>
+<h2 id="cisc-e-risc">CISC e RISC</h2>
+<p>CSIC e RISC sono due tipologie di architettura che differiscono molto tra loro.</p>
+<p>L’architettura RISC (Reduced Instruction Set Computer) è utilizzata sia dai processori ARM che MIPS e come dice il nome presenta un ridotto numero di istruzioni ma molti registri, è più semplice da implementare, ha consumi minori e quindi più efficiente</p>
+<p>d’altra parte l’architettura CISC (Complex Instruction Set computer) è utilizzata dai processori Intel con la loro versione x86 e si tratta di un’architettura più completta, che presenta un numero maggiore di istruzioni e pochi registri, le istruzioni hanno formato variabile e le istruzioni possono avere più operandi del normale. In sintesi è molto più complesso implementare questo tipo di architettura.<br>
+È però più flessibile perché puoi fare la stesso cosa in molti modi diversi e supporta meglio i sistemi legacy</p>
+<h1 id="cpu-pipeline">CPU pipeline</h1>
+<p>La caratteristica che contraddistingue questa CPU da quella a singolo e multi ciclo è il fatto che la CPU pipeline riesce a lavorare in <strong>parallelo su più istruzioni</strong>.</p>
+<p>Sebbene questo non renda le singole istruzioni più veloci (in alcuni casi pure più lente) rappresenta un notevole aumento performance per quanto riguarda il numero di istruzioni completate in unità di tempo rispetto agli altri due tipi di CPU.</p>
+<h2 id="funzionamento">Funzionamento</h2>
+<p>Per capire il funzionamento prendiamo in considerazione lo schema per la cpu a singolo ciclo (con lo stesso instruction set del modulo 1)</p>
+<p><img src="https://i.ibb.co/WN9fMFr/cingolo-ciclo.png" alt="Cingolo ciclo"></p>
+<p>Suddividiamolo in 5 fasi che rappresentano gli step dell’esecuzione di una istruzione:</p>
+<ul>
+<li>Instruction fetch (<strong>IF</strong>)<br>
+lettura dell’istruzione e incremento del PC</li>
+<li>Instruction decode (<strong>ID</strong>)<br>
+decodifica dell’istruzione e lettura registri coinvolti</li>
+<li>Execute (<strong>EX/EXE</strong>)<br>
+calcolo opearzione aritmetica / calcolo indirizzi di memoria ram/ calcolo indirizzo branch</li>
+<li>Memory access (<strong>MEM</strong>)<br>
+accesso alla memoria ram per lettura o scrittura</li>
+<li>Write back (<strong>WB</strong>)<br>
+scrittura nei registri</li>
+</ul>
+<p><img src="https://i.ibb.co/41gjSF4/5steps.png" alt=""></p>
+<p>L’idea sarebbe che queste 5 istruzioni vengono fatte contemporaneamente ma su istruzioni diverse.</p>
+<p><img src="https://i.ibb.co/L924VjJ/example.png" alt=""></p>
+<p>Dato che ciascuna istruzione ha bisogno del risultato della fase precedente abbiamo bisogno di inserire dei <strong>registri intermedi</strong> per memorizzarmi i vari risultati tra i cicli di clock.</p>
+<p><img src="https://i.ibb.co/KDDdDH8/reg-interm.png" alt=""></p>
+<p>Infine vanno aggiunti i segnali di controllo.</p>
+<h2 id="hazard">Hazard</h2>
+<p>Con il termine hazard o criticità si indica un fenomeno in cui l’esecuzione dell’istruzione dipende dai risultati dell’istruzione precedente, creando così una <strong>dipendenza</strong>.</p>
+<p>Le dipendenze creano degli <strong>stalli</strong> nella CPU. Lo stallo viene scoperto durante la fase ID e l’istruzione stessa e tutte le successive entrano in stallo.</p>
+<p>Lo stallo viene risolto solo quando l’istruzione dipendente viene completata così da sbloccare l’istruzione che la richiedeva.</p>
+<p>Dato che ogni fase deve lavorare ad ogni ciclo di clock, quando si presenta uno stallo è possibile che per alcune fasi non ci siano istruzioni da fare, vengono quindi introdotte le istruzioni <strong>nop</strong> o <strong>bubble</strong> cioè delle istruzioni che non fanno nulla ma servono a tenere impegnata quella fase.</p>
+<p>Esempio di istruzioni che creano uno stallo:</p>
+<pre><code>add $s1, $t0, $t1
+sub $s2, $s1, $s3 
+</code></pre>
+<p>l’istruzione <code>sub</code> entra in stallo perché richiede il registro $s1 che non è stato ancora aggiornato dall’istruzione <code>add</code>. Diciamo che la seconda istruzione dipende dalla precedente</p>
+<p>La dipendenza implica che non possiamo modificare l’ordine delle istruzione senza alterare il risultato</p>
+<h3 id="tipi-di-dipendenza-data-hazards">Tipi di dipendenza (data hazards)</h3>
+<h4 id="dipendenza-raw">Dipendenza RAW</h4>
+<p><em>Read After Write</em> avviene quando un’istruzione legge un registro scritto da una istruzione precedente.</p>
+<p>Es.</p>
+<pre><code>add $s1, $t0, $t1 // write $s1
+sub $t2, $s1, $t3 // read $s1
+</code></pre>
+<h4 id="dipendenza-waw">Dipendenza WAW</h4>
+<p><em>Write After Write</em> avviene quando un’istruzione scrive in un registro scritto da una istruzione precedente.</p>
+<p>Es.</p>
+<pre><code>add $s1, $t0, $t1 // write $s1
+sub $s1, $s2, $t3 // write $s1
+</code></pre>
+<h4 id="dipendenza-war">Dipendenza WAR</h4>
+<p><em>Write After Read</em> avviene quando un’istruzione scrive in un registro letto da una istruzione precedente.</p>
+<p>Es.</p>
+<pre><code>add $t0, $s1, $t1 // read $s1
+sub $s1, $s2, $t3 // write $s1
+</code></pre>
+<p>Mentre le dipendenze di tipo WAR e WAW possono generare problemi sono nel caso in cui la cpu esegue le istruzioni in modo disordinato (out-of-order execution),<br>
+la dipendenza che capita più spesso e anche più importante è quella di tipo RAW:</p>
+<p><img src="https://i.ibb.co/2sXVrWx/esempio-dipendenze.png" alt=""></p>
+<p>La gestione degli stalli viene fatta dalla <em>Hazard detection unit</em> che è contenuta nella fase ID e quello che fa è semplicemente confrontare i registri coinvolti nell’istruzione corrente con quegli delle istruzioni precedenti.</p>
+<h3 id="register-file-ottimizzato">Register file ottimizzato</h3>
+<p>Il register file ottimizzato è un register file che permette la lettura e la scrittura nello stesso ciclo di clock, più precisamente nella fase di salita del clock avviene la scrittura mentre nella fase di discesa avviene la lettura.</p>
+<p>Questo permette di allineare la fase WB con quella ID di due istruzioni diverse.</p>
+<h3 id="forwarding">Forwarding</h3>
+<p>Per ottimizzare le dipendenze di tipo RAW che sono le più frequenti possiamo utilizzare il fatto che il dato precedente di cui abbiamo bisogno viene prodotto nello stato EXE e quindi non serve aspettare la fase WB. Questa tecnica viene chiamata <strong>forwarding</strong>.</p>
+<p>Esempio con register file ottimizzato e forwarding.</p>
+<p><img src="https://i.ibb.co/bWDZ3dQ/rfott-forwarding.png" alt=""></p>
+<p>il forwarding non risolve però le istruzioni che dipendono da una <code>lw</code> dato che producono il dato nella fase MEM e non EXE. in questo caso si è costretti a mettere una <code>nop</code> dopo l’istruzione lw.</p>
+<h3 id="gestire-i-salti">Gestire i salti</h3>
+<p>Una <code>beq</code> impiega 4 cicli ad aggiornare il valore del PC e fino a che il PC non viene aggiornato non si sa se bisogna saltare oppure eseguire normalmente le istruzioni successive.<br>
+In quei 4 cicli l’istruzione subito successiva alla <code>beq</code> è arrivata allo stadio EXE e quindi non ha ancora modificato alcun registro, quindi nel caso la <code>beq</code> dovesse saltare sostituiamo le istruzioni che sono entrate nella pipeline con delle nop e ripartiamo dal salto, mentre nel caso la <code>beq</code> non salti non abbiamo perso nessun ciclo di clock.</p>
+<p>In caso di salto però perdiamo 3 cicli di clock inutilmente, possiamo ottimizzare la nostra CPU facendo fare il confronto tra i registri nella fase ID al posto della EXE, perdendo così solo un ciclo e non tre. Questa tecnica viene chiamata <strong>delayed branch</strong></p>
+<p>Si noti che questo implica che l’istruzione subito dopo la <code>beq</code> <strong>viene sempre completata</strong> quindi sta al programmatore (oppure al compilatore se in grado) decidere come gestire il comportamento, esplicitando una <code>nop</code> oppure inserendo una istruzione che non modifica la semantica del programma.</p>
+<p>Il fatto di aver spostare il confronto nella fase ID ci porta un problema: il forwarding mandava i dati alla fase EXE e non alla fase ID, per poter mandare i valori corretti nella fase ID abbiamo bisogna di mettere una nop.<br>
+<img src="https://i.ibb.co/jVZ2FtK/exebeq.png" alt=""></p>
+<p>Mentre se abbiamo una dipendenza tra <code>beq</code> e <code>lw</code> abbiamo bisogno di 2 nop</p>
+<p><img src="https://i.ibb.co/rfW2yJ1/exelwbeq.png" alt=""></p>
+<h2 id="schema-riassuntivo">Schema riassuntivo</h2>
+<h3 id="tabella-con-forwarding">Tabella Con forwarding</h3>
+
+<table>
+<thead>
+<tr>
+<th>Istruzione</th>
+<th>produce alla fase</th>
+<th>riceve alla fase</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>aritmetiche</td>
+<td>EXE</td>
+<td>EXE</td>
+</tr>
+<tr>
+<td>branch</td>
+<td>ID</td>
+<td>ID</td>
+</tr>
+<tr>
+<td>lw*</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+</tr>
+<tr>
+<td>sw*</td>
+<td>EXE (per l’indirizzo)</td>
+<td>EXE (per l’indirizzo) / MEM (per il valore)</td>
+</tr>
+</tbody>
+</table><p>*Nel caso di <code>lw</code> per esempio se l’istruzione è fatta in questo modo <code>lw $3, 32($5)</code> dobbiamo ricevere il $5 nella fase EXE mentre dobbiamo ricevere $3 nella fase MEM.<br>
+Per quanto riguarda <code>sw</code> funziona allo stesso modo.</p>
+<p><strong>NB solo in caso di register file ottimizzato è possibile allineare le fasi ID e WB</strong></p>
+<h2 id="branch-prediction">Branch prediction</h2>
+<p>il branch prediction è una tecnica che consiste nel prevedere quale sarà il risultato di una branch in modo da mettere anticipatamente la prossima istruzione in pipeline.</p>
+<ul>
+<li>Se indovina allora non abbiamo perso nessun ciclo di clock</li>
+<li>Se sbaglia bisogna annullare l’istruzione e inserire in pipeline quella corretta (se ne occupa l’hazard detection unit).</li>
+</ul>
+<p>Una prima versione molto semplice sarebbe quella di assumere sempre che la branche non salti, ma non è una soluzione ottimale.</p>
+<p>Si opta invece per una <strong>previsione dinamica</strong> che si basa nel guardare il comportamento delle branch precedentemente eseguite.</p>
+<p>Viene fatto attraverso una tabella contenente:</p>
+<ul>
+<li><strong>Indirizzo</strong> stesso della istruzione <strong>branch</strong></li>
+<li><strong>L’indirizzo</strong> del <strong>salto</strong> nel caso in cui la branch sia vera</li>
+<li>Uno <strong>stato</strong> che rappresenta se nell’ultima esecuzione di quella branch abbia saltato o meno.</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>branch addr.</th>
+<th>branch target addr.</th>
+<th>status</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x001000</td>
+<td>0x0010F4</td>
+<td>01</td>
+</tr>
+<tr>
+<td>0x001020</td>
+<td>0x001040</td>
+<td>00</td>
+</tr>
+<tr>
+<td>0x001034</td>
+<td>0x001300</td>
+<td>10</td>
+</tr>
+<tr>
+<td>0x001208</td>
+<td>0x001008</td>
+<td>01</td>
+</tr>
+</tbody>
+</table><p>Quello che viene fatto in sostanza è:</p>
+<ol>
+<li>fetch dell’istruzione</li>
+<li>controlliamo se l’idirizzo dell’istruzione è dentro la tabella</li>
+<li>se è presente allora l’istruzione che stiamo guardando è una branch che è già stata eseguita in passato</li>
+<li>guardiamo lo stato per decidere se assumere il salto oppure no</li>
+</ol>
+<h3 id="codifica-dello-stato">Codifica dello stato</h3>
+<p>Come detto lo stato nella tabella rappresenta il precedente risultato di una specifica branch, immaginando lo stato ad 1 bit possiamo codificare lo stato come:</p>
+<p>1 = salto<br>
+0 = non salto</p>
+<p>Avere solo un bit però non è ottimale nei casi in cui si hanno due cicli innestati (cosa che può capitare molto spesso), infatti i casi reali e i casi predetti non coincidono completamente</p>
+<pre><code>outer:
+	inner:
+	beq -,-,inner
+beq -,-,outer
+</code></pre>
+<p>guardando la <code>beq</code> del ciclo <code>inner</code> immaginiamo i risultati della beq.</p>
+<p>reali: 111110111110111110…<br>
+pred: 11111<strong>10</strong>1111<strong>10</strong>11110…</p>
+<p>È possibile migliorare questa situazione utilizzando uno stato a due bit, possiamo pensarla come questa automa:</p>
+<p><img src="https://i.ibb.co/XxPyytY/Screenshot-1.png" alt=""></p>
+<h2 id="eccezioni-ed-interruzioni">Eccezioni ed interruzioni</h2>
+<p>Ci sono dei casi particolari in cui il normale flusso del codice può essere cambiato, questi casi particolari sono <strong>le eccezioni e le interruzioni</strong></p>
+<ul>
+<li>Si parla di <strong>eccezioni</strong> quando la causa è interna al processore come errori aritmetici, utilizzo di funzioni indefinite o altre sviste di programmazione (sono tendenzialmente software)</li>
+<li>Si parla di <strong>interruzioni</strong> quando la causa è esterna al processore come l’interazione con dei dispositivi IO (sono tendenzialmente hardware)</li>
+</ul>
+<p>Quando si verifica una eccezione o una interruzione la CPU deve:</p>
+<ul>
+<li>Interrompere l’esecuzione del programma utente (quindi anche le istruzioni che sono già entrate in pipeline</li>
+<li>Salvare lo stato di esecuzione del programma, nel MIPS solo il PC viene salvato in un registro chiamato <em>Exception program counter</em> (EPC)</li>
+<li>Trasferire il controllo al sistema operativo modificando opportunamente il PC, quando il sistema operativo ha gestito l’eccezione l’esecuzione riprende.</li>
+</ul>
+<p>Esistono due approcci per permettere al sistema operativo di gestire le eccezioni:</p>
+<ol>
+<li>l’utilizzo di un registro speciale <em>CAUSE register</em> (nel MIPS) che può assumere dei valori diversi, ognuno dei quali rappresenta un tipo di eccezione</li>
+<li>la tecnica <em>Vectorized interrupts</em> in cui ogni eccezione ha un corrispettivo indirizzo a cui saltare nel caso si verifichi</li>
+</ol>
+<h2 id="ottimizzazione-istruzioni">Ottimizzazione istruzioni</h2>
+<p>Dato il seguente codice:<br>
+(Assumiamo di avere il forwarding e il register file ottimizzato)</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $t0, $t0, 20
+4| sw $t0, 0($s1)
+5| addi $s0, $s0, 4
+6| addi $s1, $s1, 4
+7| bne $s0, $a0, Loop
+8| nop
+</code></pre>
+<p>è possibile effettuare alcune ottimizzazioni.</p>
+<ol>
+<li>individuiamo le dipendenze di tipo RAW
+<ul>
+<li>la riga 3 dipende dalla 2</li>
+<li>la riga 4 dipende dalla 3</li>
+<li>la riga 7 dipende dalla 5</li>
+</ul>
+</li>
+<li>individuiamo le dipendenze di tipo WAR
+<ul>
+<li>la riga 5 dipende dalla 2</li>
+<li>la riga 6 dipende dalla 4</li>
+</ul>
+</li>
+</ol>
+<p><img src="https://i.ibb.co/2MLV7TM/ottimizzaz.png" alt=""></p>
+<p><strong>Le ottimizzazioni consistono nel modificare l’ordine delle istruzioni in modo che la semantica del codice rimanga la stessa  e anche le dipendenze devono sempre andare dall’alto al basso</strong></p>
+<p>La prima ottimizzazione che possiamo fare è rimpiazzare la nop con un istruzione precedente.</p>
+<p>possiamo spostare la riga 6 al posto della <code>nop</code> ottenendo così</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $t0, $t0, 20
+4| sw $t0, 0($s1)
+5| addi $s0, $s0, 4
+6| bne $s0, $a0, Loop
+7| addi $s1, $s1, 4
+</code></pre>
+<p>Ricordiamo che indipendentemente dal risultato della <code>bne</code> l’istruzione che sta subito sotto viene sempre eseguita, quindi la semantica del programma non viene cambiata in questo caso.</p>
+<p>Nel codice sono presenti degli stalli per cui vanno messe delle <code>nop</code> aggiuntive che esplicitino gli stalli</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| nop
+4| addi $t0, $t0, 20
+5| sw $t0, 0($s1)
+6| addi $s0, $s0, 4
+7| nop
+8| bne $s0, $a0, Loop
+9| addi $s1, $s1, 4
+</code></pre>
+<p>tenendo sempre presente le dipendenze possiamo anche in questo caso rimpiazzare le <code>nop</code></p>
+<p><img src="https://i.ibb.co/z649wRx/ottimizzaz.png" alt=""></p>
+<p>Possiamo infatti spostare la riga 6 al posto della prima <code>nop</code>, facendo questo risolviamo anche la seconda <code>nop</code> dato che passano sufficienti istruzioni tra la dipendenza tra <code>addi</code> e la <code>bne</code></p>
+<p>Dopo le ottimizzazioni il codice sarà</p>
+<pre><code>1| Loop:
+2| lw $t0, 0($s0)
+3| addi $s0, $s0, 4
+4| addi $t0, $t0, 20
+5| sw $t0, 0($s1)
+6| bne $s0, $a0, Loop
+7| addi $s1, $s1, 4
+</code></pre>
+<p><img src="https://i.ibb.co/BVR7sDJ/ottimizzaz.png" alt=""></p>
+<h2 id="processori-superscalari">Processori superscalari</h2>
+<p>Per aumentare il parallelismo della nostra CPU con lo scopo di aumentare le prestazioni possiamo replicare dei componenti per permettere alla CPU di far entrare più istruzioni contemporaneamente nella pipeline, questa tecnica è chiamata <strong>multiple issue</strong></p>
+<p>Questo ci permette in alcuni casi di completare più di una istruzione in un solo ciclo di clock</p>
+<p>Esistono due approcci per implementare il <em>multiple issue</em>:</p>
+<h3 id="multiple-issue-statico">Multiple issue statico</h3>
+<p>Questo metodo sfrutta il compilatore per raggruppare le istruzione da inserire in pipeline, il compilatore deve ovviamente fare attenzione alle dipendenze.</p>
+<p>Nonostante i suoi vantaggi (come la rimozione del branch prediction e il fatto che in fase di esecuzione risulta fluida e prestante perché il grosso lo ha già fatto il compilatore) questo metodo non è più utilizzato al giorno d’oggi perché:</p>
+<ul>
+<li>Non tutti gli stalli sono predicibili in fase di compilazione (come i cache miss)</li>
+<li>Il compilatore non può speculare sul risultato dei branch (il dynamic branch prediction non è possibile)</li>
+<li>Il codice prodotto dipende anche dalla singola versione della CPU, ciò non lo rende molto versatile e portabile.</li>
+</ul>
+<h3 id="multiple-issue-dinamico">Multiple issue dinamico</h3>
+<p>L’approccio usato nei processori odierni è quello dinamico, in cui la CPU decide <strong>quante</strong>, e in un caso anche <strong>quali</strong>, istruzioni mettere in pipeline ad ogni ciclo di clock. I processori che utilizzano questo approccio vengono chiamati <strong>superscalari</strong>.</p>
+<p>Esistono due tipi di versione:</p>
+<ul>
+<li><strong>in-order</strong> la CPU decide solo quante istruzioni mandare in pipeline, ma l’ordine delle istruzioni rimane quello sequenziale del codice (ad esempio utilizzato dai processori ARM nei Raspberry PI)</li>
+<li><strong>out-of-order</strong> la CPU decide quante e anche quali istruzioni mandare in pipeline, facendo ovviamente attenzione a non cambiare la semantica del codice (ad esempio utilizzato dai processori Intel e AMD odierni)</li>
+</ul>
+<p>Le uniche dipendenze che la CPU deve gestire attentamente nella versione dinamica sono quelle di tipo RAW, le dipendenze WAW e WAR possono essere risolte eseguendo in parallelo tutti gli step delle istruzione avendo cura di eseguire nel corretto ordine solo lo step WB.</p>
+<h1 id="memoria-cache">Memoria cache</h1>
+<p>Nel mondo della tecnologia le memorie presentano dei limiti tecnici</p>
+<ul>
+<li>Le memoria lente sono capienti ed economiche</li>
+<li>Le memorie veloci sono piccole e costose</li>
+</ul>
+<p>Esistono principalmente due tipologie di memorie: le SRAM e le DRAM</p>
+<h2 id="memorie-sram">Memorie SRAM</h2>
+<p>SRAM sta per Static Random Access Memory.</p>
+<ul>
+<li>Sono realizzate con molti componenti</li>
+<li>Sono molto veloci</li>
+<li>Sono relativamente grandi a livello di dimensioni</li>
+<li>Consumano molta energia</li>
+<li>Non hanno bisogno di un refresh periodico dei dati memorizzati</li>
+</ul>
+<p>Le memorie <strong>cache</strong> utilizzano questo di memoria</p>
+<h2 id="memorie-dram">Memorie DRAM</h2>
+<p>DRAM sta per Dynamic Random Access Memory.</p>
+<ul>
+<li>Sono realizzate con pochi componenti</li>
+<li>Sono più lente delle SRAM</li>
+<li>Occupano meno spazio</li>
+<li>Consumano meno energia</li>
+<li>Necessitano di un refresh periodico dei dati memorizzati (motivo per cui si chiamano Dynamic)</li>
+</ul>
+<p>Esistono altre versioni delle DRAM come le Syncrhonize DRAM (SDRAM) che utilizzano un clock sincronizzato con la CPU e le Double Data Rate SDRAM (DDR SDRAM) che possono trasferire dati sia sul fronte di salita sia su quello di discesa, raddoppiando la banda</p>
+<p>Le classiche memorie RAM utilizzano questa tipologia di memoria</p>
+<h2 id="memoria-flash">Memoria flash</h2>
+<p>Un altro tipo di memoria sono le <strong>Memorie flash</strong> che sono di tipo EEPROM (Electrically Erasable Programmable Read Only Memory),</p>
+<p>Una memoria flash molto utilizzata sono gli SSD (Solid state disk) i quali sono più lenti delle memoria DRAM però riescono a mantenere il dato anche se non alimentate, questo grazie alla tecnologia NAND flash.</p>
+<p>Il problema principale di questi tipo di memoria è l’usura nel tempo. Per ridurre questo problema è presente un controller (wear leveling) che permette di distribuire le scritture dei dati in modo uniforme in tutto il disco, così che non si usurino maggiormente alcune parti rispetto ad altre.</p>
+<p>Dato che il tempo di accesso è uguale in tutte le parti del disco, avere i dati sparsi a caso nel disco non rappresenta un problema di prestazioni. Per questo la deframmentazione (processo per il quale si cerca di mettere i dati relativi allo stesso file tutti molto vicini nelle celle del disco) è inutile e anzi riduce la vita dell’ssd.</p>
+<h2 id="hard-disk">Hard disk</h2>
+<p>Questo tipo di memoria sempre meno utilizzato a favore degli ssd sono:</p>
+<ul>
+<li>molto capienti</li>
+<li>economici</li>
+<li>è composto da dischi magnetici in movimento e una testina che ha il compito di scrivere e leggere i dati</li>
+<li>decisamente più lento degli ssd</li>
+<li>sensibile a vibrazioni</li>
+</ul>
+<p>In questo caso la deframmentazione ha senso dato che riordinare i dati aiuta la testina a leggere consecutivamente i dati che gli interessano migliorando le prestazioni.</p>
+<h2 id="gerarchia-delle-memoria">Gerarchia delle memoria</h2>
+<p>In un sistema completo vengono utilizzate tutte le tipologie di memoria, ognuna in un ambito diverso:</p>
+<p>Le memorie più veloci vanno messe più vicine possibile al processore dato che i dati che cerca la CPU vengono cercate a cascata prima nelle memoria più veloci e poi, se il dato non viene trovato, cerca nelle altre memorie.</p>
+<p>Le memorie più vicine alla CPU (chiamate memoria cache) contengono le copie di alcuni dati che si trovano nei livelli più lontani.<br>
+Il livello più lontano di tutti contiene tutti dati.</p>
+<h3 id="principio-di-località">Principio di località</h3>
+<p>Il principio di località afferma che non tutte le parti del codice hanno la stessa probabilità di essere eseguite, alcune istruzioni vengono eseguite molto spesso e altre molto meno (pensa ai cicli per esempio)</p>
+<ul>
+<li><strong>Località temporale</strong> la località temporale dice che quando si fa riferimento ad un dato c’è la tendenza a fare riferimento allo stesso dato in breve tempo (istruzioni di un ciclo).</li>
+<li><strong>Località spaziale</strong> la località spaziale dice che quando si fa riferimento ad un dato c’è la tendenza a fare riferimento ai dati adiacenti (scorrere gli array).</li>
+</ul>
+<h3 id="terminologia">Terminologia</h3>
+<p>L’unità di informazione minima è detta <strong>blocco</strong> Quando il dato viene trovato nel livello di memoria si dice <strong>hit</strong> mentre se nel livello non si trova il dato si dice <strong>miss</strong>.</p>
+<p>é possibile calcolare il rapporto tra gli accessi e la quantità di hit, lo stesso vale per i miss, questi vengono chiamati <strong>hit-rate</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mfrac><mtext>hit</mtext><mtext>accessi</mtext></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\frac{\text{hit}}{\text{accessi}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.22511em; vertical-align: -0.345em;"></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.880108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">accessi</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">hit</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></span> e <strong>miss-rate</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mfrac><mtext>mis</mtext><mtext>accessi</mtext></mfrac><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\frac{\text{mis}}{\text{accessi}})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.2065em; vertical-align: -0.345em;"></span><span class="mopen">(</span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.861502em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">accessi</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">mis</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span></span></span></span></span></p>
+<p>Viene chiamato <strong>hit time</strong> il tempo impiegato per trovare il dato nella prima memoria in cui guarda il processore.<br>
+Viene chiamato <strong>miss penalty</strong> il tempo necessario per trovare il dato nelle memoria inferiori + il tempo a passare tali dati alla CPU.</p>
+<p>Le memorie cache sono delle memorie che nascono con lo scopo di aumentare l’hit-rate e minimizzare i tempi di accesso per i dati utilizzati più frequentemente.</p>
+<h2 id="cache-ad-accesso-diretto">Cache ad accesso diretto</h2>
+<p>Per progettare una cache bisogna decidere:</p>
+<ul>
+<li>La dimensione di un blocco e la quantità di blocchi da utilizzare</li>
+<li>Come accedere/trovare/scrivere un blocco</li>
+</ul>
+<p>Bisogna creare una funzione che fa un <em>mappinig</em> tra gli indirizzi di memoria e i blocchi.</p>
+<p>L’indice della memoria principale viene mappato con il relativo indice in memoria cache con formula:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>indice-blocco</mtext><mo>=</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">%</mi> <mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">\text{indice-blocco} = \text{indice-memoria} \,\% \,\text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">indice-blocco</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></span></p>
+<p>Per agevolare le operazioni il numero di blocchi è solitamente una potenza di 2, in questo modo l’operazione di modulo equivale a prendere i primi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mo stretchy="false">(</mo><mtext>numero-blocchi</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">\log_2(\text{numero-blocchi})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mopen">(</span><span class="mord text"><span class="mord">numero-blocchi</span></span><span class="mclose">)</span></span></span></span></span> dell’indirizzo (meno significativi).</p>
+<p>Ad esempio<br>
+considerando una cache grande 8 blocchi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msup><mn>2</mn><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06411em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span> e prendendo come esempio l’indice di memoria: 01101</p>
+<p>abbiamo che:<br>
+<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><msup><mn>2</mn><mn>3</mn></msup><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">\log_2 2^3 = 3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.05825em; vertical-align: -0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">3</span></span></span></span></span><br>
+Quindi l’indice del blocco associato al nostro indirizzo di memoria equivale ai primi 3 bit meno significativi dell’indirizzo, cioè 101.</p>
+<p><img src="https://i.ibb.co/vZX90yC/cache.png" alt=""></p>
+<p>Questo assumendo che la dimensione del blocco sia 1Byte, ma non è molto utile perché ad esempio le singole istruzioni sono lunghe 4 Byte e andare a copiare 1 byte alla volta sarebbe troppo dispendioso.</p>
+<p>Ipotizzando di avere un blocco grande <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> byte allora gli indirizzi consecutivi che differiscono di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> bit finiranno nello stesso blocco.</p>
+<p>Il mapping in questo caso si fa con:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>indice-blocco</mtext><mo>=</mo><mo stretchy="false">(</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext><mo stretchy="false">)</mo> <mi mathvariant="normal">%</mi> <mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">\text{indice-blocco} = (\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">indice-blocco</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></span></p>
+<p>ad esempio<br>
+avendo 8 blocchi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msup><mn>2</mn><mn>3</mn></msup><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(2^3)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06411em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span><span class="mclose">)</span></span></span></span></span><br>
+la dimensione di un blocco è 2<br>
+come indice di memoria abbiamo: 01101</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\text{indice-memoria} \,/ \,\text{grandezza-blocco})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span><span class="mclose">)</span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>01101</mn> <mi mathvariant="normal">/</mi> <mn>2</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(01101 \,/ \, 2)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">01101</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">2</span><span class="mclose">)</span></span></span></span></span> equivale a fare uno shift di 1 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>2</mn><mo>=</mo><mn>1</mn><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\log_22=1)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span></span></span></span></span> a destra</p>
+<p>Quindi il nostro indirizzo diventa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0110</mn></mrow><annotation encoding="application/x-tex">0110</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0110</span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext><mo stretchy="false">)</mo> <mi mathvariant="normal">%</mi> <mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">(\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0110</mn> <mi mathvariant="normal">%</mi> <mn>8</mn></mrow><annotation encoding="application/x-tex">0110 \,\% \,8</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0110</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">8</span></span></span></span></span> equivale a prendere in considerazione i primi 3 (<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>l</mi><mi>o</mi><msub><mi>g</mi><mn>2</mn></msub><mn>8</mn></mrow><annotation encoding="application/x-tex">log_28</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.01968em;">l</span><span class="mord mathnormal">o</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03588em;">g</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-left: -0.03588em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mord">8</span></span></span></span></span>) bit meno significativi, quindi l’indice del blocco sarà <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>110</mn></mrow><annotation encoding="application/x-tex">110</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">110</span></span></span></span></span></p>
+<p><img src="https://i.ibb.co/VNXSXBX/cache2.png" alt=""></p>
+<p>Come si vede dall’immagine andando a ignorare l’ultimo bit otteniamo che ci sono due istruzioni che vanno contemporaneamente nello stesso blocco. I bit ignorati vengono chiamati <strong>offset</strong></p>
+<h3 id="tag">Tag</h3>
+<p>Dato che durante l’esecuzione del codice più istruzioni utilizzeranno gli stessi blocchi della cache, come faccio a riconoscere l’istruzione che c’è all’interno di un blocco in un determinato momento.</p>
+<p>Per risolvere questo problema andiamo a <strong>memorizzare oltre al dato anche l’indice</strong> della memoria:</p>
+<p>Nell’ultimo esempio fatto avevamo come indice 01101 che viene salvato assieme all’indice 01100. Quindi oltre ai dati contenuti in questi indici dovremmo salvarci anche gli indici stessi, ma in realtà basta salvarsi solo i bit più significativi (in questo caso ‘0’) perché i meno significativi (110*) rappresentano già l’indice del blocco della cache.</p>
+<p>Questi bit più significativi vengono chiamati <strong>tag</strong></p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>tag</mtext><mo>=</mo><mtext>indice-blocco</mtext><mi mathvariant="normal">/</mi><mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">\text{tag} = \text{indice-blocco}/ \text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80952em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">tag</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">indice-blocco</span></span><span class="mord">/</span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></span></p>
+<h3 id="valid-bit">Valid bit</h3>
+<p>Viene utilizzato un ulteriore bit per identificare se il dato attuale contenuto in un blocco della cache è valido oppure no. Appena acceso il PC tutti i valori nella cache non hanno significato e ci serve un bit per indicare che sono non significativi, cioè il <strong>valid bit</strong> che è inizializzato a 0.</p>
+<ul>
+<li>0: dati non validi</li>
+<li>1: dati validi</li>
+</ul>
+<p>Man mano che la cache viene riempita, i valid bit dei blocchi passano da 0 a 1</p>
+<h3 id="esempio-lettura-cache">Esempio lettura cache</h3>
+<p><img src="https://i.ibb.co/w7x4D3J/read-cache.png" alt=""></p>
+<ol>
+<li>viene utilizzato l’index per trovare la riga corrispondente in cache</li>
+<li>vengono confrontati i due tag e il risultato viene messo in <code>and</code> con il valid bit, questo per accertarsi che il dato sia valido e sia quello che effettivamente stiamo cercando</li>
+<li>in base al byte offset otteniamo i dati che ci interessano</li>
+</ol>
+<h2 id="conflitti">Conflitti</h2>
+<p>Quando dobbiamo portare un blocco in cache nella stessa posizione dove risiedono altri dati si causa un conflitto. Un conflitto si presenta quando due indirizzi hanno il campo INDEX uguale e il campo TAG diverso.</p>
+<p>cosa ne facciamo di questi dati già presenti quando bisogna risolvere un conflitto?</p>
+<ul>
+<li>Se i quei dati dopo essere stati portati in cache sono stati solo letti, possiamo rimpiazzarli senza problemi (tanto in RAM ci sarà già una copia di essi)</li>
+<li>Se quei dati dopo essere stati portati in cache sono stati modificati, prima di andare a rimpiazzarli dobbiamo aggiornare i dati anche ai livelli di memoria inferiori per mantenere una coerenza di dati. Occorre stabilire delle <strong>politiche di coerenza tra livelli di memoria</strong></li>
+</ul>
+<h3 id="politica-write-through">Politica write through</h3>
+<p>In questa politica ogni scrittura in cache implica che la scrittura avvenga anche ai livelli di memoria inferiori.<br>
+In questo caso abbiamo <strong>dati sempre coerenti</strong> però a <strong>livello prestazionale non è ottimale</strong>.</p>
+<h3 id="politica-write-back">Politica write back</h3>
+<p>In questa politica solo quando un dato in cache deve venire rimpiazzato allora viene prima scritto ai livelli di memoria sottostanti.<br>
+In questo caso abbiamo <strong>ottime prestazioni nelle normali scritture</strong> però la <strong>sostituzione del blocco è più lenta del normale</strong></p>
+<h3 id="cosa-accade-in-caso-di-miss-e-hit">Cosa accade in caso di miss e hit</h3>
+<ul>
+<li><strong>Read-hit</strong>: Avviene in caso di <code>lw</code> oppure <em>fetch</em> dell’istruzione e rappresenta l’accesso alla memoria con il massimo della velocità</li>
+<li><strong>Read-miss</strong>: la CPU va messa in stallo finche la lettura non viene completata, quando il dato viene copiato il cache:
+<ul>
+<li>in caso di <em>fetch</em> viene ripetuto</li>
+<li>in caso di <code>lw</code> viene completato l’accesso al dato</li>
+</ul>
+</li>
+<li><strong>Write-hit</strong>: Avviene in caso di <code>sw</code>
+<ul>
+<li>Write through: i dati vengono scritti sia in cache sia in RAM</li>
+<li>Write back: i dati vengono scritti soltanto in cache, viene segnalato che il blocco è stato modificato (attraverso un <em>dirty bit</em> associato al blocco)</li>
+</ul>
+</li>
+<li><strong>Write-miss</strong>: Avviene in caso di <code>sw</code>
+<ul>
+<li>Write through: la CPU viene messa in stallo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> il dato viene scritto direttamente in memoria RAM (senza passare per la cache).</li>
+<li>Write back: la CPU viene messa in stallo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> il blocco mancante in cache viene preso dalla memoria RAM e messo in cache <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> viene completata la <code>sw</code>.</li>
+</ul>
+</li>
+</ul>
+<h2 id="prestazioni">Prestazioni</h2>
+<p>La misurazione delle prestazioni quando utilizziamo la memoria cache cambiano nel seguente modo:</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mrow><mi>e</mi><mi>x</mi><mi>e</mi></mrow></msub><mo>=</mo><mo stretchy="false">(</mo><mtext>cicli</mtext><mo>+</mo><mtext>cicli&nbsp;di&nbsp;stallo</mtext><mo stretchy="false">)</mo><mo>⋅</mo><mtext>periodo&nbsp;di&nbsp;clock</mtext></mrow><annotation encoding="application/x-tex">T_{exe} = (\text{cicli} + \text{cicli di stallo}) \cdot \text{periodo di clock}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.151392em;"><span class="" style="top: -2.55em; margin-left: -0.13889em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">x</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">cicli</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">cicli&nbsp;di&nbsp;stallo</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">periodo&nbsp;di&nbsp;clock</span></span></span></span></span></span></p>
+<p>Dove</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>cicli&nbsp;di&nbsp;stallo</mtext><mo>=</mo><mtext>IC</mtext><mo>⋅</mo><mtext>miss-ratio</mtext><mo>⋅</mo><mtext>miss-penalty</mtext></mrow><annotation encoding="application/x-tex">\text{cicli di stallo} = \text{IC} \cdot \text{miss-ratio} \cdot \text{miss-penalty}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">cicli&nbsp;di&nbsp;stallo</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.66786em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">miss-ratio</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">miss-penalty</span></span></span></span></span></span></span></p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>IC</mtext><mo>⋅</mo><mtext>miss-ratio</mtext><mo>:</mo></mrow><annotation encoding="application/x-tex">\text{IC} \cdot \text{miss-ratio}:</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.66786em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">miss-ratio</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">:</span></span></span></span></span>  rappresenta il numero di istruzioni che provocano il miss</li>
+<li>per semplicità consideriamo un miss-penalty unico per scrittura e lettura</li>
+<li>il <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>miss-ratio</mtext></mrow><annotation encoding="application/x-tex">\text{miss-ratio}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66786em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">miss-ratio</span></span></span></span></span></span> si suddivide in <strong>instruction miss-ratio</strong> (per i miss dei fetch) e <strong>data miss-ratio</strong> (per i miss di <code>sw</code> e <code>lw</code>)</li>
+</ul>
+<p>Esempio:<br>
+Assumiamo di avere un programma che ha:</p>
+<ul>
+<li>Instruction miss-ratio: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">2\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">2%</span></span></span></span></span> (2% riferito alle istruzioni totali)</li>
+<li>Data miss-ratio: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>4</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">4\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">4%</span></span></span></span></span> (4% riferito alle istruzioni <code>sw</code>/<code>lw</code>)</li>
+<li>Istruzioni <code>sw</code>/<code>lw</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>36</mn><mi mathvariant="normal">%</mi><mo>⋅</mo><mi>I</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">36\% \cdot  IC</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">36%</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>CPI</mtext><mtext>ideale</mtext></msub><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\text{CPI}_{\text{ideale}} = 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CPI</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ideale</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span></li>
+<li>miss-penalty: 40 cicli (quando si verifica un miss sono necessari 40 cicli di clock per recuperare il dato)</li>
+</ul>
+<h4 id="troviamo-i-cicli-di-stallo-per-le-istruzioni">Troviamo i cicli di stallo per le istruzioni:</h4>
+<p>formula: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>cicli&nbsp;di&nbsp;stallo</mtext><mo>=</mo><mtext>IC</mtext><mo>⋅</mo><mtext>instruction&nbsp;miss-ratio</mtext><mo>⋅</mo><mtext>miss-penalty</mtext></mrow><annotation encoding="application/x-tex">\text{cicli di stallo} = \text{IC} \cdot \text{instruction miss-ratio} \cdot \text{miss-penalty}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">cicli&nbsp;di&nbsp;stallo</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.66786em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">instruction&nbsp;miss-ratio</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">miss-penalty</span></span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>IC</mtext><mo>⋅</mo><mn>0.02</mn><mo>⋅</mo><mn>40</mn><mo>=</mo><mn>0.8</mn><mo>⋅</mo><mtext>IC</mtext></mrow><annotation encoding="application/x-tex">\text{IC} \cdot 0.02 \cdot 40 = 0.8 \cdot \text{IC}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.02</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">40</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.8</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span></span></span></span></span></p>
+<h4 id="troviamo-i-cicli-di-stallo-per-i-dati">Troviamo i cicli di stallo per i dati:</h4>
+<p>formula: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>cicli&nbsp;di&nbsp;stallo</mtext><mo>=</mo><msub><mtext>IC</mtext><mrow><mi>d</mi><mi>a</mi><mi>t</mi><mi>i</mi></mrow></msub><mo>⋅</mo><mtext>data&nbsp;miss-ratio</mtext><mo>⋅</mo><mtext>miss-penalty</mtext></mrow><annotation encoding="application/x-tex">\text{cicli di stallo} = \text{IC}_{dati} \cdot \text{data miss-ratio} \cdot \text{miss-penalty}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">cicli&nbsp;di&nbsp;stallo</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">IC</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight">t</span><span class="mord mathnormal mtight">i</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">data&nbsp;miss-ratio</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">miss-penalty</span></span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mn>0.36</mn><mo>⋅</mo><mtext>IC</mtext><mo stretchy="false">)</mo><mo>⋅</mo><mn>0.04</mn><mo>⋅</mo><mn>40</mn><mo>=</mo><mn>0.58</mn><mo>⋅</mo><mtext>IC</mtext></mrow><annotation encoding="application/x-tex">(0.36\cdot \text{IC}) \cdot 0.04 \cdot 40 = 0.58 \cdot \text{IC}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">0.36</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">IC</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.04</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">40</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.58</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">IC</span></span></span></span></span></span></p>
+<h4 id="troviamo-i-cicli-di-stallo-totali">Troviamo i cicli di stallo totali</h4>
+<p>sarà dato dalla somma dei due tipi di stalli:</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0.8</mn><mtext>IC</mtext><mo>+</mo><mn>0.58</mn><mtext>IC</mtext><mo>=</mo><mn>1.38</mn><mtext>IC</mtext></mrow><annotation encoding="application/x-tex">0.8 \text{IC} + 0.58 \text{IC} = 1.38\text{IC}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord">0.8</span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">0.58</span><span class="mord text"><span class="mord">IC</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">1.38</span><span class="mord text"><span class="mord">IC</span></span></span></span></span></span></p>
+<h4 id="troviamo-i-cicli-di-stallo-medi-per-istruzione">Troviamo i cicli di stallo medi per istruzione</h4>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>1.38</mn><mtext>IC</mtext></mrow><mtext>IC</mtext></mfrac><mo>=</mo><mn>1.38</mn></mrow><annotation encoding="application/x-tex">\frac{1.38\text{IC}}{\text{IC}} = 1.38</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.21733em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.872331em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">IC</span></span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1.38</span><span class="mord text mtight"><span class="mord mtight">IC</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.38</span></span></span></span></span></p>
+<h4 id="troviamo-il-cpi-reale">Troviamo il CPI reale</h4>
+<p>dato dalla somma tra  <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>CPI</mtext><mrow><mi>i</mi><mi>d</mi><mi>e</mi><mi>a</mi><mi>l</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\text{CPI}_{ideale}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CPI</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">i</span><span class="mord mathnormal mtight">d</span><span class="mord mathnormal mtight">e</span><span class="mord mathnormal mtight">a</span><span class="mord mathnormal mtight" style="margin-right: 0.01968em;">l</span><span class="mord mathnormal mtight">e</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> e i cicli di stallo medi</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>+</mo><mn>1.38</mn><mo>=</mo><mn>3.38</mn></mrow><annotation encoding="application/x-tex">2 + 1.38 = 3.38</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.38</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">3.38</span></span></span></span></span></p>
+<h4 id="troviamo-lo-speedup">Troviamo lo speedup</h4>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>3.38</mn><mn>2</mn></mfrac><mo>=</mo><mn>1.69</mn></mrow><annotation encoding="application/x-tex">\frac{3.38}{2} = 1.69</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">2</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">3.38</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.69</span></span></span></span></span></p>
+<p>Rispetto al nostro <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mtext>CPI</mtext><mtext>ideale</mtext></msub></mrow><annotation encoding="application/x-tex">\text{CPI}_{\text{ideale}}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord text"><span class="mord">CPI</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.336108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord text mtight"><span class="mord mtight">ideale</span></span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> , quello reale risulta essere 1.69 volte peggiore</p>
+<h2 id="cache-associative">Cache associative</h2>
+<p>Nella cache ad accesso diretto ogni blocco di memoria veniva associato ad un blocco di cache (tramite la funzione di mapping)</p>
+<p>Nelle <strong>cache associative</strong> i blocchi vengono raggruppati in <strong>insiemi</strong> (set) e ogni insieme ha delle <strong>vie o blocchi</strong> (way), ogni via appartenente ad un insieme possiede il tag e il dato.</p>
+<p>cache con 4 insiemi e due vie<br>
+<img src="https://i.ibb.co/QvTc2VZ/cache-ass.png" alt="enter image description here"></p>
+<p>In queste cache la funzione di mapping lavora solo sulla decisione degli insiemi mentre per decidere in quale via andare a salvare il dato viene scelto il primo posto libero che viene trovato.</p>
+<p>Quindi ogni indirizzo in memoria avrò associato un relativo insieme in cache, e può andare in qualsiasi via in quel insieme.</p>
+<p>In base alle esigenze è possibile decidere quanti insiemi e quanti vie utilizzare, ad esempio avendo un totale di 8 blocchi da gestire, posso organizzare la cache come nell’immagine:</p>
+<p><img src="https://i.ibb.co/Khw0smN/caches.png" alt=""></p>
+<p>Per andare a leggere un dato in cache ora sappiamo solo che un dato appartiene ad un determinato insieme, per trovare la posizione specifica bisogna scorrere tutto l’insieme. Nella <strong>cache completamente associativa</strong> ogni volta che ci serve un dato in cache bisogna scorrere tutta la cache (non molto efficiente)</p>
+<p>Solitamente il numero di blocchi e il numero di insieme è un multiplo di 2.</p>
+<h4 id="funzione-di-mapping">Funzione di mapping</h4>
+<p>Ottengo l’insieme (set) della cache facendo:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>indice-blocco</mtext><mo>=</mo><mo stretchy="false">(</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext><mo stretchy="false">)</mo> <mi mathvariant="normal">%</mi> <mtext>numero-insiemi</mtext></mrow><annotation encoding="application/x-tex">\text{indice-blocco} = (\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-insiemi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">indice-blocco</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero-insiemi</span></span></span></span></span></span></span></p>
+<p><img src="https://i.ibb.co/pnKtdSx/mapping.png" alt=""></p>
+<p>Nel caso dell’immagine abbiamo 4 insiemi e 2 vie</p>
+<p>dato che la dimensione del blocco è 2 allora per trovare l’indice del blocco dobbiamo prima ignorare 1 bit meno significativo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mtext>dimensione_blocco</mtext><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">(\log_2\text{dimensione\_blocco})</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06em; vertical-align: -0.31em;"></span><span class="mopen">(</span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">dimensione_blocco</span></span><span class="mclose">)</span></span></span></span></span> poi dobbiamo fare il modulo di quello che rimane per <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mtext>numero_insiemi</mtext></mrow><annotation encoding="application/x-tex">\log_2\text{numero\_insiemi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.00444em; vertical-align: -0.31em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero_insiemi</span></span></span></span></span></span> , in questo caso 2. Fare l’operazione di modulo corrisponde a prendere i <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mtext>numero_insiemi</mtext></mrow><annotation encoding="application/x-tex">\log_2\text{numero\_insiemi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.00444em; vertical-align: -0.31em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero_insiemi</span></span></span></span></span></span> bit meno significativi.</p>
+<p>Ad esempio<br>
+Prendendo in considerazione l’indice in memoria 01010</p>
+<ul>
+<li>ignoro il 1 bit meno significativo<br>
+sarebbe l’operazione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext></mrow><annotation encoding="application/x-tex">\text{indice-memoria} \,/ \,\text{grandezza-blocco}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span></span></span></span></span> che nel nostro caso è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>01010</mn><mi mathvariant="normal">/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">01010 / 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">01010/2</span></span></span></span></span> che corrisponde ad uno shift a destra di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>2</mn><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\log_22 = 1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.93858em; vertical-align: -0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span><br>
+mi rimane 0101</li>
+<li>prendo i due bit meno significativi di quello che mi rimane<br>
+sarebbe l’operazione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mtext>indice-memoria</mtext> <mi mathvariant="normal">/</mi> <mtext>grandezza-blocco</mtext><mo stretchy="false">)</mo> <mi mathvariant="normal">%</mi> <mtext>numero-insiemi</mtext></mrow><annotation encoding="application/x-tex">(\text{indice-memoria} \,/ \,\text{grandezza-blocco}) \,\% \,\text{numero-insiemi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord text"><span class="mord">indice-memoria</span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">/</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">grandezza-blocco</span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">%</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord text"><span class="mord">numero-insiemi</span></span></span></span></span></span><br>
+che nel nostro caso è  <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0101</mn><mi mathvariant="normal">%</mi><mn>4</mn></mrow><annotation encoding="application/x-tex">0101 \% 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0101%4</span></span></span></span></span> che corrisponde a prendere i <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi>log</mi><mo>⁡</mo></mrow><mn>2</mn></msub><mn>4</mn><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">\log_24 = 2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.93858em; vertical-align: -0.24414em;"></span><span class="mop"><span class="mop">lo<span style="margin-right: 0.01389em;">g</span></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.206968em;"><span class="" style="top: -2.45586em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.24414em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">2</span></span></span></span></span> bit meno significativi.<br>
+Quindi l’indice in memoria cache di 01010 è 01</li>
+</ul>
+<h3 id="gestione-dei-miss-nelle-cache-associative">Gestione dei miss nelle cache associative</h3>
+<p>Nel caso in cui si verifica un miss e tutte le vie di un insieme associato all’istruzione “missata” sono occupate bisogna decidere quale blocco andare a sostituire.</p>
+<ul>
+<li>Viene sostituito un blocco casuale</li>
+<li>Viene sostituito il blocco usato meno di recente (Least recently used). Questa tecnica utilizza dei bit extra per memorizzare da quanto tempo non viene acceduto un blocco</li>
+</ul>
+<h3 id="esempio-di-confronto-tra-tipi-cache">Esempio di confronto tra tipi cache</h3>
+<p>Compariamo: cache ad accesso diretto, cache associativa a 2 vie, cache completamente associativa.</p>
+<p>tutte le cache composte da 4 blocchi<br>
+ipotizziamo di avere i seguenti indirizzi a cui accedere (a cui abbiamo già tolto l’offset, quindi va solo fatto il modulo) [0,8,0,6,8]</p>
+<h4 id="cache-ad-accesso-diretto-1">Cache ad accesso diretto</h4>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>indirizzo</mtext><mi mathvariant="normal">%</mi><mtext>numero-blocchi</mtext></mrow><annotation encoding="application/x-tex">\text{indirizzo} \% \text{numero-blocchi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord text"><span class="mord">indirizzo</span></span><span class="mord">%</span><span class="mord text"><span class="mord">numero-blocchi</span></span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mi mathvariant="normal">%</mi><mn>4</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>8</mn><mi mathvariant="normal">%</mi><mn>4</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>0</mn><mi mathvariant="normal">%</mi><mn>4</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>6</mn><mi mathvariant="normal">%</mi><mn>4</mn><mo>=</mo><mn>2</mn><mspace width="0.8535826771653543em"></mspace><mn>8</mn><mi mathvariant="normal">%</mi><mn>4</mn><mo>=</mo><mn>0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0\%4=0\hspace{3mm} 8\%4=0 \hspace{3mm} 0\%4=0 \hspace{3mm}6\%4=2 \hspace{3mm} 8\%4=0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">[</span><span class="mord">0%4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">8%4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">0%4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">6%4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">2</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">8%4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span></span></p>
+<p>In questo caso abbiamo che tutti gli indirizzi di memoria sono mappati per andare all’indice di cache 0 tranne l’indirizzo 6</p>
+<p><img src="https://i.ibb.co/LQtqDRn/cache-diretta.png" alt=""></p>
+<p>Otteniamo tutti <em>miss</em></p>
+<ul>
+<li>1° riga: prima apparizione del dato 0 quindi sicuramente non è presente in cache <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 0 in cache nel blocco 0</li>
+<li>2° riga: prima apparizione del dato 8 quindi sicuramente non è presente in cache <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 8 in cache nel blocco 0 (il dato precedente viene perso)</li>
+<li>3° riga: viene cercato il dato 0 ma non è presente nella sua posizione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> miss e inserimento del dato 0 in cache nel blocco 0 (il dato precedente viene perso)</li>
+<li>4° riga: prima apparizione del dato 6 quindi sicuramente non è presente in cache <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 6 in cache nel blocco 2</li>
+<li>5° riga: viene cercato il dato 8 ma non è presente nella sua posizione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> miss e inserimento del dato 8 in cache nel blocco 0 (il dato precedente viene perso)</li>
+</ul>
+<h4 id="cache-associativa-a-2-vie">Cache associativa a 2 vie</h4>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>indirizzo</mtext><mi mathvariant="normal">%</mi><mtext>numero-insiemi</mtext></mrow><annotation encoding="application/x-tex">\text{indirizzo} \% \text{numero-insiemi}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord text"><span class="mord">indirizzo</span></span><span class="mord">%</span><span class="mord text"><span class="mord">numero-insiemi</span></span></span></span></span></span></p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">[</mo><mn>0</mn><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>8</mn><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>0</mn><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>6</mn><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mn>0</mn><mspace width="0.8535826771653543em"></mspace><mn>8</mn><mi mathvariant="normal">%</mi><mn>2</mn><mo>=</mo><mn>0</mn><mo stretchy="false">]</mo></mrow><annotation encoding="application/x-tex">[0\%2=0\hspace{3mm} 8\%2=0 \hspace{3mm} 0\%2=0 \hspace{3mm}6\%2=0 \hspace{3mm} 8\%2=0]</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">[</span><span class="mord">0%2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">8%2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">0%2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">6%2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.853583em;"></span><span class="mord">8%2</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">0</span><span class="mclose">]</span></span></span></span></span></p>
+<p>In questo caso abbiamo che tutti gli indirizzi di memoria sono mappati per andare all’insieme della cache 0</p>
+<p><img src="https://i.ibb.co/9y5n3v0/2way.png" alt=""></p>
+<ul>
+<li>1° riga: prima apparizione del dato 0 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 0 in cache nell’insieme 0 nella prima posizione libera</li>
+<li>2° riga: prima apparizione del dato 8  <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 8 in cache nell’insieme 0 nella prima posizione libera</li>
+<li>3° riga: viene cercato il dato 0 e viene trovato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>hit</em></li>
+<li>4° riga: prima apparizione del dato 6 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 6 al posto del dato utilizzato meno di recente (cioè 8, perché 0 è stato letto nell’accesso precedente)</li>
+<li>5° riga: viene cercato il dato 8 ma non è presente nel suo insieme<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> miss e inserimento del dato 8 al posto del dato utilizzato meno di recente (cioè 0)</li>
+</ul>
+<h4 id="cache-completamente-associativa">Cache completamente associativa</h4>
+<p>i dati vanno nel primo blocco che trovano libero</p>
+<p><img src="https://i.ibb.co/pnDVRhR/compl-ass.png" alt=""></p>
+<ul>
+<li>1° riga: prima apparizione del dato 0 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 0 in cache nella prima posizione libera</li>
+<li>2° riga: prima apparizione del dato 8  <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 8 in cache nella prima posizione libera</li>
+<li>3° riga: viene cercato il dato 0 e viene trovato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>hit</em></li>
+<li>4° riga: prima apparizione del dato 6 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>miss</em> e inserimento del dato 6 nella prima posizione libera</li>
+<li>5° riga: viene cercato il dato 8 e viene trovato <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <em>hit</em></li>
+</ul>
+<h2 id="cache-a-più-livelli">Cache a più livelli</h2>
+<p>Nei processori moderni esistono 3 livelli di memoria cache che si differenziano per dimensione, velocità e posizionamento relativo al processore:</p>
+<ul>
+<li>L1: la più veloce, la più vicina alla CPU (una per ogni core della CPU), la più piccola</li>
+<li>L2: meno veloce di L1, più lontana alla CPU rispetto a L1 (singola condivisa da ogni core della CPU), più grande di L1</li>
+<li>L3  La meno veloce, la più lontana alla CPU rispetto le altre due (singola condivisa da ogni core della CPU), più grande rispetto alle altre 2</li>
+</ul>
+<p>Tutti e tre i livelli sono comunque notevolmente più veloci della memoria RAM</p>
+<h1 id="memoria-virtuale">Memoria virtuale</h1>
+<p>Vogliamo realizzare un meccanismo che:</p>
+<ul>
+<li>Permetta alla memoria RAM di essere condivisa tra più programmi in esecuzione, senza però che un programma possa accedere senza permesso all’area di memoria riservata ad un altro programma.</li>
+<li>Permetta ad un programma di utilizzare più memoria RAM di quella realmente disponibile nel sistema</li>
+</ul>
+<p>Per permettere queste due cose entra in gioco la <strong>memoria virtuale</strong></p>
+<p>I programmi (più in generale il processore) utilizzano uno spazio di indirizzamento virtuale che non coincide con l’indirizzamento fisico della memoria RAM.</p>
+<p>I blocchi di memoria (chiamate <strong>pagine</strong>), cioè degli insiemi di indirizzi di memoria virtuali, vengono mappati dal sistema operativo in indirizzi fisici nella RAM.</p>
+<h2 id="vantaggi-della-memoria-virtuale">Vantaggi della memoria virtuale</h2>
+<ol>
+<li>Illusione di avere più memoria disponibile di quella che è in realtà<br>
+solo le parti attive del programma sono mappate in memoria RAM, le parti inattive sono mappate nella memoria secondaria (HDD, SSD) in una area specifica chiamata <strong>spazio di swap</strong> oppure <strong>file di paging</strong>.<br>
+Grazie a questo è possibile che più programmi che richiedano oltre la memoria fisicamente installata girino contemporaneamente nel sistema</li>
+<li>Protezione: avendo questa memoria virtuale che viene mappata in RAM senza che sia il programmatore a farlo assicura che gli indirizzi virtuali siano effettivamente mappati su indirizzi fisici diversi che non vanno a modificare o leggere dati di altri programmi</li>
+<li>Semplificazione del caricamento del programma: i dati del programma vengono assegnati a degli indirizzi virtuale che possono anche essere mappati casualmente ovunque in memoria RAM senza causare problemi, e senza necessità di scrivere il programma per utilizzare una specifica area di memoria.</li>
+</ol>
+<h2 id="traduzione-da-virtuale-a-fisico">Traduzione da virtuale a fisico</h2>
+<p>Gli indirizzi virtuali sono divisi in <strong>virtual page number</strong> e <strong>page offset</strong></p>
+<p>Gli indirizzi fisici sono divisi in <strong>phisical page number</strong> e <strong>page offset</strong></p>
+<p>Il <em>page offset</em> è lo stesso sia per gli indirizzi virtuali sia per quelli fisici</p>
+<p>Un meccanismo riesce ad associare i <em>virtual page number</em> in <em>phisical page number</em>, ma non si può fare il contrario dato che è possibile avere più indirizzi virtuali associati ad un indirizzo fisico (programmi differenti che utilizzano gli stessi dati).</p>
+<p>Il numero di bit del page offset determina la dimensione della pagina (blocco di memoria)</p>
+<p>La traduzione avviene mediante una tabella <strong>page table</strong> che risiede in RAM e ogni programma ha una propria <em>page table</em> che è raggiungibile tramite un registro speciale chiamato <em>page table register</em></p>
+<p>Questa tabella associa gli indirizzi virtuali a quelli fisici.</p>
+<p>Quando un programma vuole accedere ad un’area in memoria virtuale:</p>
+<ol>
+<li>l’indirizzo viene diviso nelle due parti (<em>number</em> e <em>offset</em>)</li>
+<li>il <em>number</em> viene utilizzato come indice della tabella</li>
+<li>dopo aver trovato la riga della tabella viene utilizzato l’offset insieme al contenuto della riga nella tabella per ottenere l’indirizzo fisico della RAM</li>
+</ol>
+<p><img src="https://i.ibb.co/5cnqdr1/mapping-virt-mem.png" alt=""></p>
+<h2 id="page-fault">Page fault</h2>
+<p>Se una pagina non viene trovata in RAM, allora significa che si trova solo nel disco, questo viene definito <strong>page fault</strong></p>
+<p>Il miss-penalty per recuperare il dato dal disco è enorme, quindi ridurre il numero di page fault è molto importante.</p>
+<p>Caratteristiche</p>
+<ul>
+<li>il mapping tra pagine virtuali e fisiche è di tipo <strong>completamente associativo</strong></li>
+<li>Viene utilizzata la politica <strong>LRU</strong> (<em>least recent used</em>) per il rimpiazzo delle pagine</li>
+<li>il page fault sono gestiti dal sistema operativo</li>
+<li>viene utilizzata la politica <strong>write-back</strong> per la scrittura</li>
+</ul>
+<h3 id="bit-di-stato">Bit di stato</h3>
+<ul>
+<li><strong>valid bit</strong>: quando posto a 1 indica che il dato è presente in RAM, mentre è 0 quando il dato è presente solo sul disco.</li>
+<li><strong>dirty bit</strong>: quando posto a 1 indica che la pagina è stata modificata e quindi quando verrà sostituita deve venir aggiornato il suo valore nelle memorie secondarie</li>
+<li><strong>reference bit</strong>: viene settato a 1 ogni volta che la pagina viene riferita e periodicamente viene posto a 0. Serve per l’implementazione della politica LRU</li>
+</ul>
+<h3 id="translation-lookaside-buffer">Translation lookaside buffer</h3>
+<p><em>Translation lookaside buffer</em> (TLB) è un’altra memoria cache utilizzata per memorizzare delle porzioni di <em>page table</em> (quelli utilizzate più recentemente). Essa presenta tempi di accesso molti più veloci della ram e sfrutta la località spaziale.</p>
+<p>Nel caso si verifichi un miss nella TLB si va prima a cercare nella <em>page table</em> e se si verifica un <em>page fault</em> si cerca nel disco.</p>
+<h2 id="integrazione-della-memoria-cache">Integrazione della memoria cache</h2>
+<p>In questo sistema di memoria virtuale si può integrare la memoria cache in tre modi differenti:</p>
+<ul>
+<li><strong>Physically addressed cache</strong>: la cache utilizza indirizzi fisici, quindi prima di ogni accesso in cache si deve passare per TLB e nel caso di TLB-miss si passa per la page table. processi diversi che utilizzano gli stessi indirizzi virtuali non creano problemi.</li>
+<li><strong>Virtually addressed cache</strong>: la cache utilizza indirizzi virtuali, ogni cache-hit non richiede accesso a TLB (evitando di provocare TLB miss e paga fault). Processi che utilizzano gli stessi indirizzi virtuali possono creare dei problemi di letture e scritture senza permesso.</li>
+<li><strong>Virtually indexed but physically tagged</strong>: l’index viene calcolato sull’indirizzo virtuale mentre il tag viene ottenuto dall’indirizzo fisico. non presenta il problemi di processi che utilizzano gli stessi indirizzi virtuali. comportamente simile alla physically addressed.</li>
+</ul>
+<h3 id="tipologie-di-miss">Tipologie di miss</h3>
+<ul>
+<li><strong>compulsory</strong>: sono i miss certi, si verificano quando i blocchi vengono acceduti per la prima volta.</li>
+<li><strong>capacity</strong>: si verificano quando la cache non è in grado di contenere tutti i blocchi necessari al processo, un blocco utile viene espulso e successivamente riammesso.</li>
+<li><strong>collisions</strong>: si verifica con le cache completamente associative e accade quando due blocchi competono per una certa posizione.</li>
+</ul>
+<h2 id="gestione-della-memoria-virtuale-del-so">Gestione della memoria virtuale del SO</h2>
+<p>Il sistema operativo deve intervenire in caso di  <em>TLB miss</em> e <em>page fault</em>.</p>
+<p>la CPU possiede almeno due modalità di esecuzione: <strong>user mode</strong> e <strong>supervisor mode</strong> (kernel mode).</p>
+<p>Alcune operazioni (le più importanti) possono essere fatte solo in kernel mode. I normali programmi vengono eseguiti in user mode.</p>
+<p>Un programma eseguito in user mode:</p>
+<ul>
+<li>non può modificare il <em>page table register</em></li>
+<li>non può modificare le entry del TLB</li>
+<li>non può cambiare autonomamente in supervisor mode</li>
+</ul>
+<p>In supervisor mode non ci sono limitazioni.</p>
+<h3 id="system-call">System call</h3>
+<p>Un programma in user mode può passare alla supervisor mode solo attraverso una <strong>system call</strong> che:</p>
+<ul>
+<li>Entra in supervisor mode</li>
+<li>Trasferisce il controllo ad una locazione che si occupa di gestire l’interruzione (quindi in supervisor mode viene eseguito solo codice del sistema operativo).</li>
+<li>Salva il PC del processo in un registro chiamato <em>Exception Link Register</em> (ELR)</li>
+</ul>
+<h3 id="eccezioni">Eccezioni</h3>
+<ul>
+<li>
+<p><strong>Eccezione TLB miss</strong>: la pagina non è presente in TLB però è presente in RAM</p>
+<ul>
+<li>L’eccezione può essere gestita tramite la <em>page table</em></li>
+<li><em>miss-penalty</em> molto basso</li>
+<li>l’istruzione che ha causate l’eccezione deve essere rieseguita dopo aver risolto l’eccezione</li>
+</ul>
+</li>
+<li>
+<p><strong>Eccezione TLB miss + page fault</strong>:la pagina non è presente in TLB e nemmeno in RAM</p>
+<ul>
+<li>La pagina mancante in RAM deve essere recuperata dal disco</li>
+<li><em>miss-penalty</em> molto grande</li>
+<li>si effettua un <strong>context switch</strong> mentre si attende il dato da recuperare</li>
+<li>quando il page fault è risolto si riprende l’esecuzione del processo.ù</li>
+</ul>
+</li>
+<li>
+<p><strong>Page fault con rimpiazzamento pagina</strong>: Page fault e la memoria RAM è piena, quindi bisogna sostituire qualche pagina in RAM</p>
+<ul>
+<li>Se la pagina da sostituire è stata anche modificata va prima aggiornata nel disco</li>
+<li>Se la pagina da sostituire era presenta in TLB va rimossa anche da lì</li>
+</ul>
+</li>
+</ul>
+<h2 id="context-switch">Context switch</h2>
+<p>Il <strong>context switch</strong> è un’operazione che fa il sistema operativo per cambiare il processo che è in esecuzione attualmente. Quando alcuni programmi per vari motivi richiedono dei tempi di attesa (ad esempio <em>Eccezione TLB miss + page fault</em>) si effettua il context switch e quindi si salva lo stato del processo e si manda in esecuzione un altro programma e si mette in “pausa” quello precedente.</p>
+<p>Quando si cambia processo in esecuzione dobbiamo assicurarci che il nuovo processo non possa accedere ai dati del vecchio processo. Mentre la <em>page table</em> è unica per ogni processo e non ci crea problemi perché basta cambiare il puntatore alla tabella (basta cambiare il valore del <em>page table register</em>), il problema sta nella TLB che è unica e tutti utilizzano la stessa. Questo problema si risolve con l’ASID.</p>
+<h3 id="asid">ASID</h3>
+<p>Svuotare la TLB ad ogni context switch sarebbe troppo dispendioso, viene quindi introdotto un <em>Address Space ID</em> (ASID), cioè un ID che viene affiancato all’indirizzo virtuale per indicare a chi appartiene quel blocco di memoria, così non serve svuotare la cache/TLB ad ogni context switch.</p>
+<h2 id="page-table-multilivello">Page table multilivello</h2>
+<p>Per spazi di indirizzamento molto grandi si ottengono delle page table di una dimensione discretamente grande, contando però che ogni processo ha una propria page table si potrebbe arrivare a saturare la memoria RAM solo per contenere le page table.</p>
+<p>Si utilizzano quindi delle page table multilivello:</p>
+<p>Praticamente abbiamo che nella page table di primo livello ci sono dei puntatori alle page table di secondo livello, nelle page table di secondo livello ci sono dei puntatori a quelle di terzo livello e così via. solo l’ultimo livello conterrà gli indirizzi che cerchiamo. In RAM caricheremo solo la sequenza di page table che ci portano all’indirizzo che ci interessa e non tutte le possibili page table.<br>
+Le page table che non ci interessano vengono messe nel disco secondario (ci sarà una entry nella page di primo livello che l punterà).<br>
+La page di primo livello deve rimanere sempre in memoria RAM.<br>
+Ad esempio ARM utilizza 4 livelli di page table.</p>
+<p><img src="https://i.ibb.co/MCSdpp8/multilev-page.png" alt=""></p>
+<p>approfondimento: <a href="https://www.youtube.com/watch?v=Z4kSOv49GNc">https://www.youtube.com/watch?v=Z4kSOv49GNc</a></p>
+<h1 id="armv8-isa">ARMv8 ISA</h1>
+<p>Ci concentreremo sulla versione di ARM <strong>ARMv8-A</strong> che rappresenta la famiglia più utilizzata nei dispositivi mobili.</p>
+<p>l’ARMv8-A supporta 3 <em>instruction set</em>, noi ci concentreremo sull’istruction set “A64” che è la versione a 64bit.</p>
+<h2 id="simple-sequential-execution-sse">Simple Sequential Execution (SSE)</h2>
+<p>Le istruzioni nelle architetture ARM seguono il modello SSE, cioè si comporta come se le istruzioni fossero caricate una alla volta e nell’ordine in cui sono scritte nel programma. cioè rende il programma più prevedibile e affidabile.<br>
+Anche se questa cosa può sembrare scontata non lo è perché altre architetture utilizzano un modello OOE (<em>out-of-order execution</em>).</p>
+<p>In realtà le CPU ARM caricano 2 istruzioni alla volta e talvolta le eseguono in parallelo, l’implementazione però ci assicura che l’effetto è lo stesso di una esecuzione sequenziale in cui una istruzione non viene caricata finche la precedente non è stata completata.</p>
+<h2 id="registri">Registri</h2>
+<p>Abbiamo <strong>31 registri <em>general purpose</em></strong> anche se alcuni registri è preferibile non modificarli.</p>
+<p>ogni registro può essere utilizzato come un registro a 64bit (chiamandolo X&lt;n&gt;) oppure come un registro a 32bit (chiamandolo Q&lt;n&gt;)</p>
+<pre><code>add w0,w1,w2 // somma a 32bit
+add x0,x1,x2 // somma a 64bit
+</code></pre>
+<p>Abbiamo <strong>31 registri per le operazioni floating point e operazioni vettorizzate</strong>. Questi registri possiedono vari prefissi in base alla dimensione sui cui si vuole lavorare.</p>
+<pre><code>fadd s0,s1,s2 // somma floating point a 32bit
+fadd d0,d1,d2 // somma floating point a 64bit
+</code></pre>
+<p>Tabella dei prefissi</p>
+
+<table>
+<thead>
+<tr>
+<th>prefisso</th>
+<th>tipo di dato</th>
+<th>dimensione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>b</td>
+<td>intero</td>
+<td>8bit</td>
+</tr>
+<tr>
+<td>h</td>
+<td>intero</td>
+<td>16bit</td>
+</tr>
+<tr>
+<td>w</td>
+<td>intero</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>x</td>
+<td>intero</td>
+<td>64bit</td>
+</tr>
+<tr>
+<td>s</td>
+<td>floating point</td>
+<td>32bit</td>
+</tr>
+<tr>
+<td>d</td>
+<td>floating point</td>
+<td>64bit</td>
+</tr>
+<tr>
+<td>q</td>
+<td>floating point</td>
+<td>128bit</td>
+</tr>
+<tr>
+<td>v</td>
+<td>vettori</td>
+<td>variabile</td>
+</tr>
+</tbody>
+</table><p><strong>Altri registri speciali</strong>:</p>
+<ul>
+<li><strong>XZR</strong> viene sempre letto come fosse 0</li>
+<li><strong>SP</strong> (x28) stack pointer</li>
+<li><strong>FP</strong> (x29) frame pointer</li>
+<li><strong>LR</strong> (x30) link register</li>
+<li><strong>PC</strong> Program counter, non è un registro <em>general purpose</em> e non può essere letto/scritto direttamente, può essere letto però utilizzando una pseudo-istruzione chiamata <strong>ADR</strong></li>
+<li><strong>APSR</strong> Application program status register, contiene una copia dello stato (condition codes) dell’ultima operazione effettuata dall’ALU<br>
+<img src="https://i.ibb.co/8PFdhCS/condition-codes-alu.png" alt=""><br>
+Siamo interessati particolarmente ai flag:
+<ul>
+<li>N: posto a 1 se il risultato dell’ultima operazione è <strong>negativo</strong></li>
+<li>Z: posto a 1 se il risultato dell’ultima operazione è <strong>zero</strong></li>
+<li>V: posto a 1 se nell’ultima operazione si è verificato <strong>overflow</strong></li>
+<li>C: posto a 1 se nell’ultima operazione c’è stato un <strong>riporto</strong></li>
+</ul>
+</li>
+</ul>
+<h2 id="formato-istruzioni">Formato istruzioni</h2>
+<p>Tutte le istruzioni sono a 32 bit</p>
+<ul>
+<li>Rn = source 1</li>
+<li>Rm = source 2</li>
+<li>Rd = destination<br>
+<img src="https://i.ibb.co/ZV9bNMX/formato-istru.png" alt=""></li>
+</ul>
+<h3 id="operazioni-aritmetico-logiche">Operazioni aritmetico-logiche</h3>
+<p>Una istruzione di questo tipo è formata come segue:</p>
+<p><code>&lt;op&gt;{s} Rd, Rn, operand2</code></p>
+<ul>
+<li>
+<p><code>s</code>: è un carattere opzionale che si può aggiungere all’istruzione che serve ad settare i condition codes dell’ALU per quella istruzione. Essi tornano utili quando vogliamo fare delle operazioni in base ai codici dell’ALU.</p>
+</li>
+<li>
+<p><code>operand2</code>: può essere</p>
+<ul>
+<li><code>Rm</code> un registro comune</li>
+<li><code>Rm, &lt;shift&gt; #x</code> un registro shiftato di un numero immediato</li>
+<li><code>Rm, &lt;shift&gt; Rs</code> un registro shiftato per un valore di un registro</li>
+<li><code>#imm</code> un numero immediato a 12bit (fino a 4096)</li>
+</ul>
+</li>
+<li>
+<p><code>&lt;shift&gt;</code>:  sono presenti vari tipi di shift</p>
+<ul>
+<li>LSL</li>
+<li>LSR</li>
+<li>ASR</li>
+</ul>
+</li>
+</ul>
+<p>Le principali operazioni aritmetico logiche sono: <strong><code>ADD, SUB, AND, XOR, ORR, MUL</code></strong></p>
+<h3 id="shift">Shift</h3>
+<p>Lo scopo dello shift è quello di dividere e moltiplicare per potenze di 2 e anche per accedere a elementi di array.</p>
+<ul>
+<li>LSL (<em>Logical left shift</em>)<br>
+fa uno shift a <strong>sinistra</strong> inserendo degli zeri a destra  (rappresenta la moltiplicazione)</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>←</mo></mrow><annotation encoding="application/x-tex">\leftarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">←</span></span></span></span></span></td>
+</tr>
+<tr>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+<td><strong>0</strong></td>
+<td><strong>0</strong> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>←</mo></mrow><annotation encoding="application/x-tex">\leftarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">←</span></span></span></span></span></td>
+</tr>
+</tbody>
+</table><ul>
+<li>LSR (<em>Logical right shift</em>)<br>
+fa uno shift a <strong>destra</strong> inserendo degli zeri a sinistra (rappresenta la divisione)</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="0.9958464566929134em"></mspace></mrow><annotation encoding="application/x-tex">\hspace{3.5mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0em; vertical-align: 0em;"></span><span class="mspace" style="margin-right: 0.995846em;"></span></span></span></span></span> 4</th>
+<th>3</th>
+<th>2</th>
+<th>1</th>
+<th>0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mspace width="0.9958464566929134em"></mspace></mrow><annotation encoding="application/x-tex">\hspace{3.5mm}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0em; vertical-align: 0em;"></span><span class="mspace" style="margin-right: 0.995846em;"></span></span></span></span></span> 1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>1</td>
+</tr>
+<tr>
+<td><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\rightarrow</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span> <strong>0</strong></td>
+<td><strong>0</strong></td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><ul>
+<li>ARS (<em>Arithmetic right shift</em>)<br>
+fa uno shift a <strong>destra</strong> inserendo degli zeri oppure uno a sinistra a seconda del segno  (rappresenta la divisione)<br>
+con LSR se il numero era negativo, e quindi terminava per 1, questo dato veniva perso inserendo gli zeri.<br>
+con LSL non è un problema perché se perdiamo l’uno più a destra significa che siamo andati in overflow<br>
+con l’ARS riusciamo a mantenere il segno nelle divisioni</li>
+</ul>
+<p>Quindi per recap</p>
+
+<table>
+<thead>
+<tr>
+<th>tipo di shift</th>
+<th>utilizzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>LSL</td>
+<td>divisione per numeri senza segno</td>
+</tr>
+<tr>
+<td>LSR</td>
+<td>moltiplicazione per numeri con e senza segno segno</td>
+</tr>
+<tr>
+<td>LSL</td>
+<td>divisione per numeri con segno</td>
+</tr>
+</tbody>
+</table><h3 id="assegnamento">Assegnamento</h3>
+<p>L’istruzione <code>MOV</code> serve per assegnare un valore ad un registro, oppure per copiare il valore di un registro in un altro.</p>
+<ul>
+<li><code>MOVZ</code> permette di caricare un immediato di 16bit (fino a 65535) shiftato di 0, 16, 32, 48 settando tutti gli altri spazi del registro a zero.</li>
+<li><code>MOVK</code>permette di caricare un immediato di 16bit (fino a 65535) shiftato di 0, 16, 32, 48 lasciando inalterati gli altri bit del registro.</li>
+</ul>
+<p>esempio: <code>MOVZ X9, #255, LSL #16</code></p>
+<p>Se abbiamo un valore grande due byte (16bit) rappresentato in esadecimale “AB”</p>
+
+<table>
+<thead>
+<tr>
+<th>n° byte <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>shift di 0 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr>
+<td>shift di 16 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>shift di 32 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>shift di 48 <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>→</mo></mrow><annotation encoding="application/x-tex">\to</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.36687em; vertical-align: 0em;"></span><span class="mrel">→</span></span></span></span></span></td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table><p>è possibile combinare MOVZ e MOVK per creare registri che contengono numeri molto grandi</p>
+<h3 id="adr-e-adrp">ADR e ADRP</h3>
+<p>Queste due istruzioni servono a caricare degli indirizzi nei registri</p>
+<p>ADR salva l’indirizzo di label a partire dal PC e un offset<br>
+<code>adr X1, label</code></p>
+<p>ADRP salva l’indice della pagina che contiene l’indirizzo di label.</p>
+<h2 id="branches">Branches</h2>
+<p><strong>nota</strong> ricorda che ogni volta che in ARM ci si riferisce a degli indirizzi si utilizzano i registri <code>x&lt;m&gt;</code> perché gli indirizzi sono sempre a 64bit.</p>
+<ul>
+<li>
+<p><strong>Salti incondizionati</strong> (saltano sempre):</p>
+<ul>
+<li><code>B label</code> salta all’indirizzo di label</li>
+<li><code>BL label</code> salta all’indirizzo di label e salva l’indirizzo di questa istruzione nel registro <code>x30</code></li>
+<li><code>RET label</code> salta all’indirizzo contenuto nel registro <code>x30</code></li>
+<li><code>BR x&lt;m&gt;</code> salta all’indirizzo contenuto nel registro <code>x&lt;m&gt;</code></li>
+<li><code>BLR x&lt;m&gt;</code> salta all’indirizzo contenuto nel registro <code>x&lt;m&gt;</code> e salva l’indirizzo di questa istruzione nel registro <code>x30</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Salti condizionati</strong></p>
+<p>Sono presenti due salti condizionati semplici:</p>
+<ul>
+<li><code>CBZ w&lt;n&gt;, label</code> salta all’indirizzo di label se <code>w&lt;n&gt;</code> è uguale a zero</li>
+<li><code>CBNZ w&lt;n&gt;, label</code> salta all’indirizzo di label se <code>w&lt;n&gt;</code> è diverso da zero</li>
+</ul>
+<p>Ma per tutti gli altri tipi di salti condizionati bisogna</p>
+<ul>
+<li><code>CMP w&lt;n&gt;, w&lt;m&gt;</code> si settano i condition codes dell’alu comparando due registri<br>
+<code>B.&lt;condition&gt; label</code> si salta all’indirizzo label se la condizione è soddisfatta.<br>
+Le condizione possibili sono:<br>
+<img src="https://i.ibb.co/K6PXcXp/conditions.png" alt="enter image description here"><br>
+Ad esempio se vogliamo vedere se due registri sono uguali</li>
+</ul>
+<pre><code>CMP w1, w2
+B.EQ label
+</code></pre>
+</li>
+</ul>
+<h3 id="conditional-select-e-conditional-increment">Conditional select e conditional increment</h3>
+<p><strong>Conditional select</strong></p>
+<pre><code>CMP ...
+CSEL x&lt;d&gt;, x&lt;n&gt;, x&lt;m&gt;, &lt;condition&gt;
+</code></pre>
+<p>Se la condizione è verificata allora <code>x&lt;d&gt; = x&lt;n&gt;</code> altrimenti <code>x&lt;d&gt; = x&lt;m&gt;</code></p>
+<p><strong>Conditional increment</strong></p>
+<pre><code>CMP ...
+CINC x&lt;d&gt;, x&lt;n&gt;, x&lt;m&gt;, &lt;condition&gt;
+</code></pre>
+<p>Se la condizione è verificata allora <code>x&lt;d&gt; = x&lt;n&gt; + 1</code> altrimenti <code>x&lt;d&gt; = x&lt;m&gt;</code></p>
+<p>Queste due istruzioni sono molto comode e sono più ottimizzate perché si comportano come dei branch ma non lo sono.</p>
+<h2 id="load-e-store">Load e Store</h2>
+<p>caricare un valore dalla memoria ad un registro:</p>
+<p><code>LDR&lt;sign&gt;&lt;size&gt; &lt;reg&gt;, [addr]</code></p>
+<p>salvare un valore da un registro alla memoria:</p>
+<p><code>STR&lt;sign&gt;&lt;size&gt; &lt;reg&gt;, [addr]</code></p>
+<ul>
+<li>
+<p>Il campo <strong>size</strong> indica la dimensione di quanti dati vogliamo spostare, può essere ignorata se vogliamo passare tutto il registro.</p>
+<p><code>LDR w0, [addr]</code> carica 32 bit<br>
+<code>STRB w0, [addr]</code> la <strong>B</strong> indica che salva gli 8bit meno significativi del registro w0 (H-&gt;16, W-&gt;32)<br>
+<code>LDRB w4, [addr]</code> carica 8bit e il resto dello spazio viene riempito di zeri</p>
+</li>
+<li>
+<p>Il campo <strong>sign</strong> indica se vogliamo interpretare i valore come con segno oppure no</p>
+<p><code>LDRSB w4, [addr]</code> carica 8bit e il resto dello spazio viene esteso con il segno del dato a 8bit<br>
+Nota usando un registro a 32 bit solo fino al 32esimo bit verrà esteso il segno, da lì fino al 64esimo verranno inseriti zeri.</p>
+</li>
+<li>
+<p>Per il campo <strong>addr</strong> sono possibili 4 modi di indirizzamento:</p>
+<ol>
+<li>Base register<br>
+Si inserisce un registro che contiene l’indirizzo (l’indirizzo si ottiene con l’istruzione ADR)<br>
+<code>LDR w0, [x1]</code></li>
+<li>Offset<br>
+Si somma un immediato ad un registro contenente l’indirizzo<br>
+<code>LDR w0, [x1, #8]</code></li>
+<li>Pre-indexed<br>
+Si somma un immediato ad un registro contenente l’indirizzo e si aggiorna il registro mettendo l’indirizzo ottenuto dalla somma (il registro viene aggiornato prima di accedere alla memoria)<br>
+<code>LDR w0, [x1, #8]!</code></li>
+<li>Post-indexed<br>
+si accedere all’indirizzo contenuto in un registro e poi si aggiorna il registro sommando un immediato all’indirizzo (il registro viene aggiornato dopo aver fatto l’accesso alla memoria)<br>
+<code>LDR w0, [x1], #8</code></li>
+</ol>
+</li>
+</ul>
+<h2 id="system-calls">System calls</h2>
+<p><code>SVC #0</code></p>
+<p>Tramite le syscalls si può chiedere al sistema operativo di fare delle operazioni che noi gli chiediamo, in base al valore contenuto nel registro <code>x8</code> il sistema operativo farà un’operazione diversa.</p>
+<h1 id="assembly-1">Assembly</h1>
+<p>tool necessari per l’esecuzione di un file assembly armv8 64</p>
+<ul>
+<li>compilatore: clang</li>
+<li>linker: lld (llvm)</li>
+</ul>
+<h2 id="compilazione">Compilazione</h2>
+<p>La fase di compilazione si occupa di tradurre un programma scritto in un linguaggio in un programma scritto in un altro linguaggio, Spesso si compila un linguaggio ad alto livello per farlo diventare un codice a basso livello o in linguaggio macchina</p>
+<p>Quando si compila un codice si generano dei file oggetto, nei sistemi UNIX questi file sono composti da:</p>
+<ol>
+<li><strong>header</strong>: che descrive il contenuto dell’object file</li>
+<li><strong>text segment</strong>: che contiene il codice macchina prodotto dall’assemblatore</li>
+<li><strong>data segment</strong>: che contiene i dati «globali» necessari per l’esecuzione del programma.</li>
+<li><strong>relocation information</strong>: che identifica le istruzioni e i dati che dipendono da indirizzi assoluti</li>
+<li><strong>symbol table</strong>: che contiene i simboli (le label) locali e globali (da esportare)</li>
+<li><strong>debug informations</strong>: Informazioni aggiuntive come ad esempio il mapping tra sorgente ad alto livello e codice macchina</li>
+</ol>
+<p>comando per la compilazione</p>
+<pre><code>clang --target=aarch64-elf -c code.s -o code.o
+</code></pre>
+<h2 id="linking">Linking</h2>
+<p>Dopo la compilazione viene la fase di <strong>linking</strong> in cui si collegano i file oggetti e si produce un unico file eseguibile. In questa fase vengono risolti tutti i riferimenti e gli indirizzi relativi (indirizzi che dipendono dalla posizione in byte della label rispetto al modulo (file) a cui appartiene)</p>
+<p>comando per il linking</p>
+<pre><code>ld.lld -nostdlib code.o -o code
+</code></pre>
+<h2 id="loading">Loading</h2>
+<p>Nella fase di loading si carica il programma in memoria, gli viene assegnato uno spazio di indirizzamento in memoria e si risolvono gli indirizzi assoluti (indirizzi che dipendono dall’indirizzo in cui viene il programma)</p>
+<p>dopo questa fase il programma è effettivamente in esecuzione</p>
+<p>comando per l’esecuzione</p>
+<pre><code>./code
+</code></pre>
+<h2 id="labels">Labels</h2>
+<p>Possiamo veder le label in assembly come le variabili nei linguaggi ad alto livello.<br>
+le labels prenderanno un posizione in memora RAM e noi dobbiamo specificare la dimensione che quella variabile.</p>
+<p>Possiamo decidere la dimensione tramite le <strong>direttive</strong> cioè dei comandi da dare all’assemblatore in fase di compilazione. Alcune direttive sono:</p>
+
+<table>
+<thead>
+<tr>
+<th>direttiva</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.float &lt;&gt;</td>
+<td>inserisce un numero float32</td>
+</tr>
+<tr>
+<td>.ascii &lt;&gt;</td>
+<td>inserisce una stringa (non terminata dallo 0)</td>
+</tr>
+<tr>
+<td>.asciz &lt;&gt; oppure .string</td>
+<td>inserisce una stringa terminata da 0</td>
+</tr>
+<tr>
+<td>.byte &lt;&gt;</td>
+<td>inserisce un byte</td>
+</tr>
+<tr>
+<td>.word &lt;&gt;</td>
+<td>inserisce un numero da 4 byte (32bit)</td>
+</tr>
+<tr>
+<td>.dword &lt;&gt;</td>
+<td>inserisce un numero da 8 byte (64bit)</td>
+</tr>
+<tr>
+<td>.space &lt;&gt;</td>
+<td>riserva dei byte arbitrari non inizializzati</td>
+</tr>
+</tbody>
+</table><p>Queste direttive vanno inserite nel segmento <strong>.data</strong>:</p>
+<pre><code>.data
+	a: word 10 //la label chiamata 'a' grande 32bit contiene il numero 10
+</code></pre>
+<p>Per fare le operazione con le label dobbiamo ottenere il loro indirizzo in memoria, possiamo farla grazie all’istruzione <code>adr</code></p>
+<p><code>adr x0, a // ottiene l'indirizzo della label a in memoria</code></p>
+<p>ora che abbiamo l’indirizzo per poter utilizzare il suo valore dobbiamo caricarlo in un registro:</p>
+<p><code>ldr w1, [x0] // ora il registro w1 contiene il valore della label 'a'</code></p>
+<p>Una approccio generale è quello di evitare di copiare valori tra registri e memoria, quindi conviene utilizzare tutti i registri di cui disponiamo e non continuare a sovrascrivere dati su pochi registri</p>
+<h2 id="classici-costrutti">Classici costrutti</h2>
+<h3 id="costrutto-if-else">costrutto if-else</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>	B.&lt;!cond&gt; else // se la condizione negata si verifica allora saltiamo nel ramo else
+	// altrimenti andiamo continuiamo nel ramo then
+	...
+	B endif
+else: 
+	...
+endif:
+</code></pre>
+<h3 id="costrutto-do-while">costrutto do-while</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">do</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span> <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>init-do:
+	...
+	B.&lt;cond&gt; init_do
+</code></pre>
+<h3 id="costrutto-while">costrutto while</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly diventa</p>
+<pre><code>	B.&lt;!cond&gt; end-while // condizione di entrata nel while che viene fatta solo la prima volta
+init-while:
+	...
+	B.&lt;cond&gt; init_while // la condizione viene comunque controllata alla fine
+end-while:
+</code></pre>
+<h3 id="costrutto-for">costrutto for</h3>
+<p>un codice come</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>init<span class="token operator">&gt;</span><span class="token punctuation">;</span><span class="token operator">&lt;</span>cond<span class="token operator">&gt;</span><span class="token punctuation">;</span><span class="token operator">&lt;</span>incr<span class="token operator">&gt;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in assembly viene rappresentato come un ciclo while</p>
+<pre><code>	&lt;init&gt;
+	B.&lt;!cond&gt; end-for
+init-for:
+	...
+	&lt;incr&gt;
+	B.&lt;cond&gt; init-for
+end-for:
+	
+</code></pre>
+<h2 id="array">Array</h2>
+<p>Gli elementi di un array sono consecutivi in memoria, possiamo sfruttare questo per poter visitare l’array con la seguente formula per ottenere l’elemento in posizione n:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>&amp;A[0]&nbsp;+&nbsp;sizeof(&lt;data_type&gt;)</mtext><mo>⋅</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">\text{\&amp;A[0] + sizeof(&lt;data\_type&gt;)}\cdot n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06em; vertical-align: -0.31em;"></span><span class="mord text"><span class="mord">&amp;A[0]&nbsp;+&nbsp;sizeof(&lt;data_type&gt;)</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span></span></p>
+<p>ad esempio per ottenere l’elemento il posizione 4</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>&amp;A[0]&nbsp;+&nbsp;sizeof(int)</mtext><mo>⋅</mo><mn>4</mn></mrow><annotation encoding="application/x-tex">\text{\&amp;A[0] + sizeof(int)}\cdot 4</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">&amp;A[0]&nbsp;+&nbsp;sizeof(int)</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4</span></span></span></span></span></p>
+<p>Se</p>
+<ul>
+<li>x0 contiene l’indirizzo del primo elemento dell’array (&amp;A[0])</li>
+<li>x1 contiene l’indice dell’array che ci interessa</li>
+</ul>
+<p>possiamo ottenere il valore in indice x1 e metterlo nel registro x3 facendo</p>
+<p><code>add x3, x0, x1, LSL #2</code></p>
+<p>in questo caso LSL #2 rappresenta la moltiplicazione per sizeof(int) = 4, quindi:</p>
+<ul>
+<li>LSL #1 per sizeof(short) = 2</li>
+<li>LSL #2 per sizeof(int) = 4</li>
+<li>LSL #3 per sizeof(long int) = 8</li>
+</ul>
+<h2 id="stringhe">Stringhe</h2>
+<p>Per le stringhe utilizzeremo lo standard ASCII in cui ogni byte rappresenta un carattere:</p>
+
+<table>
+<thead>
+<tr>
+<th>range in decimale</th>
+<th>caratteri</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>48…57</td>
+<td>‘0’…‘9’ (sono i caratteri corrispettivi ai numeri, non sono effettivi numeri)</td>
+</tr>
+<tr>
+<td>65…90</td>
+<td>‘A’…‘Z’</td>
+</tr>
+<tr>
+<td>97…122</td>
+<td>‘a’…‘z’</td>
+</tr>
+</tbody>
+</table><p>Osservazioni:</p>
+<ul>
+<li>Per trasformare un carattere da minuscolo a maiuscolo: carattere - 32</li>
+<li>Per trasformare un carattere da maiuscolo a minuscolo: carattere + 32</li>
+<li>per calcolare il numero effettivo associato al carattere numerico (‘0’…‘9’): carattere - 48</li>
+</ul>
+<p>Possiamo mettere in memoria una stringa facendo:</p>
+<p><code>label: .asciiz "CIAO"</code></p>
+<p>che è lo stesso di scrivere:</p>
+<p><code>latel: .byte 67, 73, 65, 79, 0</code></p>
+<p>la ‘z’ in .asciiz indica che la stringa termina con il carattere 0</p>
+<h2 id="funzioni">Funzioni</h2>
+<p>Le funzioni sono pezzi di codice generalizzate per poter essere chiamate più volte.<br>
+Le funzioni ritornano un valore, se invece non ritornano un valore sono chiamate <strong>procedure</strong></p>
+<p>Quando vogliamo chiamare una funzione dobbiamo salvarci il punto (il PC) del codice in cui abbiamo chiamato la funzione perché una volta terminata dobbiamo tornare in quel punto</p>
+<pre><code>proc:
+	...
+	RET
+
+...
+BL proc
+...
+</code></pre>
+<p>l’istruzione BL rappresenta la chiamata alla procedura, è un normale branch ma in più viene salvato nel registro <code>x30</code> (chiamato anche registro LR) il punto in cui tornare una volta finita la procedura</p>
+<p>l’istruzione RET indica la fine della procedura e fa un branch al contenuto del registro <code>X30</code></p>
+<h3 id="procedure-call-standard-pcs">Procedure call standard (PCS)</h3>
+<p>Le PCS sono delle regole che dicono come gestire i parametri e i valori di ritorno delle funzioni</p>
+<ol>
+<li>I parametri della funzione sono passati nei registri da <code>x0...x7</code> oppure se si vogliono a 32 bit <code>w0...w7</code>. Se la funzione richiede più parametri si utilizzerà lo stack</li>
+<li>Il valore di ritorno è passato nel registro <code>x0</code></li>
+<li>l’indirizzo di ritorno della funzione viene salvata nel registro <code>x30</code></li>
+</ol>
+<p>Un <strong>side effect</strong> del chiamare funzioni può essere quello che nelle funzione possono essere utilizzati dei registri che magari contengono dei valori utili messi fuori dalla funzione e non vogliamo che la funzione modifichi quei registri. Per gestire questo problema la PCS stabilisce:</p>
+<ol start="4">
+<li>la funzione può utilizzare liberamente i registri <code>x0...x15</code> il chiamante è responsabile di salvare da qualche parte il loro valore</li>
+<li>la funzione deve mantenere i valori dei registri <code>x19...x27</code>, può modificarli ma prima di <code>RET</code> deve riportarli ai loro valori iniziali</li>
+<li>i registri <code>x8,x16,x17,x18</code> sono riservati ed è preferibili non utilizzarli</li>
+</ol>
+<p>Per salvare lo stato dei registri viene utilizzato lo <strong>stack</strong></p>
+<h2 id="stack">Stack</h2>
+<p>Lo <strong>stack</strong> è un’area di memoria che utilizza la politica LIFO (Last In First Out)</p>
+<p>per utilizzare lo stack serve lo Stack Pointer (SP) che inizialmente punta ad una locazione molto alta in memoria perche man mano che cresce utilizzerà indirizzi sempre più piccoli (contrariamente all’heap che cresce verso indirizzi più alti)</p>
+<p>In AArch64 tutti gli accessi alla memoria devono essere multipli di 16 (limitazione hardware) per rispettare questa limitazione esistono vari modi di gestire push e pop, la più semplice è sprecare spazio considerando sempre 16 bytes per ogni registro.</p>
+<ul>
+<li>push nello stack: <code>STR &lt;reg&gt;, [SP, #-16]!</code></li>
+<li>pop dallo stack: <code>LDR &lt;reg&gt;, [SP], #16</code></li>
+</ul>
+<p><img src="https://i.ibb.co/5hzGpT4/stack.png" alt=""></p>
+<ul>
+<li>È importante che chi riempie lo stack lo svuoti rimuovendo tutto quello che lui ha messo, altrimenti si presentano dei memory leak nello stack.</li>
+<li>Se si riempie lo stack oppure se si tenta di accedere a indirizzi più grandi di quello puntato dallo stack pointer iniziale si va in <em>stack overflow error</em></li>
+<li>Se una funzione chiama un’altra funzione prima della chiamata bisogna salvarsi l’indirizzo di ritorno <code>x30</code></li>
+</ul>
+<h1 id="input-e-output">Input e output</h1>
+<p>I dispositivi I/O sono quei dispositivi che ci permettono di interagire con il nostro computer.</p>
+<p>ogni sottosistema di un computer comunica con gli altri attraverso dei <strong>bus</strong> cioè dei canali di comunicazione che sono fisicamente composti da fili che veicolano segnali elettrici.</p>
+<p>Sono presenti vari tipi di bus:</p>
+<ul>
+<li>System bus: connettono CPU e memoria RAM</li>
+<li>backplane: connettono schede di espansione aggiuntive, sono standard (ad esempio PCIe quindi schede video, ssd NVMe, scheda di rete)</li>
+<li>IO: serve per connettere le periferiche principali, come mouse tastiera, microfono, ma anche hard disk</li>
+</ul>
+<p>Questi 3 tipi di bus si differenziano per prestazioni e lunghezza che possono raggiungere.</p>
+<h2 id="bus-sincrono">BUS sincrono</h2>
+<p>Nel bus sincrono le operazioni vengono regolate da un clock condiviso, quindi tutte le richieste hanno un tempo specifico e uguale per tutti per essere concluse. Questo tipo di bus viene utilizzato nei percorsi brevi come tra CPU e memoria RAM (su linee di bus più lunghe il segnale di clock potrebbe disallinearsi)</p>
+<h2 id="bus-asincrono">Bus asincrono</h2>
+<p>nei bus asincrono non è presente un clock condiviso (ma ogni periferica ha il proprio) e la comunicazione può avvenire in qualsiasi momento, viene utilizzato dai dispositivi USB, SATA, PCIe. Per verificarsi la comunicazione ha bisogno di una sincronizzazione iniziale tra le periferiche chiamata <strong>handshake</strong>.</p>
+<p>La comunicazione tra due periferiche in bus asincrono avviene tramite 3 segnali: Req(1bit), Ack(1bit), e il segnale dati (grandezza variabile).</p>
+<p>Simuliamo che il dispositivo A vuole mandare dei dati al dispositivo B:</p>
+<ol>
+<li>Inizialmente tutti i segnali sono a 0</li>
+<li>A inserisce i propri dati nella segnale <code>data</code> e invia il segnale di richiesta (<code>Req</code>) a B</li>
+<li>B si accorge che il segnale <code>Req</code> è a 1 e quindi legge i dati. Quando ha finito di leggere imposta <code>Ack</code> a 1</li>
+<li>A riceve il segnale <code>Ack = 1</code> e quindi reimposta <code>Req</code> e <code>data</code> a 0</li>
+<li>infine anche B resetta il segnale <code>Ack</code> a 0</li>
+</ol>
+<pre class=" language-mermaid"><svg id="mermaid-svg-3lbDrbNoyteZgmEy" width="100%" xmlns="http://www.w3.org/2000/svg" height="761" style="max-width: 776px;" viewBox="-204 -10 776 761"><style>#mermaid-svg-3lbDrbNoyteZgmEy{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#000000;}#mermaid-svg-3lbDrbNoyteZgmEy .error-icon{fill:#552222;}#mermaid-svg-3lbDrbNoyteZgmEy .error-text{fill:#552222;stroke:#552222;}#mermaid-svg-3lbDrbNoyteZgmEy .edge-thickness-normal{stroke-width:2px;}#mermaid-svg-3lbDrbNoyteZgmEy .edge-thickness-thick{stroke-width:3.5px;}#mermaid-svg-3lbDrbNoyteZgmEy .edge-pattern-solid{stroke-dasharray:0;}#mermaid-svg-3lbDrbNoyteZgmEy .edge-pattern-dashed{stroke-dasharray:3;}#mermaid-svg-3lbDrbNoyteZgmEy .edge-pattern-dotted{stroke-dasharray:2;}#mermaid-svg-3lbDrbNoyteZgmEy .marker{fill:#666;stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy .marker.cross{stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#mermaid-svg-3lbDrbNoyteZgmEy .actor{stroke:hsl(0,0%,83%);fill:#eee;}#mermaid-svg-3lbDrbNoyteZgmEy text.actor > tspan{fill:#333;stroke:none;}#mermaid-svg-3lbDrbNoyteZgmEy .actor-line{stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy .messageLine0{stroke-width:1.5;stroke-dasharray:none;stroke:#333;}#mermaid-svg-3lbDrbNoyteZgmEy .messageLine1{stroke-width:1.5;stroke-dasharray:2,2;stroke:#333;}#mermaid-svg-3lbDrbNoyteZgmEy #arrowhead path{fill:#333;stroke:#333;}#mermaid-svg-3lbDrbNoyteZgmEy .sequenceNumber{fill:white;}#mermaid-svg-3lbDrbNoyteZgmEy #sequencenumber{fill:#333;}#mermaid-svg-3lbDrbNoyteZgmEy #crosshead path{fill:#333;stroke:#333;}#mermaid-svg-3lbDrbNoyteZgmEy .messageText{fill:#333;stroke:#333;}#mermaid-svg-3lbDrbNoyteZgmEy .labelBox{stroke:hsl(0,0%,83%);fill:#eee;}#mermaid-svg-3lbDrbNoyteZgmEy .labelText,#mermaid-svg-3lbDrbNoyteZgmEy .labelText > tspan{fill:#333;stroke:none;}#mermaid-svg-3lbDrbNoyteZgmEy .loopText,#mermaid-svg-3lbDrbNoyteZgmEy .loopText > tspan{fill:#333;stroke:none;}#mermaid-svg-3lbDrbNoyteZgmEy .loopLine{stroke-width:2px;stroke-dasharray:2,2;stroke:hsl(0,0%,83%);fill:hsl(0,0%,83%);}#mermaid-svg-3lbDrbNoyteZgmEy .note{stroke:hsl(60,100%,23.3333333333%);fill:#ffa;}#mermaid-svg-3lbDrbNoyteZgmEy .noteText,#mermaid-svg-3lbDrbNoyteZgmEy .noteText > tspan{fill:#333;stroke:none;}#mermaid-svg-3lbDrbNoyteZgmEy .activation0{fill:#f4f4f4;stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy .activation1{fill:#f4f4f4;stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy .activation2{fill:#f4f4f4;stroke:#666;}#mermaid-svg-3lbDrbNoyteZgmEy:root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}#mermaid-svg-3lbDrbNoyteZgmEy sequence{fill:apa;}</style><g></g><g><line id="actor15" x1="75" y1="5" x2="75" y2="750" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="0" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="75" dy="0">Dispositivo A</tspan></text></g><g><line id="actor16" x1="275" y1="5" x2="275" y2="750" class="actor-line" stroke-width="0.5px" stroke="#999"></line><rect x="200" y="0" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="32.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="275" dy="0">Dispositivo B</tspan></text></g><defs><marker id="arrowhead" refX="9" refY="5" markerUnits="userSpaceOnUse" markerWidth="12" markerHeight="12" orient="auto"><path d="M 0 0 L 10 5 L 0 10 z"></path></marker></defs><defs><marker id="crosshead" markerWidth="15" markerHeight="8" orient="auto" refX="16" refY="4"><path fill="black" stroke="#000000" stroke-width="1px" d="M 9,2 V 6 L16,4 Z" style="stroke-dasharray: 0, 0;"></path><path fill="none" stroke="#000000" stroke-width="1px" d="M 0,1 L 6,7 M 6,1 L 0,7" style="stroke-dasharray: 0, 0;"></path></marker></defs><defs><marker id="filled-head" refX="18" refY="7" markerWidth="20" markerHeight="28" orient="auto"><path d="M 18,7 L9,13 L14,7 L9,1 Z"></path></marker></defs><defs><marker id="sequencenumber" refX="15" refY="15" markerWidth="60" markerHeight="40" orient="auto"><circle cx="15" cy="15" r="6"></circle></marker></defs><g><rect x="70" y="67" fill="#EDF2AE" stroke="#666" width="10" height="198" rx="0" ry="0" class="activation0"></rect></g><g><rect x="-154" y="75" fill="#EDF2AE" stroke="#666" width="204" height="52" rx="0" ry="0" class="note"></rect><text x="-52" y="80" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-52">A setta Req e data </tspan></text><text x="-52" y="96" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-52"> per iniziale la comunicazione</tspan></text></g><g><rect x="300" y="137" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="375" y="142" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="375">B rimane in attesa</tspan></text></g><text x="178" y="188" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Req = 1</text><line x1="80" y1="219" x2="275" y2="219" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="178" y="234" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">data = {...}</text><line x1="80" y1="265" x2="275" y2="265" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="270" y="267" fill="#EDF2AE" stroke="#666" width="10" height="168" rx="0" ry="0" class="activation0"></rect></g><g><rect x="300" y="275" fill="#EDF2AE" stroke="#666" width="222" height="52" rx="0" ry="0" class="note"></rect><text x="411" y="280" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="411">B legge i dati e quando ha finito </tspan></text><text x="411" y="296" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="411"> imposta ack a 1</tspan></text></g><g><rect x="-112" y="337" fill="#EDF2AE" stroke="#666" width="162" height="52" rx="0" ry="0" class="note"></rect><text x="-31" y="342" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-31">A rimane in attesa che </tspan></text><text x="-31" y="358" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-31"> B legga i dati</tspan></text></g><text x="173" y="404" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Ack = 1</text><line x1="270" y1="435" x2="75" y2="435" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="70" y="437" fill="#EDF2AE" stroke="#666" width="10" height="136" rx="0" ry="0" class="activation0"></rect></g><g><rect x="-100" y="445" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="-25" y="450" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="-25">A resetta Req e data</tspan></text></g><text x="178" y="496" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Req = 0</text><line x1="80" y1="527" x2="275" y2="527" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><text x="178" y="542" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">data = 0</text><line x1="80" y1="573" x2="275" y2="573" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="270" y="575" fill="#EDF2AE" stroke="#666" width="10" height="90" rx="0" ry="0" class="activation0"></rect></g><g><rect x="300" y="583" fill="#EDF2AE" stroke="#666" width="150" height="36" rx="0" ry="0" class="note"></rect><text x="375" y="588" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="noteText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 14px; font-weight: 400;"><tspan x="375">B resetta Ack</tspan></text></g><text x="173" y="634" text-anchor="middle" dominant-baseline="middle" alignment-baseline="middle" class="messageText" dy="1em" style="font-family: &quot;trebuchet ms&quot;, verdana, arial, sans-serif; font-size: 16px; font-weight: 400;">Ack = 0</text><line x1="270" y1="665" x2="75" y2="665" class="messageLine0" stroke-width="2" stroke="none" marker-end="url(#arrowhead)" style="fill: none;"></line><g><rect x="0" y="685" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="75" y="717.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="75" dy="0">Dispositivo A</tspan></text></g><g><rect x="200" y="685" fill="#eaeaea" stroke="#666" width="150" height="65" rx="3" ry="3" class="actor"></rect><text x="275" y="717.5" dominant-baseline="central" alignment-baseline="central" class="actor" style="text-anchor: middle; font-size: 14px; font-weight: 400; font-family: Open-Sans, &quot;sans-serif&quot;;"><tspan x="275" dy="0">Dispositivo B</tspan></text></g></svg></pre>
+<h2 id="arbitraggio-a-daisy-chain">Arbitraggio a Daisy chain</h2>
+<p>Quando più dispositivi utilizzano lo stesso bus è necessario regolare l’accesso per evitare conflitti.<br>
+Un metodo per farlo è l’arbitragggio a daisy chain.</p>
+<p>È presenta un arbitro per dara l’accesso al bus, mentre i dispositivi che richiedono l’accesso al bus sono posti a catena in cui il più vicino all’arbitro ha la priorità più alta.</p>
+<p>Abbiamo 3 segnali condivisi tra i dispositivi:</p>
+<ul>
+<li>request: il dispotivo invia la richiesta all’arbitro di accedere al bus</li>
+<li>grant: l’arbitro da l’accesso al bus</li>
+<li>release: il dispositivo finisce le sue operazioni sul bus</li>
+</ul>
+<p><img src="https://i.ibb.co/Cw8xyZR/daisy-chain.png" alt=""><br>
+Ipotizziamo che il device 2 voglia accedere al bus:</p>
+<ol>
+<li>il device 2 imposta <code>request</code> a 1</li>
+<li>l’arbitro nota la richiesta ma essendo il segnale condiviso tra i dispositivi non sa da chi provenga</li>
+<li>l’arbitro imposta il segnale <code>grant</code> a 1 che va al device 1 che è quello con la priorità più alta</li>
+<li>Il device 1 può decidere se accedere al bus (rubandolo quindi al device 2) oppure propagare il segnale al device successivo</li>
+<li>Se decide di propagare allora il device 2 può accedere al bus come da lui richiesto</li>
+<li>una volta terminate le sue operazioni sul bus imposta il segnale <code>release</code> a 1 e l’arbitro resetta il segnale <code>grant</code></li>
+</ol>
+<p>Seppure questa tecnica è molto semplice da realizzare non è molto ottimale perché i dispositivi a bassa priorità potrebbero non avere mai accesso al bus. Esistono tecniche più ottimali ma sono più complesse da realizzare.</p>
+<h2 id="gestione-dellio-i-controller">Gestione dell’IO (I controller)</h2>
+<p>Un’operazione di input/output è un trasferimento di dati che può avvenire:</p>
+<ul>
+<li>da un dispositivo alla memoria RAM (<strong>input</strong>)</li>
+<li>dalla memoria RAM ad un dispositivo (<strong>output</strong>)</li>
+</ul>
+<p>Per effettuare questi trasferimenti abbiamo bisogno dei <strong>controller</strong>, che non è altro che un piccolo processore dedicato che possiede ogni dispositivo.</p>
+<p>In generale ogni controller deve possedere dei registri che permettano interagire con il processore:</p>
+<ul>
+<li><strong>command register</strong>: utilizzato per inviare dei comandi al controller (output)</li>
+<li><strong>status register</strong>: utilizzato per sapere lo stato del dispositivo (input)</li>
+<li><strong>data write register</strong>: utilizzato per inviare dei dati nel dispositivo (output)</li>
+<li><strong>data read register</strong>: utilizzata per ricevere dei dati dal dispositivo (input)</li>
+</ul>
+<p>Per comunicare con i controller esiste un l’approccio chiamato <strong>Memory Mapped IO</strong>:<br>
+I registri dei dispositivi sono mappati in delle locazioni di memoria specifica per loro.<br>
+Per la CPU non c’è differenza al modo di accedere a quei registri (farà delle normali load e store).<br>
+È compito della MMU (Memory Management Unit) di indirizzare le richieste a un dispositivo oppure alla RAM.</p>
+<h3 id="polling">Polling</h3>
+<p>Il polling è una tecnica per fare operazioni con i dispositivi in cui la CPU controlla periodicamente lo stato del dispositivo per vedere se ci sono dei dati da prelevare. Può essere utile quando un dispositivo ha spesso dei dati da comunicare.<br>
+La CPU però spreca molto tempo a controllare ogni volta lo stato del dispositivo</p>
+<h3 id="interrupt-driven-io">Interrupt-driven IO</h3>
+<p>In quest’altra tecnica è il dispositivo che avvisa la CPU (tramite un interrupt) che di sono dei dati disponibili.<br>
+Questa tecnica è molto vantaggiosa per dispositivi che comunicano poco di frequente, questo perché gli interrupt sono molto dispendiosi per la CPU e se avvengono troppo spesso la CPU avrà un grosso calo di performance</p>
+<h2 id="dma">DMA</h2>
+<p>In entrambe le tecniche precedenti viene sempre coinvolta la CPU nelle operazioni con lo scopo di fare da collegamento tra dispositivo e RAM, ma la CPU ha altre operazioni più importanti da fare (come eseguire i programmi)</p>
+<p>Viene introdotto quindi un controller esterno alla CPU chiamato <strong>DMA</strong> (Direct Memory Access) che si occupa dell’interazione tra dispositivi e RAM. La CPU fornisce semplicemente quanti dati trasferire e dove trasferirli, il trasferimento effettivo viene fatto dal DMA. Quando tutti dati saranno trasferiti il DMA farà un interrupt alla CPU.</p>
+<p><img src="https://i.ibb.co/XJj4rnt/dma.png" alt=""></p>
+<p>Senza il DMA c’era una unica via per accedere alla memoria che era passando attraverso la CPU che gestiva gli indirizzi virtuali e la cache, inserendo il DMA però si crea un’altra strada che non utilizza la cache (incoerenza dei dati tra CPU e DMA) e non utilizza gli indirizzi virtuali</p>
+<p>per risolvere il <strong>problema della cache</strong> ci sono varie soluzioni:</p>
+<ol>
+<li>far passare l’attività di I/O tramite la cache impattando negativamente sulle prestazioni (perchè il DMA potrebbe sostituire in cache dei dati frequentemente utilizzati dalla CPU con dei dati poco utilizzati)</li>
+<li>far intervenire il sistema operativo per ogni operazione I/O: in cui quando avviene una scrittura in RAM da parte del DMA il corrispettivo valore che è in cache viene invalidato e quando il DMA vuole leggere un dato in RAM viene prima fatto un write-back dalla cache (aggiornando il valore in RAM prima che il DMA lo legga)</li>
+<li>utilizzare dei componenti hw aggiuntivi per invalidare dei dati in cache</li>
+</ol>
+<p>per quanto riguarda gli indirizzi virtuali:</p>
+<p>Se il DMA utilizzasse indirizzi virtuali dovrebbe essere anche in grado di tradurli in indirizzi fisici, dovrebbe quindi avere accesso alla page table e alla TLB per essere più performante. ciò porterebbe alla stessa incoerenza che avevamo nella cache.</p>
+<p>Se il DMA utilizzasse indirizzi fisici la dimensione del trasferimento sarebbe vincolata alla dimensione di una pagina, questo perché gli indirizzi fisici contigui in memoria fisica non sono necessariamente contigui in memoria virtuale</p>
+<p>soluzioni:</p>
+<ol>
+<li>Il DMA lavora con indirizzi virtuali e il sistema operativo si occupa di fornirgli delle tabelle di traduzione per il trasferimento</li>
+<li>il DMA lavora con indirizzi fisici frammentando il trasferimento in tanti piccoli trasferimenti.</li>
+</ol>
+
+    </div>
+  </div>
+</body>
+
+</html>

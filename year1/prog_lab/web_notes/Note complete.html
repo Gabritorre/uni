@@ -1,0 +1,1087 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#note-varie">Note varie</a>
+<ul>
+<li><a href="#r-value-and-l-value">R-value and l-value</a></li>
+<li><a href="#tipo-di-dato-variabile-e-oggetto">Tipo di dato, variabile e oggetto</a></li>
+<li><a href="#dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</a></li>
+<li><a href="#linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</a></li>
+<li><a href="#references">References</a></li>
+<li><a href="#cicli">Cicli</a></li>
+<li><a href="#invariante-di-un-ciclo">Invariante di un ciclo</a></li>
+<li><a href="#vector">Vector</a></li>
+<li><a href="#memoria-dinamica">Memoria dinamica</a></li>
+<li><a href="#eccezioni">Eccezioni</a></li>
+</ul>
+</li>
+<li><a href="#compilatore">Compilatore</a>
+<ul>
+<li><a href="#header">header</a></li>
+<li><a href="#link-dei-file-oggetto">link dei file oggetto</a></li>
+<li><a href="#librerie-statiche-e-dinamiche">Librerie statiche e dinamiche</a></li>
+<li><a href="#opzioni-comuni-di-g">Opzioni comuni di g++</a></li>
+<li><a href="#ottimizzazioni">Ottimizzazioni</a></li>
+</ul>
+</li>
+<li><a href="#automatizzazioni-e-debug">Automatizzazioni e debug</a>
+<ul>
+<li><a href="#struttura-di-un-progetto">Struttura di un progetto</a></li>
+<li><a href="#makefile">Makefile</a></li>
+</ul>
+</li>
+<li><a href="#debug">Debug</a>
+<ul>
+<li><a href="#tipologie-di-errori">Tipologie di errori</a></li>
+<li><a href="#warnings">Warnings</a></li>
+<li><a href="#asserts">Asserts</a></li>
+<li><a href="#valgrind">Valgrind</a></li>
+<li><a href="#sanitizers">Sanitizers</a></li>
+</ul>
+</li>
+<li><a href="#classi">Classi</a>
+<ul>
+<li><a href="#costruttori">Costruttori</a></li>
+<li><a href="#distruttori">Distruttori</a></li>
+<li><a href="#friend">Friend</a></li>
+<li><a href="#tecnica-pimpl">Tecnica pimpl</a></li>
+</ul>
+</li>
+<li><a href="#streams">Streams</a>
+<ul>
+<li><a href="#streams-in-c">Streams in c++</a></li>
+</ul>
+</li>
+<li><a href="#template">Template</a>
+<ul>
+<li><a href="#template-di-funzioni">Template di Funzioni</a></li>
+<li><a href="#template-di-classi">Template di classi</a></li>
+<li><a href="#non-type-template">Non-type template</a></li>
+</ul>
+</li>
+<li><a href="#move-semantics">Move semantics</a>
+<ul>
+<li><a href="#move-constructor-e-move-assignment">Move constructor e move assignment</a></li>
+</ul>
+</li>
+<li><a href="#iteratori">Iteratori</a>
+<ul>
+<li><a href="#tipi-di-iteratori">Tipi di iteratori</a></li>
+<li><a href="#operazioni-essenziali-iteratori">operazioni essenziali iteratori</a></li>
+<li><a href="#invalidation-degli-iteratori">Invalidation degli iteratori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="note-varie">Note varie</h1>
+<h2 id="r-value-and-l-value">R-value and l-value</h2>
+<p>l-value: rappresenta un oggetto che è identificabile attraverso un indirizzo</p>
+<ul>
+<li>una l-value <strong>non</strong> può essere una funzione, una espressione (<em>varibile</em> + 3) oppure una costante (1, 10.5, -5…).</li>
+<li>Nelle operazioni di assegnamento (=) la l-value deve avere la capacità di immagazzinare dati.</li>
+</ul>
+<p>r-value rappresenta un oggetto che invece non è identificabile tramite un indirizzo</p>
+<p>Sono un r-value le costanti e tutto quello che può restituire una costante</p>
+<h3 id="operatori-di-indirizzo">operatori di indirizzo</h3>
+<ul>
+<li>
+<p><strong>&amp;</strong> deve operare su una l-value e restituisce una r-value.</p>
+<pre><code>  int *p = &amp;a;
+</code></pre>
+<p>a è una variabile e quindi una l-value e viene restituito l’indirizzo di a che è una costante, quindi una r-value.<br>
+Infatti una operazione come “&amp;15” non è ammessa</p>
+</li>
+<li>
+<p><strong>*</strong> opera su una r-value e restituisce una l-value.</p>
+<pre><code>  *p = 15; 
+</code></pre>
+<p>abbiamo che ‘p’ rappresenta un indirizzo quindi una r-value e l’operatore <strong>*</strong> rappresenta la zona di memoria puntata dall’indirizzo quindi una l-value.</p>
+</li>
+</ul>
+<h2 id="tipo-di-dato-variabile-e-oggetto">Tipo di dato, variabile e oggetto</h2>
+<ul>
+<li>Tipo di variabile: insieme di valori su cui vengono definite delle operazioni.</li>
+<li>Oggetto: area di memoria alla quale è associato un tipo.</li>
+<li>Variabile: oggetto (quindi un’area di memoria) a cui è assegnato un identificatore (il nome della variabile)</li>
+</ul>
+<p>Il controllo dei tipi di dato è statico, cioè è determinato in fase di compilazione. In generale tutto quello che fatto staticamente avviene in fase di compilazione.</p>
+<h2 id="dichiarazione-assegnamento-inizializzazione-e-definizione">Dichiarazione, assegnamento, inizializzazione e definizione</h2>
+<ul>
+<li>
+<p><strong>Dichiarazione</strong>: Operazione che introduce un nuovo identificatore (nome della variabile), con il suo tipo di dato.</p>
+<pre><code>  int a;
+</code></pre>
+</li>
+<li>
+<p><strong>Assegnamento</strong>: Significa dare un valore ad una variabile precedentemente dichiarata.</p>
+<pre><code>  a = 5;
+</code></pre>
+</li>
+<li>
+<p><strong>Inizializzazione</strong>: Indica che si sta dichiarando una variabile e nello stesso passaggio si assegna anche un valore ad essa.</p>
+<pre><code>  int b = 5;
+</code></pre>
+</li>
+<li>
+<p><strong>Definizione</strong>: Una dichiarazione è anche una definizione quando specifica completamente il nome introdotto.<br>
+Per esempio:</p>
+<pre><code>  int a;
+</code></pre>
+<p>è una definizione (e quindi anche una dichiarazione).<br>
+Invece la dichiarazione</p>
+<pre><code>  extern int a;
+</code></pre>
+</li>
+</ul>
+<p>introduce il nome a che però è allocato altrove. In questo caso parliamo di dichiarazione ma non di definizione.</p>
+<h3 id="const-e-constexpr">Const e constexpr</h3>
+<p>sono due keyword che vengono servono entrambe a rendere una variabile non modificabile, la differenza sta nel fatto che con <code>constexpr</code> si può usare solo per inizializzare una variabile in compile-time, mentre <code>const</code> può essere usato per inizializzare sia in run-time che in compile-time.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// errore</span>
+<span class="token keyword">int</span> var <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+constexpr <span class="token keyword">int</span> a <span class="token operator">=</span> var<span class="token punctuation">;</span>
+
+<span class="token comment">// valido</span>
+<span class="token keyword">int</span> var <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token keyword">int</span> a <span class="token operator">=</span> var<span class="token punctuation">;</span>
+</code></pre>
+<p>per quanto riguarda l’inizializzazione di costanti sarebbe meglio l’utilizzo di <code>constexpr</code>.</p>
+<p>Mentre viene spesso utilizzato il <code>const</code> nei parametri delle funzioni in quelle variabili che vogliamo assicurare non vengano lette durante il corpo della funzione</p>
+<h2 id="linguaggi-imperativi-e-funzionali">Linguaggi imperativi e funzionali</h2>
+<ul>
+<li>
+<p>I linguaggi imperativi rappresentano la classica idea di programmazione con le caratteristiche principali come:</p>
+<ul>
+<li>OOP</li>
+<li>flusso delle istruzioni ini ordine ben specifico</li>
+<li>utilizzo e modifica di variabili durante il flusso del codice</li>
+</ul>
+<p>es. C, C++, Java</p>
+</li>
+<li>
+<p>I linguaggi funzionali si basano su funzioni matematiche</p>
+<ul>
+<li>si basano principalmente nel definire funzioni che elaborano dei valori dati in input</li>
+<li>non esiste l’assegnamento a “variabili” già definite</li>
+</ul>
+<p>es. scheme, scala, Prolog</p>
+</li>
+</ul>
+<h2 id="references">References</h2>
+<p>Una variabile dichiarata come reference di un’altra variabile è in sostanza un <em>alias</em> di quella variabile.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+<span class="token keyword">int</span><span class="token operator">&amp;</span> b <span class="token operator">=</span> a<span class="token punctuation">;</span>
+</code></pre>
+<p>In questo caso <code>b</code> è una reference alla variabile <code>a</code>, quindi le variabili <code>a</code> e <code>b</code> sono la stessa cosa.</p>
+<p>Quando una funzione richiede come parametri delle references si ha una chiamata a funzione con passaggio dei parametri per inidirizzo, per cui vengono utilizzate effettivamente le variabili passate alla funzione e non una loro copia</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">void</span> <span class="token function">function</span> <span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">&amp;</span> var1<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	var1 <span class="token operator">+</span><span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token function">function</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	cout<span class="token operator">&lt;&lt;</span>a<span class="token punctuation">;</span>	<span class="token comment">//a vale 10</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="differenze-con-i-puntatori">Differenze con i puntatori</h3>
+<ul>
+<li>Una reference non può essere di tipo void, mentre un puntatore sì.</li>
+<li>Una reference non può essere aggiornata dopo la sua inizializzazione, mentre un puntatore sì.</li>
+<li>Una reference può riferirsi ad una altra reference ma rappresenterà sempre un alias della variabile originale, mentre un puntatore può puntare ad un altro puntatore ma ogni puntatore avrà un contenuto diverso (i vari indirizzi).</li>
+</ul>
+<h2 id="cicli">Cicli</h2>
+<h3 id="ciclo-for">Ciclo for</h3>
+<p>Il ciclo for consiste di tre clausole: l’inizializzazione, la condizione di permanenza, l’espressione di iterazione.</p>
+<pre><code>for(inizializzazione;condizione;iterazione){}
+</code></pre>
+<p>Un buon uso del ciclo for prevede che nel corpo del for non vengano modificate le variabili che sono soggette alla condizione del ciclo.</p>
+<h3 id="ciclo-for-each">Ciclo for each</h3>
+<p>Scritto con la seguente sintassi</p>
+<pre><code>for(type var: vect){}
+</code></pre>
+<p>si tratti di un ciclo che ad ogni iterazione <strong>copia</strong> uno ad uno i valori di <code>vect</code> in <code>var</code>. Torna molto utile per lavorare con le stringhe e per fare alcune operazioni con gli array.</p>
+<p>Per evitare di avere una copia è possibile utilizzare le references per lavorare direttamente sui valori dell’array.</p>
+<h4 id="keyword-auto">keyword “auto”</h4>
+<p>La keyword auto viene molto utilizzata nei for-each e va al posto del tipo di dato per lasciare al compilatore il compito di decidere il tipo di dato della variabile in cui copiare i vari valori.</p>
+<p>È possibile utilizzarla anche nelle normali inizializzazioni (ma non nelle dichiarazioni)</p>
+<h3 id="ciclo-while">ciclo while</h3>
+<pre><code>while(condizione){}
+</code></pre>
+<p>la scelta del ciclo while entra in gioco quando non è possibile esprimere un’iterazione con il ciclo for e quando il ciclo verrà eseguito zero o più volte.</p>
+<h3 id="ciclo-do-while">ciclo do-while</h3>
+<pre><code>do{
+}while();
+</code></pre>
+<p>la scelta del ciclo do-while entra in gioco quando non è possibile esprimere un’iterazione con il ciclo for e quando il ciclo verrà eseguito una o più volte.</p>
+<h2 id="invariante-di-un-ciclo">Invariante di un ciclo</h2>
+<p>L’invariante di un ciclo è una proprietà che deve essere vera prima e durante le iterazioni del ciclo.</p>
+<p>L’utilità dell’invariante sta nel fatto che permette di verificare se il ciclo funziona correttamente. Se l’invariante è vera all’inizio del ciclo e rimane vera ad ogni iterazione, allora possiamo essere certi che il ciclo terminerà correttamente.</p>
+<h3 id="esempio">Esempio</h3>
+<p>Ad esempio in un programma che calcola il l’elemento maggiore  presente in una matrice.</p>
+<p>All’inizio di ogni iterazione del ciclo,  una variabile, <code>max</code> contiene il valore massimo tra tutti gli elementi della matrice che abbiamo finora esaminato.</p>
+<p>Alla fine di ogni iterazione del ciclo, l’invariante deve rimanere vero. In particolare, se abbiamo esaminato tutti gli elementi della matrice, allora <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
+<p>Quindi, l’invariante in questo caso è che la variabile <code>max</code> contenga sempre il valore massimo tra gli elementi della matrice che abbiamo finora esaminato. Alla fine del ciclo, <code>max</code> conterrà il valore massimo tra tutti gli elementi della matrice.</p>
+<h2 id="vector">Vector</h2>
+<p>Uno dei motivi principali per cui utilizzeremo vector al posto degli array C-like è che in C non è possibile passare un array ad una funzione per copia ma solo per parametro, essendo sì più efficiente ma ciò ci costringe a portarci sempre una variabile in più per indicare la dimensione dell’array.</p>
+<p>In più se vogliamo volutamente lavorare su una copia dell’array non è possibile farlo (in realtà utilizzando gli struct sarebbe possibile, ma è scomodo e poco chiaro).</p>
+<p>Utilizzando la classe vector è possibile decidere se effettuare un passaggio per indirizzo o per valore. In più porta con se molti metodi che facilitano di molto l’utilizzo degli array.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> arr<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// passaggio per copia</span>
+<span class="token keyword">void</span> <span class="token function">foo2</span><span class="token punctuation">(</span>vecotr<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token operator">&amp;</span> arr<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// passaggio per riferimento</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> a<span class="token punctuation">;</span> <span class="token comment">// non è necessario specificare la dimensione</span>
+vector<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment">/* è possibile utilizzare entrambi i seguenti modi,
+* l'importante differenza sta nel fatto che utilizzare
+* il metodo at è più sicuro perche fa un controllo
+* sull'esistenza dell'indice*/</span>
+a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+b<span class="token punctuation">.</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">1.5</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>La classe vector è implementata come un <strong>template</strong> cioè una classe generica che può agire su un tipo di dato passato per parametro, e viene indicato tra le parentisi angolari.</p>
+<h3 id="matrici">Matrici</h3>
+<p>Possiamo dichiarare una matrice (vector di vector) facendo:</p>
+<pre class=" language-c"><code class="prism ++ language-c">vector<span class="token operator">&lt;</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;&gt;</span> matrix<span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> righe <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">,</span> colonne <span class="token operator">=</span> <span class="token number">4</span><span class="token punctuation">;</span>
+
+matrix<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span>righe<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// imposto il numero di righe</span>
+
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> e<span class="token punctuation">:</span> matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// imposto il numero di colonne per ogni riga</span>
+	e<span class="token punctuation">.</span><span class="token function">resize</span><span class="token punctuation">(</span>colonne<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// riempio la matrice</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> r<span class="token punctuation">:</span>matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> elem<span class="token punctuation">:</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		elem <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// stampa della matrice</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> r<span class="token punctuation">:</span>matrix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span><span class="token operator">&amp;</span> elem<span class="token punctuation">:</span>r<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout<span class="token operator">&lt;&lt;</span>elem <span class="token operator">&lt;&lt;</span> <span class="token string">" "</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	cout<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>è possibile anche creare una <strong>matrice frastagliata</strong> cioè in cui le righe possono avere un numero di colonne diverso.</p>
+<h2 id="memoria-dinamica">Memoria dinamica</h2>
+<p>le <em>keyword</em> <strong>new</strong> e <strong>delete</strong> di C++ possono in qualche modo essere comparate al <code>malloc</code> e il <code>free</code> di C:</p>
+<p>l’utilizzo della memoria dinamica è supportata nativamente senza l’utilizzo di altre librerie (come stdlib)</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// Allocazione in memoria dinamica in C++:</span>
+<span class="token keyword">int</span> <span class="token operator">*</span>a <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">;</span> <span class="token comment">// restituisce l'indirizzo della memoria creata</span>
+<span class="token comment">// Deallocazione della memoria</span>
+delete a<span class="token punctuation">;</span>
+
+<span class="token comment">// Allocazione di array</span>
+<span class="token keyword">int</span> <span class="token operator">*</span>p <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// ritorna l'indirizzo del primo elemento</span>
+delete<span class="token punctuation">[</span><span class="token punctuation">]</span> p<span class="token punctuation">;</span>
+</code></pre>
+<h2 id="eccezioni">Eccezioni</h2>
+<p>In c++ è possibile lanciare e catturare delle eccezioni, cioè un segnale che indica che è stato rilevato un errore.</p>
+<p>l’istruzione <code>throw</code> serve per lanciare l’eccezione, in pratica viene “lanciato” un oggetto al chiamante della funzione il quale potrà gestire l’eccezione.</p>
+<p>Quando viene eseguito il throw l’esecizione viene bloccata e viene passata al chiamante, se il chiamante ha catturato l’eccezione con un <code>try{} ... catch(){}</code>allora viene gestita l’eccezione altrimenti il programma abortisce</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> my_exception <span class="token punctuation">{</span>
+	string info<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		throw my_exception<span class="token punctuation">{</span><span class="token string">"valore non valido"</span><span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	try<span class="token punctuation">{</span>	
+		<span class="token function">f</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span><span class="token function">catch</span><span class="token punctuation">(</span>my_exception<span class="token operator">&amp;</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//gestione eccezione</span>
+	cerr<span class="token operator">&lt;&lt;</span>e<span class="token punctuation">.</span>info<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="compilatore">Compilatore</h1>
+<p>Il compilatore per i programmi scritti in c++ è <strong>g++</strong>.</p>
+<p>il comando g++ è  una chiamata a gcc con l’aggiunta di particolari parametri</p>
+<p>Compilazione:</p>
+<pre><code>g++ program.cpp -o program
+./program
+</code></pre>
+<h2 id="header">header</h2>
+<p>Per una migliore organizzazione del codice è possibile avere gli header in una cartella diversa da quella del file eseguibile. Inoltre mettere in testa al file il percorso relativo o assoluto di ogni header è scomodo e poco elegante.</p>
+<p>È possibile indicare la cartella contenente gli header in fase di compilazione (con l’opzione -I ) e in testa al file che utilizza quelle librerie basta mettere il nome degli header.</p>
+<pre><code>g++ program.cpp -o program -I header-dir/
+</code></pre>
+<h2 id="link-dei-file-oggetto">link dei file oggetto</h2>
+<p>In grandi progetti dove sono presenti più file che fanno dei riferimenti a funzioni tra di loro è più conveniente compilare i vari file singolarmente, attraverso il parametro -c dice al compilatore di creare dei file oggetto e non degli eseguibili (quindi non si avranno errori per dei riferimenti mancanti) e una volta compilati tutti i file .cpp (tra cui deve essere presente il main) si linkano tutti i file oggetto</p>
+<pre><code>//creazione dei file oggetto
+g++ -c -o foo.o foo.cpp
+g++ -c -o main.o main.cpp
+g++ -c -o bar.o bar.cpp
+
+//link dei file oggetto
+g++ -o fubar foo.o main.o bar.o
+</code></pre>
+<p>Questo torna utile in fase di aggiornamento di uno specifico file, per cui non dobbiamo ricompilare tutti i file ma solo il file modificato e poi rifare il linking.</p>
+<h2 id="librerie-statiche-e-dinamiche">Librerie statiche e dinamiche</h2>
+<h3 id="librerie-statiche">Librerie statiche</h3>
+<p>Le librerie statiche sono pezzi di codice già compilati che vengono legati al programma che le ha chiamata in <strong>fase di compilazione</strong>. Viene effettivamente copiato il codice della libreria all’interno del file chiamante</p>
+<h3 id="librerie-dinamiche">Librerie dinamiche</h3>
+<p>Le libreri dinamiche sono sempre dei pezzi di codice già compilati ma vengono caricate in memoria in fase di esecuzione (run-time).</p>
+<h3 id="differenze">Differenze</h3>
+<ul>
+<li>Le librerie dinamiche vengono caricate in memoria solo una volta e possono essere usate da più programmi. Mentre con le statiche ogni eseguibile ha una copia caricata in memoria di quella libreria.</li>
+<li>L’utilizzo di librerie statiche implica una maggiore grandezza degli eseguibili.</li>
+<li>La modifica della libreria statica implica che bisogna ricompilare anche tutti i file che la utilizzavano.</li>
+<li>L’utilizzo delle librerie dinamiche può portare a problemi di compatibilità, e di indirizzamento.</li>
+<li>L’utilizzo delle librerie statiche è generalmente più veloce perché non ci sono chiamate esterne.</li>
+</ul>
+<h2 id="opzioni-comuni-di-g">Opzioni comuni di g++</h2>
+
+<table>
+<thead>
+<tr>
+<th>opzione</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>-g</td>
+<td>aggiunge informazione aggiuntive all’eseguibile utili per il debug</td>
+</tr>
+<tr>
+<td>-Wall</td>
+<td>abilita tutti i possibili warning della compilazione</td>
+</tr>
+<tr>
+<td>-O</td>
+<td>ottimizzazioni</td>
+</tr>
+<tr>
+<td>-o &lt;name&gt;</td>
+<td>permette di specificare il nome del file eseguibile</td>
+</tr>
+<tr>
+<td>-I &lt;path&gt;</td>
+<td>specifica il percorso per la cartella dei file header</td>
+</tr>
+<tr>
+<td>-L &lt;path&gt;</td>
+<td>specifica il percorso per la cartella contenente le librerie</td>
+</tr>
+</tbody>
+</table><h2 id="ottimizzazioni">Ottimizzazioni</h2>
+<p>è possibile applicare delle ottimizzazioni in fase di compilazione utilizzando il parametro -O secondo la seguente tabella:</p>
+<p><img src="https://i.ibb.co/zZfh9WT/optimization.png" alt=""></p>
+<h1 id="automatizzazioni-e-debug">Automatizzazioni e debug</h1>
+<h2 id="struttura-di-un-progetto">Struttura di un progetto</h2>
+<p>La struttura delle cartelle di un progetto (medio-piccolo) fatto in c++ dovrebbe seguire la seguente gerarchia:</p>
+<pre><code>parent-folder
+|--include/
+|--src/
+|--build/
+|--tools/
+</code></pre>
+<ul>
+<li>In <em>include</em> vanno messi i file header (.h o .hpp) contenenti le firme di classi e funzioni</li>
+<li>in <em>src</em> vanno messi i file cpp che definiscono le funzioni e le classi nei file header</li>
+<li>in <em>build</em> vanno messi i file oggetto generati dalla compilazione con il parametro -c</li>
+<li>in <em>tools</em> ci vanno gli script che servono per lo sviluppo del progetto</li>
+</ul>
+<h2 id="makefile">Makefile</h2>
+<p>Il comando <strong>make</strong> torna molto utile quando bisogna automatizzare alcune azioni (come la compilazione). Si basa su un file chiamato <strong>Makefile</strong> nel quale sono scritte le sequenze di operazioni da fare.</p>
+<p>Il Makefile è formato da regole che seguono la seguente sintassi:</p>
+<pre><code>&lt;target&gt;:&lt;prerequisiti&gt;
+	&lt;operazioni&gt;
+</code></pre>
+<ul>
+<li><strong>target</strong>: nome del file che vogliamo generare oppure nome di una azione</li>
+<li><strong>prerequisiti</strong>: lista dei file necessari per eseguire quel target</li>
+<li><strong>operazioni</strong>: istruzioni da eseguire</li>
+</ul>
+<p>N.B. le operazioni vanno tabulate nel file</p>
+<p>Quando viene chiamato il comando “make” esso esegue il primo target presente nel Makefile, se ci sono dei prerequisiti allora prima esegue i prerequisiti.</p>
+<p>In alternativa è possibile chiamare il comando “make” seguito dal nome del target per eseguirne uno specifico.</p>
+<h1 id="debug">Debug</h1>
+<p>Fare debugging significa trovare degli errori logici nel codice che si presentano in run-time.</p>
+<p>Gli strumenti che ti permettono di scovare questi errori sono i <strong>debugger</strong>.</p>
+<h2 id="tipologie-di-errori">Tipologie di errori</h2>
+<p>I principali errori da cui sono afflitti i programmi sono correlati ad una pessima gestione della memoria.</p>
+<p>Ad esempio:</p>
+<ul>
+<li>
+<p>Utilizzare aree di memoria non inizializzate</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> x<span class="token punctuation">;</span>
+<span class="token keyword">int</span> y <span class="token operator">=</span> x <span class="token operator">*</span> <span class="token number">5</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<p>Accedere a memoria precedentemente deallocata</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span><span class="token operator">*</span> x <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+delete<span class="token punctuation">[</span><span class="token punctuation">]</span> x<span class="token punctuation">;</span>
+std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span>x<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<p>Accedere oltre i limiti della memoria allocata</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span><span class="token operator">*</span> x <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span>x<span class="token punctuation">[</span><span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+delete<span class="token punctuation">[</span><span class="token punctuation">]</span> x<span class="token punctuation">;</span>
+</code></pre>
+</li>
+<li>
+<p>Non deallocare la memoria dinamica precedentemente allocata (<strong>Memory leak</strong>)</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token operator">*</span> x <span class="token operator">=</span> new <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+<h2 id="warnings">Warnings</h2>
+<p>Gli warning che ci vengono dati dal compilatore sono il primo elemento da considerare per controllare la presenza di errori banali quando si andrà ad eseguire il codice.</p>
+<p>È possibile attivare tutti i possibili warning compilando con le opzioni <code>-Wall</code> e <code>-Wextra</code></p>
+<pre><code>g++ -Wall -Wextra my_prog.cpp -o my_prog
+</code></pre>
+<p>Gli warning appaiono solo in fase di compilazione quindi tutti i possibili errori in run-time non vengono beccati in fase di compilazione, quindi l’utilizzo degli warning non basta per assicurarsi la correttezza del programma.</p>
+<h2 id="asserts">Asserts</h2>
+<p>Assert è una funzione appartenente alla libreria <code>cassert</code> che prende in input una condizione booleana e se questa condizione è falsa il programma viene bloccato (<em>aborted</em>)</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;iostream&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;cassert&gt;</span></span>
+
+<span class="token keyword">void</span> <span class="token function">print_number</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token operator">*</span> myInt<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">assert</span><span class="token punctuation">(</span>myInt<span class="token operator">!=</span><span class="token constant">NULL</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span>myInt<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span> <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+  <span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span><span class="token operator">*</span> b <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+  <span class="token keyword">int</span><span class="token operator">*</span> c <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+  b <span class="token operator">=</span> <span class="token operator">&amp;</span>a<span class="token punctuation">;</span>
+
+  <span class="token function">print_number</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//funziona</span>
+  <span class="token function">print_number</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//aborted</span>
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il loro utilizzo è specialmente indirizzato per controllare le pre e post condizioni delle funzioni, cioè cosa deve essere vero in modo da chiamare la funzione correttamente e cosa deve essere vero in modo che la funziona restituisca un valore corretto.</p>
+<h2 id="valgrind">Valgrind</h2>
+<p>Valgrind è un tool esterno che permette di avere un controllo approfondito della gestione della memoria durante l’esecuzione del programma, segnalando eventuali errori.</p>
+<p>per utilizzare valgrind è molto consigliato compilare con l’opzione <code>-g</code> che aggiunge delle informazioni aggiuntive all’eseguibili in modo che l’output del debugger sia più leggibile per il programmatore.</p>
+<pre><code>g++ -g my_prog.cpp -o my_prog
+valgrind ./my_prog
+</code></pre>
+<p>ci sono due opzioni per il comando valgrind che tornano molto utili: <code>--track-origins=yes</code> e <code>--leak-check=full</code></p>
+<p>Quindi la compilazione ed esecuzione completa sarebbe:</p>
+<pre><code>g++ -g my_prog.cpp -o my_prog
+valgrind --leak-check=full --track-origins=yes ./my_prog
+</code></pre>
+<p>l’obiettivo che vogliamo raggiungere quando scriviamo un programma è che valgrind termini con la stringa</p>
+<pre><code>ERROR SUMMARY: 0 errors from 0 contexts (suppressed: 0 from 0)
+</code></pre>
+<p>Il grande svantaggio di valgrind è la sua pesantezza nelle prestazioni: in progetti molto grandi l’utilizzo di valgrind è molto tedioso per quanto rende lenta l’esecuzione del codice.</p>
+<h2 id="sanitizers">Sanitizers</h2>
+<p>Un altro strumento che è intregrato nel compilatore di C++ è l’utilizzo dei <strong>sanitizers</strong>.</p>
+<p>questo strumento svolge circa lo stesso compito di valgrind solo che essendo integrato non influisce pesantemente nelle prestazioni.</p>
+<p>A differenza di valgrind risulta più sintetico nell’errore e non offre una panoramica generale, inoltre i sanitizers possono beccare degli errori particolare che a valgrind possono sfuggire. Di contro abbiamo che se vogliamo togliere i sanitizers bisogna ricompilare il codice mentre con valgrind non è necessario.</p>
+<p>Per utilizzarli basta mettere le seguenti opzioni in fase di compilazione:</p>
+<pre><code>g++ -g -fsanitize=address -fno-omit-frame-pointer my_prog.cpp -o myprog
+</code></pre>
+<h1 id="classi">Classi</h1>
+<p>In c++ è possibile sia fare uso delle <strong>struct</strong> per costruire degli oggetti propri sia usare le <strong>classi</strong>.</p>
+<p>Entrambi i metodo hanno le stesse funzionalità, la differenza sta nel fatto che nelle classi i membri sono privati di default mentre nelle struct i membri sono pubblici di default. è possibile decidere cosa mettere pubblico e privato tramite le keyword <code>private</code> e <code>public</code></p>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token keyword">void</span> <span class="token function">set_var1</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">void</span> <span class="token function">set_var2</span><span class="token punctuation">(</span><span class="token keyword">double</span> value<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">int</span> <span class="token function">get_var1</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+		<span class="token keyword">double</span> <span class="token function">get_var2</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		<span class="token keyword">int</span> var1<span class="token punctuation">;</span>
+		<span class="token keyword">double</span> var2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	myclass a<span class="token punctuation">;</span>
+	a<span class="token punctuation">.</span><span class="token function">set_var1</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	a<span class="token punctuation">.</span><span class="token function">get_var1</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Un grande utilizzo che può essere fatto è quello rendere le variabile non accessibili direttamente ma solo tramite dei metodi che possono modificarle oppure restituire il valore, questo permette di aver maggior controllo sul come vengono modificate le variabili.</p>
+<p>Le parti della classe che sono private possono essere modificate/lette solo dagli oggetti appartenenti a quella classe.</p>
+<h2 id="costruttori">Costruttori</h2>
+<p>I costruttori sono dei metodi speciali che vengono chiamati ogni volta che viene istanziato un nuovo oggetto della classe.<br>
+Sono molto utili per inizializzare le variabili di una classe.</p>
+<ul>
+<li>
+<p><strong>Costruttore di default</strong> Questo tipo di costruttore è un metodo che non prende parametri in input. È obbligatorio nel caso si creino degli altri costruttori, mentre se non vengono creati altri costruttore aggiungere quello di default non è strettamente necessario</p>
+</li>
+<li>
+<p><strong>Costruttore non default</strong> Questo costruttore prende dei parametri in input. che viene chiamato quando si istanzia un oggetto con i relativi parametri</p>
+</li>
+<li>
+<p><strong>Costruttore per copia</strong> Questo costruttore ha come parametro la stessa classe e viene chiamato:</p>
+<ul>
+<li>Ogni qual volta che si passa un oggetto della classe ad una funzione come parametro per copia</li>
+<li>Quando viene fatto il return dell’oggetto che viene passato per riferimento</li>
+<li>Quando si inizializza un nuovo oggetto con uno già esistente</li>
+</ul>
+<p>Creare il costruttore per copia è molto importante: Quando vengono utilizzati puntatori come variabili di classe e si va ad utilizzare il costruttore per copia di default viene fatta una copia del riferimento ma non fa una copia del dato puntato, questo può causare dei problemi perché abbiamo due oggetti che puntano alla stessa area di memoria e quando viene eseguito il distruttore di uno dei due l’altro avrà perso l’area che puntava (e quando verrà distrutto anche l’altro oggetto de allocherà una memoria che è già stata deallocata, generando un errore)</p>
+</li>
+</ul>
+<p>È una buona pratica quindi definire sempre un proprio costruttore per copia che si occupa di fare una copia del dato puntato e non del riferimento.</p>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore di default</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token keyword">int</span> value<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore normale</span>
+		<span class="token function">myclass</span><span class="token punctuation">(</span><span class="token keyword">const</span> myclass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">// costruttore per copia</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	private<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span>myclass a<span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	myclass obj1<span class="token punctuation">;</span>	<span class="token comment">//utilizzo del costruttore di default</span>
+	myclass <span class="token function">obj2</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span> <span class="token comment">// utilizzo del costruttore normale</span>
+	<span class="token function">foo</span><span class="token punctuation">(</span>obj1<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// utilizzo del costruttore per copia</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="liste-di-inizializzazione">Liste di inizializzazione</h3>
+<p>Per ottimizzare il codice è possibile utilizzare le liste di inizializzazione nei costruttori.</p>
+<p>Servono per inizializzare i valori delle classe in maniere più diretta:</p>
+<pre class=" language-c"><code class="prism ++ language-c">class class_def<span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">class_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+			b <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token function">class_def</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">a</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">b</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		<span class="token keyword">int</span> a<span class="token punctuation">;</span>
+		<span class="token keyword">int</span> b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>entrambi i “class_def()” sono dei costruttori di default che fanno la stessa cosa, il secondo però fa utilizzo delle liste di inizializzazione.</p>
+<p>È più ottimizzato il secondo caso perchè nel primo caso quando viene chiamato il costruttore prima vengono create le variabile ed inizializzate con il loro valore di default e successivamente gli vengono assegnati i valori da noi decisi.<br>
+Nel secondo caso però le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi.</p>
+<p>Servono anche ad inizializzare i valori delle variabili constanti: se nel codice di prima al posto di <code>int a</code> fosse stato <code>const int a</code> in quel caso solo il secondo metodo funzionerebbe.</p>
+<h2 id="distruttori">Distruttori</h2>
+<p>Similmente ai costruttori esistono anche i distruttori cioè dei metodi speciali che vengono chiamati ogni volta che un oggetto  termina la sua esistenza, ciò può essere causato da:</p>
+<ul>
+<li>Lo scope in cui è stato creato l’oggetto termina la sua esecuzione</li>
+<li>Viene chiamato manualmente con una <code>delete</code> (nel caso si trovi in memoria dinamica allocato con <code>new</code>)</li>
+<li>Chiamando esplicitamente il nome della funzione del distruttore</li>
+</ul>
+<p>Non è obbligatorio creare un distruttore in quanto il compilatore ne fornisce uno di default.<br>
+Inoltre non presenta alcun parametro e non ritorna nulla.<br>
+Per definirne uno è necessario chiamarlo con lo stesso nome della classe preceduto da una tilde.</p>
+<pre class=" language-c"><code class="prism ++ language-c">class myclass <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token operator">~</span><span class="token function">myclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span> <span class="token comment">//definizione di un distruttore</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	private<span class="token punctuation">:</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="friend">Friend</h2>
+<p>La parola chiave <code>friend</code> in c++ viene utilizzata principalmente nella dichiarazione delle funzioni <strong>non appartenenti alla classe</strong> e che tramite la keyword <code>friend</code> diamo accesso a tale funzione di gestire le variabili private che altrimenti non potrebbe vedere.</p>
+<pre class=" language-c"><code class="prism ++ language-c">class MyClass <span class="token punctuation">{</span>
+private<span class="token punctuation">:</span>
+  <span class="token keyword">int</span> x<span class="token punctuation">;</span>
+	<span class="token comment">// dichiarazione delle funzione friend</span>
+  friend <span class="token keyword">void</span> <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>MyClass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+public<span class="token punctuation">:</span>
+  <span class="token function">MyClass</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">x</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+  <span class="token keyword">void</span> <span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout <span class="token operator">&lt;&lt;</span> <span class="token string">"x = "</span> <span class="token operator">&lt;&lt;</span> x <span class="token operator">&lt;&lt;</span> std<span class="token punctuation">:</span><span class="token punctuation">:</span>endl<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//definizione della funzione friend</span>
+<span class="token keyword">void</span> <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>MyClass<span class="token operator">&amp;</span> obj<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  obj<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">42</span><span class="token punctuation">;</span>	<span class="token comment">// riesce ad accedere alla variabile privata x</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  MyClass <span class="token function">obj</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  obj<span class="token punctuation">.</span><span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Output: x = 10</span>
+
+  <span class="token function">myFriendFunction</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// non è una fuzione appartenente alla classe infatti non viene chiamata sull'oggetto</span>
+  obj<span class="token punctuation">.</span><span class="token function">printX</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Output: x = 42</span>
+
+  <span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<h2 id="tecnica-pimpl">Tecnica pimpl</h2>
+<p>Pimpl (<em>pointer to implementation</em>) è una tecnica che rimuove dalla dichiarazione di una classe i dettagli le variabili/oggetti che essa utilizza, dichiarando solo un puntatore che punterà alla definizione della classe.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">//header.hpp</span>
+ class MyClass <span class="token punctuation">{</span>
+private<span class="token punctuation">:</span>
+	<span class="token keyword">struct</span> impl<span class="token punctuation">;</span>
+	impl<span class="token operator">*</span> pimpl<span class="token punctuation">;</span>
+public<span class="token punctuation">:</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+
+<span class="token comment">//implementation.cpp</span>
+<span class="token macro property">#inlcude "header.hpp"</span>
+<span class="token keyword">struct</span> MyClass<span class="token punctuation">:</span><span class="token punctuation">:</span>impl<span class="token punctuation">{</span> <span class="token comment">// definisco gli oggetti utilizzati dalla classe</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> vec<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> var<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token comment">//definizione dei vari metodi..</span>
+</code></pre>
+<p>Utilizzare questa tecnica porta il grande vantaggio di non dover ricompilare i file che utilizzano questa classe se magari dovessimo cambiare la definizione degli oggetti che utilizza la classe. Accade questo perché il compilatore in fase di compilazione deve sapere quanto spazio allocare quando si istanza un oggetto di una classe, quindi se dovessimo cambiare le variabili della classe, essa andrebbe ricompilata.<br>
+Andando però ad utilizzare sempre un puntatore che punta alla nostra implementazione la dimensione del puntatore rimane sempre la stessa e quindi non è necessario ricompilare.</p>
+<h1 id="streams">Streams</h1>
+<p>Gli stream sono flussi di dati (sequenze di byte) utilizzati per le operazione di input (comunicare con dispositivi come tastiera e mouse) e di output (come lo schermo).</p>
+<p>I byte degli stream possono essere interpretati in vari modi, ad esempio come numeri, caratteri, stringhe ecc…</p>
+<p>Per questioni di efficienza non è ottimale leggere/scrivere un byte alla volta interrogando per ogni byte l’hardware, per questo vengono utilizzati dei <strong>buffer</strong> cioè delle piccole memorie (input buffer e output buffer) che continuano ad accumulare byte che vengono utilizzati quando richiesto, cioè con le istruzioni:</p>
+<pre class=" language-c"><code class="prism ++ language-c">std<span class="token punctuation">:</span><span class="token punctuation">:</span>cin <span class="token operator">&gt;&gt;</span> x<span class="token punctuation">;</span> <span class="token comment">// estrae i byte dal buffer di input che vengono inseriti da un</span>
+			   <span class="token comment">// dipositivo di input (la tastiera ad esempio)</span>
+std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout <span class="token operator">&lt;&lt;</span> x<span class="token punctuation">;</span> <span class="token comment">// spinge i byte dal buffer di output verso una</span>
+				<span class="token comment">// periferica di output (il monitor ad esempio)</span>
+</code></pre>
+<h2 id="streams-in-c">Streams in c++</h2>
+
+<table>
+<thead>
+<tr>
+<th>Stream</th>
+<th>Utilizzo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>std::istream</code></td>
+<td>è la classe stream di input general purpose, <code>cin</code> è l’oggetto standard appartenente a quella classe</td>
+</tr>
+<tr>
+<td><code>std::ostream</code></td>
+<td>è la classe stream di output general purpose, <code>cout</code> e <code>cerr</code> sono due oggetti standard appartenenti a quella classe</td>
+</tr>
+<tr>
+<td><code>std::ifstream</code></td>
+<td>input stream per i file. legge dati da un file.</td>
+</tr>
+<tr>
+<td><code>std::ofstream</code></td>
+<td>output stream per i file. scrive dati in un file.</td>
+</tr>
+<tr>
+<td><code>std::istringstream</code></td>
+<td>input stream per le stringhe. legge dati da una stringa.</td>
+</tr>
+<tr>
+<td><code>std::ostringstream</code></td>
+<td>output stream per le stringhe. scrive dati su una stringa.</td>
+</tr>
+</tbody>
+</table><p>Gli stream non possono essere copiati, quindi non possono essere passati per valore ad una funzione (ma solamente per reference) e non è possibile creare un nuovo stream copiando lo stream <code>std::cout</code>. Questo perché gli stream solo legati alla periferica esterna e fare una copia significherebbe fare una copia anche della periferica.</p>
+<h3 id="stato-di-uno-stream">Stato di uno stream</h3>
+<p>sono presenti delle funzioni che possono mostrare lo stato di uno stream</p>
+
+<table>
+<thead>
+<tr>
+<th>funzione</th>
+<th>significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>good()</td>
+<td>le operazioni fatte hanno avuto successo</td>
+</tr>
+<tr>
+<td>eof()</td>
+<td>raggiunto la fine dell’input (<em>end of file</em>)</td>
+</tr>
+<tr>
+<td>fail()</td>
+<td>errore nello stream (dovuto a come è scritto il programma, oppure era presente qualcosa di inaspettato nel buffer)</td>
+</tr>
+<tr>
+<td>bad()</td>
+<td>si è verificato un errore per cui lo stream non è più in grado di performare operazioni di input/output</td>
+</tr>
+</tbody>
+</table><h1 id="template">Template</h1>
+<p>I template servono a generalizzare le nostre classi o funzioni, essi ci permettono infatti di creare una funzione/classe una unica volta che su un generico tipo di dato che verrà scelto dal chiamante della funzione/classe.</p>
+<p>Ad esempio se vogliamo scrivere una funzione che riordina gli elementi dell’array l’algoritmo per farlo non cambia in base al tipo di dato, utilizzando i template quindi non dobbiamo specificare che quella funzione lavora su int, unsigned int, long int, double, ecc… ma la funzione si adatterà al tipo che viene deciso dal chiamante.</p>
+<h2 id="template-di-funzioni">Template di Funzioni</h2>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token comment">// definiamo un tipo generico T che verrà utilizzato nella funzione sottostante</span>
+<span class="token comment">// T verrà sostituito con il tipo passato alla funzione</span>
+template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+T <span class="token function">get_max</span><span class="token punctuation">(</span>T val1<span class="token punctuation">,</span> T val2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>val1 <span class="token operator">&gt;</span> val2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> val1<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">return</span> val2<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+T <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	T var <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> var <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> x <span class="token operator">=</span> get_max<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//tra parentesi angolari specifichiamo il tipo di dato</span>
+	 
+	 <span class="token comment">// nella maggior parte dei casi il compilatore riconosce il tipo di dato</span>
+	 <span class="token comment">// e quindi non è necessario specificarlo</span>
+	 <span class="token keyword">double</span> y <span class="token operator">=</span> <span class="token function">get_max</span><span class="token punctuation">(</span><span class="token number">7.1</span><span class="token punctuation">,</span> <span class="token number">9.3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// il compilatore riconosce il tipo di dato "double"</span>
+	
+	<span class="token comment">// nel caso in cui T non faccia parte dei parametri in quel caso</span>
+	<span class="token comment">// è obbligatorio specificare il tipo di dato</span>
+	  <span class="token keyword">if</span><span class="token punctuation">(</span>foo<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">11</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		  <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="template-di-classi">Template di classi</h2>
+<p>Si possono utilizzare i template per i tipi degli attributi di classe</p>
+<pre class=" language-c"><code class="prism ++ language-c">template <span class="token operator">&lt;</span>typename T<span class="token operator">&gt;</span>
+class container <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token function">container</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">container</span><span class="token punctuation">(</span><span class="token keyword">const</span> T<span class="token operator">&amp;</span> new_val<span class="token punctuation">)</span><span class="token punctuation">:</span><span class="token function">var</span><span class="token punctuation">(</span>new_val<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token keyword">const</span> T<span class="token operator">&amp;</span> <span class="token function">get</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span><span class="token punctuation">{</span>
+			<span class="token keyword">return</span> var<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">void</span> <span class="token function">set</span><span class="token punctuation">(</span>T new_val<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			var <span class="token operator">=</span> new_val<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		T var<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	container<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> con<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> value <span class="token operator">=</span> <span class="token number">10.33</span><span class="token punctuation">;</span>
+	con<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+	container<span class="token operator">&lt;</span><span class="token keyword">unsigned</span> <span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">con2</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>é possibile definire dei propri tipi di dato (con struct) e passarle come template, bisogna stare attenti però a ridefinire gli operatori come “==”, “&gt;”, “&lt;”, “=”, “++” eccetera.</p>
+<p>Ai template è possibile assegnare dei valori de default</p>
+<pre class=" language-c"><code class="prism ++ language-c">template <span class="token operator">&lt;</span>typename T <span class="token operator">=</span> <span class="token keyword">int</span><span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> couple<span class="token punctuation">{</span>
+	T a<span class="token punctuation">;</span>
+	T b<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	couple<span class="token operator">&lt;</span><span class="token keyword">double</span><span class="token operator">&gt;</span> prova<span class="token punctuation">;</span>
+	couple prova2<span class="token punctuation">;</span> <span class="token comment">// in questo caso assumono di default il tipo int</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="non-type-template">Non-type template</h2>
+<p>È possibile anche parametrizzare un valore e non un tipo</p>
+<pre class=" language-c"><code class="prism ++ language-c">template<span class="token operator">&lt;</span>typename T<span class="token punctuation">,</span> <span class="token keyword">int</span> N<span class="token operator">&gt;</span>
+<span class="token keyword">struct</span> my_sequence <span class="token punctuation">{</span>
+	public<span class="token punctuation">:</span>
+		<span class="token keyword">void</span> <span class="token function">set</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">,</span> T value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			vec<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		T <span class="token function">get</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> vec<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	private<span class="token punctuation">:</span>
+		T vec<span class="token punctuation">[</span>N<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+  
+<span class="token keyword">int</span>  <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	<span class="token comment">//il valre N deve essere conosciuto a compile-time, quindi ci va un numero oppure una constexpr</span>
+	my_sequence<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token operator">&gt;</span> seq<span class="token punctuation">;</span>
+	seq<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="move-semantics">Move semantics</h1>
+<p>Con move semantics si intende una tecnica che ruba la zona di memoria di un oggetto temporaneo, quindi di una r-value. Normalmente però non riusciamo a ottenere l’indirizzo di un r-value ad esempio:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo che ritorna un numero e quindi una r-value</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//stiamo cercando di ottenere una reference di 10,</span>
+                            <span class="token comment">// ma questo non è possibile </span>
+                            <span class="token comment">//possiamo ottenere una reference solo di una l-value</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Esiste però un modo ottenere una reference di una r-value:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo che ritorna un numero e quindi una r-value</span>
+	<span class="token keyword">int</span> a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+	<span class="token keyword">return</span> a<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token operator">&amp;&amp;</span> ptr <span class="token operator">=</span> <span class="token function">get_value</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//usando &amp;&amp; indichiamo che vogliamo ottenere</span>
+	                         <span class="token comment">// una reference di un r-value </span>
+							
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Ma perché è utile fare questo?<br>
+È una questione di performance: le reference ad r-value ci permettono di identificare degli oggetti temporanei, nell’esempio ‘a’ era un oggetto temporaneo che alla fine della funzione “get_value()” non esiste più.<br>
+Dato che siamo in grado di riconoscere oggetti temporanei possiamo agire in modo diverso da oggetti non temporanei, come ad esempio rubare la zona di memoria in cui sono al posto di copiare interamente l’area di memoria.</p>
+<p>Un esempio che fa capire maggiormente l’utilità di questa tecnica è il seguente:</p>
+<p>Abbiamo un vettore e da questo vettore vogliamo crearne uno nuovo con tutti gli elementi sommati di 1.</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">f</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token keyword">const</span><span class="token operator">&amp;</span> vec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> new_vec<span class="token punctuation">;</span>
+<span class="token number">3</span> 	new_vec<span class="token punctuation">.</span><span class="token function">reserve</span><span class="token punctuation">(</span>vec<span class="token punctuation">.</span>size<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//assegno la stessa dimensione</span>
+<span class="token number">4</span> 	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> el <span class="token punctuation">:</span> vec<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">5</span> 		new_vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>el <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">6</span> 	<span class="token punctuation">}</span>
+<span class="token number">7</span>   <span class="token keyword">return</span> new_vec<span class="token punctuation">;</span>
+<span class="token number">8</span>  <span class="token punctuation">}</span>
+<span class="token number">9</span>
+<span class="token number">10</span>  <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">11</span> 		vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> vec<span class="token punctuation">;</span>
+<span class="token number">12</span>		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">!=</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">13</span>			vec<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">14</span>		<span class="token punctuation">}</span>
+<span class="token number">15</span>		vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> y <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>vec<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">16</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>Abbiamo il nostro metodo f() che prende un vettore per const reference, all’interno della funzione viene creato un nuovo vettore locale e quindi un <strong>vettore temporaneo</strong> e viene riempito con gli elementi del vettore orginale sommati di 1, infine viene fatto un return by value.</p>
+<p>Quello che ci interessa avviene a riga 15 dove vogliamo inizializzare il vettore y con quello che abbiamo creato nel metodo f. In quel punto dovrebbe avvenire una deep-copy del vettore, quindi si alloca la memoria necessario per y, poi viene fatta la copia elemento per elemento e infine si de alloca il vettore temporaneo, che si traduce in un grande spreco di tempo.<br>
+Usando la move semantics possiamo permettere a y di rubare l’area di memoria assegnata all’oggetto temporaneo, evitando tutti i passaggi precedenti.</p>
+<p>Nota: nell’esempio vengono utilizzati i vector, i quali implementano già al loro interno la move semantics, quindi il codice sarebbe già ottimizzato così, però se lavorassimo con una classe fatta da noi che non implementa la move semantics verrebbe utilizzato il classico copy constructor che fa una deep-copy, risultando inefficiente.</p>
+<h2 id="move-constructor-e-move-assignment">Move constructor e move assignment</h2>
+<p>La move semantics viene utilizzata principalmente per due operazioni nelle classi:</p>
+<ul>
+<li>il <strong>move constructor</strong> cioè un costruttore in cui il parametro è un oggetto temporaneo (riconosciuto da una r-value reference)</li>
+<li>il <strong>move assignment</strong> cioè l’overloading dell’operatore ‘=’ il cui oggetto a destra dell’assegnamento è un oggetto temporaneo (riconosciuto da una r-value reference)</li>
+</ul>
+<p>Prendiamo in considerazione la seguente classe</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">7</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>Disabilitando la <a href="https://shaharmike.com/cpp/rvo/">RVO</a> otteniamo in output</p>
+<pre><code>constructor
+copy constructor
+destructor
+copy constructor
+destructor
+destructor
+</code></pre>
+<ol>
+<li>viene fatto il costruttore a riga 2</li>
+<li>viene copiato l’oggetto che verrà poi passato al chiamante sempre a riga 2</li>
+<li>viene fatto il distruttore del dell’oggetto locale nella funzione <code>f()</code></li>
+<li>viene fatto il copy constructor a riga 6 per inizializzare <code>my_obj</code></li>
+<li>viene distrutto sempre a riga 6 l’oggetto risultante della funzione <code>f()</code></li>
+<li>viene distrutto <code>my_obj</code></li>
+</ol>
+<p>Se noi andiamo ad aggiungere il move constuctor alla nostra classe</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">Snitch</span><span class="token punctuation">(</span>Class<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// copia i puntatori</span>
+		<span class="token comment">// fai puntare i puntatori derubati a nullptr</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">7</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>sempre disabilitando la <a href="https://shaharmike.com/cpp/rvo/">RVO</a> otteniamo in output</p>
+<pre><code>constructor
+move constructor
+destructor
+move constructor
+destructor
+destructor
+</code></pre>
+<p>In questo caso al posto del copy constructor viene chiamato il move constructor perché il compilatore ha riconosciuto che l’oggetto restituito da <code>f()</code> è un oggetto temporaneo e quindi noi possiamo definire il nostro costruttore in una maniera diversa dal copy constructor (rubando il puntatore al posto di copiare elemento per elemento)</p>
+<p><strong>Nota importante</strong>: quando rubiamo i puntatori dobbiamo ricordarci di impostare a nullptr i puntatori che abbiamo derubato, questo perché essendo oggetti temporanei verrà chiamato il distruttore a breve e quindi dobbiamo dire che quel puntatore non punta più all’area di memoria di prima (che abbiamo rubato) altrimenti il suo distruttore la libererebbe.</p>
+<p>Possiamo utilizzare lo stesso meccanismo per il move assignment</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">struct</span> Class <span class="token punctuation">{</span> 
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	<span class="token operator">~</span><span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> cout <span class="token operator">&lt;&lt;</span> <span class="token string">"destructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span> <span class="token punctuation">}</span>
+
+	<span class="token function">Snitch</span><span class="token punctuation">(</span><span class="token keyword">const</span> Class<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// allocazione di memoria</span>
+		<span class="token comment">// copia di tutti i valori</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">Snitch</span><span class="token punctuation">(</span>Class<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move constructor"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token comment">// copia i puntatori</span>
+		<span class="token comment">// fai puntare i puntatori derubati a nullptr</span>
+	<span class="token punctuation">}</span>
+	Snitch<span class="token operator">&amp;</span> operator<span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> Snitch<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"copy assignment"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">*</span>this<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span> 
+	Snitch<span class="token operator">&amp;</span> operator<span class="token operator">=</span><span class="token punctuation">(</span>Snitch<span class="token operator">&amp;&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout <span class="token operator">&lt;&lt;</span> <span class="token string">"move assignment"</span> <span class="token operator">&lt;&lt;</span> endl<span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">*</span>this<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token number">1</span> Class <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">2</span> 	<span class="token keyword">return</span> <span class="token function">Class</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">3</span> <span class="token punctuation">}</span>
+<span class="token number">4</span>
+<span class="token number">5</span> <span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token number">6</span>	Class my_obj<span class="token punctuation">;</span>
+<span class="token number">7</span>	my_obj <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token number">8</span> <span class="token punctuation">}</span>
+</code></pre>
+<p>Output:</p>
+<pre><code>constructor                  # costruttore di my_obj
+constructor                  # costruttore dell'oggetto locale di f()
+move constructor             # move constructor dell'oggetto che verrà poi passato al chiamante
+destructor                   # distruttore dell'oggetto locale ad f()
+move assignment              # assegnamento di un oggetto temporaneo
+destructor                   # distruttore dell'oggetto temporaneo
+destructor                   # distruttore di my_obj
+</code></pre>
+<p>È possibile far diventare un l-value in un r-value con l’istruzione <code>std::move()</code> con questa istruzione possiamo forzare la chiamata di un move assignment e di conseguenza stiamo permettendo a qualche altra variabile di prendere la zona di memoria che era intestata alla nostra variabile.</p>
+<h1 id="iteratori">Iteratori</h1>
+<p>Gli iteratori sono degli oggetti che puntano agli elementi di una struttura dati come le liste.</p>
+<p>Rappresentano un modo per scorrere e modificare le liste, quindi in generale effettuare operazioni sulle strutture dati della standard library.</p>
+<p>Sono molto generalizzati per cui gli iteratori della standard librari si adattano in basa alla struttura dati su cui operano.</p>
+<p>Si possono chiamare facendo:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token comment">//#include &lt;iterators&gt; //non è necessario includere la libreria</span>
+<span class="token comment">//perchè viene già inclusa dalle strutture della libreria standard (proprio come vector, list, stack ecc...), è possibili che le strutture dati ridefiniscano i metodi della classe iterator</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// creiamo la nostra lista</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it<span class="token punctuation">;</span> <span class="token comment">// creiamo l'iteratore</span>
+	<span class="token comment">//scorriamo la lista con gli iterator</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span>it <span class="token operator">=</span> lista<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> lista<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span>it<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>begin()</code> restituisce un iteratore che punta al primo elemento della lista</li>
+<li><code>end()</code> restituisce un iteratore all’elemento successivo all’ultimo (nullptr)</li>
+<li><code>*it</code> dereferenziando l’iteratore possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+</ul>
+<p>è possibile fare la stessa cosa utilizzando i cicli for-each che nella loro implementazione fanno uso in modo trasparente degli iteratori:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+<span class="token comment">//#include &lt;iterators&gt; //non è necessario includere la libreria</span>
+<span class="token comment">//perchè viene già inclusa dalle strutture della libreria standard (proprio come vector, list, stack ecc...), è possibili che le strutture dati ridefiniscano i metodi della classe iterator</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">auto</span> el <span class="token punctuation">:</span>lista<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		std<span class="token punctuation">:</span><span class="token punctuation">:</span>cout<span class="token operator">&lt;&lt;</span>el<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nella standard library è presente sia l’<strong>iteratore</strong> normale che l’<strong>iteratore costante</strong> che impedisce di modificare gli elementi da esso puntati. Nota che la classe <code>const_iterator</code> è diversa da fare <code>const iterator</code>:<br>
+nel primo caso la classe è implementata per rendere <code>const</code> gli elementi puntati dall’iteratore, nel secondo caso non possiamo modificare l’iteratore in sé.</p>
+<h2 id="tipi-di-iteratori">Tipi di iteratori</h2>
+<p>In c++ sono definiti 6 diversi tipi di iteratori</p>
+<ul>
+<li><strong>input iterator</strong> può scorrere il container solo una volta (solo in avanti) e non può modificare gli elementi</li>
+<li><strong>output iterator</strong> può scorrere il container solo una volta (solo in avanti) e non può leggere gli elementi</li>
+<li><strong>forward iterator</strong>  può scorrere più volte il container (solo in avanti) e può leggere e modificare gli elementi</li>
+<li><strong>bidirectional iterator</strong> può scorrere più volte il container (sia in avanti che in indietro) e può leggere e modificare gli elementi</li>
+<li><strong>random iterator</strong> può scorrere più volte il container (sia in avanti che in indietro) e può leggere e modificare gli elementi e può saltare ad elementi in mezzo</li>
+<li><strong>contiguous iterator</strong> uguale al random ma in più assicura che gli elementi adiacenti a quello puntato siano sequenziali in memoria.</li>
+</ul>
+<p><img src="https://i.ibb.co/02vn09d/container.png" alt=""></p>
+<h2 id="operazioni-essenziali-iteratori">operazioni essenziali iteratori</h2>
+<p>Se vogliamo implementare un nostro iteratore per un particolare container dobbiamo implementare delle operazioni importanti nel nostra classe iteratore:</p>
+<ul>
+<li><code>operator*()const;</code> operatore di dereferenziazione con cui possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+<li><code>operator-&gt;()const;</code>nel caso in cui il tipo di dato della nostra lista sia una struttura particolare possiamo accedere agli elementi di quella struttura</li>
+<li><code>operator++();</code> pre indremento</li>
+<li><code>operator++(int);</code> post incremento</li>
+<li><code>operator==(my_iterator const&amp;)const;</code> confronto tra iteratori</li>
+<li><code>operator!=(my_iterator const&amp;)const;</code> operatore di dereferenziazione con cui possiamo accedere all’elemento puntato dall’iteratore (sia lettura che scrittura)</li>
+</ul>
+<h2 id="invalidation-degli-iteratori">Invalidation degli iteratori</h2>
+<p>Bisogna prestare attenzione che quando istanziamo degli iteratori e poi la lista viene cambiata quegli iteratori che abbiamo istanziato potrebbero non essere più validi.</p>
+<p>Ad esempio</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;vector&gt;</span></span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> lista <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	std<span class="token punctuation">:</span><span class="token punctuation">:</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it <span class="token operator">=</span> lista<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//inizializziamo l'iteratore</span>
+	lista<span class="token punctuation">.</span><span class="token function">push_back</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 
+<span class="token comment">//quest'ultima istruzione rende invalido l'iteratore che abbiamo inizializzato</span>
+<span class="token comment">/*Questo perchè i vector sono implementati come array in memoria dinamica 
+e ogni volta che avviene una modifica nella struttura della lista
+viene reistanziata la memoria
+e quindi le vecchie celle di memoria vengono deallocate.
+Il nostro iteratore puntava a quelle vecchie celle di memoria ormai deallocate
+*/</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Per capire quando gli iteratori vengono invalidati bisogna conoscere come sono implementati i container che utilizzano.<br>
+Una buona pratica è evitare di utilizzare gli iteratori per operazioni che modifichino la struttura della lista e aggiornare l’iteratore (con begin()) prima di andare ad utilizzarlo nel caso sia stato istanziato indietro nel codice.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

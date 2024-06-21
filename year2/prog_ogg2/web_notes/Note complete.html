@@ -1,0 +1,1258 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#note-generali">Note generali</a>
+<ul>
+<li><a href="#classificazione-dei-linguaggi">Classificazione dei linguaggi</a></li>
+<li><a href="#linguaggio-orientato-agli-oggetti">Linguaggio orientato agli oggetti</a></li>
+<li><a href="#classe-e-oggetto">Classe e oggetto</a></li>
+<li><a href="#tipi-statici-e-dinamici">Tipi statici e dinamici</a></li>
+<li><a href="#classi-astratte-e-interfacce">Classi astratte e interfacce</a></li>
+<li><a href="#tipi-generici-vs-object">Tipi generici vs Object</a></li>
+<li><a href="#parametri-formali-e-attuali">Parametri formali e attuali</a></li>
+<li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
+<li><a href="#dimensione-di-un-oggetto">Dimensione di un oggetto</a></li>
+<li><a href="#statement-vs-expression">Statement vs expression</a></li>
+<li><a href="#final">Final</a></li>
+<li><a href="#type-parameter-e-type-argument">Type parameter e Type argument</a></li>
+</ul>
+</li>
+<li><a href="#classi-innestate">Classi innestate</a>
+<ul>
+<li><a href="#classi-static-e-non-static">Classi Static e non static</a></li>
+<li><a href="#inner-class">Inner class</a></li>
+<li><a href="#local-class">Local class</a></li>
+<li><a href="#anonymous-class">Anonymous class</a></li>
+<li><a href="#static-nested-class">static nested class</a></li>
+<li><a href="#shadowing">Shadowing</a></li>
+<li><a href="#come-simulare-una-classe-statica-top-level">Come simulare una classe statica top-level</a></li>
+</ul>
+</li>
+<li><a href="#programmazione-pseudo-funzionale">Programmazione pseudo funzionale</a>
+<ul>
+<li><a href="#espressioni-lambda">Espressioni lambda</a></li>
+<li><a href="#confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</a></li>
+<li><a href="#command-pattern">Command pattern</a></li>
+<li><a href="#classi-per-le-funzioni">Classi per le funzioni</a></li>
+<li><a href="#il-particolare-polimorfismo-delle-lambda">Il particolare polimorfismo delle lambda</a></li>
+</ul>
+</li>
+<li><a href="#thread">Thread</a>
+<ul>
+<li><a href="#vecchio-modo-di-creare-thread">Vecchio modo di creare thread</a></li>
+<li><a href="#nuovo-modo-di-creare-thread">Nuovo modo di creare thread</a></li>
+<li><a href="#produttore-consumatore">Produttore consumatore</a></li>
+</ul>
+</li>
+<li><a href="#covarianza-e-controvarianza">Covarianza e controvarianza</a>
+<ul>
+<li><a href="#wildcard">Wildcard</a></li>
+</ul>
+</li>
+<li><a href="#programmazione-ad-oggetti-in-c">Programmazione ad oggetti in C++</a>
+<ul>
+<li><a href="#concetto-di-dichiarazione-in-c">Concetto di “dichiarazione” in C++</a></li>
+<li><a href="#costruttori">Costruttori</a></li>
+<li><a href="#passaggio-dei-parametri-valore-e-reference">Passaggio dei parametri, valore e reference</a></li>
+<li><a href="#costruttori-di-conversione-e-explicit">Costruttori di conversione e “explicit”</a></li>
+<li><a href="#copy-constructor">Copy constructor</a></li>
+<li><a href="#this">This</a></li>
+<li><a href="#const">Const</a></li>
+<li><a href="#virtual">Virtual</a></li>
+<li><a href="#ereditarietà">Ereditarietà</a></li>
+<li><a href="#modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</a></li>
+<li><a href="#template">Template</a></li>
+<li><a href="#override-degli-operatori">Override degli operatori</a></li>
+<li><a href="#conversion-operator">Conversion operator</a></li>
+<li><a href="#iteratori">Iteratori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="note-generali">Note generali</h1>
+<p>Ripassiamo alcuni concetti che abbiamo affrontato nel modulo 1 e introduciamo delle brevi note su altri aspetti di Java.</p>
+<h2 id="classificazione-dei-linguaggi">Classificazione dei linguaggi</h2>
+<p>differenza tra: inizializzazione, dichiarazione, assegnamento</p>
+<ul>
+<li>dichiarazione: creare una nuova variabile specificando il <strong>tipo</strong> e il <strong>nome</strong>.</li>
+<li>assegnamento: dare un valore ad una variabile già creata in precedenza</li>
+<li>Inizializzazione (<em>binding</em>): consiste nel dichiarare una variabile e assegnargli subito un valore</li>
+</ul>
+<p>I linguaggi di programmazione si dividono principalmente in due <strong>paradigmi</strong> di programmazione:</p>
+<ul>
+<li><strong>Imperativi</strong></li>
+<li><strong>Funzionali</strong><br>
+Si differenziano dalla presenza o meno dell’operatore di <strong>assegnazione</strong>, infatti nei linguaggi funzionali non è possibile fare assegnazioni, ma solo inizializzazioni.</li>
+</ul>
+<p>I linguaggi imperativi si dividono poi in diversi stili di programmazione, ad esempio <strong>procedurale</strong> e <strong>orientato agli oggetti</strong>.</p>
+<h2 id="linguaggio-orientato-agli-oggetti">Linguaggio orientato agli oggetti</h2>
+<p>Java è un linguaggio imperativo orientato agli oggetti e basato sulle classi (sei obbligato a mettere il codice all’interno di una classe, anche se non vuoi utilizzare le classi)</p>
+<p>La caratteristica distintiva tra un linguaggio orientato agli oggetti da uno che non è orientato agli oggetti è <strong>il polimorfismo</strong>, in particolare dalla presenza della <strong>virtual table</strong> la <strong>Subsumption</strong>: “qualunque oggetto di una data classe X è anche istanza della superclasse di X.”<br>
+Ad esempio, una istanza della classe Rettangolo può essere sempre usata dove ci si aspetti una qualunque FiguraGeometrica poiché un rettangolo <strong>è</strong> una figura geometrica.</p>
+<h2 id="classe-e-oggetto">Classe e oggetto</h2>
+<p>la Classe definisce come deve essere un tipo di dato, un oggetto è l’istanza di una classe cioè un valore con il tipo definito dalla sua classe.</p>
+<h2 id="tipi-statici-e-dinamici">Tipi statici e dinamici</h2>
+<p>Tipo statico e dinamico in Java:</p>
+<ul>
+<li>il tipo statico è deciso in <strong>compile time</strong>, cioè quello messo nella fase di dichiarazione della variabile (senza assegnarla)</li>
+<li>il tipo dinamico è deciso in <strong>runtime</strong>, cioè il tipo dell’oggetto nella fase di assegnamento</li>
+</ul>
+<p>In Java possiamo dire di avere un <strong>dispatch dinamico sul ricevitore</strong> su cui è chiamata la funzione mentre abbiamo un <strong>dispatch statico sui parametri</strong> delle funzioni.</p>
+<h2 id="classi-astratte-e-interfacce">Classi astratte e interfacce</h2>
+<p>il significato di classi astratte e interfacce è molto simile tra loro, sono entrambi dei sistemi per creare dei sottotipi. La necessità di avere questa distinzione viene dal fatto che Java è un linguaggi in cui <strong>non è presente l’ereditarietà multipla</strong>, quindi puoi ereditare da una sola classe e poi implementare più interfacce.</p>
+<h2 id="tipi-generici-vs-object">Tipi generici vs Object</h2>
+<p>Da una analisi superficiale potrebbe sembrare che usare i tipi generici oppure Object sia la stessa cosa, in parte è vero in quanto entrambi permettono di poter mettere qualsiasi cosa come tipo di dato. Il problema di Object è che se venisse come tipo di dato per una collezione di dati, in tale collezione ci potrebbero finire dentro qualsiasi oggetto però noi saremo abbastanza limitati sulle operazioni che possiamo fare su tali oggetti:</p>
+<ul>
+<li>o utilizziamo solo metodi della classe Object.</li>
+<li>o facciamo dei cast, con il rischio però di fare errori non conoscendo i veri tipi degli oggetti.</li>
+</ul>
+<p>Usando i tipi dinamici questo problema non si pone in quanto al momento della inizializzazione della collezione viene specificato il tipo dei dati che ci andremo ad inserire.</p>
+<p>Nella documentazione di Java ci sono vari metodi che nonostante questo utilizzano comunque Object (vedi il metodo <code>contains</code> di ArrayList), questo perché Java ha introdotto i tipi dinamici svariate versioni dopo il rilascio iniziale e quindi per mantenere la compatibilità con le vecchie versioni Java utilizza ancora Object.</p>
+<h2 id="parametri-formali-e-attuali">Parametri formali e attuali</h2>
+<ul>
+<li>Parametri formali: variabili presenti nella dichiarazione dei parametri dei metodi e che vengono poi utilizzati all’interno del metodo</li>
+<li>parametri attuali: gli argomenti usati nella chiamata della funzione</li>
+</ul>
+<h2 id="eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</h2>
+<p>Quando stiamo implementando delle nostre classi,  facciamo un metodo che può non andare a buon fine, come gestiamo quel caso?</p>
+<ul>
+<li>ritornare <code>null</code></li>
+<li>lanciare una eccezione checked</li>
+<li>lanciare una eccezione unchecked</li>
+</ul>
+<p>Prendiamo ad esempio un metodo <code>get(int indice)</code> di una collezione di oggetti, esso può fallire nel caso si dia un indice al di fuori del limite della collezione.</p>
+<ul>
+<li>ritornare <code>null</code> non è una buona soluzione in quanto non esprime chiaramente che si è andati fuori dal limite dell’array e soprattutto bisognerebbe fare un <code>if</code> ogni volta che si chiama il metodo</li>
+<li>lanciare una eccezione è la soluzione migliore, ma come decidere se usare una eccezione checked oppure unchecked? scegliere una eccezione checked implica di costruire una propria eccezione (è una operazione raccomandata ma non obbligatoria), e dichiararla nella firma del metodo e poi il chiamante dovrà occuparsi di gestirla.<br>
+Scegliere una unchecked risulta più comoda ma anche meno esplicativa in quanto sono eccezioni generiche.</li>
+</ul>
+<p>Per capire quale usare possiamo chiederci: “Se un utente cattura la mia eccezione checked può fare qualcosa di utile?”, “l’eccezione che lancio fa parte di un possibile risultato del metodo oppure rappresenta un errore raro”</p>
+<p>Nel nostro caso, se il chiamante fa del codice corretto, è molto inusuale uscire dai limiti della collezione, inoltre se il chiamante prende l’eccezione non può fare niente di utile, inoltre gestire ogni get con dei try-catch risulta essere molto scomodo e allunga inutilmente il codice. Quindi si opta per una eccezione unchecked.</p>
+<h3 id="sottotipo-di-una-eccezione-unchecked">Sottotipo di una eccezione unchecked</h3>
+<p>potremmo chiederci se ha senso creare un sottotipo di una eccezione unchecked, la risposta è che non ha molto senso in quanto con una eccezione unchecked si prevede che il chiamante non gestirà le eccezioni con un try catch, quindi creare il proprio tipo speciale non avrebbe molto senso perche non verrebbe catturata mai.</p>
+<h2 id="dimensione-di-un-oggetto">Dimensione di un oggetto</h2>
+<p>la dimensione in byte di un oggetto è determinata da vari fattori della sua classe:</p>
+<ul>
+<li>la somma della dimensione degli attributi primitivi</li>
+<li>per ogni attributo <em>reference type</em> (oggetto) si aggiunge la dimensione di un puntatore</li>
+<li>per ogni metodo si aggiunge la dimensione di un puntatore</li>
+<li>se si tratta di una sottoclasse si considerano anche gli attributi ereditati e i metodi ereditati non sovrascritti</li>
+<li>attributi e metodi statici non vanno contati</li>
+</ul>
+<h2 id="statement-vs-expression">Statement vs expression</h2>
+<p>Vediamo la differenza che c’è tra una espressione e uno statement (vale in generale per i linguaggi di programmazione):</p>
+<ul>
+<li><strong>Expression</strong>: codice che può essere valutato, cioè che produce un valore che possiede un tipo.</li>
+<li><strong>Statement</strong>: codice che non genera un valore e che viene terminato <code>;</code> uppure dalla chisura del proprio blocco di codice <code>{...}</code></li>
+</ul>
+<h2 id="final">Final</h2>
+<p>Il significato della keyword <strong>final</strong> in Java è sostanzialmente la disabilitazione dell’operatore di assegnamento sull’oggetto relativo.</p>
+<p>il final può essere messo nei seguenti casi:</p>
+<ul>
+<li><strong>sui parametri di una funzione</strong>: significa che tali parametri non possono essere riassegnati all’interno del corpo della funzione</li>
+<li><strong>dichiarazione di campi o variabili locali</strong>: la variabile dopo essere stata inizializzata non può più essere assegnata</li>
+<li><strong>sulla firma dei metodi</strong>: il metodo non è sovrascrivibile</li>
+</ul>
+<p>Fare attenzione che un oggetto final significa sempre che non può essere riassegnato con un nuovo oggetto, ma è comunque possibile modificare i suoi campi e chiamare i suoi metodi</p>
+<h2 id="type-parameter-e-type-argument">Type parameter e Type argument</h2>
+<p>Nell’ambito dei <em>generics</em>:</p>
+<ul>
+<li>il <em>type parameter</em> rappresenta la <strong>dichiarazione</strong> dei tipi generici che verranno usati dalla classe/metodo, si trovano tra parentesi angolari e appaiono prima dell’utilizzo effettivo dei tipi:<br>
+<code>public class MyClass&lt;T&gt; {}</code><br>
+<code>public static &lt;MyType&gt; void f() {}</code></li>
+<li>il <em>type argument</em> rappresenta l’utilizzo dei tipi generici e anche “l’assegnazione” di quale tipo utilizzare<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyClass</span><span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	T ciao<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="prism  language-java">  <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>MyType<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>MyType a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+  <span class="token punctuation">}</span>
+</code></pre>
+<pre class=" language-java"><code class="prism  language-java">MyClass<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> mc<span class="token punctuation">;</span>
+</code></pre>
+</li>
+</ul>
+<h1 id="classi-innestate">Classi innestate</h1>
+<p>In Java è possibile definire una classe dentro un’altra, in questo caso la classe più esterna viene chiamata <em>top-level class</em> oppure <em>enclosing class</em> e quella interna viene chiamata <em>nested class</em>.</p>
+<p>Utilità delle classi innestate:</p>
+<ul>
+<li>È un modo per <strong>raggruppare logicamente le classi</strong> che vengono utilizzate in un unico posto</li>
+<li><strong>Migliora l’incapsulamento</strong> Se abbiamo 2 classi <em>top-level</em> A e B in cui B è l’unica classe del nostro universo che ha bisogno di accedere agli attributi/metodi di A, allora A sarà obbligata a dare una visibilità sufficiente a tali attributi/metodi. Se però B fosse una classe innestata allora tali attributi/metodi potrebbero essere messi privati e comunque B potrebbe accederci</li>
+<li><strong>Migliore leggibilità e manutenibilità del codice</strong>: in quanto la creazione del codice risulta posizionato vicino a dove viene utilizzato.</li>
+</ul>
+<p>Nota che non si tratta in alcun modo di ereditarietà e sottotipi</p>
+<h2 id="classi-static-e-non-static">Classi Static e non static</h2>
+<p>Le classi innestate possono essere di due tipi, <em>static</em> oppure <em>non-static</em>. Ricordiamo che le <strong>classi <em>top-level</em> non possono essere statiche</strong></p>
+<ul>
+<li>le classi innestate non statiche vengono chiamate <em><strong>inner classes</strong></em></li>
+<li>le classi innestate statiche vengono chiamate <em><strong>static nested classes</strong></em></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">class</span> <span class="token class-name">InnerClass</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StaticNestedClass</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="inner-class">Inner class</h2>
+<p>Una classe innestata non statica (<em>inner class</em>) <strong>ha accesso ai membri della classe esterna</strong>, anche se questi sono privati.</p>
+<p>Una istanza della <em>inner class</em> può esistere solo all’interno dell’istanza della sua classe esterna.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+
+    String outerField <span class="token operator">=</span> <span class="token string">"Outer field"</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> String staticOuterField <span class="token operator">=</span> <span class="token string">"Static outer field"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">InnerClass</span> <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">accessMembers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>outerField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>staticOuterField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        OuterClass outerObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        OuterClass<span class="token punctuation">.</span>InnerClass innerObject <span class="token operator">=</span> outerObject<span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token class-name">InnerClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        innerObject<span class="token punctuation">.</span><span class="token function">accessMembers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se non si vuole che la classe esterna possa accedere ai membri della <em>inner class</em> allora la si può mettere con visibilità <em>private</em> oppure <em>protected</em> (ricorda che questo non si può fare con la classe esterna)</p>
+<p>Esistono due tipi speciali di <em>inner class</em>:</p>
+<ul>
+<li><em>local classes</em></li>
+<li><em>Anonymous Classes</em></li>
+</ul>
+<h2 id="local-class">Local class</h2>
+<p>Le classi locali sono delle classi che sono <strong>definite all’interno di un blocco di codice</strong>, nella maggior parte dei casi all’interno del corpo di un metodo (ma è anche possibile farlo dentro un <code>if</code> oppure dentro un <code>for</code> ad esempio)</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">LocalClassExample</span> <span class="token punctuation">{</span>
+    <span class="token keyword">static</span> String regularExpression <span class="token operator">=</span> <span class="token string">"[^0-9]"</span><span class="token punctuation">;</span>
+  
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">validatePhoneNumber</span><span class="token punctuation">(</span>String phoneNumber1<span class="token punctuation">,</span> String phoneNumber2<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">final</span> <span class="token keyword">int</span> numberLength <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+        
+        <span class="token keyword">class</span> <span class="token class-name">PhoneNumber</span> <span class="token punctuation">{</span>		<span class="token comment">//local class</span>
+            String formattedPhoneNumber <span class="token operator">=</span> null<span class="token punctuation">;</span>
+
+            <span class="token function">PhoneNumber</span><span class="token punctuation">(</span>String phoneNumber<span class="token punctuation">)</span><span class="token punctuation">{</span>
+				<span class="token comment">// verifica se il numero passato in input è valido (utilizzando "regularExpression" e "numberLength")</span>
+				<span class="token comment">// se valido lo salva in "formattedPhoneNumber"</span>
+            <span class="token punctuation">}</span>
+            <span class="token keyword">public</span> String <span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span> formattedPhoneNumber<span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+		
+	    PhoneNumber myNumber1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhoneNumber</span><span class="token punctuation">(</span>phoneNumber1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	    PhoneNumber myNumber2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PhoneNumber</span><span class="token punctuation">(</span>phoneNumber2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	    
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>myNumber1<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span> 
+	           System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"First number is "</span> <span class="token operator">+</span> myNumber1<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>myNumber2<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">!=</span> null<span class="token punctuation">)</span>
+	           System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Second number is "</span> <span class="token operator">+</span> myNumber2<span class="token punctuation">.</span><span class="token function">getNumber</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">validatePhoneNumber</span><span class="token punctuation">(</span><span class="token string">"123-456-7890"</span><span class="token punctuation">,</span> <span class="token string">"456-7890"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Una classe locale può accedere agli elementi della classe esterna solo se questi sono esplicitamente oppure “effettivamente” <strong>final</strong>, cioè o vengono dichiarati esplicitamente come <em>final</em> oppure non mettendo <em>final</em> e non modificando il loro valore dopo l’inizializzazione.</p>
+<p>Nel caso di classe locale al corpo di un metodo, la classe può accedere anche ai parametri del metodo.</p>
+<h2 id="anonymous-class">Anonymous class</h2>
+<p>Le classi anonime sono esattamente come le classi locali, solo che queste possono essere <strong>dichiarate e istanziate allo stesso momento</strong>. Le classi anonime sono chiamate in questo modo in quanto non gli viene dato un nome.</p>
+<p><strong>Sono utili nel caso si voglia utilizzare una classe locale solo una volta</strong></p>
+<p>Dato che non viene fornito un nome, per definire la classe ci si appoggia ad una interfaccia da implementare oppure ad una classe da cui estendere.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">MyInterface</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AnonymousClassExample</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        MyInterface anonymousObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyInterface</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token annotation punctuation">@Override</span>
+            <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Implementazione di myMethod tramite classe anonima"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Chiamata al metodo dell'oggetto della classe anonima</span>
+        anonymousObject<span class="token punctuation">.</span><span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="static-nested-class">static nested class</h2>
+<p>Una classe innestata statica (<em>static nested class</em>) <strong>non ha accesso ai membri della classe esterna</strong></p>
+<p>La classe statica non è legata ad una istanza della classe esterna.<br>
+Possiamo dire che una <em>static nested class</em> si comporta come una classe <em>top-level</em></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">OuterClass</span> <span class="token punctuation">{</span>
+
+    String outerField <span class="token operator">=</span> <span class="token string">"Outer field"</span><span class="token punctuation">;</span>
+    <span class="token keyword">static</span> String staticOuterField <span class="token operator">=</span> <span class="token string">"Static outer field"</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">StaticNestedClass</span> <span class="token punctuation">{</span>
+        <span class="token keyword">void</span> <span class="token function">accessMembers</span><span class="token punctuation">(</span>OuterClass outer<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment">// Compiler error: Cannot make a static reference to the non-static</span>
+            <span class="token comment">//     field outerField</span>
+            <span class="token comment">// System.out.println(outerField);</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>outer<span class="token punctuation">.</span>outerField<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>staticOuterField<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//posso accedere al campo statico esterno</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        StaticNestedClass staticNestedObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">StaticNestedClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        OuterClass outerObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    
+        staticNestedObject<span class="token punctuation">.</span><span class="token function">accessMembers</span><span class="token punctuation">(</span>outerObject<span class="token punctuation">)</span><span class="token punctuation">;</span>              
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se si vuole istanziare <code>StaticNestedClass</code> dall’esterno si deve fare:</p>
+<pre class=" language-java"><code class="prism  language-java">OuterClass<span class="token punctuation">.</span>StaticNestedClass staticNestedObject <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">OuterClass<span class="token punctuation">.</span>StaticNestedClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="shadowing">Shadowing</h2>
+<p>Quando in una <em>nested class</em> dichiariamo un membro con lo stesso nome di un membro della classe esterna, allora il nuovo membro nasconde (<em>shadows</em>) il membro della classe esterna. In questo caso dalla classe innestata è possibile riferirsi direttamente ai membri locali, ma per riferirsi ai membri della classe esterna bisogna specificarne il nome.</p>
+<p>Vediamo un esempio in cui si verifica uno <em>shadowing</em> 2 volte</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ShadowTest</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">class</span> <span class="token class-name">FirstLevel</span> <span class="token punctuation">{</span>		<span class="token comment">//inner class</span>
+        <span class="token keyword">public</span> <span class="token keyword">int</span> x <span class="token operator">=</span> <span class="token number">15</span><span class="token punctuation">;</span>		<span class="token comment">//primo shadowing</span>
+
+        <span class="token keyword">void</span> <span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>				<span class="token comment">//secondo shadowing</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"x = "</span> <span class="token operator">+</span> x<span class="token punctuation">)</span><span class="token punctuation">;</span>				<span class="token comment">// = 23</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"this.x = "</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// = 15</span>
+            System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ShadowTest.this.x = "</span> <span class="token operator">+</span> ShadowTest<span class="token punctuation">.</span><span class="token keyword">this</span><span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// = 10</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        ShadowTest st <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ShadowTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        ShadowTest<span class="token punctuation">.</span>FirstLevel fl <span class="token operator">=</span> st<span class="token punctuation">.</span><span class="token keyword">new</span> <span class="token class-name">FirstLevel</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        fl<span class="token punctuation">.</span><span class="token function">methodInFirstLevel</span><span class="token punctuation">(</span><span class="token number">23</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="come-simulare-una-classe-statica-top-level">Come simulare una classe statica top-level</h2>
+<p>Come detto una classe <em>top-level</em> non può essere statica, ma possiamo fare dei magheggi per fare in modo che si comporti come tale:</p>
+<ol>
+<li>dichiarare la classe come <code>final</code> in modo che non possa essere ereditata</li>
+<li>fare il costruttore con visibilità <code>private</code></li>
+<li>rendi tutti i membri statici</li>
+</ol>
+<h1 id="programmazione-pseudo-funzionale">Programmazione pseudo funzionale</h1>
+<p>Java è un linguaggio orientato agli oggetti ed è detto <em>class-based</em>, cioè sei sempre obbligato a racchiudere il codice all’interno di una classe.</p>
+<p>Possiamo però forzare, limitatamente, il linguaggio ad utilizzare uno stile di programmazione procedurale (come C) per esempio limitandoci a creare classi composte solo da campi e definire solo metodo statici.</p>
+<p>Nel corso del tempo vari linguaggi tra cui Java hanno introdotto un costrutto proveniente dalla programmazione funzionale: le <strong>espressioni lambda</strong></p>
+<h2 id="espressioni-lambda">Espressioni lambda</h2>
+<p>Una funzione lambda possiamo vederla come una funzione anonima, cioè che non possiede un nome per essere invocata.</p>
+<p>Si utilizzano con la seguente sintassi:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token punctuation">(</span>parameter1<span class="token punctuation">,</span> parameter2<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> code block <span class="token punctuation">}</span>
+</code></pre>
+<p><strong>è opzionale specificare il tipo dei parametri</strong><br>
+se ci sono statement nel <code>code block</code> allora sono obbligatorie le parentesi graffe, altrimenti no</p>
+<p>ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// espressione che prende in input due interi e restituisce la somma</span>
+<span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">,</span> <span class="token keyword">int</span> y<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> x <span class="token operator">+</span> y
+
+<span class="token comment">// espressione che prende in input una stringa e restituisce la sua lunghezza</span>
+s <span class="token operator">-</span><span class="token operator">&gt;</span> s<span class="token punctuation">.</span><span class="token function">length</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token comment">// espressione che prende in input una stringa e non restituisce nulla</span>
+<span class="token punctuation">(</span>String s<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span> System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Benvenuto "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			  <span class="token punctuation">}</span>
+</code></pre>
+<h2 id="confronto-tra-lambda-e-classi-anonime">Confronto tra lambda e classi anonime</h2>
+<p>La programmazione funzionale in generale è più coincisa, espressiva e ha meno probabilità avere bug al suo interno (banalmente perché riduce di molto il codice scritto)</p>
+<p>Prima che Java implementasse le funzioni lambda, venivano utilizzate le <strong>classi anonime</strong>.</p>
+<p>Con l’aggiunta delle lambda si sono aggiunte anche le cosiddette <strong>funzioni di ordine superiore</strong>, cioè funzioni che: prendono come parametro una funzione oppure che ritornato una funzione oppure che definiscono un altra funzione al loro interno.<br>
+le normali funzioni vengono chiamate <strong>funzioni di primo ordine</strong></p>
+<h2 id="command-pattern">Command pattern</h2>
+<p>Il <em>command pattern</em> è un modo di programmare in cui al posto di eseguire direttamente delle modifiche su dei dati, deleghi il compito ad una funzione: che prenderà in input <strong>i dati</strong> e un <strong>comando</strong> (implementato come una interfaccia) e si occuperà di applicare tale comando ai dati passati.<br>
+La funzione che esegue questo compito non saprà nulla di che cosa fa il comando, saprà solamente il nome della funzione da chiamare all’interno del comando.</p>
+<p>Ci sono altri modi per implementare questo pattern, ad esempio definendo una classe che ha al suo interno un attributo che fungerà da comando.</p>
+<p>Questa tecnica permette molta flessibilità del codice.</p>
+<h3 id="esempio">Esempio</h3>
+<p>Un classico utilizzo delle funzioni lambda è quando vogliamo far operare una funzione su ogni elemento di una collezione di dati.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
+	<span class="token comment">//creo una interfaccia con un metodo che prende in input un valore e non ritorna nulla.</span>
+	<span class="token comment">// è utile perche nella firma della prossima funzione voglio specificare che voglio una funzione come input</span>
+	<span class="token keyword">interface</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		<span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>T  x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token comment">// questo metodo vuole una collection ed una funzione come parametri.</span>
+	<span class="token comment">// il suo scopo è di applicare la funzione ad ogni elemento della collezione</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">forEach</span><span class="token punctuation">(</span>Collection<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> c<span class="token punctuation">,</span> MyFunction<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> f<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>T x <span class="token operator">:</span> c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			f<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		List<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> l <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//ESEMPIO 1</span>
+		<span class="token comment">//chiamata alla funzione con classe anonima</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token annotation punctuation">@Override</span>
+			<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>Integer x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		
+		<span class="token comment">//chiamata alla funzione con espressione lambda</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//ESEMPIO 2</span>
+	
+		<span class="token comment">//chiamata alla funzione con classe anonima</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">apply</span><span class="token punctuation">(</span>Integer  x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">&gt;</span>  <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+					x <span class="token operator">=</span> x <span class="token operator">+</span>  <span class="token number">1</span><span class="token punctuation">;</span>
+				<span class="token punctuation">}</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">//chiamata alla funzione con espressione lambda</span>
+		<span class="token function">forEach</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">&gt;</span>  <span class="token number">5</span><span class="token punctuation">)</span> x <span class="token operator">=</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Notiamo come la chiamata alla funzione <code>forEach</code> passando come secondo parametro una funzione anonima (lambda) risulta molto più semplice.</p>
+<h2 id="classi-per-le-funzioni">Classi per le funzioni</h2>
+<p>Nell’esempio precedente abbiamo creato manualmente una interfaccia contenente il metodo da utilizzare, tale funzione prende in input un dato e non ritorna nulla.<br>
+Se volessimo però fare una funzione che prende in input e genera in output qualcosa dovremmo creare un’altra interfaccia, lo stesso vale per una funzione che non prende input ma genera output.</p>
+<p>Java offre delle interfacce già pronte all’interno di <code>java.util.function.*</code> da poter usare come tipo di dato nei parametri delle funzioni di ordine superiore.</p>
+<p>Le interfacce sono le seguenti:</p>
+<ul>
+<li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Function.html"><code>Function</code></a> usato per funzioni che prendono qualcosa in <strong>input</strong> e ritornano qualcosa in <strong>output</strong><br>
+la sua metodo si chiama <code>apply()</code></li>
+<li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Consumer.html"><code>Consumer</code></a> usato per funzioni che prendono qualcosa in <strong>input</strong> ma che <strong>non hanno output</strong><br>
+la sua metodo si chiama <code>accept()</code></li>
+<li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/util/function/Supplier.html"><code>Supplier</code></a> usato per funzioni che <strong>non</strong> prendono <strong>input</strong> ma che ritornano qualcosa in <strong>output</strong><br>
+la sua metodo si chiama <code>get()</code></li>
+<li><a href="https://docs.oracle.com/en/java/javase/16/docs/api/java.base/java/lang/Runnable.html"><code>Runnable</code></a> usato per funzioni che <strong>non</strong> prendono niente in <strong>input</strong> e che <strong>non</strong> hanno <strong>output</strong><br>
+la sua metodo si chiama <code>run()</code></li>
+</ul>
+<p>Nell’esempio precedente avremmo potuto usare direttamente <code>Consumer</code> al posto di definire <code>MyFunction</code>.</p>
+<p>Vediamo un esempio di utilizzo con <code>Function</code>:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
+
+	<span class="token comment">//questo metodo riempie un arraylist con dei dati generati dalla funzione 'f' chiamata su ogni elemento della collection 'c'</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> Collection<span class="token operator">&lt;</span>B<span class="token operator">&gt;</span> <span class="token function">map</span><span class="token punctuation">(</span>Collection<span class="token operator">&lt;</span>A<span class="token operator">&gt;</span> c<span class="token punctuation">,</span> Function<span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> f<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		Collection<span class="token operator">&lt;</span>B<span class="token operator">&gt;</span> r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>A x <span class="token operator">:</span> c<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			B value <span class="token operator">=</span> f<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+			r<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">return</span> r<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		List<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> l <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+		<span class="token comment">//per ottenere una collection con tutti gli elementi incrementati di 1</span>
+		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res1 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span><span class="token keyword">return</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">//equivalente a:</span>
+		Collection<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> res2 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+		<span class="token comment">//per ottenere una collection di booleani che indicano se i valori sono positivi</span>
+		Collection<span class="token operator">&lt;</span>Boolean<span class="token operator">&gt;</span> res3 <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>l<span class="token punctuation">,</span> x <span class="token operator">-</span><span class="token operator">&gt;</span> x<span class="token operator">&gt;</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="il-particolare-polimorfismo-delle-lambda">Il particolare polimorfismo delle lambda</h2>
+<p>Le lambda in Java sono più polimorfe del normale, questo perché una stessa lambda può avere <strong>più di un tipo associato</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>function<span class="token punctuation">.</span>Function<span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Lambda</span> <span class="token punctuation">{</span>
+	<span class="token keyword">interface</span> <span class="token class-name">MyFunction</span><span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		A <span class="token function">ciccio</span><span class="token punctuation">(</span>B x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">interface</span> <span class="token class-name">MyFunction2</span><span class="token operator">&lt;</span>A<span class="token punctuation">,</span> B<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		A <span class="token function">prova</span><span class="token punctuation">(</span>B x<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		MyFunction<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f1 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+		Function<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f2 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+		MyFunction2<span class="token operator">&lt;</span>Integer<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> f3 <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> a<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Si nota nel precedente codice come una stessa lambda può essere assegnata a 3 variabili con tipo diverso.<br>
+Questo perché le lambda sono sostanzialmente una <em>shortcut</em> per creazione di una <strong>classe anonima</strong>, Java riesce a creare questa classe anonima in base al contesto (al tipo della variabile oppure al tipo del parametro).<br>
+È sufficiente che il tipo sia una <strong>interfaccia</strong> con un <strong>unico metodo</strong>, il compilatore si preoccuperà di implementare tale metodo basandosi sulle informazioni presenti nella lambda.</p>
+<h1 id="thread">Thread</h1>
+<p>I Thread sono la parte esecutiva di un processo.<br>
+I thread condividono la maggior parte delle cose contenute nel processo, tra cui il <em>data-segment</em> e il <em>code-segment</em>. Mentre ogni thread ha il proprio <em>Program Counter</em> e il proprio <em>Stack Pointer</em>.</p>
+<p>Vediamo come si creano e usano i thread in Java, vediamo il metodo “vecchio stile” con cui si sono sempre utilizzati i thread e vediamo anche un modo alternativo introdotto nelle versioni successive di Java.<br>
+Sta di fatto che il nuovo metodo non sostituisce completamente il vecchio modo, in quanto in determinati casi può risultare più comodo il vecchio modo (ma generalmente si tratta solo di un discorso di leggibilità e organizzazione di codice).</p>
+<p>In generale ricordiamo che <strong>un processo ha sempre almeno un thread</strong>, nei programmi generalmente quel thread esegue il <strong>main</strong>.</p>
+<h2 id="vecchio-modo-di-creare-thread">Vecchio modo di creare thread</h2>
+<p>Per definire un thread bisogna:</p>
+<ol>
+<li>Creare una nuova classe che estende dalla classe <code>Thread</code></li>
+<li>Sovrascrivere il metodo <code>run()</code> con il codice che il thread deve eseguire durante la sua vita</li>
+</ol>
+<p>Per utilizzare un thread bisogna:</p>
+<ol>
+<li>Istanziare un oggetto del tipo della classe creata precedentemente</li>
+<li>chiamare il metodo <code>start()</code> per far partire il thread</li>
+<li>il creatore del thread deve poi aspettarlo con il metodo <code>join()</code></li>
+</ol>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ThreadExample</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">MyThread</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		Thread t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MyThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		t<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"ciao"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		t<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Note:</p>
+<ul>
+<li>Solo al momento della chiamata al metodo <code>t.start()</code> il thread inizia la sua esecuzione, in altre parole da quel momento viene schedulato dalla CPU.</li>
+<li>Un <strong>errore</strong> potrebbe essere quello di chiamare <code>t.run()</code> al posto di <code>t.start()</code>, così facendo però stiamo dicendo al thread che sta eseguendo il main di eseguire il metodo <code>run()</code> definito nella classe <code>MyThread</code> per poi ritornare al main, non stiamo effettivamente creando un nuovo thread che esegue quel codice.</li>
+<li>A basso livello possiamo pensare che un thread è un fork della <em>Java Virtual Machine</em> che interpreta il bytecode specificato nel metodo <code>run()</code></li>
+<li>se al posto dei cicli for mettessimo un <code>while(true)</code> vedremmo delle stampe molto separate (prima tanti “ciao” e poi tanti “hello” e via così) e <strong>non alternati</strong>, questo è dato dal <strong>quanto di tempo</strong> che la CPU fornisce ai thread</li>
+</ul>
+<h2 id="nuovo-modo-di-creare-thread">Nuovo modo di creare thread</h2>
+<p>Con l’introduzione delle lambda è possibile creare i thread in maniera molto più diretta, anche se meno strutturata.</p>
+<p>Non è più necessario creare una nuova classe che estende <code>Thread</code>, ma possiamo direttamente istanziare la classe <code>Thread</code> passando come parametro una istanza di <code>Runnable</code>.</p>
+<p>Vediamo vari modi di farlo:</p>
+<p><strong>Metodo 1</strong> classe anonima</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Runnable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Metodo 2</strong>: espressione lambda</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p><strong>Metodo 3</strong>: variabile contenente un Runnable</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	Runnable f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">100</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"hello"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+	Thread t1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Thread</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	t1<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>La scelta tra la nuova versione e quella vecchia si base sostanzialmente sulla grandezza del thread, <strong>il vecchio metodo</strong> è più comodo <strong>per thread che hanno un codice lungo</strong>, utilizzano altri campi o altri metodi.<br>
+Mentre <strong>per thread leggeri</strong> con codici brevi <strong>la nuova versione è decisamente più rapida</strong> da implementare.</p>
+<h2 id="produttore-consumatore">Produttore consumatore</h2>
+<p>Vediamo un classico problema di sincronizzazione multithreading per vedere anche come sincronizzare i thread</p>
+<p>Il problema del produttore e consumatore consiste che un thread produca dei dati in un buffer e un altro thread li consumi dal buffer.<br>
+La sincronizzazione deve avvenire al fine di impedire che un un produttore sovrascriva dei dati nel buffer se il consumatore non li ha ancora consumati.<br>
+Il consumatore deve attendere che il produttore produca dei dati prima di consumarli.</p>
+<p>In questo caso dato che i thread <code>Consumatore</code> e <code>Produttore</code> sono due entità ben distinte, hanno molto codice, è più conveniente utilizzare il vecchio metodo di utilizzo dei thread.</p>
+<p>Nota: Il seguente metodo di sincronizzazione dei thread viene realizzato usando i <strong>monitor</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>ArrayList<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>List<span class="token punctuation">;</span>
+<span class="token keyword">import</span> java<span class="token punctuation">.</span>util<span class="token punctuation">.</span>Random<span class="token punctuation">;</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">ConsumerProducer</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> List<span class="token operator">&lt;</span>Integer<span class="token operator">&gt;</span> buff <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//buffer condiviso dai due thread</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Producer</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token function">Producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token string">"Producer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            Random rnd <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Random</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">int</span> n <span class="token operator">=</span> rnd<span class="token punctuation">.</span><span class="token function">nextInt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//inserisce un numero random nel buffer</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>   <span class="token comment">// lock</span>
+                    buff<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    buff<span class="token punctuation">.</span><span class="token function">notify</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//sblocco eventuali thread che hanno fatto wait()</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: added %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>                       <span class="token comment">// unlock</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">Consumer</span> <span class="token keyword">extends</span> <span class="token class-name">Thread</span> <span class="token punctuation">{</span>
+        <span class="token keyword">public</span> <span class="token function">Consumer</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token string">"Consumer"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        
+        <span class="token annotation punctuation">@Override</span>
+        <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>buff<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//lock</span>
+	                <span class="token comment">//se entro in zona critica però il buffer è vuoto rimango in attesa.</span>
+                    <span class="token keyword">if</span> <span class="token punctuation">(</span>buff<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	
+                        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+                            buff<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                        <span class="token punctuation">}</span>
+                    <span class="token punctuation">}</span>
+                    <span class="token keyword">int</span> n <span class="token operator">=</span> buff<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s: removed %d\n"</span><span class="token punctuation">,</span> <span class="token function">getName</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">}</span>						<span class="token comment">//unlock</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        Thread p <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Producer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        Thread c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Consumer</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        p<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        c<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">{</span>
+            p<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            c<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//in caso di terminazioni anomale dei thread</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Analizziamo le parti più importanti:</p>
+<ul>
+<li><code>synchronized(){}</code>  è una keyword che garantisce che tutto ciò che c’è all’interno delle parentesi graffe viene eseguito in modo atomico, cioè la sua esecuzione non può essere suddivisa.
+<ul>
+<li>All’interno delle parentesi ci va un qualsiasi <strong>oggetto</strong> che verrà utilizzato come <strong>mutex</strong>.</li>
+<li>Ogni oggetto è figlio della classe <code>Object</code> la quale ha dei metodi particolari per la sincronizzazione: <code>wait()</code> e <code>notify()</code>.</li>
+<li>È possibile quindi utilizzare qualsiasi oggetto a piacimento, l’importante però è che <strong>sia un oggetto condiviso tra i thread che si vuole sincronizzare</strong>. Nel nostro caso abbiamo utilizzato l’oggetto <code>buff</code>.</li>
+<li>Entrare all’interno di un blocco <code>synchronized</code> equivale diventare il proprietario (<em>owner</em>) dell’oggetto passato come mutex, e gli altri thread devono attendere che il mutex diventi senza proprietario</li>
+</ul>
+</li>
+<li><code>wait()</code> serve per rimanere in attesa all’interno di un blocco <code>synchronized</code> fino a quando un altro thread non lo sblocca. Dopo aver fatto una <code>wait</code> l’accesso all’area synchonized viene liberata.</li>
+<li><code>notify()</code> serve a notificare i thread che sono in attesa in un blocco <code>synchronized</code> (cioè che hanno chiamato la <code>wait()</code>) di poter riprendere l’esecuzione.</li>
+<li>La <code>wait()</code> e la <code>notify()</code> si possono eseguire solo all’interno di un blocco <code>synchronized</code> e vanno chiamati sull’oggetto passato come mutex.</li>
+<li>le <strong>exception</strong> lanciate all’interno di un blocco <code>synchronized</code> rendono libero il blocco.</li>
+<li>Una conseguenza del fatto che solo l’owner del blocco possa lavorare in zona critica, implica che in funzioni ricorsive synchronized (a singolo thread) non generino uno stallo, in quanto è sempre lo stesso thread che esegue la funzione ricorsiva ed è sempre lui l’owner, quindi non rimane mai in attesa.</li>
+</ul>
+<p>La buona regola per capire se è necessario sincronizzare è la seguente:<br>
+se lavorando con più thread ho almeno un thread che legge dei dati da una zona di memoria e almeno un thread che scrive dei dati nella stessa zona di memoria, allora è necessario sincronizzare.</p>
+<h1 id="covarianza-e-controvarianza">Covarianza e controvarianza</h1>
+<p>La covarianza e la controvarianza sono due concetti applicabili nell’<em>override</em> dei metodi</p>
+<ul>
+<li><strong>override</strong>: quanto si ridefinisce il corpo di un metodo esistente mantenendone la firma</li>
+<li><strong>overload</strong>: quando si ridefinisce la firma e il corpo di un metodo mantenendo lo stesso nome del metodo da ridefinire</li>
+</ul>
+<p>Ricordiamo che la <strong>firma</strong> di un metodo comprende: nome, tipo e ordine dei parametri.<br>
+È importante sottolineare che il <strong>tipo di ritorno e la dichiarazione di eventuali eccezioni non fanno parte della firma</strong>.</p>
+<p>La <strong>covarianza e controvarianza</strong> si applica ai <strong>tipi di ritorno</strong> dei metodi.<br>
+<strong>covariare</strong> significa “variare assieme a qualcosa”<br>
+<strong>controvariare</strong> significa “variare inversamente a qualcosa”</p>
+<ul>
+<li>
+<p>Si parla di <strong>covarianza</strong> quando il tipo di ritorno diventa <strong>più specifico</strong> assieme alla classe che eredità il metodo, e quindi è un sottotipo, cioè <strong>più specifica</strong></p>
+</li>
+<li>
+<p>Si parla di <strong>controvarianza</strong> quando il tipo di ritorno diventa <strong>più generale</strong>, contrariamente alla classe che eredità il metodo, e quindi è un sottotipo, cioè <strong>più specifica</strong>.</p>
+<p>In java la <strong>covarianza sul tipo di ritorno è ammessa</strong>, mentre la <strong>controvarianza sul tipo di ritorno non è ammessa</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Overload</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
+
+		<span class="token keyword">public</span> A <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">A</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		<span class="token keyword">public</span> Number <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> <span class="token number">1.9</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">class</span> <span class="token class-name">B</span> <span class="token keyword">extends</span> <span class="token class-name">A</span> <span class="token punctuation">{</span>
+
+		<span class="token comment">//il tipo di ritorno può covariare assieme a this</span>
+		
+		<span class="token comment">//il tipo di ritorno non può controvariare rispetto a this.</span>
+		<span class="token comment">//Il compilatore se ne accorge e da un errore di compilazione</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> B <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//valido</span>
+			<span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token annotation punctuation">@Override</span>
+		<span class="token keyword">public</span> Integer <span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//valido</span>
+			<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		
+		A a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">B</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//tipo statico A, tipo dinamico B</span>
+		Number n <span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//viene chiamato il metodo di B per il dynamic dispatch</span>
+		<span class="token comment">//il compilatore non da errore perche il tipo di ritorno a runtime è</span>
+		<span class="token comment">// un Integer che è sottotipo di Number, perche abbiamo applicato la covarianza</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se applicassimo la controvarianza dovremmo invertire <code>Integer</code> con <code>Number</code>, ma in quel caso nel main dovremmo mettere il risultato in un <code>Integer</code>, però a <em>runtime</em> ci verrebbe ritornato un <code>Number</code>.</p>
+</li>
+</ul>
+<h2 id="wildcard">Wildcard</h2>
+<p>Le <em>Wildcard</em> rappresentano un tipo generico sconosciuto.</p>
+<ul>
+<li>è possibile utilizzarle nei parametri dei metodi, nei campi, variabili locali ma <strong>non</strong> nella intestazione di interfacce e classi</li>
+</ul>
+<p>spesso è possibile utilizzare i generics e le wildcard per fare la stessa cosa, ad esempio vediamo definire la firma di un metodo “swap” con generics e wildcard:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> des<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">swap</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> list<span class="token punctuation">,</span> <span class="token keyword">int</span> src<span class="token punctuation">,</span> <span class="token keyword">int</span> des<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>seppur entrambi siano corretti e accettino un qualsiasi oggetto come tipo, il secondo sarebbe migliore in quanto al momento della chiamata non dobbiamo preoccuparci impostare il <em>type parameter</em>.</p>
+<p>In generale vale che dato che se il tipo generico (in questo caso <code>E</code>) viene utilizzato solamente una volta nella firma del metodo allora è più comodo usare un <em>wildcard</em></p>
+<p>Mentre i generics li posso limitare solo come <strong>un sottotipo</strong> di qualche oggetto. Le wildcard le posso limitare anche come <strong>un supertipo</strong> di qualche oggetto</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">Number</span><span class="token operator">&gt;</span> list1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// upper bound</span>
+List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> Integer<span class="token operator">&gt;</span> list2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// lower bound</span>
+</code></pre>
+<ul>
+<li>nel primo caso accetto solo sottotipi di <code>Number</code> (oppure un oggetto <code>Number</code>).<br>
+permette quindi la <strong>covarianza</strong></li>
+<li>Nel secondo caso accesso solo supertipi di <code>Integer</code> (oppure un oggetto <code>Integer</code>)<br>
+permette quindi la <strong>controvarianza</strong></li>
+</ul>
+<h3 id="uso-combinato-con-i-generics">Uso combinato con i generics</h3>
+<p>Un potente utilizzo delle wildcard è quello di utilizzarle insieme ai generics per rilassare o restringere i tipi in base ad un tipo generico.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">sort</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> list<span class="token punctuation">,</span> Comparator<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">&gt;</span> c<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<h3 id="tipo-di-ritorno">Tipo di ritorno</h3>
+<p>Quando si vuole ritornare un tipo generico bisognerebbe usare i generics rispetto alle wildcard: vediamo un esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> <span class="token function">merge</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listOne<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listTwo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">//restituisce una lista che concatena le due liste in input</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Con questa definizione <strong>non</strong> è possibile salvare la lista di ritorno in questo modo:</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbers1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers1<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbers2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">15</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+numbers2<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">20.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//errore di compilazione</span>
+List<span class="token operator">&lt;</span>Number<span class="token operator">&gt;</span> numbersMerged <span class="token operator">=</span> <span class="token function">merge</span><span class="token punctuation">(</span>numbers1<span class="token punctuation">,</span> numbers2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>questo perché il tipo di ritorno è sconosciuto al compilatore (sa solo che è un sottotipo di E) anche se in realtà i tipi sono corretti.</p>
+<p>Per sistemare questo problema basta usare il generic come tipo di ritorno</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> List<span class="token operator">&lt;</span>E<span class="token operator">&gt;</span> <span class="token function">merge</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listOne<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">E</span><span class="token operator">&gt;</span> listTwo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+     <span class="token comment">//restituisce una lista che concatena le due in input</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="esempio-1">Esempio</h3>
+<p>Vediamo un esempio in cui si nota la flessibilità delle <em>wildcard</em> rispetto ai <em>generics</em></p>
+<p>Vediamo un metodo <code>copy</code> che prende in input due liste e copia il contenuto della seconda nella prima</p>
+<p>Vediamo prima l’implementazione con solo <em>generics</em></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>questa implementazione è fin troppo restrittiva: le due liste devono avere lo stesso identico tipo,  se volessimo copiare una lista di <code>Integer</code> in una lista di <code>Number</code> non compilerebbe.</p>
+<p>Proviamo ad usare le wildcard senza imporre alcun limite</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span><span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso c’è un errore di compilazione nella riga all’interno del <code>for</code>:</p>
+<p><code>src.get()</code> ritorna un riferimento ad un oggetto di tipo sconosciuto, questa cosa è lecita e viene espressa come il riferimento ad un oggetto di tipo <code>Object</code><br>
+D’altra parte <code>dest.set()</code> richiede un oggetto di tipo sconosciuto e non <code>Object</code>. Il tipo sconosciuto può essere qualsiasi tipo (anche <code>Object</code>) ma questo a tempo di compilazione non è conosciuto.</p>
+<p>Stiamo chiaramente utilizzando una firma di funzione troppo libera, proviamo a restringerla in po’</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Collections</span> <span class="token punctuation">{</span>  
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> <span class="token keyword">void</span> <span class="token function">copy</span><span class="token punctuation">(</span>List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">super</span> T<span class="token operator">&gt;</span> dest<span class="token punctuation">,</span> List<span class="token operator">&lt;</span><span class="token operator">?</span> <span class="token keyword">extends</span> <span class="token class-name">T</span><span class="token operator">&gt;</span> src<span class="token punctuation">)</span> <span class="token punctuation">{</span>  
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> src<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			dest<span class="token punctuation">.</span><span class="token function">set</span><span class="token punctuation">(</span>i<span class="token punctuation">,</span> src<span class="token punctuation">.</span><span class="token function">get</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+		<span class="token punctuation">}</span>  
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo modo voglio che gli elementi in input siano un sottotipo di <code>T</code> e tali elementi li posso inserire in una lista contenente anche tipi più generali di <code>T</code>.</p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Object<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+List<span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span> input <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+Collections<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>output<span class="token punctuation">,</span> input<span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//corretto</span>
+</code></pre>
+<p>In questo caso <code>Object</code> è un supertipo di <code>Long</code></p>
+<pre class=" language-java"><code class="prism  language-java">List<span class="token operator">&lt;</span>String<span class="token operator">&gt;</span> output <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>String<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+List<span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span> input <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token operator">&lt;</span>Long<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  
+<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>  
+Collections<span class="token punctuation">.</span><span class="token function">copy</span><span class="token punctuation">(</span>output<span class="token punctuation">,</span> input<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">// errore</span>
+</code></pre>
+<p>In questo caso <code>String</code> non è un supertipo di <code>Long</code></p>
+<h1 id="programmazione-ad-oggetti-in-c">Programmazione ad oggetti in C++</h1>
+<p>C++ è un linguaggio fortemente tipato capace di supportare</p>
+<ul>
+<li>programmazione funzionale</li>
+<li>programmazione ad oggetti</li>
+<li>programmazione generica</li>
+</ul>
+<p>Utilizza una convenzione di stile di tipo <em>snake_case</em></p>
+<p>La definizione di nuovi tipi di dato può avvenire con due parole chiave: <code>struct</code> e <code>class</code>.</p>
+<p>La differenza tra la due è la visibilità di default:</p>
+<ul>
+<li><code>struct</code> la visibilità di default del suo contenuto è <code>public</code></li>
+<li><code>class</code> la visibilità di default del suo contenuto è <code>private</code></li>
+</ul>
+<p>Le uniche visibilità presenti in C++ sono le seguenti:</p>
+<ul>
+<li><strong>public</strong>: visibile a chiunque</li>
+<li><strong>protected</strong>: visibile solo all’interno della classe e ai propri figli</li>
+<li><strong>private</strong>: visibile solo all’interno della classe</li>
+</ul>
+<h2 id="concetto-di-dichiarazione-in-c">Concetto di “dichiarazione” in C++</h2>
+<p>In C++ non esiste un vero e proprio concetto di dichiarazione di variabili come avviene in C:</p>
+<ul>
+<li>in C si può parlare di dichiarazione perché quello che accade è che una zona di memoria viene riservata e gli viene dato un nome</li>
+<li>in C++ ogni volta che si crea una variabile la si “costruisce” tramite il proprio costruttore di default (questo vale anche per i tipi primitivi), quindi oltre a riservare la zona di memoria tale zona viene anche inizializzata ad un valore di default</li>
+</ul>
+<p>Scrivere la seguente cosa in C++</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> a<span class="token punctuation">;</span>
+</code></pre>
+<p>equivale a chiamare il costruttore di default sulla variabile:</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">a</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In C++ si chiama <strong>oggetto</strong> una area di memoria dotata di un tipo.</p>
+<p>Quindi nel caso precedente <code>a</code> è un <strong>oggetto di tipo int</strong><br>
+è quindi possibile fare anche</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">int</span> <span class="token function">var</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//viene chiamato il copy constructor di int</span>
+</code></pre>
+<h2 id="costruttori">Costruttori</h2>
+<p>I costruttori vanno realizzati con le <strong>liste di inizializzazione</strong> quando possibile:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>		<span class="token comment">//senza lista di inizalizzazione</span>
+		weight <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+		speed <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>		<span class="token comment">//con lista di inizializzazione</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Entrambi i costruttori fanno la stessa cosa, il secondo però fa utilizzo delle liste di inizializzazione.<br>
+L’utilizzo delle liste di inizializzazione è consigliato per due motivi principali:</p>
+<ul>
+<li>
+<p><strong>Ottimizzazione</strong>: senza le liste di inizializzazione quando viene chiamato il costruttore prima vengono create le variabile inizializzate con il loro valore di default (tramite il <em>default constructor</em>) e successivamente gli vengono assegnati i valori da noi decisi.<br>
+Utilizzando le liste di inizializzazione invece le variabili vengono dichiarate e inizializzate direttamente con i valori da noi decisi (utilizzando il <em>copy constructor</em> della variabile).</p>
+</li>
+<li>
+<p><strong>Inizializzazione di costanti</strong>: se nel codice di prima al posto di  <code>int a</code>  fosse stato  <code>const int a</code>  in quel caso solo il costruttore con le liste funzionerebbe, in quanto una assegnazione successiva all’inizializzazione tramite il <em>default constructor</em> non sarebbe permessa a causa del <code>const</code>.</p>
+</li>
+</ul>
+<h2 id="passaggio-dei-parametri-valore-e-reference">Passaggio dei parametri, valore e reference</h2>
+<p>Vediamo 3 modi in cui si può passare un oggetto ad una funzione</p>
+<ul>
+<li>passaggio per copia: viene creato un nuovo oggetto creato tramite il <strong>copy constructor</strong><pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">void</span> <span class="token function">f</span> <span class="token punctuation">(</span>my_obj<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li>passaggio del puntatore: viene passata la copia del puntatore dell’oggetto<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">void</span> <span class="token function">f</span> <span class="token punctuation">(</span>my_obj<span class="token operator">*</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li>passaggio della reference: viene passata la reference, cioè un alias della variabile originale. In questo caso si sta usando direttamente l’oggetto originale, non una copia<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">void</span> <span class="token function">f</span> <span class="token punctuation">(</span>my_obj<span class="token operator">&amp;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+</li>
+</ul>
+<h2 id="costruttori-di-conversione-e-explicit">Costruttori di conversione e “explicit”</h2>
+<p>Un costruttore con un singolo parametro che non ha un valore di default  e che <strong>non</strong> viene dichiarato <code>explicit</code> è chiamato <strong>costruttore di conversione</strong>.</p>
+<p>Un costruttore di conversione esegue una conversione implicita che converte un oggetto cha ha il tipo del primo parametro in un oggetto dal tipo della classe a cui il costruttore di conversione appartiene.</p>
+<p>La keyword <em>explicit</em> associata ad un costruttore di conversione impedisce il comportamento appena descritto, forzando il chiamante ad usare i costruttori con i tipi corretti.</p>
+<p>Vediamo il comportamento dei costruttori di conversione:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">Y</span> <span class="token punctuation">{</span>
+  <span class="token keyword">private</span><span class="token operator">:</span>
+	  <span class="token keyword">int</span> a<span class="token punctuation">,</span> b<span class="token punctuation">;</span>
+	  <span class="token keyword">char</span><span class="token operator">*</span> name<span class="token punctuation">;</span>
+  <span class="token keyword">public</span><span class="token operator">:</span>
+	  <span class="token function">Y</span><span class="token punctuation">(</span><span class="token keyword">int</span> i<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>	<span class="token comment">//converte int a oggetti di tipo Y</span>
+	  <span class="token function">Y</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span><span class="token operator">*</span> n<span class="token punctuation">,</span> <span class="token keyword">int</span> j <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>	<span class="token comment">//converte stringhe a oggetti di tipo Y</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>Y<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>		<span class="token comment">//metodo che apparentemente prende solo oggetti di tipo Y</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment">// equivalente a: Y obj1 = Y(2)</span>
+  Y obj1 <span class="token operator">=</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// equivalente a: Y obj2 = Y("somestring",0)</span>
+  Y obj2 <span class="token operator">=</span> <span class="token string">"somestring"</span><span class="token punctuation">;</span>
+
+  <span class="token comment">// equivalente a: add(Y(5))</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>È interessante la chiamata al metodo <code>add</code> che nonostante chieda un oggetto di tipo Y, passandogli un intero la chiamata avviene correttamente comunque in quanto il compilatore chiama implicitamente il costruttore di <code>Y</code> che prende un intero, creando così un oggetto di tipo <code>Y</code></p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">struct</span> A <span class="token punctuation">{</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>      <span class="token comment">// converting constructor</span>
+    <span class="token function">A</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span> <span class="token comment">// converting constructor (C++11)</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">struct</span> B <span class="token punctuation">{</span>
+    <span class="token keyword">explicit</span> <span class="token function">B</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+    <span class="token keyword">explicit</span> <span class="token function">B</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+ 
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    A a1 <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>      <span class="token comment">// OK: copy-initialization selects A::A(int)</span>
+    A <span class="token function">a2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// OK: direct-initialization selects A::A(int)</span>
+    A a3 <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment">// OK: direct-list-initialization selects A::A(int, int)</span>
+    A a4 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// OK: copy-list-initialization selects A::A(int, int)</span>
+    A a5 <span class="token operator">=</span> <span class="token punctuation">(</span>A<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">// OK: explicit cast performs static_cast</span>
+ 
+<span class="token comment">//  B b1 = 1;      // error: copy-initialization does not consider B::B(int)</span>
+    B <span class="token function">b2</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// OK: direct-initialization selects B::B(int)</span>
+    B b3 <span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment">// OK: direct-list-initialization selects B::B(int, int)</span>
+<span class="token comment">//  B b4 = {4, 5}; // error: copy-list-initialization does not consider B::B(int, int)</span>
+    B b5 <span class="token operator">=</span> <span class="token punctuation">(</span>B<span class="token punctuation">)</span><span class="token number">1</span><span class="token punctuation">;</span>   <span class="token comment">// OK: explicit cast performs static_cast</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="copy-constructor">Copy constructor</h2>
+<p>Il copy constructor è un costruttore che utilizza un altro oggetto gemello per inizializzare i propri valori con i suoi.</p>
+<p>Si realizza nel seguente modo</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>		<span class="token comment">//constructor</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//copy constructor</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il <code>const</code> sta ad indicare che il parametro non viene modificato all’interno della funzione.<br>
+La reference è necessaria perché altrimenti si genererebbe una ricorsione infinita, se venisse passato per copia verrebbe chiamato il copy constructor, ma noi lo stiamo definendo in questo momento.</p>
+<h2 id="this">This</h2>
+<p><code>this</code> in questo caso è un pointer all’oggetto e quindi lo si usa sempre con <code>-&gt;</code> invece che con <code>.</code></p>
+<p>Come dimostrazione vediamo che la seguente assegnazione non genera errori:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>		<span class="token comment">//constructor</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//copy constructor</span>
+	
+	<span class="token keyword">int</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		animal<span class="token operator">*</span> a <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>	<span class="token comment">//funziona</span>
+		<span class="token keyword">return</span> <span class="token keyword">this</span><span class="token operator">-</span><span class="token operator">&gt;</span>weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="const">Const</h2>
+<p>Il <code>const</code> ha sia il significato che un costrutto non è modificabile sia che può interagire solo con costrutti a loro volta dichiarati <code>const</code>.</p>
+<p>Una buona regola quando si dichiarano le funzioni è di partire sempre da metodi <code>const variabile&amp;</code>, perché è l’approccio più restrittivo.<br>
+Nel caso si avesse bisogno di modificare la variabile allora si toglie il <code>const</code>.<br>
+Qual ora si volesse una copia e non la variabile originale si toglie la <code>&amp;</code>.</p>
+<p>il <code>const</code> si può anche mettere alla fine della firma di un metodo, per indicare che all’interno di quel metodo non si modificano i campi della classe.</p>
+<p>Questo ci porta a definire <strong>due tipi di getter</strong> in C++, uno passato in sola lettura e uno anche in scrittura</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>		<span class="token comment">//constructor</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>	<span class="token comment">//copy constructor</span>
+	
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>		<span class="token comment">//getter che restituisce il campo in sola lettura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>					<span class="token comment">//getter che restituisce il campo anche in scrittura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il const alla fine della firma permette di separare le due firme e quindi di fare un <strong>overload</strong></p>
+<h2 id="virtual">Virtual</h2>
+<p>Se si vuole permettere alle sottoclassi di sovrascrivere (fare <em>override</em>) un metodo, allora esso va marcato come <code>virtual</code></p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>		<span class="token comment">//getter che restituisce il campo in sola lettura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>					<span class="token comment">//getter che restituisce il campo anche in scrittura</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//metodo overridabile dai figli</span>
+		weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span>weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="ereditarietà">Ereditarietà</h2>
+<p>La sintassi per ereditare da una classe è la seguente</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">dog</span> <span class="token operator">:</span> <span class="token keyword">public</span> animal <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il tag della visibilità ha il seguente significato:</p>
+<ul>
+<li>se <strong>public</strong> significa che chiunque può vedere che sono figlio di quella classe, per cui chiunque può sostituirmi al posto di mio padre</li>
+<li>se <strong>protected</strong> significa che solo i miei figli sono al corrente che sono figlio di quella classe e quindi solo loro possono sostituirmi al posto di mio padre</li>
+<li>se <strong>private</strong> significa che nessuno può sostituirmi al posto di mio padre</li>
+</ul>
+<p>La classe figlio ha un puntatore al padre come campo privato, chiamato come la superclasse.</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">dog</span> <span class="token operator">:</span> <span class="token keyword">public</span> animal <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		<span class="token keyword">bool</span> has_pedigree<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">dog</span><span class="token punctuation">(</span><span class="token keyword">int</span> w<span class="token punctuation">,</span> <span class="token keyword">double</span> sp<span class="token punctuation">,</span> <span class="token keyword">bool</span> ped<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">animal</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> sp<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">has_pedigree</span><span class="token punctuation">(</span>ped<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		<span class="token comment">//in c++11 si può mettere "override" alla fine della firma per specificare che si tratta di override</span>
+		<span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> override <span class="token punctuation">{</span>
+			<span class="token comment">// weight += a.weight / 2;			//il weight di a non è accessibile perche è privato.</span>
+						<span class="token comment">//nota che si tratta di un attributo esterno e non è quello ereditato</span>
+			weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>		<span class="token comment">//modifica diretta</span>
+			<span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>	<span class="token comment">//modifica tramite il getter in scrittura</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Nota: diversamente da Java, se ricevi come parametro un oggetto dello stesso tipo della classe in cui stai lavorando non è comunque possibile accedere ai suoi campi privati, vanno usati i getter.</p>
+<p>Se si vuole permettere ai propri figli di sovrascrivere un metodo già sovrascritto va specificato ancora il <code>virtual</code></p>
+<h2 id="modi-di-istanziare-un-oggetto">Modi di istanziare un oggetto</h2>
+<p>Vediamo 3 modi per istanziare un oggetto</p>
+<ol>
+<li>tramite la keyword <code>new</code>, che ritorna un puntatore al nuovo oggetto che è stato creato nell’heap</li>
+<li>istanziamento direttamente nello stack</li>
+<li>istanziamento tramite <em>reference</em> di un altro oggetto</li>
+</ol>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">class</span> <span class="token class-name">animal</span><span class="token punctuation">{</span>
+<span class="token keyword">private</span><span class="token operator">:</span>
+	<span class="token keyword">int</span> weight<span class="token punctuation">;</span>
+	<span class="token keyword">int</span> speed<span class="token punctuation">;</span>
+<span class="token keyword">public</span><span class="token operator">:</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">weight</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>  <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	<span class="token function">animal</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token function">weight</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>weight<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">speed</span><span class="token punctuation">(</span>a<span class="token punctuation">.</span>speed<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+	
+	<span class="token keyword">const</span> <span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">int</span><span class="token operator">&amp;</span> <span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">return</span> weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">virtual</span> <span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span>weight<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">dog</span> <span class="token operator">:</span> <span class="token keyword">public</span> animal <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		<span class="token keyword">bool</span> has_pedigree<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">dog</span><span class="token punctuation">(</span><span class="token keyword">int</span> w<span class="token punctuation">,</span> <span class="token keyword">double</span> sp<span class="token punctuation">,</span> <span class="token keyword">bool</span> ped<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">animal</span><span class="token punctuation">(</span>w<span class="token punctuation">,</span> sp<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">has_pedigree</span><span class="token punctuation">(</span>ped<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		<span class="token keyword">void</span> <span class="token function">eat</span><span class="token punctuation">(</span><span class="token keyword">const</span> animal<span class="token operator">&amp;</span> a<span class="token punctuation">)</span> override <span class="token punctuation">{</span>
+			weight <span class="token operator">+</span><span class="token operator">=</span> a<span class="token punctuation">.</span><span class="token function">get_weight</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token number">2</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	animal<span class="token operator">*</span> a1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token function">animal</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">5.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//istanziamento nell'heap</span>
+	animal <span class="token function">a2</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>					<span class="token comment">//istanziamento nello stack</span>
+
+	animal <span class="token function">a3</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span>						<span class="token comment">//copy constructor</span>
+	animal a4<span class="token punctuation">;</span>							<span class="token comment">//default constructor</span>
+
+	dog <span class="token function">fido</span><span class="token punctuation">(</span><span class="token number">60</span><span class="token punctuation">,</span> <span class="token number">45.2</span><span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	animal <span class="token function">a5</span><span class="token punctuation">(</span>fido<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	a5<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//no dynamic dispatch, viene chiamato il metodo di animal</span>
+
+	animal<span class="token operator">&amp;</span> a6 <span class="token operator">=</span> fido<span class="token punctuation">;</span>					<span class="token comment">//instanziamento tramite reference</span>
+	a6<span class="token punctuation">.</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//si dynamic dispatch, viene chiamato il metodo di dog</span>
+
+	animal<span class="token operator">*</span> a7 <span class="token operator">=</span> <span class="token operator">&amp;</span>fido<span class="token punctuation">;</span>
+	a7<span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">eat</span><span class="token punctuation">(</span>a2<span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//si dynamic dispatch, viene chiamato il metodo di dog</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nota che il dynamic dispatch si ha solo con puntatori e reference, questo perche con l’istanziazione di <code>a5</code> vengono copiati i valori dei campi ma il suo tipo rimane sempre un animal, anche a <em>runtime</em>.</p>
+<p>Mentre con reference e puntatori il tipo dinamico a runtime cambia da quello statico e il dynamic dispatch funziona</p>
+<h2 id="template">Template</h2>
+<p>approfondimento: <a href="https://gabritorre.github.io/uni/year1/prog_lab/web_notes/Templates.html">template (corso PEL)</a></p>
+<p>I template sono la trasposizione dei tipi generici visti in Java.<br>
+Si possono applicare a classi, metodi, funzioni globali e typedef.</p>
+<p>Una particolarità dei template è che posticipano la compilazione del codice che usa i template fino a quando non verrà utilizzato tale codice passandogli il tipo reale.</p>
+<p>Ad esempio se definiamo una funzione che fa uso di template, tale funzione non verrà compilata fino a che non viene invocata da qualcuno che gli passerà il tipo da sostituire al tipo generico, a quel punto viene compilata con il tipo corretto.</p>
+<h2 id="override-degli-operatori">Override degli operatori</h2>
+<p>In C++ tutti gli operatori: <code>+ - * / &lt; &lt;= &gt; &gt;= != () =</code> ecc… eseguiti su oggetti non <em>built-in</em>, sono in realtà delle <strong>chiamate a funzioni</strong> e come tali si possono overridare.</p>
+<p>Vediamo un esempio:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">matrix</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		size_t cols<span class="token punctuation">;</span>
+		vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> v<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			cols <span class="token operator">=</span> m<span class="token punctuation">.</span>cols<span class="token punctuation">;</span>
+			v <span class="token operator">=</span> m<span class="token punctuation">.</span>v<span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+
+
+<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	matrix<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">m</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	matrix<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> <span class="token function">m2</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">,</span> <span class="token number">50</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	m <span class="token operator">=</span> m2<span class="token punctuation">;</span> 	<span class="token comment">// equivalente a: m.operator=(m2);</span>
+	m <span class="token operator">=</span> m2 <span class="token operator">=</span> m<span class="token punctuation">;</span> <span class="token comment">// equivalente a: m.operator=(m2.operator=(m));</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Per sovrascrivere un operatore bisogna ridefinire la funzione chiamata “operator” concatenato al simbolo dell’operatore, nel caso precedente <code>operator=</code></p>
+<p>Quando facciamo <code>m = m2</code> implicitamente stiamo invocando <code>m.operator=(m2)</code>, cioè una chiamata a funzione che prende in input il membro di destra dell’operatore di assegnamento.</p>
+<p>Nota che il tipo di ritorno è arbitrario, si potrebbe anche lasciare <code>void</code>, però restituire una reference dell’oggetto stesso ci permette di innestare le chiamate alla funzione, cioè rende possibile fare:</p>
+<pre class=" language-c"><code class="prism ++ language-c">m <span class="token operator">=</span> m2 <span class="token operator">=</span> m<span class="token punctuation">;</span> <span class="token comment">//equivalente a:	m.operator=(m2.operator=(m));</span>
+</code></pre>
+<p>funziona in quanto <code>m2.operator=(m)</code> ritorna un oggetto che viene usato a sua volta nella successiva chiamata alla funzione.</p>
+<h2 id="conversion-operator">Conversion operator</h2>
+<p>Se abbiamo una classe templetizzata, possiamo convertirci in base ad una struttura simile alla nostra tramite un costruttore particolare, oppure possiamo restituire una nostra versione convertita tramite un <em>conversion operator</em></p>
+<p>Prendiamo l’esempio della matrice poco sopra, possiamo creare una sorta di <em>copy constructor</em> che al posto di prendere esattamente una classe dello stesso nostro tipo ne prende una con  un parametro diverso:</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">matrix</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		size_t cols<span class="token punctuation">;</span>
+		vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> v<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			cols <span class="token operator">=</span> m<span class="token punctuation">.</span>cols<span class="token punctuation">;</span>
+			v <span class="token operator">=</span> m<span class="token punctuation">.</span>v<span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		size_t <span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span><span class="token keyword">return</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		size_t <span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+	
+		<span class="token comment">//la funzione seguente è un costruttore che costuisce la matrice di classe che ha tipo T partendo dalla matrice passata per input che ha tipo S</span>
+		<span class="token comment">// il corpo del metodo assume che il tipo T abbia un costruttore che converta partendo da un S.</span>
+		<span class="token comment">//Questo è possibile e non da errori in quanto non viene compilato</span>
+		<span class="token comment">//fino a che non viene chiamato questo costruttore,</span>
+		<span class="token comment">//sarà compito del chiamante assicurarsi che i tipi siano convertibili tra loro</span>
+		<span class="token keyword">template</span><span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">S</span><span class="token operator">&gt;</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>S<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span><span class="token operator">:</span> <span class="token function">cols</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span><span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> m<span class="token punctuation">.</span><span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span>  <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span>  v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				v<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span>  <span class="token function">T</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//chiamo il costruttore del tipo T, passandogli un S</span>
+			<span class="token punctuation">}</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+</code></pre>
+<p>Inoltre posso fare una funzione chiamata <em>conversion operator</em>, cioè una sorta di cast della nostra classe in qualche altro tipo.<br>
+Questo metodo non deve avere un tipo di ritorno e dopo la parola “operator” si mette il tipo in cui convertire</p>
+<pre class=" language-cpp"><code class="prism  language-cpp"><span class="token keyword">template</span> <span class="token operator">&lt;</span><span class="token keyword">class</span> <span class="token class-name">T</span><span class="token operator">&gt;</span>
+<span class="token keyword">class</span> <span class="token class-name">matrix</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span><span class="token operator">:</span>
+		size_t cols<span class="token punctuation">;</span>
+		vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> v<span class="token punctuation">;</span>
+	<span class="token keyword">public</span><span class="token operator">:</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+		<span class="token function">matrix</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token operator">:</span> <span class="token function">v</span><span class="token punctuation">(</span>m<span class="token punctuation">.</span>v<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+		matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> <span class="token keyword">operator</span><span class="token operator">=</span><span class="token punctuation">(</span><span class="token keyword">const</span> matrix<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token operator">&amp;</span> m<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			cols <span class="token operator">=</span> m<span class="token punctuation">.</span>cols<span class="token punctuation">;</span>
+			v <span class="token operator">=</span> m<span class="token punctuation">.</span>v<span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">*</span><span class="token keyword">this</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+
+		size_t <span class="token function">get_cols</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span><span class="token keyword">return</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		size_t <span class="token function">get_rows</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>v<span class="token punctuation">.</span><span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">/</span> cols<span class="token punctuation">;</span><span class="token punctuation">}</span>
+		
+		<span class="token comment">//restituisce una versione della nostra classe convertita in un altro tipo (un vector&lt;T&gt; in questo caso)</span>
+		<span class="token keyword">operator</span> <span class="token keyword">const</span> vector<span class="token operator">&lt;</span>T<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">const</span> <span class="token punctuation">{</span>
+			<span class="token keyword">return</span> v<span class="token punctuation">;</span>	<span class="token comment">//dato che la matrice viene implementata usando un vettore posso ritornarlo direttamente</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+</code></pre>
+<h2 id="iteratori">Iteratori</h2>
+<p>Gli iteratori in C++ sono dei particolari tipi di dato che sono definiti all’interno del tipo di dato più esterno.<br>
+Gli iteratori si utilizzano proprio come se fossero dei puntatori.<br>
+vediamo un esempio con la classe vector</p>
+<pre class=" language-c"><code class="prism ++ language-c"><span class="token keyword">void</span> <span class="token function">f</span><span class="token punctuation">(</span>vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span> v<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span>typename vector<span class="token operator">&lt;</span><span class="token keyword">int</span><span class="token operator">&gt;</span><span class="token punctuation">:</span><span class="token punctuation">:</span>iterator it <span class="token operator">=</span> v<span class="token punctuation">.</span><span class="token function">begin</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it <span class="token operator">!=</span> v<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> it<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		cout<span class="token operator">&lt;&lt;</span><span class="token operator">*</span>it<span class="token operator">&lt;&lt;</span>endl<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<ul>
+<li><code>typename vector&lt;int&gt;::iterator</code> rappresenta un tipo di dato
+<ul>
+<li><code>typename</code> è una keyword necessaria (fino a c++20) per dire al compilatore che la parte successiva è un tipo di dato</li>
+<li><code>vector&lt;int&gt;::iterator</code> la sintassi con i <code>::</code> viene utilizzata per accedere a dei tipi definiti all’interno di una classe, in questo caso il tipo <code>iterator</code> è definito dentro la classe <code>vector</code></li>
+</ul>
+</li>
+<li>Il vector avrà poi dei metodi per utilizzare l’iteratore, in particolare:
+<ul>
+<li><code>begin()</code> restituisce il primo elemento</li>
+<li><code>end()</code> restituisce l’elemento successivo all’ultimo</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

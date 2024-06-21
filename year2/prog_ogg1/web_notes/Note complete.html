@@ -1,0 +1,1414 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione">Introduzione</a>
+<ul>
+<li><a href="#la-programmazione-ad-oggetti">La programmazione ad oggetti</a></li>
+</ul>
+</li>
+<li><a href="#classi">Classi</a>
+<ul>
+<li><a href="#new">new</a></li>
+<li><a href="#costruttore">Costruttore</a></li>
+<li><a href="#static">Static</a></li>
+<li><a href="#aliasing">Aliasing</a></li>
+<li><a href="#this">This</a></li>
+<li><a href="#package">Package</a></li>
+</ul>
+</li>
+<li><a href="#incapsulamento">Incapsulamento</a>
+<ul>
+<li><a href="#getter-e-setter">Getter e setter</a></li>
+</ul>
+</li>
+<li><a href="#javadoc">Javadoc</a>
+<ul>
+<li><a href="#sintassi-di-javadoc">Sintassi di javadoc</a></li>
+</ul>
+</li>
+<li><a href="#ereditarietà">Ereditarietà</a>
+<ul>
+<li><a href="#esempio-1">Esempio</a></li>
+<li><a href="#visibilità">Visibilità</a></li>
+<li><a href="#super">super</a></li>
+<li><a href="#abstract">Abstract</a></li>
+<li><a href="#firma-e-definizione-dei-metodi">Firma e definizione dei metodi</a></li>
+<li><a href="#override-e-overload">override e overload</a></li>
+<li><a href="#final">Final</a></li>
+<li><a href="#combinazioni-dei-modificatori">Combinazioni dei modificatori</a></li>
+</ul>
+</li>
+<li><a href="#subtyping">Subtyping</a>
+<ul>
+<li><a href="#sostituzione-con-la-sottoclasse">Sostituzione con la sottoclasse</a></li>
+<li><a href="#polimorfimo">Polimorfimo</a></li>
+<li><a href="#tipi-dinamici">tipi dinamici</a></li>
+</ul>
+</li>
+<li><a href="#interfacce">Interfacce</a>
+<ul>
+<li></li>
+</ul>
+</li>
+<li><a href="#dispatch-delle-chiamate-dei-metodi">Dispatch delle chiamate dei metodi</a>
+<ul>
+<li></li>
+<li><a href="#funzionamento-di-java">Funzionamento di Java</a></li>
+<li><a href="#invocazione-di-metodi-statici">Invocazione di metodi statici</a></li>
+</ul>
+</li>
+<li><a href="#tipi-generici">Tipi generici</a>
+<ul>
+<li><a href="#invarianti">Invarianti</a></li>
+<li><a href="#metodi-con-tipi-generici">Metodi con tipi generici</a></li>
+</ul>
+</li>
+<li><a href="#object-e-tipi-nativi">Object e tipi nativi</a>
+<ul>
+<li><a href="#object">Object</a></li>
+<li><a href="#equals">Equals</a></li>
+<li><a href="#clone">Clone</a></li>
+<li><a href="#hashcode">hashCode</a></li>
+<li><a href="#tostring">toString</a></li>
+<li><a href="#collections">Collections</a></li>
+<li><a href="#stringhe">Stringhe</a></li>
+<li><a href="#tipi-primitivi">Tipi primitivi</a></li>
+<li><a href="#wrappers">Wrappers</a></li>
+</ul>
+</li>
+<li><a href="#exceptions">Exceptions</a>
+<ul>
+<li><a href="#override">Override</a></li>
+<li><a href="#eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</a></li>
+<li><a href="#catturare-eccezioni">Catturare eccezioni</a></li>
+<li><a href="#catene-di-eccezioni">Catene di eccezioni</a></li>
+<li><a href="#assertions">Assertions</a></li>
+</ul>
+</li>
+<li><a href="#annotazioni">Annotazioni</a>
+<ul>
+<li><a href="#creare-una-annotazione">Creare una annotazione</a></li>
+<li><a href="#target">Target</a></li>
+<li><a href="#retention">Retention</a></li>
+<li><a href="#junit">JUnit</a></li>
+<li><a href="#jaxb">JAXB</a></li>
+</ul>
+</li>
+<li><a href="#reflection">Reflection</a>
+<ul>
+<li><a href="#classi-1">Classi</a></li>
+<li><a href="#campi">Campi</a></li>
+<li><a href="#metodi">Metodi</a></li>
+<li><a href="#costruttori">Costruttori</a></li>
+<li><a href="#annotazioni-1">Annotazioni</a></li>
+<li><a href="#vantaggi-e-svantaggi-della-reflection">Vantaggi e svantaggi della reflection</a></li>
+</ul>
+</li>
+<li><a href="#library-management">Library management</a>
+<ul>
+<li><a href="#compatibilità-e-versioni">Compatibilità e versioni</a></li>
+<li><a href="#strumenti-di-automazione">Strumenti di automazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione">Introduzione</h1>
+<p>In questo corso approfondiremo il concetto di programmazione ad oggetti, cioè uno stile di programmazione differente da un linguaggio solo procedurale quale può essere C.</p>
+<p>Verrà usato il linguaggio <strong>Java</strong>, un linguaggio derivato da C ma orientato alla programmazione ad oggetti.</p>
+<p>È un linguaggio <strong>compilato ed interpretato</strong>: Il codice sorgente java viene compilato in <strong>bytecode</strong>, cioè un file contenente un simil-linguaggio macchina che termina con l’estensione .class, il quale viene interpretato da una macchina virtuale chiamata <em>Java Virtual Machine</em> (JVM). questo rende un programma scritto in java compatibile con più sistemi in quanto è l’installazione della JVM che cambia in base al sistema su cui viene eseguito il codice, allo stesso tempo, però, non risulta essere tanto efficiente quanto lo è C.</p>
+<p>Java non utilizza esplicitamente i puntatori e adotta un sistema chiamato <strong>garbage collection</strong> che si occupa in automatico di deallocare la memoria non più utilizzata.</p>
+<h2 id="la-programmazione-ad-oggetti">La programmazione ad oggetti</h2>
+<p>La programmazione ad oggetti permette di creare del codice più gerarchico, flessibile, più facilmente mantenibile ed espandibile, inoltre riduce molto codice duplicato.<br>
+Per grandi progetti è ideale adottare questo tipo di programmazione, ovviamente per piccoli progetti a sé stanti, programmare ad oggetti può generare del codice inutilmente prolisso.</p>
+<h1 id="classi">Classi</h1>
+<p>Posiamo definire una <strong>classe</strong> come un modello astratto che definisce le caratteristiche e le funzionalità che possiede un <strong>oggetto</strong></p>
+<p>un <strong>oggetto</strong> è un’istanza della classe, quindi una sorta di “variabile” che rispetta le caratteristiche definite dalla classe.</p>
+<ul>
+<li>Le caratteristiche definite nella classe prendono il nome di <strong>campi</strong> (o attributi) e sono effettivamente delle variabili (contenute però all’interno della memoria <strong>heap</strong>) di vario tipo che possiedono un significato specifico per quella classe. I tipi che può assumere un campo sono sia tipi primitivi oppure possono essere altre classi.<br>
+I campi possono essere <strong>final</strong>, che sta ad indicare che non è possibile cambiare i loro valore dopo che sono stati inizializzati (direttamente quando vengono dichiarati oppure dal costruttore)</li>
+<li>Le funzionalità sono delle <strong>funzioni o metodi</strong> quindi pezzi di codice che lavorano sui campi</li>
+</ul>
+<p>Un classico esempio è la classe <code>Automobile</code> che possiede delle caratteristiche come: marca, colore, targa, peso, capacità della benzina. E possiede delle funzionalità come accelerare frenare, fare rifornimento.<br>
+La classe quindi definisce come deve essere fatto l’oggetto automobile.<br>
+Gli oggetti effettivi istanziati saranno delle automobili con le proprie caratteristiche che rispettano quelle della classe.</p>
+<p>Per esempio definiamo la classe <code>Car</code> come segue in un apposito <strong>file</strong> che deve per forza essere nominato con <strong>lo stesso nome della classe</strong>(Car.java), questo va fatto quando la classe ha visibilità <code>public</code>:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+	<span class="token comment">// Campi</span>
+	<span class="token keyword">double</span> speed<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> fuel<span class="token punctuation">;</span>
+	string color<span class="token punctuation">;</span>
+	<span class="token comment">// Metodi</span>
+	<span class="token keyword">void</span> <span class="token function">refuel</span><span class="token punctuation">(</span><span class="token keyword">double</span> amount<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		fuel <span class="token operator">+=</span> amount<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">void</span> <span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		speed <span class="token operator">+=</span> a<span class="token punctuation">;</span>
+		fuel <span class="token operator">-=</span> a<span class="token operator">*</span>FUEL_CONS<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">void</span> <span class="token function">fullBreak</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	speed <span class="token operator">=</span> <span class="token number">0.0</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="new">new</h2>
+<p>L’istanziazione di una classe può avvenire un numero indefinito di volte e ogni oggetto è indipendente dagli altri.</p>
+<p>Creiamo una istanza della classe (quindi un oggetto) utilizzando la parola chiave <strong>new</strong></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>	<span class="token comment">//main del programma</span>
+	Car myCar1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	myCar1<span class="token punctuation">.</span>fuel <span class="token operator">=</span> <span class="token number">10.0</span><span class="token punctuation">;</span>	<span class="token comment">//accedo direttamente al campo dell'oggetto</span>
+	myCar<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//eseguo il metodo dell'oggetto</span>
+	Car myCar2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Questi due oggetti (<code>myCar1</code> e <code>myCar2</code>) provengono dalla stessa classe ma ognuno ha il proprio spazio di memora e quindi non si influenzano tra loro.</p>
+<p>Quello che fa nello specifico l’operatore new è:</p>
+<ol>
+<li>Allocare lo spazio necessario per l’oggetto nell’heap</li>
+<li>Inizializza i valori ai valori di default i campi dell’oggetto</li>
+<li>Chiama un eventuale costruttore</li>
+<li>Ritorna un puntatore all’oggetto nello stack (Java non mostra esplicitamente i puntatori)</li>
+</ol>
+<h2 id="costruttore">Costruttore</h2>
+<p>Il costruttore è un metodo speciale della classe che deve avere lo <strong>stesso nome della classe</strong>,<br>
+Tale metodo viene <strong>chiamato automaticamente</strong> quando viene istanziato un oggetto.<br>
+Il suo compito è quello di inizializzare i campi dell’oggetto con dei valori passati come parametro alla funzione (oppure con dei valori di default definiti a priori).</p>
+<p>Sempre nell’esempio della macchina un possibile costruttore potrebbe essere:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>
+	<span class="token comment">// Campi</span>
+	<span class="token keyword">double</span> speed<span class="token punctuation">;</span>
+	<span class="token keyword">double</span> fuel<span class="token punctuation">;</span>
+	String color<span class="token punctuation">;</span>
+	
+	<span class="token comment">//costruttore</span>
+	<span class="token function">Car</span><span class="token punctuation">(</span><span class="token keyword">double</span> s<span class="token punctuation">,</span> <span class="token keyword">double</span> f<span class="token punctuation">,</span> String c<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		speed <span class="token operator">=</span> s<span class="token punctuation">;</span>
+		fuel <span class="token operator">=</span> f<span class="token punctuation">;</span>
+		color <span class="token operator">=</span> c<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token comment">// Metodi</span>
+	<span class="token comment">//...</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span><span class="token punctuation">{</span>
+	Car myCar <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0.0</span><span class="token punctuation">,</span> <span class="token number">100.0</span><span class="token punctuation">,</span> <span class="token string">"red"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//utilizzo il costruttore per istanziare l'oggetto</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>È possibile avere anche più costruttori (che si differenziano dal tipo, l’ordine e la quantità dei parametri) e se non se ne scrive nemmeno uno entra in gioco il <strong>costruttore di default</strong> che inizializza i campi ai loro valori standard in base ai loro tipi.</p>
+<h2 id="static">Static</h2>
+<p>Static è una keyword la quale indica che un campo oppure un metodo sono associati direttamente alla classe.</p>
+<p>Sia i campi che le funzioni possono essere <strong>static</strong> cioè ci si può riferire a loro anche direttamente attraverso la classe senza bisogno di avere un oggetto istanziato.</p>
+<ul>
+<li>Per quanto riguarda un <strong>campo static</strong> è importante ricordare che quel campo sarà condiviso tra tutti gli oggetti e quindi non ne viene creata una copia per ogni oggetto.</li>
+<li>Per quanto riguarda in <strong>metodi static</strong> è importante ricordare che possono accedere direttamente solo ai campi e altri metodi della classe che sono anch’essi <strong>static</strong>.</li>
+</ul>
+<h2 id="aliasing">Aliasing</h2>
+<p>Seppur non esplicitamente, java fa uso di puntatori, ad esempio per array e per gli oggetti.</p>
+<p>Il fenomeno dell’<strong>aliasing</strong> accade quando si hanno più variabili fanno riferimento ad una stessa zona di memoria.<br>
+Questo porta al problema che se si modifica i dati all’interno di quella zona di memoria utilizzando una variabile implicitamente anche l’altra si aggiornerà, e questo potrebbe essere un comportamento non atteso dal programmatore.</p>
+<p>Ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span>  <span class="token keyword">static</span>  <span class="token keyword">void</span>  <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array1 <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> array2 <span class="token operator">=</span> array1<span class="token punctuation">;</span> <span class="token comment">// array2 fa riferimento allo stesso array di array1</span>
+	<span class="token comment">// Modificando array2, si modifica anche array1</span>
+	array2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span><span class="token punctuation">;</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"array1[0]: "</span> <span class="token operator">+</span> array1<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Stampa 100</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"array2[0]: "</span> <span class="token operator">+</span> array2<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Stampa 100</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="this">This</h2>
+<p><strong>this</strong> è una keyword che serve a riferirsi all’oggetto corrente (quindi è un puntatore) che viene utilizzata all’interno dei metodi della classe.</p>
+<p>Serve per accedere esplicitamente ai campi o metodi della proprio oggetto, oppure può essere utilizzato per passare per reference il nostro oggetto come parametro ad un altro metodo</p>
+<h2 id="package">Package</h2>
+<p>In java è possibile organizzare delle classi all’interno di un package, che si può, poi, importare in altri codici.</p>
+<p>Aiutano ad organizzare meglio il codice ma hanno anche l’importante funzionalità di essere dei <em>namespace</em>, quindi classi con lo stesso nome ma che risiedono in package differenti non creano conflitti.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// Definizione di un package</span>
+<span class="token keyword">package</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">;</span>
+
+<span class="token comment">// Definizione di una classe all'interno del package</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Campi e metodi della classe</span>
+<span class="token punctuation">}</span>
+<span class="token comment">// Definizione di un'altra classe all'interno del package</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse2</span> <span class="token punctuation">{</span>
+    <span class="token comment">// Campi e metodi della classe</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>È quindi possibile importare delle classi specifiche all’interno di un package (oppure importare tutto il package)</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">import</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">.</span>MiaClasse<span class="token punctuation">;</span>	<span class="token comment">//importo la singola classe</span>
+<span class="token keyword">import</span> com<span class="token punctuation">.</span>example<span class="token punctuation">.</span>mio_package<span class="token punctuation">.</span>*<span class="token punctuation">;</span>	<span class="token comment">//importo tutte le classi del package</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">AltraClasse</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	    <span class="token comment">// ...</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Importante: il nome del package deve corrispondere alla gerarchia di sotto cartelle con lo stesso nome. Quindi:</p>
+<p>le classi appartenenti al package <code>com.example.mio_package</code> devono risiedere nella cartella al percorso “com/example/mio_package”</p>
+<h1 id="incapsulamento">Incapsulamento</h1>
+<p>L’incapsulamento è un concetto fondamentale nella programmazione ad oggetti, esso infatti dice che i <strong>l’implementazione degli oggetti</strong> deve essere <strong>nascosta</strong> e non direttamente <strong>accessibili</strong>, ma solo <strong>attraverso</strong> delle <strong>interfacce pubbliche</strong>.</p>
+<p>Gli scopi dell’incapsulamento sono:</p>
+<ul>
+<li>Garantire la <strong>consistenza dei dati</strong> effettuando dei controlli prima di operare su un campo della classe.</li>
+<li>Rendere la <strong>documentazione più semplice</strong></li>
+<li>Rendere più semplice lavorare con la classe non interessandoci a come è composta nei dettagli ma piuttosto ad utilizzare dei metodi che svolgono le azioni per noi (con i dovuti controlli)</li>
+</ul>
+<p>Per questo in Java vengono introdotti dei <strong>modificatori di accesso</strong> associabili ai campi e ai metodi:</p>
+<ul>
+<li><strong>public</strong>: il metodo/campo è accessibile <strong>ovunque</strong><br>
+generalmente va messo come public le funzionalità più esterne della classe, che chiunque può utilizzare</li>
+<li><strong>protected</strong>: il metodo/campo è accessibile: nella <strong>classe stessa</strong>, nello <strong>stesso package</strong>, nelle <strong>sottoclassi</strong></li>
+<li><strong>default</strong>: il metodo/campo è accessibile: nella <strong>classe stessa</strong> e nello <strong>stesso package</strong><br>
+come protected e default va messo ciò che l’intero pacchetto software deve utilizzare</li>
+<li><strong>private</strong>: il metodo/campo è accessibile solo nella <strong>classe stessa</strong><br>
+come private vanno messi i dettagli implementativi</li>
+</ul>
+<p>È importante notare una parte importante dell’incapsulamento che è <strong>l’information hiding</strong>, il quale dice che generalmente è meglio minimizzare ciò che è accessibile all’esterno, lasciando accessibili solo dei metodi controllati, questo per rendere il codice più sicuro e consistente.</p>
+<h2 id="getter-e-setter">Getter e setter</h2>
+<p>Un prima implementazione dell’incapsulamento viene fatta attraverso i <strong>getter e setter</strong>;</p>
+<p>I <strong>getter</strong> sono dei metodi che permettono di ottenere in modalità di sola lettura il contenuto di un campo della classe, spesso è un semplice return del campo ma può essere anche un valore calcolato dallo stato dell’oggetto.</p>
+<p>I <strong>setter</strong> d’altra parte sono dei metodi che permettono di modificare dei campi della classe, il vantaggio è che prima di aggiornare il campo viene fatto un controllo che il nuovo valore rispetti i vincoli del campo.</p>
+<h1 id="javadoc">Javadoc</h1>
+<p>Quando si distribuisce il proprio codice per essere usato in altri progetti le parti del codice che vengono utilizzate sono le interfacce pubbliche. È molto importante quindi documentare i propri metodi spiegando il loro scopo, cosa prendono in input e cosa restituiscono in output, senza andare nei dettagli di implementazione.</p>
+<p>Javadoc è un’applicazione integrata in Java che permette di generare una documentazione delle proprie interfacce utilizzando i commenti.</p>
+<h2 id="sintassi-di-javadoc">Sintassi di javadoc</h2>
+<p>la seguente sintassi serve per un commento multilinee che javadoc interpreta come documentazione</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+...
+*/</span>
+</code></pre>
+<p>javadoc supporta vari tag che vengono rappresentati in modo particolare nella documentazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+* @author author's name		//nome di chi ha sviluppato il componente
+* @version 1.5		// versione della classe corrente
+* @since 1.0		// da quale versione il metodo/classe è presente
+*/</span>
+</code></pre>
+<p>in particolare i tag per documentare un metodo sono:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+...
+descrizione del metodo..
+...
+@param &lt;parameter name&gt; &lt;description&gt;
+@return &lt;description&gt;
+@throws &lt;exception name&gt; &lt;description&gt;
+*/</span>
+<span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">mioMetodo</span><span class="token punctuation">(</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">{</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">}</span>
+</code></pre>
+<h3 id="precondizioni">Precondizioni</h3>
+<p>Le precondizioni sono ciò che il chiamante deve garantire prima di chiamare il metodo</p>
+<p>è importante esprime oltre che il significato dei singoli parametri, anche i vincoli che devono rispettare al fine di avere l’output voluto. ad esempio un parametro deve essere maggiore di zero, ovviamente dentro al metodo verrà fatto l’effettivo controllo ma scriverlo nella documentazione è comunque importante.</p>
+<h3 id="postcondizioni">Postcondizioni</h3>
+<p>le postcondizioni sono ciò che il codice deve garantire dopo essere stato chiamato.</p>
+<p>lo stesso discorso fatto per le precondizione vale per le postcondizione riguardo al valore di ritorno</p>
+<h3 id="invariante-della-classe">invariante della classe</h3>
+<p>Le invarianti rappresentano delle condizioni che devono essere rispettate per tutta la vita di un oggetto della classe.<br>
+L’invariante è riferita all’intera classe e non ad un singolo metodo, spesso è rivolta anche ai campi.<br>
+Ad esempio: un determinato campo deve sempre essere compreso tra 0 e 100, nessun metodo deve infrangere questa regola.</p>
+<h3 id="esempio">Esempio</h3>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">/**
+ * Questa classe contiene una funzione per calcolare la somma di due interi.
+ */</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">SommaIntero</span> <span class="token punctuation">{</span>
+
+    <span class="token comment">/**
+     * Questo metodo restituisce la somma di due numeri interi.
+     *
+     * @param a il primo intero
+     * @param b il secondo intero
+     * @return la somma di a e b
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">calcolaSomma</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">int</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">/**
+     * Metodo principale per eseguire il programma.
+     *
+     * @param args gli argomenti della riga di comando
+     */</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> primoNumero <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> secondoNumero <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> risultato <span class="token operator">=</span> <span class="token function">calcolaSomma</span><span class="token punctuation">(</span>primoNumero<span class="token punctuation">,</span> secondoNumero<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"La somma di "</span> <span class="token operator">+</span> primoNumero <span class="token operator">+</span> <span class="token string">" e "</span> <span class="token operator">+</span> secondoNumero <span class="token operator">+</span> <span class="token string">" è: "</span> <span class="token operator">+</span> risultato<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>per generare la documentazione è sufficiente eseguire il seguente comando:</p>
+<pre><code>javadoc -d docs SommaIntero.java
+</code></pre>
+<p>verrà generata una pagina di questo tipo</p>
+<p><img src="https://i.ibb.co/wN6V7x9/index.png" alt="enter image description here"></p>
+<p>Cliccando sulla classe “SommaIntero” andremo nella seguente pagina</p>
+<p><img src="https://i.ibb.co/rQTCWYq/class.png" alt="enter image description here"></p>
+<h1 id="ereditarietà">Ereditarietà</h1>
+<p>L’ereditarietà è una tecnica che permette di creare delle gerarchie tra le classi, portando il vantaggio di avere un codice più organizzato e meno ripetuto.</p>
+<p>Abbiamo quindi una classe figlio e una classe padre (o <strong>superclasse</strong>). La classe figlio <strong>eredita</strong> dal padre i <strong>metodi e i campi</strong> (che non sono privati). La classe figlio può estendere (aggiungendo altri metodi) oppure specializzare (sovrascrivendo i metodi del padre) il comportamento del padre.</p>
+<h2 id="esempio-1">Esempio</h2>
+<p>Un padre può avere più classi figlie. Possiamo rappresentare la gerarchia graficamente come:</p>
+<p><img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
+<p>Le classe figlie idealmente diventano più grandi e complesse perché avranno man mano più codice, comprendendo il codice dei padri e il suo stesso codice aggiuntivo.</p>
+<p>Mentre un figlio può avere un <strong>singolo padre</strong></p>
+<p>In codice possiamo esprimere questa ereditarietà tramite la <em>keyword</em> <code>extends</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Automobile</span> <span class="token keyword">extends</span> <span class="token class-name">Veicoli4ruote</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="visibilità">Visibilità</h2>
+<p>I figli possono vedere campi e metodi del padre solo se:</p>
+<ul>
+<li>i metodi/campi del padre sono pubblici o protected</li>
+<li>i metodi/campi del padre sono default e il figlio è nello stesso package</li>
+</ul>
+<p>Se un metodo/campo è protected la classe di un altro package può accedere quei membri solo se diventa una sottoclasse</p>
+<p>Nel caso i <strong>metodi/campi</strong> siano <strong>privati</strong> allora il <strong>figlio non può vederli</strong></p>
+<h2 id="super">super</h2>
+<p>la <em>keyword</em> <code>super</code> serve per riferirsi a metodi oppure campi della superclasse.</p>
+<p>Abbiamo due utilizzi principali di <code>super</code></p>
+<ol>
+<li>
+<p>chiamare il costruttore del padre all’interno del costruttore del figlio.</p>
+<p>È molto probabile che quando si chiama il costruttore di una classe figlia si voglia inizializzare anche i campi derivati dal padre tramite il suo costruttore, è possibile fare ciò chiamando <code>super()</code> all’interno del costruttore figlio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Parent</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// Operazioni di inizializzazione della classe genitore</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Child</span> <span class="token keyword">extends</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token function">Child</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Chiamata al costruttore della classe genitore</span>
+        <span class="token comment">// Altre operazioni specifiche della classe figlia</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+</li>
+<li>
+<p>Accedere ai membri della classe padre</p>
+<p>È possibile riferirsi ai metodi e ai campi della superclasse tramite <code>super.&lt;nome_metodo&gt;()</code> oppure <code>super.&lt;nome_campo&gt;</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> a<span class="token punctuation">;</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe genitore"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Child</span> <span class="token keyword">extends</span> <span class="token class-name">Parent</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">print</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Chiamata al metodo della classe genitore</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Metodo della classe figlia"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">super</span><span class="token punctuation">.</span>a <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>	<span class="token comment">//riferiemnto al campo del padre</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+</li>
+</ol>
+<h2 id="abstract">Abstract</h2>
+<p><code>abstract</code> è una keyword che si applica ai metodi e alle classi.</p>
+<h3 id="metodi-abstract">metodi abstract</h3>
+<p>Quando un metodo è abstract si sta dicendo che quel metodo è presente nella classe ma non è implementato (c’è solo la firma), sarà compito di chi eredita la classe di implementarlo.<br>
+Un metodo astratto può essere presente solo in una classe che è anch’essa astratta.</p>
+<h3 id="classe-abstract">classe abstract</h3>
+<p>Una classe astratta è una classe che ha solo parte dei suoi metodi implementati.<br>
+Una classe astratta non può essere istanziata, può essere solo ereditata</p>
+<p>Una classe che eredita una classe astratta deve implementare tutti i metodi <code>abstract</code> per essere istanziata, altrimenti deve essere astratta anche lei.</p>
+<h2 id="firma-e-definizione-dei-metodi">Firma e definizione dei metodi</h2>
+<p>Prima di spiegare i concetti di overriding e overloading bisogna chiarire i concetti di <strong>firma e definizione</strong> di un metodo</p>
+<p>Con <strong>firma</strong> si intende tutto quello che è disponibile in fase di chiamata del metodo:</p>
+<ul>
+<li>Nome del metodo</li>
+<li>L’oggetto su cui è chiamato</li>
+<li>il tipo, il numero e l’ordine dei parametri</li>
+</ul>
+<p>Mentre con <strong>definizione</strong> si intende tutto quello che è disponibile quando si crea il metodo:</p>
+<ul>
+<li>Comprende tutto quello che ha la firma</li>
+<li>Tipo di ritorno</li>
+<li>Eccezioni che può lanciare</li>
+<li>La visibilità</li>
+<li>Altri modificatori (static, abstract, final…)</li>
+</ul>
+<h2 id="override-e-overload">override e overload</h2>
+<p><strong>override e overload</strong> sono due modi diversi di ridefinire il comportamento di un metodo già esistente.</p>
+<ul>
+<li>nel caso di override la firma del metodo rimane la stessa, cambia solo il corpo del metodo</li>
+<li>nel caso di overload cambia anche la firma (il nome del metodo deve rimanere lo stesso, cambiano l’ordine o il numero o il tipo dei parametri)</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Messaggio: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">OverrideClass</span> <span class="token keyword">extends</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token annotation punctuation">@Override</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Messaggio sovrascritto: "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">class</span> <span class="token class-name">OverloadClass</span> <span class="token keyword">extends</span> <span class="token class-name">BaseClass</span> <span class="token punctuation">{</span>
+    <span class="token keyword">void</span> <span class="token function">printMessage</span><span class="token punctuation">(</span>String message<span class="token punctuation">,</span> String prefix<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>prefix <span class="token operator">+</span> <span class="token string">": "</span> <span class="token operator">+</span> message<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+</code></pre>
+<p>Nota che <code>@Override</code> è una indicazione  per il compilatore (chiamata annotazione in Java, che vedremo più avanti) in cui si vuole esplicitare che si sta facendo override di un metodo.<br>
+L’utilità sta nel fatto che se a causa di un typo si sbagliasse a scrivere il nome del metodo il compilatore si accorgerebbe che non stai facendo l’override di un metodo ma stai definendo un nuovo metodo e ti verrebbe segnalato.</p>
+<h3 id="visibilità-in-caso-di-override">Visibilità in caso di override</h3>
+<p>Quando si vuole fare override di un metodo si deve usare una visibilità <strong>uguale o meno restrittiva</strong> ad esempio:</p>
+<ul>
+<li>Se si vuole sovrascrivere un metodo pubblico siamo obbligati a tenerlo pubblico.</li>
+<li>Se il vuole sovrascrivere un metodo con visibilità default possiamo tenerlo a default oppure cambiarlo a protected oppure public, ma <strong>non private</strong></li>
+</ul>
+<h2 id="final">Final</h2>
+<p>Il modificatore <code>final</code> associato ad un <strong>metodo</strong> impedisce a quel metodo di essere sovrascritto dalle classi figlie.</p>
+<p>Anche i <strong>campi</strong> possono essere <strong>final</strong>, e in questo caso sta a significare che non è possibile cambiare i loro valore dopo essere stati inizializzati (possono essere inizializzati o direttamente quando vengono dichiarati all’interno della classe oppure dal costruttore)</p>
+<p>Costruttori e metodi astratti <strong>non possono essere final</strong></p>
+<p>Una <strong>classe final</strong> sta a significare che nessuna classe può estendere quella classe. Riprendendo la rappresentazione grafica di prima:<br>
+<img src="https://i.ibb.co/7G8cLfX/ereditariet.png" alt="enter image description here"></p>
+<p>una classe final rappresenta una foglia dell’albero.<br>
+Se si vuole impedire che modificare tutti i metodi della classe di solito non è una buona pratica mettere la classe come final in quanto è meglio mettere tutti i metodi della classe come final cosicché un’altra classe possa comunque aggiungere i suoi metodi.</p>
+<h2 id="combinazioni-dei-modificatori">Combinazioni dei modificatori</h2>
+<p>Vediamo come si possono associare i vari modificatori:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">Classe</th>
+<th align="center">Campo</th>
+<th align="center">Metodo</th>
+<th align="center">Static</th>
+<th align="center">Final</th>
+<th align="center">Abstract</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>public</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>protected</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>default</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>private</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Static</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Final</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">✅</td>
+<td align="center">❗</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Abstract</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">✅</td>
+<td align="center">❌</td>
+<td align="center">❌</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table><p>nelle spiegazioni ci saranno dei riferimenti alle classi “esterne” che vedremo nel modulo 2. Per il momento possiamo ignorare e pensare alle classi in generale.</p>
+<ul>
+<li><strong>classe protected</strong>: mettere una classe “esterna” come protected non avrebbe molto senso in quanto se tutti possono ereditarla tanto vale metterla pubblica, mentre se nessuno può ereditarla al di fuori del package tanto vale mettere la visibilità di default. Con protected non possiamo decidere a chi è permesso utilizzare la nostra classe.</li>
+<li><strong>classe privata</strong>: con una classe “esterna” privata non sarebbe possibile fare nessuna operazione, la classe sarebbe accessibile solo da se stessa.</li>
+<li><strong>Classe statica</strong>: una classe “esterna” non può essere statica.</li>
+<li><strong>Campo abstract</strong>: Il tipo di dato del campo già definisce il suo comportamento, di conseguenza non avrebbe senso utilizzare abstract.</li>
+<li><strong>metodo statico e abstract</strong>: un metodo statico è legato alla classe e non viene ereditato, ciò va in contro senso con abstract che richiede l’ereditarietà per implementare il metodo</li>
+<li><strong>Metodo final e abstract</strong>: un metodo final non si può sovrascrivere mentre abstract richiede che sia implementato da una sottoclasse tramite override, controsenso.</li>
+<li><strong>Metodo static e final</strong>: compila con un warning: in questo caso mettere sia static che final è una ripetizione: final dice che non può essere sovrascritto e static impedisce che sia ereditato, quindi basta solo uno dei due.</li>
+</ul>
+<h1 id="subtyping">Subtyping</h1>
+<p>Java è un linguaggio fortemente tipizzato, ciò significa che ogni cosa in memoria deve possedere un tipo: variabili, parametri, campi, tipi di ritorno,…</p>
+<p>Il tipi vengono saputi in fase di compilazione e durante l’esecuzione il tipo di una zona di memoria no può cambiare.<br>
+In fase di compilazione oltre a controllare i tipi dichiarati vengono anche controllati i tipi di dato dedotti, ad esempio fare <code>2 + "ciao"</code>, il compilatore si accorge dell’errore</p>
+<h2 id="sostituzione-con-la-sottoclasse">Sostituzione con la sottoclasse</h2>
+<p>Una istanza di una superclasse può essere sostituita da una istanza di una sua sottoclasse, questo perché una sottoclasse sarà sempre una versione più grande della superclasse (ha tutto quello che ha la superclasse e in più ha altro).<br>
+Si dice che la classe che estende una superclasse è un un <strong>subtype</strong> (sottotipo) della superclasse</p>
+<p>Consideriamo il seguente esempio:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Car</span> <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Truck</span> <span class="token keyword">extends</span> <span class="token class-name">Car</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token keyword">class</span> <span class="token class-name">Bicycle</span> <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">,</span> <span class="token keyword">double</span> length<span class="token punctuation">)</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+
+Car c1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+c2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Truck t <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Bicycle b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> c2<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> t<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span> b<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c1<span class="token punctuation">,</span> b<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Abbiamo una superclasse <code>Vehicle</code> le cui classi estese sono <code>Car</code> e <code>Bycycle</code>, poi abbiamo <code>Truck</code> che estende <code>Car</code> quindi è comunque imparentata con <code>Vehicle</code>.</p>
+<p>Nonostante il metodo <code>race</code> accetti come parametri dei tipi <code>Vehicle</code> posso comunque chiamare il metodo passando come parametri dei sottotipi di <code>Vehicle</code> senza problemi.</p>
+<p>Ovviamente è necessario che all’interno dell’implementazione del metodo <code>race</code> si utilizzino campi e metodi della classe <code>Vehicle</code> in modo che sicuramente tutte le sottoclassi abbiano l’implementazione di quei metodi.</p>
+<h2 id="polimorfimo">Polimorfimo</h2>
+<p>Il concetto di polimorfismo significa definire lo stesso simbolo, ad esempio un metodo, che si comporta in maniera diversa in base all’oggetto su cui è chiamato.</p>
+<p>Ma possiamo anche immaginarlo come la stessa classe che si può comportare in maniera diversa, come il caso del metodo <code>race</code> che come parametro prende la classe <code>Vehicle</code> la quale però può variare il proprio comportamento in base a quale sottoclasse gli viene passata (sia una bicicletta che una automobile possono accelerare ma lo fanno in maniera diversa).</p>
+<p>Il polimorfismo è realizzato attraverso l’ereditarietà e il subtyping.</p>
+<h2 id="tipi-dinamici">tipi dinamici</h2>
+<p>In Java abbiamo dei tipi statici e dinamici:</p>
+<ul>
+<li>i tipi statici vengono determinati in tempo di compilazione</li>
+<li>i tipi dinamici vengono determinati in <em>runtime</em></li>
+</ul>
+<p>Stiamo utilizzando i tipi dinamici quando ad un oggetto che ha il tipo di una superclasse istanziamo una sua sottoclasse, ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p><code>Vehicle</code> è il tipo statico mentre <code>Car</code> è il tipo dinamico, questo perché noi inizialmente adiamo a dichiarare il tipo della variabile <code>v</code> che è <code>Vehicle</code> il quale è statico (in fase di compilazione si sa quale tipo deve avere <code>v</code>) per quanto riguarda il tipo dinamico il compilatore  potrebbe non riuscire a determinare quale sarà il sottotipo assegnato alla variabile, che sarà quindi determinato in fase di esecuzione.<br>
+Un esempio che mostra questa differenza più chiaramente è il seguente</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> null<span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&gt;</span> <span class="token number">0.5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//in fase di compilazione non sappiamo in quale ramo andare</span>
+	v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">else</span> <span class="token punctuation">{</span>
+	v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">//sia Car che Bicycle sono sottotipi della classe Vehicle quindi il codice compila.</span>
+</code></pre>
+<p><strong>Il tipo dinamico deve essere una sottoclasse del tipo statico</strong> altrimenti il codice non compila</p>
+<h3 id="type-casting">Type casting</h3>
+<p>È possibile anche castare un oggetto in un suo sottotipo:</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car a <span class="token operator">=</span> <span class="token punctuation">(</span>Car<span class="token punctuation">)</span> v<span class="token punctuation">;</span>
+</code></pre>
+<p>è possibile fare il casting solo verso un tipo che è sottoclasse dell’oggetto da castare, nell’esempio <code>Car</code> è sottoclasse di <code>Vehicle</code> e quindi il casting è permesso.</p>
+<h3 id="instanceof">instanceof</h3>
+<p>Per determinare il tipo dinamico di un oggetto si usa la keyword <code>instanceof</code></p>
+<p><code>&lt;oggetto&gt; instanceof &lt;TipoDesiderato&gt;</code></p>
+<p>che restituisce <code>true</code> oppure <code>false</code></p>
+<p>Torna molto utile di utilizzare <code>instanceof</code> prima di fare il casting del tipo, per essere sicuri che il casting non dia errore in <em>runtime</em></p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle v <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">if</span> <span class="token punctuation">(</span>v <span class="token keyword">instanceof</span> <span class="token class-name">Car</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+	Car a <span class="token operator">=</span> <span class="token punctuation">(</span>Car<span class="token punctuation">)</span> v<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h1 id="interfacce">Interfacce</h1>
+<p>Un limite di Java è che una classe può <strong>estendere una sola classe</strong>, ci potrebbero essere dei casi in cui ad una classe vorremmo estendere più classi perché ci interessano i metodi di più classi.<br>
+Per fare ciò entrano in gioco le <strong>interfacce</strong>.</p>
+<p>Una interfaccia non è altro che un insieme di firme di metodi (o se vogliamo dei metodi astratti, ma senza specificarlo con la keyword <code>abstract</code>)</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>È possibile aggiungere anche dei campi ma essi saranno implicitamente statici, pubblici e final, quindi possiamo solo usare delle costanti pubbliche comuni ad ogni istanza, ciò non è molto utile nella maggior parte dei casi.</p>
+<p>Inoltre la <strong>visibilità dei metodi</strong> dell’interfaccia è <strong>implicitamente <em>public</em></strong></p>
+<p>Una classe può quindi <strong>implementare</strong> una interfaccia andando a specificare il corpo di ogni metodo.<br>
+è obbligatorio <strong>implementare tutti i metodi dell’interfaccia</strong></p>
+<p>Una classe può implementare più di una interfaccia.</p>
+<p>Si usa la <em>keyword</em> <code>implements</code> per estendere l’interfaccia</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">class</span> <span class="token class-name">A</span> <span class="token keyword">extends</span> <span class="token class-name">B</span> <span class="token keyword">implements</span> <span class="token class-name">i1</span><span class="token punctuation">,</span> i2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">{</span>
+	<span class="token comment">//implementazione di tutti i metodi dell'interfacca i1 e i2</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="implementazione-di-default">Implementazione di default</h3>
+<p>Da java 8 in poi è anche possibile fornire una implementazione di default ai metodi dell’interfaccia, utilizzando la <em>keyword</em> <code>default</code> nella intestazione del metodo</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
+	<span class="token keyword">default</span> <span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">int</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h3 id="estendere-interfacce">Estendere interfacce</h3>
+<p>Anche con le interfacce è possibile avere l’ereditarietà, è infatti possibile estendere un’interfaccia con un’altra, esattamente come si fa per le classi.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">interface</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> <span class="token function">method1</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">,</span> <span class="token keyword">double</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">interface</span> <span class="token class-name">f</span> <span class="token keyword">extends</span> <span class="token class-name">i</span> <span class="token punctuation">{</span>
+	<span class="token keyword">int</span> <span class="token function">method2</span><span class="token punctuation">(</span><span class="token keyword">int</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso una classe che implementerà l’interfaccia <code>f</code> avrà sia i suoi metodi che quelli dell’interfaccia <code>i</code></p>
+<h1 id="dispatch-delle-chiamate-dei-metodi">Dispatch delle chiamate dei metodi</h1>
+<p>Vediamo come Java gestisce le chiamate dei metodi quando abbiamo delle sottoclassi e quando si presentano casi di override e overload</p>
+<p>Ricordiamo che il modo per chiamare un metodo di un oggetto è:</p>
+<p><code>&lt;ricevitore&gt;.&lt;nome del metodo&gt;(&lt;parametri&gt;)</code></p>
+<p>Quando facciamo <em>override</em> dei metodi stiamo andando a ridefinire una funzione esistente nascondendo la versione che aveva il padre (all’interno della funzione sovrascritta è comunque possibile usare <code>super</code> per eseguire il codice del metodo padre così da non duplicare codice).<br>
+Quando andiamo a chiamare un metodo di una classe viene chiamata la <strong>versione del metodo più specifica</strong>, la versione più specifica è quella del <strong>tipo dinamico</strong>. Se nel tipo dinamico non è stato fatto l’override del metodo allora si cercherà nelle superclassi una dopo l’altra (risalendo quindi l’albero della gerarchia) fino al raggiungimento della definizione del metodo.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">,</span> <span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	v1<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	v2<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso sappiamo che il tipo statico è <code>Vehicle</code> ma il tipo dinamico è deciso in <em>runtime</em> quindi non sappiamo quale metodo <code>accelerate</code> verrà chiamato.</p>
+<p>Se chiamassimo il metodo come segue:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>in questo caso allora</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">,</span> <span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	v1<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//metodo della classe Car</span>
+	v2<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//metodo della classe Truck</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se per esempio la classe <code>Truck</code> non ha ridefinito il metodo <code>accelerate()</code> verrà usato quello della sua superclasse.</p>
+<p>Quando invece abbiamo un <em>overload</em> dei metodi e quindi più metodi con lo stesso nome ma parametri diversi, i linguaggi possono implementare due tipi di risoluzione: dispatch statico e dinamico.</p>
+<h3 id="il-dispatch-statico">il dispatch statico</h3>
+<p>viene chiamata la versione più vicina a quelli che sono i tipi statici, ad esempio immaginiamo di avere i seguenti metodi:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 1</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Car v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 2</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 3</span>
+</code></pre>
+<p>Vediamo le chiamate quale metodo usano in base ai tipi dei parametri:</p>
+<pre class=" language-java"><code class="prism  language-java">Vehicle a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Vehicle b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 1, in quanto a e b hanno tipo statico Vehicle</span>
+Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">race</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> d<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 2, in quanto c e d hanno tipo statico Car</span>
+</code></pre>
+<p>Con il dispatch statico abbiamo un <strong>basso overhead</strong> ma viene <strong>ridotto il concetto di polimorfismo</strong></p>
+<h3 id="il-dispatch-dinamico">il dispatch dinamico</h3>
+<p>viene chiamata la versione più vicina a quelli che sono i tipi dinamici, ad esempio sempre con i soliti metodi:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 1</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Car v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 2</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// metodo 3</span>
+</code></pre>
+<p>Vediamo le chiamate quale metodo usano in base ai tipi dei parametri:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 2</span>
+<span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 1</span>
+<span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Bicyble</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 3</span>
+<span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Bicyble</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// viene chiamato il metodo 1</span>
+</code></pre>
+<p>In questo caso abbiamo un <strong>grande overhead</strong> e oltretutto potrebbero esserci dei casi in cui dei metodi la <strong>chiamata del metodo può essere ambigua</strong>:</p>
+<p>immaginiamo di avere i seguenti metodi</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Truck v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<p>Se volessimo fare la seguente chiamata</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">Truck</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Quale dovrebbe essere il metodo chiamato?<br>
+Il compilatore dovrebbe riuscire a scegliere il metodo migliore in base a quale firma del metodo ha la “distanza” minore dei tipi tra parametro della chiamata e quello delle firma. In questo caso però abbiamo una uguale distanza, quindi nessuno dei due è definibile come “migliore”. Ad esempio se avessimo aggiunto un altro metodo</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token comment">// nuovo</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Car v1<span class="token punctuation">,</span> Vehicle v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">int</span> <span class="token function">race</span><span class="token punctuation">(</span>Vehicle v1<span class="token punctuation">,</span> Truck v2<span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<p>Il nuovo metodo verrebbe visto come il peggiore fra i 3 perché è più generico rispetto agli altri.</p>
+<h2 id="funzionamento-di-java">Funzionamento di Java</h2>
+<p>In Java possiamo dire di avere un <strong>dispatch dinamico sul ricevitore</strong> su cui è chiamata la funzione mentre abbiamo un <strong>dispatch statico sui parametri</strong> delle funzioni.</p>
+<p>Quindi in casi di <em>override</em> java usa un dispatch dinamico per decidere in quale classe andare a trovare il metodo.<br>
+Mentre quando abbiamo più metodi con l’<em>overload</em> utilizza un dispatch statico</p>
+<h2 id="invocazione-di-metodi-statici">Invocazione di metodi statici</h2>
+<p>Vediamo cosa accade con l’invocazione di metodi statici, dove <strong>non dovremmo avere un ricevitore</strong> su cui chiamare il metodo ma abbiamo la classe stessa.</p>
+<p>È buona pratica chiamare i metodi statici sulla classe e non sull’istanza di un oggetto, Java però ti permette comunque di farlo, ottenendo un <em>warning</em></p>
+<p>Nel caso si ignorasse il warning e si procedesse a chiamare il metodo sull’istanza verrebbe utilizzato un dispatching statico sul ricevitore, diversamente quindi dai metodi non statici</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Racing</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Racing 1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Racing2</span> <span class="token keyword">extends</span> <span class="token class-name">Racing</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Racing 2"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// chiamate corrette</span>
+Racing2<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//Racing 2</span>
+Racing<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//Racing 1</span>
+
+<span class="token comment">// chiamate con warning</span>
+Racing racing <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Racing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+racing<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//Racing 1</span>
+Racing2 racing2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Racing2</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+racing2<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//Racing 2</span>
+
+<span class="token comment">// in qusto caso notiamo il dispatching statico sul ricevitore:</span>
+<span class="token comment">// ci aspetteremo che venga stampato Racing 2 dato che è il tipo dinamico corrente, ma in questo caso java utilizza il dispatching statico</span>
+Racing racing3 <span class="token operator">=</span> racing2<span class="token punctuation">;</span>
+racing3<span class="token punctuation">.</span><span class="token function">foo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">//Racing 1</span>
+</code></pre>
+<h1 id="tipi-generici">Tipi generici</h1>
+<p>Java supporta i tipi generici su classi, parametri dei metodi e valore di ritorno dei metodi.</p>
+<p>Con i tipi generici per esempio possiamo permettere ad una funzione di lavorare su un tipo generico che verrà specificato durante l’istanza dell’oggetto.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>T<span class="token punctuation">,</span> U<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">private</span> T primoElemento<span class="token punctuation">;</span>
+    <span class="token keyword">private</span> U secondoElemento<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">Coppia</span><span class="token punctuation">(</span>T primo<span class="token punctuation">,</span> U secondo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>primoElemento <span class="token operator">=</span> primo<span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>secondoElemento <span class="token operator">=</span> secondo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> T <span class="token function">getPrimoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> primoElemento<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> U <span class="token function">getSecondoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> secondoElemento<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setPrimoElemento</span><span class="token punctuation">(</span>T primo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>primoElemento <span class="token operator">=</span> primo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">setSecondoElemento</span><span class="token punctuation">(</span>U secondo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>secondoElemento <span class="token operator">=</span> secondo<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Ad esempio posso istanziare la seguente classe nei seguenti modi</p>
+<pre class=" language-java"><code class="prism  language-java">Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Coppia<span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>Double<span class="token punctuation">,</span> String<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token number">3.14</span><span class="token punctuation">,</span> <span class="token string">"Due"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+coppia1<span class="token punctuation">.</span><span class="token function">getSecondoElemento</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="invarianti">Invarianti</h2>
+<p>I tipi generici di Java sono detti <strong>invarianti</strong>, cioè non è possibile fare assegnamento tra due variabili che hanno un tipo generico diverso, anche nel caso in cui un tipo sia sottotipo dell’altro.</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>V<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">add</span><span class="token punctuation">(</span>V el<span class="token punctuation">)</span> <span class="token punctuation">{</span>…<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+List<span class="token operator">&lt;</span>Vehicle<span class="token operator">&gt;</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Vehicle<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+List<span class="token operator">&lt;</span>Bicycle<span class="token operator">&gt;</span> b <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">List</span><span class="token operator">&lt;</span>Bicycle<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+b<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Bicycle</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a <span class="token operator">=</span> b<span class="token punctuation">;</span>	<span class="token comment">//errore</span>
+b <span class="token operator">=</span> a<span class="token punctuation">;</span>	<span class="token comment">//errore</span>
+</code></pre>
+<h2 id="metodi-con-tipi-generici">Metodi con tipi generici</h2>
+<p>possiamo usare un tipo generico per il singolo metodo della classe, possiamo utilizzarlo per:</p>
+<ul>
+<li>valore di ritorno</li>
+<li>tipo dei parametri</li>
+<li>variabili locali all’interno del corpo del metodo</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EsempioTipoGenerico</span> <span class="token punctuation">{</span>
+
+    <span class="token keyword">public</span> <span class="token operator">&lt;</span>T<span class="token operator">&gt;</span> T <span class="token function">restituisciElemento</span><span class="token punctuation">(</span>T elemento<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        T risultatoLocale <span class="token operator">=</span> elemento<span class="token punctuation">;</span>
+        <span class="token keyword">return</span> risultatoLocale<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+</code></pre>
+<p>In questa sintassi:</p>
+<ul>
+<li>prima specifichiamo che il metodo utilizzerà un tipo generico <code>&lt;T&gt;</code></li>
+<li>poi specifichiamo la funzione ritorna un tipo <code>T</code></li>
+<li>come parametro abbiamo una variabile di tipo <code>T</code></li>
+<li>possiamo utilizzare il tipo T per dichiarare altre variabili locali</li>
+</ul>
+<h3 id="type-inference">Type inference</h3>
+<p>la <em>type inference</em> permette di non dover specificare i tipi quando si istanzia la classe.<br>
+I tipi vengono dedotti dai tipi dell’oggetto nella fase di dichiarazione</p>
+<p>considerando il primo esempio che abbiamo visto:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// senza type inference</span>
+Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">//con type inference</span>
+Coppia<span class="token operator">&lt;</span>String<span class="token punctuation">,</span> Integer<span class="token operator">&gt;</span> coppia2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Coppia</span><span class="token operator">&lt;</span><span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token string">"Uno"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h3 id="tipi-generici-limitati">Tipi generici limitati</h3>
+<p>È possibile limitare i tipi che può assumere un tipo generico, imponendo che il tipo essere un sottotipo di una data classe (oppure anche la classe stessa).<br>
+Per fare ciò utilizziamo la keyword <code>extends</code> seguito dalla classe</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token operator">&lt;</span>T <span class="token keyword">extends</span> <span class="token class-name">Vehicle</span><span class="token operator">&gt;</span> <span class="token keyword">void</span>  <span class="token function">frena</span><span class="token punctuation">(</span>T veicolo<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">// ...</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso il tipo T può essere di tipo <code>Vehicle</code> oppure una sottoclasse di essa.</p>
+<h1 id="object-e-tipi-nativi">Object e tipi nativi</h1>
+<h2 id="object">Object</h2>
+<p>La classe <code>Object</code> è la radice dell’albero delle gerarchie, tutte le classi che si fanno in java sono figlie della classe Object.</p>
+<p>Quando dichiariamo una classe nel seguente modo</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>implicitamente quello che succede è:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MiaClasse</span> <span class="token keyword">extends</span> <span class="token class-name">Object</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Il ruolo della classe <code>Object</code> è quello di fornire una implementazione di base per ogni classe.<br>
+Tra le funzioni offerte dalla classe <code>Object</code> ce ne sono alcune deprecate e altre riguardanti la programmazione concorrente che non vedremo, ma ci sono dei metodi che vale la pena vedere:</p>
+<ul>
+<li><code>boolean equals(Object obj)</code></li>
+<li><code>Object clone()</code></li>
+<li><code>int hashCode()</code></li>
+<li><code>String toString()</code></li>
+</ul>
+<h2 id="equals">Equals</h2>
+<p><code>boolean equals(Object obj)</code></p>
+<p>Questo metodo serve per indicare se l’oggetto passato per parametro è uguale all’oggetto su cui è stato chiamato il metodo.<br>
+nell’implementazione di default con “uguale” si intende che i due riferimenti puntano allo stesso oggetto in memoria.<br>
+È l’equivalente di fare <code>oggetto1 == oggetto2</code><br>
+Solitamente è consigliato fare un <em>override</em> di questo metodo sulla propria classe per creare la propria uguaglianza a piacimento (solitamente una <em>deep copy</em> in cui si confrontano tutti i campi dei due oggetti).</p>
+<p>Quindi nel caso noi <strong>non facessimo <em>override</em></strong> si avrà il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//false</span>
+car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
+</code></pre>
+<p>immaginiamo di aver fatto un <em>override</em> del metodo <code>equals</code> in cui andiamo a verificare che il parametro passato  sia dello stesso tipo ricevente e che tutti i campi siano equivalenti, si avrà il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car car1 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car car2 <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> fuelType<span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car2<span class="token punctuation">)</span> <span class="token comment">//true</span>
+car1<span class="token operator">==</span>car2 <span class="token comment">//false</span>
+car1<span class="token punctuation">.</span><span class="token function">equals</span><span class="token punctuation">(</span>car1<span class="token punctuation">)</span> <span class="token comment">//true</span>
+</code></pre>
+<p>Quando si ridefinisce il metodo <code>equals</code> bisogna assicurarsi di mantenere le proprietà:</p>
+<ul>
+<li>Riflessiva: <code>x.equals(x)</code> deve essere vero</li>
+<li>Simmetrica: allora <code>x.equals(y)</code> e <code>y.equals(x)</code> devono avere lo stesso risultato</li>
+<li>Transitiva: se <code>x.equals(y)</code> e <code>y.equals(z)</code> allora <code>x.equals(z)</code></li>
+</ul>
+<h2 id="clone">Clone</h2>
+<p><code>Object clone()</code></p>
+<p>Il metodo <code>clone</code> restituisce un <strong>nuovo oggetto</strong> che è semanticamente identico a quello su cui è stato chiamato il metodo.<br>
+Quindi vorremmo che</p>
+<ul>
+<li><code>obj.clone() == obj</code> restituisca falso perchè sono effettivamente due oggetti in zone di memoria diverse</li>
+<li><code>obj.equals(obj.clone())</code> restituisca vero perché il contenuto dell’oggetto è uguale (sempre considerando che il metodo <code>equals</code> venga ridefinito per controllare il contenuto dell’oggetto)</li>
+</ul>
+<p>Il metodo clone <strong>non ha una implementazione di base pubblica</strong> (è solo una interfaccia) quindi è importante fare un <em>override</em> del metodo per fare la copia effettiva dei valori e restituire non un Object generico ma il tipo della classe.<br>
+Inoltre di default il metodo ha visibilità <code>protected</code> quindi possiamo scegliere solo se metterlo pubblico o lasciarlo protected.</p>
+<p>Quando ridefiniamo il metodo possiamo scegliere se adottare una <em>deep copy</em> dei campi oppure una <em>shallow copy</em>. Questa distinzione entra in gioco quando abbiamo come campi dei tipi non primitivi.<br>
+con la <em>deep copy</em> andiamo a copiare l’effettivo valore puntato (maggior utilizzo di memoria). Mentre con la <em>shallow copy</em> facciamo una copia del puntatore (a questo punto avremo due oggetti che puntano alla stessa area di memoria, fenomeno chiamato <em>aliasing</em>)</p>
+<h2 id="hashcode">hashCode</h2>
+<p><code>int hashCode()</code></p>
+<p>Questo è un metodo che ritorna un intero risultante da una funzione hash fatta sull’oggetto.</p>
+<p>Se si va a sovrascrivere <code>equals</code> bisogna andare anche a sovrascrivere <code>hashCode</code> perche le due funzioni sono legate, infatti:</p>
+<ul>
+<li>se <code>a.equals(b)</code> restituisce vero allora anche <code>a.hashCode() == b.hashCode()</code> deve essere vero</li>
+<li>però se <code>a.hashCode() == b.hashCode()</code> è vero non significa necessariamente che <code>a.equals(b)</code> sia vero</li>
+</ul>
+<p>Generalmente le funzioni hash non sono semplici da scrivere, per questo spesso gli IDE propongono delle proprie implementazioni.<br>
+Per realizzare una versione semplice di funzione hash si può ritornare un campo della classe oppure la somma dei campi primitivi e non (chiamando a sua volta <code>&lt;obj&gt;hashCode()</code> quando il campo non è primitivo)</p>
+<h2 id="tostring">toString</h2>
+<p><code>String toString()</code></p>
+<p>Questo metodo ritorna una stringa che rappresenta testualmente lo stato dell’oggetto</p>
+<p>è molto utile ridefinire questo metodo per fare in modo che rappresenti lo stato della specifica classe, elencando, ad esempio, i campi con i rispettivi valori.</p>
+<h2 id="collections">Collections</h2>
+<p>Vediamo alcune classi native di Java, le collezioni. Le strutture dati iterabili seguono una gerarchia di interfacce e classi astratte. Una porzione di questa gerarchia è la seguente:</p>
+<p><img src="https://i.ibb.co/LNyBb1L/image.png" alt="enter image description here"></p>
+<p>Le strutture che noi utilizziamo solitamente sono le foglie, riconosciamo infatti classi come LinkedList, Vector, ArrayList ecc…</p>
+<p>Un costrutto molto utile per iterare su queste strutture è il <strong>for each</strong>, che ha la seguente forma</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>var_locale<span class="token operator">&gt;</span> <span class="token operator">:</span> <span class="token operator">&lt;</span>struttura_iterabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Torna spesso utile utilizzare <code>var</code> come tipo. <code>var</code> corrisponde ad <code>auto</code> di c++ e serve per dedurre in automatico in <strong>fase di compilazione</strong> il tipo che c’è all’interno della struttura iterabile</p>
+<h2 id="stringhe">Stringhe</h2>
+<p>In java esiste il tipo stringa esplicito, che quindi non è propriamente un array di caratteri, bensì un array di byte.</p>
+<p><code>String s = "abc";</code></p>
+<p>È importante sapere che le stringhe in Java sono <strong>immutabili</strong>.<br>
+Per capire il significato capiamo cosa sono le stringhe: le Stringhe sono degli oggetti, quindi dei puntatori ad una zona di memoria dove è contenuta una serie di byte che rappresentano la stringa. dopo essere stata inizializzata tale zona di memoria non può modificare il suo contenuto.<br>
+Quindi quando si vuole modificare una stringa quello che viene fatto è creare una nuova zona di memoria contenente la nuova stringa e aggiornare il puntatore alla nuova zona</p>
+<p>Tutti i metodi sulle stringhe che modificano la stringa in realtà stanno creando una nuova stringa e spostano il puntatore della variabile per puntare alla nuova stringa.</p>
+<p>Tra questi metodi troviamo:</p>
+<ul>
+<li>concatenazione di stringhe: <code>new_str = str.concat(str2)</code> alternativamente si può usare la <code>+</code>, ad esempio <code>new_str = str + str2</code></li>
+<li>rimpiazzo di un carattere: <code>new_str = str.replace(char_to_be_changed, new_char)</code></li>
+<li>ottenere una sottostringa: <code>new_str = str.substring(limite_sinistro, limite_destro)</code></li>
+<li>dividere una stringa su un carattere: <code>new_str[] = str.split(carattere_divisorio)</code></li>
+</ul>
+<h2 id="tipi-primitivi">Tipi primitivi</h2>
+<p>I tipi primitivi di Java, che quindi <strong>non sono sottoclasse</strong> di <code>Object</code> sono le seguenti:</p>
+<ul>
+<li>boolean</li>
+<li>byte</li>
+<li>char</li>
+<li>short</li>
+<li>int</li>
+<li>long</li>
+<li>float</li>
+<li>double</li>
+</ul>
+<p>Su questi tipi possiamo fare le operazioni standard come</p>
+<ul>
+<li><code>+ - * /</code> sugli integer e floating-point</li>
+<li><code>&amp;&amp; || !</code> sui boolean</li>
+</ul>
+<p>Nota: gli operatori appena citati non si possono ridefinire negli oggetti (ad esempio non è possibile sovrascrivere il significato di <code>*</code> per fare <code>obj1 * obj2</code>), come avviene invece in c++.</p>
+<p><img src="https://i.ibb.co/LkS6PYT/image.png" alt="enter image description here"></p>
+<p>Per quanto riguarda i casting, quando c’è perdita di dati va esplicitato il casting, mentre se non c’è perdita di dati allora non è necessario esplicitare il cast.<br>
+Ad esempio</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">byte</span> a<span class="token punctuation">;</span>
+<span class="token keyword">int</span> b<span class="token punctuation">;</span>
+a <span class="token operator">=</span> b<span class="token punctuation">;</span>	<span class="token comment">// non consentito</span>
+a <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">byte</span><span class="token punctuation">)</span>b	<span class="token comment">//consentito (con possibile perdita di informazioni)</span>
+</code></pre>
+<p>Nota che anche passare da un numero floating point ad uno intero significa perdere dei dati quindi anche in quel caso va fatto un cast esplicito</p>
+<h2 id="wrappers">Wrappers</h2>
+<p>In java esistono delle classi che fanno da contenitori per i corrispettivi tipi primitivi</p>
+<p><img src="https://i.ibb.co/Nm2Y5BP/image.png" alt="enter image description here"></p>
+<ul>
+<li>Questo può tornare utile quando certi metodi vogliono degli oggetti come parametri e quindi non potremmo usare i tipi primitivi.</li>
+<li>I wrapper possono assumere il valore Null mentre i tipi primitivi non possono.</li>
+<li>È possibile eseguire dei metodi sui dati, come le conversioni.</li>
+<li>I tipi generici di Java lavorano su oggetti quindi se vogliamo utilizzare i tipi primitivi dobbiamo usare i wrapper</li>
+</ul>
+<p>Il lato negativo dei wrapper è il maggior consumo di memoria rispetto ai semplici tipi primitivi</p>
+<h3 id="boxing-autoboxing-e-unboxing">Boxing, Autoboxing e Unboxing</h3>
+<p>È pratica comune lavorare con tipi di dato primitivi ma in alcuni casi è necessario passare da un tipo primitivo ad un corrispettivo Wrapper o vice versa.</p>
+<p>Con <strong>boxing</strong> si intende passare da un tipo primitivo ad un tipo Wrapper in modo <strong>esplicito</strong>, nel seguente modo:</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Integer</span> <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Double y <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Double</span> <span class="token punctuation">(</span><span class="token number">5.5</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Java supporta anche la conversione automatica chiamata <strong>autoboxing</strong>, nel seguente modo:</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>
+Double y <span class="token operator">=</span> <span class="token number">5.5</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Il compilatore si arrangia a fare le dovute conversioni</p>
+<p>D’altra parte convertire un Wrapper nel corrispettivo tipo primitivo è una operazione che anche in questo caso viene fatto in automatico e si chiama <strong>unboxing</strong>, si fa nel seguente modo</p>
+<pre class=" language-java"><code class="prism  language-java">Integer x <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Integer</span><span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">int</span> y <span class="token operator">=</span> x<span class="token punctuation">;</span>	<span class="token comment">//unboxing</span>
+</code></pre>
+<h1 id="exceptions">Exceptions</h1>
+<p>La normale esecuzione del codice può essere interrotta a causa di errori, In Java tali errori vengono rappresentati dalle <strong>exceptions</strong>. Le exceptions sono degli oggetti che contengono informazioni utili sui relativi errori.</p>
+<p>Quando si verifica un errore viene interrotta l’esecuzione e l’eccezione relativa viene propagata (tramite il comando <code>throw</code>) attraverso tutto lo stack delle chiamate fino a che qualche funzione la “catturi” <code>catch</code> per gestire l’errore, se nessuna funzione ha previsto una cattura allora il programma verrà terminato.</p>
+<p>Gli oggetti che definiscono le eccezioni appartengono ad una classe <code>Throwable</code>, nella seguente immagini vediamo una piccola parte della gerarchia:</p>
+<p><img src="https://i.ibb.co/PhD2xnT/image.png" alt="enter image description here"></p>
+<p>Notiamo intanto una distinzione tra <code>Error</code> ed <code>Exception</code></p>
+<ul>
+<li>Gli <code>Error</code> sono errori seri da cui non è possibile riprendere l’esecuzione del programma</li>
+<li>Le <code>Exception</code> sono errori più leggeri che, se gestiti, possono far riprendere l’esecuzione del programma</li>
+</ul>
+<p>È possibile definire delle nostre eccezioni estendendo la classe <code>Throwable</code> oppure una delle sue sottoclassi</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// definisco la mia exception</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">NegativeSpeedException</span> <span class="token keyword">extends</span> <span class="token class-name">Exception</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> <span class="token function">NegativeSpeedException</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token punctuation">{</span>	<span class="token comment">//costruttore</span>
+		<span class="token keyword">super</span><span class="token punctuation">(</span>“Negative speed not allowed<span class="token operator">:</span> “ <span class="token operator">+</span> a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">//Utilizzo dell'eccezione</span>
+<span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Vehicle</span> <span class="token punctuation">{</span>
+	<span class="token keyword">private</span> <span class="token keyword">double</span> speed<span class="token punctuation">;</span>
+	<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token keyword">double</span> a<span class="token punctuation">)</span> <span class="token keyword">throws</span> NegativeSpeedException <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>a <span class="token operator">&lt;</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+			<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">NegativeSpeedException</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//lancio l'eccezione</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">this</span><span class="token punctuation">.</span>speed <span class="token operator">=</span> a<span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se dovessimo andare ad eseguire il seguente codice</p>
+<pre class=" language-java"><code class="prism  language-java">Car a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+a<span class="token punctuation">.</span><span class="token function">accelerate</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 	<span class="token comment">//lancia l'eccezione con il messaggio “Negative speed not allowed: -10“</span>
+</code></pre>
+<p>come si nota dal codice al momento della definizione del metodo <code>accelerate</code> abbiamo messo <code>throws NegativeSpeedException</code>, questo perché tutti i metodi devono dichiarare anticipatamente le eccezioni che possono lanciare (in realtà solo quelle di tipo <em>checked</em>).<br>
+Inoltre anche le funzioni che chiamano le funzioni che possono lanciare eccezioni devono a loro volta dichiarare le eccezioni (Quindi nel caso ci fosse un metodo che fa uso di  <code>accelerate</code> quel metodo deve aggiungere alla propria definizione <code>throws NegativeSpeedException</code>)</p>
+<p>è importante documentare accuratamente le eccezioni che possono essere lanciate dai nostri metodi.<br>
+In javadoc possiamo utilizzare il tag <code>@throws &lt;exception_name&gt; &lt;descrizione&gt;</code></p>
+<h2 id="override">Override</h2>
+<p>Le eccezioni rispettano il principio di sostituzione: “se una classe C1 espone una interfaccia più aperta di C2, allora possiamo utilizzare l’istanza di C1 anche quando ci si aspetta una istanza di C2”<br>
+Attenzione però: per quanto riguarda le eccezioni una classe viene definita <strong>più aperta</strong> se essa espone <strong>un numero minore o uguale</strong> di eccezioni del metodo sovrascritto.</p>
+<p>È evidente un problema: se vogliamo sovrascrivere un metodo che prevede delle eccezioni ma noi vogliamo aggiungerne altre non lo possiamo fare.</p>
+<h2 id="eccezioni-checked-e-unchecked">Eccezioni checked e unchecked</h2>
+<p>Per migliorare questo problema Java divide le eccezioni in due categorie:</p>
+<ul>
+<li><strong>Unchecked</strong>: non è necessario dichiarare queste eccezioni. Includono la maggior parte delle eccezioni generiche che estendono le classi <code>Error</code> e <code>RuntimException</code> (Sono solitamente errori del programma che possono essere evitati con una corretta progettazione e programmazione.)</li>
+<li><strong>Checked</strong>: devono essere dichiarate. includono le eccezioni che estendono la classe <code>Exception</code> ma non di <code>RuntimeException</code></li>
+</ul>
+<h2 id="catturare-eccezioni">Catturare eccezioni</h2>
+<p>È possibile gestire le eccezioni tramite il comando <code>catch</code>, che quindi permette di fare delle operazioni nel caso si verificasse una eccezione specifica.</p>
+<p>Riusciamo a catturare eccezioni tramite il costrutto <code>try-catch</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+	<span class="token comment">// blocco che potrebbe generare una exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo eccezione<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_variabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice da eseguire in caso di exception</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>il codice precedente può avere tre risvolti:</p>
+<ol>
+<li>all’interno del blocco <code>try</code> non viene generata nessuna eccezione e quindi il codice prosegue normalmente</li>
+<li>viene generata una eccezione del tipo specificato nel <code>catch</code> (oppure anche un sottotipo), e viene eseguito il corpo del <code>catch</code></li>
+<li>viene generata una eccezione che però non è un sottotipo di quello specificato nel <code>catch</code>. In quel caso l’eccezione viene propagata in tutto lo stack di chiamate per trovare un <code>catch</code> che cattura quel tipo di eccezione</li>
+</ol>
+<h3 id="finally">Finally</h3>
+<p>Abbiamo anche un blocco aggiuntivo <code>finally</code> da poter mettere dopo i catch.<br>
+È un blocco che viene eseguito sempre, che si verifichi o meno una eccezione, Questo è utile, ad esempio, quando si lavora con risorse come file o connessioni di rete e si desidera assicurarsi che tali risorse vengano correttamente rilasciate, anche in caso di eccezioni.</p>
+<p>Viene eseguito anche se nel <code>try</code> oppure nel <code>catch</code> c’è un return. Nel caso all’interno del finally ci sia un return, i return precedenti verranno scartati</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+	<span class="token comment">// blocco che potrebbe generare una exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token operator">&lt;</span>tipo eccezione<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_variabile<span class="token operator">&gt;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice da eseguire in caso di exception</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">finally</span> <span class="token punctuation">{</span>
+	<span class="token comment">//codice eseguito indipendentemente dal verificarsi dell'exception</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="catene-di-eccezioni">Catene di eccezioni</h2>
+<p>Quando lanciamo una eccezione possiamo anche passare come parametro l’eccezione che l’ha causata:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">Race</span> <span class="token punctuation">{</span>
+	<span class="token keyword">public</span> T <span class="token function">race</span><span class="token punctuation">(</span><span class="token keyword">double</span> length<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token keyword">try</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">catch</span><span class="token punctuation">(</span>ImpossibleAccelerationException e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+			<span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">IllegalArgumentException</span><span class="token punctuation">(</span>“Random returned a negative number<span class="token punctuation">,</span> e<span class="token punctuation">)</span><span class="token punctuation">;</span>	 <span class="token comment">//passiamo il valore 'e' che è a sua volta una eccezione</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">finally</span> <span class="token punctuation">{</span>
+			<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+		<span class="token punctuation">}</span>
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>in questo caso vedremo nella console sia l’eccezione esterna che anche quella che l’ha causata.<br>
+Il tutto per migliorare il debug in caso di errori.</p>
+<h2 id="assertions">Assertions</h2>
+<p>Le assertions sono delle condizione che dovrebbero rappresentare qualcosa che dovrebbe essere sempre vero.<br>
+Possiamo utilizzare queste condizione per testare la correttezza delle variabili durante l’esecuzione del programma.</p>
+<p>vediamo un esempio:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">EsempioAssertion</span> <span class="token punctuation">{</span>
+    <span class="token keyword">public</span> <span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span>String<span class="token punctuation">[</span><span class="token punctuation">]</span> args<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> numero <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Utilizzo di assert per verificare che il numero sia positivo</span>
+        <span class="token keyword">assert</span> numero <span class="token operator">&gt;</span> <span class="token number">0</span> <span class="token operator">:</span> <span class="token string">"Il numero deve essere positivo"</span><span class="token punctuation">;</span>
+
+        <span class="token comment">// Se l'assertion fallisce, il messaggio specificato viene stampato</span>
+        <span class="token comment">// e il programma termina se gli assert sono abilitati (-ea).</span>
+        
+        System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Il numero è: "</span> <span class="token operator">+</span> numero<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>nota che gli assert sono disabilitati di default e vanno abilitati aggiungendo le opzioni <code>-ea</code> quando si esegue il programma</p>
+<h1 id="annotazioni">Annotazioni</h1>
+<p>Le annotazioni in Java sono metadati che forniscono informazioni aggiuntive sul codice sorgente.<br>
+Esse non hanno un impatto diretto sull’esecuzione del programma, ma possono essere lette da strumenti durante il processo di compilazione o esecuzione per applicare comportamenti speciali, generare codice ausiliario, o fornire informazioni utili agli sviluppatori o a strumenti di analisi.</p>
+<p>Le annotazioni possono venir associate a:</p>
+<ul>
+<li>classi</li>
+<li>metodi e costruttori</li>
+<li>campi</li>
+<li>parametri</li>
+<li>variabili locali</li>
+</ul>
+<p>Un esempio di annotazione che abbiamo già visto è <code>@override</code></p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@override</span>
+<span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso il ruolo dell’annotazione è assicurare che il metodo sia effettivamente un override, altrimenti non viene compilato il codice.</p>
+<p>Altri esempi molto utilizzati sono <code>@Deprecated(since="&lt;versione&gt;")</code> per dire che un costrutto è deprecato da un certa versione.<br>
+Oppure <code>@SuppressWarnings("&lt;warning_type&gt;")</code> per evitare che il compilatore generi il tipo di warning specificato</p>
+<h2 id="creare-una-annotazione">Creare una annotazione</h2>
+<p>La sintassi per definire una propria annotazione è la seguente:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token operator">&lt;</span>visibilità<span class="token operator">&gt;</span> @<span class="token keyword">interface</span> <span class="token operator">&lt;</span>nome_annotazione<span class="token operator">&gt;</span> <span class="token punctuation">{</span>
+	<span class="token comment">// eleneco dei campi che seguono il seguente formato</span>
+	<span class="token operator">&lt;</span>tipo<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>nome_campo<span class="token operator">&gt;</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token operator">&lt;</span>valore_di_default<span class="token operator">&gt;</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Solitamente le annotazioni vengono messe in un file Java a parte e poi viene importato tale file dove serve.<br>
+Vediamo come ad ogni campo possiamo attribuire un valore di default, se esso non viene specificato quando si fa riferimento all’annotazione bisogna assegnare un valore a tale campo.</p>
+<p>Creiamo la seguente annotazione con due campi:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>vediamo come utilizzare questa annotazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token keyword">public</span> <span class="token keyword">class</span> <span class="token class-name">MyClass</span> <span class="token punctuation">{</span>
+	 <span class="token comment">//utilizzo valido</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>value <span class="token operator">=</span> <span class="token string">"Custom Value"</span><span class="token punctuation">,</span> priority <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+	
+	<span class="token comment">//utilizzo valido</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span>priority <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+    
+    <span class="token comment">//utilizzo non valido: bisogna inizializzare il campo "priority"</span>
+    <span class="token annotation punctuation">@MyAnnotation</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">myMethod</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="target">Target</h2>
+<p>Nella definizione è possibile anche limitare a cosa è possibile affiancare l’annotazione.<br>
+Questo viene fatto aggiungendo una annotazione speciale chiamata <code>@Target</code> alla nostra annotazione, specificando al suo interno a cosa è possibile affiancare la nostra annotazione:</p>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai campi</span>
+	ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai metodi</span>
+	ElementType<span class="token punctuation">.</span>PARAMETER <span class="token comment">// può assere affiancata ai parametri</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>nota la presenza delle parentesi graffe in quanto il campo nella annotazione <code>Target</code> è un array</p>
+<h2 id="retention">Retention</h2>
+<p>Similmente all’annotazione <code>@Target</code>, l’annotazione <code>@Retention</code> permette di rendere l’annotazione presente solo nel codice, nel .class (bytecode), oppure in esecuzione.<br>
+Possiamo decidere modificando il parametro<code>RetentionPolicy</code></p>
+<ul>
+<li><code>RetentionPolicy = SOURCE</code>: l’annotazione viene trattata come fosse un normale commento.</li>
+<li><code>RetentionPolicy = CLASS</code>: L’annotazione viene considerata in fase di compilazione (documentazione esterna).</li>
+<li><code>RetentionPolicy = RUNTIME</code>: L’annotazione viene considerata anche in fase di esecuzione.</li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+	ElementType<span class="token punctuation">.</span>FIELD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai campi</span>
+	ElementType<span class="token punctuation">.</span>METHOD<span class="token punctuation">,</span>	<span class="token comment">// può assere affiancata ai metodi</span>
+	ElementType<span class="token punctuation">.</span>PARAMETER <span class="token comment">// può assere affiancata ai parametri</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>
+	RetentionPolicy<span class="token punctuation">.</span>SOURCE
+<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+	String <span class="token function">value</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">default</span> <span class="token string">""</span><span class="token punctuation">;</span>
+	<span class="token keyword">int</span>  <span class="token function">priority</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="junit">JUnit</h2>
+<p><strong>JUnit</strong> è un framework utilizzato per fare testing di un codice, in sostanza un metodo che richiama parti del nostro codice per vedere se si comporta come previsto.<br>
+Questo framework fa uso delle annotazioni per gestire le fasi di testing e identificare quali metodi del nostro codice testare.<br>
+<a href="https://junit.org/junit5/docs/current/user-guide/">junit user guide</a></p>
+<h2 id="jaxb">JAXB</h2>
+<p>Un altro framework che fa intenso uso delle annotazioni è <strong>JAXB</strong>, utilizzato per rappresentare le classi di Java in XML.<br>
+Attraverso diverse annotazioni si possono riconoscere le varie componenti della classe.<br>
+La traduzione da oggetto Java a XML viene chiamata <strong>Marshalling</strong>. Mentre la traduzione da XML a oggetto Java viene chiamata <strong>Unmarshalling</strong></p>
+<h1 id="reflection">Reflection</h1>
+<p>La <strong>reflection</strong> è una feature di Java che permette di interagire e ottenere informazioni <strong>a runtime</strong> di: classi, campi, metodi e costruttori</p>
+<h2 id="classi-1">Classi</h2>
+<p>Vediamo come accedere alle informazioni di una classe.<br>
+Si utilizza una classe chiamata <code>Class</code> e per istanziare un oggetto di tipo <code>Class</code> si possono utilizzare due modi:</p>
+<ul>
+<li><code>&lt;oggetto&gt;.getClass()</code></li>
+<li><code>&lt;classe&gt;.class</code></li>
+</ul>
+<p><code>Class</code> definisce tutti i metodi per ottenere:</p>
+<ul>
+<li>informazioni sulla struttura di definizione della classe: <code>isPrimitive(), isInterface(), isAnnotation(), getModifiers(), ...</code></li>
+<li>informazioni sulla gerarchia: <code>getInterfaces(), getSuperclass(), getPackage(), ...</code></li>
+<li>campi/metodi con visibilità pubblica definiti nella classe e anche quelli ereditati: <code>getFields(), getMethods(), getCostructors()</code></li>
+<li>campi/metodi (ignorando i modificatori di visibilità) definiti nella classe (ma non quelli ereditati): <code>getDeclaredFields(), gedDeclaredMethods(), getDeclaredConstructors()</code></li>
+<li><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Class.html">lista operazioni</a></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java">Class <span class="token class-name">c</span> <span class="token operator">=</span> Vehicle<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">;</span>
+<span class="token comment">// tutti i costruttori</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Constructor t <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredConstructors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// tutti i metodi</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Method m <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredMethods</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>m<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// i campi pubblici (anche ereditati)</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment">// tutti i campi locali della classe</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span>Field f <span class="token operator">:</span> c<span class="token punctuation">.</span><span class="token function">getDeclaredFields</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>	<span class="token comment">//la superclasse</span>
+System<span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span><span class="token function">getPackage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>		<span class="token comment">//il package a cui appartiene la classe</span>
+</code></pre>
+<h2 id="campi">Campi</h2>
+<p>Vediamo come accedere e manipolare i campi di una classe.<br>
+Si utilizza una classe chiamata <code>Field</code><br>
+Come abbiamo visto possiamo ottenere la lista dei campi tramite <code>getFields(), getDeclaredFields()</code>.<br>
+È possibile anche ottenere un campo in particolare specificando come parametro il nome del campo: <code>get[Declared]Field("&lt;nome_campo&gt;")</code> (se il campo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>
+<p>Ottenere informazioni generali sul campo: <code>getType(), getModifiers()</code></p>
+</li>
+<li>
+<p>Leggere il valore del campo: <code>get(), getDouble(), getInt(), ...</code><br>
+Si utilizza <code>get()</code> per leggere degli oggetti, mentre ci sono dei metodi specifici per i tipi primitivi<br>
+Come parametro ai <code>get()</code> va passato l’oggetto da cui si vuole leggere il campo:<br>
+<code>&lt;field&gt;.get(&lt;oggetto&gt;)</code></p>
+</li>
+<li>
+<p>Scrivere il valore del campo: <code>set(), setDouble(), setInt(), ...</code><br>
+Si utilizza <code>set()</code> per scrivere degli oggetti, mentre ci sono dei metodi specifici per i tipi primitivi<br>
+Come parametro ai <code>set()</code> va passato l’oggetto da cui si vuole leggere il campo e il nuovo valore:<br>
+<code>&lt;field&gt;.set(&lt;oggetto&gt;, &lt;nuovo_valore&gt;)</code></p>
+</li>
+<li>
+<p><a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/reflect/Field.html">lista operazioni</a></p>
+</li>
+</ul>
+<p>In caso di <strong>campi privati</strong> non è direttamente possibile performare dei <code>set</code> e dei <code>get</code> (verrebbe lanciato un <code>IllegalAccessException</code>). È possibile prima di eseguire un <code>set</code> o un <code>get</code> mettere la seguente riga di codice:<br>
+<code>&lt;field&gt;.setAccessible(true);</code><br>
+rendendo così il campo accessibile.<br>
+Si tenga nota però che questa operazione infrange il concetto di incapsulamento, che potrebbe portare a problemi al normale funzionamento del codice e un riduzione della sicurezza del codice.<br>
+È quindi consigliato usare questo metodo solo quando strettamente necessario.</p>
+<pre class=" language-java"><code class="prism  language-java">Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classCar</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classVehicle</span> <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Field speed <span class="token operator">=</span> classVehicle<span class="token punctuation">.</span><span class="token function">getDeclaredField</span><span class="token punctuation">(</span> <span class="token string">"speed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+speed<span class="token punctuation">.</span><span class="token function">setDouble</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">10.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="metodi">Metodi</h2>
+<p>Vediamo come accedere e manipolare i metodi di una classe.<br>
+Si utilizza una classe chiamata <code>Method</code><br>
+Come abbiamo visto possiamo ottenere la lista dei metodi tramite <code>getMethods(), getDeclaredMethods()</code>.<br>
+È possibile anche ottenere un metodo in particolare specificando come parametro il nome del metodo e la <code>Class</code> dei tipi dei parametri: <code>get[Declared]Method("&lt;nome_metodo&gt;", &lt;tipo&gt;.class, ...)</code> (se il metodo non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>Ottenere informazioni generali sul sul metodo: <code>getReturnType(), getTypeParameters(), getGenericExceptionTypes(), getModifiers()</code></li>
+<li>invocare il metodo tramite il metodo <code>&lt;method&gt;.invoke(&lt;oggetto&gt;, &lt;valore_parametro&gt;, ...)</code></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Method.html">lista operazioni</a></li>
+</ul>
+<p>In caso di <strong>metodi privati</strong> vale lo stesso discorso fatto sui campi.</p>
+<pre class=" language-java"><code class="prism  language-java">Car c <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Car</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> null<span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classCar</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Class <span class="token class-name">classVehicle</span> <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getSuperclass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Method accelerate <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"accelerate"</span><span class="token punctuation">,</span> <span class="token keyword">double</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Method getSpeed <span class="token operator">=</span> classVehicle<span class="token punctuation">.</span><span class="token function">getDeclaredMethod</span><span class="token punctuation">(</span><span class="token string">"getSpeed"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Object result <span class="token operator">=</span> getSpeed<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>c<span class="token punctuation">)</span><span class="token punctuation">;</span>
+result <span class="token operator">=</span> accelerate<span class="token punctuation">.</span><span class="token function">invoke</span><span class="token punctuation">(</span>c<span class="token punctuation">,</span> <span class="token number">2.0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="costruttori">Costruttori</h2>
+<p>Vediamo come accedere e manipolare i costruttori di una classe.<br>
+Si utilizza una classe chiamata <code>Constructor</code><br>
+Come abbiamo visto possiamo ottenere la lista dei costruttori tramite <code>getConstructors(), getDeclaredConstructors()</code>.<br>
+È possibile anche ottenere un costruttore in particolare specificando come parametro la <code>Class</code> dei tipi dei parametri (ovviamente dato che i costruttori non hanno un proprio nome, non serve metterlo): <code>get[Declared]Constructor(&lt;tipo&gt;.class, ...)</code> (se il costruttore non esiste viene lanciata una eccezione a <em>runtime</em>).<br>
+È possibile:</p>
+<ul>
+<li>Ottenere informazioni generali sul sul costruttore: <code>getParameterTypes(), getGenericExceptionTypes(), getModifiers()</code></li>
+<li>chiamare il costruttore per creare una nuova istanza della classe: <code>&lt;costruttore&gt;.newInstance(&lt;valore_parametro&gt;, ...);</code></li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html">lista operazioni</a></li>
+</ul>
+<p>In caso di <strong>costruttori privati</strong> vale lo stesso discorso fatto sui campi.</p>
+<pre class=" language-java"><code class="prism  language-java">Class <span class="token class-name">class</span><span class="token operator">&lt;</span>Car<span class="token operator">&gt;</span> <span class="token operator">=</span> c<span class="token punctuation">.</span><span class="token function">getClass</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Constructor cst <span class="token operator">=</span> classCar<span class="token punctuation">.</span><span class="token function">getDeclaredConstructor</span><span class="token punctuation">(</span><span class="token keyword">double</span><span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">,</span> FuelType<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+Car created <span class="token operator">=</span> cst<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token number">2.0</span><span class="token punctuation">,</span> <span class="token keyword">new</span> <span class="token class-name">FuelType</span><span class="token punctuation">(</span><span class="token string">"diesel"</span><span class="token punctuation">,</span> <span class="token number">0.015</span><span class="token punctuation">,</span> <span class="token number">0.01</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="annotazioni-1">Annotazioni</h2>
+<p>Con la reflection si può interagire con le annotazioni che hanno <code>RetentionPolicy = RUNTIME</code>.<br>
+Si utilizza una classe chiamata <code>Annotation</code></p>
+<ul>
+<li>possiamo ottenere le annotazioni: <code>getAnnotations(), getDeclaredAnnotations()</code><br>
+anche ottenere delle specifiche annotazioni con <code>getAnnotation(&lt;nome_annotazione&gt;.class),getDeclaredAnnotation(&lt;nome_annotazione&gt;.class)</code></li>
+<li>possiamo ottenere i valori presenti nei campi dell’annotazione, usando il nome del campo come funzione</li>
+<li><a href="https://docs.oracle.com/javase/8/docs/api/java/lang/reflect/Constructor.html">lista operazioni</a></li>
+</ul>
+<pre class=" language-java"><code class="prism  language-java"><span class="token comment">// Definizione di un'annotazione personalizzata</span>
+<span class="token annotation punctuation">@Retention</span><span class="token punctuation">(</span>RetentionPolicy<span class="token punctuation">.</span>RUNTIME<span class="token punctuation">)</span>
+<span class="token annotation punctuation">@Target</span><span class="token punctuation">(</span>ElementType<span class="token punctuation">.</span>TYPE<span class="token punctuation">)</span>
+<span class="token keyword">public</span> @<span class="token keyword">interface</span> <span class="token class-name">MyAnnotation</span> <span class="token punctuation">{</span>
+    String <span class="token function">mio_campo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// Ottenere il valore dell'annotazione da una classe</span>
+MyAnnotation myAnnotation <span class="token operator">=</span> MyClass<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">.</span><span class="token function">getAnnotation</span><span class="token punctuation">(</span>MyAnnotation<span class="token punctuation">.</span><span class="token keyword">class</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+String annotationValue <span class="token operator">=</span> myAnnotation<span class="token punctuation">.</span><span class="token function">mio_campo</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="vantaggi-e-svantaggi-della-reflection">Vantaggi e svantaggi della reflection</h2>
+<ul>
+<li>
+<p><strong>Vantaggi</strong></p>
+<ul>
+<li>tramite reflection abbiamo accesso a componenti a cui non avremmo accesso normalmente, in alcuni casi ciò può rompere il principio di incapsulamento ma delle volte può essere necessario (estremamente utile per i framework).</li>
+<li>accedere a componente sconosciuti in fase di compilazione. i framework infatti non sono a conoscenza su quali classi, metodi, campi andranno a lavorare</li>
+</ul>
+</li>
+<li>
+<p><strong>Svantaggi</strong></p>
+<ul>
+<li>la reflection funziona a <em>runtime</em>, quindi nel caso ci fossero dei palesi errori (cercare di ottenere un metodo non esistente) il codice compilerebbe lo stesso ma verrebbe lanciata una eccezione a <em>runtime</em></li>
+<li>la sintassi utilizzate per fare le varie operazioni è abbastanza verbosa e poco intuitiva rispetto al modo classico di fare le cose</li>
+</ul>
+</li>
+</ul>
+<h1 id="library-management">Library management</h1>
+<p>Generalmente quando sviluppiamo programmi in java facciamo uso delle librerie base di Java, semplicemente importandole all’inizio del codice in quanto sono librerie già precaricate.</p>
+<p>Quando parliamo di <strong>librerie</strong> intendiamo sostanzialmente il <strong>bytecode di un insieme di classi</strong>.</p>
+<p>La JVM utilizza la <em>classpath</em> per sapere dove trovare le classi, la <em>classpath</em> è un insieme di percorsi che possono condurre a una directory contenente dei file .class oppure file .jar.</p>
+<p><strong>La ricerca delle classi avviene in fase di runtime</strong>, e se una determinata classe che viene utilizzata nel codice non viene trovata nel <em>classpath</em> allora viene lanciata una eccezione <em>ClassNotFoundException</em>.</p>
+<p>Possiamo dire alla JVM dove andare a trovare le nostre librerie in fase di compilazione aggiungendo l’opzione<br>
+<code>-classpath &lt;/percorso/della/libreria1;/percorso/della/libreria2&gt;</code></p>
+<h2 id="compatibilità-e-versioni">Compatibilità e versioni</h2>
+<p>Quando si sviluppa e si modifica nel tempo una libreria è importante considerare la <em><strong>backward  compatibility</strong></em>, cioè la compatibilità di quella versione della libreria con le versioni precedenti.<br>
+Per assicurare questa compatibilità è importante non modificare le interfacce esterne (campi, metodi e classi utilizzate dagli altri) della nostra libreria.</p>
+<p>Se consideriamo un metodo pubblico ad esempio: Se in una successiva versione vogliamo aggiungere, modificare o rimuovere un parametro, stiamo rompendo la compatibilità quindi bisogna trovare un modo per evitare ciò, magari aggiungendo un’altra versione del metodo, oppure dando al parametro aggiunto un valore di default oppure far chiamare il nuovo metodo all’interno del metodo originale.</p>
+<p>Un altro esempio potrebbe essere che il metodo che abbiamo scritto in una vecchia versioni non è più necessario e vorremmo rimuoverlo… Questa non è una buona idea in quanto chi sta utilizzando quel metodo e aggiorna la libreria si troverà il codice rotto. In questo caso entra in gioco l’annotazione <code>@deprecated</code> la quale dice che quel metodo non dovrebbe essere più utilizzato e non verrà più supportato</p>
+<p>È chiaro che in alcune situazioni mantenere la compatibilità non è possibile, in questo caso tornano molto utili i <strong>version numbers</strong>, cioè dei numeri che identificano la versione della libreria.</p>
+<p>Spesso si utilizza la seguente convenzione: <code>x1.x2.x3</code> dove:</p>
+<ul>
+<li><code>x1</code> rappresenta una <em>major release</em>, in questo caso numeri diversi implicano che delle interfacce esterne sono cambiate, quindi la compatibilità è molto probabilità che non sia mantenuta con le versioni precedenti</li>
+<li><code>x2</code> rappresenta una <em>minor release</em>, in questo caso cambiano solo le implementazioni interne oppure vengono aggiunte nuove interfacce esterne, ma non vengono modificate le interfacce esterne già esistenti. La compatibilità dovrebbe essere garantita</li>
+<li><code>x3</code> rappresenta un <em>bug fix</em>, sono dei cambiamenti minori che sistemano dei problemi e garantiscono la compatibilità</li>
+</ul>
+<h2 id="strumenti-di-automazione">Strumenti di automazione</h2>
+<p>Quando un progetto diventa eccessivamente grande diventa difficile e frustrante gestire.<br>
+Esistono dei tool che automatizzano varie fasi come la compilazione, l’esecuzione, costruire eseguibili, effettuare test, ecc…<br>
+Uno di questi tool è <a href="https://docs.gradle.org/current/userguide/userguide.html">Gradle</a></p>
+
+    </div>
+  </div>
+</body>
+
+</html>

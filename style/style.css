@@ -112,8 +112,13 @@ li a {
 	color: #1f8ec5;
 }
 
-.special {
+.exercise {
 	color: #1fc580;
+}
+
+.full_notes {
+	color: #ec5c09;
+	margin-bottom:15px;
 }
 
 
@@ -134,8 +139,12 @@ li a:hover:after {
 	transform-origin: bottom left;
 }
 
-.special:after {
+.exercise:after {
 	background-color: #1fc580;
+}
+
+.full_notes:after {
+	background-color: #ec5c09;
 }
 
 .subject-list {
