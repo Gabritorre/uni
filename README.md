@@ -22,19 +22,24 @@ Notes for my bachelor degree
 │⠀⠀⠀ │ <a href="https://github.com/Gabritorre/uni/tree/main/year1/prog_lab">Programmazione e laboratorio</a> <br>
 │    <br>
 └─── year2 <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/basi_dati1">Basi di dati mod. 1</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/sis_operativi1">Sistemi operativi mod. 1</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/prob_stat">Probabilità e statistica</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/prog_ogg1">Programmazione a oggetti mod. 1</a> <br>
-│⠀⠀⠀ │------------------------ <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/algo_strut_dati1">Algoritmi e strutture dati mod. 1</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/algo_strut_dati2">Algoritmi e strutture dati mod. 2</a> <br>
-│⠀⠀⠀ │------------------------ <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/basi_dati2">Basi di dati mod. 2</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/int_uomo_macchina">Interazione uomo-macchina</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/sis_operativi2">Sistemi operativi mod. 2</a> <br>
-│   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year2/prog_ogg2">Programmazione a oggetti mod. 2</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/basi_dati1">Basi di dati mod. 1</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/sis_operativi1">Sistemi operativi mod. 1</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/prob_stat">Probabilità e statistica</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/prog_ogg1">Programmazione a oggetti mod. 1</a> <br>
+│⠀⠀⠀     │------------------------ <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/algo_strut_dati1">Algoritmi e strutture dati mod. 1</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/algo_strut_dati2">Algoritmi e strutture dati mod. 2</a> <br>
+│⠀⠀⠀     │------------------------ <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/basi_dati2">Basi di dati mod. 2</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/int_uomo_macchina">Interazione uomo-macchina</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/sis_operativi2">Sistemi operativi mod. 2</a> <br>
+│   	⠀⠀⠀│ <a href="https://github.com/Gabritorre/uni/tree/main/year2/prog_ogg2">Programmazione a oggetti mod. 2</a> <br>
 │   <br>
 └─── year3 <br>
-⠀   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year1/alg_lineare"></a> <br>
-⠀   	⠀⠀⠀│   	<a href="https://github.com/Gabritorre/uni/tree/main/year1/alg_lineare"></a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/calc_e_ling_form">Calcolabilità e linguaggi formali</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/diritto_info">Diritto all'informatica</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/ing_software">Ingegneria del software</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/ling_per_rete">Linguaggi per la rete</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/reti_calc">Reti di calcolatori</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/ric_operativa">Ricerca operativa</a> <br>
+  ⠀⠀⠀    │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/sicurezza">Sicurezza</a> <br>
