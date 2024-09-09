@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-16_Introduzione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione">Introduzione</a>
+<ul>
+<li><a href="#prodotto-software">Prodotto software</a></li>
+<li><a href="#processo-di-produzione">Processo di produzione</a></li>
+<li><a href="#qualità-del-software">Qualità del software</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione">Introduzione</h1>
+<p>Si può definire “<em>software engineering</em>” come la disciplina che fornisce delle regole per il processo di produzione del software.</p>
+<h2 id="prodotto-software">Prodotto software</h2>
+<p>Un <strong>prodotto software</strong> è composto da:</p>
+<ul>
+<li>Codice</li>
+<li>Dati</li>
+<li>Documentazione
+<ul>
+<li>Documentazione del sistema (come funziona il software)</li>
+<li>Documentazione dell’utente (come utilizzare il software)</li>
+</ul>
+</li>
+</ul>
+<p>Le caratteristiche di un prodotto software sono:</p>
+<ul>
+<li>l’intangibilità</li>
+<li>Si “sviluppa” e non si “fabbrica”</li>
+<li>È facilmente duplicabile e distribuibile</li>
+<li>Si deteriora nel tempo (cambia l’ambiente su cui lavora, si aggiornano gli standard)</li>
+<li>Viene acquisito su licenza</li>
+</ul>
+<p>In particolare presenta una curva dei guasti di questo tipo:</p>
+<p><img src="https://i.ibb.co/YWHn23V/image.png" alt="https://i.ibb.co/YWHn23V/image.png"></p>
+<p>La curva ideale porta a pensare più applico delle <em>fix</em> più il software diventerà tollerante ai guasti, ma non è così, infatti ogni modifica porta con sé la probabilità di generare nuovi <em>bug.</em></p>
+<h2 id="processo-di-produzione">Processo di produzione</h2>
+<p>Il processo di produzione di un software inizia con l’analisi dei requisiti e finisce con il ritiro dal mercato del prodotto.</p>
+<p>Possiamo elencare le fasi in questo modo (indipendentemente dal tipo di processo impiegato):</p>
+<ol>
+<li><strong>Analisi dei requisiti</strong>: specificare cosa deve fare il sistema e quali sono i vincoli sul sistema</li>
+<li><strong>Specifica</strong>: Documentazione delle funzioni del sistema</li>
+<li><strong>Progettazione</strong>: Creare una soluzione al problema attraverso un modello astratto</li>
+<li><strong>Implementazione</strong>: Codificare il modello astratto</li>
+<li><strong>Integrazione</strong>: collegamento dei sotto-sistemi e dell’ambiente con il sistema principale</li>
+<li><strong>Mantenimento</strong>: Aggiornare il sistema con modifiche correttive e di aggiunta di funzionalità</li>
+<li><strong>Ritiro</strong>: Dismissione del sistema ed eventuale migrazione i dati nel nuovo sistema</li>
+</ol>
+<p>L’organizzazione di tutte queste fasi, quindi il tempo, l’energia, il personale da impiegare su ogni fase prende il nome di <strong>Piano di progetto</strong></p>
+<p>Il processo include anche gli strumenti utilizzati, le tecniche di sviluppo, e le risorse umane.</p>
+<h2 id="qualità-del-software">Qualità del software</h2>
+<p>Per determinare la qualità di un software si valutano le <strong>proprietà intrinseche</strong> del prodotto, quindi solitamente non visibili direttamente dall’utente(es. copertura dei test case, manutenibilità del codice, struttura del codice) e le <strong>proprietà percepite</strong> dal committente (es. usabilità dell’interfaccia, tasso di errori).</p>
+<p>Esiste uno standard ISO/IEC 25010 (2017) che permette di misurare la qualità del software con delle <strong>metriche</strong> (es. come si misura il fattore di facilità d’uso di una interfaccia?)</p>
+<p>Lo standard definisce due tipi di qualità:</p>
+<ul>
+<li><strong>Qualità interna</strong>: tutte quelle proprietà che sono rilevanti durante le fasi di sviluppo e di manutenzione del software stesso.</li>
+<li><strong>Qualità esterna</strong>: tutte le proprietà rilevanti in fase di esecuzione</li>
+</ul>
+<p>Queste qualità sono:</p>
+<ul>
+<li><strong>Functional stability</strong>: Assicurare il corretto e completo funzionamento delle funzioni di base</li>
+<li><strong>Efficiency / performance</strong>: tempo di esecuzione, utilizzo di risorse, spazio occupato</li>
+<li><strong>Compatibility</strong>: interoperabilità con i sistemi con cui si appoggia (es. una applicazione con quali versioni di Android è compatibile?)</li>
+<li><strong>Usability</strong>: facilità di apprendimento, prevenzione degli errori, estetica</li>
+<li><strong>Reliability</strong>: tolleranza ai guasti, disponibilità, recupero</li>
+<li><strong>Security</strong>: confidenzialità, integrità, autenticazione</li>
+<li><strong>Maintainability</strong>: eleganza, modificabilità, riuso, analisi del codice</li>
+<li><strong>Portability</strong>: facilità di portare il sistema in un ambiente diverso (modificare il codice senza stravolgere tutto)</li>
+</ul>
+<p>Si è notato che la <strong>maggior parte del costo</strong> relativo al processo di produzione del software (le 7 fasi) risiede nel <strong>mantenimento.</strong></p>
+<p>Questo comporta che più tardi nel processo di produzione ci si accorge di un errore maggiore saranno i costi per sistemare il problema.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
