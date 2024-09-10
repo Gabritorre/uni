@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-30_Ingegneria dei requisiti</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#ingegneria-dei-requisiti">Ingegneria dei requisiti</a>
+<ul>
+<li><a href="#processo-di-analisi">Processo di analisi</a></li>
+<li><a href="#motivazione-dei-requisiti">Motivazione dei requisiti</a></li>
+<li><a href="#step-per-determinare-i-requisiti">Step per determinare i requisiti</a></li>
+<li><a href="#evoluzione-dei-requisiti">Evoluzione dei requisiti</a></li>
+<li><a href="#errori-nella-definizione-dei-requisiti">Errori nella definizione dei requisiti</a></li>
+<li><a href="#regole-di-stesura">Regole di stesura</a></li>
+<li><a href="#classificazione-dei-requisiti-non-funzionali">Classificazione dei requisiti non funzionali</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="ingegneria-dei-requisiti">Ingegneria dei requisiti</h1>
+<p>I requisiti rappresentano la base del contratto e quindi è necessario prestarci attenzione per ridurre la probabilità di controversie a progetto consegnato.</p>
+<p>È importante definire il livello di dettaglio dei vincoli: assenza di vincoli significa che qualsiasi sistema è valido, mentre avere troppi riduce la possibilità di trovare una soluzione che li rispetta tutti.</p>
+<p>Ci deve anche essere coerenza tra i requisiti (due requisiti non si devono contrastare)</p>
+<p>Con <strong>requisito</strong> si intende una caratteristica che il prodotto deve possedere o un servizio che il prodotto deve offrire.</p>
+<p>L’origine dei requisiti può essere: una richiesta dal committente oppure proviene dagli utilizzatori finali, oppure da vincoli normativi, oppure da una esperienza pregressa, …</p>
+<p>Ogni requisito ha un proprio <strong>scopo</strong> all’interno del prodotto, quindi i requisiti sono delle caratteristiche che permettono di raggiungere un determinato scopo</p>
+<h2 id="processo-di-analisi">Processo di analisi</h2>
+<p>Il documento dei requisiti deve essere fatto da una collaborazione tra il committente e il fornitore, trovando dei compromessi tra necessità e possibilità.</p>
+<p>Per analizzare i requisiti è necessario fare:</p>
+<ul>
+<li>uno studio della realtà applicativa: capire in che ambiente deve collocarsi il prodotto (attraverso ricerche, competitors, fonti dei dati)</li>
+<li>comprendere quali sono livelli di qualità richiesti</li>
+<li>a questo punto non bisogna pensare al “come“ ma a “<strong>cosa”</strong> offrire</li>
+</ul>
+<h2 id="motivazione-dei-requisiti">Motivazione dei requisiti</h2>
+<p>I requisiti servono per:</p>
+<ul>
+<li>definire i bisogni del committente, quindi il documento deve essere comprensibili da non tecnici.</li>
+<li>Deve anche essere chiaro e preciso dato che andrà in mano a chi si occuperà della fase successiva</li>
+<li>Servirà in fase di manutenzione, se si nota un comportamento del prodotto strano si va a guardare nel documento dei requisiti se era stato pensato così oppure se è un <em>bug</em></li>
+</ul>
+<h2 id="step-per-determinare-i-requisiti">Step per determinare i requisiti</h2>
+<ol>
+<li>
+<p>Definire gli obiettivi generali</p>
+</li>
+<li>
+<p>Identificare e modellare i servizi, i vincoli, l’ambiente che riguardano il sistema (vengono coinvolti sia esperti del dominio applicativo sia potenziali utilizzatori)</p>
+<p>Approcci tipici sono quelli delle <strong>interviste</strong> (strutturate oppure informali), dei <strong>questionari</strong> oppure tramite <strong>osservazioni</strong> sul campo</p>
+</li>
+<li>
+<p>Descrivere in linguaggio naturale dei servizi che il sistema offre e dei suoi vincoli (requisiti non funzionali)</p>
+</li>
+<li>
+<p>Specificare i requisiti funzionali in dettaglio</p>
+</li>
+</ol>
+<p>Per definire i requisiti si possono adottare due tipi di stili:</p>
+<ul>
+<li><strong>Operazionale</strong>: viene descritto il comportamento in modo algoritmico</li>
+<li><strong>Descrittivo</strong>: viene descritto attraverso le proprietà in linguaggio naturale (approccio preferito)</li>
+</ul>
+<h2 id="evoluzione-dei-requisiti">Evoluzione dei requisiti</h2>
+<p>I requisiti si possono evolvere nel corso del progetto, il sistema è quindi necessario che sia aperto a modifiche</p>
+<p><strong>Requisiti durevoli</strong>: sono quei requisiti che difficilmente potranno variare</p>
+<p><strong>Requisiti volatili</strong>: sono requisiti che possono facilmente variare durante lo sviluppo</p>
+<h2 id="errori-nella-definizione-dei-requisiti">Errori nella definizione dei requisiti</h2>
+<p>Il modo usuale per scrivere le definizioni dei requisiti è tramite linguaggio naturale accompagnato da schemi.</p>
+<p>Possono accadere dei problemi:</p>
+<ul>
+<li>mancanza di chiarezza</li>
+<li>confusione tra i requisiti, requisiti funzionali e non funzionali vengono mescolati</li>
+<li>raggruppare requisiti diversi in uno unico anziché tenerli distinti</li>
+<li>mancanza di precisione e completezza, anche ciò che sembra più banale da specificare non va tralasciato (es. dire che si può abilitare una determinata funzionalità nel software necessita anche di esplicitare se si può disattivare o meno, non va dato per scontato anche se banale)</li>
+</ul>
+<h2 id="regole-di-stesura">Regole di stesura</h2>
+<p>Vediamo delle pratica da adottare per una buona definizione dei requisiti:</p>
+<ul>
+<li>Il soggetto è sempre il sistema e non l’utente (non devono comparire frasi come “l’utente deve…”)</li>
+<li>Aderire a formati standard nella definizione dei requisiti</li>
+<li>Raggruppare i requisiti che sono legati in qualche modo alla stesso ambito</li>
+<li>Legare ai requisiti la motivazione</li>
+</ul>
+<h2 id="classificazione-dei-requisiti-non-funzionali">Classificazione dei requisiti non funzionali</h2>
+<p>Abbiamo già visto che i requisiti non funzionali sono le caratteristiche del prodotto, e possono riguardare tre categorie:</p>
+<ul>
+<li><strong>Requisiti di prodotto</strong>: il prodotto deve comportarsi in un certo modo (es. velocità di esecuzione, affidabilità)</li>
+<li><strong>Requisiti di processo</strong>: riguardano il processo di produzione (es. conformità con degli standard, utilizzo di particolari strumenti di sviluppo)</li>
+<li><strong>Requisiti esterni</strong>: requisiti derivati da fattori esterni al sistema e al processo di sviluppo (es. requisiti normativi, etici)</li>
+</ul>
+<p>Per i requisiti non funzionali è importante specificare le metriche di appartenenza e le unità di misura, evitando di usare termini vaghi per descrivere il requisiti ma invece di quantificare le metriche</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
