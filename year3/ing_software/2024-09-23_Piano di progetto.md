@@ -1,5 +1,7 @@
 ﻿# Piano di progetto
 
+## Piano di progetto
+
 Il **piano di progetto** è un documento formale che descrive e accompagna lo sviluppo del progetto dal suo inizio fino alla sua fine.
 
 Il piano di progetto segue questa struttura:
@@ -99,3 +101,86 @@ Ci sono due approcci per gestire i rischi:
 Un rischio si può **classificare** secondo il seguente schema che relazione la probabilità di accadimento con l’impatto:
 
 ![https://i.ibb.co/27682Jw/image.png](https://i.ibb.co/27682Jw/image.png)
+
+## Pianificazione, Scheduling, Analisi dei costi
+
+La pianificazione delle attività si può struttura in una sequenza fasi con un input e un output
+
+1. **Input**: l’obiettivo del progetto
+    
+    **Elaborazione**: identificare i compiti necessari per raggiungere l’obiettivo
+    
+    **Output**: creazione di una WBS (*Work breakdown structure*), cioè una scomposizione del progetto in piccole attività con opportuna descrizione
+    
+2. **Input**: WBS e struttura organizzativa dei membri
+    
+    **Elaborazione**: assegnazione delle responsabilità
+    
+    **Output**: matrice compiti-responsabilità
+    
+3. **Input**: vincoli temporali, di risorse, tecnici
+    
+    **Elaborazione**: stimare i tempi necessari per ogni attività
+    
+    **Output**: diagramma di PERT
+    
+
+1. **Input**: legami logici e scadenze tra le attività
+    
+    **Elaborazione**: schedulazione della attività su un asse temporale
+    
+    **Output**: diagramma di Gantt
+    
+
+Due definizioni importanti sono:
+
+- *Milestones,* cioè i punti finali di ogni singola attività (ciò che determina quando una attività può considerarsi conclusa)
+- *Deliverables*, cioè i risultati che sono forniti al committente (sono un sottoinsieme delle *milestones*)
+
+### Work breakdown structure
+
+La strutturazione del progetto in attività segue questo schema
+
+![https://i.ibb.co/sRMfqXq/wbs.png](https://i.ibb.co/sRMfqXq/wbs.png)
+
+Le **funzioni** sono della attività che seguono l’intero progetto.
+
+Le **attività** sono delle suddivisione del progetto in compiti, per ogni attività ci possono essere delle sotto-attività (per ogni attività è importante specificare il momento di inizio e fine)
+
+I **task** (non strettamente necessari) sono delle attività di lavoro atomiche figlie di una specifica attività, hanno durata stimabile, necessitano di certe risorse, producono risultati tangibili
+
+## Diagramma di Pert
+
+Dal WBS realizzo il diagramma di Pert, cioè un grafo che rappresenta le attività, le dipendenze e vari tipi di tempi di realizzazione.
+
+Nel diagramma di Pert devono essere presenti 4 tipi di tempi:
+
+1. **ES (earliest start time**): minimo giorno di inizio dell’attività
+2. **EF (earliest finish time)**: minimo giorno in cui l’attività può terminare (calcolato da $\text{ES} + \text{durata dell’attività}$)
+3. **LF (latest finish time)**: l’ultimo giorno in cui quell’attività deve finire senza comportare un ritardo nelle attività che dipendono da essa.
+4. **LS (latest start time)**: l’ultimo giorno in cui quell’attività deve iniziare senza comportare un ritardo nelle attività che dipendono da essa (calcolato da $\text{LF} - \text{durata dell’attività}$)
+
+![https://i.ibb.co/GJMSzhQ/pert.png](https://i.ibb.co/GJMSzhQ/pert.png)
+
+Il modo più comodo per compilarlo è partire da T1 e andare fino a T7 compilando ES e EF.
+
+Una volta finito si parte da T7 e andare fino a T1 compilando LF e LS.
+
+**Cammino critico**: è la successione di attività che richiede il massimo tempo, è composto dai nodi i quali non hanno una elasticità tra la prima riga (ES e EF) e la seconda (LS e LF), nell’esempio il cammino critico sarebbe
+
+ $$T1 \to T4 \to T5 \to T7$$
+
+se una di queste attività accumula ritardo lo propaga all’intero progetto.
+
+## Diagramma di Gantt
+
+Una volta ottenute le attività con i relativi tempi e le relazioni tra di esse, posso costruire un diagramma di Gantt, cioè una grafico che mette le attività su un asse temporale.
+
+![https://i.ibb.co/JsYtLkW/image.png](https://i.ibb.co/JsYtLkW/image.png)
+
+Ovviamente i ritardi possono formarsi ma possono essere categorizzati in 2 modi:
+
+- **ritardi di una fase critica:** comporta un ritardo sulla conclusione del progetto (es. un ritardo nell’attività A porta ad uno shift di tutte le successive attività che dipendono da essa).
+ Le fasi critiche si ottengono dal cammino critico nel diagramma di Pert
+    
+- **ritardi di una fase non critica**: non comportano un ritardo sulla conclusione del progetto (es. un ritardo nell’attività D che riesce comunque a terminare prima di C non comporta una ritardo sul progetto in quanto le attività successive dipendono sia da C che da D. Ovviamente se D va oltre a C allora il ritardo sul progetto si forma.

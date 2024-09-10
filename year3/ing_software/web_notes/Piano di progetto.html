@@ -15,8 +15,12 @@
 <ul>
 <li><a href="#piano-di-progetto">Piano di progetto</a>
 <ul>
+<li><a href="#piano-di-progetto-1">Piano di progetto</a></li>
 <li><a href="#modelli-di-processo">Modelli di processo</a></li>
 <li><a href="#analisi-dei-rischi">Analisi dei rischi</a></li>
+<li><a href="#pianificazione-scheduling-analisi-dei-costi">Pianificazione, Scheduling, Analisi dei costi</a></li>
+<li><a href="#diagramma-di-pert">Diagramma di Pert</a></li>
+<li><a href="#diagramma-di-gantt">Diagramma di Gantt</a></li>
 </ul>
 </li>
 </ul>
@@ -26,6 +30,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="piano-di-progetto">Piano di progetto</h1>
+<h2 id="piano-di-progetto-1">Piano di progetto</h2>
 <p>Il <strong>piano di progetto</strong> è un documento formale che descrive e accompagna lo sviluppo del progetto dal suo inizio fino alla sua fine.</p>
 <p>Il piano di progetto segue questa struttura:</p>
 <ol>
@@ -132,6 +137,69 @@ processi e degli strumenti</li>
 <p><img src="https://i.ibb.co/MGJpFC3/image.png" alt="https://i.ibb.co/MGJpFC3/image.png"></p>
 <p>Un rischio si può <strong>classificare</strong> secondo il seguente schema che relazione la probabilità di accadimento con l’impatto:</p>
 <p><img src="https://i.ibb.co/27682Jw/image.png" alt="https://i.ibb.co/27682Jw/image.png"></p>
+<h2 id="pianificazione-scheduling-analisi-dei-costi">Pianificazione, Scheduling, Analisi dei costi</h2>
+<p>La pianificazione delle attività si può struttura in una sequenza fasi con un input e un output</p>
+<ol>
+<li>
+<p><strong>Input</strong>: l’obiettivo del progetto</p>
+<p><strong>Elaborazione</strong>: identificare i compiti necessari per raggiungere l’obiettivo</p>
+<p><strong>Output</strong>: creazione di una WBS (<em>Work breakdown structure</em>), cioè una scomposizione del progetto in piccole attività con opportuna descrizione</p>
+</li>
+<li>
+<p><strong>Input</strong>: WBS e struttura organizzativa dei membri</p>
+<p><strong>Elaborazione</strong>: assegnazione delle responsabilità</p>
+<p><strong>Output</strong>: matrice compiti-responsabilità</p>
+</li>
+<li>
+<p><strong>Input</strong>: vincoli temporali, di risorse, tecnici</p>
+<p><strong>Elaborazione</strong>: stimare i tempi necessari per ogni attività</p>
+<p><strong>Output</strong>: diagramma di PERT</p>
+</li>
+<li>
+<p><strong>Input</strong>: legami logici e scadenze tra le attività</p>
+<p><strong>Elaborazione</strong>: schedulazione della attività su un asse temporale</p>
+<p><strong>Output</strong>: diagramma di Gantt</p>
+</li>
+</ol>
+<p>Due definizioni importanti sono:</p>
+<ul>
+<li><em>Milestones,</em> cioè i punti finali di ogni singola attività (ciò che determina quando una attività può considerarsi conclusa)</li>
+<li><em>Deliverables</em>, cioè i risultati che sono forniti al committente (sono un sottoinsieme delle <em>milestones</em>)</li>
+</ul>
+<h3 id="work-breakdown-structure">Work breakdown structure</h3>
+<p>La strutturazione del progetto in attività segue questo schema</p>
+<p><img src="https://i.ibb.co/sRMfqXq/wbs.png" alt="https://i.ibb.co/sRMfqXq/wbs.png"></p>
+<p>Le <strong>funzioni</strong> sono della attività che seguono l’intero progetto.</p>
+<p>Le <strong>attività</strong> sono delle suddivisione del progetto in compiti, per ogni attività ci possono essere delle sotto-attività (per ogni attività è importante specificare il momento di inizio e fine)</p>
+<p>I <strong>task</strong> (non strettamente necessari) sono delle attività di lavoro atomiche figlie di una specifica attività, hanno durata stimabile, necessitano di certe risorse, producono risultati tangibili</p>
+<h2 id="diagramma-di-pert">Diagramma di Pert</h2>
+<p>Dal WBS realizzo il diagramma di Pert, cioè un grafo che rappresenta le attività, le dipendenze e vari tipi di tempi di realizzazione.</p>
+<p>Nel diagramma di Pert devono essere presenti 4 tipi di tempi:</p>
+<ol>
+<li><strong>ES (earliest start time</strong>): minimo giorno di inizio dell’attività</li>
+<li><strong>EF (earliest finish time)</strong>: minimo giorno in cui l’attività può terminare (calcolato da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>ES</mtext><mo>+</mo><mrow><mtext>durata&nbsp;dell’attivit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover></mrow></mrow><annotation encoding="application/x-tex">\text{ES} + \text{durata dell’attività}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">ES</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">durata&nbsp;dell’attivit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span></span></span></span></span></span>)</li>
+<li><strong>LF (latest finish time)</strong>: l’ultimo giorno in cui quell’attività deve finire senza comportare un ritardo nelle attività che dipendono da essa.</li>
+<li><strong>LS (latest start time)</strong>: l’ultimo giorno in cui quell’attività deve iniziare senza comportare un ritardo nelle attività che dipendono da essa (calcolato da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LF</mtext><mo>−</mo><mrow><mtext>durata&nbsp;dell’attivit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover></mrow></mrow><annotation encoding="application/x-tex">\text{LF} - \text{durata dell’attività}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">LF</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">durata&nbsp;dell’attivit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span></span></span></span></span></span>)</li>
+</ol>
+<p><img src="https://i.ibb.co/GJMSzhQ/pert.png" alt="https://i.ibb.co/GJMSzhQ/pert.png"></p>
+<p>Il modo più comodo per compilarlo è partire da T1 e andare fino a T7 compilando ES e EF.</p>
+<p>Una volta finito si parte da T7 e andare fino a T1 compilando LF e LS.</p>
+<p><strong>Cammino critico</strong>: è la successione di attività che richiede il massimo tempo, è composto dai nodi i quali non hanno una elasticità tra la prima riga (ES e EF) e la seconda (LS e LF), nell’esempio il cammino critico sarebbe</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mn>1</mn><mo>→</mo><mi>T</mi><mn>4</mn><mo>→</mo><mi>T</mi><mn>5</mn><mo>→</mo><mi>T</mi><mn>7</mn></mrow><annotation encoding="application/x-tex">T1 \to T4 \to T5 \to T7</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">7</span></span></span></span></span></span></p>
+<p>se una di queste attività accumula ritardo lo propaga all’intero progetto.</p>
+<h2 id="diagramma-di-gantt">Diagramma di Gantt</h2>
+<p>Una volta ottenute le attività con i relativi tempi e le relazioni tra di esse, posso costruire un diagramma di Gantt, cioè una grafico che mette le attività su un asse temporale.</p>
+<p><img src="https://i.ibb.co/JsYtLkW/image.png" alt="https://i.ibb.co/JsYtLkW/image.png"></p>
+<p>Ovviamente i ritardi possono formarsi ma possono essere categorizzati in 2 modi:</p>
+<ul>
+<li>
+<p><strong>ritardi di una fase critica:</strong> comporta un ritardo sulla conclusione del progetto (es. un ritardo nell’attività A porta ad uno shift di tutte le successive attività che dipendono da essa).<br>
+Le fasi critiche si ottengono dal cammino critico nel diagramma di Pert</p>
+</li>
+<li>
+<p><strong>ritardi di una fase non critica</strong>: non comportano un ritardo sulla conclusione del progetto (es. un ritardo nell’attività D che riesce comunque a terminare prima di C non comporta una ritardo sul progetto in quanto le attività successive dipendono sia da C che da D. Ovviamente se D va oltre a C allora il ritardo sul progetto si forma.</p>
+</li>
+</ul>
 
     </div>
   </div>
