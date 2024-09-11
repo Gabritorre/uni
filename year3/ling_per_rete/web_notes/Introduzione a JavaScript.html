@@ -1,0 +1,73 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-16_Introduzione a JavaScript</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione-a-javascript">Introduzione a JavaScript</a>
+<ul>
+<li><a href="#espressioni">Espressioni</a></li>
+<li><a href="#struttura-lessicale">Struttura lessicale</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione-a-javascript">Introduzione a JavaScript</h1>
+<p>Javascript è un linguaggio <strong>interpretato general purpose ad alto livello non tipato</strong> principalmente utilizzato nel mondo web ma non solo, ambienti che interpretano JavaScript come Node.js permettono di utilizzare JavaScript anche fuori dai browser.</p>
+<p>JavaScript di per sé definisce solo delle api base per gestire i tipi di dato come numeri, testi, array, insiemi ecc… Non include funzioni di <strong>input e output</strong>, infatti queste sono fornite dall’ambiente ospitante, che nel nostro caso è il browser (ma in altri casi può essere Node.js).</p>
+<h2 id="espressioni">Espressioni</h2>
+<p>Le <strong>espressioni</strong> sono del testo che viene <strong>valutato</strong> per <strong>produrre un valore</strong> di qualche tipo.</p>
+<p>Le espressioni più semplici sono i <em>literal</em>, operazioni matematiche (es somma, sottrazione) ma ci anche particolari operazioni aritmentiche (es. pre e post incremento), operazioni di confronto (es. maggiore, uguale), operazioni logiche (and, or). Tutte queste operazioni vengono valutate per produrre un output: numerico, di verità, testuale, ecc…</p>
+<p>A basso livello le espressioni vengono salvate a runtime nella memoria <em>heap</em> sottoforma di blocco <strong>indivisibile</strong> <code>|Tipo|Valore|</code> , ad esempio il letterale <code>5</code> verrà salvato come <code>|Number|5|</code>.</p>
+<p>Quando si assegna una espressione ad una variabile, ad esempio <code>let my_var = 5</code> viene inserita una nuova informazione composta da <code>|"my_var"|Number|5|</code> in un grande dizionario contenente altri dati dello stesso <em>scope</em></p>
+<p>D’altra parte lo <strong>statement</strong> è del testo che non produce un valore, ma alterano lo stato dell’esecuzione, ne sono un esempio i cicli, gli <em>if</em>, assegnamenti e dichiarazioni.</p>
+<h2 id="struttura-lessicale">Struttura lessicale</h2>
+<p>Vediamo le regole lessicale degli elementi basilari di JavaScript.</p>
+<p>JavaScript è <strong>case-sensitive</strong>, quindi parole chiave e identificativi con lo stesso nome ma con capitalizzazione diversa sono in realtà nomi diversi.</p>
+<p>JavaScript generalmente ignora gli spazi, le <em>new line</em> e le tabulazioni</p>
+<p>Supporta due stili di <strong>commento</strong>:</p>
+<ul>
+<li>il commento in-line con i caratteri <code>//</code></li>
+<li>il commento multi-line con i caratteri <code>/* */</code></li>
+</ul>
+<p>I <strong>letterali</strong> (o <em>literal</em>) sono dei valori direttamente scritti nel codice, si oppongono dai valori derivanti dall’esterno (input utente, input da sensori, input da API, ecc…)</p>
+<p>Gli <strong>identificativi</strong>, che includono nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un <em>underscore</em> (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate</p>
+<p>L’utilizzo del punto e virgola (<code>;</code>) per indicare la fine di uno <em>statement</em> è opzionale, anche se con particolari stili di programmazione aiuta a disambiguare la fine degli statement. Generalmente (ma ci sono dei casi particolari) JavaScript tratta un accapo come un punto e virgola solo quando non riesce a parsare il codice a meno di aggiungere un ‘;’</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a
+a
+<span class="token operator">=</span>
+<span class="token number">3</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+</code></pre>
+<p>Verrà interpretato da JavaScript come:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a<span class="token punctuation">;</span> a <span class="token operator">=</span> <span class="token number">3</span><span class="token punctuation">;</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>nonostante <code>a;</code> possa essere un valido statement, l’interprete cerca sempre di creare lo statement più grande che può.</p>
+<p>Si possono creare situazioni inaspettate come con il seguente codice:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> y <span class="token operator">=</span> x <span class="token operator">+</span> <span class="token function">f</span>
+<span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>che possono essere interpretata correttamente sia come due righe completamente separate sia come una riga unica, il comportamento finale però è diverso.</p>
+<p>L’interprete di JavaScript vedrà il codice come:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> y <span class="token operator">=</span> x <span class="token operator">+</span> <span class="token function">f</span><span class="token punctuation">(</span>a<span class="token operator">+</span>b<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In generale è quindi consigliato l’uso del punto e virgola per evitare comportamenti inaspettati.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

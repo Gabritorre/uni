@@ -2,7 +2,7 @@ let courses = {
 	calc_e_ling_form : ["Note complete"],
  	diritto_info : ["Note complete"],
  	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti"],
-	ling_per_rete : ["Note complete"],
+	ling_per_rete : ["Note complete", "Introduzione a JavaScript"],
 	reti_calc : ["Note complete"],
 	ric_operativa : ["Note complete"],
 	sicurezza : ["Note complete"],
