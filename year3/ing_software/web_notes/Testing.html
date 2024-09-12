@@ -1,0 +1,135 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-02_Testing</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#testing">Testing</a>
+<ul>
+<li><a href="#casi-di-test">Casi di test</a></li>
+<li><a href="#specifica-dei-casi-di-test">Specifica dei casi di test</a></li>
+<li><a href="#test-di-moduli">Test di moduli</a></li>
+<li><a href="#incremental-testing">Incremental testing</a></li>
+<li><a href="#thread-testing">Thread testing</a></li>
+<li><a href="#stress-testing">Stress testing</a></li>
+<li><a href="#back-to-back-testing">Back to back testing</a></li>
+<li><a href="#black-box-testing">Black-box testing</a></li>
+<li><a href="#white-box-testing">White-box testing</a></li>
+<li><a href="#verifica-statica">Verifica statica</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="testing">Testing</h1>
+<p>Basandosi sul documento dei requisiti è già possibile definire le modalità di collaudo del sistema, generando così un <strong>piano di testing.</strong></p>
+<p>Il piano di testing definisce in che modo le attività di testing accompagnano lo sviluppo del progetto</p>
+<p>Vediamo alcune definizioni utili:</p>
+<ul>
+<li><strong>Errore</strong>: incomprensione umana riguardo la comprensione del problema, la risoluzione del problema o nell’uso di strumenti</li>
+<li><strong>Difetto</strong>: manifestazione software dell’errore umano (<em>bug</em>)</li>
+<li><strong>Malfunzionamento</strong>: situazione in cui il software non si comporta come previsto a causa di un difetto</li>
+</ul>
+<p>La fase di testing consiste nel ottenere un malfunzionamento, trovare il difetto relativo e cercare di capire l’errore che ha generato quel difetto.</p>
+<p>Un test ha successo quando trova malfunzionamenti, il fatto di non trovare malfunzionamenti non assicura la loro assenza (il testing è quindi una condizione necessaria ma non sufficiente per garantire la correttezza del codice)</p>
+<h2 id="casi-di-test">Casi di test</h2>
+<p><strong>Casi di test</strong> (test case): insieme di input per testare il sistema (chiamati “dati di test”) e i corrispettivi output attesi</p>
+<p>Un criterio per generare dei test è:</p>
+<ul>
+<li><strong>Affidabile</strong> se il criterio genera dei test case che danno sempre lo stesso risultato (sempre un successo o sempre un insuccesso)</li>
+<li><strong>Valido</strong> se qualora il programma non sia corretto esiste almeno un test che fa emergere un malfunzionamento</li>
+</ul>
+<p>Garantire entrambe le proprietà non è sempre banale, è quindi importante dare delle <strong>priorità</strong>.</p>
+<p>Vediamo delle regole generali:</p>
+<ul>
+<li>i test devono testare le caratteristiche globali del sistema piuttosto che testare le singole componenti</li>
+<li>se il sistema è una nuova versione è più importante testare le caratteristiche che erano già presenti nel precedente sistema</li>
+<li>testare le situazione più comuni è più importante di testare casi atipici (hanno meno probabilità di accadere)</li>
+</ul>
+<h2 id="specifica-dei-casi-di-test">Specifica dei casi di test</h2>
+<p>La documentazione dei casi di test dovrebbe seguire questi campi:</p>
+<ul>
+<li>Identificativo del test case</li>
+<li>descrizione</li>
+<li>precondizioni</li>
+<li>valori in input</li>
+<li>output attesi</li>
+<li>output riscontrato</li>
+<li>esito: positivo (rilevato malfunzionamento), negativo (nessun malfunzionamento)</li>
+<li>postcondizioni (simili agli output attesi ma verificabili sulle risorse, come database, file, device, …)</li>
+<li>priorità</li>
+</ul>
+<p>La specifica serve sia in fase di sviluppo per identificare delle correzioni necessarie, ma anche per dimostrare che il software è fatto bene.</p>
+<h2 id="test-di-moduli">Test di moduli</h2>
+<p>Un <strong>modulo</strong> in questo caso rappresenta un blocco di codice da testare.</p>
+<p>Per testare un modulo occorre simulare i chiamanti del modulo (<strong>DRIVER</strong>) e gli utilizzatori del risultato prodotto dal modulo (<strong>STUB</strong>)</p>
+<p>Esistono diverse tipologie di testing:</p>
+<ul>
+<li>Incremental testing
+<ul>
+<li>Top-down testing</li>
+<li>Bottom-up testing</li>
+</ul>
+</li>
+<li>Thread testing</li>
+<li>Stress testing</li>
+<li>Back-to-back testing</li>
+<li>Black-box testing</li>
+<li>White-box testing</li>
+<li>Verifica statica</li>
+</ul>
+<h2 id="incremental-testing">Incremental testing</h2>
+<p>è un modo di testare ripetutamente, ad ogni passo si aggiungono dei moduli con i relativi test case.</p>
+<p>L’approccio <strong>top-down</strong> consiste nel testare prima i livelli più generici del sistema in cui temporaneamente i livelli più bassi vengono implementati come STUB (chiamate con la stessa firma dei metodi veri ma che non fanno niente) e man mano si testano i livelli più specifici</p>
+<p>L’approccio bottom-up consiste nel testare prima i livelli più profondi del sistema in cui temporaneamente i livelli più alti vengono implementati come DRIVER (chiamanti che simulano l’ambiente reale) e man mano si testano livelli più generici</p>
+<h2 id="thread-testing">Thread testing</h2>
+<p>Consiste nel testare tutte le possibili strade che l’esecuzione può intraprendere in base all’input.</p>
+<p>Gli <code>if</code> nel codice rappresenta una divisione dell’esecuzione.</p>
+<h2 id="stress-testing">Stress testing</h2>
+<p>Si basa sul fatto che mettendo il sistema sotto pressione è più probabile che si verifichino malfunzionamenti.</p>
+<p>Si cerca si superare i limiti previsti in fase di progettazione e si vede fino a che punto il sistema regge e quali sono le conseguenze quando si verifica il fallimento</p>
+<h2 id="back-to-back-testing">Back to back testing</h2>
+<p>Si utilizzano diverse versione software per testare che durante lo sviluppo gli output di componenti comuni siano uguali. Se non fossero uguali significa o che le nuove aggiunte e modifiche hanno rotto qualcosa oppure che la componente in comune ha leggermente cambiato il suo scopo</p>
+<h2 id="black-box-testing">Black-box testing</h2>
+<p>Si vede il sistema come una scatola nera, baso quindi i miei test sulla specifica del sistema ancora prima passare all’implementazione.</p>
+<p>Bisogna quindi fare un partizionamento degli input per separare tutti i tipi di input validi e invalidi</p>
+<h2 id="white-box-testing">White-box testing</h2>
+<p>I casi di test sono ottenuti da codice, si cerca quindi di testare tutti i comandi e i cammini di esecuzione del codice.</p>
+<p>In questo metodo bisogna rispettare dei criteri:</p>
+<ul>
+<li>Copertura delle istruzioni: esercitare almeno una volta ogni istruzione durante il test</li>
+<li>Copertura delle decisioni: ogni percorso di esecuzione deve venir testato, nelle condizioni (gli if) devo testare sia il caso in cui entro sia il caso in cui non entro (è importante testare i valori ai limiti della condizione).</li>
+<li>Copertura dei cammini: bisognerebbe testate le combinazioni di tutti i percorsi, ma sono potenzialmente infiniti. Bisogna calcolare un numero minimo di test per testare le combinazioni indipendenti, tramite la <strong>complessità ciclomatica</strong></li>
+</ul>
+<h3 id="complessità-ciclomatica">Complessità ciclomatica</h3>
+<p>Il numero minimo di test necessari per attraversare tutti i cammini indipendenti è uguale alla complessità ciclomatica che si calcola a partire dal <strong>diagramma di flusso</strong> del programma e si ottiene con la seguente formula</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>Complessit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover><mtext>&nbsp;ciclomatica&nbsp;=&nbsp;</mtext></mrow><mtext>Numero&nbsp;di&nbsp;archi</mtext><mo>−</mo><mtext>Numero&nbsp;di&nbsp;nodi</mtext><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">
+\text{Complessità ciclomatica = }\text{Numero di archi} - \text{Numero di nodi} + 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">Complessit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span><span class="mord">&nbsp;ciclomatica&nbsp;=&nbsp;</span></span><span class="mord text"><span class="mord">Numero&nbsp;di&nbsp;archi</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.77777em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">Numero&nbsp;di&nbsp;nodi</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span></span></p>
+<p>(per dettagli e altre versioni leggermente diverse della formula guarda <a href="https://it.wikipedia.org/wiki/Complessit%C3%A0_ciclomatica#Descrizione">https://it.wikipedia.org/wiki/Complessità_ciclomatica#Descrizione</a></p>
+<p>Esempio</p>
+<p><img src="https://i.ibb.co/bL9T76S/image.png" alt="https://i.ibb.co/bL9T76S/image.png"></p>
+<p><strong>Numero di archi: 17</strong> (si conta anche la freccia verso il nodo 1 perché si immagina una freccia dal nodo di fine, 13 verso l’inizio, 1 per far ripartire il programma. Da questo motivo deriva il fatto di fare +1 nella formula, altrimenti la formula cambia)</p>
+<p>Numero di nodi: 13</p>
+<p>Complessità ciclomatica: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17</mn><mo>−</mo><mn>13</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">17-13 + 1 = 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">17</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">13</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">5</span></span></span></span></span></p>
+<p>Quindi so che se faccio meno di 5 test sono certo che <strong>non siano sufficienti</strong>, però farne di più non assicura che sia sufficiente</p>
+<h2 id="verifica-statica">Verifica statica</h2>
+<p>Finora abbiamo visto metodi di testing durante l’esecuzione del programma, ma si può testare il codice anche prima dell’esecuzione tramite l’analisi mirata del codice sorgente (terminazione dei cicli, variabili non inizializzate, mancata deallocazione, …) ed esecuzioni mentali o a voce (assieme a collaboratori) del codice per identificare incoerenze o dubbi.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
