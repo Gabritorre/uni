@@ -5,7 +5,7 @@ let courses = {
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript"],
 	reti_calc : ["Note complete"],
 	ric_operativa : ["Note complete"],
-	sicurezza : ["Note complete"],
+	sicurezza : ["Note complete", "Unix shell"],
 };
 
 function show_arguments(subj) {

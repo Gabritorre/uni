@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-18_Unix shell</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#unix-shell">Unix shell</a>
+<ul>
+<li><a href="#comandi-di-base">Comandi di base</a></li>
+<li><a href="#wildcards">Wildcards</a></li>
+<li><a href="#reindirizzamento">Reindirizzamento</a></li>
+<li><a href="#pipe">Pipe</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="unix-shell">Unix shell</h1>
+<p>La shell di Unix è il modo più semplice per interfacciarsi con il sistema operativo:</p>
+<ul>
+<li>eseguire programmi</li>
+<li>reindirizzare input e output</li>
+<li>connettere programmi</li>
+<li>lanciare script</li>
+</ul>
+<h2 id="comandi-di-base">Comandi di base</h2>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span>  <span class="token comment"># mostra il contenuto di una directory</span>
+<span class="token function">file</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span> <span class="token comment"># mostra il tipo di file</span>
+<span class="token function">pwd</span> <span class="token comment"># mostra il percorso della directory corrente</span>
+<span class="token function">mkdir</span> <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span> <span class="token comment"># crea una nuova directory</span>
+<span class="token function">cd</span> <span class="token operator">&lt;</span>path<span class="token operator">&gt;</span> <span class="token comment"># cambia la directory corrente</span>
+<span class="token function">cat</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># visualizza il contenuto di un file</span>
+<span class="token function">cat</span> <span class="token operator">&lt;</span>f1<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>f2<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>f3<span class="token operator">&gt;</span> <span class="token comment"># concatena e visualizza il contenuto di più file</span>
+<span class="token keyword">echo</span> <span class="token string">"string"</span> <span class="token comment"># stampa una stringa sulla console</span>
+<span class="token function">grep</span> <span class="token operator">&lt;</span>word<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># cerca una parola in un file</span>
+<span class="token function">man</span> <span class="token operator">&lt;</span>command<span class="token operator">&gt;</span> <span class="token comment"># mostra il manuale di un comando</span>
+<span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">&gt;</span> -name <span class="token string">"expression"</span> <span class="token comment"># cerca ricorsivamente file che hanno l'espressione nel nome</span>
+<span class="token function">sort</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># ordina le righe di un file</span>
+strings <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># estrae le stringhe leggibili da un file binario</span>
+</code></pre>
+<h2 id="wildcards">Wildcards</h2>
+<p>Le wildcards sono dei caratteri speciali che vengono interpretato in modo particolare dai comandi:</p>
+<pre class=" language-bash"><code class="prism  language-bash">* <span class="token comment"># accetta ogni stringa di caratteri</span>
+? <span class="token comment"># accetta un singolo carattere</span>
+<span class="token punctuation">[</span><span class="token punctuation">..</span>.<span class="token punctuation">]</span> <span class="token comment"># accetta un insieme di caratteri specificato</span>
+</code></pre>
+<p>Nota che come comportamento di default il ‘.’ all’inizio del nome del file o subito dopo una slash deve essere specificato esplicitamente.</p>
+<h2 id="reindirizzamento">Reindirizzamento</h2>
+<p>Ci sono dei simboli per poter reindirizzare input e output:</p>
+<ul>
+<li><code>&gt;</code>  reindirizza l’output di un comando verso un file sovrascrivendone il contenuto già presente
+<ul>
+<li>es: <code>ls &gt; tempfile.txt</code> scrive l’output di <code>ls</code>  nel file chiamato <code>tempfile.txt</code></li>
+</ul>
+</li>
+<li><code>&lt;</code> reindirizzo il contenuto di un file come input al comando
+<ul>
+<li>es: <code>sort &lt; list.txt</code></li>
+</ul>
+</li>
+<li><code>&gt;&gt;</code>  reindirizza l’output di un comando verso un file aggiungendolo al contenuto già presente</li>
+</ul>
+<p>Linux ha tre stream di input/output di default:</p>
+<ul>
+<li><strong>stdin (0)</strong>: standard input</li>
+<li><strong>stdout (1)</strong>: standard output, dove viene stampato il normale output</li>
+<li><strong>stderr (2)</strong>: standard error, dove vengono stampati gli errori</li>
+</ul>
+<p>quindi si può anteporre il numero relativo allo stream per reindirizzare lo standard output oppure lo standard error:</p>
+<p><code>cat test.txt 2&gt; errors.txt</code>  se “test.txt” non esiste allora l’errore lanciato dal programma andrà nel file “errors.txt”</p>
+<h2 id="pipe">Pipe</h2>
+<p>Le pipe sono la forma base per la comunicazione tra processi, possiamo pensarlo ad un meccanismo di reindirizzamento ma tra due programmi.</p>
+<p><code>command1 | command2</code></p>
+<p>l’output di “command1” diventa l’input di “command2”, l’output di “command2” verrà stampato sul terminale.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span> <span class="token operator">|</span> <span class="token function">grep</span> Documents
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
