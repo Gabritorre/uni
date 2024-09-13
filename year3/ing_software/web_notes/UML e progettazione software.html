@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-08_UML e progettazione software</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#uml-e-progettazione-software">UML e progettazione software</a>
+<ul>
+<li><a href="#diagramma-delle-classi">Diagramma delle classi</a></li>
+<li><a href="#diagramma-di-sequenza">Diagramma di sequenza</a></li>
+<li><a href="#diagramma-di-stato">Diagramma di stato</a></li>
+<li><a href="#diagramma-dei-componenti">Diagramma dei componenti</a></li>
+<li><a href="#diagramma-di-distribuzione">Diagramma di distribuzione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="uml-e-progettazione-software">UML e progettazione software</h1>
+<p>UML (Unified Modeling Language) rappresenta un linguaggio per creare dei modelli che rappresentano vari punti di vista di una progettazione, possiamo pensare alla progettazione di una casa in cui vengono disegnate varie piantine (vista orizzontale, vista verticale, vista impianto idraulico, vista impianto elettrico, ecc…)</p>
+<p>Si possono categorizzare i modelli UML in:</p>
+<ul>
+<li>Modelli a <strong>vista statica: il</strong> tempo viene ignorato
+<ul>
+<li>Diagramma dei casi d’uso (già visto)</li>
+<li>Diagramma delle classi</li>
+<li>Diagramma dei componenti</li>
+<li>Diagramma di distribuzione</li>
+</ul>
+</li>
+<li>Modelli a <strong>vista dinamica</strong>: la sequenza di azioni nel tempo viene considerata
+<ul>
+<li>Diagramma di sequenza</li>
+<li>Diagramma di stato</li>
+</ul>
+</li>
+</ul>
+<h2 id="diagramma-delle-classi">Diagramma delle classi</h2>
+<p>Sono gli stessi diagrammi utilizzati nella programmazione ad oggetti e nei database.</p>
+<p>Rappresentano classi di oggetti con i loro attributi e operazioni, e le interazioni tra le classi.</p>
+<h2 id="diagramma-di-sequenza">Diagramma di sequenza</h2>
+<p>Definisce la logica di uno scenario corrispondente ad un caso d’uso.</p>
+<p>Lo use case che avevo già definito mi diceva cosa doveva fare, con questo diagramma specifico come lo si deve fare. Descrive, quindi, interazioni tra oggetti che collaborano per svolgere un compito, le interazioni sono paragonabili alla chiamata di funzioni.</p>
+<p>Si tratta di un modello dinamico in quanto la <strong>sequenza temporale delle azioni è importante</strong>.</p>
+<p>L’aspetto di questo diagramma è il seguente</p>
+<p><img src="https://i.ibb.co/16Lktqr/image.png" alt="https://i.ibb.co/16Lktqr/image.png"></p>
+<p>Lo scambio di messaggio può essere <strong>sincrono o asincrono:</strong></p>
+<ul>
+<li>il <strong>messaggio sincrono</strong> (rappresentato con una freccia piena) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È sincrono in quanto il chiamante attende che il metodo finisca prima di proseguire. La freccia tratteggiata rappresenta il ritorno</li>
+<li>il <strong>messaggio asincrono</strong> (rappresentato con una freccia non riempita) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È asincrono in quanto il chiamante non attende che il metodo finisca prima di proseguire, si formano delle interazioni concorrenti.</li>
+</ul>
+<h3 id="condizioni">Condizioni</h3>
+<p>Possiamo avere anche una <strong>esecuzione condizionale di un messaggio</strong>, cioè un messaggio (metodo) viene chiamato solo se una condizione si avvera.</p>
+<p>Si rappresenta aggiungendo la condizione tra parentesi quadre prima del nome del messaggio</p>
+<h3 id="iterazioni">Iterazioni</h3>
+<p>Posso rappresentare una esecuzione ciclica di messaggi, si rappresenta aggiungendo un asterisco * tra la condizione e il messaggio</p>
+<p>Si possono iterare anche blocchi di più messaggi, racchiudendo i messaggi in un box e si scrive solitamente in alto a sinistra la condizione</p>
+<h3 id="auto-chiamata">Auto-chiamata</h3>
+<p>L’auto chiamata descrive l’invocazione di un metodo appartenente allo stesso oggetto, si rappresenta con una freccia circolare che torna su se stessa</p>
+<h3 id="creazione-di-un-oggetto">Creazione di un oggetto</h3>
+<p>È possibile che un oggetto venga creato durante le sequenza di azioni del diagramma, la freccia avrà una etichetta “new” o “create” e il rettangolo rappresentante l’oggetto creato andrà posizionato nel corretto momento temporale nel diagramma</p>
+<p><img src="https://i.ibb.co/ysJ3jyz/image.png" alt="https://i.ibb.co/ysJ3jyz/image.png"></p>
+<h3 id="eliminazione-di-un-oggetto">Eliminazione di un oggetto</h3>
+<p>È possibile terminare prematuramente la vita di un oggetto, rendendo da quel momento in poi illegale ogni chiamata ad un suo metodo.</p>
+<p>Si rappresenta mettendo una “X” sulla sua linea di vita</p>
+<h3 id="esempio-completo">Esempio completo</h3>
+<p><img src="https://i.ibb.co/kM1ZWjq/esempio-completo.png" alt="https://i.ibb.co/kM1ZWjq/esempio-completo.png"></p>
+<h2 id="diagramma-di-stato">Diagramma di stato</h2>
+<p>Questo tipo di diagramma ha un punto di vista sugli stati assunti dagli oggetti durante la loro vita.</p>
+<p>Gli <strong>eventi,</strong> che possiamo ricondurre ai messaggi nei diagrammi di sequenza, attivano delle <strong>transazioni di stato</strong>, lo <strong>stato</strong> è costituito dai valori assunti dalla proprietà dell’oggetto</p>
+<p>Abbiamo due stati speciali (<em>pseudostati</em>):</p>
+<ul>
+<li>lo stato iniziale</li>
+<li>lo stato finale</li>
+</ul>
+<p>gli stati si rappresentano con dei rettangolo stondati</p>
+<p>L’evento può essere:</p>
+<ul>
+<li>una chiamata sincrona o asincrona</li>
+<li>una condizione predefinita che diventa vera</li>
+<li>un periodo di tempo</li>
+</ul>
+<p>gli eventi si rappresentano con delle frecce con una etichetta al nome dell’evento.</p>
+<h3 id="nome-evento">Nome evento</h3>
+<p>Il nome dell’evento segue una sintassi particolare:</p>
+<p><code>nome_evento(parametri_separati_da_virgola)[condizione_di_attivazione]/[azioni_di_risposta_all'evento]</code></p>
+<p><img src="https://i.ibb.co/X4j4kkS/image.png" alt="https://i.ibb.co/X4j4kkS/image.png"></p>
+<p><img src="https://i.ibb.co/tLrDg2y/esempio.png" alt="https://i.ibb.co/tLrDg2y/esempio.png"></p>
+<p>Quando si verifica un evento l’ordine di esecuzione è il seguente:</p>
+<ol>
+<li>Se è in esecuzione una attività, questa viene interrotta</li>
+<li>si esegue l’azione di uscita dall’attuale stato</li>
+<li>si esegue l’azione di entrata nel nuovo stato</li>
+<li>si inizia l’attività del nuovo stato</li>
+</ol>
+<h2 id="diagramma-dei-componenti">Diagramma dei componenti</h2>
+<p>Evidenzia l’organizzazione e le dipendenze delle componenti software (i file che poi si andranno a scrivere)</p>
+<p><img src="https://i.ibb.co/N7cLK9N/image.png" alt="https://i.ibb.co/N7cLK9N/image.png"></p>
+<h2 id="diagramma-di-distribuzione">Diagramma di distribuzione</h2>
+<p>Mostra come sono configurate e allocate le unità HW e SW dell’applicazione, cosa va su un server, cosa va sul client, cosa è in cloud e come questi nodi comunicano.</p>
+<p><img src="https://i.ibb.co/X8vKQQz/image.png" alt="https://i.ibb.co/X8vKQQz/image.png"></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
