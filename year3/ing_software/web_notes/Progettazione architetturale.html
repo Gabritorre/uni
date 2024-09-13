@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-07_Progettazione architetturale</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#progettazione-architetturale">Progettazione architetturale</a>
+<ul>
+<li><a href="#architettura-del-sistema">Architettura del sistema</a></li>
+<li><a href="#modello-dei-dati">Modello dei dati</a></li>
+<li><a href="#modello-del-controllo">Modello del controllo</a></li>
+<li><a href="#strategie-di-progettazione">Strategie di progettazione</a></li>
+<li><a href="#qualità-della-progettazione">Qualità della progettazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="progettazione-architetturale">Progettazione architetturale</h1>
+<p>Il documento di progettazione ha come obiettivo quello di definire come (a livello astratto) realizzare ciò che è stato definito nel modello dei requisiti.</p>
+<p>Quindi è una fase intermedia che parte dal documento dei requisiti e produce un documento di progettazione da passare poi a chi si occuperà dell’implementazione.</p>
+<p>Il documento è strutturato sarà composto nel seguente modo:</p>
+<ul>
+<li><strong>Introduzione</strong>: riassunto degli elementi fondamentali del documento</li>
+<li><strong>Architettura del sistema</strong>: organizzazione del sistema in sottosistemi</li>
+<li><strong>Modello dei dati e del controllo</strong></li>
+<li><strong>Modelli UML</strong></li>
+<li><strong>Progettazione dell’interfaccia utente</strong>: mockup con spiegazione</li>
+<li><strong>Glossario</strong></li>
+</ul>
+<h2 id="architettura-del-sistema">Architettura del sistema</h2>
+<p>L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli tramite un diagramma a blocchi.</p>
+<p>Un <strong>sottosistema</strong> è un sistema indipendente dagli altri sottosistemi.</p>
+<p>Un <strong>modulo</strong> è una componente del sistema che quindi non può essere considerato un sistema a se stante.</p>
+<p>Un esempio (robot di impacchettamento) in cui vede la divisione in sistemi:</p>
+<p><img src="https://i.ibb.co/Bj0SNPj/image.png" alt="https://i.ibb.co/Bj0SNPj/image.png"></p>
+<h2 id="modello-dei-dati">Modello dei dati</h2>
+<p>Il prossimo passo è la <strong>modellazione dei dati</strong> in cui si identifica come i sottosistemi si scambiano i dati:</p>
+<ul>
+<li>I dati sono <strong>condivisi</strong> in un repository comune in cui tutti i sottosistemi possono accedere
+<ul>
+<li>efficiente per grandi quantità di dati</li>
+<li>i sottosistemi non si preoccupano della gestione dei dati (backup, sicurezza, produzione)</li>
+<li>evoluzione dei dati dispendiosa</li>
+<li>il modello dei dati deve essere un compromesso tra le varia esigenze dei sottosistemi</li>
+</ul>
+</li>
+<li>Ogni sottosistema mantiene una propria base di dati isolata dagli altri (modello “client-server”)
+<ul>
+<li>i dati sono gestiti in modo distribuito dai singoli componenti che offrono i servizi</li>
+<li>la distribuzione non è semplice</li>
+<li>è richiesta una rete, quindi è semplice aggiungere nuovi server e fare upgrade di quelli esistenti</li>
+<li>lo scambio di dati tra sottosistemi può risultare inefficiente perché ogni sottosistema utilizza il proprio modello</li>
+</ul>
+</li>
+<li>I sottosistemi sono organizzati a cipolla (modello “macchina astratta”)
+<ul>
+<li>il sistema è fatto a livelli in cui ogni livello comunica con il livello inferiore e superiore</li>
+</ul>
+</li>
+</ul>
+<h2 id="modello-del-controllo">Modello del controllo</h2>
+<p>Vediamo come viene passato il controllo nelle azioni del sistema:</p>
+<ul>
+<li>Controllo <strong>centralizzato,</strong> Un sottosistema ha il controllo globale e dà inizio e fine agli<br>
+altri sottosistemi.
+<ul>
+<li>modello “<strong>call-return</strong>”: il controllo viene gestito top-down tramite la chiamata di procedure: il sistema principale chiama delle procedure nei sottosistemi. Il controllo lo ha la procedura in esecuzione</li>
+<li>modello “<strong>manager</strong>”: Il controllo viene gestito da un componente del sistema</li>
+</ul>
+</li>
+<li>Controllo basato su <strong>eventi</strong>, guidato da eventi esterni che non si sa a priori quando accadano
+<ul>
+<li>modello “<strong>broadcast</strong>”: l’evento è trasmesso a tutti i sottosistemi, ogni sottosistema può gestirlo.
+<ul>
+<li>i sottosistemi dichiarano di essere “interessati” a degli specifici eventi.</li>
+<li>le politiche di controllo sono interne al sottosistema</li>
+</ul>
+</li>
+<li>modello “<strong>interrupt-driven</strong>”: all’evento corrisponde un solo sottosistema che lo gestisce</li>
+</ul>
+</li>
+</ul>
+<h2 id="strategie-di-progettazione">Strategie di progettazione</h2>
+<p>Possiamo pensare alla nostra soluzione progettuale in due modi:</p>
+<ul>
+<li><strong>Progettazione funzionale</strong>: lo <strong>stato</strong> del sistema è centralizzato e condiviso, le componenti operano su quello stato modificandolo.
+<ul>
+<li>Ne è un esempio il modello “data-flow”: l’esecuzione del sistema è composto da passaggi da un funzione all’altra le quali cambiano lo stato comune, passando quindi da uno stato iniziale ad uno finale.</li>
+</ul>
+</li>
+<li><strong>Progettazione orientata agli oggetti</strong>: Il sistema è un insieme di oggetti, ognuno con il proprio stato. Attraverso le interfacce degli oggetti posso passare loro il controllo in modo da cambiare il loro stato interno in un certo modo</li>
+</ul>
+<p>In alternativa se si vuole realizzare una architettura simile a quelle già esistenti bisogna cercare se esistono già dei modelli esistenti e quindi:</p>
+<ul>
+<li>Ispirarmi a <strong>modelli generici</strong>: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).</li>
+<li>seguire <strong>modelli di riferimento</strong>: cioè modelli ideali standard che non hanno una implementazione diretta, ma forniscono solo delle direttive (es. modello TCP/IP)</li>
+</ul>
+<h2 id="qualità-della-progettazione">Qualità della progettazione</h2>
+<p>Vediamo degli attributi per determinare una progettazione di buona qualità:</p>
+<h3 id="coesione">1. Coesione</h3>
+<p>Misura quanto la divisione del sistema in componenti è fatta bene.</p>
+<p>Un sistema coeso è un sistema in cui ogni componente ha tutte e sole le funzioni che devono stare legate. In questo modo quando devo fare una modifica al sistema è sufficiente toccare un singolo componente.</p>
+<p>Ci possono essere vari criteri per raggruppare le funzionalità nei componenti, le migliori sono:</p>
+<ul>
+<li>coesione funzionale: ogni parte del componente è necessario solo per l’esecuzione di una funzione di quel componente</li>
+<li>coesione d’oggetto: la componente ha tutti gli attributi e tutti le operazioni per modificare o ispezionare lo stato dell’oggetto. Bisogna cercare di ridurre lunghe catene di ereditarietà</li>
+</ul>
+<h3 id="accoppiamento">2. Accoppiamento</h3>
+<p>Misura la dipendenza delle componenti.</p>
+<p>Più le componenti sono indipendenti meglio è, infatti il cambiamento di una componente non ha forti effetti sulle altre.</p>
+<p>Bisogna quindi ridurre l’uso di variabile condivise e il passaggio di dati per riferimento. Inoltre, come nel punto precedente anche qui bisogna cercare di ridurre lunghe catene di ereditarietà.</p>
+<h3 id="comprensibilità">3. Comprensibilità</h3>
+<p>Ricordando che questo documento deve essere utilizzabile da chi andrà ad implementare il sistema e deve essere verificabile da chi ha fatto la specifica. Quindi bisogna rendere il documento più comprensibile possibile:</p>
+<ul>
+<li>dare nomi corretti e significativi</li>
+<li>ridurre la complessità</li>
+<li>fare una buona documentazione</li>
+</ul>
+<h3 id="adattabilità">4. Adattabilità</h3>
+<p>Un progetto si dice adattabile se è facilmente adattabile in caso di modifiche sui requisiti:</p>
+<ul>
+<li>buona documentazione</li>
+<li>isolare i componenti</li>
+<li>tracciare i legami tra componenti e requisiti</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
