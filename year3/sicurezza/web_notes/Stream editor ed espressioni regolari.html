@@ -1,0 +1,183 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-19_Stream editor ed espressioni regolari</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#stream-editor-ed-espressioni-regolari">Stream editor ed espressioni regolari</a>
+<ul>
+<li></li>
+<li><a href="#espressioni-regolari">Espressioni regolari</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="stream-editor-ed-espressioni-regolari">Stream editor ed espressioni regolari</h1>
+<p>Uno <strong>stream editor</strong> è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di basi Unix e si chiama “<strong>sed</strong>”.</p>
+<p>La struttura base per invocare il programma sed è il seguente</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token operator">&lt;</span>commands<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>input_file<span class="token operator">&gt;</span>
+</code></pre>
+<p>Esempio, sostituire la stringa “Gigi” con “Franco” da un testo proveniente dal file di testo chiamato “input.txt”.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/Gigi/Franco/"</span> input.txt
+</code></pre>
+<p>Possiamo aggiungere l’opzione <code>-i</code>  serve per fare il cambiamento all’interno del file, senza le modifiche vanno solamente nello stream di output, cosicché il file non venga toccato</p>
+<h3 id="comandi-sed">Comandi sed</h3>
+<p>Vediamo la sintassi dei comandi che sed utilizza per fare le sue trasformazioni.</p>
+<p>i comandi sed seguono la seguente struttura:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">[</span>addr<span class="token punctuation">]</span>X<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+</code></pre>
+<ul>
+<li><code>addr</code> (opzionale): espressione regolare, numero di riga o range di righe, che indica dove si vuole eseguire il comando</li>
+<li><code>X</code> (necessario): una singola lettere che indica l’azione del comando</li>
+<li><code>options</code>(opzionale): opzioni aggiuntive per particolari comandi</li>
+</ul>
+<p>Degli esempi di comandi sono:</p>
+<ul>
+<li>
+<p><strong>Delete</strong>, con lettera <code>d</code></p>
+<ul>
+<li><code>sed "1d" input.txt</code> stampa tutte le righe tranne la prima</li>
+<li><code>sed “1,3d” input.txt</code> stampa tutte le righe tranne le righe 1, 2 e 3</li>
+</ul>
+</li>
+<li>
+<p><strong>Print</strong>, con lettera <code>p</code></p>
+<ul>
+<li><code>sed "1p" input.txt</code> stampa la prima riga + stampa di default</li>
+<li><code>sed “1,3p” input.txt</code> stampa la riga 1, 2 e 3 + stampa di default</li>
+</ul>
+<p>Nota: per comportamento di default <em>sed</em> cerca sempre di stampare indipendentemente dal comando, quindi con il comando <code>p</code> stiamo facendo stampare ciò che già viene stampato di default, ottenendo così che con il comando <code>sed "1p" input.txt</code> viene stampata la prima riga 2 volte. Se si vuole forzare la stampa solo delle righe indicate nel comando va aggiunta l’opzione <code>-n</code> al programma</p>
+<ul>
+<li><code>sed -n “1,3p” input.txt</code> stampa solo la riga 1, 2 e 3</li>
+</ul>
+</li>
+<li>
+<p><strong>Substitution</strong>, con lettera <code>s</code></p>
+<ul>
+<li><code>sed “s/hello/hi” input.txt</code> sostituisce la <strong>prima occorrenza di ogni riga</strong> della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando <code>s</code> usa due opzioni racchiuse tra slash (<code>/</code>)</li>
+<li><code>sed “s/hello/hi/g” input.txt</code> sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi”</li>
+<li><code>sed “s/HeLlO/hi/gi” input.txt</code>sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi” in modo case insensitive</li>
+</ul>
+<p>Nota: il carattere che divide le opzioni è arbitrario, lo slash è quello convenzionale ma si possono usare altri caratteri <em>single-byte</em> come:  <code>.</code> , <code>?</code></p>
+</li>
+<li>
+<p><strong>Mapping</strong>, con lettera <strong><code>y</code></strong></p>
+<ul>
+<li><code>sed “y/abc/ABC/” input.txt</code> fa un mapping carattere per carattere su ogni occorrenza, quindi mappa il primo carattere della prima opzione con il primo carattere della seconda opzione e così via. Si ottiene che tutte le ‘a’ diventano ‘A’, tutte le ‘b’ diventano ‘B’ ecc…</li>
+</ul>
+</li>
+</ul>
+<h2 id="espressioni-regolari">Espressioni regolari</h2>
+<p>Le espressioni regolari rappresentano dei pattern di stringhe con strutture particolari.</p>
+<p>Ci sono dei caratteri speciali che rappresentano la struttura:</p>
+<ul>
+<li><code>^</code> inizio della riga</li>
+<li><code>$</code> fine della riga</li>
+<li><code>.</code> singolo carattere</li>
+<li><code>.*</code> una sequenza di caratteri (anche una sequenza vuota, o sequenza con spazi)</li>
+<li><code>c*</code>  qualunque numero di occorrenze del carattere ‘c’, anche nessuna occorrenza.</li>
+<li><code>c\+</code> una o più occorrenze di ‘c’</li>
+<li><code>c\?</code> zero o una occorrenze di ‘c’</li>
+<li><code>[0-9]</code>  sequenza di caratteri numerici</li>
+<li><code>[^0-9]</code> sequenza che <strong>non contiene</strong> caratteri numerici</li>
+</ul>
+<p>Vediamo delle classi particolari:</p>
+
+<table>
+<thead>
+<tr>
+<th>Classe</th>
+<th>Significato</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[:alpha:]]</td>
+<td>Caratteri alfabetici</td>
+<td>[[:alpha:]]+: corrisponde a “abcXYZ”</td>
+</tr>
+<tr>
+<td>[[:digit:]]</td>
+<td>Cifre numeriche</td>
+<td>[[:digit:]]{3}: corrisponde a “123”</td>
+</tr>
+<tr>
+<td>[[:alnum:]]</td>
+<td>Caratteri alfanumerici</td>
+<td>[[:alnum:]]: corrisponde a “a1B2c3”</td>
+</tr>
+<tr>
+<td>[[:space:]]</td>
+<td>Spazi bianchi</td>
+<td>[[:space:]]+: corrisponde a " \t\n"</td>
+</tr>
+<tr>
+<td>[[:punct:]]</td>
+<td>Segni di punteggiatura</td>
+<td>[[:punct:]]: corrisponde a “!?.,;”</td>
+</tr>
+<tr>
+<td>[[:upper:]]</td>
+<td>Lettere maiuscole</td>
+<td>[[:upper:]]+: corrisponde a “ABC”</td>
+</tr>
+<tr>
+<td>[[:lower:]]</td>
+<td>Lettere minuscole</td>
+<td>[[:lower:]]+: corrisponde a “xyz”</td>
+</tr>
+<tr>
+<td>[[:blank:]]</td>
+<td>caratteri vuoti</td>
+<td>[[:blank:]]+: corrisponde a spazi e tab</td>
+</tr>
+<tr>
+<td>[[:print:]]</td>
+<td>Caratteri stampabili</td>
+<td>[[:print:]]+: corrisponde ai caratteri stampabili, inclusi gli spazi</td>
+</tr>
+</tbody>
+</table><p>Un esempio in un comando sed:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> -E <span class="token string">'s/[[:digit:]]+/NUMERO/'</span> input.txt
+</code></pre>
+<p>Questo comando sostituisce qualsiasi sequenza di una o più cifre con la parola “NUMERO”. Ad esempio:</p>
+<ul>
+<li>“Ho 25 anni” diventa “Ho NUMERO anni”</li>
+</ul>
+<p>Nota: L’opzione <code>-E</code> in sed abilita l’uso di espressioni regolari estese, permettendo una sintassi più avanzata e flessibile per i pattern di ricerca e sostituzione.</p>
+<h3 id="back-reference">Back reference</h3>
+<p>Con alcuni comandi è comodo poter fare riferimento al testo <em>metchato</em>. questo si può fare con il careattere ‘&amp;’.</p>
+<p>es. aggiungere “world”  dopo “hello”</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/hello/&amp; world/g"</span> input.txt
+</code></pre>
+<p>è possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:</p>
+<p>Ad esempio, per scambiare l’ordine di due parole:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/\(hello\) \(world\)/\2 \1/"</span> input.txt
+</code></pre>
+<p>Questo comando cerca il pattern “hello world” e lo sostituisce con “world hello”. Le parentesi tonde creano due gruppi, e \1 e \2 si riferiscono rispettivamente al primo e al secondo gruppo.</p>
+<p>Ci sono delle sintassi particolari non standard, ma fornite da GNU:</p>
+<ul>
+<li><code>c\{n\}</code> ripete ‘c’ n volte</li>
+<li><code>\L</code> converte in lowercase</li>
+<li><code>\U</code> converte in uppercase</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

@@ -35,7 +35,7 @@ Le wildcards sono dei caratteri speciali che vengono interpretato in modo partic
 [...] # accetta un insieme di caratteri specificato
 ```
 
-Nota che come comportamento di default il ‘.’ all’inizio del nome del file o subito dopo una slash deve essere specificato esplicitamente.
+Nota che come comportamento di default il ‘.’ all’inizio del nome del file o subito dopo una slash deve essere specificato esplicitamente, le wildcard non lo considerano in automatico.
 
 ## Reindirizzamento
 
