@@ -33,6 +33,7 @@
 <p>Le espressioni più semplici sono i <em>literal</em>, operazioni matematiche (es somma, sottrazione) ma ci anche particolari operazioni aritmentiche (es. pre e post incremento), operazioni di confronto (es. maggiore, uguale), operazioni logiche (and, or). Tutte queste operazioni vengono valutate per produrre un output: numerico, di verità, testuale, ecc…</p>
 <p>A basso livello le espressioni vengono salvate a runtime nella memoria <em>heap</em> sottoforma di blocco <strong>indivisibile</strong> <code>|Tipo|Valore|</code> , ad esempio il letterale <code>5</code> verrà salvato come <code>|Number|5|</code>.</p>
 <p>Quando si assegna una espressione ad una variabile, ad esempio <code>let my_var = 5</code> viene inserita una nuova informazione composta da <code>|"my_var"|Number|5|</code> in un grande dizionario contenente altri dati dello stesso <em>scope</em></p>
+<p>Il fatto che il nome della variabile sia salvato come stringa non è banale, infatti è possibile fare modifica al nome della variabile oppure decidere il nome della variabile a <em>runtime</em>.</p>
 <p>D’altra parte lo <strong>statement</strong> è del testo che non produce un valore, ma alterano lo stato dell’esecuzione, ne sono un esempio i cicli, gli <em>if</em>, assegnamenti e dichiarazioni.</p>
 <h2 id="struttura-lessicale">Struttura lessicale</h2>
 <p>Vediamo le regole lessicale degli elementi basilari di JavaScript.</p>

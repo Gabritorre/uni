@@ -14,10 +14,11 @@ A basso livello le espressioni vengono salvate a runtime nella memoria *heap* so
 
 Quando si assegna una espressione ad una variabile, ad esempio `let my_var = 5` viene inserita una nuova informazione composta da `|"my_var"|Number|5|` in un grande dizionario contenente altri dati dello stesso *scope*
 
+Il fatto che il nome della variabile sia salvato come stringa non è banale, infatti è possibile fare modifica al nome della variabile oppure decidere il nome della variabile a *runtime*.
+
 D’altra parte lo **statement** è del testo che non produce un valore, ma alterano lo stato dell’esecuzione, ne sono un esempio i cicli, gli *if*, assegnamenti e dichiarazioni.
 
  
-
 ## Struttura lessicale
 
 Vediamo le regole lessicale degli elementi basilari di JavaScript.

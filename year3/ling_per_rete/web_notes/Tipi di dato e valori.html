@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-19_Tipi di dato e valori</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#tipi-di-dato-e-valori">Tipi di dato e valori</a>
+<ul>
+<li><a href="#immutabilità">Immutabilità</a></li>
+<li><a href="#type-conversion">Type conversion</a></li>
+<li><a href="#const-let-var">Const, let, var</a></li>
+<li><a href="#null-e-undefined">Null e undefined</a></li>
+<li><a href="#infinity-value">Infinity value</a></li>
+<li><a href="#nan-not-a-number">NaN (Not a number)</a></li>
+<li><a href="#il-global-object">Il Global object</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="tipi-di-dato-e-valori">Tipi di dato e valori</h1>
+<p>I tipi di JavaScript possono essere divisi in due categorie:</p>
+<ul>
+<li>Tipi primitivi: sono i tipi classici, quindi stringhe, numeri e boolean
+<ul>
+<li>Ci sono anche due valori speciali, <code>null</code> e <code>undefined</code> che fanno parte dei tipi primitivi</li>
+</ul>
+</li>
+<li>Tipi oggetto (o <em>reference type</em>): sono tipi più complessi, un oggetto possiamo immaginarlo come una collezione di proprietà dotate di nome e valore (ad esempio, <code>Set</code>, <code>Map</code>, <code>Error</code>, array, dizionari, …)
+<ul>
+<li>Anche <strong>funzioni</strong> e <strong>classi</strong> sono un particolare tipo di oggetto.</li>
+</ul>
+</li>
+</ul>
+<p>JavaScript ha un garbage collector integrato, quindi quando delle variabili non sono più raggiungibili si arrangia a deallocarle.</p>
+<p>JavaScript supporta una stile di programmazione orientato agli oggetti, sia i tipi primitivi che i tipi oggetto possono comportarsi come degli oggetti e quindi invocare dei metodi su di loro (<code>null</code> e <code>undefined</code> sono l’unica eccezione).</p>
+<h2 id="immutabilità">Immutabilità</h2>
+<p>I tipi primitivi sono immutabili, mentre i tipi oggetti sono mutabili.</p>
+<p>quindi quando si vuole modificare un tipo primitivo si fa sempre un nuovo assegnamento creando un nuovo valore.</p>
+<p>quindi ogni volta che viene invocato un metodo su una stringa quel metodo restituirà una nuova stringa e non modifica se stessa.</p>
+<h2 id="type-conversion">Type conversion</h2>
+<p>JavaScript esegue delle conversioni di tipo in modo automatico, ad esempio se un programma si aspetta una stringa ma gli viene passato un intero viene convertito da solo.</p>
+<p>Gli <strong>operatori sono polimorfi</strong>, quindi cambiano il loro comportamento in base ai tipi dei valori, un esempio è sommare una stringa ad un numero che genererà il risultato come una stringa concatenata al numero (il quale è stato convertito in stringa)</p>
+<p>Da qui nasce la differenza tra l’eguaglianza con <em>type conversion</em> (<code>==</code>) e quella senza (<code>===</code>).</p>
+<p>quindi l’operatore <code>==</code> esegue una conversione per “avvicinare” il più possibile i tipi tra loro e poi fa il confronto, comportamento che può portare ad errori.</p>
+<p>mentre l’operatore <code>===</code> esegue un confronto diretto sui tipi (questo è il confronto voluto nella maggior parte dei casi).</p>
+<p>Nota che anche <code>===</code> sugli oggetti effettua un confronto <code>shallow</code> sui riferimenti, non vengono confrontate le proprietà degli oggetti.</p>
+<h2 id="const-let-var">Const, let, var</h2>
+<p>Abbiamo tre <code>keyword</code> per dichiarare variabili e in nessuna viene specificato il tipo di dato, viene determinato dall’interprete quando gli vengono assegnati dei valori in base alla loro sintassi.</p>
+<ul>
+<li><code>const</code> usato per dichiarare costanti nel blocco di scope più stretto racchiuso tra <code>{}</code>
+<ul>
+<li>Una variabile dichiarata <code>const</code> non può essere riassegnata.</li>
+<li>Se la costante è un oggetto è comunque possibile modificare i suoi attributi interni (ad esempio negli array è possibile modificarci i valori, aggiungere e togliere elementi ecc…).</li>
+</ul>
+</li>
+<li><code>let</code>  usato per dichiarare variabili nel blocco di scope più stretto racchiuso tra <code>{}</code>
+<ul>
+<li>Generalmente è il modo di dichiarazione preferito.</li>
+</ul>
+</li>
+<li><code>var</code> usato per dichiarare variabili nello scope della funzione
+<ul>
+<li>Hanno anche un comportamento particolare detto <em>hoisting</em> cioè vengono salvate nello scopo come <code>undefined</code> ancora prima di raggiungere la riga di dichiarazione. È quindi possibile accedere alla variabile ancora prima di raggiungere la sua dichiarazione (conterrà comunque <code>undefined</code> finche non viene raggiunta la riga di inizializzazione)</li>
+</ul>
+</li>
+<li>Si può anche dichiarare senza le keyword precedenti, semplicemente scrivendo il nome della variabile e assegnandogli un valore. In questo caso il suo scope sarà globale (anche se dichiarata all’interno di funzioni)</li>
+</ul>
+<h2 id="null-e-undefined">Null e undefined</h2>
+<p>Quando viene dichiarata una variabile senza assegnamento, assume il <strong>tipo e il valore</strong> <code>undefined</code>, che serve proprio a rappresentare la non inizializzazione. Quindi può essere interpretato come una mancanza di valore non prevista, o proprio un errore.</p>
+<p>il valore <code>null</code> (che ha tipo <code>object</code>) invece rappresenta la mancanza di un valore voluta.</p>
+<p>Entrambi sono codificati come valore booleano falso e sono valori distinti per l’operatore di uguaglianza <code>===</code>.</p>
+<p>Su entrambi non è possibile invocare metodi.</p>
+<h2 id="infinity-value">Infinity value</h2>
+<p>Operazioni aritmetiche non sollevano eccezioni in caso di <em>overflow</em>, <em>underflow</em> o divisione per zero, piuttosto viene usato il valore speciale <code>Infinity</code> oppure <code>-Infinity</code>.</p>
+<h2 id="nan-not-a-number">NaN (Not a number)</h2>
+<p>Un caso particolare però è <code>0/0</code> (e altre operazioni particolari) che non ha un valore definito e viene quindi assegnato un <code>NaN</code> (<em>not a number</em>)</p>
+<p>Una caratteristica particolare di <code>NaN</code> è l’impossibilità di essere comparato con altri valori, per controllare che una variabile sia NaN si usa il metodo <code>Number.isNaN()</code></p>
+<h2 id="il-global-object">Il Global object</h2>
+<p>Esiste un particolare oggetto chiamato <strong>Global object</strong>, è un regolare oggetto che possiede delle proprietà accessibili globalmente.</p>
+<p>Quando si carica un sito web viene creato questo oggetto che contiene costanti come <code>NaN</code> e <code>Infinity</code>, funzioni globali, costruttori globali, e oggetti globali come <code>Math</code> e <code>JSON</code></p>
+<p>Nei browser il global object è riferibile tramite la proprietà <code>window</code> oppure <code>globalThis</code></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
