@@ -30,7 +30,7 @@ viene chiamato **anello con identità** se:
 - esiste l'identità del prodotto $(\exists 1 \in A : a \cdot 1 = 1 \cdot a)$
 
 l'anello è **invertibile** se:
-- esiste l'inverso $(\exists a' \in A : a\codt a' = a' \cdot a = 1)$
+- esiste l'inverso $(\exists a' \in A : a\cdot a' = a' \cdot a = 1)$
 
 Es $(\mathbb{Z}, + , \cdot)$
 
