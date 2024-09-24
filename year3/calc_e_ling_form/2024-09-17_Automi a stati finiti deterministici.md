@@ -1,4 +1,5 @@
-﻿# Linguaggi regolari
+﻿
+# Automi a stati finiti deterministici
 
 ## Automi a stati finiti (DFA)
 
@@ -80,7 +81,7 @@ Ricordiamo che il numero di istanze della funzione $\delta$ è $|Q| \times |\Sig
 
 Diamo una definizione formale di linguaggio di un DFA.
 
-Sia $M=(Q, \Sigma, \delta, q_0, F)$ e sia $w=w_1w_2...w_n$ una stringa tale che $\forall i \in [1...n],\, w_i\in \Sigma$ diciamo che $M$ accetta $w$ se e solo se esiste una sequenza di stati $r_0, r_1, …r_n \in Q$  tali che:
+Sia $M=(Q, \Sigma, \delta, q_0, F)$ e sia $w=w_1w_2...w_n$ una stringa tale che $\forall i \in [1...n],\, w_i\in \Sigma$ diciamo che $M$ **accetta** $w$ se e solo se esiste una sequenza di stati $r_0, r_1, …r_n \in Q$  tali che:
 
 1. $r_0 = q_0 \hspace{5mm}$ (parte dallo stato iniziale di $M$)
 2. $r_n \in F \hspace{6mm}$(l’ultimo stato è uno stato accettante)
@@ -204,3 +205,24 @@ Definiamo ogni elemento della quintupla, è sufficiente ricordare lo stato in cu
     Gli stati accettati di $M$ sono gli stati accettati da $M_1$ oppure da $M_2$
     
     Nota: cambiando $\lor$ con $\land$ avrei dimostrato la chiusura rispetto **all’intersezione**
+    
+
+### Caso con alfabeti diversi
+
+Mostriamo come anche con alfabeti diversi la dimostrazione rimane valida.
+
+Prendiamo un esempio che si può estendere a qualsiasi caso:
+
+- $\Sigma = \{a, b\}$
+- Linguaggio: stringhe di alfabeto $\{a,b\}$ che terminano con la stringa $b$
+
+![https://i.ibb.co/vL7Qf1F/es1.png](https://i.ibb.co/vL7Qf1F/es1.png)
+
+L’idea è quella che far lavorare il DFA su un alfabeto diverso ma che mantiene esattamente lo stesso linguaggio.
+
+- $\Sigma' = \{a, b, c\}$
+- Linguaggio: stringhe di alfabeto $\{a,b\}$ che terminano con la stringa $b$
+
+![https://i.ibb.co/Pt9Y82X/es2.png](https://i.ibb.co/Pt9Y82X/es2.png)
+
+Abbiamo creato un nuovo stato da cui non si può uscire (chiamato **stato pozzo**) nel caso venga incontrata la stringa non appartenente all’alfabeto originale
