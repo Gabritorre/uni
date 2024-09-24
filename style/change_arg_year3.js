@@ -1,6 +1,6 @@
 let courses = {
 	calc_e_ling_form : ["Note complete", "Linguaggi regolari"],
- 	diritto_info : ["Note complete", "Ordinamento giuridico italiano"],
+ 	diritto_info : ["Note complete", "Ordinamento giuridico italiano", "Principio di neutralità"],
  	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti", "Testing", "Progettazione architetturale", "UML e progettazione software", "Progettazione di interfacce utenti"],
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript", "Tipi di dato e valori"],
 	reti_calc : ["Note complete", "Introduzione", "Livello fisico"],
