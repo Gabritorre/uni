@@ -1,5 +1,5 @@
 ﻿
-# 2024-09-19_Spazi vettoriali
+# Spazi vettoriali
 
 Lo spazio vettoriale è un insieme di elementi chiamati vettori che soddisfa 8+1 proprietà e che è definito su un insieme di numeri (detti **scalari**) chiamato **campo** (ad esempio il campo del numeri reali $\mathbb{R}$),
 
@@ -107,7 +107,7 @@ Definizione di **vettori linearmente indipendenti**:
 Presi i vettori $z_1,…,z_m \in V^n(K)$ sono linearmente indipendenti se calcolato
 
 $$
-z=a_1z_1+…+a_mz_m
+ z=a_1z_1+…+a_mz_m
 $$
 
 Si ha 
@@ -164,7 +164,7 @@ $$
 a\begin{pmatrix}
 1\\
 0
-\end{pmatrix} + b
+\end{pmatrix}+ b
 \begin{pmatrix}
 0\\
 1
@@ -264,4 +264,106 @@ Definiamo $z \in \mathbb{R}^n$ come risultato di combinazioni:
     $$
     
     Dato che questo tipo di combinazione è una intersezione tra le combinazioni affine e canonica, graficamente lo possiamo immaginare nel seguente modo: il punto sarà all’interno del segmento passante per i due punti.
-	![https://i.ibb.co/G5kbjdz/image.png](https://i.ibb.co/G5kbjdz/image.png)
+    
+    ![https://i.ibb.co/G5kbjdz/image.png](https://i.ibb.co/G5kbjdz/image.png)
+    
+    ## Prodotto scalare
+    
+    Dato uno spazio vettoriale $V^n(K)$, il prodotto scalare è una funzione che prende in input due vettori e restituisce uno scalare. $V^n(K) \times V^n(K) \rightarrow \mathbb{R}$.
+    
+    L’operazione di prodotto scalare si indica con la seguente simbologia: $<v_1, v_2>$ dove $v_1,v_2$ sono dei vettori.
+    
+    Questa funzione per essere un prodotto scalare deve soddisfare tre proprietà:
+    
+    1. $\forall v \in V^n(K),\hspace{2mm} <v, v> \geq 0$
+        
+        il prodotto scalare di un vettore per se stesso è un valore positivo, in particolare è $=0$ se e solo se $v$ è il vettore nullo
+        
+    2. $\forall u, v, z \in V^n(K),\hspace{2mm} <u + v, z> \hspace{2mm} =  \hspace{2mm}<u, z> \oplus <v, z>$
+        
+        proprietà distributiva, nota che $\oplus$ è la somma tra scalari reali
+        
+    3. $\forall u, v \in V^n(K),\hspace{2mm} <u, v> \hspace{2mm}=\hspace{2mm} <v, u>$
+        
+        proprietà commutativa
+        
+
+Il prodotto scalare standard può essere calcolato nei seguenti modi equivalenti:
+
+Presi due vettori:
+
+$$
+v = \begin{pmatrix}
+v_1\\
+...\\
+v_n
+\end{pmatrix}
+\hspace{5mm}
+u = \begin{pmatrix}
+u_1\\
+...\\
+u_n
+\end{pmatrix}
+$$
+
+il prodotto scalare standard si calcola come:
+
+$$<v, u> = v_1u_1 + ... + v_nu_n = v^Tu = \sum_{i=1}^n v_i\cdot u_i$$
+
+
+### Vettori ortogonali
+
+Dati due vettori $u, v$ dello spazio vettoriale $\mathbb{R}^n$, si dice che i vettori $u, v$ sono **ortogonali** (indicato con $u\perp v$) se e solo se $<u, v> = 0$
+
+**Dei vettori ortogonali sono anche linearmente indipendenti**, il contrario non sempre vale.
+
+## Norma
+
+Dato uno spazio vettoriale $V^n(K)$, la norma è una funzione che prende in input un vettore e restituisce uno scalare. $V^n(K) \rightarrow \mathbb{R}^+$
+
+La norma si indica con la seguente simbologia: $||v_1||_*$ dove $v_1$ è un vettore e il pedice indica il tipo di norma.
+
+Questa funzione per essere una norma deve soddisfare tre proprietà:
+
+1. $\forall v \in V^n(K), \hspace{2mm} ||x||_* \geq 0$
+    
+    La norma di un vettore è un valore positivo, in particolare è $=0$ se e solo se $v$ è il vettore nullo
+    
+2. $\forall v \in V^n(K), \forall \alpha \in K \hspace{3mm} ||\alpha \bullet v||_* = |\alpha|\cdot ||v||_*$
+    
+    la norma di un vettore moltiplicato per uno scalare equivale al valore assoluto dello scalare moltiplicato alla norma del vettore.
+    
+    rappresenta graficamente un allungamento (con $\alpha > 1$) oppure un restringimento (con $0<\alpha<1$) del vettore.
+    
+3. $\forall u, v \in V^n(K), \hspace{3mm} ||u + v||_* \hspace{2mm}\leq \hspace{2mm} ||u||_* + ||v||_*$
+    
+    chiamata proprietà di disuguaglianza triangolare
+    
+
+### Tipi di norma
+
+Vediamo 3 tipi di norma, considerando $v \in \mathbb{R}^n$:
+
+- Norma uno:
+
+$$
+||v||_1 = |v_1| + |v_2| + … + |v_n|
+$$
+
+- Norma due (euclidea)
+
+$$
+||v||_2 = \sqrt{(v_1)^2 + ... + (v_n)^2}
+$$
+
+- Norma infinito
+
+$$
+||v||_\infty = \underset{1 \leq i \leq n}{\max} |v_i|
+$$
+
+Graficamente possiamo vedere le norme come delle distanze, ad esempio vediamo il confronto tra i vari tipi di norma tracciano i punti in cui le norme valgono 1
+
+![https://i.ibb.co/3kzbQt8/image.png](https://i.ibb.co/3kzbQt8/image.png)
+
+Nei punti $(0, 1), (0, -1), (1, 0), (-1, 0)$ le tre norme hanno lo stesso valore
