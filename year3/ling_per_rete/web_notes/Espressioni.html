@@ -1,0 +1,152 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-23_Espressioni</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#espressioni">Espressioni</a>
+<ul>
+<li><a href="#espressioni-primarie">Espressioni primarie</a></li>
+<li><a href="#espressioni-di-inizializzazioni-di-oggetti-e-array">Espressioni di Inizializzazioni di oggetti e array</a></li>
+<li><a href="#espressioni-di-definizione-di-funzioni">Espressioni di definizione di funzioni</a></li>
+<li><a href="#espressioni-di-accesso-alle-proprietà">Espressioni di accesso alle proprietà</a></li>
+<li><a href="#espressioni-di-invocazione">Espressioni di invocazione</a></li>
+<li><a href="#espressioni-di-creazione-di-oggetti">Espressioni di creazione di oggetti</a></li>
+<li><a href="#espressioni-di-valutazione-di-stringhe-eval">Espressioni di valutazione di stringhe (eval)</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="espressioni">Espressioni</h1>
+<p>Le <strong>espressioni</strong> sono dei pezzi di codice che possono essere valutati per produrre un valore.</p>
+<h2 id="espressioni-primarie">Espressioni primarie</h2>
+<p>Le espressioni primarie sono il tipo di espressioni più semplici che non includono sotto-espressioni, che sono i <strong>letterali</strong>, cioè dei valori scritti direttamente nel codice dal programmatore.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token number">1.23</span>      <span class="token comment">// A number literal</span>
+<span class="token string">"hello"</span>   <span class="token comment">// A string literal</span>
+<span class="token boolean">true</span>      <span class="token comment">// Evalutes to the boolean true value</span>
+<span class="token boolean">false</span>     <span class="token comment">// Evaluates to the boolean false value</span>
+<span class="token keyword">null</span>      <span class="token comment">// Evaluates to the null value</span>
+<span class="token keyword">this</span>      <span class="token comment">// Evaluates to the "current" object</span>
+sum       <span class="token comment">// Evaluates to the value of the variable "sum" in the global object.</span>
+undefined <span class="token comment">// The value of the "undefined" property of the global object</span>
+</code></pre>
+<h2 id="espressioni-di-inizializzazioni-di-oggetti-e-array">Espressioni di Inizializzazioni di oggetti e array</h2>
+<p>Queste sono delle espressioni il cui valore ritornato è l’oggetto o l’array appena creato, spesso chiamati <em>object literals</em> e <em>array literals</em>. Non fanno parte delle espressioni primarie perché la loro creazione prevede delle sotto-espressioni per specificare proprietà e valori.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">[</span><span class="token punctuation">]</span>             <span class="token comment">// An empty array: no expressions inside brackets means no elements</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">+</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token operator">+</span><span class="token number">4</span><span class="token punctuation">]</span>     <span class="token comment">// A 2-element array. First element is 3, second is 7</span>
+<span class="token keyword">let</span> matrix <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">5</span><span class="token punctuation">,</span><span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// The element expressions in an array initializer can themselves be array initializers</span>
+
+<span class="token keyword">let</span> p <span class="token operator">=</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">2.3</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token operator">-</span><span class="token number">1.2</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>   <span class="token comment">// An object with 2 properties</span>
+<span class="token keyword">let</span> q <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>                    <span class="token comment">// An empty object with no properties</span>
+q<span class="token punctuation">.</span>x <span class="token operator">=</span> <span class="token number">2.3</span><span class="token punctuation">;</span>
+q<span class="token punctuation">.</span>y <span class="token operator">=</span> <span class="token operator">-</span><span class="token number">1.2</span><span class="token punctuation">;</span>                    <span class="token comment">// Now q has the same properties as p</span>
+
+<span class="token keyword">let</span> rectangle <span class="token operator">=</span> <span class="token punctuation">{</span>              <span class="token comment">// Object literals can be nested.</span>
+ upperLeft<span class="token punctuation">:</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+ lowerRight<span class="token punctuation">:</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token number">5</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<h2 id="espressioni-di-definizione-di-funzioni">Espressioni di definizione di funzioni</h2>
+<p>Come per gli oggetti e gli array, anche quando creiamo una funzione possiamo definirla una <em>function literals</em>, in quanto la definizione di una funzione produce un valore che è la funzione stessa.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> <span class="token function-variable function">square</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> x <span class="token operator">*</span> x<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In questo caso la funzione è una variabile e verrà definita quando l’interprete giunge alla riga di codice corrispondente.</p>
+<p>Diverso è il comportamento dello <em>statement</em> di creazione di funzione:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">function</span> <span class="token function">square</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> x <span class="token operator">*</span> x<span class="token punctuation">:</span><span class="token punctuation">}</span>
+</code></pre>
+<p>in questo caso si ha il fenomeno di <em>hoisting,</em> cioè la funzione viene creata ancora prima di iniziare lo script nel quale è definita.</p>
+<h2 id="espressioni-di-accesso-alle-proprietà">Espressioni di accesso alle proprietà</h2>
+<p>Queste espressioni ritornano un valore corrispondente ad una proprietà di un oggetto oppure ad un elemento di un array.</p>
+<p>Ci sono due sintassi per l’accesso alle proprietà:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx">expression<span class="token punctuation">.</span>identifier   <span class="token comment">// first style</span>
+expression<span class="token punctuation">[</span>expression<span class="token punctuation">]</span>  <span class="token comment">// second style</span>
+</code></pre>
+<p>Nel primo stile, l’<em>expression</em> specifica l’oggetto mentre l’<em>identifier</em> specifica il nome della proprietà</p>
+<p>Nel secondo stile, la prima <em>expression</em> specifica l’oggetto o l’array, e la seconda <em>expression</em> specifica la proprietà dell’oggetto (usando una stringa) o l’indice dell’array (usando un intero)</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> o <span class="token operator">=</span> <span class="token punctuation">{</span>x<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token punctuation">{</span>z<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// An example object</span>
+<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span>o<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span>    <span class="token comment">// An example array that contains the object</span>
+o<span class="token punctuation">.</span>x                        <span class="token comment">// =&gt; 1: property x of expression o</span>
+o<span class="token punctuation">.</span>y<span class="token punctuation">.</span>z                      <span class="token comment">// =&gt; 3: property z of expression o.y</span>
+o<span class="token punctuation">[</span><span class="token string">"x"</span><span class="token punctuation">]</span>                     <span class="token comment">// =&gt; 1: property x of object o</span>
+a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>                       <span class="token comment">// =&gt; 4: element at index 1 of expression a</span>
+a<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token string">"1"</span><span class="token punctuation">]</span>                  <span class="token comment">// =&gt; 6: element at index 1 of expression a[2]</span>
+a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>x                     <span class="token comment">// =&gt; 1: property x of expression a[0]</span>
+</code></pre>
+<p>Se si accede ad una proprietà che non esiste verrà restituito un <code>undefined</code></p>
+<h3 id="accessi-condizionali-alle-proprietà">Accessi condizionali alle proprietà</h3>
+<p>Nelle ultime versioni di JS sono stati aggiunti due nuovi modi di accedere alle proprietà, chiamati <strong>accessi condizionali</strong>:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx">expression<span class="token operator">?</span><span class="token punctuation">.</span>identifier
+expression<span class="token operator">?</span><span class="token punctuation">.</span><span class="token punctuation">[</span>expression<span class="token punctuation">]</span>
+</code></pre>
+<p>Se l’accesso alle proprietà diretto viene tentato sui valori <code>null</code> e <code>undefined</code> verrà lanciato un <code>TypeError</code>, gli accessi condizionali prevengono questo comportamento.</p>
+<p>Nell’espressione <code>a?.b</code> se <code>a</code> è <code>null</code> oppure <code>undefined</code>, l’espressione viene valutata come <code>undefined</code> senza tentare di accedere alla proprietà <code>b</code>, se invece <code>a</code> è un qualche altro valore allora il comportamento è il medesimo dell’accesso diretto.</p>
+<p>Vediamo un particolare comportamento concatenando gli accessi:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span> b<span class="token punctuation">:</span> <span class="token keyword">null</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+a<span class="token punctuation">.</span>b                 <span class="token comment">// =&gt; null</span>
+a<span class="token punctuation">.</span>b<span class="token punctuation">.</span>c               <span class="token comment">// =&gt; TypeError</span>
+a<span class="token punctuation">.</span>b<span class="token operator">?</span><span class="token punctuation">.</span>c              <span class="token comment">// =&gt; undefined</span>
+<span class="token punctuation">(</span>a<span class="token punctuation">.</span>b<span class="token operator">?</span><span class="token punctuation">.</span>c<span class="token punctuation">)</span><span class="token punctuation">.</span>d          <span class="token comment">// =&gt; TypeError</span>
+a<span class="token punctuation">.</span>b<span class="token operator">?</span><span class="token punctuation">.</span>c<span class="token punctuation">.</span>d            <span class="token comment">// =&gt; undefined</span>
+</code></pre>
+<p>L’ultima riga ha il comportamento che può risultare più inaspettato, ma viene restituito un <code>undefined</code> perché appena si ha <code>null</code> o <code>undefined</code> sinistra dell’operatore <code>?.</code> viene fatto un “corto-circuito” e viene subito valutata l’intera espressione come <code>undefined</code> senza proseguire con la valutazione.</p>
+<p>Il comportamento è del tutto analogo con l’operatore <code>?.[]</code>:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a<span class="token punctuation">;</span>           <span class="token comment">// Oops, we forgot to initialize this variable!</span>
+<span class="token keyword">let</span> index <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token keyword">try</span> <span class="token punctuation">{</span>
+   a<span class="token punctuation">[</span>index<span class="token operator">++</span><span class="token punctuation">]</span><span class="token punctuation">;</span>     <span class="token comment">// Throws TypeError</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+   index           <span class="token comment">// =&gt; 1: increment occurs before TypeError is thrown</span>
+<span class="token punctuation">}</span>
+a<span class="token operator">?</span><span class="token punctuation">.</span><span class="token punctuation">[</span>index<span class="token operator">++</span><span class="token punctuation">]</span>     <span class="token comment">// =&gt; undefined: because a is undefined</span>
+index            <span class="token comment">// =&gt; 1: not incremented because ?.[] short-circuits</span>
+a<span class="token punctuation">[</span>index<span class="token operator">++</span><span class="token punctuation">]</span>       <span class="token comment">// !TypeError: can't index undefined.</span>
+</code></pre>
+<h2 id="espressioni-di-invocazione">Espressioni di invocazione</h2>
+<p>Questo tipo di espressione è data dall’invocazione di un metodo o una funzione</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>               <span class="token comment">// f is the function expression; 0 is the argument expression.</span>
+Math<span class="token punctuation">.</span><span class="token function">max</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span>y<span class="token punctuation">,</span>z<span class="token punctuation">)</span>    <span class="token comment">// Math.max is the function; x, y, and z are the arguments.</span>
+a<span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token punctuation">)</span>           <span class="token comment">// a.sort is the function; there are no arguments.</span>
+</code></pre>
+<p>Il valore generato dall’invocazione sarà il valore di ritorno della funzione, se non presente allora sarà <code>undefined</code>.</p>
+<h3 id="invocazione-condizionale">Invocazione condizionale</h3>
+<p>Come per l’accesso alle proprietà anche per le funzioni esiste una invocazione condizionale con la sintassi <code>?.()</code>.</p>
+<p>In questo caso se l’espressione a sinistra dell’operatore <code>?.()</code> è <code>null</code> oppure <code>undefined</code> al posto di essere lanciato un <code>TypeError</code>, l’intera invocazione viene valutata come <code>undefined</code></p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">function</span> <span class="token function">square</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> log<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// The second argument is an optional function</span>
+   log<span class="token operator">?</span><span class="token punctuation">.</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>              <span class="token comment">// Call the function if there is one</span>
+   <span class="token keyword">return</span> x <span class="token operator">*</span> x<span class="token punctuation">;</span>          <span class="token comment">// Return the square of the argument</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<h2 id="espressioni-di-creazione-di-oggetti">Espressioni di creazione di oggetti</h2>
+<p>Queste espressioni sono provocate dalla creazione di nuovi oggetti tramite l’invocazione di un particolare metodo chiamato <em>costruttore</em>.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">new</span> <span class="token class-name">Point</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Il valore generato dall’espressione è l’oggetto appena creato.</p>
+<h2 id="espressioni-di-valutazione-di-stringhe-eval">Espressioni di valutazione di stringhe (eval)</h2>
+<p>JavaScript ha la possibilità di interpretare delle stringhe come del codice, valutandolo e producendo di conseguenza un valore.</p>
+<p>Questo viene fatto attraverso la funzione globale <code>eval()</code></p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token function">eval</span><span class="token punctuation">(</span><span class="token string">"5*3"</span> <span class="token punctuation">)</span>  <span class="token comment">// =&gt; 15 </span>
+</code></pre>
+<p>La funzione prende in input una stringa e tenta di fare un parsing in codice JavaScript, se ci riesce esegue poi il codice e ritorna l’ultima espressione (oppure <code>undefined</code>).</p>
+<p>Il codice passato ad eval, può riferisci al codice locale JavaScript scritto in precedenza, permettendo così di leggere valori e anche modificarli.</p>
+<p>L’uso di questa funzione può rappresentare un problema di sicurezza se si passa una stringa proveniente dallo user input in quanto è difficile sanitizzare completamente l’input.</p>
+<p>Molti siti infatti utilizzano “Content-Security-Policy” nell’header HTTP per disabilitare l’uso della funzione <code>eval()</code>.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

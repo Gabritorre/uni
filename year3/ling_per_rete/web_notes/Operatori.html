@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-09-23_Operatori</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#operatori">Operatori</a>
+<ul>
+<li><a href="#numero-di-operandi">Numero di operandi</a></li>
+<li><a href="#tipi-degli-operandi">Tipi degli operandi</a></li>
+<li><a href="#precedenza-degli-operatori">Precedenza degli operatori</a></li>
+<li><a href="#associatività">Associatività</a></li>
+<li><a href="#tabella-degli-operatori">Tabella degli operatori</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="operatori">Operatori</h1>
+<p>Il modo più comune per creare delle espressioni complesse è tramite l’utilizzo di <strong>operatori</strong>, cioè dei simboli che, operano su dei valori e ne producono uno nuovo.</p>
+<p>Gli operatori sono utilizzati per: espressioni aritmetiche, espressioni di confronto, espressioni logiche, espressioni di assegnamento, ecc…</p>
+<p>Molti operatori sono rappresentati con simboli particolari (<code>+</code>, <code>=</code>, <code>&gt;</code>, …), altri con delle <em>keyword</em> specifiche (<code>delete</code>, <code>instanceof</code>, …)</p>
+<p>Analizziamo degli aspetti importanti che riguardano gli operatori.</p>
+<h2 id="numero-di-operandi">Numero di operandi</h2>
+<p>Gli operatori si possono categorizzare in base al numero di operandi su cui lavorano. La maggior parte degli operatori sono <strong>operatori binari</strong>, cioè che lavorano su due operandi. Ci sono anche <strong>operatori unari</strong> e un <strong>operatore ternario</strong></p>
+<h2 id="tipi-degli-operandi">Tipi degli operandi</h2>
+<p>Alcuni operatori accettano un tipo di operandi qualsiasi, altri vogliono dei tipi particolari.</p>
+<p>JavaScript tenta sempre di convertire un tipo sbagliato nel tipo che si aspetta.</p>
+<p>Alcuni operatori però si comportano in modo differente in base al tipo degli operatori (ad esempio l’operatore <code>+</code> che può fare somma tra due numeri oppure la concatenazione tra stringhe)</p>
+<h2 id="precedenza-degli-operatori">Precedenza degli operatori</h2>
+<p>Quando si concatenano più operatori, essi hanno una priorità di valutazione, ad esempio in espressioni aritmetiche la precedenza degli operatori e la classica precedenza matematica.</p>
+<p>L’operatore di assegnamento tendenzialmente ha la priorità più bassa.</p>
+<p>L’uso delle parentesi tonde può forzare la precedenza degli operatori.</p>
+<p><strong>L’accesso a proprietà, l’accesso a elementi di array e le invocazioni di funzioni hanno un priorità più alta di tutti gli operatori.</strong></p>
+<h2 id="associatività">Associatività</h2>
+<p>L’associatività descrive l’ordine di esecuzione con operatori di uguale priorità.</p>
+<p>Possiamo avere una associatività <em>Left-to-right</em> oppure <em>Right-to-left.</em></p>
+<p>Ad esempio:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx">w <span class="token operator">=</span> x <span class="token operator">-</span> y <span class="token operator">-</span> z<span class="token punctuation">;</span>    <span class="token comment">// Left-to-right: w = ((x - y) - z)</span>
+w <span class="token operator">=</span> x <span class="token operator">&amp;&amp;</span> y <span class="token operator">&amp;&amp;</span> z<span class="token punctuation">;</span>  <span class="token comment">// Left-to-right: w = ((x &amp;&amp; y) &amp;&amp; z)</span>
+
+w <span class="token operator">=</span> a <span class="token operator">**</span> b <span class="token operator">**</span> c<span class="token punctuation">;</span>  <span class="token comment">// Right-to-left: w = (a ** (b ** c))</span>
+w <span class="token operator">=</span> x <span class="token operator">=</span> y <span class="token operator">=</span> z<span class="token punctuation">;</span>    <span class="token comment">// Right-to-left: w = (x = (y = z));</span>
+</code></pre>
+<h2 id="tabella-degli-operatori">Tabella degli operatori</h2>
+
+<table>
+<thead>
+<tr>
+<th>Simbolo</th>
+<th>Operazione</th>
+<th>Associatività</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>+</code></td>
+<td>Addizione o concatenazione di stringhe</td>
+<td>Left-to-right</td>
+<td><code>3 + 2 // 5</code>, <code>'a' + 'b' // 'ab'</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Sottrazione</td>
+<td>Left-to-right</td>
+<td><code>3 - 2 // 1</code></td>
+</tr>
+<tr>
+<td><code>*</code></td>
+<td>Moltiplicazione</td>
+<td>Left-to-right</td>
+<td><code>3 * 2 // 6</code></td>
+</tr>
+<tr>
+<td><code>/</code></td>
+<td>Divisione</td>
+<td>Left-to-right</td>
+<td><code>6 / 2 // 3</code></td>
+</tr>
+<tr>
+<td><code>%</code></td>
+<td>Modulo (resto della divisione)</td>
+<td>Left-to-right</td>
+<td><code>5 % 2 // 1</code></td>
+</tr>
+<tr>
+<td><code>**</code></td>
+<td>Esponenziale</td>
+<td>Right-to-left</td>
+<td><code>2 ** 3 // 8</code></td>
+</tr>
+<tr>
+<td><code>++</code></td>
+<td>Incremento</td>
+<td>Right-to-left</td>
+<td><code>let a = 1; a++ // a = 2</code></td>
+</tr>
+<tr>
+<td><code>--</code></td>
+<td>Decremento</td>
+<td>Right-to-left</td>
+<td><code>let a = 2; a-- // a = 1</code></td>
+</tr>
+<tr>
+<td><code>-</code></td>
+<td>Negazione unaria</td>
+<td>Right-to-left</td>
+<td><code>-5 // -5</code></td>
+</tr>
+<tr>
+<td><code>+</code></td>
+<td>Conversione in numero</td>
+<td>Right-to-left</td>
+<td><code>+"5" // 5</code></td>
+</tr>
+<tr>
+<td><code>!</code></td>
+<td>Negazione logica</td>
+<td>Right-to-left</td>
+<td><code>!true // false</code></td>
+</tr>
+<tr>
+<td><code>~</code></td>
+<td>Complemento a uno (NOT bit a bit)</td>
+<td>Right-to-left</td>
+<td><code>~5 // -6</code></td>
+</tr>
+<tr>
+<td><code>&amp;&amp;</code></td>
+<td>AND logico</td>
+<td>Left-to-right</td>
+<td><code>true &amp;&amp; false // false</code></td>
+</tr>
+<tr>
+<td><code>||</code></td>
+<td>OR logico</td>
+<td>Left-to-right</td>
+<td><code>true || false // true</code></td>
+</tr>
+<tr>
+<td><code>??</code></td>
+<td>sceglie il primo operando definito</td>
+<td>Left-to-right</td>
+<td><code>null ?? 'default' // 'default'</code></td>
+</tr>
+<tr>
+<td><code>?:</code></td>
+<td>Operatore ternario (condizionale)</td>
+<td>Right-to-left</td>
+<td><code>true ? 'yes' : 'no' // 'yes'</code></td>
+</tr>
+<tr>
+<td><code>,</code></td>
+<td>Valuta ogni operando e restituisce il risultato dell’ultimo</td>
+<td>Left-to-right</td>
+<td><code>let a = 1, 2; // a = 2</code></td>
+</tr>
+<tr>
+<td><code>=</code></td>
+<td>Assegnazione</td>
+<td>Right-to-left</td>
+<td><code>a = 5 // a = 5</code></td>
+</tr>
+<tr>
+<td><code>+=</code></td>
+<td>Assegnazione con addizione</td>
+<td>Right-to-left</td>
+<td><code>a += 5 // a = a + 5</code></td>
+</tr>
+<tr>
+<td><code>-=</code></td>
+<td>Assegnazione con sottrazione</td>
+<td>Right-to-left</td>
+<td><code>a -= 5 // a = a - 5</code></td>
+</tr>
+<tr>
+<td><code>*=</code></td>
+<td>Assegnazione con moltiplicazione</td>
+<td>Right-to-left</td>
+<td><code>a *= 5 // a = a * 5</code></td>
+</tr>
+<tr>
+<td><code>/=</code></td>
+<td>Assegnazione con divisione</td>
+<td>Right-to-left</td>
+<td><code>a /= 5 // a = a / 5</code></td>
+</tr>
+<tr>
+<td><code>%=</code></td>
+<td>Assegnazione con modulo</td>
+<td>Right-to-left</td>
+<td><code>a %= 5 // a = a % 5</code></td>
+</tr>
+<tr>
+<td><code>**=</code></td>
+<td>Assegnazione con esponenziale</td>
+<td>Right-to-left</td>
+<td><code>a **= 2 // a = a ** 2</code></td>
+</tr>
+<tr>
+<td><code>==</code></td>
+<td>Uguaglianza debole (con conversione di tipo)</td>
+<td>Left-to-right</td>
+<td><code>5 == '5' // true</code></td>
+</tr>
+<tr>
+<td><code>===</code></td>
+<td>Uguaglianza stretta (senza conversione di tipo)</td>
+<td>Left-to-right</td>
+<td><code>5 === '5' // false</code></td>
+</tr>
+<tr>
+<td><code>!=</code></td>
+<td>Diversità debole</td>
+<td>Left-to-right</td>
+<td><code>5 != '5' // false</code></td>
+</tr>
+<tr>
+<td><code>!==</code></td>
+<td>Diversità stretta</td>
+<td>Left-to-right</td>
+<td><code>5 !== '5' // true</code></td>
+</tr>
+<tr>
+<td><code>&gt;</code></td>
+<td>Maggiore di</td>
+<td>Left-to-right</td>
+<td><code>5 &gt; 3 // true</code></td>
+</tr>
+<tr>
+<td><code>&lt;</code></td>
+<td>Minore di</td>
+<td>Left-to-right</td>
+<td><code>3 &lt; 5 // true</code></td>
+</tr>
+<tr>
+<td><code>&gt;=</code></td>
+<td>Maggiore o uguale</td>
+<td>Left-to-right</td>
+<td><code>5 &gt;= 5 // true</code></td>
+</tr>
+<tr>
+<td><code>&lt;=</code></td>
+<td>Minore o uguale</td>
+<td>Left-to-right</td>
+<td><code>5 &lt;= 3 // false</code></td>
+</tr>
+<tr>
+<td><code>&amp;</code></td>
+<td>AND bit a bit</td>
+<td>Left-to-right</td>
+<td><code>5 &amp; 1 // 1</code></td>
+</tr>
+<tr>
+<td><code>|</code></td>
+<td>OR bit a bit</td>
+<td>Left-to-right</td>
+<td><code>5 | 1 // 5</code></td>
+</tr>
+<tr>
+<td><code>^</code></td>
+<td>XOR bit a bit</td>
+<td>Left-to-right</td>
+<td><code>5 ^ 1 // 4</code></td>
+</tr>
+<tr>
+<td><code>&lt;&lt;</code></td>
+<td>Shift a sinistra</td>
+<td>Left-to-right</td>
+<td><code>5 &lt;&lt; 1 // 10</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;</code></td>
+<td>Shift a destra</td>
+<td>Left-to-right</td>
+<td><code>5 &gt;&gt; 1 // 2</code></td>
+</tr>
+<tr>
+<td><code>&gt;&gt;&gt;</code></td>
+<td>Shift a destra con estensione di zeri</td>
+<td>Left-to-right</td>
+<td><code>-5 &gt;&gt;&gt; 1 // 2147483645</code></td>
+</tr>
+<tr>
+<td><code>in</code></td>
+<td>Verifica se una proprietà è in un oggetto, o se un indice è in un array</td>
+<td>Left-to-right</td>
+<td><code>'length' in [] // true</code></td>
+</tr>
+<tr>
+<td><code>instanceof</code></td>
+<td>Verifica se un oggetto è istanza di una funzione costruttore di una classe</td>
+<td>Left-to-right</td>
+<td><code>[] instanceof Array // true</code></td>
+</tr>
+<tr>
+<td><code>typeof</code></td>
+<td>Restituisce il tipo di una variabile</td>
+<td>Right-to-left</td>
+<td><code>typeof 42 // 'number'</code></td>
+</tr>
+<tr>
+<td><code>delete</code></td>
+<td>Elimina una proprietà da un oggetto o un elemento di un array (negli array viene lasciato un “buco”, non cambia la dimensione dell’array)</td>
+<td>Right-to-left</td>
+<td><code>delete obj.key // true</code></td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+</body>
+
+</html>
