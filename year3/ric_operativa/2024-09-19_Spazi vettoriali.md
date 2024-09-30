@@ -267,11 +267,11 @@ Definiamo $z \in \mathbb{R}^n$ come risultato di combinazioni:
     
     ![https://i.ibb.co/G5kbjdz/image.png](https://i.ibb.co/G5kbjdz/image.png)
     
-    ## Prodotto scalare
+    ## Prodotto scalare standard
     
-    Dato uno spazio vettoriale $V^n(K)$, il prodotto scalare è una funzione che prende in input due vettori e restituisce uno scalare. $V^n(K) \times V^n(K) \rightarrow \mathbb{R}$.
+    Dato uno spazio vettoriale $V^n(K)$, il prodotto scalare standard è una funzione che prende in input due vettori e restituisce uno scalare. $V^n(K) \times V^n(K) \rightarrow \mathbb{R}$.
     
-    L’operazione di prodotto scalare si indica con la seguente simbologia: $<v_1, v_2>$ dove $v_1,v_2$ sono dei vettori.
+    L’operazione di prodotto scalare standard si indica con la seguente simbologia: $<v_1, v_2>$ dove $v_1,v_2$ sono dei vettori.
     
     Questa funzione per essere un prodotto scalare deve soddisfare tre proprietà:
     
@@ -308,8 +308,9 @@ $$
 
 il prodotto scalare standard si calcola come:
 
-$$<v, u> = v_1u_1 + ... + v_nu_n = v^Tu = \sum_{i=1}^n v_i\cdot u_i$$
-
+$$
+<v, u> = v_1u_1 + ... + v_nu_n = v^Tu = \sum_{i=1}^n v_i\cdot u_i
+$$
 
 ### Vettori ortogonali
 
@@ -367,3 +368,15 @@ Graficamente possiamo vedere le norme come delle distanze, ad esempio vediamo il
 ![https://i.ibb.co/3kzbQt8/image.png](https://i.ibb.co/3kzbQt8/image.png)
 
 Nei punti $(0, 1), (0, -1), (1, 0), (-1, 0)$ le tre norme hanno lo stesso valore
+
+## Relazione tra norma e prodotto scalare standard
+
+Utilizzando la norma euclidea è possibile ricavarsi il prodotto scalare standard tra due vettori.
+
+Indichiamo con $\phi$ l’angolo più piccolo formato dai i vettori $u$ e $v$. Allora il prodotto scalare standard tra $u$ e $v$ si può ottenete con la seguente formula:
+
+$$
+<v, u> = ||v||_2 \cdot ||u||_2 \cdot \cos\phi
+$$
+
+torna con il fatto che se due vettori sono ortogonali, formano un angolo $\phi = 90°$, il cui coseno è $0$, rendendo così il prodotto scalare tra i due vettori ortogonali uguale a $0$
