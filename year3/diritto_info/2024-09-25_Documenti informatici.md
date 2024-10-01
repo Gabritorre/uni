@@ -61,3 +61,28 @@ La comunicazione migliore avviene tramite indirizzi PEC, in qualche modo (seppur
 In ogni caso una comunicazione PEC-non PEC non acquisisce nessuna validità legale.
 
 Abbiamo quindi che l’accoppiata: firma digitale + PEC ci permette di assicurarci circa **l’autenticità del contenuto** e del **mittente**.
+
+## Domicilio digitale
+
+Il domicilio digitale è un indirizzo di posta elettronica certificata (PEC) inserito in un particolare registro che viene utilizzato per le comunicazioni legali (cause legali, comunicazioni dalla agenzia delle entrate). Queste comunicazione hanno la stessa validità delle raccomandate.
+
+Nei **registri** sono segnate le assegnazioni, le modifiche e le cessazioni dei domicili digitali.
+
+Sono obbligati ad avere un domicilio digitale le pubbliche amministrazioni, le imprese e i professionisti tenuti all'iscrizione in albi.
+
+Anche i privati hanno la possibilità di creare il proprio domicilio digitale, anche se al giorno d’oggi non presenta molti vantaggi.
+
+## Digital divide
+
+Con il rapido avanzamento tecnologico, una gran fetta di popolazione (specialmente quella più anziana) rischia di rimanere tagliata fuori dall’accesso a servizi importanti, che diventano accessibili esclusivamente mediante mezzi tecnologici.
+
+D’altra parte anche i funzionari della pubblica amministrazione rischiano di non essere efficienti non sapendo utilizzare i mezzi tecnologici in modo appropriato.
+
+In generale indica con *digital divide* il divario tra le competenze digitali tra le persone.
+
+Si divide in 3 livelli:
+
+1. **digital divide di primo livello**: la distribuzione non uniforme delle tecnologie dell'informazione
+e della comunicazione (TIC) nella società.
+2. **digital divide di secondo livello**: indica l’esclusione generata dal mancato possesso delle specifiche competenze necessarie ad usare queste tecnologie (alfabetizzazione informatica).
+3. **digital divide di terzo livello**: riguarda invece le disparità nei rendimenti derivanti dall’uso di Internet all’interno delle popolazioni di utenti con profili simili (ad esempio della stessa area).
