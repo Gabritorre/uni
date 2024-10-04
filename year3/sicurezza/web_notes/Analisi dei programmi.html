@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-04_Analisi dei programmi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#analisi-dei-programmi">2024-10-04_Analisi dei programmi</a>
+<ul>
+<li><a href="#gdb">gdb</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="analisi-dei-programmi">2024-10-04_Analisi dei programmi</h1>
+<p>I programmi possono essere analizzati in due modi:</p>
+<ul>
+<li>
+<p><strong>Analisi statica</strong>: che avviene ispezionando il codice assembly e provare a capire la logica</p>
+</li>
+<li>
+<p><strong>Analisi dinamica</strong>: che avviene tramite l’uso di programmi chiamati <strong>debugger</strong>, in grado di osservare il comportamento del programma durante l’esecuzione.</p>
+<p>Un debugger molto utilizzato è <strong>gdb</strong>.</p>
+</li>
+</ul>
+<h2 id="gdb">gdb</h2>
+<p>Consideriamo sempre il seguente codice:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property"># <span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> i<span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Una volta compilato il programma possiamo eseguire gdb:</p>
+<pre class=" language-c"><code class="prism  language-c">$ gcc <span class="token operator">-</span>g count<span class="token punctuation">.</span>c <span class="token operator">-</span>o count
+$ gdb <span class="token operator">-</span>q count
+</code></pre>
+<p>nota che l’opzione <code>-g</code> sulla compilazione è importante perché aggiunge delle informazioni utili che gdb può utilizzare per migliorare la visualizzazione del debugging.</p>
+<p>una volta eseguito gdb apparirà la sua cli, prima di passare al disassemblaggio del programma, impostiamo la sintassi da utilizzare</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> set disassembly<span class="token operator">-</span>flavor intel
+</code></pre>
+<p>disassembliamo la funzione main:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disassemple main
+</code></pre>
+<p>ottenendo un output del genere</p>
+<p><img src="https://i.ibb.co/ChHynw2/image.png" alt="https://i.ibb.co/ChHynw2/image.png"></p>
+<p>È possibile impostare dei breakpoint per fermare l’esecuzione del programma in uno specifico punto (ad esempio su un indirizzo)</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> main
+</code></pre>
+<p>Possiamo lanciare l’esecuzione:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> run
+</code></pre>
+<p>e l’esecuzione si fermerà sul main.</p>
+<p>Rilanciando il disassembly notiamo come gli indirizzi sono stati rilocati</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disassembly main
+</code></pre>
+<p>possiamo quindi mettere un break point sull’indirizzo dell’istruzione che ci interessa, ad esempio sulla riga dentro il ciclo for, con indirizzo di offset &lt;+17&gt;</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> <span class="token operator">*</span><span class="token number">0x000055555540069b</span>
+</code></pre>
+<p>Possiamo ispezionare i registri nella situazione attuale dell’esecuzione</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> info registers
+</code></pre>
+<p><img src="https://i.ibb.co/8mT5wzM/image.png" alt="https://i.ibb.co/8mT5wzM/image.png"></p>
+<p>Possiamo ispezionare anche la memoria con il comando</p>
+<p><code>x/&lt;num&gt;&lt;format&gt;&lt;size&gt; &lt;addr&gt;</code></p>
+<p>dove:</p>
+<ul>
+<li><code>num</code>: numero di elementi da ispezionare</li>
+<li><code>format</code>: formato usato per mostrare il valore in memoria
+<ul>
+<li><code>o</code>: ottale</li>
+<li><code>x</code>: esadecimale</li>
+<li><code>u</code>: decimale senza segno</li>
+<li><code>t</code>: binario</li>
+<li><code>i</code>: istruzione</li>
+<li><code>c</code>: carattere</li>
+<li><code>s</code>: stringa</li>
+</ul>
+</li>
+<li><code>size</code>: grandezza degli elementi
+<ul>
+<li><code>b</code>: byte</li>
+<li><code>h</code>: 2 byte</li>
+<li><code>w</code>: 4 byte</li>
+<li><code>g</code>: 8 byte</li>
+</ul>
+</li>
+</ul>
+<p>Esempi:</p>
+<ul>
+<li>
+<p><code>(gdb) x/i main+22</code>:</p>
+<p><code>0x5555554006a0 &lt;main+22&gt;: lea rdi,[rip+0xad] # 0x555555400754</code></p>
+<p>mostra l’istruzione alla posizione <code>main+22</code></p>
+</li>
+<li>
+<p><code>(gdb) x/4i $rip</code>:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token number">0x555555400692</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">8</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>     mov    DWORD PTR <span class="token punctuation">[</span>rbp<span class="token number">-0x4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token number">0x0</span>
+<span class="token number">0x555555400699</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">15</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    jmp    <span class="token number">0x5555554006b5</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">43</span><span class="token operator">&gt;</span>
+<span class="token number">0x55555540069b</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">17</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    mov    eax<span class="token punctuation">,</span>DWORD PTR <span class="token punctuation">[</span>rbp<span class="token number">-0x4</span><span class="token punctuation">]</span>
+<span class="token number">0x55555540069e</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">20</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    mov    esi<span class="token punctuation">,</span>eax
+</code></pre>
+<p>mostra le quattro istruzioni rispetto all’instruction pointer</p>
+</li>
+<li>
+<p><code>(gdb) x/s 0x555555400754</code>:</p>
+<p><code>0x555555400754: "%d “</code></p>
+<p>mostra il contenuto di quel registro in formato stringa.</p>
+</li>
+</ul>
+<p>Un utile cheatsheet con i comandi principali di gdb: <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">https://darkdust.net/files/GDB Cheat Sheet.pdf</a></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
