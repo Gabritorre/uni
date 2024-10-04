@@ -341,6 +341,8 @@ Questa funzione per essere una norma deve soddisfare tre proprietà:
     chiamata proprietà di disuguaglianza triangolare
     
 
+Possiamo assimilare il concetto di norma come la **distanza dall’origine**.
+
 ### Tipi di norma
 
 Vediamo 3 tipi di norma, considerando $v \in \mathbb{R}^n$:

@@ -1,4 +1,5 @@
-﻿# Funzioni lineari, continuità e derivabilità
+﻿
+# Funzioni lineari, continuità e derivabilità
 
 ## Funzione lineare
 
@@ -41,11 +42,17 @@ Di fatti le funzioni nella seconda forma sono più propriamente dette **funzioni
 
 ## Funzione continua
 
-Data una funzione, semplificando, possiamo dire che è continua se tracciando il suo grafico non ci sono “buchi”
+Data una funzione, semplificando, possiamo dire che è continua se tracciando il suo grafico non ci sono “buchi”.
+
+Per determinare che una funzione è continua in un punto deve valere:
+
+$$
+\lim_{x \to x_0^-} f(x) = \lim_{x \to x_0^+} f(x) = f(x_0)
+$$
 
 ## Derivata di un punto della funzione
 
-Calcolare la derivata di un punto appartenente ad una funzione rappresenta la **pendenza della retta tangente** che tocca la funzione in quel punto. Indica quindi se in quel punto la funzione sta salendo, sta scendendo oppure è in un punto particolare (un massimo, un minimo o un flesso).
+Lavorando con una variabile, calcolare la derivata di un punto appartenente ad una funzione rappresenta la **pendenza della retta tangente** che tocca la funzione in quel punto. Indica quindi se in quel punto la funzione sta salendo, sta scendendo oppure è in un punto particolare (un massimo, un minimo o un flesso).
 
 Calcolare la derivata di una funzione indica quindi ottenere una nuova funzione che rappresenta la  pendenza della funzione originale in ogni suo punto.
 
@@ -69,7 +76,7 @@ Indicheremo le funzioni $f \in C^1(\mathbb{R}^n)$, come le funzioni continue e d
 
 Definiamo il **gradiente di un punto** come un vettore contenente le derivate parziali in quel punto.
 
-Indichiamo il punto composto da $n$ variabili come $\bar x$ e definiamo il gradiente come:
+Indichiamo il punto, composto da $n$ variabili, come $\bar x$ e definiamo il gradiente come:
 
 $$
 \nabla f(\bar x) = \begin{pmatrix}
@@ -81,7 +88,7 @@ $$
 
 Derivando le derivate parziali si ottengono le **derivate parziali seconde**, che permettono di analizzare la concavità di superfici.
 
-Indichiamo la derivata parziale di una funzione $f$ rispetto alla variabile $x$ e alla variabile $y$ in questo modo:
+Indichiamo la derivata parziale seconda di una funzione $f$ rispetto alla variabile $x$ e alla variabile $y$ in questo modo:
 
 $$
 \frac{\partial^2 f(\bar x)}{\partial x_i, \partial x_j} \hspace{5mm} \text{con }i, j \in [1 ... n]
@@ -89,11 +96,11 @@ $$
 
 Indicheremo le funzioni $f \in C^2(\mathbb{R}^n)$, come le funzioni continue e derivabili, le cui derivate prima e seconda sono continue.
 
-Analogamente al gradiente, per le derivate parziali seconde abbiamo **l’essiana.**
+Analogamente al gradiente, per le derivate parziali seconde abbiamo **l’hessiana.**
 
-Definiamo **l’essiana** **di un punto** come una matrice contenente le derivate parziali seconde in quel punto.
+Definiamo **l’hessiana** **di un punto** come una matrice contenente le derivate parziali seconde in quel punto.
 
-Indichiamo il punto composto da $n$ variabili come $\bar x$ e definiamo l’essiana come:
+Indichiamo il punto, composto da $n$ variabili, come $\bar x$ e definiamo l’hessiana come:
 
 $$
 \nabla^2f(\bar x) = \begin{pmatrix}
@@ -103,9 +110,69 @@ $$
 \end{pmatrix}
 $$
 
+In particolare, nel caso si lavori con una sola variabile, $n=1$, le definizioni di gradiente ed hessiana, corrispondono alle definizioni di derivata prima e seconda di $f(x)$.
+
 ## Teoremi del valor medio
 
-Una possibile applicazione delle derivate riguarda i teoremi del valor medio:
+Dal teorema di Tylor è possibile ricavare due risultati chiamati **Teoremi del valor medio**.
 
-1. $f(y) = f(x) + \nabla f[x + \theta(y-x)]^T (y-x)$
-2. $f(y) = f(x) + \nabla f(x)^T (y-x ) + o(||y-x||)$
+I teoremi sono due ma esprimono lo stesso concetto, scritto in due modi diversi.
+
+- Prima forma:
+    
+    $$
+    f(y) = f(x) + \nabla f(x)^T \cdot (y-x ) + o(||y-x||)
+    $$
+    
+- Seconda forma:
+    
+    $$
+    f(y) = f(x) + \nabla f[x + \theta(y-x)]^T \cdot (y-x)
+    $$
+    
+
+L’interpretazione è quella di ottenere una approssimazione del valore di $f(y)$, conoscendo il valore di $f(x)$, l’andamento della funzione intorno a $f(x)$.
+
+Dato che si tratta di una approssimazione, più distante è il punto da determinare (cioè $y$) rispetto al punto conosciuto (cioè $x$) peggiore sarà l’approssimazione.
+
+### Analizziamo la **prima forma**
+
+$$
+f(y) = f(x) + \nabla f(x)^T \cdot (y-x ) + o(||y-x||)
+$$
+
+la prima forma ci dice che il valore di $f(y)$ è dato dal valore di $f(x)$ più l’andamento della funzione andando da $x$ a $y$, $y$$\nabla f(x)^T \cdot (y-x )$. Infine viene considerato un errore di approssimazione $o(||y-x||)$ che diventa trascurabile quando $y$ si avvina molto a $x$.
+
+In particolare l’errore di approssimazione deve essere tale da valere:
+
+$$
+\lim_{y\to x} \frac{o(||y-x||)}{||y-x||} = 0
+$$
+
+Di questa forma è anche possibile dare una interpretazione grafica in caso di funzione non lineare e lineare, vediamo prima il caso non lineare:
+
+![https://i.ibb.co/ZdFPQkp/es1.png](https://i.ibb.co/ZdFPQkp/es1.png)
+
+Mentre con una funzione lineare notiamo come l’errore di approssimazione è $0$ e quindi si può togliere dal calcolo
+
+![https://i.ibb.co/pnXhHby/image.png](https://i.ibb.co/pnXhHby/image.png)
+
+### Analizziamo la seconda forma
+
+$$
+f(y) = f(x) + \nabla f[x + \theta(y-x)]^T \cdot (y-x)
+$$
+
+la seconda forma ci dice che il valore di $f(y)$ è dato dal valore di $f(x)$ più l’andamento della funzione in un punto intermedio lungo la linea tra $x$ e $y$, tale punto è $x+ \theta(y-x)$ dove $\theta$ indica la frazione della distanza tra $x$ e $y$, per il teorema esiste un valore di $\theta$ nell’intervallo $[0, 1]$ calcola in modo preciso la variazione della funzione.
+
+L’incertezza che prima era nell’o-piccolo adesso è attribuita al fatto che non calcoliamo più l’andamento nel punto che conoscevamo $\nabla f(x)$ ma lo calcoliamo in un punto intermedio tra $x$ e $y$, $y$$\nabla f[x + \theta(y-x)]$
+
+## Derivata direzionale
+
+La derivata direzionale generalizza il concetto di derivata parziale, infatti mentre le derivate parziali osservano l’andamento della funzione dal punto di vista degli assi (come varia rispetto all’asse x, come varia rispetto all’asse y, ecc…), **le derivate direzionali osservano l’andamento della funzione da un punto di vista libero,** $d \in \mathbb{R}^n \setminus \{0\}$.
+
+$$
+D(f, d) = f(x + d) - f(x) - o(||d||)
+$$
+
+quindi quando $||d||$ è piccola si può trascurare dal calcolo
