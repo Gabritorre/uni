@@ -1,0 +1,134 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-01_Condivisione delle risorse</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#condivisione-delle-risorse">Condivisione delle risorse</a>
+<ul>
+<li><a href="#bottleneck">Bottleneck</a></li>
+<li><a href="#reti-wireless">Reti wireless</a></li>
+<li><a href="#fdma-frequency-division-multiple-access">FDMA (Frequency-Division Multiple Access)</a></li>
+<li><a href="#tdma-time-division-multiple-access">TDMA (Time-Division Multiple Access)</a></li>
+<li><a href="#accesso-casuale-aloha">Accesso casuale (ALOHA)</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="condivisione-delle-risorse">Condivisione delle risorse</h1>
+<p>Fino ad ora abbiamo visto il modo più semplice per condividere risorse, cioè con un singoli link tra due host, ma se abbiamo più host ci sono vari metodi in cui possiamo interconnetterli.</p>
+<p>Vediamo varia topologie di rete:</p>
+<ul>
+<li><strong>Rete full mash</strong>:
+<ul>
+<li>ogni host ha un collegamento diretto con ogni altro host</li>
+<li>molto resistente ai fallimenti</li>
+<li>non scalabile: tanti link e tante interfacce per ogni host</li>
+</ul>
+</li>
+<li><strong>Rete a bus</strong>:
+<ul>
+<li>Un solo link fisico a cui si connettono tutti gli host (tipicamente era un cavo coassiale)</li>
+<li>economica</li>
+<li>non scalabile: con tanti host collegati allo stesso link si provocherebbero collisioni molto di frequente</li>
+<li>non robusto: se si rompe il link fisico la rete è divisa in due parti non comunicanti</li>
+</ul>
+</li>
+<li><strong>Rete ad anello</strong>:
+<ul>
+<li>come la rete a bus ma circolare</li>
+<li>resiste ad una rottura del bus</li>
+<li>comunque non scalabile</li>
+</ul>
+</li>
+<li><strong>Rete a stella</strong>:
+<ul>
+<li>c’è un centro stella (ad esempio uno switch ethernet) a cui si collegano gli host, questo centro stella gestisce il traffico</li>
+<li>molto resistente ai fallimenti, se però si rompe il centro stella la rete non funziona più</li>
+<li>maneggiabilità: da un punto si controlla tutto</li>
+<li>efficienza dal punto di visto dei link fisici utilizzati (uno per ogni host)</li>
+<li>oggi utilizzata nelle LAN</li>
+<li>in questo tipo di rete le collisioni non sono un problema per come funzionano i cavi ethernet moderni (utilizzano coppie di cavi diversi per la trasmissione e la ricezione)</li>
+</ul>
+</li>
+<li><strong>Rete ad albero</strong>:
+<ul>
+<li>Si ha una struttura ad albero in cui i nodi sono delle LAN (una rete a stella)</li>
+<li>molto scalabile</li>
+<li>non resistente ai fallimenti, se un link che connette due nodi la rete si disconnette</li>
+</ul>
+</li>
+<li>Reti Data center e Fat tree
+<ul>
+<li>sono reti utilizzate in ambito server che si basano sulla topologia ad albero ma hanno una forte ridondanza</li>
+</ul>
+</li>
+</ul>
+<h2 id="bottleneck">Bottleneck</h2>
+<p>Quando una comunicazione passa attraverso più link, diciamo che la connessione è <em>multi-hop</em>.</p>
+<p>In questo tipo di comunicazione il collo di bottiglia (bottleneck) è dato dal link più lento del percorso</p>
+<p><img src="https://i.ibb.co/FxPynss/image.png" alt="https://i.ibb.co/FxPynss/image.png"></p>
+<p>In questo caso la comunicazione tra H1 e H4 è limitata a 100Mb/s.</p>
+<p>Se si avesse un altro host H5 collegato con H3 da un link 1000Mb/s, nel caso in cui sia H5 che H3 comunicassero contemporaneamente con H4 la loro capacità sarebbe limitata a 500Mb/s in quanto condividono il link da H3 a H4.</p>
+<p>Nelle topologie ad albero bisogna avere link con maggiore capacità muovendosi dalle foglie verso la radice.</p>
+<h2 id="reti-wireless">Reti wireless</h2>
+<p>Le reti wireless sono organizzate come rete a stella (gli host non parlano direttamente tra di loro) ma fisicamente funzionano come una rete bus, dove al posto di avere un cavo coassiale condiviso per tutti, si ha un segnale radio.</p>
+<p>Dato che il range di frequenza è limitato, un compito del data link layer è quello di schedulare l’accesso al mezzo fisico per evitare collisioni quando più host comunicano contemporaneamente con il ricevitore (<em>l’access point</em>).</p>
+<p>Vediamo vari metodi per ottenere questo scheduling, spesso usati insieme.</p>
+<h2 id="fdma-frequency-division-multiple-access">FDMA (Frequency-Division Multiple Access)</h2>
+<p>In questo approccio si evitano le collisioni usando frequenze differenti per ogni comunicazione, in questo modo comunicazione contemporanee su frequenze diverse non creano collisioni.</p>
+<p>Le reti wifi possono operare su varie frequenze, chiamate <strong>canali</strong>. Quando si accende l’access point per la prima volta si metterà a cercare i canali usati dalle altre reti wifi nelle vicinanze in modo da usare quelle libere.</p>
+<p>Un Access point, però, può utilizzare solo una frequenza alla volta, quindi gli host connessi a tale access point devono usare tutti la stessa frequenza. Non abbiamo quindi interferenza tra reti diverse ma abbiamo interferenza tra host della stessa rete, è quindi necessario un meccanismo di scheduling dei messaggi.</p>
+<h2 id="tdma-time-division-multiple-access">TDMA (Time-Division Multiple Access)</h2>
+<p>Un modo per schedulare i messaggi nella stessa rete è il <strong>Time-division multiplexing</strong> (TDM), in pratica se si hanno <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> terminali collegati, il tempo viene diviso in <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> slot di dimensione fissa, ogni slot viene assegnato ad un terminale e in tale slot quel terminale può mandare i suoi messaggi.</p>
+<p><img src="https://i.ibb.co/mH69KpQ/image.png" alt="https://i.ibb.co/mH69KpQ/image.png"></p>
+<p>È molto importante che i terminali siano sincronizzati per evitare che iniziano a trasmettere troppo presto o troppo tardi rispetto al proprio slot, c’è quindi una tempo di tolleranza tra la fine di uno slot e l’inizio del successivo (sprecando del tempo).</p>
+<p>Definiamo <strong>l’efficienza del livello data link</strong> come la frazione del tempo in cui il datalink è utilizzato per comunicare dati utili.</p>
+<p>Se tutti i terminali hanno qualcosa da trasmettere, avremo che ogni slot è occupato e non ci sono collisioni, in tal caso il meccanismo TDMA è alla sua <strong>massima efficienza</strong>.</p>
+<p>Contrariamente se un solo terminale vuole comunicare si avrà una <strong>efficienza molto bassa</strong> in quanto il terminale dovrà aspettare un intero ciclo di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> slot che non fanno niente per continuare a trasmettere.</p>
+<p><img src="https://i.ibb.co/X2BkKm4/image.png" alt="https://i.ibb.co/X2BkKm4/image.png"></p>
+<p>Abbiamo quindi che la rete funziona al meglio quando è congestionata, generalmente però quando una rete è congestionata significa che i terminali vogliono mandare più dati che quelli che gli stai permettendo di mandare.</p>
+<p>Nelle reti cellulari può essere utile in quanto una porzione di risorse vengono concesse a tutti anche sotto congestione.</p>
+<h2 id="accesso-casuale-aloha">Accesso casuale (ALOHA)</h2>
+<p>Un’altra tecnica è quella di accedere al media in modo casuale: I terminale cercano di trasmettere, se c’è collisione il frame viene inviato di nuovo.</p>
+<p>Una implementazione di questo tipo è <strong>ALOHA</strong>, e rappresenta l’antenato del sistema in utilizzo oggi nelle reti wifi, il CSMA/CA.</p>
+<p>Vediamo la versione <strong>ALOHA-slotted (S-ALOHA)</strong>, in cui i terminale devono essere sincronizzati e il tempo viene diviso in slot.</p>
+<p>La differenza fondamentale rispetto a TDMA è che ogni terminale non ha uno slot fisso e prova a trasmettere all’inizio del prossimo slot.</p>
+<p><strong>Funzionamento</strong>:</p>
+<p>Abbiamo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> host sincronizzati (conoscono l’inizio di uno slot), quando più host mandano contemporaneamente avviene una collisione (assumiamo che gli host sappiano immediatamente che la collisione è avvenuta).</p>
+<p>Quando il livello superiore manda un SDU da trasmettere, l’host attende l’inizio del prossimo slot per trasmettere.</p>
+<p>Se un altro host manda in contemporanea entrambi gli host entrano in uno stato chiamato <em><strong>backlogged</strong></em>.</p>
+<p>In questo stato la <strong>ritrasmissione</strong> avviene al prossimo slot con una certa <strong>probabilità</strong>.</p>
+<p>Quando la trasmissione avviene con successo si esce da questo stato.</p>
+<p>Se il terminale <em>backlogged</em> riceve un altro SDU da mandare, viene scartato.</p>
+<p>Esempio:</p>
+<p><img src="https://i.ibb.co/BNY7bcx/image.png" alt="https://i.ibb.co/BNY7bcx/image.png"></p>
+<h3 id="prestazioni">Prestazioni</h3>
+<p>Definiamo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi></mrow><annotation encoding="application/x-tex">G</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">G</span></span></span></span></span> il carico del sistema, quindi il numero di frame medio che deve essere trasmesso per slot da tutti i terminali.</p>
+<p>La probabilità di trasmettere con successo un frame, <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>S</mi></msub></mrow><annotation encoding="application/x-tex">P_S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.13889em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span> è data dalla probabilità di trasmettere un solo frame per slot</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><msub><mi>P</mi><mi>S</mi></msub><mo>=</mo><mi>G</mi><msup><mi>e</mi><mrow><mo>−</mo><mi>G</mi></mrow></msup></mrow><annotation encoding="application/x-tex">
+P_S = Ge^{-G}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.83333em; vertical-align: -0.15em;"></span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.13889em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.05764em;">S</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.891331em; vertical-align: 0em;"></span><span class="mord mathnormal">G</span><span class="mord"><span class="mord mathnormal">e</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.891331em;"><span class="" style="top: -3.113em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">−</span><span class="mord mathnormal mtight">G</span></span></span></span></span></span></span></span></span></span></span></span></span></span></p>
+<p><img src="https://i.ibb.co/DLxbCsV/image.png" alt="https://i.ibb.co/DLxbCsV/image.png"></p>
+<p>Vediamo come il punto di massima efficienza è quando <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">G=1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> quindi quando viene mediamente mandato un frame per slot, l’efficienza è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mi>e</mi></mfrac><mo>=</mo><mn>0.36</mn></mrow><annotation encoding="application/x-tex">\frac{1}{e} = 0.36</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mathnormal mtight">e</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.36</span></span></span></span></span>, cioè solo il <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>36</mn><mi mathvariant="normal">%</mi></mrow><annotation encoding="application/x-tex">36\%</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">36%</span></span></span></span></span> dei pacchetti viene mandata con successo.</p>
+<p>con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">G&lt;1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72243em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> la rete ha poche collisioni ma è meno efficiente, in quanto gestisce pochi pacchetti, cioè la rete è dimensionata male, ma comunque funziona.</p>
+<p>con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">G&gt;1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72243em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">G</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> si presentano molte collisioni e l’efficienza cala drasticamente. Si dice che si verifica un <strong>congestion collapse</strong>, cioè le performance del sistema calano in modo drastico all’aumentare del carico.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

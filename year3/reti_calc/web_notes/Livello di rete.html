@@ -1,0 +1,148 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-03_Livello di rete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#livello-di-rete">Livello di rete</a>
+<ul>
+<li><a href="#forwarding-table">Forwarding table</a></li>
+<li><a href="#indirizzamento">Indirizzamento</a></li>
+<li><a href="#eterogeneità-del-livello-collegamento">Eterogeneità del livello collegamento</a></li>
+<li><a href="#algoritmi-di-routing">Algoritmi di routing</a></li>
+<li><a href="#distance-vector-routing">Distance Vector routing</a></li>
+<li><a href="#recupero-dei-fallimenti">Recupero dei fallimenti</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="livello-di-rete">Livello di rete</h1>
+<p>Il livello di rete si occupa della trasmissioni di informazioni tra host che non fanno parte della stessa rete attraverso l’utilizzo di dispositivi chiamati <strong>router</strong>, che si occupano di instradare delle unità di informazione chiamate <strong>pacchetti</strong>.</p>
+<p><img src="https://i.ibb.co/k4w0Zst/image.png" alt="https://i.ibb.co/k4w0Zst/image.png"></p>
+<p>Ogni nodo (router intermedio oppure host) è identificato d un particolare indirizzo, per mandare una informazione, l’host crea un pacchetto contenente:</p>
+<ul>
+<li>l’indirizzo di destinazione</li>
+<li>il proprio indirizzo</li>
+<li>le informazioni da mandare</li>
+</ul>
+<h2 id="forwarding-table">Forwarding table</h2>
+<p>I router utilizzano un instradamento <em>hop-by-hop</em>: cioè quando un router riceve un pacchetto che non è destinato a lui, allora deve decidere a chi inoltrare quel pacchetto.</p>
+<p>La decisione su a chi inoltrare il pacchetto è basata su una <em><strong>forwarding table</strong></em>: cioè una struttura dati che mappa indirizzi a interfacce di rete su cui instradare i pacchetti che hanno quell’indirizzo.</p>
+<p>Possono essere mappati anche un insieme di indirizzi su stessa interfaccia.</p>
+<p>Nella realizzazione di una <em>forwarding table</em> possono accadere due errori:</p>
+<ul>
+<li><strong>buchi neri</strong> (<em>black holes</em>): situazione in cui un router che deve instradare un pacchetto non ha una entry valida nella propria forwarding table. Il pacchetto verrà scartato</li>
+<li><strong>Cicli</strong> (rounting loops): Un pacchetto attraversa in modo ciclico gli stessi router senza raggiungere la destinazione</li>
+</ul>
+<p>Una buona forwarding table oltre ad evitare questi due problemi deve anche assicurarsi che da ogni host si possa raggiungere ogni altro host.</p>
+<p>I router sono divisi in due funzioni:</p>
+<ul>
+<li><strong>Data plane</strong>: la funzione che si occupa di inoltrare i pacchetti in base alla forwarding table</li>
+<li><strong>Control plane</strong>: la funzione che si occupa di creare le forwarding tables</li>
+</ul>
+<p>Il modo più semplice per gestire il <strong>control plane</strong> è quello di creare le tabelle manualmente, ma con grandi reti sono necessari protocolli e algoritmi che si prendano carico della creazione e modifica in modo automatico.</p>
+<p>Per far funzionare questi algoritmi i router devono inviarsi dei pacchetti particolari contenenti le informazioni della propria conoscenza della rete.</p>
+<h2 id="indirizzamento">Indirizzamento</h2>
+<p>Per quanto riguarda il <strong>data plane</strong>, abbiamo due modi per assegnare gli indirizzi ai vari nodi della rete:</p>
+<ul>
+<li>
+<p><strong>Indirizzamento piatto</strong>: la forwarding table contiene le informazioni per raggiungere ogni destinazione. Ogni nodo ha un indirizzo unico. Non è scalabile, le tabelle diventano enormi</p>
+</li>
+<li>
+<p><strong>indirizzamento gerarchico</strong>: gli indirizzi sono raggruppati in blocchi, un blocco contiene anche milioni di host. Nella tabella ci sono gli indirizzi dei singoli blocchi quindi la sua dimensione è notevolmente ridotta rispetto all’indirizzamento piatto.</p>
+<p>In questo caso quando un host cambia rete, cambia anche il suo indirizzo, è quindi necessario un modo per il quale quando un host entra in una rete riceva un indirizzo e un modo per mantenere attive le comunicazioni quando avviene il cambio della rete.</p>
+</li>
+</ul>
+<h2 id="eterogeneità-del-livello-collegamento">Eterogeneità del livello collegamento</h2>
+<p>Sulle reti non possiamo assumere che tutti i link utilizzino lo stesso datalink layer, in particolare i datalink layer utilizzano una dimensione prefissata massima per i frame che non possiamo ignorare.</p>
+<p><img src="https://i.ibb.co/z5QG6gj/image.png" alt="https://i.ibb.co/z5QG6gj/image.png"></p>
+<p>Bisogna quindi implementare un sistema di frammentazione dei pacchetti quando questi sono troppo grandi, abbiamo 3 modi per implementarlo:</p>
+<ol>
+<li><strong>Scarta e notifica</strong>: Quando un pacchetto troppo grande pacchetto arriva a R1, viene scartato e viene notificato all’host A</li>
+<li><strong>Frammenta e riassembla al prossimo <em>hop</em></strong>: R1 è in grado di frammentare il pacchetto in più parti che vengono mandate ad R2 il quale attende l’arrivo di tutte le parti e lo riassembla per poterlo inoltrare nuovamente</li>
+<li><strong>Frammenta e riassembla alla destinazione</strong>: R1 è in grado di frammentare il pacchetto in più parti che vengono mandate ad R2, il quale inoltrerà direttamente le singole parti. L’host di destinazione si occuperà di riassemblare tutte le parti (metodo migliore).</li>
+</ol>
+<h2 id="algoritmi-di-routing">Algoritmi di routing</h2>
+<p>Un primo approccio per popolare la forwarding table (chiamato hot-potato) è quello di sfruttare i pacchetti di dati degli host: Inizialmente le tabella saranno vuote e man mano che gli host inviano i pacchetti, si utilizzano dei messaggi in <em>broadcast</em> per trovare il percorso per raggiungere la destinazione e aggiornare le tabelle di conseguenza.</p>
+<p>Su reti più complesse è necessario utilizzare meccanismi dedicati alla popolazione delle tabelle.</p>
+<p>Definiamo:</p>
+<ul>
+<li>Algoritmo: Una sequenza finita di istruzioni non ambigue che risolvono un determinato problema (distributed Bellman-Ford).</li>
+<li>Protocollo di routing: è un insieme di specifiche usate per implementare un algoritmo nei router. Se ogni produttore segue i protocolli allora indipendentemente dal software i router interagiranno senza problemi (RIP, Routing Information Protocol).</li>
+<li>Demone: è un software in esecuzione sul router che implementa un protocollo (Bird software).</li>
+</ul>
+<p>Un compito del control plane è quello di gestire le <strong>routing table</strong>, un struttura dati più generale rispetto alle forwarding table, che per ogni indirizzo di destinazione <code>d</code> contiene varie informazioni (che dipendono dal protocollo utilizzato):</p>
+<ul>
+<li><code>R[d].link</code> l’interfaccia di uscita verso cui inoltrare il pacchetto</li>
+<li><code>R[d].cost</code> La somma delle metriche che compongono il percorso minimo per raggiungere la destinazione</li>
+<li><code>R[d].time</code> il timestamp dell’ultimo control packet che portava informazione riguardo al destinatario</li>
+</ul>
+<h2 id="distance-vector-routing">Distance Vector routing</h2>
+<p>Distance Vector (DV) è un protocollo di routing utilizzato per riempire le routing table dei router nella rete.</p>
+<p>Assumiamo che ogni link abbia un costo per venir attraversato, assumiamo per semplicità che sia costante per ogni link.</p>
+<p>Inizialmente ogni router avrà nella propria tabella di routing la distanza verso se stesso, con distanza uguale a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>.</p>
+<p><img src="https://i.ibb.co/WFrwLmK/image.png" alt="https://i.ibb.co/WFrwLmK/image.png"></p>
+<p>Periodicamente i router inviano il proprio distance vector (la tabella di routing) ai propri vicini, possiamo immaginare che ciò avvenga attraverso il seguente pseudo-codice:</p>
+<pre class=" language-python"><code class="prism  language-python">Every N seconds<span class="token punctuation">:</span>
+    v <span class="token operator">=</span> Vector<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> d <span class="token keyword">in</span> R<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">:</span>
+        <span class="token comment"># add destination d to vector</span>
+        v<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Pair<span class="token punctuation">(</span>d<span class="token punctuation">,</span> R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> interfaces
+        <span class="token comment"># send vector v on this interface</span>
+        send<span class="token punctuation">(</span>v<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
+</code></pre>
+<p>Ogni router che riceve il distance vecotor si comporterà come descritto dal seguente pseudo-codice:</p>
+<pre class=" language-python"><code class="prism  language-python"><span class="token comment"># V : received Vector</span>
+<span class="token comment"># l : link over which vector is received</span>
+<span class="token keyword">def</span> <span class="token function">received</span><span class="token punctuation">(</span>V<span class="token punctuation">,</span> l<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    <span class="token comment"># received vector from link l</span>
+    <span class="token keyword">for</span> d <span class="token keyword">in</span> V<span class="token punctuation">[</span><span class="token punctuation">]</span>
+        <span class="token keyword">if</span> <span class="token operator">not</span> <span class="token punctuation">(</span>d <span class="token keyword">in</span> R<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment"># new route</span>
+            R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost <span class="token operator">=</span> V<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost <span class="token operator">+</span> l<span class="token punctuation">.</span>cost
+            R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>link <span class="token operator">=</span> l
+            R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>time <span class="token operator">=</span> now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">else</span><span class="token punctuation">:</span>
+            <span class="token comment"># existing route, is the new better ?</span>
+            <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token punctuation">(</span>V<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost <span class="token operator">+</span> l<span class="token punctuation">.</span>cost<span class="token punctuation">)</span> <span class="token operator">&lt;</span> R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost<span class="token punctuation">)</span> <span class="token operator">or</span> <span class="token punctuation">(</span>R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>link <span class="token operator">==</span> l<span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token comment"># Better route or change to current route</span>
+                R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost <span class="token operator">=</span> V<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>cost <span class="token operator">+</span> l<span class="token punctuation">.</span>cost
+                R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>link <span class="token operator">=</span> l
+                R<span class="token punctuation">[</span>d<span class="token punctuation">]</span><span class="token punctuation">.</span>time <span class="token operator">=</span> now<span class="token punctuation">(</span><span class="token punctuation">)</span>
+</code></pre>
+<p>Il router che riceve il DV, itera attraverso tutti gli indirizzi inclusi nel DV, se contiene un indirizzo che il router non conosce lo inserisce nella propria tabella.</p>
+<p>Se invece un indirizzo è già conosciuto ma ha un costo migliore oppure se quell’indirizzo è già ritenuto essere sul percorso migliore vengono semplicemente aggiornati i campi</p>
+<p>Vediamo un esempio ci popolazione:</p>
+<p><img src="https://i.ibb.co/wN68zbQ/image.png" alt="https://i.ibb.co/wN68zbQ/image.png"></p>
+<p>Alla fine si entra nello stato di convergenza (<em>convergence</em>), quando si è in questo stato ci si aspetta che ogni router conosca il percorso più breve verso ogni altro router.</p>
+<p>Note:</p>
+<ul>
+<li>Un solo ciclo di invio delle tabelle può non essere sufficiente</li>
+<li>Ci possono essere più percorsi minimi da un router ad un altro</li>
+<li>Ogni router ha un timer prima di rimandare la propria tabella ai vicini</li>
+</ul>
+<h2 id="recupero-dei-fallimenti">Recupero dei fallimenti</h2>
+<p>Ogni router controlla regolarmente i timestamp dei percorsi nella propria tabella, se passa troppo tempo senza ricevere un aggiornamento per quel percorso allora viene rimosso (pensando che ci sia stato un fallimento su tale percorso).</p>
+<p>In particolare se i router inviano la propria tabella ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> secondi, se passa più di  <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mo>×</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">3\times N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> (scelta in base al protocollo) tempo allora il percorso viene scartato (impostandolo a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">\infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord">∞</span></span></span></span></span>). Inoltre vengono informati i router vicini e magari c’è la possibilità che venga scoperto un nuovo percorso con costo migliore di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">∞</mi></mrow><annotation encoding="application/x-tex">\infty</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord">∞</span></span></span></span></span>.</p>
+<p>Vediamo un esempio:</p>
+<p><img src="https://i.ibb.co/SmBrCVX/image-1.png" alt="https://i.ibb.co/SmBrCVX/image-1.png"></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
