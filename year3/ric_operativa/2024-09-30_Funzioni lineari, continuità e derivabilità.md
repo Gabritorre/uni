@@ -167,12 +167,51 @@ la seconda forma ci dice che il valore di $f(y)$ è dato dal valore di $f(x)$ pi
 
 L’incertezza che prima era nell’o-piccolo adesso è attribuita al fatto che non calcoliamo più l’andamento nel punto che conoscevamo $\nabla f(x)$ ma lo calcoliamo in un punto intermedio tra $x$ e $y$, $y$$\nabla f[x + \theta(y-x)]$
 
+## Teorema del valore medio del secondo ordine
+
+Con funzioni due volte continuamente derivabili possiamo avere una approssimazione ancora più precisa:
+
+- Prima forma:
+    
+    $$
+    f(y) = f(x) + \nabla f(x)^T \cdot (y-x) + \frac{1}{2}(y-x)^T\nabla^2f(x)(y-x) + o(||y-x||^2)
+    $$
+    
+- Seconda forma:
+    
+    $$
+    f(y) = f(x) + \nabla f(x)^T(y-x) + \frac{1}{2}(y-x)^T \nabla^2 f[x + \theta(y-x)] (y-x)
+    $$
+    
+
 ## Derivata direzionale
 
-La derivata direzionale generalizza il concetto di derivata parziale, infatti mentre le derivate parziali osservano l’andamento della funzione dal punto di vista degli assi (come varia rispetto all’asse x, come varia rispetto all’asse y, ecc…), **le derivate direzionali osservano l’andamento della funzione da un punto di vista libero,** $d \in \mathbb{R}^n \setminus \{0\}$.
+La derivata direzionale generalizza il concetto di derivata parziale, infatti mentre le derivate parziali osservano l’andamento della funzione dal punto di vista degli assi (come varia rispetto all’asse x, come varia rispetto all’asse y, ecc…), **le derivate direzionali osservano l’andamento della funzione rispetto una direzione libera,** $d \in \mathbb{R}^n \setminus \{0\}$.
 
 $$
-D(f, d) = f(x + d) - f(x) - o(||d||)
+D(f, d) = \hspace{3mm} \nabla f(x)^T \cdot d \hspace{3mm} =\hspace{3mm} f(x + d) - f(x) - o(||d||)
 $$
 
-quindi quando $||d||$ è piccola si può trascurare dal calcolo
+quindi quando $||d||$ è piccola si può trascurare dal calcolo.
+
+Esempio:
+
+Data la funzione affine
+
+$$
+f(x) = c^T x + \bar c \hspace{5mm} c \in \mathbb{R}^n, \bar c \in \mathbb{R}
+$$
+
+dimostrare che la derivata direzionale coincide con $c^T\cdot d$
+
+**Ogni funzione affine è continua e derivabile con derivata continua**: dato che $x$ e $c$ sono vettori possiamo vedere la funzione come: $f(x) = c_1x_1 + c_2x_2 + … + c_nx_n + \bar c$
+
+derivando tale funzione rispetto a tutti gli $x$ ci porta ad avere il vettore:
+
+$\nabla f(x) = c = \begin{pmatrix} c_1\\…\\c_n\end{pmatrix}$
+
+Otteniamo quindi che la derivata direzionale è:
+
+$$
+D(f, d) = \nabla f(x) \cdot d = c^T \cdot d
+$$
