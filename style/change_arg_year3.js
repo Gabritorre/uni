@@ -1,6 +1,6 @@
 let courses = {
 	calc_e_ling_form : ["Note complete", "Automi a stati finiti deterministici", "Automi a stati finiti non deterministici", "Espressioni regolari", "Linguaggi non regolari"],
- 	diritto_info : ["Note complete", "Ordinamento giuridico italiano", "Principio di neutralità", "Documenti informatici", "Monete virtuali"],
+ 	diritto_info : ["Note complete", "Ordinamento giuridico italiano", "Principio di neutralità", "Documenti informatici", "Monete virtuali", "Privacy", "Il commercio elettronico"],
  	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti", "Testing", "Progettazione architetturale", "UML e progettazione software", "Progettazione di interfacce utenti"],
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript", "Tipi di dato e valori", "Espressioni", "Operatori", "Statement", "Oggetti"],
 	reti_calc : ["Note complete", "Introduzione", "Livello fisico", "Livello di collegamento", "Gestione degli errori", "Condivisione delle risorse", "Livello di rete"],
