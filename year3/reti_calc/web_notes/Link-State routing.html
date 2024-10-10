@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-08_Link-State routing</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#link-state-routing">Link-State routing</a>
+<ul>
+<li><a href="#funzionamento">Funzionamento</a></li>
+<li><a href="#conclusioni">Conclusioni</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="link-state-routing">Link-State routing</h1>
+<p>Il <strong>link-state</strong> è un’altra famiglia di protocolli di routing.</p>
+<p>Mentre con i distance vector si utilizzavano algoritmi distribuiti per computare le routing table, con il link-state si utilizzano <strong>scambi di messaggi</strong> in modo da permettere ad ogni router di conoscere l’intera topologia di rete.</p>
+<p>Successivamente ogni router utilizza un algoritmo come Dijkstra per calcolare la tabella con i percorsi minimi.</p>
+<p>Abbiamo quindi sempre la rete rappresentata da un grafo, ma in questo caso <strong>i link sono direzionali</strong>, quindi per una comunicazione bidirezionali se hanno due link per ogni coppia di router.</p>
+<p>Ogni link ha un <strong>peso</strong>, più grande è peggiore è.</p>
+<h2 id="funzionamento">Funzionamento</h2>
+<h3 id="messaggio-di-hello">Messaggio di HELLO</h3>
+<ul>
+<li>Ogni router ha un indirizzo univoco</li>
+<li>Un router invia un messaggio di HELLO (contenente il suo indirizzo) ogni <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi></mrow><annotation encoding="application/x-tex">N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> secondi a tutte le sue interfacce.</li>
+<li>I router che ricevono il messaggio scoprono i loro vicini con cui sono connessi.</li>
+<li>Se i  messaggi HELLO non arrivano dopo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>⋅</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">k\cdot N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> secondi allora il relativo link viene marcato come rotto</li>
+</ul>
+<h3 id="lsp">LSP</h3>
+<p>Quando i router hanno scoperto i propri router vicini, devono distribuire in modo affidabile i propri link locali a tutta la rete.</p>
+<p>Ogni router costruisce un <em>link-state packet</em> (LSP) contenente:</p>
+<ul>
+<li><code>LSP.Router</code>: il suo indirizzo identificativo</li>
+<li><code>LSP.age</code>: il tempo di vita rimanente del pacchetto</li>
+<li><code>LSP.seq</code>: numero di sequenza che incrementa ad ogni pacchetto</li>
+<li><code>LSP.Links[]</code>: lista di vicini composta da:
+<ul>
+<li><code>LSP.Links[i].Id</code>: l’identificativo del vicino</li>
+<li><code>LSP.Links[i].cost</code>: il costo del link</li>
+</ul>
+</li>
+</ul>
+<p>Per la distribuzione di questi pacchetti viene utilizzato un <strong>algoritmo di Flooding</strong>, in cui ogni router mantiene un database (LSDB) contenente per ogni router, l’LSP più recente.</p>
+<p>Se un router che riceve un LSP che ha già all’interno del suo LSDB con lo stesso numero di sequenza allora non lo inoltra. Altrimenti viene inoltrato a tutte le interfacce tranne quella da cui è arrivato.</p>
+<p>Stato di partenza:</p>
+<p><img src="https://i.ibb.co/TMRbYzT/image.png" alt="https://i.ibb.co/TMRbYzT/image.png"></p>
+<p>Stato dopo il flooding:</p>
+<p><img src="https://i.ibb.co/cw0Wm76/image.png" alt="https://i.ibb.co/cw0Wm76/image.png"></p>
+<p>Quando un link si rompe, i router connessi a tale link generano un nuovo LSP e lo inoltrano alla rete.</p>
+<p>Quindi se si rompe il link B-E, il router E manderà un nuovo LSP a D e C che lo inoltreranno a loro volta ai router vicini. Il router B farà lo stesso.</p>
+<h3 id="note">Note</h3>
+<ul>
+<li>è possibile che un router riceva più copie dello stesso LSP.</li>
+<li>il tempo in cui i router coinvolti nel link in errore si accorgono del fallimento può essere diverso</li>
+<li>Dato che i link sono direzionali anche se un solo verso si è rotto vengono rimosse entrambe le direzioni. Analogamente se il lini viene aggiustato è necessario avere la conferma da entrambi i router coinvolti per assicurarsi che entrambe le direzioni funzionino.</li>
+<li>Per avere affidabilità sul ricevimento degli LSP sono necessari degli acknowledgement</li>
+</ul>
+<p>Questo metodo richiede molta computazione a causa del flooding e di Dijkstra su ogni router. Su reti molto grani è anche abbastanza frequente che qualcosa si rompa, quindi in grandi reti non viene utilizzato.</p>
+<h2 id="conclusioni">Conclusioni</h2>
+<p>Indipendentemente dall’algoritmo di routing, quando avviene un cambiamento alla topologia della rete si possono verificare:</p>
+<ul>
+<li>loop (duplicazione di pacchetti)</li>
+<li>pacchetti che intraprendono percorsi diversi (con velocità diverse)</li>
+<li>creazione di buchi neri (perdita di pacchetti)</li>
+</ul>
+<p>A livello di rete quindi i pacchetti possono essere persi, corrotti, duplicati e ricevuti fuori ordine. I layer superiori devono tenerne conto.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
