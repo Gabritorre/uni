@@ -82,3 +82,33 @@ f(x^*) \geq f(x)\hspace{5mm} \forall x \in C
 $$
 
 Si definisce punto di **massimo globale unico** se la disuguaglianza è un minore stretto con $x \neq x^*$
+
+## Problema del knapsack
+
+Il problema del knapsack (zaino) è un esempio di **programmazione matematica lineare**.
+
+Ci si pone il problema di riempiere uno zaino **massimizzando** l'utilità degli oggetti al suo interno e **minimizzando** il più possibile il volume interno occupato.
+
+Definiamo quindi:
+
+- $u_i$: utilità di portare l'oggetto $i$-esimo nello zaino
+- $a_i$: volume dell'oggetto $i$-esimo
+- $b \geq 0$: volume dello zaino
+- $n$: numero di oggetti
+- $x_i=\begin{cases}1&\text{se l'oggetto i-esimo è inserito nello zaino}\\0&\text{altrimenti}\end{cases}$
+
+Formuliamo il **problema di massimizzazione** che vogliamo risolvere:
+
+$$
+\max_x u_1x_1+...+u_nx_n
+$$
+
+Poniamo i seguenti **vincoli** sull’insieme ammissibile $C$:
+
+$$
+a_1x_1+...+a_nx_n\leq b\quad\text{(vincolo lineare)}
+$$
+
+$$
+x_i\in\{0,1\},\forall i=1,...,n\quad\text{(vincolo di interezza - inserisco oppure no)}
+$$
