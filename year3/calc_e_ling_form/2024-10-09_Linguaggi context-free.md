@@ -1,4 +1,5 @@
-﻿# Linguaggi context-free
+﻿
+# Linguaggi context-free
 
 Vediamo un nuovo metodo per descrivere linguaggi con struttura ricorsiva, questo metodo si chiama ***Context-Free Grammar*** (CFG).
 
@@ -112,9 +113,11 @@ Forniamo il CFG con il seguente alfabeto $\Sigma = \{0, 1\}$ per:
 
 Qualche volta una grammatica può generare la stessa stringa in più modi diversi, quando ciò accade diciamo che la CFG è **ambigua**.
 
-In altre parole possiamo dire che una CFG è ambigua se e solo se esiste una stringa $w \in L(G)$ tale che $w$ ha almeno due *parse tree* diversi
+In altre parole possiamo dire che una CFG è ambigua se e solo se esiste una stringa $w \in L(G)$ tale che $w$ ha almeno due *parse tree* diversi oppure almeno due derivazioni a sinistra diverse.
 
-Ad esempio con la grammatica:
+**derivazione a sinistra**: è un derivazione in cui ad ogni passo la variabile sostituita è quella più a sinistra
+
+Ad esempio considerando la grammatica:
 
 $$
 E \to E+E | E \times E | a
@@ -123,3 +126,202 @@ $$
 genera la stessa stringa con due parse tree diversi:
 
 ![https://i.ibb.co/3NKMs2V/image.png](https://i.ibb.co/3NKMs2V/image.png)
+
+## Forma normale di Chomsky
+
+Vediamo una forma semplificata delle CFG, chiamata **forma normale di Chomsky.**
+
+Una CFG è in forma normale Chomsky se e solo se ognuna delle sue produzioni è nella forma:
+
+$$
+A \to BC
+\\
+A \to a
+\\
+S \to \epsilon
+$$
+
+Dove $A, B, C$ sono dei non terminali che non sono *start symbol* e $S$ è lo *start symbol*.
+
+Ad esempio la seguente grammatica è in forma normale Chomsky
+
+$S \to AB | \epsilon$
+
+$A \to 0$
+
+$B \to CD$
+
+$C \to 1$
+
+$D \to 1$
+
+### Teorema
+
+Per ogni CFG $G$ esiste una CFG $H$ in forma normale Chomsky tale che $L(H) = L(G)$
+
+**Dimostrazione**:
+
+Definiamo un algoritmo che converte $G$ in un CFG $H$ equivalente che soddisfa la forma normale Chomsky.
+
+Tale algoritmo farà delle modifiche alla grammatica, assicurandosi di mantenere il linguaggio invariato.
+
+1. Garantiamo che lo *start symbol* non appaia mai sul lato destro delle regole.
+
+	$$
+	\text{Genera un nuovo start symbol } S'\text{ e aggiungi la produzione } S' \to S
+	$$
+
+1. Garantiamo che solamente lo *start symbol* possa avere $\epsilon$-transizioni
+    
+    $$
+    \text{Elimina le produzioni nella forma } A \to \epsilon \text{ dove }A \text{ non è uno start symbol.}
+    \\
+    \\
+    \text{Inoltre per tutte le regole che hanno } A \text{ nella parte destra, }\\
+    \text{aggiungi una nuova regola con quell'occorrenza cancellata}
+    \\
+    \text{ad esempio } R \to uAvAw \text{ introduco delle nuove regole:}
+    \\
+    R\to uvAw \\
+    R\to uAvw \\
+    R\to uvw
+    $$
+    
+2. Garantiamo che non ci siano produzioni unitarie, cioè nella forma $A \to B$
+
+	$$
+	\text{Elimina  le regole nella forma } A \to B.
+	\\
+	\text{per ogni regola nella forma } B \to u \text{ introduci una nuova regola:}
+	\\
+	A \to u
+	$$
+
+1. Garantiamo che non appaiano regole nella forma $A \to u_1 … u_k$ con $k \geq 3$ dove $u_i$ possono essere sia terminali che non terminali.
+E garantiamo che a destra delle regole non ci sia un misto di terminali e non terminali
+	$$
+	\text{Rimpiazza ogni regola nella forma } A \to u_1 ...u_k \text{ con } k \geq 3 \text{ con le seguenti regole:}\\
+	A_0 \to u_1A_1\\
+	A_1 \to u_2A_2\\
+	...\\
+	A_{k-2} \to u_{k-1} u_k\\
+	\text{in queste nuove regole rimpiazza ogni terminale } u_i \text{ con un nuovo non terminale } U_i\\
+	\text{e aggiungi la regola } U_i \to u_i
+	$$
+
+**Nota 1**: seguire gli step nell’ordine indicato è fondamentale per evitare che uno step invalidi quelli precedenti.
+
+**Nota 2**: Negli step 2 e 3, si non si deve rigenerare ciò che è già stato eliminato, altrimenti si verifica un loop.
+
+### Esempio di conversione
+
+Partiamo dalla seguente CFG:
+
+$S \to ASA \,|\, aB$
+$A \to B \, | \, S$
+
+$B \to b \,|\, \epsilon$
+
+Seguiamo l’algoritmo:
+
+- Step 1 iterazione 1
+    
+    $S_0 \to S$
+    
+    $S \to ASA \,|\, aB$
+    $A \to B \, | \, S$
+    
+    $B \to b \,|\, \epsilon$
+    
+- Step 2 iterazione 1
+    - $B \to b \,|\, \cancel{\epsilon}$
+        - $S \to ASA \, |\,aB\,|\,a$
+        - $A \to B \,|\, S \,|\, \epsilon$
+    
+    Risultato:
+    
+    $S_0 \to S$
+    
+    $S \to ASA \,|\, aB \,|\, a$
+    $A \to B \, | \, S \,|\, \epsilon$
+    
+    $B \to b$
+    
+- Step 2 iterazione 2
+    - $A \to B\,|\,S\,|\,\cancel{\epsilon}$
+        - $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS\,|\,S$
+    
+    Risultato:
+    
+    $S_0 \to S$
+    
+    $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS\,|\,S$
+    $A \to B \, | \, S$
+    
+    $B \to b$
+    
+- Step 3 iterazione 1
+    - $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS\,|\,\cancel{S}$
+        - $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+- Step 3 iterazione 2
+    - $S_0 \to \cancel{S}$
+        - $S_0 \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+- Step 3 iterazione 3
+    - $A \to \cancel{B} \,|\,S$
+        - $A \to S \,|\, b$
+- Step 3 iterazione 4
+    - $A \to \cancel{S}\,|\,b$
+        - $A \to b\,|\,ASA\,|\,aB\,|\,a\,|\,SA\,|\,AS$
+- Risultato Step 3
+    
+    $S_0 \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    
+    $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    
+    $A \to b\,|\,ASA\,|\,aB\,|\,a\,|\,SA\,|\,AS$
+    
+    $B \to b$
+    
+- Step 4 prima parte
+    - $S_0 \to \cancel{ASA} \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+        - $S_0 \to AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    - $S \to \cancel{ASA} \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+        - $S \to AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    - $A \to b\,|\,\cancel{ASA}\,|\,aB\,|\,a\,|\,SA\,|\,AS$
+        - $A \to b\,|\,AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    - $A_1 \to SA$
+    
+    Risultato Step 4 intermedio
+    
+    $S_0 \to AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    
+    $S \to AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    
+    $A \to b\,|\,AA_1 \,|\, aB \,|\, a\,|\, SA\,|\, AS$
+    
+    $B\to b$
+    
+    $A_1 \to SA$
+    
+- Step 4 seconda parte
+    - $S_0 \to AA_1 \,|\, \cancel{aB} \,|\, a\,|\, SA\,|\, AS$
+        - $S_0 \to AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+    - $S \to AA_1 \,|\, \cancel{aB} \,|\, a\,|\, SA\,|\, AS$
+        - $S \to AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+    - $A \to b\,|\,AA_1 \,|\, \cancel{aB} \,|\, a\,|\, SA\,|\, AS$
+        - $A \to b\,|\,AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+    - $U \to a$
+
+**Risultato finale**
+
+$S_0 \to AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+
+$S \to AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+
+$A \to b\,|\,AA_1 \,|\, UB \,|\, a\,|\, SA\,|\, AS$
+
+$B\to b$
+
+$A_1 \to SA$
+
+$U \to a$
