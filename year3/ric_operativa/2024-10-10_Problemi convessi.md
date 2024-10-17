@@ -89,7 +89,7 @@ $$
 
 Otteniamo quindi che per ogni $\alpha \in [0, 1], ||w|| \leq 1$
 
-## Funzioni convesse
+## Funzioni convesse e concave
 
 Data una funzione $f: \mathbb{R}^n \rightarrow \mathbb{R}$ e un insieme convesso $C \subseteq \mathbb{R}^n$, si dice che la **funzione è convessa sull’insieme** $C$, se per ogni coppia di punti $x, y \in C$, risulta che
 
@@ -117,4 +117,147 @@ Vediamo l’interpretazione geometrica per la funzione convessa:
 
 Vediamo quindi come una funzione è convessa su un insieme $C$ se i valori assunti dalla funzione nell’intervallo delimitato da $x$ e $y$ stanno sotto al segmento che congiunge $x$ e $y$.
 
-È quindi possibile riconoscere le funzioni convesse in un certo intervallo se sono a forma di tazza in tale intervallo.
+È quindi possibile riconoscere le funzioni convesse in un certo intervallo se sono a forma di tazza in tale intervallo. 
+
+### Lemma
+
+Data la funzione $f(x)$ con $f:\mathbb{R}^n \rightarrow \mathbb{R}$ e dato **l’insieme convesso** $C \subseteq \mathbb{R}^n$, se $f(x)$ **è convessa** su $C$ allora anche $g(x) = -f(x)$ è **concava** su C
+
+Analogamente se $f(x)$ è **concava** su $C$ allora $g(x) = -f(x)$ è **convessa** su $C$.
+
+Nota: il lemma vale anche con funzioni **strettamente concave e convesse**.
+
+**Dimostrazione**:
+
+Dalla convessità di di $f(x)$ segue che:
+
+$$
+f(\alpha x + (1-\alpha)y) \leq \alpha f(x) + (1-\alpha) f(y)
+$$
+
+Moltiplicando per $-1$:
+
+$$
+[-f](\alpha x + (1-\alpha)y) \geq \alpha [-f](x) + (1-\alpha) [-f](y)
+$$
+
+Sostituendo $g = -f$ ottengo esattamente la definizione di concavità
+
+$$
+g(\alpha x + (1-\alpha)y) \geq \alpha g(x) + (1-\alpha) g(y)
+$$
+
+Da questo lemma è utile notare che se $\bar x$ è un **minimo locale/globale** della funzione $f(x)$ su un insieme generico $A \subseteq \mathbb{R}^n$, allora su $-f(x)$ si avrà che $\bar x$ è un **massimo locale/globale** su $A$.
+
+(vale anche il contrario)
+
+## Funzioni sia convesse che concave
+
+Data una funzione **affine** $f(x)$ con $f: \mathbb{R}^n \rightarrow \mathbb{R}$, allora $f(x)$ è **sia concava che convessa** su $\mathbb{R}^n$
+
+**Dimostrazione**:
+
+Una funzione affine $f(x)$ ha la seguente forma: $f(x) = f_L(x) + \bar c$
+
+cove $f_L(x)$ è una funzione lineare e $\bar c \in \mathbb{R}$.
+
+Presa una qualsiasi coppia $x, y \in \mathbb{R}^n$ e uno scalare $\alpha \in [0, 1]$, si avrà
+
+$$
+f[\alpha x + (1-\alpha)y] = f_L[\alpha x(1-\alpha)y] + \bar c
+\\
+=\alpha f_L(x) + (1-\alpha)f_L(y) + \bar c
+$$
+
+$\bar c$ lo posso scrivere come combinazione convessa:
+
+$$
+=\alpha f_L(x) + (1-\alpha)f_L(y) + \alpha \bar c + (1-\alpha)\bar c
+$$
+
+raccolgo i termini comuni:
+
+$$
+=\alpha (f_L(x) + \bar c)  + (1-\alpha)(f_L(y) + \bar c)
+$$
+
+Dalla definizione di $f(x)$ ottengo quindi:
+
+$$
+=\alpha f(x)  + (1-\alpha)f(x)
+$$
+
+Quindi abbiamo ottenuto che 
+
+$$
+f[\alpha x + (1-\alpha)y] =\alpha f(x)  + (1-\alpha)f(x)
+$$
+
+che soddisfa contemporaneamente sia la definizione di convessità che di concavità.
+
+## Insieme di livello
+
+Può capitare che nei problemi di ottimizzazione l’insieme delle soluzioni ammissibili sia definito tramite dei vincoli che sono delle disequazioni. In tale situazione riconoscere che i vincoli formano insiemi convessi è importante per sfruttare la proprietà che anche l’intersezione di tali vincoli è un insieme convesso.
+
+Data una funzione $f(x)$ con $f: \mathbb{R}^n \rightarrow \mathbb{R}$ **convessa** su $\mathbb{R}^n$ allora l’**insieme livello** $\mathcal{L}_\gamma$ **è convesso** per ogni $\gamma \in \mathbb{R}$
+
+$$
+\mathcal{L}_\gamma = \{x \in \mathbb{R}^n: f(x) \leq \gamma\}
+$$
+
+In due dimensioni ($n = 2$) possiamo pensare che l’insieme di livello siano i punti dell’asse x i cui valori calcolati nella funzione ($f(x)$) stiano al di sotto di un valore $\gamma$
+
+![https://i.ibb.co/Wpzj3WH/image.png](https://i.ibb.co/Wpzj3WH/image.png)
+
+**Dimostrazione**:
+
+Fissato un $\gamma \in \mathbb{R}$ avremo 3 casi:
+
+- $\mathcal{L}_\gamma = \emptyset$, che è convesso
+- $\mathcal{L}_\gamma$ contiene un solo elemento (è un s*ingleton*), che è quindi convesso
+- altrimenti $\mathcal{L}_\gamma$ contiene un numero infinito di elementi (dato che lavoriamo sull’insieme $\mathbb{R})$
+    
+    In tal caso siano $y, z$ due punti distinti di $\mathcal{L}_\gamma$, si ha per definizione che 
+    
+    $f(y) \leq \gamma$
+    
+    $f(z) \leq \gamma$
+    
+    Inoltre consideriamo un **punto intermedio** $w$ tra $y$ e $z$
+    
+    $$
+    w = \alpha y + (1-\alpha)z \hspace{5mm} \text{con } \alpha \in [0, 1]
+    $$
+    
+    Per la convessità di $f$ su $\mathbb{R}^n$ si ha
+    
+    $$
+    f(w) = f[\alpha y + (1-\alpha) z] \leq \alpha f(y) + (1-\alpha) f(z)
+    $$
+    
+    Dato che:
+    
+    $f(y) \leq \gamma$
+    
+    $f(z) \leq \gamma$
+    
+    possiamo fare una maggiorazione
+    
+
+	$$
+	\alpha f(y) + (1-\alpha) f(z) \leq \alpha \gamma + (1-\alpha) \gamma
+	$$
+
+	Dato che $\alpha \in [0, 1]$
+
+	$$
+	\alpha \gamma + (1-\alpha) \gamma = \gamma
+	$$
+
+	Otteniamo quindi che $f(w) \leq \gamma$ cioè $w$ appartiene a $\mathcal{L}_\gamma$ indipendentemente dalla scelta di $y$ e $z$. Questo significa che tutti i punti tra $y$ e $z$ sono sotto $\gamma$, cioè l’insieme $\mathcal{L}_\gamma$ è un insieme convesso.
+
+**Nota**: Con funzioni convesse su $\mathbb{R}^n$ ogni insieme di livello $\mathcal{L}_\gamma$ è convesso, per qualsiasi $\gamma$.
+
+## Curva di livello
+
+![https://i.ibb.co/r2B5RbG/image.png](https://i.ibb.co/r2B5RbG/image.png)
