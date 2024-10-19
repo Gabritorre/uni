@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-16_HMAC, MD5 e cifratura a chiave simmetrica</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#hmac-md5-cifratura-a-chiave-simmetrica">HMAC, MD5 cifratura a chiave simmetrica</a>
+<ul>
+<li><a href="#hmac">HMAC</a></li>
+<li><a href="#cram-md5">CRAM-MD5</a></li>
+<li><a href="#cifratura-a-chiave-simmetrica">Cifratura a chiave simmetrica</a></li>
+<li><a href="#approccio-degli-algoritmi-moderni">Approccio degli algoritmi moderni</a></li>
+<li><a href="#comunicazione-finale">Comunicazione finale</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="hmac-md5-cifratura-a-chiave-simmetrica">HMAC, MD5 cifratura a chiave simmetrica</h1>
+<p>Abbiamo visto come Alice, nel tentativo di garantire l’integrità del messaggio, assieme al messaggio manda anche il relativo hash. Ma dato che Eve controlla il canale di comunicazione quello che può fare è modificare il messaggio, calcolare un nuovo hash e mandarlo a Bob, il quale non si accorgerà di nulla.</p>
+<p>Per raggirare questo problema è necessario utilizzare <strong>due canali separati per il messaggio e per l’hash</strong> (supponendo che l’attaccante non possa controllare entrambi i canali).</p>
+<h2 id="hmac">HMAC</h2>
+<p>Una soluzione al precedente problema senza utilizzare due canali separati è quello di utilizzare un HMAC.</p>
+<p>L’<strong>HMAC</strong> (<em>Hashed Message Authentication Code</em>) è un meccanismo crittografico che utilizza una funzione hash che prende in input il messaggio e una chiave segreta per generare il digest.</p>
+<p>Quindi Alice e Bob devono accordarsi sulla chiave e sulla funzione hash da usare, in questo modo solo loro possono verificare l’integrità del messaggio.</p>
+<p><img src="https://i.ibb.co/943vXb6/image.png" alt="https://i.ibb.co/943vXb6/image.png"></p>
+<p>In questo caso se Eve intercetta il messaggio non riesce a calcolare l’hash del messaggio modificato dato che non conosce la chiave, quindi Bob si accorgerebbe che il messaggio non è valido.</p>
+<p>Vantaggi:</p>
+<ul>
+<li>Fornisce <strong>integrità</strong> usando un solo canale di comunicazione</li>
+<li>Fornisce <strong>autenticazione</strong>: Bob sa che il messaggio viene da Alice in quanto solo lei conosce la chiave</li>
+</ul>
+<p>Svantaggio:</p>
+<ul>
+<li>Serve un canale di comunicazione <strong>sicuro</strong> per poter accordarsi sulla chiave segreta.</li>
+<li>Non garantisce la non ripudiabilità in quanto ci sono due chiavi uguali per la comunicazione</li>
+</ul>
+<h3 id="sicurezza-dei-canali">Sicurezza dei canali</h3>
+<p>Spesso i protocolli hanno bisogno di un canale sicuro per poter funzionare, un canale che fornisce segretezza e/o autenticità.</p>
+<p>Nel precedente esempio abbiamo bisogno di un canale sicuro per accordarsi sulla chiave.</p>
+<p>Mentre il canale dove si scambiano messaggio può essere insicuro, ma viene garantita la segretezza tramite la crittografia del contenuto.</p>
+<h3 id="generazione-delle-chiavi">Generazione delle chiavi</h3>
+<p>Alice e Bob non devono perdere o dimenticarsi la chiave, altrimenti non possono più comunicare, tenteranno quindi di usare una chiave troppo semplice. A questo punto Eve potrebbe fare brute force e indovinare la chiave.</p>
+<p>Quello che si può fare è di sfruttare la randomicità delle funzioni hash per generare una chiave di caratteri senza significato.</p>
+<p>Alice e Bob usano un canale sicuro per accordarsi su una password forte, la chiave sarà ottenuta da una fuzione hash su tale password.</p>
+<p>Eve può aspettarsi che venga usata questa tecnica e da qui nasce l’importanza di usare password molto forti in modo da rendere vano un attacco di brute force.</p>
+<h2 id="cram-md5">CRAM-MD5</h2>
+<p>CRAM-MD5 è un protocollo che permette di avere un servizio di autenticazione basato sull’uso dell’HMAC.</p>
+<p>Immaginiamo che <strong>un client si voglia autenticare al server</strong>, <strong>i</strong>l protocollo funziona in questo modo:</p>
+<ul>
+<li>il server crea una challenge <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span></span></span></span></span> in questo formato “timestamp@dominio” e la manda al client</li>
+<li>Il client ha la chiave segreta <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span></span></span></span></span> e computa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mtext>HMAC</mtext><mo stretchy="false">(</mo><mi>C</mi><mo separator="true">,</mo><mi>K</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D=\text{HMAC}(C, K)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">HMAC</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mclose">)</span></span></span></span></span> rispondendo al server con il proprio username e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi></mrow><annotation encoding="application/x-tex">D</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span></span></span></span></span></li>
+<li>Il server cerca l’username nel suo database, se presente ottiene la rispettiva chiave e computa a sua volta <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mtext>’</mtext><mo>=</mo><mtext>HMAC</mtext><mo stretchy="false">(</mo><mi>C</mi><mo separator="true">,</mo><mi>K</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">D’ = \text{HMAC}(C, K)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mord">’</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">HMAC</span></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mclose">)</span></span></span></span></span>, se <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mi>D</mi><mtext>’</mtext></mrow><annotation encoding="application/x-tex">D=D’</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mord">’</span></span></span></span></span> allora l’autenticazione ha successo</li>
+</ul>
+<p><img src="https://i.ibb.co/WB4RP2J/image.png" alt="https://i.ibb.co/WB4RP2J/image.png"></p>
+<p>Questo protocollo è deprecato per problemi di sicurezza:</p>
+<ul>
+<li>la funzione hash che si utilizzava è MD5 che ad oggi non è ritenuta sicura</li>
+<li>Il client non autentica il server, non sa quindi se è veramente chi dice di essere</li>
+<li>La chiave viene mantenuta in chiaro nel server</li>
+<li>Possibili attacchi brute force offline: l’attaccante può intercettare la challenge e l’HMAC, può quindi fare brute force sulla chiave fino a che non ottiene l’HMAC corretto</li>
+</ul>
+<h2 id="cifratura-a-chiave-simmetrica">Cifratura a chiave simmetrica</h2>
+<p>Gli elementi fondamentali di un sistema cifratura sono:</p>
+<ul>
+<li>cifrario (algoritmo)</li>
+<li>chiave (informazione)</li>
+</ul>
+<p><strong>Principio di Kerchoffs</strong>: Un sistema crittografico dovrebbe essere sicuro anche se tutto ciò che riguarda il sistema, fatta eccezione per la chiave, fosse di dominio pubblico.</p>
+<p><strong>La segretezza deve stare nella chiave e non nell’algoritmo usato.</strong></p>
+<p>Il funzionamento è simile a quello dell’HMAC: Alice e Bob usano un canale sicuro per accordarsi su una chiave condivisa e sul cifrario da usare (un cifrario ritenuto sicuro oggi è AES).</p>
+<ul>
+<li>Quando Alice vuole inviare un messaggio, utilizza AES usando come input il messaggio e la chiave per creare un messaggio criptato</li>
+<li>Quando Bob riceve il messaggio criptato, utilizza AES usando come input il messaggio criptato e la chiave per recuperare il messaggio originale</li>
+</ul>
+<p>Quindi lo <strong>stesso algoritmo</strong> viene utilizzato sia per <strong>cifrare</strong> che per <strong>decifrare</strong>.</p>
+<p>Le operazioni di base di un cifrario sono <strong>sostituzioni</strong> (rimpiazzare un simbolo con un altro) e <strong>trasposizioni</strong> (cambiare l’ordine dei simboli)</p>
+<p>Ad esempio un cifrario che utilizza solo sostituzioni è il <strong>cifrario di cesare</strong> che rimappa le lettere dell’alfabeto con le lettere 13 posizioni più avanti (o indietro):</p>
+<p><img src="https://i.ibb.co/BZPDnHR/image.png" alt="https://i.ibb.co/BZPDnHR/image.png"></p>
+<p>Un cifrario trasforma un testo in chiaro in un testo cifrato usando una chiave.</p>
+<p>Un cifrario funziona se non c’è una correlazione statistica (ad esempio la frequenza di lettere) tra il testo in chiaro e il testo cifrato.</p>
+<p>Un algoritmo teoricamente perfetto esiste e si chiama One-time-pad (<strong>OTP</strong>) o cifrario di Vernam.</p>
+<p>È l’unico algoritmo la cui sicurezza è stata dimostrata matematicamente.</p>
+<h3 id="funzionamento">Funzionamento:</h3>
+<ul>
+<li>Alice genera un stringa random <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span></span></span></span></span> di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> bit. Trasmette questa stringa a Bob su un <strong>canale sicuro</strong></li>
+<li>Per cifrare un messaggio lungo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> bit, con <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m &lt; n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.5782em; vertical-align: -0.0391em;"></span><span class="mord mathnormal">m</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span>, Alice prende una porzione <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mtext>’</mtext></mrow><annotation encoding="application/x-tex">K’</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mord">’</span></span></span></span></span> della chiave <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi></mrow><annotation encoding="application/x-tex">K</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span></span></span></span></span> lunga esattamente quanto il messaggio (quindi <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi></mrow><annotation encoding="application/x-tex">m</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">m</span></span></span></span></span> bit) e calcola <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>=</mo><mi>M</mi><mo>⊕</mo><mi>K</mi><mtext>’</mtext></mrow><annotation encoding="application/x-tex">C = M\oplus K’</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">M</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⊕</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">K</span><span class="mord">’</span></span></span></span></span> dove <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⊕</mo></mrow><annotation encoding="application/x-tex">\oplus</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord">⊕</span></span></span></span></span> è l’operazione di XOR binario</li>
+<li>la porzione di chiave presa non deve essere riutilizzata.</li>
+<li>Bob per recuperare il messaggio esegue semplicemente lo XOR tra il messaggio cifrato e la chiave</li>
+</ul>
+<p>Questo sistema è ritenuto perfetto perché se immaginiamo di avere un messaggio di 3 bit e quindi anche una chiave di 3 bit, a causa dell’operazione di XOR fare un attacco di brute force equivale a ottenere tutte le possibili stringhe composte da 3 bit.</p>
+<p>Quindi facendo brute force sulla chiave si ottengono messaggi diversi che possono essere perfettamente validi e plausibili</p>
+<p><img src="https://i.ibb.co/ZY2M9W5/image.png" alt="https://i.ibb.co/ZY2M9W5/image.png"></p>
+<p>Ovviamente un attaccante può dedurre i risultati più plausibili dal contesto, se sa che si tratta di testo scritto in italiano, potrebbe scartare i risultati che non sono scritti in italiano, ma tra quelli scritti in italiano non sa quale sia quello originale.</p>
+<h3 id="limiti-nell’uso">Limiti nell’uso</h3>
+<p>Nonostante la sua sicurezza dimostrata non è utilizzato nella realtà per motivi pratici:</p>
+<ul>
+<li>ha bisogno di numeri veramente random e non pseudorandom</li>
+<li>mittente e il destinatario devono scambiarsi in modo sicuro una chiave segreta condivisa, lunga <strong>almeno quanto il messaggio</strong> da cifrare</li>
+<li>le chiavi possiedono un solo utilizzo (da cui deriva il “One-time”)</li>
+</ul>
+<h2 id="approccio-degli-algoritmi-moderni">Approccio degli algoritmi moderni</h2>
+<p>Gli algoritmi moderni usano <strong>combinazioni ripetute di sostituzioni e trasposizioni</strong> per creare algoritmi con le seguenti proprietà:</p>
+<ul>
+<li>la lunghezza della chiave è fissa</li>
+<li>la correlazione tra il testo in chiaro e il testo cifrato è talmente bassa che è computazionalmente impossibile ottenere il messaggio originale da quello cifrato</li>
+</ul>
+<h2 id="comunicazione-finale">Comunicazione finale</h2>
+<p>Una volta che Alice e Bob hanno concordato una chiave condivisa in modo sicuro, allora possiamo garantire <strong>integrità, Segretezza e autenticazione</strong>, usando HMAC e cifratura.</p>
+<p><img src="https://i.ibb.co/1fMSBkb/image.png" alt="https://i.ibb.co/1fMSBkb/image.png"></p>
+<ol>
+<li>Alice usa la cifratura a chiave simmetrica per cifrare il messaggio</li>
+<li>Il messaggio cifrato assieme alla chiave vengono dati alla funzione hash dell’HMAC, che produce un digest</li>
+<li>il digest e il messaggio cifrato vengono concatenati e mandati al canale di comunicazione</li>
+<li>Bob riceve i dati e separa il digest dal messaggio cifrato</li>
+<li>manda il messaggio cifrato assieme alla chiave alla funzione hash dell’HMAC per ottenere un digest candidato</li>
+<li>il digest generato viene confrontato con il digest ricevuto:
+<ol>
+<li>se sono uguali allora il messaggio non è stato manomesso e il processo continua</li>
+<li>se sono diversi allora il messaggio è stato manomesso e il processo si ferma</li>
+</ol>
+</li>
+<li>Bob decifra il messaggio cifrato usando la chiave</li>
+<li>Bob ha recuperato il messaggio originale, sapendo che è integro, la comunicazione è stata segreta e il mittente è sicuramente Alice</li>
+</ol>
+<p>Questo metodo è sufficientemente sicuro fintanto che:</p>
+<ul>
+<li>le funzione di cifratura e di hashing sono robuste</li>
+<li>lo scambio della chiave condivisa è avvenuta prima di cominciare la comunicazione utilizzando un canale sicuro</li>
+<li>la chiave è di una lunghezza sufficientemente grande (256 bit è sufficiente ad oggi)</li>
+</ul>
+<p>Nota: generalmente si usano chiavi diverse per la cifratura e per l’hashing.</p>
+<p>Questo sistema è utilizzato nelle reti wifi odierne.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
