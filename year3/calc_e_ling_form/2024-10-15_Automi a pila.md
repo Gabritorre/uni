@@ -121,3 +121,119 @@ Cioè i linguaggi composti dalle stringhe $0, 1$ palindrome
 Anche in questo caso il non determinismo ci permette in ogni momento di ipotizzare di essere arrivati a metà stringa
 
 ![https://i.ibb.co/Px05z7R/image.png](https://i.ibb.co/Px05z7R/image.png)
+
+## Equivalenza tra CFG e PDA
+
+Abbiamo già dimostrato che un linguaggio si dice context-free se e solo se esiste una CFG che lo riconosce. Per dimostrare l’equivalenza dobbiamo dimostrare il seguente teorema dimostrando che possiamo convertire una CFG a PDA e vice versa.
+
+**Teorema**: Un linguaggio è context free se e solo se esiste un PDA che lo riconosce.
+
+**Dimostrazione**: La doppia implicazione nel teorema ci porta a dimostrare entrambi i versi, lo facciamo attraverso la dimostrazione di due lemmi che ricalcano i versi del teorema:
+
+### Lemma 1
+
+**Lemma**: Se $A$ è un linguaggio context free allora esiste un PDA $P$ tale che $L(P) = A$
+
+**Dimostrazione**: Dato che $A$ è un linguaggio context free, allora esiste un CGF $G$ tale che $L(G) = A$. Converto $G$ in un PDA equivalente simulando le derivazioni usando lo stack.
+
+Seguiamo il seguente algoritmo per fare la conversione:
+
+1. Metti nello stack $ e poi lo start symbol $S$
+2. Ripeti i seguenti passi fino a terminazione
+    1. Se sulla cima dello stack c’è un non terminale $A$, scegli non deterministicamente una produzione del tipo $A \to u_1…u_k$ e fai una `POP` di $A$ e una `PUSH` di $u_k…u_1$ (in modo che $u_1$ risulti in cima allo stack)
+    2. Se sulla cima dello stack c’è un terminale, confrontalo con il prossimo carattere in input, se sono uguali fai `POP`, se sono diversi rifiuta il ramo del non determinismo
+    3. Se sulla cima dello stack c’è $, allora passa allo stato di accettazione, in questo modo si accetta l’input se è stato completamente letto
+
+Graficamente possiamo rappresentare il PDA in questo modo
+
+![https://i.ibb.co/wcByRH8/aaa.png](https://i.ibb.co/wcByRH8/aaa.png)
+
+Dove la produzione $\epsilon, \epsilon \to S$$ indica il `PUSH` di più simboli da destra verso sinistra ($S$ sarà in cima allo stack)
+
+### Esempio di traduzione
+
+Data la seguente grammatica
+
+$$
+S \to aTb | b \\
+T \to Ta | \epsilon
+$$
+
+![https://i.ibb.co/SypQM3M/image.png](https://i.ibb.co/SypQM3M/image.png)
+
+### Lemma 2
+
+**Lemma**: Se un linguaggio è riconosciuto da un PDA allora quel linguaggio è context free
+
+**Dimostrazione**: Dato un PDA $P$ convertiamolo in una CFG $G$ ad esso equivalente.
+
+La conversione è complessa, la dividiamo in tre passi:
+
+### Primo passo
+
+Prendiamo $P$ “più disciplinato” senza cambiare il suo linguaggio, imponiamo 3 requisiti:
+
+1. $P$ ha un **solo stato accettante** (TRADUZIONE: gli stati accettanti vanno in un nuovo stato accettante tramite $\epsilon$-transizioni, i vecchi stati accettanti diventano non più accettanti)
+2. $P$ **accetta solo con lo stack vuoto** (TRADUZIONE: svuotare lo stack prima di andare nel nuovo stato accettante)
+3. Ogni transizione di $P$ può essere **solo una** `PUSH` ($\epsilon \to a$) **oppure solo una** `POP` ($a \to \epsilon$) ma non fa entrambe contemporaneamente (TRADUZIONE: $\epsilon\to\epsilon$ tradurlo come $\epsilon\to y$ con successivo $y \to \epsilon$, mentre $a\to b$ tradurlo come $a\to \epsilon$ con successivo $\epsilon \to b$)
+
+Ogni PDA può essere disciplinato in questo modo senza perdita di generalità
+
+### Secondo passo
+
+Definiamo una nuova CFG che contiene un non terminale $A_{pq}$ per ogni coppia di stati $p, q$ del PDA.
+
+$A_{pq}$ genera tutte le stringhe che possono portare il PDA dallo stato $p$ con stack vuoto allo stato $q$ con stack vuoto.
+
+Per ogni stringa generata da $A_{pq}$ che chiamiamo $x$, la prima mossa del PDA su $x$ dovrà essere una `PUSH` (non si può fare `POP` sullo stack vuoto). Analogamente l’ultima mossa dovrà essere una `POP` dato che vogliamo lo stack vuoto.
+
+Durante la computazione della stringa $x$ si possono presentare due eventualità:
+
+1. Il simbolo eliminato alla fine è il simbolo inserito all’inizio. In tal caso la pila può essere vuota solamente all’inizio e alla fine della computazione di $x$.
+    
+    Questa eventualità è espressa da una produzione della CFG del tipo:
+    
+    $$
+    A_{pq} \to aA_{rs} b
+    $$
+    
+    Dove:
+    
+    - $a$ è il primo simbolo dell’input letto
+    - $b$ è l’ultimo simbolo dell’input letto
+    - $r$ è il secondo stato a cui si transita
+    - $s$ è il penultimo stato a cui si transita
+2. Altrimenti. In tal caso il primo simbolo deve essere eliminato prima della fine di $x$, svuotando così la pila.
+    
+    Questa eventualità è espressa da una produzione della CFG del tipo:
+    
+    $$
+    A_{pq} \to A_{pr}A_{rq} \hspace{3mm} \forall p, q, r \text{ stati del PDA}
+    $$
+    
+    Dove $r$ è lo stato in cui la pila diventa vuota
+    
+
+Un ultimo formato di produzione possibile della CFG è che lo stato di partenza e lo stato di arrivo siano uguali:
+
+$$
+A_{pp} \to \epsilon \hspace{3mm} \forall p \text{ stato del PDA}
+$$
+
+Si può dimostrare che $A_{pq} \Rightarrow^* x$ se e solo se dallo stato $p$ con stack vuoto si arriva in $q$ con stack vuoto. Si dimostra in entrambi i versi per induzione sul numero di passi.
+
+### Terzo passo
+
+Definiamo come start symbol dalla CFG il non terminale $A_{q_0,q_{\text{accept}}}$ dove $q_0$ è lo stato iniziale del PDA e $q_{\text{accept}}$ è lo stato accettante del PDA.
+
+## Corollario dato dall’equivalenza tra CFG e PDA
+
+**Corollario**: qualsiasi linguaggio regolare è anche context free
+
+**Dimostrazione**: Sia $A$ un linguaggio regolare, allora esiste un NFA $N$ tale che $L(N) = A$.
+
+Un NFA è un PDA che non tolla lo stack, quindi $N$ è un PDA, concludo che $A$ è context free.
+
+Da questo corollario possiamo derivare il seguente diagramma:
+
+![https://i.ibb.co/xs5L1f9/diagramma.png](https://i.ibb.co/xs5L1f9/diagramma.png)
