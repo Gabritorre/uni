@@ -411,6 +411,46 @@ $$
 f(z^*) = f^*
 $$
 
+### Proposizione 3
+
+Dato l’insieme convesso $C \subseteq \mathbb{R}^n$, siano $f_i(x)$ con $i =1,…,m$ funzioni convesse su $C$.
+
+Dati i coefficienti $\lambda_i \geq 0$ con $i = 1, …, m$ allora:
+
+$$ g(x) = \sum_{i=1}^m \lambda_if_i(x) $$
+
+è una funzione convessa su $C$
+
+**Dimostrazione**:
+
+Se $C$ è insieme vuoto è un singleton allora è banalmente vero.
+
+Se $C$ contiene almeno due elementi proviamo che $g(x)$ è convessa:
+
+Dalla definizione di $g(x)$:
+
+$$ g(\alpha x + (1-\alpha)y) = \sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y) $$
+
+Dalla convessità delle $f_i(x)$ ho che $f_i(\alpha x + (1-\alpha)y) \leq \alpha f(x) + (1-\alpha)f(y)$
+
+e dato che $\lambda_i \geq 0$ posso scrivere:
+
+$$ \sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y)\leq \sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y)) $$
+
+Separo in due sommatorie
+
+$$ \sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y)) = \sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y) $$
+
+porto fuori i termini indipendenti dalla sommatoria
+
+$$ \sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y) = \alpha \underbrace{ \sum_{i=1}^m\lambda_if_i(x)}_{g(x)} + (1-\alpha) \underbrace{\sum_{i=1}^m \lambda_i f_i(y)}_{g(y)} $$
+
+Ottengo quindi
+
+$$ g(\alpha x + (1-\alpha)y) \leq \alpha g(x) + (1-\alpha) g(y) $$
+
+che è la definizione di funzione convessa
+
 ## Relazione tra convessità e differenziabilità
 
 Dato un insieme convesso $C\subseteq \mathbb{R}^n$ e la funzione $f: \mathbb{R}^n \rightarrow \mathbb{R}$ appartenente alla classe $C^1(C)$. 
