@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-24_Secure coding</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#secure-coding">Secure coding</a>
+<ul>
+<li><a href="#analisi">Analisi</a></li>
+<li><a href="#taint-analysis">Taint analysis</a></li>
+<li><a href="#sanitizzazione">Sanitizzazione</a></li>
+<li><a href="#secure-coding-sei-cert">Secure Coding: SEI CERT</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="secure-coding">Secure coding</h1>
+<p>Linguaggi di programmazione come C sono ritenuti <em><strong>unsafe</strong></em> e richiede molta attenzione ai programmatori per scrivere del codice sicuro. Nonostante questo tutti i linguaggi presentano comportamenti insicuri.</p>
+<h2 id="analisi">Analisi</h2>
+<p>Sebbene l’ispezione manuale del codice sia possibile per programmi di piccole dimensioni, gli <strong>strumenti di analisi statica</strong> sono necessari per applicazioni del mondo reale. Tuttavia, le proprietà che dipendono dal flusso di controllo sono generalmente indecidibili, quindi gli strumenti di analisi statica non possono essere precisi al 100%.</p>
+<p>Durante una analisi si possono presentare:</p>
+<ul>
+<li><strong>falsi negativi</strong>: non vengono segnalati errori effettivamente presenti nel codice.</li>
+<li><strong>falsi positivi</strong>: vengono segnalati errori che in realtà non esistono.</li>
+</ul>
+<p>Generalmente si desidera un’analisi <strong>sana</strong> (nessun falso negativo) e <strong>completa</strong> (nessun falso positivo), ma nella pratica gli strumenti danno più priorità ad essere <strong>sani</strong> cercando di minimizzare i falsi positivi.</p>
+<h2 id="taint-analysis">Taint analysis</h2>
+<p>Un concetto chiave nella sicurezza del codice è <strong>l’analisi della contaminazione (<em>taint analysis</em>)</strong>, che determina quali valori provenienti dagli input del programma possono influenzare i valori utilizzati in un’operazione rischiosa.</p>
+<p>Definiamo:</p>
+<ul>
+<li><strong>La sorgente contaminata</strong> (<em>Tainted Source</em>): Si riferisce a qualsiasi fonte di dati esterni al programma che potrebbe essere controllata da un utente malintenzionato.</li>
+<li><strong>Il valore contaminato</strong> (<em>Tainted Value</em>): Un valore è considerato contaminato se deriva da una sorgente contaminata e non è stato opportunamente sanificato.</li>
+<li><strong><em>Restricted Sink</em>:</strong> Si riferisce a un argomento di una funzione che richiede un insieme specifico di valori accettabili. Utilizzare un valore contaminato in un restricted sink può portare a vulnerabilità di sicurezza.</li>
+</ul>
+<h3 id="propagazione">Propagazione</h3>
+<p>Una contaminazione si può propagare attraverso le operazioni del programma.</p>
+<p>Se un’operazione utilizza un dato contaminato, il risultato dell’operazione sarà a sua volta contaminato.  Un banale esempio è copiare una stringa contaminata in un’altra stringa tramite funzioni come <code>strcpy</code>.</p>
+<p>Esempio di propagazione:</p>
+<p><img src="https://i.ibb.co/S3CwCyc/image.png" alt="https://i.ibb.co/S3CwCyc/image.png"></p>
+<h2 id="sanitizzazione">Sanitizzazione</h2>
+<p>La sanitizzazione è il processo per <strong>rimuovere la contaminazione</strong> da un valore.</p>
+<p>Esistono due approcci principali:</p>
+<ul>
+<li><strong>Sostituzione:</strong> I valori contaminati (fuori dal dominio del <em>sink</em>) vengono sostituiti con valori appartenenti al dominio <em>sink</em>.</li>
+<li><strong>Terminazione:</strong> Il programma rileva un valore contaminato e termina l’esecuzione o salta il codice che utilizza quel valore.</li>
+</ul>
+<h2 id="secure-coding-sei-cert">Secure Coding: SEI CERT</h2>
+<p>Il <a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT C Coding Standard</a> fornisce regole e raccomandazioni per la scrittura di codice C sicuro.</p>
+<p>Esso definisce:</p>
+<ul>
+<li><strong>Regole</strong>: Requisiti normativi la cui violazione indica un bug potenzialmente sfruttabile.</li>
+<li><strong>Raccomandazioni</strong>: Suggerimenti per migliorare sicurezza, affidabilità e robustezza del codice.</li>
+</ul>
+<h3 id="valutazione-del-rischio">Valutazione del Rischio</h3>
+<p>La valutazione del rischio aiuta a dare priorità alle correzioni delle violazioni delle regole e raccomandazioni.</p>
+<p>Si valuta la <strong>gravità</strong> delle conseguenze, la <strong>probabilità</strong> di sfruttamento e il <strong>costo</strong> della correzione. Le violazioni <strong>più critiche e meno costose</strong> da correggere hanno <strong>più priorità</strong>.</p>
+<p><strong>Livelli di gravità</strong>:</p>
+<ol>
+<li>Bassa: ad esempio Denial of Service, terminazione anomala.</li>
+<li>Media: ad esempio Violazione dell’integrità dei dati, divulgazione di informazioni.</li>
+<li>Alta: ad esempio esecuzione di codice arbitrario.</li>
+</ol>
+<p><strong>Livelli di probabilità</strong>:</p>
+<ol>
+<li>Improbabile</li>
+<li>Probabile</li>
+<li>Verosimile</li>
+</ol>
+<p><strong>Livelli di costo di correzione</strong>:</p>
+<ol>
+<li>Alto: Correzione manuale e rilevamento manuale.</li>
+<li>Medio: Correzione manuale e rilevamento automatico.</li>
+<li>Basso: Correzione automatica e rilevamento automatico.</li>
+</ol>
+<p>I valori di questi livelli vengono moltiplicati tra loro producendo i possibili valori di <strong>priorità</strong>:  <code>1, 2, 3, 4, 6, 8, 9, 12, 18, 27</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Livello</th>
+<th>Priorità</th>
+<th>Interpretazione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>12, 18, 27</td>
+<td>alta gravità, alta probabilità, basso costo di correzione</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>6, 8, 9</td>
+<td>media gravità, probabilità media, costo medio</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>1, 2, 3, 4</td>
+<td>bassa gravità, bassa probabilità, alto costo</td>
+</tr>
+</tbody>
+</table><h3 id="esempio">Esempio</h3>
+<p>Una <strong>regola</strong> che ci da <a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT C Coding Standard</a> è quella di <strong>non passare una sequenza di caratteri non terminata da NULL a una funzione di libreria che si aspetta una stringa.</strong></p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> c_str<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> c_str <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nel codice l’array <code>c_str</code> non ha abbastanza spazio per inserire il carattere di terminazione stringa.</p>
+<p>Per fixare questo problema possiamo seguire una <strong>raccomandazione</strong>: non specificare la grandezza dell’array di caratteri quando viene inizializzato con un letterale.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> c_str<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> c_str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo modo <code>c_str</code> si alloca in automatico lo spazio necessario per contenere il letterale e il carattere di terminazione.</p>
+<p>Un attaccante può sfruttare questa vulnerabilità per accedere alla memoria fuori dai limiti dell’array (buffer overflow), la community categorizza questa regola in questo modo</p>
+
+<table>
+<thead>
+<tr>
+<th>Gravità</th>
+<th>Probabilità</th>
+<th>costo di correzione</th>
+<th>Priorità</th>
+<th>Livello</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alta</td>
+<td>Probabile</td>
+<td>medio</td>
+<td>12</td>
+<td>L1</td>
+</tr>
+</tbody>
+</table>
+    </div>
+  </div>
+</body>
+
+</html>
