@@ -1,0 +1,172 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-23_format strings</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#format-strings">format strings</a>
+<ul>
+<li></li>
+<li><a href="#vulnerabilità">Vulnerabilità</a></li>
+<li><a href="#esercizio">Esercizio</a></li>
+<li><a href="#accesso-a-locazioni-arbitrarie">Accesso a locazioni arbitrarie</a></li>
+<li><a href="#prevenzione-agli-attacchi">Prevenzione agli attacchi</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="format-strings">format strings</h1>
+<p>Una format string è una stringa che contiene delle direttive di formato. Ad esempio in C le direttiva sono <code>%d</code>, <code>%s</code>, che vengono molto utilizzate in funzioni come <code>printf()</code> .</p>
+<p>Ad esempio con l’istruzione <code>printf("Result: %d\n",r)</code> quello che succede è:</p>
+<ul>
+<li><strong>Parsing a runtime</strong>: La funzione <code>printf</code> analizza la stringa <code>"Result: %d\n"</code> carattere per carattere a runtime per trovare i caratteri di formattazione (come <code>%d</code>).</li>
+<li><strong>Sostituzione di valori</strong>: Quando trova un segnaposto (<code>%d</code> in questo caso), <code>printf</code> cerca i valori corrispondenti nella lista degli argomenti forniti (come <code>my_var</code>) e li sostituisce nel testo.</li>
+<li><strong>Output finale</strong>: La stringa risultante viene quindi costruita e inviata a allo standard output.</li>
+</ul>
+<h3 id="interpretazione-a-runtime">Interpretazione a runtime</h3>
+<p>Queste direttive vengono quindi <strong>interpretate</strong> a <em>runtime</em>, questo permette <strong>l’accesso arbitrario allo stack</strong> quando viene interpretata una string format (se quest’ultima viene controllata da un attaccante).</p>
+<p>Nella seguente istruzione <code>printf(s);</code>  se <code>s</code>  contiene delle direttive di formato queste verranno interpretate:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">char</span> <span class="token operator">*</span>s <span class="token operator">=</span> <span class="token string">"valore: %d"</span><span class="token punctuation">;</span>
+<span class="token function">printf</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// =&gt; valore: 10</span>
+</code></pre>
+<h3 id="argomenti-alle-funzioni">Argomenti alle funzioni</h3>
+<p>Le <em>format string</em> contengono un <strong>numero arbitrario di direttive</strong>, di conseguenza anche le funzioni che usano le <em>format string</em> accettano un numero arbitrario di argomenti.</p>
+<p>Vediamo come può funzionare questa cosa:</p>
+<ol>
+<li>la format string viene parsata</li>
+<li>la i-esima direttiva viene mappata all’i-esimo argomento della funzione</li>
+</ol>
+<p>In linguaggio assembly la <em>format string</em> viene salvata registro <code>rdi</code>, mentre gli argomenti successivi saranno salvati in <code>rsi, rdx, rcx, r8, r9</code> e se ce ne sono altri verranno pushati nello stack.</p>
+<p>Ad esempio con l’istruzione <code>printf("%s%s%s%s%s%s","H","e","l","l","o"," World\n");</code> subito dopo l’invocazione alla funzione <code>printf</code> la memoria sarà in questo stato:</p>
+<p><img src="https://i.ibb.co/VCvPwGm/image.png" alt="https://i.ibb.co/VCvPwGm/image.png"></p>
+<h3 id="sbagliare-il-numero-di-argomenti">Sbagliare il numero di argomenti</h3>
+<p>Siccome la <em>format string</em> viene interpretata a runtime, se si sbaglia il numero di argomenti (mettendone troppi o troppo pochi) non si avranno errori, ma solo un <em>warning</em> (se la format string è una variabile allora non c’è nemmeno il <em>warning)</em>.</p>
+<p>Nel caso di un numero eccessivo di argomenti, quelli in più vengono ignorati. mentre con un numero di argomenti minore di quello richiesto, la funzione tenterà di dereferenziare il registro (il la zona nello stack) corrispondenti agli argomenti mancanti e se è un indirizzo dereferenziato è valido stampa quello che trova altrimenti va in <em>segmentation fault.</em></p>
+<h2 id="vulnerabilità">Vulnerabilità</h2>
+<p>Se un attaccante ha il controllo di una format string, ad esempio <code>s1</code> può riuscire a dumpare il contenuto dello stack e di alcuni registri usando delle direttive.</p>
+<ul>
+<li><code>printf(s1)</code> VULNERABLE (warning a tempo di compilazione)</li>
+<li><code>printf("%s",s1)</code> OK</li>
+<li><code>printf(s1,s2)</code> VULNERABLE (nessun warning a tempo di compilazione)</li>
+</ul>
+<h3 id="esempio-di-codice-vulnerabile">Esempio di codice vulnerabile</h3>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"What is your name? "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">stdout</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// reads at most 128 bytes, including NULL!</span>
+	 <span class="token function">fgets</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// format string vulnerability: the user controls buffer!</span>
+	 <span class="token comment">// should be printf("Hello %s",buffer) so that the format string</span>
+	 <span class="token comment">// is not controlled by the user.</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se diamo come input al programma 8 volte la direttiva <code>“.%16lx”</code> (che indica numeri in formato esadecimale lunghi 16 caratteri aggiungendo zeri a sinistra se necessario) otteniamo questo:</p>
+<p><img src="https://i.ibb.co/XFggvHV/image.png" alt="https://i.ibb.co/XFggvHV/image.png"></p>
+<p>Quando arriviamo a stampare i valori dello stack stiamo stampando il contenuto del <code>buffer</code>:</p>
+<p>Se facciamo partire il buffer con 8 byte di ‘A’, dopo aver stampato i registri contenenti valori casuali, arriviamo a stampare il contenuto buffer (che ovviamente è salvato nello stack) come si nota dai caratteri <code>0x41 = A</code>, poi stampa anche il resto della stringa raggruppata per 8 byte.</p>
+<p><img src="https://i.ibb.co/ZzDjLq9/image.png" alt="https://i.ibb.co/ZzDjLq9/image.png"></p>
+<h2 id="esercizio">Esercizio</h2>
+<p>Possiamo ottenere il valore del pin dumpandolo dallo stack nel seguente codice?</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">char</span> PIN<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"1337"</span><span class="token punctuation">;</span> <span class="token comment">// secret PIN</span>
+	 
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"What is your name? "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">stdout</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// reads at most 128 bytes, including NULL!</span>
+	 <span class="token function">fgets</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token comment">// format string vulnerability: the attacker controls buffer</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Supponiamo che il PIN venga allocato immediatamente dopo il buffer.</p>
+<p>se riuscissimo a inserire abbastanza “<code>%016lx</code>” nel buffer in modo da leggere il contenuto dello stack fino al raggiungimento del PIN ce l’avremo fatta:</p>
+<ul>
+<li>
+<p>il buffer è grande 128 byte, in tale buffer devo metterci le “<code>%016lx</code>”</p>
+</li>
+<li>
+<p>Il contenuto del buffer è nel sesto parametro, cioè quando si inizia a leggere lo stack</p>
+</li>
+<li>
+<p>raggiungere il PIN abbiamo bisogno consumare i primi 5 registri per poi leggere 8 byte 16 volte (per consumare il buffer) e infine leggere altri 8 byte per il PIN:</p>
+<p>6 + 16 = 22. Abbiamo quindi bisogno di 22 “<code>%016lx</code>” per raggiungere la prima word del PIN</p>
+</li>
+<li>
+<p>dato che la stringa “<code>%016lx</code>” è lunga 6 byte, la stringa totale sarà lunga 22*6 = 132 byte che è maggiore dei 128 byte che il nostro buffer ci permette di inserire</p>
+</li>
+</ul>
+<p>Quindi non riusciamo a raggiungere la stringa.</p>
+<h3 id="soluzione-1">Soluzione 1</h3>
+<p>Al posto di usare “<code>%016lx</code>” usiamo “<code>%lx</code>”, dato che la nuova stringa è lunga 3 byte la stringa totale sarà lunga 22*3 = 66 byte che ci sta dentro il buffer.</p>
+<p>Eseguendo l’attacco otteniamo:</p>
+<pre class=" language-c"><code class="prism  language-c">python3 <span class="token operator">-</span>c <span class="token string">'print(".%lx"*22)'</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>vulnerable
+What is your name<span class="token operator">?</span> Hello <span class="token punctuation">.</span>6c6c6548<span class="token number">.0</span><span class="token punctuation">.</span>206f6c6c<span class="token number">.0</span><span class="token punctuation">.</span>7fffe46682b0<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>a<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">0.37333331</span>
+</code></pre>
+<p>Gli ultimi byte (<code>37333331</code>) sono la password: la possiamo convertire da esadecimale a testo ASCII (<code>7331</code>) e poi siccome la rappresentazione è in <em>little endian</em> dobbiamo invertire l’ordine dei caratteri (<code>1337</code>)</p>
+<h3 id="soluzione-2">Soluzione 2</h3>
+<p>Nelle format string si può specificare il parametro da utilizzare con la seguente sintassi</p>
+<p><code>%6$016lx</code>, dove con <code>6$</code> indichiamo <strong>l’indice dell’argomento</strong> da utilizzare (che parte da <code>0</code>), in questo caso vogliamo che questa direttiva utilizzi il settimo argomento (<code>6$</code>)  passato alla <code>printf</code>, cioè il primo parametro che sta nello stack.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%6$d"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//=&gt; 6</span>
+</code></pre>
+<p>Se usiamo nella direttiva l’argomento con indice 22 otteniamo il PIN</p>
+<pre class=" language-bash"><code class="prism  language-bash">python3 -c <span class="token string">'print("%22<span class="token variable">$16lx</span>")'</span> <span class="token operator">|</span> ./vulnerable
+What is your name? Hello 37333331
+</code></pre>
+<h2 id="accesso-a-locazioni-arbitrarie">Accesso a locazioni arbitrarie</h2>
+<p>Quando il buffer è salvato nello stack è possibile dumpare ogni locazione in memoria, l’idea è la seguente:</p>
+<ol>
+<li><strong>Identificare la posizione del buffer nello stack</strong></li>
+<li><strong>Iniettare l’indirizzo target nel buffer</strong> in modo che corrisponda a un argomento specifico di <code>printf</code>, ad esempio l’argomento <code>a</code>.</li>
+<li><strong>Estrarre il contenuto della memoria</strong> utilizzando la direttiva <strong><code>%a$s</code></strong> per dereferenziare l’indirizzo target e stamparne il contenuto come stringa.</li>
+</ol>
+<h3 id="step-1">Step 1</h3>
+<p>Identificare la posizione del buffer sullo stack:</p>
+<p>Si inizia la stringa di input con <code>%a$16lx.AAAAAAAA</code> e si prova con diversi valori di <code>a</code> finché non si trova l’output <code>4141414141414141</code>.</p>
+<ul>
+<li>Questo indica che l’argomento <code>a</code> corrisponde alla posizione del buffer sullo stack.</li>
+<li>Ad esempio, se con <code>a=7</code>, vediamo per la prima volta l’output <code>4141414141414141</code> significa che il buffer inizia all’argomento che passiamo alla funzione con indice 6 (il quale conterrà <code>%a$16lx.</code>) e nella successiva cella dello stack, ad indice 7 invece abbiamo i secondi 8 byte del buffer contenenti <code>AAAAAAAA</code>.</li>
+</ul>
+<p>Notare che <code>%a$16lx.</code> occupa esattamente 8 byte, quindi prende una intera cella dello stack.</p>
+<h3 id="step-2">Step 2</h3>
+<p>Iniettare l’Indirizzo target:</p>
+<p>Quello che possiamo fare è rimpiazzare le <code>AAAAAAAA</code> con un indirizzo target (in formato little endian)</p>
+<p>Ad esempio, se l’indirizzo target è <code>0x6b90f0</code>, la stringa di input sarà <code>%7$16lx.\xf0\x90\x6b\x00\x00\x00\x00\x00</code></p>
+<h3 id="step-3">Step 3</h3>
+<p>Estrarre il contenuto della memoria:</p>
+<p>Rimpiazzando <code>%7$16lx.</code> con <code>%7$s....</code>  possiamo stampare il contenuto all’indirizzo di memoria iniettato come stringa.</p>
+<p>Nota: i <code>....</code> servono per mantenere la lunghezza di 8 byte</p>
+<p>Quindi con la seguente stringa in input otteniamo il contenuto di un indirizzo di memoria arbitrario</p>
+<p><code>%7$s....\xf0\x90\x6b\x00\x00\x00\x00\x00</code></p>
+<h2 id="prevenzione-agli-attacchi">Prevenzione agli attacchi</h2>
+<p>i compilatori moderni lanciano degli warning quando <code>printf</code> viene invocato senza argomenti di formato, nonostante ciò ci sono casi in cui non vengono lanciati warning ad esempio facendo <code>printf(f, s)</code>, se l’attaccante controllasse <code>f</code> riuscirebbe a fare l’attacco.</p>
+<p>È quindi importante che la <em>format string</em> sia sempre una costante definita dal programmatore e non dovrebbe essere influenzata dall’input dell’utente.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
