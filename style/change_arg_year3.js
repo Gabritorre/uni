@@ -4,7 +4,7 @@ let courses = {
  	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti", "Testing", "Progettazione architetturale", "UML e progettazione software", "Progettazione di interfacce utenti"],
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript", "Tipi di dato e valori", "Espressioni", "Operatori", "Statement", "Oggetti", "Array"],
 	reti_calc : ["Note complete", "Introduzione", "Livello fisico", "Livello di collegamento", "Gestione degli errori", "Condivisione delle risorse", "Livello di rete", "Count-to-Infinity", "Link-State routing", "Livello di trasporto", "Livello applicativo", "Sicurezza della rete", "HMAC, MD5 e cifratura a chiave simmetrica"],
-	ric_operativa : ["Note complete", "Spazi vettoriali", "Funzioni lineari, continuità e derivabilità", "Esercizi derivata direzionale", "Programmazione matematica", "Problemi convessi", "Esercizi programmazione matematica"],
+	ric_operativa : ["Note complete", "Spazi vettoriali", "Funzioni lineari, continuità e derivabilità", "Esercizi derivata direzionale", "Programmazione matematica", "Problemi convessi", "Esercizi programmazione matematica", "Programmazione lineare"],
 	sicurezza : ["Note complete", "Unix shell", "Stream editor ed espressioni regolari", "Assembly", "Analisi dei programmi", "Buffer overflow", "Stack overflow", "format strings", "Secure coding"],
 };
 
