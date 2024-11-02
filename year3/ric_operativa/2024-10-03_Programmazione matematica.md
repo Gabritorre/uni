@@ -1,5 +1,4 @@
-﻿
-# Programmazione matematica
+﻿# Programmazione matematica
 
 Introduciamo dei problema di programmazione matematica.
 
@@ -19,7 +18,7 @@ Dove indichiamo:
 - $f(x)$: la **funzione obiettivo** da massimizzare/minimizzare
 - $C$ insieme di valori (vettori di $n$ dimensioni) che rappresentano delle soluzioni ammissibili
 
-I problema consistono nel trovare tra tutte le soluzioni ammissibili, quella che rende minima o massima la funzione obiettivo (possono essere anche più di una)
+I problemi consistono nel trovare tra tutte le soluzioni ammissibili, quella che rende minima o massima la funzione obiettivo (possono essere anche più di una)
 
 ## Teorema di Weierstrass
 

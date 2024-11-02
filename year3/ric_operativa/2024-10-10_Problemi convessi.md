@@ -38,7 +38,7 @@ $$
 
 Si tratta di un insieme di punti interni ad una circonferenza di raggio 1.
 
-Per dimostrarlo bisogna che determinare $w_1, w_2$, cioè le coordinate di un qualsiasi punto che sta nel segmento che congiunge $x$ e $y$ e dimostrare che qualunque sia il punto, esso stia all’interno della circonferenza: $\sqrt{w_1^2 + w_2^2} \leq 1$
+Per dimostrarlo bisogna determinare $w_1, w_2$, cioè le coordinate di un qualsiasi punto $w$ che sta nel segmento che congiunge $x$ e $y$ e dimostrare che qualunque sia il punto, esso stia all’interno della circonferenza: $\sqrt{w_1^2 + w_2^2} \leq 1$
 
 Si possono tentare due approcci, il metodo algebrico che risulta essere un po’ complesso e un metodo geometrico.
 
@@ -128,7 +128,7 @@ Nota: il lemma vale anche con funzioni **strettamente concave e convesse**.
 
 **Dimostrazione**:
 
-Dalla convessità di di $f(x)$ segue che:
+Dalla convessità di $f(x)$ segue che:
 
 $$
 f(\alpha x + (1-\alpha)y) \leq \alpha f(x) + (1-\alpha) f(y)
@@ -158,12 +158,12 @@ Data una funzione **affine** $f(x)$ con $f: \mathbb{R}^n \rightarrow \mathbb{R}$
 
 Una funzione affine $f(x)$ ha la seguente forma: $f(x) = f_L(x) + \bar c$
 
-cove $f_L(x)$ è una funzione lineare e $\bar c \in \mathbb{R}$.
+Dove $f_L(x)$ è una funzione lineare e $\bar c \in \mathbb{R}$.
 
 Presa una qualsiasi coppia $x, y \in \mathbb{R}^n$ e uno scalare $\alpha \in [0, 1]$, si avrà
 
 $$
-f[\alpha x + (1-\alpha)y] = f_L[\alpha x(1-\alpha)y] + \bar c
+f[\alpha x + (1-\alpha)y] = f_L[\alpha x+(1-\alpha)y] + \bar c
 \\
 =\alpha f_L(x) + (1-\alpha)f_L(y) + \bar c
 $$
@@ -291,7 +291,7 @@ Dato un problema $P = \underset{x\in C}{\min}f(x)$ con $f(x)$ **funzione convess
 
 **Dimostrazione**:
 
-Se $C$ è insieme vuoto o se è un singleton allora la proposizione è banalmente vera.
+Se $C$ è insieme vuoto o se è un singleton allora la proposizione è banalmente vera (insieme vuoto e insieme di un elemento sono convessi).
 
 Se $C$ ha almeno due elementi, consideriamo due punti **distinti** $x^*, y \in C$ dove $x^*$ è un punto di minimo locale per la funzione $f(x)$ e $y$ è un qualsiasi altro punto dell’insieme.
 
@@ -371,7 +371,7 @@ In altre parole se $x^*, y^* \in C$ sono delle soluzioni al problema $P$, allora
 
 **Dimostrazione**:
 
-Se $C$ è insieme vuoto o se è un singleton allora la proposizione è banalmente vera.
+Se $C$ è insieme vuoto o se è un singleton allora la proposizione è banalmente vera (insieme vuoto e insieme di un elemento sono convessi).
 
 Se $C$ ha almeno due elementi, consideriamo due punti **distinti** $x^*, y^* \in C$ dove entrambi sono minimi locali.
 
@@ -417,37 +417,49 @@ Dato l’insieme convesso $C \subseteq \mathbb{R}^n$, siano $f_i(x)$ con $i =1,�
 
 Dati i coefficienti $\lambda_i \geq 0$ con $i = 1, …, m$ allora:
 
-$$ g(x) = \sum_{i=1}^m \lambda_if_i(x) $$
+$$
+g(x) = \sum_{i=1}^m \lambda_if_i(x)
+$$
 
 è una funzione convessa su $C$
 
 **Dimostrazione**:
 
-Se $C$ è insieme vuoto è un singleton allora è banalmente vero.
+Se $C$ è insieme vuoto è un singleton allora è banalmente vero (insieme vuoto e insieme di un elemento sono convessi).
 
 Se $C$ contiene almeno due elementi proviamo che $g(x)$ è convessa:
 
 Dalla definizione di $g(x)$:
 
-$$ g(\alpha x + (1-\alpha)y) = \sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y) $$
+$$
+g(\alpha x + (1-\alpha)y) = \sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y)
+$$
 
 Dalla convessità delle $f_i(x)$ ho che $f_i(\alpha x + (1-\alpha)y) \leq \alpha f(x) + (1-\alpha)f(y)$
 
 e dato che $\lambda_i \geq 0$ posso scrivere:
 
-$$ \sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y)\leq \sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y)) $$
+$$
+\sum_{i=1}^m \lambda_i f_i(\alpha x + (1-\alpha) y)\leq \sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y))
+$$
 
 Separo in due sommatorie
 
-$$ \sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y)) = \sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y) $$
+$$
+\sum_{i=1}^m \lambda_i (\alpha f_i(x) + (1-\alpha) f_i(y)) = \sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y)
+$$
 
 porto fuori i termini indipendenti dalla sommatoria
 
-$$ \sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y) = \alpha \underbrace{ \sum_{i=1}^m\lambda_if_i(x)}_{g(x)} + (1-\alpha) \underbrace{\sum_{i=1}^m \lambda_i f_i(y)}_{g(y)} $$
+$$
+\sum_{i=1}^m\lambda_i \alpha f_i(x) + \sum_{i=1}^m \lambda_i(1-\alpha)f_i(y) = \alpha \underbrace{ \sum_{i=1}^m\lambda_if_i(x)}_{g(x)} +  (1-\alpha) \underbrace{\sum_{i=1}^m \lambda_i f_i(y)}_{g(y)}
+$$
 
-Ottengo quindi
+Ottengo quindi 
 
-$$ g(\alpha x + (1-\alpha)y) \leq \alpha g(x) + (1-\alpha) g(y) $$
+$$
+g(\alpha x + (1-\alpha)y) \leq \alpha g(x) + (1-\alpha) g(y)
+$$
 
 che è la definizione di funzione convessa
 

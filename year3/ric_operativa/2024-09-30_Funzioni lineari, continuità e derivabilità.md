@@ -1,5 +1,4 @@
-﻿
-# Funzioni lineari, continuità e derivabilità
+﻿# Funzioni lineari, continuità e derivabilità
 
 ## Funzione lineare
 
@@ -25,7 +24,7 @@ infatti:
 - $f(x + y) = c(x + y) = cx + cy = f(x) + f(y)$
 - $f(\alpha x) = c(\alpha x) = \alpha(c x) = \alpha f(x)$
 
-Mentre le funzioni in questa forma non sono lineari (ma **affini**):
+Mentre le funzioni in questa forma non sono lineari:
 
 $$
 f(x) = cx + \bar c \hspace{5mm} c \in \mathbb{R}^n,\hspace{1mm} \bar c \in \mathbb{R}\setminus \{0\}
@@ -36,9 +35,19 @@ infatti:
 - $f(x + y) = c(x + y) + \bar c = cx + cy + \bar c = f(x) + cy$
 - $f(\alpha x) = c(\alpha x) + \bar c = \alpha(c x) + \bar c$
 
-Nella letteratura anche le funzioni nella seconda forma vengono considerate come lineari, in quanto si comportano come le funzioni lineari. 
+Nella letteratura anche le funzioni nella seconda forma vengono considerate come lineari, in quanto si comportano come le funzioni lineari.
 
-Di fatti le funzioni nella seconda forma sono più propriamente dette **funzioni affini**
+In realtà le funzioni nella seconda forma sono più propriamente dette **funzioni affini**
+
+### Esercizio:
+
+Data la seguente funzione $f: \mathbb{R}^3 \rightarrow \mathbb{R}^2$ verificare che sia lineare in $\mathbb{R}^3$
+
+$$
+f(x_1, x_2, x_3) = (x_1 + 5x_2 + 2x_3, 2x_2 + x_3)
+$$
+
+Si può vedere immediatamente la linearità della funzione, infatti ogni componente è un polinomio di **primo grado** (non ci sono termini del tipo  $x_1\cdot x_2$ o $x_1^2$) e **non ci sono termini noti nelle componenti**
 
 ## Funzione continua
 
@@ -163,7 +172,7 @@ $$
 f(y) = f(x) + \nabla f[x + \theta(y-x)]^T \cdot (y-x)
 $$
 
-la seconda forma ci dice che il valore di $f(y)$ è dato dal valore di $f(x)$ più l’andamento della funzione in un punto intermedio lungo la linea tra $x$ e $y$, tale punto è $x+ \theta(y-x)$ dove $\theta$ indica la frazione della distanza tra $x$ e $y$, per il teorema esiste un valore di $\theta$ nell’intervallo $[0, 1]$ calcola in modo preciso la variazione della funzione.
+la seconda forma ci dice che il valore di $f(y)$ è dato dal valore di $f(x)$ più l’andamento della funzione in un punto intermedio tra $x$ e $y$, tale punto è $x+ \theta(y-x)$ dove $\theta$ indica la frazione della distanza tra $x$ e $y$, per il teorema esiste un valore di $\theta$ nell’intervallo $[0, 1]$ calcola in modo preciso la variazione della funzione.
 
 L’incertezza che prima era nell’o-piccolo adesso è attribuita al fatto che non calcoliamo più l’andamento nel punto che conoscevamo $\nabla f(x)$ ma lo calcoliamo in un punto intermedio tra $x$ e $y$, $y$$\nabla f[x + \theta(y-x)]$
 
@@ -194,7 +203,9 @@ $$
 
 quindi quando $||d||$ è piccola si può trascurare dal calcolo.
 
-Esempio:
+Per determinare **se esiste la derivata direzionale** lungo una qualsiasi direzione non nulla è sufficiente che la funzione sia di classe $C^1(\mathbb{R}^n)$
+
+Esercizio:
 
 Data la funzione affine
 

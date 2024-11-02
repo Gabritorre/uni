@@ -1,5 +1,4 @@
-﻿
-# Spazi vettoriali
+﻿# Spazi vettoriali
 
 Lo spazio vettoriale è un insieme di elementi chiamati vettori che soddisfa 8+1 proprietà e che è definito su un insieme di numeri (detti **scalari**) chiamato **campo** (ad esempio il campo del numeri reali $\mathbb{R}$),
 
@@ -104,7 +103,7 @@ Nella sintassi $V^n(K)$, l’apice $n$ rappresenta 3 cose:
 
 Definizione di **vettori linearmente indipendenti**:
 
-Presi i vettori $z_1,…,z_m \in V^n(K)$ sono linearmente indipendenti se calcolato
+Presi i vettori $z_1,…,z_m \in V^n(K)$ non tutti nulli, essi sono linearmente indipendenti se calcolato
 
 $$
  z=a_1z_1+…+a_mz_m
@@ -267,15 +266,23 @@ Definiamo $z \in \mathbb{R}^n$ come risultato di combinazioni:
     
     ![https://i.ibb.co/G5kbjdz/image.png](https://i.ibb.co/G5kbjdz/image.png)
     
+    Spesso la combinazione convessa di due punti si scrive in questo modo:
+    
+    $$
+    z = \alpha x + (1-\alpha)y \hspace{5mm} \alpha \in [0, 1]
+    $$
+    
+    Si può notare che quando $\alpha = 0$ allora $z \equiv y$, mentre quando $\alpha = 1$ allora $z = x$
+    
     ## Prodotto scalare standard
     
-    Dato uno spazio vettoriale $V^n(K)$, il prodotto scalare standard è una funzione che prende in input due vettori e restituisce uno scalare. $V^n(K) \times V^n(K) \rightarrow \mathbb{R}$.
+    Dato uno spazio vettoriale $V^n(K)$, il prodotto scalare standard è una funzione che prende in input due vettori e restituisce uno scalare: $V^n(K) \times V^n(K) \rightarrow \mathbb{R}$.
     
     L’operazione di prodotto scalare standard si indica con la seguente simbologia: $<v_1, v_2>$ dove $v_1,v_2$ sono dei vettori.
     
-    Questa funzione per essere un prodotto scalare deve soddisfare tre proprietà:
+    Questa funzione per essere un prodotto scalare deve soddisfare tre **proprietà**:
     
-    1. $\forall v \in V^n(K),\hspace{2mm} <v, v> \geq 0$
+    1. $\forall v \in V^n(K),\hspace{2mm} <v, v> \hspace{2mm}\geq \hspace{2mm} 0$
         
         il prodotto scalare di un vettore per se stesso è un valore positivo, in particolare è $=0$ se e solo se $v$ è il vettore nullo
         
@@ -368,6 +375,10 @@ $$
 Graficamente possiamo vedere le norme come delle distanze, ad esempio vediamo il confronto tra i vari tipi di norma tracciano i punti in cui le norme valgono 1
 
 ![https://i.ibb.co/3kzbQt8/image.png](https://i.ibb.co/3kzbQt8/image.png)
+
+La norma 1 rappresenta una distanza calcolata percorrendo linee rette parallele agli assi, come se dovessi muoverti lungo una griglia.
+
+La norma 2 è la distanza geometrica più familiare.
 
 Nei punti $(0, 1), (0, -1), (1, 0), (-1, 0)$ le tre norme hanno lo stesso valore
 
