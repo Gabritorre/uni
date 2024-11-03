@@ -197,6 +197,8 @@ Con funzioni due volte continuamente derivabili possiamo avere una approssimazio
 
 La derivata direzionale generalizza il concetto di derivata parziale, infatti mentre le derivate parziali osservano l’andamento della funzione dal punto di vista degli assi (come varia rispetto all’asse x, come varia rispetto all’asse y, ecc…), **le derivate direzionali osservano l’andamento della funzione rispetto una direzione libera,** $d \in \mathbb{R}^n \setminus \{0\}$.
 
+Data la direzione $d \in \mathbb{R}^n \setminus \{0\}$ e una funzione $f : \mathbb{R}^n \rightarrow \mathbb{R}$ continuamente derivabile in $\mathbb{R}^n$ definiamo la derivata direzionale della funzione $f$ nel punto $x$ lungo la direzione $d$ come:
+
 $$
 D(f, d) = \hspace{3mm} \nabla f(x)^T \cdot d \hspace{3mm} =\hspace{3mm} f(x + d) - f(x) - o(||d||)
 $$
