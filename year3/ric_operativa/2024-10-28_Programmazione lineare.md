@@ -1,4 +1,5 @@
-﻿# Programmazione lineare
+﻿
+# Programmazione lineare
 
 Possiamo vedere la programmazione lineare come un caso particolare della programmazione convessa nella forma: 
 
@@ -27,6 +28,8 @@ Nella seguente immagine ci sono due direzioni entrambi ammissibili
 La direzione $d$ è ammissibile in quanto esiste un $\bar \alpha < 1$ in quanto un pezzo della direzione va fuori dall’insieme $C$.
 
 Mentre la direzione $\tilde{d}$ è una direzione ammissibile direttamente $\bar \alpha = 1$ cioè nella sua interezza.
+
+Una direzione non ammissibile sarebbe un punto nella frontiera con direzione che punta fuori dall’insieme $C$
 
 Nota: se $C$ è un insieme convesso allora scelto un punto dentro l’insieme, qualsiasi direzione è ammissibile nella sua interezza ($\bar \alpha = 1$)
 
@@ -130,3 +133,55 @@ e dato che $\alpha$ è positivo allora il limite è negativo e per l’uguaglian
 $$
 \nabla f(\bar x)^T d =\lim_{\alpha \to 0^+}\frac{f(\bar x  + \alpha d) - f(\bar x)}{\alpha} < 0
 $$
+
+## Condizione necessaria per punto minimo locale
+
+Dato un problema di trovare un punto di minimo con $C\subseteq \mathbb{R}^n$ convesso e una **funzione generica continuamente differenziabile** su $C$. La condizione necessaria affinché $\bar x \in C$ sia un punto di minimo locale per $f(x)$ su $C$ è che 
+
+$$
+\nabla f(\bar x)^T (x-\bar x) \geq 0 \hspace{5mm}\forall x \in C
+$$
+
+**Dimostrazione**:
+
+Dimostro che se $\bar x$ è minimo locale allora vale $\nabla f(\bar x)^T (x - \bar x) \geq 0$.
+
+Se $\bar x$ è un minimo locale allora non possono esistere direzioni ammissibili che siano anche di discesa per $f(x)$, pertanto esisteranno solo direzioni ammissibili tali che $\nabla f(\bar x)^Td \geq 0$.
+
+Dal momento che $C$ è convesso, prendendo un qualsiasi punto $x$ diverso da $\bar x$ allora $d = x - \bar x$ sarà una direzione ammissibile, allora dovrà valere la condizione $\nabla f(\bar x)^T (x-\bar x) \geq 0$
+
+## Condizione necessaria e sufficiente per punto minimo
+
+Dato un problema di trovare un punto di minimo con $C\subseteq \mathbb{R}^n$ convesso e una **funzione convessa e continumente differenziabile** su $C$. La condizione necessaria e sufficiente affinché $\bar x \in C$ sia un punto di minimo locale per $f(x)$ su $C$ è che:
+
+$$
+\nabla f(\bar x)^T (x-\bar x) \geq 0 \hspace{5mm}\forall x \in C
+$$
+
+Si tratta quindi della stessa condizione solamente nell’ipotesi aggiuntiva di avere la **funzione convessa** su $C$.
+
+**Dimostrazione**:
+
+La condizione necessaria è dimostrata sopra.
+
+Dimostro la condizione sufficiente: cioè che se vale $\nabla f(\bar x)^T (x-\bar x) \geq 0$ allora $\bar x$ è un punto di minimo (**sia globale che locale**, dato che siamo nelle ipotesi valide affinché un minimo locale è anche un minimo globale)
+
+Per la convessità della funzione $f(x)$ è convessa se (per la relazione tra convessità e differenziabilità):
+
+$$
+f(y) \geq f(x) + \nabla f(x)^T (y-x)
+$$
+
+sostituendo $x = \bar x$ si ha
+
+$$
+f(y) \geq f(\bar x) + \underbrace{\nabla f(\bar x)^T (y-\bar x)}_{\geq 0 \text{ per ipotesi}} \hspace{5mm} \forall y \in C
+$$
+
+Quindi ottengo
+
+$$
+f(y) \geq f(\bar x) \hspace{5mm} \forall y \in C
+$$
+
+che è la definizione di punto di minimo globale
