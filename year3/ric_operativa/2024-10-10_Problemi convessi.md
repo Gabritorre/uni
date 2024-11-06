@@ -287,7 +287,7 @@ Vediamo delle proprietà derivate dal fatto di avere insiemi ammissibili convess
 
 ### Proposizione 1
 
-Dato un problema $P = \underset{x\in C}{\min}f(x)$ con $f(x)$ **funzione convessa** su $\mathbb{R}^n$ e $C$ **insieme convesso** allora **ogni punto di minimo locale è anche un punto di massimo locale.**
+Dato un problema $P = \underset{x\in C}{\min}f(x)$ con $f(x)$ **funzione convessa** su $\mathbb{R}^n$ e $C$ **insieme convesso** allora **ogni punto di minimo locale è anche un punto di minimo globale.**
 
 **Dimostrazione**:
 
