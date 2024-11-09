@@ -1,0 +1,179 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-23_Public key infrastructure</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#public-key-infrastructure">Public key infrastructure</a>
+<ul>
+<li><a href="#web-of-trust">Web of trust</a></li>
+<li><a href="#pki">PKI</a></li>
+<li><a href="#ottenere-il-certificato">Ottenere il certificato</a></li>
+<li><a href="#verificare-il-certificato">Verificare il certificato</a></li>
+<li><a href="#fiducia-con-le-ca">Fiducia con le CA</a></li>
+<li><a href="#certificate-revocation-lists">Certificate Revocation Lists</a></li>
+<li><a href="#insicurezza-nelle-ca">Insicurezza nelle CA</a></li>
+<li><a href="#let’s-encrypt">Let’s Encrypt</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="public-key-infrastructure">Public key infrastructure</h1>
+<p>Vediamo ora come risolvere il problema di scambiarsi le chiavi con RSA in modo affidabile. Cioè come può Alice essere certa che quando riceve la chiave pubblica di Bob essa sia veramente di Bob?</p>
+<p>Innanzitutto una chiave è un <strong>file binario</strong> codificato in caratteri ASCII con l’aggiunta di eventuali metadati come nome e indirizzo e-mail.</p>
+<p>I metadati ovviamente non garantiscono una prova affidabile su chi ha generato effettivamente la chiave.</p>
+<p>Vediamo alcuni metodi informali per associare una chiave ad una identità:</p>
+<ol>
+<li><strong>Key fingerprint</strong>: Alice quando genera la chiave, <strong>pubblica l’hash</strong> della chiave (<em>key fingerprint</em>) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando <strong>Bob</strong> riceve la <strong>chiave controlla che l’hash corrisponda</strong> a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.</li>
+<li><strong>Key server</strong>: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo non garantisce che chi carica la chiave non si spacci per qualcun altro.</li>
+</ol>
+<h2 id="web-of-trust">Web of trust</h2>
+<p>Un terzo metodo è il <strong>Web of trust</strong>: è una rete di contatti in cui i partecipanti certificano l’identità degli altri. Alice e Bob si fidano di Carl, questo significa che:</p>
+<ul>
+<li>possiedono la sua chiave pubblica</li>
+<li>se lui certifica qualcosa Alice e Bob si fidano che sia vero</li>
+</ul>
+<p>Carl può quindi certificare che la chiave pubblica di Alice appartenga veramente ad Alice e lo stesso per la chiave pubblica di Bob.</p>
+<p>Vediamo come funziona:</p>
+<ol>
+<li>
+<p>Alice e Carl si scambiano le fingerprint (hash delle chiavi), lo stesso fanno Bob e Carl</p>
+</li>
+<li>
+<p>Carl manda ad Alice una <em>key signature</em>:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>S</mi><mo>=</mo><mi>E</mi><mo stretchy="false">(</mo><mi>P</mi><mi>r</mi><mi>i</mi><msub><mi>v</mi><mi>C</mi></msub><mo separator="true">,</mo><mo stretchy="false">(</mo><mi>P</mi><mi>u</mi><msub><mi>b</mi><mi>A</mi></msub><mo separator="true">,</mo><mi mathvariant="normal">"</mi><mi>A</mi><mi>l</mi><mi>i</mi><mi>c</mi><mi>e</mi><mi mathvariant="normal">"</mi><mo stretchy="false">)</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">
+ S = E(Priv_C, (Pub_A, "Alice"))
+ </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">E</span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mord mathnormal">i</span><span class="mord"><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: -0.03588em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.07153em;">C</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mopen">(</span><span class="mord mathnormal" style="margin-right: 0.13889em;">P</span><span class="mord mathnormal">u</span><span class="mord"><span class="mord mathnormal">b</span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.328331em;"><span class="" style="top: -2.55em; margin-left: 0em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight">A</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">"</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right: 0.01968em;">l</span><span class="mord mathnormal">i</span><span class="mord mathnormal">ce</span><span class="mord">"</span><span class="mclose">))</span></span></span></span></span></span></p>
+<p>Cioè Carl cifra, usando la sua chiave privata, la chiave pubblica di alice con la sua identità (il suo nome). Chiunque in possesso della chiave pubblica di Carl può decifrare <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> e quindi, se si fidano di Carl, verificano la chiave pubblica di Alice.</p>
+</li>
+<li>
+<p>Alice manda a Bob la propria chiave pubblica e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> e dato che Bob si fida di Carl decifra <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span> con la chiave pubblica di Carl e si fida dell’appartenenza della chiave pubblica di Alice</p>
+<p><img src="https://i.ibb.co/HHT5ZhQ/image.png" alt="https://i.ibb.co/HHT5ZhQ/image.png"></p>
+</li>
+</ol>
+<p>Notiamo come una volta che Alice riceve la propria <em>key signature</em> da Carl, esso non è più necessario ai fine della comunicazione, Alice può usare la <em>key signature</em> con chiunque si fidi di Carl.</p>
+<p>Il sistema può scalare tramite delle catene di fiducia:</p>
+<p><img src="https://i.ibb.co/30M1B99/image.png" alt="https://i.ibb.co/30M1B99/image.png"></p>
+<p>Nell’immagine Alice si fida di Carl, Carl e Dory si fidano a vicenda e Francis si fida di Dory. In questo modo Alice può dare a Francis la propria chiave pubblica e le signature di tutti i certificatori della gerarchia di cui si fida.</p>
+<p>Francis che si fida di Dory, può usare la chiave pubblica di Dory per verificare Carl, e a sua volta può usare la chiave pubblica di Carl per verificare Alice.</p>
+<p>Quindi fintanto che c’è un percorso di certificatori fidati che connette i due attori che vogliono comunicare allora possono comunicare in modo sicuro</p>
+<p><img src="https://i.ibb.co/SwWfZHg/image.png" alt="https://i.ibb.co/SwWfZHg/image.png"></p>
+<p>In questo modo Bob sarà certo della chiave pubblica di alice.</p>
+<p>L’approccio del <strong>Web of trust</strong> viene utilizzato in contesti specifici, ma si avvicina al metodo utilizzato oggi per certificare le identità delle chiavi, tra gli aspetti importanti abbiamo:</p>
+<ul>
+<li>le <em><strong>key signature</strong></em>: il fatto ci firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave</li>
+<li>la <em><strong>trust delegation</strong></em>: il fatto che se A e B si fidano di C allora C fa da certificatore intermedio</li>
+<li>La <strong>fiducia è asimmetrica</strong>: Quando B ottiene la chiave di A, non è detto che A riesca ad ottenere la chiave di B.</li>
+</ul>
+<h2 id="pki">PKI</h2>
+<p>Una <strong>PKI</strong> (<em>Public key infrastructure</em>) è insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.</p>
+<p>La <em><strong>Certification Authority</strong></em> (CA) è una entità specifica della PKI di cui tutti gli attori nella comunicazione si fidano, è quella che in passato abbiamo definito essere la <em>trusted third party</em></p>
+<p>Le CA firmano digitalmente le chiavi pubbliche generando così dei certificati per garantire l’integrità e autenticità delle chiavi:</p>
+<ol>
+<li>Alice e Bob si fidano della CA, questo significa che:
+<ol>
+<li>si fidano che non si comporti male</li>
+<li>possiedono la sua chiave pubblica</li>
+</ol>
+</li>
+<li>Alice chiede alla CA di firmare la sua chiave pubblica, producendo così un <strong>certificato</strong></li>
+<li>Bob quando riceve la chiave pubblica di Alice controlla se è stata firmata dalla CA</li>
+<li>se è così allora Bob si fida che tale chiave pubblica appartiene ad Alice</li>
+</ol>
+<h2 id="ottenere-il-certificato">Ottenere il certificato</h2>
+<p>Alice per ottenere il certificato dalla CA seguirà i seguenti passi:</p>
+<ol>
+<li>
+<p>Alice genera chiave pubblica e privata</p>
+</li>
+<li>
+<p>Alice genera una <em>Certificate Signing Request</em> (CSR), un file che contiene le sue informazioni e la sua chiave pubblica con la rispettiva firma</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>CSR&nbsp;=&nbsp;{Pub_A,</mtext>   <mtext>"Alice",</mtext>   <mtext>E(Priv_A,&nbsp;(Pub_A,&nbsp;"Alice"))}</mtext></mrow><annotation encoding="application/x-tex">
+ \text{CSR = \{Pub\_A,\,\,\, "Alice",\,\,\, E(Priv\_A, (Pub\_A, "Alice"))\}}
+ </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06em; vertical-align: -0.31em;"></span><span class="mord text"><span class="mord">CSR&nbsp;=&nbsp;{Pub_A,</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord">"Alice",</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord">E(Priv_A,&nbsp;(Pub_A,&nbsp;"Alice"))}</span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>Alice manda la CSR alla CA</p>
+</li>
+<li>
+<p>La CA controllerà la sua identità (attraverso un documento) e la validità della CSR, decifrando la firma con la chiave pubblica di Alice</p>
+</li>
+<li>
+<p>La CA genera il certificato</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>Certificate&nbsp;=&nbsp;{CSR,&nbsp;</mtext>   <mtext>E(Priv_CA,&nbsp;CSR)}</mtext></mrow><annotation encoding="application/x-tex">
+ \text{Certificate = \{CSR, \,\,\,E(Priv\_CA, CSR)\}}
+ </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1.06em; vertical-align: -0.31em;"></span><span class="mord text"><span class="mord">Certificate&nbsp;=&nbsp;{CSR,&nbsp;</span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mspace" style="margin-right: 0.1667em;"></span><span class="mord">E(Priv_CA,&nbsp;CSR)}</span></span></span></span></span></span></span></p>
+</li>
+</ol>
+<p>I certificati seguono un formato standard chiamato X.509, composto principalmente da:</p>
+<ul>
+<li>id della CA</li>
+<li>id del certificato</li>
+<li>periodo di validità</li>
+<li>identità del richiedente del certificato</li>
+<li>la chiave pubblica</li>
+<li>firma del certificato</li>
+</ul>
+<p><img src="https://i.ibb.co/7tx282v/image.png" alt="https://i.ibb.co/7tx282v/image.png"></p>
+<p>Note:</p>
+<ul>
+<li>Questo processo viene fatto solamente una volta finche non scade il certificato</li>
+<li>Una volta ottenuto il certificato la CA non è più necessaria ai fini della comunicazione</li>
+<li>La CA non viene mai a conoscenza delle chiavi private degli attori che certifica</li>
+<li>Per questioni di performance (dato che il certificato contiene molte cose) la CA firma un hash del certificato (dall’hash è esclusa la firma stessa).</li>
+</ul>
+<h2 id="verificare-il-certificato">Verificare il certificato</h2>
+<p>Quando Bob riceve un certificato da Alice:</p>
+<ol>
+<li>Controlla che il nome riportato nel certificato sia quello di Alice</li>
+<li>Controlla che il certificato non sia scaduto</li>
+<li>Controlla che la CA che lo ha firmato sia una CA riconosciuta (Bob ha un database di CA fidate)</li>
+<li>Decifra la firma con la chiave pubblica della CA e ottiene l’hash del certificato</li>
+<li>Computa per conto suo l’hash del certificato (escludendo il campo della firma della CA)</li>
+<li>Se l’hash computato è uguale all’hash ottenuto dalla decifratura allora il certificato è valido</li>
+</ol>
+<p>In questo contesto possiamo pensare ad Alice nella realtà come una persona fisica, una rete wifi o un dominio per un sito web.</p>
+<h2 id="fiducia-con-le-ca">Fiducia con le CA</h2>
+<p>Quando Bob deve decidere di quali CA fidarsi si ha una <strong>gerarchia di CA</strong> in cui una CA certifica le sottostanti, Bob <strong>si fida solamente di alcune CA</strong> tendenzialmente in alto sulla gerarchia.</p>
+<p>Se una CA è certificata da una CA di cui Bob si fida allora Bob si fida anche di quella.</p>
+<p><img src="https://i.ibb.co/N6LM0Kp/image.png" alt="https://i.ibb.co/N6LM0Kp/image.png"></p>
+<p>La <strong>Root CA</strong> è una <em>certification authority</em> di cui tutti si devono fidare. Ad esempio su Chrome per vedere quali sono le CA di cui il browser si fida è possibile accedere all’url <code>chrome://certificate-manager/</code></p>
+<p>Le root CA si firmano i certificati per conto proprio.</p>
+<p>Quando Bob visita <code>www.alice.com</code> , il server di alice deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi <strong>verificare la validità di tutte le CA nel cammino</strong>.</p>
+<p>Se una qualsiasi CA nel cammino non è valida o scade Bob riceverà un warning e potrà proseguire a proprio rischio.</p>
+<p>Come per il <em>Web of Trust</em> in questo caso il browser dell’utente è riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso è necessario un altro mezzo che generalmente è <strong>l’autenticazione tramite username e password</strong>.</p>
+<h2 id="certificate-revocation-lists">Certificate Revocation Lists</h2>
+<p>In determinate situazioni è necessario revocare un certificato, ad esempio quando viene compromessa la segretezza della chiave privata.</p>
+<p>Le C<em>ertificate Revocation Lists</em> (CRL) sono liste di certificati che sono stati revocati dalla CA, in modo da far sapere a tutti che tali certificati sono stati <strong>revocati prima della data di scadenza pianificata</strong> e non dovrebbero più essere considerati attendibili.</p>
+<p>Un CRL viene generato e pubblicato periodicamente, spesso ad un intervallo di tempo definito.</p>
+<h2 id="insicurezza-nelle-ca">Insicurezza nelle CA</h2>
+<p>Abbiamo quindi visto come la comunicazione sicura avviene grazie a delle entità (le CA) di cui ci fidiamo.</p>
+<p>È comunque possibile che le CA vengano compromessi ed è già successo in passato con conseguenze molto gravi. È quindi importante avere un alto livello di sicurezza per evitare che le CA vengano compromesse, dato anche che è possibile costruire una propria gerarchia privata di CA.</p>
+<h2 id="let’s-encrypt">Let’s Encrypt</h2>
+<p><a href="https://letsencrypt.org/">Let’s Encrypt</a> è una CA che fornisce gratuitamente dei certificati per i siti web. Sostanzialmente esso ti chiede di mettere un file ad un determinato URL del tuo sito per certificare che tu sia il proprietario.</p>
+<p>L’infrastruttura di Let’s Encrypt è la seguente</p>
+<p><img src="https://i.ibb.co/P1RhTKb/image.png" alt="https://i.ibb.co/P1RhTKb/image.png"></p>
+<ul>
+<li>ISGR (<em>Internet Security Research Group</em>) è l’infrastruttura che sta dietro a Let’s encrypt</li>
+<li>ECDSA è un altro metodo di cifratura a chiave pubblica alternativo ad RSA</li>
+</ul>
+<p>Qui è descritto il funzionamento: <a href="https://letsencrypt.org/it/certificates/">https://letsencrypt.org/it/certificates/</a></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
