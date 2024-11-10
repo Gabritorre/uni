@@ -1,0 +1,101 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-10-31_Identificazione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#identificazione">Identificazione</a>
+<ul>
+<li><a href="#classi-di-schemi-di-identificazione">Classi di schemi di identificazione</a></li>
+<li><a href="#password">Password</a></li>
+<li><a href="#funzioni-hash">Funzioni hash</a></li>
+<li><a href="#attacchi-offline">Attacchi offline</a></li>
+<li><a href="#token-based-authentication">Token-based authentication</a></li>
+<li><a href="#biometric-authentication">Biometric authentication</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="identificazione">Identificazione</h1>
+<p>Passiamo ora a discutere della sicurezza nell’<strong>identificazione di un utente</strong> o in un sistema informatico o una rete.</p>
+<p>L’identificazione o autenticazione di un utente o in generale di una entità è un processo fondamentale per la regolazione dell’<strong>accesso ad una risorsa</strong>.</p>
+<p>Un tipico esempio di identificazione è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.</p>
+<p>Un buono schema di autenticazione serve ad <strong>impedire</strong> che una entità si <strong>impersonifichi</strong> per qualcun’altra.</p>
+<h2 id="classi-di-schemi-di-identificazione">Classi di schemi di identificazione</h2>
+<p>Vediamo delle categorie che raggruppano gli schemi di identificazione, tali schemi si possono basare su:</p>
+<ul>
+<li>un segreto che si <strong>conosce</strong>: password, passphrase, PIN, chiavi crittografiche</li>
+<li>un oggetto che si <strong>possiede</strong>: Carta di credito, smartphone</li>
+<li>una <strong>caratteristica</strong> biometrica che si <strong>possiede</strong>: firma cartacea, impronta digitale, volto e voce, retina dell’occhio</li>
+</ul>
+<h2 id="password">Password</h2>
+<p>L’autenticazione tramite password presenta alcuni problemi:</p>
+<ol>
+<li>
+<p>Può essere <strong>intercettata</strong>.</p>
+<p>È importante usare canali cifrati, come <em>HTTPS</em></p>
+</li>
+<li>
+<p>Può essere <strong>indovinata.</strong></p>
+<p>È importante usare password forti.</p>
+<p>Inoltre il sistema deve implementare un meccanismo per limitare i tentativi possibili</p>
+</li>
+<li>
+<p>Può essere <strong>salvata</strong> nel server <strong>in modo non sicuro.</strong></p>
+<p>È importante che il server non memorizzi le password in chiaro, bensì un hash di esse.</p>
+</li>
+</ol>
+<h2 id="funzioni-hash">Funzioni hash</h2>
+<p>Una <strong>funzione di hash</strong> è una funzione che calcola un valore di lunghezza fissa, chiamato <em>digest</em>, da un input di dimensioni arbitrarie. Sebbene le <strong>collisioni</strong> siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono <strong>computazionalmente impossibile recuperare una password dal suo hash</strong>.</p>
+<p>Quindi un server nel momento del login <strong>confronta gli hash</strong> e non le password in chiaro.</p>
+<p>Funzioni hash molto utilizzate oggi e ritenute essere sufficientemente sicure sono le SHA-2 che producono hash da 224 bit in su.</p>
+<p>Un comando per ottenere l’hash di una stringa di testo su Linux:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> -n <span class="token string">"mypassword"</span> <span class="token operator">|</span> sha256sum
+89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8 -
+</code></pre>
+<p>Un altro utilizzo delle funzioni hash è per controllare <strong>l’integrità di file</strong>.</p>
+<p>Dai seguenti comandi si nota che la modifica del file viene rilevata confrontando gli hash dello stesso file prima e dopo la modifica:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"ciao"</span> <span class="token operator">&gt;</span> file.txt
+$ sha256sum file.txt <span class="token operator">&gt;</span> checksum
+$ sha256sum -c checksum
+file.txt: OK
+$ <span class="token keyword">echo</span> <span class="token string">"modifica"</span> <span class="token operator">&gt;</span> file.txt
+$ sha256sum -c checksum
+file.txt: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+</code></pre>
+<h2 id="attacchi-offline">Attacchi offline</h2>
+<p>Nonostante l’uso delle funzioni hash, usare password forti è comunque importante per proteggersi da <strong>attacchi brute force offline</strong> su cui non è possibile limitare il numero di tentativi.</p>
+<p>Inoltre è possibile usare un attacco a <strong>rainbow tables</strong>, che consiste nel avere una lista di associazioni di password comuni con il rispettivo hash già calcolato, se l’attaccante riuscisse ad ottenere l’hash di una password, con una semplice ricerca nella rainbow table otterrebbe la rispettiva password (se presente).</p>
+<h3 id="salting-delle-password">Salting delle password</h3>
+<p>Per contrastare quest’ultima tipologia di attacco, si utilizza il <strong>salting delle password</strong>, che consiste nell’aggiungere un valore casuale (il sale) a ciascuna password prima di calcolare l’hash.</p>
+<p><strong>Ogni salt è diverso</strong> per ciascun utente e viene salvato assieme all’hash nel server.</p>
+<p>Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password, l’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.</p>
+<p>In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt (usato prima di fare la ricerca) ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.</p>
+<p>Per migliorare ulteriormente la sicurezza si cerca di <strong>mantenere segreti i salt</strong>. Inoltre le <strong>computazioni dell’hash iterate più volte</strong> (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.</p>
+<h2 id="token-based-authentication">Token-based authentication</h2>
+<p>Vediamo adesso l’autenticazione basata su <strong>un oggetto che si possiede.</strong></p>
+<p>Un esempio è una <strong>carta con una piccola memoria</strong> la suo interno (Carte bancomat a Banda Magnetica), La banda magnetica contiene dati statici codificati, come il numero del conto e altre informazioni di base. Spesso si accoppia l’oggetto ad un PIN, in modo che un attaccante abbia bisogno di entrambi. Il problema di queste carte è che sono facili da clonare con dei lettori, e magari l’uso di una telecamera per vedere il pin inserito dal proprietario.</p>
+<p>Le <strong>smart card</strong>, dotate di un chip integrato, offrono maggiore sicurezza rispetto alle tradizionali memory card passive. I chip generano un codice unico a ogni transazione, rendendo praticamente impossibile clonare la carta. Può fare anche operazioni crittografiche.</p>
+<h2 id="biometric-authentication">Biometric authentication</h2>
+<p>Infine, la <strong>biometria</strong> utilizza le caratteristiche biologiche uniche degli utenti per l’identificazione. Questo processo prevede la registrazione delle caratteristiche biometriche in un database e il successivo confronto con le caratteristiche acquisite durante la verifica.</p>
+<p>Sebbene la biometria offra un alto livello di sicurezza, solleva anche preoccupazioni relative alla privacy, poiché la compromissione di un database biometrico avrebbe un impatto significativo: sono dati unici e non cambiabili</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
