@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-06_Controllo degli accessi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#controllo-degli-accessi">Controllo degli accessi</a>
+<ul>
+<li><a href="#politiche-di-controllo-degli-accessi">Politiche di controllo degli accessi</a></li>
+<li><a href="#oggetti-e-soggetti">Oggetti e soggetti</a></li>
+<li><a href="#diritti-di-accesso">Diritti di accesso</a></li>
+<li><a href="#unix-access-control">Unix Access Control</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="controllo-degli-accessi">Controllo degli accessi</h1>
+<p>Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso ad delle risorse a chi non è autorizzato.</p>
+<p>Nell’ambito dei sistemi operativi, chi può accedere alle risorse solitamente è un <strong>utente</strong>, un <strong>programma</strong>, un <strong>processo</strong> o <strong>altri sistemi</strong>. L’accesso alle risorse del sistema viene regolato da una <em><strong>security policy.</strong></em></p>
+<p><img src="https://i.ibb.co/KsWbtFz/image.png" alt="https://i.ibb.co/KsWbtFz/image.png"></p>
+<h2 id="politiche-di-controllo-degli-accessi">Politiche di controllo degli accessi</h2>
+<p>Vediamo i diversi <strong>tipi di politiche di controllo degli accessi</strong>:</p>
+<ul>
+<li>
+<p><strong>Controllo di accesso discrezionale (DAC)</strong>: Il proprietario della risorsa determina chi può accedere alla risorsa in base alla <strong>identità</strong> dell’utente</p>
+<p>Un’entità <strong>può abilitare un’altra entità</strong> ad accedere a una risorsa.</p>
+</li>
+<li>
+<p><strong>controllo di accesso vincolato (MAC)</strong>: Il sistema determina l’accesso alla risorsa in base a delle <strong>etichette di classificazione</strong> date agli utenti e alle risorse, un utente per poter accedere alla risorsa deve possedere l’etichetta corretta</p>
+<p>Un’entità che ha l’autorizzazione ad accedere a una risorsa <strong>non può abilitare un’altra entità</strong> ad accedere a tale risorsa.</p>
+</li>
+<li>
+<p><strong>Controllo di accesso basato sui ruoli (RBAC)</strong>: basato sui <strong>ruoli</strong> che gli utenti hanno all’interno del sistema e ogni ruolo ha i propri permessi che stabiliscono quali accessi sono consentiti.</p>
+</li>
+<li>
+<p><strong>Controllo di accesso basato sugli attributi (ABAC)</strong>: basato sugli <strong>attributi</strong> dell’utente, sulla <strong>risorsa</strong> a cui si accede e sulle <strong>condizioni ambientali</strong> correnti. Gli attributi possono includere dati come l’età dell’utente, la posizione geografica, l’ora del giorno, o il tipo di dispositivo…</p>
+</li>
+</ul>
+<h2 id="oggetti-e-soggetti">Oggetti e soggetti</h2>
+<p>Vengono chiamati <strong>soggetti</strong> le entità capaci di accedere a delle risorse.</p>
+<p>Mentre vengono chiamati <strong>oggetti</strong> le risorse a cui accedere.</p>
+<p>I soggetti accedono agli oggetti attraverso dei <strong>processi</strong> che acquisiscono i permessi dell’utente.</p>
+<h2 id="diritti-di-accesso">Diritti di accesso</h2>
+<p>Un soggetto può avere vari diritti di accesso su un oggetto:</p>
+<ul>
+<li>Lettura (che include la copia)</li>
+<li>Scrittura (che include aggiungere, modificare o rimuovere del contenuto all’interno dell’oggetto)</li>
+<li>Esecuzione</li>
+<li>Eliminazione</li>
+<li>Creazione</li>
+</ul>
+<p>Una possibile organizzazione dei diritti di accesso che possiedono i soggetti nei confronti degli oggetti è attraverso una <strong>matrice degli accessi</strong>:</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>README.txt</th>
+<th>/etc/shadow</th>
+<th>Carol.pdf</th>
+<th>/bin/bash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alice</strong></td>
+<td>Lettura, Scrittura</td>
+<td>Lettura, Scrittura</td>
+<td></td>
+<td>Lettura, Scrittura, Esecuzione</td>
+</tr>
+<tr>
+<td><strong>Bob</strong></td>
+<td>Lettura</td>
+<td></td>
+<td>Lettura</td>
+<td>Lettura, Esecuzione</td>
+</tr>
+<tr>
+<td><strong>Carol</strong></td>
+<td>Lettura</td>
+<td></td>
+<td>Lettura, Scrittura</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>La matrice degli accessi si può decomporre per ottenere:</p>
+<ul>
+<li><strong>Access Control List</strong> (ACL): per ogni oggetto si ottiene la lista degli utente con i rispettivi permessi (decomposizione in colonne)</li>
+<li><strong>Capabilities</strong>: per ogni soggetto si ottengono i suoi diritti su tutti gli oggetti (decomposizione in righe)</li>
+</ul>
+<h2 id="unix-access-control">Unix Access Control</h2>
+<p>Unix utilizza un controllo degli accessi di tipo DAC.</p>
+<p>Il kernel ha accesso libero a tutto il sistema, i programmi accedono ai file e device attraverso il kernel.</p>
+<p>Ad <strong>ogni file e directory è assegnato esattamente uno</strong> <em><strong>user identifier</strong> (userid, uid)</em> che ne indica il proprietario e contribuisce a determinarne i permessi d’accesso.</p>
+<p>Ad <strong>ogni processo è associato un insieme definito</strong> <strong>di <em>user identifier</em></strong> che contribuiscono a determinare i permessi che il processo ha su file e directory.<br>
+L’utente root (con userid = 0) ha sempre accesso garantito dal kernel.</p>
+<h3 id="permessi-su-un-file">Permessi su un file</h3>
+<p>In Unix i permessi su un file sono formati da <strong>tre blocchi</strong> che definiscono i permessi del proprietario, del gruppo e di tutti gli altri.</p>
+<p>Ogni blocco può possedere i seguenti caratteri:</p>
+<ul>
+<li>
+<p><code>r</code>: permette la <strong>lettura</strong> del file o la visualizzazione del contenuto della directory.</p>
+</li>
+<li>
+<p><code>w</code>: permette la <strong>modifica</strong> del file o del contenuto della directory.</p>
+</li>
+<li>
+<p><code>x</code>: permette <strong>l’esecuzione</strong> del file o l’attraversamento della directory.</p>
+</li>
+<li>
+<p><code>s</code>: indica che il file è SUID (o SGID se la “s” è nella blocco del gruppo) e permette al file di essere eseguito con i privilegi del proprietario (o del gruppo) (viene messo al posto della <code>x</code>)</p>
+<p>Usare questa funzionalità è rischioso in quanto, se il file è vulnerabile un attaccante può ottenere i privilegi di root.</p>
+<p>Se proprio necessario è opportuno usare una pratica di <em>privilege drop</em>: cioè usare subito i privilegi del proprietario e poi scendere ai permessi standard dell’utente. Una volta scesi di permessi non sarà più possibile riacquisire i permessi del proprietario (ciò si può fare in C con la funzione <code>setuid()</code>)</p>
+</li>
+<li>
+<p><code>t</code>: il cosiddetto <em><strong>sticky bit</strong></em>, può apparire al posto della <code>x</code> nel terzo blocco in un file di tipo directory e indica che non è possibile eliminare file all’interno di tale directory di cui non si è proprietari. Questo è particolarmente utile in cartelle condivise come <code>/tmp</code></p>
+</li>
+</ul>
+<p>La seguente stringa di informazioni UNIX (ottenibili con il comando <code>ls -la</code>), mostra i permessi di una directory/file:</p>
+<pre class=" language-bash"><code class="prism  language-bash">-rwxr-xr-- 8 username groupname 678 Jan 10:10 filename 
+</code></pre>
+<p>la prima parte: <code>-rwxr-xr--</code> riguarda i permessi, in particolare:</p>
+<ul>
+<li>Il primo carattere riguarda il fatto che il file è una directory (’<code>d</code>’) oppure no (‘<code>-</code>’).</li>
+<li>Le successive <strong>prime tre posizioni</strong> indicano i permessi del proprietario. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (<code>rwx</code>)</li>
+<li>Le <strong>seconde tre posizioni</strong> indicano i permessi per il gruppo. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (<code>r-x</code>)</li>
+<li>Le <strong>ultime tre posizioni</strong> si riferiscono ai permessi per chiunque altro. Nell’esempio chiunque altro può solamente leggere il file (<code>r--</code>).</li>
+</ul>
+<h3 id="alterare-i-permessi">Alterare i permessi</h3>
+<p>È possibile alterare i permessi con il comando <code>chmod</code> ad esempio <code>chmod 760 myfile</code></p>
+<p>Il numero <code>760</code> viene interpretato come tre cifre distinti in base ottale</p>
+<ul>
+<li>7 = 111 = <code>rwx</code></li>
+<li>6 = 110 = <code>rw-</code></li>
+<li>0 = 000 = <code>---</code></li>
+</ul>
+<p>quindi il permesso totale sul file sarà composto come <code>rwxrw----</code></p>
+
+    </div>
+  </div>
+</body>
+
+</html>
