@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-13_Firewall</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#firewall">Firewall</a>
+<ul>
+<li><a href="#firewall-nat">Firewall NAT</a></li>
+<li><a href="#netfilter">Netfilter</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="firewall">Firewall</h1>
+<p>In una rete possiamo avere una <strong>host-based defence</strong>, cioè una difesa realizzata sui singoli host, oppure una <strong>network-based defence</strong>, cioè un filtro implementato fuori dagli host che cerca di difenderli tutti.</p>
+<p>Uno strumento usato per quest’ultimo tipo di difesa è il <strong>Firewall</strong>.</p>
+<p>Si tratta di un componente hardware e/o software avente lo scopo di controllare gli accessi alle risorse di un sistema filtrando tutto il traffico che tale sistema scambia con l’esterno.</p>
+<p>il sistema, che si suppone sicuro, può essere un singolo computer o una rete di computer mentre l’ambiente esterno con cui interagisce è tipicamente una rete che si suppone sconosciuta e insicura (tipicamente Internet)</p>
+<p>un firewall filtra il traffico sulla base di un insieme di <strong>regole</strong>, dette <em>policy.</em></p>
+<h2 id="firewall-nat">Firewall NAT</h2>
+<p>Una funzione spesso associata al firewall è quella di NAT (<em>Network Address Translation</em>), che può contribuire a rendere inaccessibili degli host sulla rete interna mascherandone gli indirizzi IP</p>
+<p>Le operazioni possibili che adotta il firewall in questo caso sono:</p>
+<ul>
+<li>
+<p><code>drop</code>: i pacchetti non vengono consegnati a causa di:</p>
+<ul>
+<li>indirizzo sorgente/destinazione</li>
+<li>porta sorgente/destinazione</li>
+<li>contenuto del pacchetto</li>
+</ul>
+</li>
+<li>
+<p><code>forward</code>: i pacchetti vengono consegnati da una sottorete ad un’altra, in base a</p>
+<ul>
+<li>indirizzo sorgente/destinazione</li>
+<li>porta sorgente/destinazione</li>
+<li>contenuto del pacchetto</li>
+</ul>
+</li>
+<li>
+<p><code>translate</code>: i pacchetti vengono consegnati ma gli indirizzi vengono tradotti.</p>
+<p>questo è necessario in quanto nelle reti locali si utilizzano indirizzi privati mentre per navigare su internet si utilizzano indirizzi pubblici.</p>
+<p>Ci riferiamo a SNAT (Source NAT) per riferirci alla traduzione degli indirizzi per il traffico uscente dalla rete locale (che va verso internet)</p>
+<p><img src="https://i.ibb.co/5jVZrtK/image.png" alt="https://i.ibb.co/5jVZrtK/image.png"></p>
+<p>Ci riferiamo a DNAT (Destination NAT) per riferirci alla traduzione degli indirizzi per il traffico entrante in arrivo da internet (che va verso la rete locale)</p>
+<p><img src="https://i.ibb.co/6yTs2HF/image.png" alt="https://i.ibb.co/6yTs2HF/image.png"></p>
+</li>
+</ul>
+<p>Tipicamente è consigliato utilizzare un approccio di <strong>privilegio minimo</strong>: cioè droppare di default e far passare solamente ciò che è necessario.</p>
+<h2 id="netfilter">Netfilter</h2>
+<p><strong>Netfilter</strong> è un tool Linux che gestisce il filtraggio dei pacchetti di rete. Il suo scopo principale è implementare funzionalità come firewall, NAT, e il controllo del traffico di rete.</p>
+<p>Le regole di Netfilter sono implementate tramite strumenti come <strong>iptables</strong></p>
+<p>Le regole sono implementate in <strong>catene (chains)</strong>, che definiscono il flusso del traffico di rete attraverso il sistema. Ogni pacchetto in transito viene processato attraverso una sequenza di catene e regole associate, che determinano cosa fare con il pacchetto (accettarlo, rifiutarlo, modificarlo, ecc…).</p>
+<p>Le principali <strong>catene</strong> predefinite di Netfilter sono:</p>
+<ol>
+<li><strong>INPUT</strong>: gestisce i pacchetti destinati al sistema (ricevuti da una rete remota o locale).</li>
+<li><strong>OUTPUT</strong>: gestisce i pacchetti in uscita dal sistema.</li>
+<li><strong>FORWARD</strong>: gestisce i pacchetti che passano attraverso il sistema senza essere destinati ad esso (ad esempio, nel caso di un router).</li>
+<li><strong>PREROUTING</strong>: applicato ai pacchetti appena ricevuti, prima che vengano instradati.</li>
+<li><strong>POSTROUTING</strong>: applicato ai pacchetti che stanno per essere inviati, dopo l’instradamento.</li>
+</ol>
+<p>Le <strong>regole</strong> vengono <strong>applicate in ordine sequenziale</strong> dentro ciascuna catena. Quando un pacchetto entra in una catena, Netfilter verifica se esistono regole che corrispondono al pacchetto stesso. Se una regola corrisponde, viene eseguita l’azione associata (ad esempio, accettare, rifiutare o modificare il pacchetto). Se nessuna regola corrisponde, viene eseguita l’azione di default (“DROP” o “ACCEPT”).</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
