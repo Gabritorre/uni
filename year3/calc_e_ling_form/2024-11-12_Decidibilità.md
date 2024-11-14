@@ -1,6 +1,7 @@
-﻿# Decidibilità
+﻿
+# Decidibilità
 
-Vediamo la potenza degli algoritmi presentando alcuni problemi che si possono risolvere in maniera algoritmica in un tempo finito, tali problemi sono detti **problemi decidibili**.
+Vediamo la potenza degli algoritmi presentando alcuni problemi che si possono **risolvere in maniera algoritmica**, tali problemi sono detti **problemi decidibili**.
 
 Rappresenteremo i problemi mediante linguaggi.
 
@@ -150,3 +151,22 @@ L’idea è quella che se partendo dallo start symbol non è possibile generare 
     2. finché è possibile sottolineare non terminali:
         1. sottolinea i non terminali $A$ tali che esiste una produzione nella forma $A \to w_1…w_n$ dove tutti i $w_i$ sono sottolineati
     3. Se ho sottolineato lo start symbol rifiuta, altrimenti accetta
+
+## Teorema sulla decidibilità dei linguaggi CF
+
+Dimostriamo che ogni linguaggio context free è decidibile
+
+**Dimostrazione**: Sia $A$ un linguaggio context free, allora esiste un CFG $G$ tale che $L(G) = A$
+
+ Dimostro che esiste un decisore $M$ tale che $L(M) = A$
+
+- $M =$ su input $w$
+    1. Costruisco una copia di $G$ nella macchina $M$
+    2. Esegui il decisore per il problema $A_{\text{CFG}}$ su input $<G, w>$
+    3. ritorna il suo output
+
+Abbiamo quindi che la stringa $w$ viene accettata da $M$ se viene riconosciuta dalla grammatica $G$
+
+Da questo teorema possiamo organizzare le classi di linguaggio viste fino ad ora nel seguente modo:
+
+![https://i.ibb.co/Qfz4T0b/image.png](https://i.ibb.co/Qfz4T0b/image.png)
