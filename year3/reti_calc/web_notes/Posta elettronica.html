@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-12_DNS</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#posta-elettronica">Posta elettronica</a>
+<ul>
+<li><a href="#formato-delle-e-mail">Formato delle e-mail</a></li>
+<li><a href="#smtp">SMTP</a></li>
+<li><a href="#autenticazione">Autenticazione</a></li>
+<li><a href="#dns">DNS</a></li>
+<li><a href="#pop">POP</a></li>
+<li><a href="#differenza-tra-pop-e-imap">Differenza tra POP e IMAP</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="posta-elettronica">Posta elettronica</h1>
+<p>L’architettura di un sistema di posta elettronica la possiamo immaginare come segue:</p>
+<p><img src="https://i.ibb.co/9wdgRMG/image.png" alt="https://i.ibb.co/9wdgRMG/image.png"></p>
+<p>Le e-mail non viaggiano direttamente da un computer all’altro, ma coinvolgono diversi componenti come:</p>
+<ul>
+<li>client di posta elettronica del mittente</li>
+<li>server di posta elettronica del mittente</li>
+<li>server di posta elettronica del destinatario</li>
+<li>e client di posta elettronica del destinatario.</li>
+</ul>
+<p>I client di posta elettronica vengono chiamati <strong>MUA</strong> (<em>Mail User Agent</em>), i server che si occupano della trasmissione sono chiamati <strong>MTA</strong> (<em>Mail Transfer Agents</em>)</p>
+<p>La catena di server può essere più lunga di due.</p>
+<p>Diversi protocolli sono coinvolti nel processo di invio e ricezione delle e-mail:</p>
+<ul>
+<li><em>Internet Message Format</em> (IMF) e <em>Multipurpose Internet Mail Extensions (MIME)</em> specificano come vengono formattati i messaggi e-mail.</li>
+<li><em>Simple Mail Transfer Protocol</em> (<strong>SMTP</strong>) specifica il protocollo necessario per recapitare il messaggio dal client di Alice al server di Bob.</li>
+<li><em>Post Office Protocol</em> (<strong>POP</strong>) e <em>Internet Message Access Protocol</em> (<strong>IMAP</strong>) specificano come Bob può recuperare le e-mail dal suo server.</li>
+</ul>
+<p><img src="https://i.ibb.co/grXjLk6/image.png" alt="https://i.ibb.co/grXjLk6/image.png"></p>
+<p>Approfondiamo alcuni di questi protocolli.</p>
+<h2 id="formato-delle-e-mail">Formato delle e-mail</h2>
+<p>I messaggi e-mail sono composti da due parti:</p>
+<ul>
+<li>un header contenente i metadati come il mittente, l’oggetto, CC, la data.</li>
+<li>Il corpo del messaggio</li>
+</ul>
+<p>I messaggi e-mail sono messaggi di testo, inizialmente formattati in testo ASCII, successivamente la codifica è stata estesa.</p>
+<p>Le e-mail sono composte da più righe, ciascuna delle quali termina con CRLF (due simboli speciali “CR” e “LF” spesso usati per specificare la fine della riga, lo stesso viene usato in Windows).</p>
+<p>Esempio di una mail:</p>
+<pre><code>From: Bob Smith &lt;Bob@machine.example&gt;
+To: Alice Doe &lt;alice@example.net&gt;, Alice Smith &lt;Alice@machine.example&gt;
+Subject: Hello
+Date: Mon, 8 Mar 2010 19:55:06 -0600
+
+This is the "Hello world" of email messages.
+This is the second line of the body
+</code></pre>
+<p>Oltre ai campi standard nell’header, ci sono altre intestazioni rilevanti come:</p>
+<ul>
+<li><code>Message-Id</code>: ID univoco del messaggio, può essere usato da altri messaggi per riferirsi a questo messaggio</li>
+<li><code>In-reply-to</code>: usato quando si risponde a un messaggio precedente (contiene il suo Message-Id)</li>
+<li><code>Received</code>: aggiunto da ogni server che elabora l’e-mail per scopi di debugging</li>
+<li><code>X-</code>: campi personalizzati aggiunti dal client o dal server</li>
+</ul>
+<h3 id="mime">MIME</h3>
+<p>Nel corpo del messaggio, oltre a scrivere del testo ASCII, abbiamo bisogno di inviare file binari e allegati. Con l’introduzione di <strong>MIME (Multipurpose Internet Mail Extensions)</strong>, è diventato possibile inviare diversi tipi di contenuto, inclusi file binari, immagini e audio.</p>
+<p>MIME utilizza header specifici come “<code>Content-Type</code>” (che indica il tipo di contenuto nel messaggio) e “<code>Content-Transfer-Encoding</code>” (che indica come è codificato il contenuto del messaggio) per definire il formato e la codifica del contenuto.</p>
+<p>Esempio:</p>
+<p><img src="https://i.ibb.co/sRh696T/image.png" alt="https://i.ibb.co/sRh696T/image.png"></p>
+<pre><code>From: Alice &lt;alice@email.it&gt;
+Date: Wed, 18 Oct 2023 16:51:15 +0200
+Message-ID: &lt;CAMJfarHWLkY1hBNiPuxCP9_kV+XJNg-addi3kCCnMrw1-TU6sg@mail.gmail.com&gt;
+Subject: image attached
+To: bob@email.it
+Content-Type: multipart/mixed; boundary="00000000000061c37d0607fec679"
+
+--00000000000061c37d0607fec679
+Content-Type: text/plain; charset="UTF-8"
+
+1x1 pixel image attached
+
+--00000000000061c37d0607fec679
+Content-Type: image/gif; name="1pixel.gif"
+Content-Disposition: attachment; filename="1pixel.gif"
+Content-Transfer-Encoding: base64
+Content-ID: &lt;f_lnvvfaz20&gt;
+X-Attachment-Id: f_lnvvfaz20
+
+R0lGODlhAQABAIAAAP///////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAAQABAAACAkQBADs=
+--00000000000061c37d0607fec679--
+
+</code></pre>
+<h2 id="smtp">SMTP</h2>
+<p>SMTP (Simple Mail Transfer Protocol) è un protocollo testuale utilizzato per inviare messaggi e-mail dal client al server mail e tra server mail. È  basato su TCP e opera sulla porta 25.</p>
+<p>La comunicazione in SMTP avviene tramite <strong>comandi e codici di risposta numerici</strong>. Il client invia comandi al server, e il server risponde con un codice a tre cifre che indica l’esito dell’operazione e un commento opzionale.</p>
+<p>I comandi più utilizzati sono:</p>
+<ul>
+<li><strong>EHLO:</strong> Utilizzato dal client per presentarsi al server e indicare il supporto per estensioni SMTP</li>
+<li><strong>MAIL FROM:</strong> Specifica l’indirizzo email del mittente</li>
+<li><strong>RCPT TO:</strong> Specifica l’indirizzo email del destinatario</li>
+<li><strong>DATA:</strong> Segnala l’inizio del trasferimento del corpo del messaggio email</li>
+<li><strong>QUIT:</strong> Termina la sessione SMTP</li>
+</ul>
+<p>I codici di risposta sono organizzati in questo modo:</p>
+<ul>
+<li><strong>2xx:</strong> Successo. Il comando è stato eseguito correttamente.</li>
+<li><strong>3xx:</strong> Successo, ma sono richiesti ulteriori input dal client.</li>
+<li><strong>4xx:</strong> Errore temporaneo. Il comando non può essere eseguito al momento, ma potrebbe essere possibile riprovare più tardi.</li>
+<li><strong>5xx:</strong> Errore permanente. Il comando non può essere eseguito.</li>
+</ul>
+<h2 id="autenticazione">Autenticazione</h2>
+<p>Inizialmente, i server SMTP permettevano a chiunque di inviare email attraverso di essi. Questo ha portato a una forte diffusione di spam. Per contrastare il problema, i server SMTP moderni implementano dei sistemi di autenticazione e limitano il <strong>relaying</strong> solo ai client autenticati.</p>
+<p>Il relaying si riferisce alla capacità di un server SMTP di <strong>inoltrare email a domini diversi dal proprio</strong>.</p>
+<p>I meccanismi di autenticazione comuni includono:</p>
+<ul>
+<li><strong>PLAIN:</strong> Invia nome utente e password in chiaro (sconsigliato per motivi di sicurezza).</li>
+<li><strong>LOGIN:</strong> Simile a PLAIN, ma codifica nome utente e password usando Base64.</li>
+<li><strong>CRAM-MD5:</strong> Utilizza un sistema di sfida-risposta basato su hash MD5 per autenticare il client senza trasmettere la password in chiaro.</li>
+</ul>
+<h2 id="dns">DNS</h2>
+<p>Quando il server SMTP del mittente riceve il messaggio dal client deve conoscere l’indirizzo del successivo server SMTP a cui inoltrare la richiesta.</p>
+<p>Per fare ciò si usa il protocollo DNS per ottenere l’indirizzo.</p>
+<p>A questo punto il server SMTP del mittente si connette al server SMTP del destinatario. Tuttavia, se il server SMTP del mittente non è autenticato, il server SMTP del destinatario non consentirà il relaying.</p>
+<p>Si introduce il concetto di <em>Mail Submission Agent</em> (MSA), un MTA che richiede l’autenticazione a tutti i client che si connettono a loro, indipendentemente dal dominio di destinazione dell’email.</p>
+<p><img src="https://i.ibb.co/JpgCkcB/image.png" alt="https://i.ibb.co/JpgCkcB/image.png"></p>
+<h2 id="pop">POP</h2>
+<p>Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può ottenere la posta nel server.</p>
+<p>Il protocollo POP è uno dei protocolli che stabilisce come ciò può avvenire.</p>
+<p>Il protocollo POP (Post Office Protocol), attualmente nella versione 3 (POP3), è uno dei protocolli utilizzati per consegnare la posta elettronica alla MUA del destinatario.</p>
+<p>Per farlo si introduce una nuova entità MDA (<em>Mail Delivery Agent</em>) che si occupa di rendere disponibile la posta al client di destinazione con un protocollo dedicato.</p>
+<p>POP è un protocollo testuale basato su comandi. Un server POP in genere è in ascolto sulla porta 110.</p>
+<p>Una sessione POP si compone di tre parti: una fase di <strong>autorizzazione</strong>, una fase di <strong>transazione</strong> e una fase di <strong>aggiornamento</strong>.</p>
+<ul>
+<li><strong>Fase di autorizzazione:</strong> Il client si connette e si autentica al server.</li>
+<li><strong>Fase di transazione:</strong> Il client può emettere diversi comandi, tra cui:
+<ul>
+<li><code>STAT</code>: per ottenere lo stato della casella di posta (numero di messaggi e dimensione totale in byte).</li>
+<li><code>LIST</code>: per elencare i messaggi presenti.</li>
+<li><code>RETR n</code>: per recuperare l’n-esimo messaggio.</li>
+<li><code>DELE n</code>: per contrassegnare l’n-esimo messaggio per l’eliminazione.</li>
+</ul>
+</li>
+<li><strong>Fase di aggiornamento:</strong> Il client emette il comando QUIT per terminare la sessione. Il server elimina i messaggi contrassegnati per l’eliminazione.</li>
+</ul>
+<h2 id="differenza-tra-pop-e-imap">Differenza tra POP e IMAP</h2>
+<p>La principale differenza tra i protocollo POP e IMAP riguarda il modo in cui rimangono salvate le e-mail:</p>
+<ul>
+<li><strong>POP</strong>: Scarica le email dal server sul dispositivo del client e, generalmente, le elimina dal server (a meno che non venga configurato diversamente).</li>
+<li><strong>IMAP</strong>: Le email restano sul server e vengono sincronizzate tra tutti i dispositivi connessi. Il client visualizza una copia dei messaggi, che rimangono accessibili da più dispositivi.</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
