@@ -189,3 +189,37 @@ ma come può $D$ accettare se per farlo deve rifiutare? questa è una contraddiz
 Possiamo interpretare l’assurdo anche graficamente, tramite una tabella che mostra il comportamento di $H$:
 
 ![https://i.ibb.co/8MC8NY4/Diagramma-senza-titolo-drawio.png](https://i.ibb.co/8MC8NY4/Diagramma-senza-titolo-drawio.png)
+
+## Teorema
+
+Un linguaggio $A$ è **decidibile** se e solo se sia $A$ che $\overline A$ sono linguaggi Turing riconoscibili.
+
+**Corollario**: Da questo teorema si ha che se un linguaggio non è decidibile allora o esso stesso oppure il suo complemento non è Turing riconoscibile, infatti $\overline{A_{\text{TM}}}$ non è Turing riconoscibile.
+
+**Dimostrazione del teorema**:
+
+- Primo verso della doppia implicazione:  Sia $A$ decidibile, dimostriamo che $A$ e $\overline A$ sono Turing riconoscibili.
+    
+    Dato che $A$ è decidibile esso è anche Turing riconoscibile (un problema decidibile è sottoinsieme di un problema Turing riconoscibile)
+    
+    Dato che $A$ è decidibile, la classe dei linguaggi decidibili è chiusa rispetto al complemento quindi $\overline A$ è decidibile e di conseguenza Turing riconoscibile
+    
+- Secondo verso della doppia implicazione: Assumo che $A$ e $\overline A$ siano Turing riconoscibili, allora esistono due MdT $M, N$ tali che $L(M) = A$, $L(N) = \overline A$
+    
+    Costruisco un decisore $D$ per il linguaggio $A$ sfruttando il fatto che una qualsiasi stringa per forza di cose o sta in $A$ o non sta in $A$ (cioè sta nel suo complemento, $\overline A$), quindi eseguendo in parallelo $M$ e $N$ (su due nastri diversi) uno dei due sicuramente accetterà l’input di conseguenza il decisore termina sempre.
+    
+    $D =$ su input $w$
+    
+    1. simula $M$ su $w$ per un passo di computazione sul primo nastro
+        
+        Se $M$ accetta, allora accetta
+        
+        Se $M$ rifiuta, allora rifiuta
+        
+    2. Simula $N$ su $w$ per un passo di computazione sul secondo nastro
+        
+        Se $N$ accetta, allora rifiuta
+        
+        se $N$ rifiuta, allora accetta
+        
+    3. Ripeti dal passo 1
