@@ -5,7 +5,7 @@ let courses = {
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript", "Tipi di dato e valori", "Espressioni", "Operatori", "Statement", "Oggetti", "Array", "Funzioni"],
 	reti_calc : ["Note complete", "Introduzione", "Livello fisico", "Livello di collegamento", "Gestione degli errori", "Condivisione delle risorse", "Livello di rete", "Count-to-Infinity", "Link-State routing", "Livello di trasporto", "Livello applicativo", "Sicurezza della rete", "HMAC, MD5 e cifratura a chiave simmetrica", "Cifratura a chiave pubblica", "Public key infrastructure", "DNS", "Posta elettronica", "Tecniche anti-spam", "HTTP"],
 	ric_operativa : ["Note complete", "Spazi vettoriali", "Funzioni lineari, continuità e derivabilità", "Esercizi derivata direzionale", "Programmazione matematica", "Esercizi programmazione matematica", "Problemi convessi", "Esercizi convessità", "Programmazione lineare", "Poliedri"],
-	sicurezza : ["Note complete", "Unix shell", "Stream editor ed espressioni regolari", "Assembly", "Analisi dei programmi", "Buffer overflow", "Stack overflow", "format strings", "Secure coding", "Identificazione", "Controllo degli accessi", "Firewall"],
+	sicurezza : ["Note complete", "Unix shell", "Stream editor ed espressioni regolari", "Assembly", "Analisi dei programmi", "Buffer overflow", "Stack overflow", "format strings", "Secure coding", "Identificazione", "Controllo degli accessi", "Firewall", "Attacchi web server side"],
 };
 
 function show_arguments(subj) {
