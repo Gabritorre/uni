@@ -15,10 +15,11 @@
 <ul>
 <li><a href="#attacchi-web-server-side">Attacchi web server side</a>
 <ul>
-<li><a href="#string-comparison-attacks">String comparison attacks</a></li>
-<li><a href="#file-inclusion-attacks">File inclusion attacks</a></li>
-<li><a href="#deserialization-attacks">Deserialization attacks</a></li>
-<li><a href="#sql-injection-attacks">SQL injection attacks</a></li>
+<li><a href="#string-comparison-attacks">1 String comparison attacks</a></li>
+<li><a href="#file-inclusion-attacks">2 File inclusion attacks</a></li>
+<li><a href="#deserialization-attacks">3 Deserialization attacks</a></li>
+<li><a href="#sql-injection-attacks">4 SQL injection attacks</a></li>
+<li><a href="#tecniche-di-difesa">Tecniche di difesa</a></li>
 </ul>
 </li>
 </ul>
@@ -42,7 +43,7 @@
 <li>evitare soluzioni ad hoc preferendo quelle standard.</li>
 </ul>
 <p>Vediamo quattro esempi di comuni vulnerabilità nel linguaggio PHP.</p>
-<h2 id="string-comparison-attacks">String comparison attacks</h2>
+<h2 id="string-comparison-attacks">1 String comparison attacks</h2>
 <p>PHP, non richiede una definizione esplicita del tipo di variabile in quanto viene determinato dinamicamente in base al contesto tramite un meccanismo chiamato t<em>ype juggling</em> che esegue conversioni automatiche.</p>
 <p>Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l’operatore di confronto debole <code>==</code>, dato che questo operatore eseguo il confronto dopo la conversione automatica. Al contrario, l’operatore di confronto stretto <code>===</code> verifica l’uguaglianza sia del valore che del tipo senza la conversione automatica.</p>
 <p>Gli attacchi basati sul <strong>confronto di stringhe</strong> sfruttano queste comparazioni deboli per modificare il flusso di controllo dell’applicazione.</p>
@@ -73,7 +74,7 @@
 <p>se <code>strcmp</code> fallisce ritorna <code>NULL</code>, ma <code>NULL</code> viene convertito in <code>0</code> e quindi si supera il controllo.</p>
 </li>
 </ul>
-<h2 id="file-inclusion-attacks">File inclusion attacks</h2>
+<h2 id="file-inclusion-attacks">2 File inclusion attacks</h2>
 <p>Supponiamo un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:</p>
 <pre class=" language-php"><code class="prism  language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"p"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -85,7 +86,7 @@
 <span class="token delimiter important">?&gt;</span></span>
 </code></pre>
 <p>Con il metodo GET i parametri sono in chiaro sull’URL, quindi l’utente può scrivere quello che vuole, ad esempio mettere il percorso di file all’interno del server.</p>
-<h2 id="deserialization-attacks">Deserialization attacks</h2>
+<h2 id="deserialization-attacks">3 Deserialization attacks</h2>
 <p>Negli URL è possibile usare un sottoinsieme dei caratteri ASCII, alcuni caratteri sono riservati per essere utilizzati come delimitatori (es. <code>/</code> <code>?</code> <code>:</code> <code>+</code> <code>=</code>). Tali caratteri possono essere messi nell’URL ma verranno sostituiti da un carattere <code>%</code> seguito da due caratteri esadecimali.</p>
 <pre><code>How are you?
 How%20are%20you%3F
@@ -120,7 +121,7 @@ Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamen
 	<span class="token keyword">echo</span> <span class="token function">urlencode</span><span class="token punctuation">(</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Example</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token delimiter important">?&gt;</span></span>
 </code></pre>
-<h2 id="sql-injection-attacks">SQL injection attacks</h2>
+<h2 id="sql-injection-attacks">4 SQL injection attacks</h2>
 <p>SQL injection è un attacco che prevede di inserire query SQL arbitrarie nei campi di input, con l’obiettivo che tali stringhe vengano messe all’interno di query reali senza una corretta sanitizzazione modificandone quindi il comportamento.</p>
 <p>Vediamo un esempio di query per ottenere le informazione di un utente in base al cognome inserito dall’utente in un form di input.</p>
 <p><code>$query = "SELECT name, lastname FROM people WHERE lastname = '" . $_POST['lastname'] . "'";</code></p>
@@ -128,6 +129,65 @@ Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamen
 <p>L’attaccante ha il controllo di una parte della query, cioè <code>$_POST['lastname']</code>.</p>
 <p>L’attaccante può inserire un <code>'</code> per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore</p>
 <p><code>SELECT name, lastname FROM people WHERE lastname = '' OR 1 -- '</code></p>
+<p>In questo modo la condizione nel <code>where</code> sarà sempre vera e l’attaccante ottiene il risultato della query anche se non dovrebbe.</p>
+<p>L’attaccante può sfruttare il comando <code>UNION ALL</code> per fare il dump di altre tabelle.</p>
+<h3 id="attacchi-black-box-al-database">Attacchi black box al database</h3>
+<p>L’attaccante potrebbe non sapere i nomi di tabelle e colonne all’interno di un database.</p>
+<p>Un attacca black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query</p>
+<ul>
+<li><code>... where lastname = '' UNION ALL SELECT 1 #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,2 #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 #'</code></li>
+<li>…</li>
+</ul>
+<p>fino a quando la query restituisce un output.</p>
+<p>Successivamente, si ipotizzano i nomi delle tabelle usando nomi comuni come <code>users</code>, <code>customers</code>, <code>people</code>,</p>
+<ul>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM users #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM customers #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM people #'</code></li>
+<li>…</li>
+</ul>
+<p>fino a quando si ottiene una risposta positiva.</p>
+<p>Lo stesso metodo può essere applicato per scoprire i nomi delle colonne.</p>
+<p>Siccome il comando <code>UNION ALL</code> richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima la query andrà in errore, ma possiamo usare a concatenazione di colonne in un’unica colonna utilizzando la funzione <code>CONCAT()</code>.</p>
+<p>Un altra cosa che l’attaccante può fare è dumpare le informazioni contenute nel database <code>information_schema</code>, il quale contiene informazioni su tutti gli altri database presenti nel sistema tra cui i nomi dei database, le tabelle e le colonne.</p>
+<h2 id="tecniche-di-difesa">Tecniche di difesa</h2>
+<h3 id="sql-injection">SQL injection</h3>
+<p>Per contrastare gli attacchi SQL injection, si possono usare i <strong>prepared statements</strong>, un meccanismo che prevede la preparazione della query da parte del database prima che i parametri effettivi vengano inseriti. In questo modo, l’input fornito dall’utente non viene interpretato come codice SQL.</p>
+<p>Esempio:</p>
+<p><img src="https://i.ibb.co/TqTykb7/image.png" alt="https://i.ibb.co/TqTykb7/image.png"></p>
+<p>Anche da PHP si possono usare i prepared statemet:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$stmt</span> <span class="token operator">=</span> <span class="token variable">$link</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token string">"SELECT name, lastname, url FROM people WHERE lastname = ?"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">bind_param</span><span class="token punctuation">(</span><span class="token string">"s"</span><span class="token punctuation">,</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string">'lastname'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Non tutte le parti di una query SQL possono essere parametrizzate con le <em>prepared statements, a</em>d esempio, il nome della tabella. Per questo si utilizzano tecniche come il <strong>type casting</strong>, il <strong>whitelisting</strong> e la <strong>sanitizzazione</strong> dell’input.</p>
+<ul>
+<li>Il <strong>type casting</strong> consiste nella conversione dei parametri numerici in interi, impedendo l’inserimento di payload arbitrari che potrebbero contenere codice dannoso.</li>
+<li>Il <strong>whitelisting</strong> limita l’input dell’utente a un insieme predefinito di valori considerati validi</li>
+<li>La <strong>sanitizzazione</strong> prevede l’escape dei caratteri speciali presenti nell’input dell’utente prima che venga utilizzato nella query, riducendo la possibilità di interpretazioni errate.</li>
+</ul>
+<h3 id="best-practice-generali">Best practice generali</h3>
+<p>Oltre alle tecniche specifiche per prevenire le SQL injection, vediamo delle <em>best practices</em> di sicurezza per lo sviluppo di applicazioni web in PHP.</p>
+<ol>
+<li>
+<p><strong>Utilizzo del confronto stretto (===)</strong>: L’uso dell’operatore di confronto stretto (===), che verifica sia il valore che il tipo senza conversioni automatiche, previene attacchi basati su manipolazioni del confronto di stringhe.</p>
+</li>
+<li>
+<p><strong>Casting dei valori o controllo dei tipi</strong>: prima di utilizzare una variabile in una funzione, è consigliabile eseguire il casting esplicito al tipo di dato atteso o verificare il tipo di dato effettivo.</p>
+</li>
+<li>
+<p><strong>Whitelist rigorosa</strong>: quando possibile, limitare l’input dell’utente a un insieme predefinito di valori validi. Questa tecnica, detta <em>whitelisting</em>, è particolarmente efficace per prevenire attacchi di <em>file inclusion</em>.</p>
+</li>
+<li>
+<p><strong>Verifica dell’integrità dell’input</strong>: prima di utilizzare l’input dell’utente in funzioni potenzialmente pericolose, come la deserializzazione, è fondamentale verificarne l’integrità per individuare eventuali modifiche malevole. Questa verifica può essere effettuata utilizzando tecniche come HMAC (<em>Hash-based Message Authentication Code</em>). HMAC utilizza una chiave segreta per generare un hash per il messaggio.</p>
+<p>Quindi il web server genera una chiave segreta internamente. Quando esporta dati li manda in chiaro affiancati dal rispettivo hash. Quando invece importa dati, prima di utilizzarli (ad esempio fare la deserializzazione) si ricalcola l’hash dei dati e verifica che il risultato combaci con l’hash ricevuto</p>
+</li>
+<li>
+<p><strong>Funzioni e API sicure</strong>: quando disponibili, utilizzare funzioni e API progettate per essere sicure. Queste funzioni spesso implementano internamente le <em>best practices</em> di sicurezza</p>
+</li>
+</ol>
 
     </div>
   </div>

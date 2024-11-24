@@ -15,7 +15,7 @@ Data la natura di questi attacchi, è fondamentale adottare i principi di *secur
 
 Vediamo quattro esempi di comuni vulnerabilità nel linguaggio PHP.
 
-## String comparison attacks
+## 1 String comparison attacks
 
 PHP, non richiede una definizione esplicita del tipo di variabile in quanto viene determinato dinamicamente in base al contesto tramite un meccanismo chiamato t*ype juggling* che esegue conversioni automatiche.
 
@@ -55,7 +55,7 @@ Vediamo degli esempi di attacco nello specifico
     se `strcmp` fallisce ritorna `NULL`, ma `NULL` viene convertito in `0` e quindi si supera il controllo.
     
 
-## File inclusion attacks
+## 2 File inclusion attacks
 
 Supponiamo un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:
 
@@ -72,7 +72,7 @@ Supponiamo un codice in cui vengono caricate delle pagine in modo dinamico in ba
 
 Con il metodo GET i parametri sono in chiaro sull’URL, quindi l’utente può scrivere quello che vuole, ad esempio mettere il percorso di file all’interno del server.
 
-## Deserialization attacks
+## 3 Deserialization attacks
 
 Negli URL è possibile usare un sottoinsieme dei caratteri ASCII, alcuni caratteri sono riservati per essere utilizzati come delimitatori (es. `/` `?` `:` `+` `=`). Tali caratteri possono essere messi nell’URL ma verranno sostituiti da un carattere `%` seguito da due caratteri esadecimali.
 
@@ -123,7 +123,7 @@ La stringa codificata è stata prodotta dall’attaccante in questo modo, serial
 ?>
 ```
 
-## SQL injection attacks
+## 4 SQL injection attacks
 
 SQL injection è un attacco che prevede di inserire query SQL arbitrarie nei campi di input, con l’obiettivo che tali stringhe vengano messe all’interno di query reali senza una corretta sanitizzazione modificandone quindi il comportamento.
 
@@ -139,3 +139,72 @@ L’attaccante ha il controllo di una parte della query, cioè `$_POST['lastname
 L’attaccante può inserire un `'` per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore
 
 `SELECT name, lastname FROM people WHERE lastname = '' OR 1 -- '`
+
+In questo modo la condizione nel `where` sarà sempre vera e l’attaccante ottiene il risultato della query anche se non dovrebbe.
+
+L’attaccante può sfruttare il comando `UNION ALL` per fare il dump di altre tabelle.
+
+### Attacchi black box al database
+
+L’attaccante potrebbe non sapere i nomi di tabelle e colonne all'interno di un database. 
+
+Un attacca black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query
+
+- `... where lastname = '' UNION ALL SELECT 1 #'`
+- `... where lastname = '' UNION ALL SELECT 1,2 #'`
+- `... where lastname = '' UNION ALL SELECT 1,1,1 #'`
+- …
+
+ fino a quando la query restituisce un output.
+
+Successivamente, si ipotizzano i nomi delle tabelle usando nomi comuni come `users`, `customers`, `people`,
+
+- `... where lastname = '' UNION ALL SELECT 1,1,1 FROM users #'`
+- `... where lastname = '' UNION ALL SELECT 1,1,1 FROM customers #'`
+- `... where lastname = '' UNION ALL SELECT 1,1,1 FROM people #'`
+- …
+
+fino a quando si ottiene una risposta positiva.
+
+Lo stesso metodo può essere applicato per scoprire i nomi delle colonne.
+
+Siccome il comando `UNION ALL` richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima la query andrà in errore, ma possiamo usare a concatenazione di colonne in un'unica colonna utilizzando la funzione `CONCAT()`.
+
+Un altra cosa che l’attaccante può fare è dumpare le informazioni contenute nel database `information_schema`, il quale contiene informazioni su tutti gli altri database presenti nel sistema tra cui i nomi dei database, le tabelle e le colonne.
+
+## Tecniche di difesa
+
+### SQL injection
+
+Per contrastare gli attacchi SQL injection, si possono usare i **prepared statements**, un meccanismo che prevede la preparazione della query da parte del database prima che i parametri effettivi vengano inseriti. In questo modo, l'input fornito dall'utente non viene interpretato come codice SQL. 
+
+Esempio:
+
+![https://i.ibb.co/TqTykb7/image.png](https://i.ibb.co/TqTykb7/image.png)
+
+Anche da PHP si possono usare i prepared statemet:
+
+```php
+$stmt = $link->prepare("SELECT name, lastname, url FROM people WHERE lastname = ?");
+$stmt->bind_param("s", $_POST['lastname']);
+$stmt->execute();
+```
+
+Non tutte le parti di una query SQL possono essere parametrizzate con le *prepared statements, a*d esempio, il nome della tabella. Per questo si utilizzano tecniche come il **type casting**, il **whitelisting** e la **sanitizzazione** dell'input.
+
+- Il **type casting** consiste nella conversione dei parametri numerici in interi, impedendo l'inserimento di payload arbitrari che potrebbero contenere codice dannoso.
+- Il **whitelisting** limita l'input dell'utente a un insieme predefinito di valori considerati validi
+- La **sanitizzazione** prevede l'escape dei caratteri speciali presenti nell'input dell'utente prima che venga utilizzato nella query, riducendo la possibilità di interpretazioni errate.
+
+### Best practice generali
+
+Oltre alle tecniche specifiche per prevenire le SQL injection, vediamo delle *best practices* di sicurezza per lo sviluppo di applicazioni web in PHP.
+
+1. **Utilizzo del confronto stretto (===)**: L'uso dell'operatore di confronto stretto (===), che verifica sia il valore che il tipo senza conversioni automatiche, previene attacchi basati su manipolazioni del confronto di stringhe.
+2. **Casting dei valori o controllo dei tipi**: prima di utilizzare una variabile in una funzione, è consigliabile eseguire il casting esplicito al tipo di dato atteso o verificare il tipo di dato effettivo.
+3. **Whitelist rigorosa**: quando possibile, limitare l'input dell'utente a un insieme predefinito di valori validi. Questa tecnica, detta *whitelisting*, è particolarmente efficace per prevenire attacchi di *file inclusion*.
+4. **Verifica dell'integrità dell'input**: prima di utilizzare l'input dell'utente in funzioni potenzialmente pericolose, come la deserializzazione, è fondamentale verificarne l'integrità per individuare eventuali modifiche malevole. Questa verifica può essere effettuata utilizzando tecniche come HMAC (*Hash-based Message Authentication Code*). HMAC utilizza una chiave segreta per generare un hash per il messaggio.
+    
+    Quindi il web server genera una chiave segreta internamente. Quando esporta dati li manda in chiaro affiancati dal rispettivo hash. Quando invece importa dati, prima di utilizzarli (ad esempio fare la deserializzazione) si ricalcola l’hash dei dati e verifica che il risultato combaci con l’hash ricevuto
+    
+5. **Funzioni e API sicure**: quando disponibili, utilizzare funzioni e API progettate per essere sicure. Queste funzioni spesso implementano internamente le *best practices* di sicurezza
