@@ -1,0 +1,283 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-20_UDP e TCP</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#udp-e-tcp">UDP e TCP</a>
+<ul>
+<li><a href="#udp">UDP</a></li>
+<li><a href="#tcp">TCP</a></li>
+<li><a href="#stabilire-e-chiudere-connessioni-tcp">Stabilire e Chiudere Connessioni TCP</a></li>
+<li><a href="#trasporto-dei-dati-affidabile">Trasporto dei dati affidabile</a></li>
+<li><a href="#scelte-di-design-di-tcp">Scelte di design di TCP</a></li>
+<li><a href="#quando-inviare-dati">Quando inviare dati?</a></li>
+<li><a href="#quando-grande-dovrebbe-essere-la-window">Quando grande dovrebbe essere la window?</a></li>
+<li><a href="#a-quanto-andrebbero-impostati-i-timer-di-ritrasmissione">A quanto andrebbero impostati i timer di ritrasmissione?</a></li>
+<li><a href="#strategie-di-ricezione">Strategie di ricezione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="udp-e-tcp">UDP e TCP</h1>
+<p>Vediamo i due principali protocolli a livello di trasporto: <strong>UDP (User Datagram Protocol)</strong> e <strong>TCP (Trasmission Control Protocol)</strong></p>
+<h2 id="udp">UDP</h2>
+<p>Il protocollo <strong>UDP (User Datagram Protocol)</strong>, fornisce un servizio di trasporto <strong>connection-less e non affidabile</strong>. La sua caratteristica principale è che non <strong>garantisce la consegna dei dati</strong>, cioè non si assicura che gli SDU (<em>Service Data Unit</em>) arrivino a destinazione, né che lo facciano in ordine o senza errori. L’unico controllo effettuato è quello sull’integrità dei dati tramite una <em>checksum</em>.</p>
+<p>UDP offre il servizio di <strong>multiplexing:</strong> Grazie ai numeri di porta, diverse applicazioni su uno stesso host possono comunicare con diverse applicazioni su host remoti.</p>
+<p><img src="https://i.ibb.co/YWRV5yj/image.png" alt="https://i.ibb.co/YWRV5yj/image.png"></p>
+<p><strong>L’header UDP</strong> contiene solo le porte sorgente e destinazione (16 bit ciascuna), la lunghezza del segmento (16 bit) e il checksum (16 bit).</p>
+<p>I <strong>numeri di porta,</strong> codificati con 16bit e quindi sono 65535 numeri diversi, sono divisi in tre categorie:</p>
+<ul>
+<li><strong>porte well-known</strong> (da 1 a 1023) riservati ai processi con privilegi di amministratore</li>
+<li>porte <strong>registrate</strong> (da 1024 a 49151) dovrebbero essere assegnate dall’IETF ai protocolli che ne fanno richiesta</li>
+<li>porte <strong>dinamiche</strong> (da 49152 a 65535). possono essere utilizzate liberamente da chiunque</li>
+</ul>
+<p>UDP si utilizza in applicazioni dove <strong>la velocità è fondamentale e la perdita di qualche pacchetto è tollerabile</strong>, come ad esempio il VoIP, il DNS e i giochi online.</p>
+<h2 id="tcp">TCP</h2>
+<p><strong>TCP</strong> (Transmission Control Protocol) offre un <strong>servizio di trasporto affidabile e orientato alla connessione</strong>. Questo significa che garantisce la consegna ordinata dei dati, gestisce il controllo di flusso per evitare la congestione della rete e implementa meccanismi di recupero dagli errori.</p>
+<p>L’unità di dati TCP è il <strong>segmento</strong>, che include un header e un payload. Ogni byte trasmesso tramite TCP viene associato ad un <strong>numero di sequenza</strong>, garantendo che i dati arrivino al destinatario nell’ordine corretto.</p>
+<h3 id="header">Header</h3>
+<p><img src="https://i.ibb.co/F6ZM86M/image.png" alt="https://i.ibb.co/F6ZM86M/image.png"></p>
+<p>L’header TCP è composto da una parte di lunghezza fissa e delle estensioni opzionali, quindi l’intero header non ha una lunghezza fissa.</p>
+<p>La <strong>parte fissa</strong> include:</p>
+<ul>
+<li><strong>Porte sorgente e di destinazione</strong> (16 bit ciascuna): identificano le applicazioni comunicanti.</li>
+<li><strong>Numero di sequenza</strong> (32 bit):  indica la posizione del primo byte del payload nel flusso di dati.</li>
+<li><strong>Numero di acknowledgement</strong> (32 bit): serve a confermare la ricezione dei dati fino ad un certo numero di sequenza.</li>
+<li><strong>TCP Header Length (THL) o Data Offset</strong> (4 bit): specifica la lunghezza dell’header TCP indicando un multiplo di 32bit (la lunghezza massima è 4bit * 32bit = 512bit = 64Byte)</li>
+<li><strong>Bit riservati (4bit)</strong></li>
+<li><strong>Flag</strong> (8 bit): indicano lo scopo del segmento, ad esempio:
+<ul>
+<li><strong>SYN</strong>: utilizzato per la sincronizzazione iniziale della connessione.</li>
+<li><strong>FIN</strong>: usato durante il rilascio della connessione.</li>
+<li><strong>RST</strong>: forza la chiusura della connessione in caso di problemi.</li>
+<li><strong>ACK</strong>: segnala che il campo “numero di acknowledgement” è valido.</li>
+<li><strong>PSH</strong>: Quando il flag PSH è impostato, il ricevente è notificato a consegnare immediatamente i dati all’applicazione, senza attendere di riempire il buffer di ricezione.</li>
+<li><strong>URG</strong>: Il flag URG, insieme al campo “Urgent Pointer”, permette di segnalare al ricevente che dovrebbe consegnare questi dati all’applicazione con la massima priorità, senza seguire i numeri di sequenza. Tuttavia, sia il flag URG che il campo “Urgent Pointer” sono deprecati.</li>
+</ul>
+</li>
+<li>Window (16 bit): comunica la dimensione della finestra di ricezione del mittente in byte.</li>
+<li><strong>Checksum</strong> (16 bit): garantisce l’integrità dei dati, calcolato sull’intero segmento TCP e su alcuni campi dell’header a livello di rete.</li>
+</ul>
+<p>Possono essere presenti <strong>estensioni opzionali</strong>, ad esempio:</p>
+<ul>
+<li><strong>MSS (Maximum Segment Size)</strong>: Questa opzione viene scambiata durante la fase di stabilimento della connessione e definisce la dimensione massima del segmento TCP che il ricevente è in grado di gestire. In genere, MSS viene impostato alla MTU (Maximum Transmission Unit) del livello di collegamento, per evitare la frammentazione dei pacchetti IP.</li>
+<li><strong>Window Scale</strong>: Il campo “window” nell’header TCP è limitato a 16 bit. Questa limitazione può influire negativamente sulle prestazioni. L’opzione <strong>Window Scale</strong>, introduce un fattore di moltiplicazione per la dimensione della finestra, consentendo finestre di ricezione più grandi.</li>
+<li><strong>Timestamps</strong>: Introdotta per risolvere problemi nella misurazione del RTT (Round Trip Time) e per disambiguare i numeri di sequenza in caso di riavvolgimento.</li>
+</ul>
+<h2 id="stabilire-e-chiudere-connessioni-tcp">Stabilire e Chiudere Connessioni TCP</h2>
+<p>TCP, a differenza di UDP, è progettato per garantire l’affidabilità, assicurando che entrambe le parti siano pronte a comunicare e che i dati vengano trasferiti senza perdite.</p>
+<p>Serve quindi seguire un processo per stabilire una Connessione chiamato <em><strong>three way handshake</strong></em> che utilizza i flag SYN e ACK e i numeri di sequenza per sincronizzare client e server:</p>
+<p><img src="https://i.ibb.co/WWJpgq2/image.png" alt="https://i.ibb.co/WWJpgq2/image.png"></p>
+<ol>
+<li><strong>SYN</strong>: Il client invia un segmento TCP con il flag SYN impostato, richiedendo di aprire una connessione. Il numero di sequenza del segmento è un valore casuale scelto dal client.</li>
+<li><strong>SYN+ACK</strong>: Il server, se in ascolto sulla porta specificata, risponde con un segmento che ha i flag SYN e ACK impostati. Il numero di sequenza è anch’esso un valore casuale, mentre il numero di acknowledgement è il numero di sequenza ricevuto dal client incrementato di 1, questo sta a significare che sono stati ricevuti i dati fino a <code>x</code> e mi aspetto <code>x+1</code>.</li>
+<li><strong>ACK</strong>: Il client, ricevuto il SYN+ACK, conferma la ricezione inviando un segmento con il flag ACK impostato.</li>
+</ol>
+<p>A questo punto, la connessione è stabilita e entrambe le parti possono iniziare a scambiarsi dati.</p>
+<p>Esiste la possibilità che <strong>client e server inviino simultaneamente un segmento SYN</strong>, ad esempio se utilizzano la stessa porta e agiscono entrambi come client e server.</p>
+<p>Vediamo una macchina a stati che riassume i passaggi:</p>
+<p><img src="https://i.ibb.co/Qk17Khp/image.png" alt="https://i.ibb.co/Qk17Khp/image.png"></p>
+<p>Nota: <code>?</code> significa riceve mentre <code>!</code> significa invia.</p>
+<p>Un esempio di <strong>rifiuto di connessione</strong> avviene in questo modo:</p>
+<p><img src="https://i.ibb.co/41sVyjn/image.png" alt="https://i.ibb.co/41sVyjn/image.png"></p>
+<p>Per motivi di sicurezza, un segmento RST deve sempre contenere un numero di acknowledgement valido. Questo impedisce attacchi di <strong>RST spoofing</strong>, in cui un utente malintenzionato potrebbe cercare di interrompere una connessione inviando un segmento RST con parametri non validi.</p>
+<p>La chiusura di una connessione TCP può avvenire in due modi:</p>
+<ul>
+<li>
+<p><strong>Chiusura graceful</strong>: entrambe le parti terminano la trasmissione dati in modo concordato dopo aver trasmesso tutti i dati.</p>
+<ol>
+<li>La parte che desidera chiudere la connessione invia un segmento FIN con il numero di sequenza corrispondente all’ultimo byte di dati inviato.</li>
+<li>La parte ricevente risponde con un segmento ACK, confermando la ricezione del FIN.</li>
+<li>La parte che ha inviato il FIN attende un FIN dalla parte ricevente, a indicare che anche quest’ultima ha terminato la trasmissione dati.</li>
+<li>Una volta ricevuto il FIN, la parte che lo ha ricevuto invia un ACK di conferma.</li>
+</ol>
+<p>Una macchina a stati finiti (FSM) che rappresenta questo tipo di chiusura è la seguente</p>
+<p><img src="https://i.ibb.co/db3hqYS/image.png" alt="https://i.ibb.co/db3hqYS/image.png"></p>
+<p>Dopo aver inviato l’ultimo ACK durante la chiusura graceful, la parte che ha inviato il FIN passa allo stato <strong>TIME WAIT</strong>, dove rimane per un periodo di tempo. Questo intervallo di tempo serve a garantire che eventuali segmenti ritardati o duplicati relativi alla connessione vengano gestiti correttamente, senza causare problemi alla successiva apertura di nuove connessioni con gli stessi parametri.</p>
+</li>
+<li>
+<p><strong>Chiusura abrupt</strong>: una delle due parti, chiudono la connessione in modo forzato.</p>
+<p>utilizza il flag RST che chiude immediatamente la connessione, senza attendere la conferma dell’altra parte.</p>
+</li>
+</ul>
+<h2 id="trasporto-dei-dati-affidabile">Trasporto dei dati affidabile</h2>
+<p>Ci spostiamo ora sull’analisi del <strong>trasferimento affidabile dei dati.</strong></p>
+<p>Ogni endpoint di una connessione TCP utilizza un <strong>Transmission Control Block (TCB)</strong> per gestire lo stato e il flusso di dati della connessione. Il TCB è essenzialmente una struttura dati che raccoglie tutte le informazioni necessarie per l’invio e la ricezione dei segmenti TCP.</p>
+<p>Possiamo suddividere le informazioni contenute nel TCB in due categorie principali:</p>
+<p><strong>Informazioni Statiche</strong> (che non cambiano durante tutta la connessione)<strong>:</strong></p>
+<ul>
+<li><strong>Indirizzi IP e porte locali e remoti</strong>: Questi parametri identificano univocamente la connessione.</li>
+<li><strong>Buffer di invio</strong>: memoria dedicata ai dati che l’applicazione desidera trasmettere. Questi dati rimarranno nel buffer fino a quando non saranno correttamente confermati dal ricevente.</li>
+<li><strong>Buffer di ricezione</strong>: buffer per contenere i dati ricevuti. questi dati rimangono nel buffer perché ricevuti fuori sequenza o perché l’applicazione è lenta ad elaborarli.</li>
+</ul>
+<p><strong>Informazioni Dinamiche</strong> (che possono cambiare durante la connessione):</p>
+<ul>
+<li><strong>Stato corrente della FSM</strong>: Questa variabile indica la fase in cui si trova la connessione all’interno della Finite State Machine (FSM)</li>
+<li><strong>Maximum Segment Size (MSS)</strong>: La MSS rappresenta la dimensione massima del payload che un segmento TCP può trasportare senza incorrere nella frammentazione a livello IP.</li>
+<li><strong>snd.nxt</strong>: Il numero di sequenza associato al prossimo byte che il mittente trasmetterà.</li>
+<li><strong>snd.una</strong>: Il numero di sequenza del primo byte che, pur essendo stato inviato, non ha ancora ricevuto acknowledgement dal ricevente.</li>
+<li><strong>snd.wnd</strong>: La dimensione attuale della <em>sending window</em>, espressa in byte. Indica la quantità massima di dati che il mittente è autorizzato a inviare prima di ricevere un acknowledgement dal ricevente.</li>
+<li><strong>rcv.nxt</strong>: Il numero di sequenza del prossimo byte che il ricevente si aspetta di ricevere.</li>
+<li><strong>rcv.wnd</strong>: La dimensione attuale della <em>receiving window</em> espressa in byte. indica quanti byte il ricevente è in grado di accogliere nel suo buffer di ricezione.</li>
+</ul>
+<h3 id="invio-dei-dati">Invio dei dati</h3>
+<p>Quando un’applicazione desidera inviare dati attraverso una connessione TCP, il livello TCP esegue le seguenti operazioni:</p>
+<ol>
+<li>
+<p><strong>Verifica lo spazio disponibile nella finestra di ricezione</strong>: Il mittente controlla se la quantità di dati da inviare è inferiore o uguale alla dimensione della finestra di ricezione (<code>rcv.wnd</code>) comunicata dal ricevente.</p>
+</li>
+<li>
+<p><strong>Crea un nuovo segmento TCP</strong>: Il mittente assembla un segmento TCP includendo un’header e un payload. Il payload sarà grande fino a MSS byte.</p>
+</li>
+<li>
+<p><strong>Imposta il numero di sequenza del segmento</strong>: Il numero di sequenza del segmento (<code>seq</code>) viene impostato al valore di <code>snd.nxt</code>. Dopo l’invio, <code>snd.nxt</code> viene incrementato della dimensione del payload.</p>
+</li>
+<li>
+<p><strong>Imposta il numero di acknowledgement</strong>: Il numero di acknowledgement (<code>ack</code>) viene impostato al valore di <code>rcv.nxt</code>, che rappresenta il prossimo byte atteso dal ricevente.</p>
+<p>(Vengono usati acknowledgement cumulativi, cioè un singolo acknowledgement conferma la ricezione di tutti i byte con numero di sequenza inferiore a <code>ack</code>)</p>
+</li>
+<li>
+<p><strong>Calcola e imposta la dimensione della finestra</strong>: Il mittente calcola il campo <code>window</code> dell’header TCP in base allo spazio disponibile rimasto nel proprio buffer di ricezione.</p>
+</li>
+<li>
+<p><strong>Mantiene i dati nel buffer di invio</strong>: I dati inviati vengono conservati nel buffer di invio finché non si riceve un acknowledgement, In caso di perdita di un segmento il mittente potrà ritrasmettere i dati persi.</p>
+</li>
+</ol>
+<h3 id="ricezione-dei-dati">Ricezione dei dati</h3>
+<p>Sul lato ricevente, quando arriva un segmento TCP, il livello TCP esegue le seguenti operazioni:</p>
+<p><strong>Controlla il flag ACK</strong>: Se il flag ACK è impostato, significa che il segmento contiene informazioni di acknowledgement, in tal caso:</p>
+<ol>
+<li><strong>Aggiorna la finestra di invio</strong>: Il ricevente aggiorna la variabile <code>snd.wnd</code> con il valore del campo <code>window</code> ricevuto nell’header del segmento. Questo valore indica la dimensione della finestra di ricezione del mittente.</li>
+<li><strong>Gestisce gli acknowledgements</strong>: Il ricevente confronta il numero di acknowledgement (<code>ack</code>) con la variabile <code>snd.una</code> del mittente. Se <code>ack</code> è maggiore di <code>snd.una</code>, significa che sono stati confermati nuovi dati. Tali dati vengono rimossi dal buffer di invio, e <code>snd.una</code> viene aggiornato al valore di <code>ack</code>.</li>
+</ol>
+<p>Altrimenti il segmento ricevuto contiene dei dati, in tal caso:</p>
+<ol>
+<li><strong>Verifica la sequenza dei dati</strong>: controlla se il numero di sequenza del segmento (<code>seq</code>) coincide con il valore di <code>rcv.nxt</code>. Se coincidono, i dati sono in sequenza e vengono aggiunti al buffer di ricezione. <code>rcv.nxt</code> viene incrementato per indicare il prossimo byte atteso.</li>
+<li><strong>Controlla il buffer di ricezione</strong>: Il ricevente verifica se, dopo l’aggiunta dei nuovi dati, ci sono altri dati già presenti nel buffer di ricezione che possono essere consegnati all’applicazione. Se sì, <code>rcv.nxt</code> viene incrementato ulteriormente sulla nuova posizione della finestra di ricezione.</li>
+<li><strong>Invia un acknowledgement</strong>: invia un ACK per confermare la ricezione dei dati e per comunicare la nuova dimensione della finestra di ricezione.</li>
+</ol>
+<h2 id="scelte-di-design-di-tcp">Scelte di design di TCP</h2>
+<p>Analizziamo adesso tre scelte di design il funzionamento di TCP:</p>
+<ol>
+<li>Quando inviare dati?</li>
+<li>Quanto grande dovrebbe essere la window?</li>
+<li>A quanto andrebbero impostati i timer di ritrasmissione?</li>
+</ol>
+<h2 id="quando-inviare-dati">Quando inviare dati?</h2>
+<p>Mentre l’applicazione riempie il buffer di invio con i dati, il livello TCP deve decidere quando è opportuno assemblare e trasmettere un segmento TCP.</p>
+<p>Analizziamo due approcci estremi a questo problema:</p>
+<ul>
+<li><strong>Invio Immediato:</strong>
+<ul>
+<li><strong>Vantaggio:</strong> Minimizza la latenza. I dati vengono inviati non appena sono disponibili, ideale per shell remote o giochi online.</li>
+<li><strong>Svantaggio:</strong> Bassa efficienza. Si ha un overhead significativo dovuto alla generazione di molti header IP e TCP.</li>
+</ul>
+</li>
+<li><strong>Attendere un Segmento Completo</strong>
+<ul>
+<li><strong>Vantaggio:</strong> Massimizza l’efficienza. Attendere di avere un payload completo (pari alla MSS) prima di inviare un segmento riduce al minimo l’overhead.</li>
+<li><strong>Svantaggio:</strong> Aumento della latenza. Per applicazioni che generano dati a bassa velocità, l’attesa potrebbe essere eccessiva.</li>
+</ul>
+</li>
+</ul>
+<h3 id="lalgoritmo-di-nagle">L’Algoritmo di Nagle</h3>
+<p>John Nagle ha proposto un algoritmo che offre un compromesso tra latenza ed efficienza, l’<strong>algoritmo di Nagle</strong>:</p>
+<pre class=" language-python"><code class="prism  language-python"><span class="token keyword">if</span> <span class="token builtin">len</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token operator">&gt;=</span> MSS <span class="token operator">and</span> rcv<span class="token punctuation">.</span>wnd <span class="token operator">&gt;=</span> MSS<span class="token punctuation">:</span>
+	send one MSS<span class="token operator">-</span>sized segment
+<span class="token keyword">else</span><span class="token punctuation">:</span>
+	<span class="token keyword">if</span> there are unacknowledged data<span class="token punctuation">:</span>
+		place data <span class="token keyword">in</span> <span class="token builtin">buffer</span> until acknowledgment has been received
+	<span class="token keyword">else</span><span class="token punctuation">:</span>
+		send one TCP segment containing at most rcv<span class="token punctuation">.</span>wnd data
+</code></pre>
+<ol>
+<li>Se la dimensione dei dati da inviare <code>len(data)</code> è maggiore o uguale alla MSS e la finestra di ricezione <code>rcv.wnd</code> è sufficientemente grande da accoglierli, invia un segmento di dimensione MSS.</li>
+<li>Altrimenti, se ci sono dati non ancora confermati, attendi la ricezione di un acknowledgement prima di inviare nuovi dati.</li>
+<li>Altrimenti, se non ci sono dati in attesa di acknowledgement, invia un segmento contenente una quantità di dati non superiore a <code>rcv.wnd</code>.</li>
+</ol>
+<p>L’algoritmo di Nagle favorisce l’invio di segmenti completi quando possibile, allo stesso tempo, limita l’invio di piccoli segmenti riempiendo il buffer mentre si attendono gli ACK</p>
+<h2 id="quando-grande-dovrebbe-essere-la-window">Quando grande dovrebbe essere la window?</h2>
+<p>La dimensione massima della finestra TCP è limitata a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup><mo>=</mo><mn>65536</mn><mtext>&nbsp;byte</mtext></mrow><annotation encoding="application/x-tex">2^{16} = 65536 \text{ byte}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord">65536</span><span class="mord text"><span class="mord">&nbsp;byte</span></span></span></span></span></span> a causa del campo “window” a 16 bit. Questa limitazione risulta oggi inadatta per le reti ad alta velocità. Si è infatti limitati ad inviare dati grandi quanto la window per RTT (tempo di andata del pacchetto e ritorno dell’ACK).</p>
+<p>Per superare la limitazione, è stata introdotta l’opzione <strong>“Window Scale”.</strong></p>
+<p>Questa opzione, negoziata durante la fase di handshake, indica un moltiplicatore per la dimensione della finestra.</p>
+<p><strong>Window Scale</strong> contiene un valore <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi></mrow><annotation encoding="application/x-tex">S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span></span></span></span></span>, compreso tra <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>14</mn></mrow><annotation encoding="application/x-tex">14</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">14</span></span></span></span></span>, che rappresenta lo spostamento a sinistra da applicare alla dimensione della finestra. In questo modo la dimensione effettiva della finestra di ricezione diventa <code>rcv.wnd</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>⋅</mo><msup><mn>2</mn><mi>S</mi></msup></mrow><annotation encoding="application/x-tex">\cdot 2^S</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.841331em; vertical-align: 0em;"></span><span class="mord">⋅</span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.841331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.05764em;">S</span></span></span></span></span></span></span></span></span></span></span></span>.</p>
+<h2 id="a-quanto-andrebbero-impostati-i-timer-di-ritrasmissione">A quanto andrebbero impostati i timer di ritrasmissione?</h2>
+<p>Il <em>Retrasmission Time-out</em> (RTO) determina il tempo che il mittente attende prima di ritrasmettere un segmento non ancora confermato. Se il timeout scade troppo presto, si potrebbero ritrasmettere segmenti già ricevuti correttamente. Al contrario, se il timeout scade troppo tardi, mittente rimane inattivo in attesa della scadenza del timeout.</p>
+<p>Un’impostazione accurata del RTO dipende da una stima precisa del RTT, ovvero il tempo impiegato da un segmento per raggiungere il destinatario e tornare al mittente con un ACK.</p>
+<p>Misurare l’RTT semplicemente calcolando il tempo trascorso tra l’invio di un segmento dati e la ricezione del relativo acknowledge può essere influenzato dalla perdita di segmenti.</p>
+<p>Le implementazioni TCP moderne utilizzano l’opzione <strong>“timestamp”</strong>. Questa opzione consente al mittente di inserire due timestamp a 32 bit in ogni segmento inviato:</p>
+<ul>
+<li><strong>TS Value (TSval):</strong> Il timestamp corrente del mittente.</li>
+<li><strong>TS Echo Reply (TSecr):</strong> L’ultimo TSval ricevuto dal destinatario.</li>
+</ul>
+<p><img src="https://i.ibb.co/0Q43J98/image.png" alt="https://i.ibb.co/0Q43J98/image.png"></p>
+<p>(<strong>Nota</strong>: l’utilizzo dei timestamp risolve anche il problema in cui nelle reti ad alta velocità i numeri di sequenza si potevano riavvolgere prima che si ricevessero gli ACK, con il timestamp un segmento altamente ritardato si riesce a rilevare anche se il suo numero di sequenza si è riavvolto.)</p>
+<p>Una volta ottenute le misurazioni dell’RTT, il mittente deve calcolare l’RTO. Poiché l’RTT può variare nel tempo, anche l’RTO deve essere adattato di conseguenza.</p>
+<h3 id="algoritmo-di-jacobson">Algoritmo di Jacobson</h3>
+<p>L’algoritmo di Jacobson, è il metodo standard per calcolare l’RTO. Questo algoritmo utilizza le seguenti variabili per calcolare l’RTO:</p>
+<ul>
+<li><code>rtt</code>: l’ultimo valore misurato di RTT</li>
+<li><code>srtt</code><strong>:</strong> la media ponderata dell’RTT</li>
+<li><code>rttvar</code><strong>:</strong> la stima della varianza dell’RTT</li>
+</ul>
+<p>L’algoritmo prevede i seguenti passaggi:</p>
+<ol>
+<li>
+<p>All’inizio della connessione, l’RTO viene impostato a 3 secondi.</p>
+</li>
+<li>
+<p>Quando si ottiene la prima misurazione dell’RTT allora <code>srtt</code>, <code>rttvar</code> vengono calcolati come segue:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>r</mi><mi>t</mi><mi>t</mi><mo>=</mo><mtext>RTT</mtext><mspace width="1.4226377952755906em"></mspace><mi>r</mi><mi>t</mi><mi>t</mi><mi>v</mi><mi>a</mi><mi>r</mi><mo>=</mo><mfrac><mtext>RTT</mtext><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">
+ srtt = \text{RTT} \hspace{5mm}rttvar=\frac{\text{RTT}}{2}
+ </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.61508em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">sr</span><span class="mord mathnormal">tt</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">RTT</span></span><span class="mspace" style="margin-right: 1.42264em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mord mathnormal">tt</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 2.04633em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.36033em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord">2</span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">RTT</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></span></p>
+</li>
+<li>
+<p>Successivamente, quando si ottengono nuove misurazioni dell’RTT, <code>srtt</code>, <code>rttvar</code> e <code>rto</code> vengono aggiornati come segue:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>s</mi><mi>r</mi><mi>t</mi><mi>t</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false">)</mo><mo>⋅</mo><mi>s</mi><mi>r</mi><mi>t</mi><mi>t</mi><mo>+</mo><mi>α</mi><mo>⋅</mo><mtext>RTT</mtext><mspace linebreak="newline"></mspace><mi>r</mi><mi>t</mi><mi>t</mi><mi>v</mi><mi>a</mi><mi>r</mi><mo>=</mo><mo stretchy="false">(</mo><mn>1</mn><mo>−</mo><mi>β</mi><mo stretchy="false">)</mo><mo>⋅</mo><mi>r</mi><mi>t</mi><mi>t</mi><mi>v</mi><mi>a</mi><mi>r</mi><mo>+</mo><mi>β</mi><mo>⋅</mo><mi mathvariant="normal">∣</mi><mi>s</mi><mi>r</mi><mi>t</mi><mi>t</mi><mo>−</mo><mtext>RTT</mtext><mi mathvariant="normal">∣</mi><mspace linebreak="newline"></mspace><mtext>RTO</mtext><mo>=</mo><mi>s</mi><mi>r</mi><mi>t</mi><mi>t</mi><mo>+</mo><mn>4</mn><mo>⋅</mo><mi>r</mi><mi>t</mi><mi>t</mi><mi>v</mi><mi>a</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">
+ srtt = (1-\alpha)\cdot srtt + \alpha \cdot \text{RTT}\\
+ rttvar = (1-\beta)\cdot rttvar + \beta \cdot |srtt-\text{RTT}|\\
+ \text{RTO} = srtt + 4\cdot rttvar
+ </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.61508em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">sr</span><span class="mord mathnormal">tt</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.0037em;">α</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69841em; vertical-align: -0.08333em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">sr</span><span class="mord mathnormal">tt</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.44445em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.0037em;">α</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">RTT</span></span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height: 0.61508em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mord mathnormal">tt</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.05278em;">β</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69841em; vertical-align: -0.08333em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mord mathnormal">tt</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.05278em;">β</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">∣</span><span class="mord mathnormal" style="margin-right: 0.02778em;">sr</span><span class="mord mathnormal">tt</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord text"><span class="mord">RTT</span></span><span class="mord">∣</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">RTO</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.69841em; vertical-align: -0.08333em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">sr</span><span class="mord mathnormal">tt</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.61508em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span><span class="mord mathnormal">tt</span><span class="mord mathnormal" style="margin-right: 0.03588em;">v</span><span class="mord mathnormal">a</span><span class="mord mathnormal" style="margin-right: 0.02778em;">r</span></span></span></span></span></span></p>
+<p>dove <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mfrac><mn>1</mn><mn>8</mn></mfrac></mrow><annotation encoding="application/x-tex">\alpha = \frac{1}{8}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.0037em;">α</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">8</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span> e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>β</mi><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">\beta = \frac{1}{4}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.05278em;">β</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">4</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">1</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span></span></span></span></span></p>
+</li>
+</ol>
+<h3 id="strategie-avanzate-di-ritrasmissione">Strategie Avanzate di Ritrasmissione</h3>
+<p>Oltre all’algoritmo di Jacobson, esistono altre strategie avanzate per la gestione delle ritrasmissioni in TCP.</p>
+<ul>
+<li>
+<p><em>Exponential Backoff</em>:</p>
+<p>In caso di ritrasmissioni multiple dello stesso segmento, l’RTO viene raddoppiato dopo ogni tentativo fallito, fino a raggiungere un valore massimo configurato (tipicamente 60 secondi).</p>
+</li>
+<li>
+<p><em>Fast Retransmit</em></p>
+<p>La tecnica <strong>“fast retransmit”</strong> consente di ritrasmettere un segmento perso prima della scadenza dell’RTO nel caso in cui il mittente riceve tre ACK consecutivi per lo stesso numero di sequenza.</p>
+</li>
+</ul>
+<h2 id="strategie-di-ricezione">Strategie di ricezione</h2>
+<p>Oltre alle strategie di ritrasmissione implementate dal mittente, vediamo due strategie utilizzate dal ricevitore: <strong>Delayed ACK</strong> e <strong>Selective ACK</strong>.</p>
+<h3 id="delayed-ack">Delayed ACK</h3>
+<p>In molti casi, la comunicazione TCP è prevalentemente unidirezionale, con un mittente che invia grandi quantità di dati e un ricevitore che invia principalmente ACK. Inviare un ACK per ogni segmento ricevuto può generare un sovraccarico significativo.</p>
+<p><strong>Delayed ACK</strong> affronta questo problema inviando un ACK ogni due segmenti dati ricevuti, oppure dopo un determinato intervallo di tempo.</p>
+<h3 id="selective-ack-sack">Selective ACK (SACK)</h3>
+<p>Per migliorare l’efficienza in caso di perdite multiple, TCP implementa l’opzione <strong>Selective ACK (SACK)</strong>. Questa opzione, negoziata durante l’handshake, consente al ricevitore di informare il mittente su blocchi di dati ricevuti correttamente ma fuori sequenza.</p>
+<p>Il mittente, può quindi ritrasmettere solo i segmenti mancanti, evitando la ritrasmissione di dati già ricevuti correttamente.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
