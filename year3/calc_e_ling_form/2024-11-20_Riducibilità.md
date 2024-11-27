@@ -136,3 +136,25 @@ L(N) = \begin{cases}
 $$
 
 Se quindi esistesse il decisore $R$ potemmo risolvere il problema $A_{\text{TM}}$ che però è stato dimostrato essere indecidibile, pertanto $R$ non esiste e $\text{REG}_{\text{TM}}$ è indecidibile.
+
+### Problema 4
+
+Dimostriamo che il problema di determinare se due MdT riconoscono lo stesso linguaggio è indecidibile
+
+$$
+\text{EQ}_{\text{TM}} \{<M_1, M_2> | M_1, M_2 \text{ sono MdT e }L(M_1) =L(M_2)\}
+$$
+
+**Teorema**: $\text{EQ}_{\text{TM}}$ è indecidibile
+
+**Dimostrazione**: questa volta dimostro che $E_{\text{TM}}$ è riducibile a $\text{EQ}_{\text{TM}}$, cioè dimostro che se avessi un decisore per $\text{EQ}_{\text{TM}}$ allora potrei costruire un decisore per $E_{\text{TM}}$ (ma ciò è impossibile).
+
+Assumiamo per assurdo che $R$ sia un decisore per il problema $\text{EQ}_{\text{TM}}$, sfruttandolo costruisco il seguente decisore $S$ per il problema $E_{\text{TM}}$:
+
+$S=$ su input $<M>$
+
+1. costruisco una nuova macchina di Turing $N$ tale che $L(N) = \emptyset$
+2. eseguo $R$ su input $<M, N>$ (decidendo difatti se $L(M)$ è vuoto o no, dato che $L(N)$ è vuoto)
+3. ritorno il suo output
+
+Se quindi esistesse il decisore $R$ potemmo risolvere il problema $E_{\text{TM}}$ che però è stato dimostrato essere indecidibile, pertanto $R$ non esiste e $\text{EQ}_{\text{TM}}$ è indecidibile.
