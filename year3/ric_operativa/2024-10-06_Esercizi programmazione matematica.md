@@ -1,5 +1,4 @@
-﻿
-# Esercizi programmazione matematica
+﻿# Esercizi programmazione matematica
 
 ## Es 1
 
@@ -73,3 +72,66 @@ y_{11} + y_{21} + y_{31} \geq 1650 \\
 x_{12} + x_{22} + x_{32} \geq 1900 \\
 y_{12} + y_{22} + y_{32} \geq 1300 \\
 $$
+
+## Es 2
+
+Si vuole minimizzare i costi di consegna di due tipi di macchinari, dagli stabilimenti di produzione
+a quattro rivenditori diversi. E previsto un costo (Euro) di consegna diverso per ogni modello di
+macchinario e per ogni rivenditore, come riassunto nella seguente tabella:
+
+|  | **Rivenditore 1** | **Rivenditore 2** | **Rivenditore 3** | **Rivenditore 4** |
+| --- | --- | --- | --- | --- |
+| **Macchinario 1** | 110 | 115 | 115 | 145 |
+| **Macchinario 2** | 155 | 180 | 170 | 175 |
+
+Le modalità con cui la consegna dei macchinari deve avvenire sono le seguenti:
+
+- i macchinari del secondo tipo che vanno inviati al rivenditore 4 non possono eccedere la somma
+tra i macchinari del primo tipo inviati al rivenditore 2 e il doppio dei macchinari inviati al
+rivenditore 1;
+- ad ogni rivenditore devono arrivare almeno 3 macchinari del tipo 1 e 4 macchinari del tipo 2;
+per ogni tipo di macchinario
+- al rivenditore 3 deve arrivare un numero di macchinari almeno pari ad 1/3 dei macchinari che arrivano al rivenditore 2;
+
+Si formuli un modello di PL/PLI che fornisca la soluzione del problema di minimizzazione per la
+consegna dei macchinari ai rivenditori
+
+## Risoluzione
+
+### Step 1 - definizione variabili
+
+$$
+x_{ij}  = \text{numero di macchinari di tipo }i \text{ inviati al rivenditore } j, \\\text{ dove } i = 1, 2; j = 1, 2, 3, 4
+$$
+
+### Step 2 - definizione funzione obiettivo
+
+In questo caso si tratta di un problema di **minimizzazione** (di costi di consegna).
+
+La quantità da minimizzare (funzione obiettivo) è data da:
+
+$$
+\min\begin{array}{l}    
+\text{costi di consegna del macchinario 1}+ \\      \text{costi di consegna del macchinario 2 +}\end{array}
+$$
+
+$$
+\min\begin{array}{l}    110x_{11} + 115x_{12} + 115x_{13} + 145x_{14}+\\
+155x_{21} + 180x_{22} + 170x_{23} + 175x_{24}+\\
+\end{array}
+$$
+
+### Step 3 - definizione vincoli
+
+Definiamo infine i vincoli che il modello del problema deve rispettare in base alle modalità di consegna date dal problema.
+
+- $x_{24} \leq x_{12} + 2(x_{11} + x_{21})$
+- $x_{1j} \geq 3 \hspace{5mm} j = 1, 2, 3, 4$
+    
+    $x_{2j} \geq 4 \hspace{5mm} j = 1, 2, 3, 4$
+    
+- $x_{i3} \geq \frac{1}{3}x_{i2} \hspace{5mm} i = 1, 2$
+
+Inoltre dobbiamo definire il seguente vincolo per completezza, infatti non possiamo avere un numero negativo di macchinari e un macchinario non è divisibile in più parti:
+
+- $x_{ij} \geq 0$ e deve essere una variabile intera
