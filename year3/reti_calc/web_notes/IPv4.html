@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-27_IPv4</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#ipv4">IPv4</a>
+<ul>
+<li><a href="#ipv4-1">IPv4</a></li>
+<li><a href="#subnet">Subnet</a></li>
+<li><a href="#router">Router</a></li>
+<li><a href="#header-ipv4">Header IPv4</a></li>
+<li><a href="#frammentazione-dei-pacchetti">Frammentazione dei pacchetti</a></li>
+<li><a href="#nat">NAT</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="ipv4">IPv4</h1>
+<p>Il livello di rete fornisce la consegna non affidabile dei pacchetti utilizzando i servizi del livello di collegamento. I tipi di livello di collegamento sono principalmente di due tipi: collegamenti punto a punto (<strong>PPP</strong>, <em>Point-to-Point Protocol</em>) che coinvolge solo due dispositivi che comunicano direttamente e <strong>LAN</strong> (<em>Local Area Network</em>) in cui vari dispositivi connessi tra loro tramite un particolare dispositivo come uno <em>switch</em> comunicano tra loro*.*</p>
+<h2 id="ipv4-1">IPv4</h2>
+<p>Il protocollo di rete più utilizzato è IPv4 (<em>Internet Protocol version 4</em>).</p>
+<p>Questo protocollo assegna un indirizzo IP agli host di una rete.</p>
+<p>Gli indirizzi IPv4 sono composti da 32 bit, rappresentati come quattro numeri decimali da 0 a 255 separati da punti (es: <code>192.168.1.1</code> = <code>11000000 10101000 00000001 00000001</code>).</p>
+<h2 id="subnet">Subnet</h2>
+<p>Le reti sono organizzate in <strong>sottoreti</strong> (<em><strong>subnet</strong></em>), interconnesse da dispositivi chiamati <strong>router</strong>. Una sottorete è identificata da un gruppo di indirizzi nel formato <code>x.y.z.w/N</code>, dove <code>N</code> (chiamata <em><strong>netmask</strong></em>) rappresenta il numero di bit dell’indirizzo dedicati alla rete, mentre <code>32-N</code> identifica il numero di bit dedicati agli host di quella sottorete.</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.841331em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.841331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></span> = numero di sottoreti creabili</p>
+<p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mn>32</mn><mo>−</mo><mi>N</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^{32-N}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.841331em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.841331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></span></span> numero di host che ogni sottorete ha a disposizione</p>
+<p>Esempi:</p>
+<ul>
+<li><code>192.168.0.0/24</code>: 24 bit per identificare la rete, 8 bit per identificare l’host</li>
+<li><code>192.168.0.0/30</code>: 30 bit per identificare la rete, 2 bit per identificare l’host</li>
+</ul>
+<p>Ogni indirizzo IP può essere quindi diviso nella parte <strong>netid</strong> e <strong>hostid</strong>: gli indirizzi all’interno di una <strong>stessa sottorete</strong> avranno lo <strong>stesso netid</strong> ma <strong>hostid diversi</strong>. Indirizzi appartenenti a <strong>sottoreti diverse</strong> avranno <strong>netid diversi</strong> e <strong>hostid arbitrari</strong> (anche uguali perché tanto sono in sottoreti diverse)</p>
+<p>Siccome abbiamo in totale 32bit divisi in gruppi di 8bit, ci sono delle netmask più comuni che sono:</p>
+<ul>
+<li>classe A: <code>x.y.z.w/8</code> poche reti ma con tantissimi host</li>
+<li>classe B: <code>x.y.z.w/16</code> via di mezzo tra reti e host</li>
+<li>classe C: <code>x.y.z.w/24</code> tante reti con pochi host</li>
+</ul>
+<h3 id="indirizzi-speciali">Indirizzi speciali</h3>
+<p>Ogni sottorete ha anche due indirizzi speciali riservati: l’<strong>indirizzo di rete</strong> e l’<strong>indirizzo di broadcast</strong>.</p>
+<ul>
+<li>L’indirizzo di rete serve per identificare la rete, tale indirizzo è composto da un <strong>hostid</strong> di soli <code>0</code></li>
+<li>l’indirizzo di broadcast viene utilizzato per inviare pacchetti a tutti i dispositivi all’interno della sottorete, tale indirizzo è composto da un <strong>hostid</strong> di soli <code>1</code></li>
+</ul>
+<p>Ad esempio con una subnet <code>192.168.0.0/24</code> abbiamo che</p>
+<ul>
+<li><code>192.168.0</code> (primi 3 byte) rappresentano il <strong>netid</strong>, mentre l’ultimo byte <code>0</code> rappresenta l’<strong>hostid</strong></li>
+<li><code>192.168.0.0</code> = … 00000000<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow></mrow><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.451108em; vertical-align: -0.15em;"></span><span class="mord"><span class=""></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>: indirizzo di rete</li>
+<li><code>192.168.0.255</code> = … 11111111<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow></mrow><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">_2</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.451108em; vertical-align: -0.15em;"></span><span class="mord"><span class=""></span><span class="msupsub"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.301108em;"><span class="" style="top: -2.55em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">2</span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.15em;"><span class=""></span></span></span></span></span></span></span></span></span></span>: indirizzo di broadcast</li>
+</ul>
+<p>Oltre a questi, esistono altri indirizzi speciali:</p>
+<ul>
+<li>
+<p><code>0.0.0.0/8</code><strong>:</strong> Indirizzo con cui si presenta un host per chiedere al router un indirizzo IP valido.</p>
+<p>(viene utilizzato anche come route di default nelle tabelle di routing)</p>
+</li>
+<li>
+<p><code>127.0.0.0/8</code><strong>:</strong> Interfaccia di <strong>loopback</strong>. Utilizzata per le connessioni all’interno della stessa macchina.</p>
+</li>
+<li>
+<p><code>10.0.0.0/8</code>, <code>172.16.0.0/12</code>, <code>192.168.0.0/16</code>: Questi indirizzi sono riservati per l’uso in reti private e non vengono instradati su Internet.</p>
+</li>
+<li>
+<p><code>169.254.0.0/16</code><strong>:</strong> detto “<strong>Link-local</strong>”, viene assegnato automaticamente a un dispositivo quando non riesce a ottenere un indirizzo IP dal router, permette la comunicazione locale con altri dispositivi nella stessa sottorete.</p>
+</li>
+</ul>
+<h2 id="router">Router</h2>
+<p>La comunicazione all’interno di una sottorete è possibile tra tutti gli host (assumiamo che ciò avvenga grazie ad uno switch). Tuttavia, per comunicare con host in altre sottoreti, è necessario un <strong>router</strong>.</p>
+<p>I router possiedono più interfacce di rete, ciascuna con un indirizzo IP, e sono in grado di instradare i pacchetti tra reti diverse. Ogni host ha un <strong>router predefinito</strong> (<em>gateway</em>) a cui inviare pacchetti destinati a reti diverse dalla propria.</p>
+<p><img src="https://i.ibb.co/NjNH6Ym/image.png" alt="https://i.ibb.co/NjNH6Ym/image.png"></p>
+<p>Quando un host vuole comunicare con un altro host della stessa rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo privato) e il relativo indirizzo MAC, lo switch a cui sono collegati gli host instraderà il pacchetto all’host in base all’indirizzo MAC specificato (l’indirizzo IP in questo caso serve nel caso non si disponga dell’indirizzo MAC, tramite l’IP si può usare il protocollo ARP per ottenere il MAC di un certo indirizzo IP).</p>
+<p>Se invece un host vuole comunicare al di fuori della propria rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo pubblico) e l’indirizzo MAC del router di default (<em>default gateway</em>), lo switch a cui sono collegati gli host instraderà il pacchetto in base all’indirizzo MAC specificato, in questo caso verso il router, il quale instraderà il pacchetto in base all’indirizzo IP.</p>
+<h2 id="header-ipv4">Header IPv4</h2>
+<p><img src="https://i.ibb.co/dBPVhSg/image.png" alt="https://i.ibb.co/dBPVhSg/image.png"></p>
+<p>L’header è composto da un parte fissa (raffigurata nell’immagine) e opzioni aggiuntive facoltative che non vengono molto utilizzate.</p>
+<ul>
+<li>
+<p><strong>Version:</strong> Indica la versione del protocollo IP, 4 o 6</p>
+</li>
+<li>
+<p><strong>Internet Header Length (IHL):</strong> Specifica la lunghezza dell’header IPv4 in word a 32 bit. Il valore minimo è 5, che corrisponde a un header senza opzioni, e il valore massimo è 15.</p>
+</li>
+<li>
+<p><strong>Total length:</strong> Indica la lunghezza totale del pacchetto IP in byte, inclusi header e payload. Il valore massimo è 65535 byte.</p>
+</li>
+<li>
+<p><strong>Identification:</strong> Utilizzato per identificare in modo univoco i vari frammenti in cui può essere stato spezzato un pacchetto IP, frammenti con lo stesso valore apparterranno allo stesso pacchetto.</p>
+</li>
+<li>
+<p><strong>Flag:</strong> Tre flag di un bit:</p>
+<ul>
+<li><strong>Evil Bit:</strong> Non utilizzato.</li>
+<li><strong>Don’t Fragment:</strong> Indica se il pacchetto può essere frammentato. Se settato a 1 indica che il pacchetto non deve essere frammentato; se tale pacchetto non può essere inoltrato da un host senza essere frammentato, viene semplicemente scartato.</li>
+<li><strong>More Fragments:</strong> Indica se ci sono altri frammenti del pacchetto originale. È impostato a 1 per tutti i frammenti tranne l’ultimo.</li>
+</ul>
+</li>
+<li>
+<p><strong>Fragment offset:</strong> Indica l’offset (misurato in blocchi di 8 byte) di un particolare frammento relativamente all’inizio del pacchetto IP originale, il primo frammento ha offset 0. Si riferisce solo ai dati, escluso l’header. Serve per riordinare i frammenti quando arrivano a destinazione.</p>
+<p>si misura in blocchi di 8 byte perché la grandezza totale di un pacchetto IP (non frammentato) è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>16</mn></msup></mrow><annotation encoding="application/x-tex">2^{16}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">16</span></span></span></span></span></span></span></span></span></span></span></span></span> = 65535 byte. Il fragment offset però ha arriva al massimo fino a <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>13</mn></msup></mrow><annotation encoding="application/x-tex">2^{13}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">13</span></span></span></span></span></span></span></span></span></span></span></span></span> = 8192 byte, dobbiamo quindi moltiplicare il suo valore per i byte mancanti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">2^3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight">3</span></span></span></span></span></span></span></span></span></span></span></span> = 8 byte</p>
+</li>
+<li>
+<p><strong>TTL (Time to Live):</strong> Un contatore decrementato a ogni hop. Se il TTL raggiunge 0, il pacchetto viene scartato.</p>
+</li>
+<li>
+<p><strong>Protocol:</strong> Indica il protocollo di livello superiore incapsulato nel pacchetto IP (ad esempio, 1 per ICMP, 6 per TCP, 17 per UDP).</p>
+</li>
+<li>
+<p><strong>header checksum:</strong> Un checksum utilizzato per verificare l’integrità dell’header.</p>
+</li>
+<li>
+<p><strong>Source address:</strong> L’indirizzo IP del mittente del pacchetto.</p>
+</li>
+<li>
+<p><strong>Destination address:</strong> L’indirizzo IP del destinatario del pacchetto.</p>
+</li>
+</ul>
+<h2 id="frammentazione-dei-pacchetti">Frammentazione dei pacchetti</h2>
+<p>La frammentazione dei pacchetti IP si verifica quando un pacchetto è più grande dell’MTU (Maximum Transmission Unit) che la rete supporta. L’MTU varia a seconda del tipo di mezzo fisico; ad esempio, Ethernet ha un MTU di 1500 byte, mentre Wi-Fi (802.11) ha un MTU di 2272 byte.</p>
+<p>Quando un pacchetto supera l’MTU, viene frammentato in <strong>pacchetti più piccoli indipendenti</strong>, ognuno con un proprio header IPv4. La frammentazione può avvenire in qualsiasi router lungo il percorso dalla sorgente alla destinazione. Il destinatario avrà poi il compito di riassemblare tutti i frammenti.</p>
+<p>Ogni frammento contiene le seguenti informazioni:</p>
+<ul>
+<li>Lo stesso campo <code>identification</code> nell’header: Permette al destinatario di associare i frammenti allo stesso pacchetto originale.</li>
+<li>Campo <code>total length</code>: Impostato alla lunghezza del frammento specifico.</li>
+<li>Campo <code>fragment offset</code><strong>:</strong> Indica la posizione del frammento rispetto al pacchetto originale, espresso in multipli di 8 byte.</li>
+<li>Il flag <code>More Fragments</code>: Impostato a 1 per tutti i frammenti tranne l’ultimo, che indica la fine del pacchetto originale.</li>
+</ul>
+<h3 id="esempi-di-frammentazione"><strong>Esempi di frammentazione:</strong></h3>
+<p>Con un pacchetto lungo 250byte e un MTU di 120byte:</p>
+<p><img src="https://i.ibb.co/j6T63WT/image.png" alt="https://i.ibb.co/j6T63WT/image.png"></p>
+<p>Ricorda che ogni frammento ha anche il proprio header IP di 20 byte da far rientrare nei 120byte.</p>
+<p>Un altro esempio con un pacchetto IP di 3500 byte e un MTU di 1500 byte.</p>
+<p>Verrà suddiviso in tre frammenti:</p>
+<ul>
+<li><strong>Frammento 1:</strong> 20 byte (header IP) + 1480 byte (payload + header TCP) = 1500 byte. Flag “More Fragments” impostato a 1, offset del frammento a 0.</li>
+<li><strong>Frammento 2:</strong> 20 byte (header IP) + 1480 byte (payload) = 1500 byte. Flag “More Fragments” impostato a 1, offset del frammento a 1480/8 = 185.</li>
+<li><strong>Frammento 3:</strong> 20 byte (header IP) + 540 byte (payload) = 560 byte. Flag “More Fragments” impostato a 0, offset del frammento a (1480 + 1480)/8 = 370.</li>
+</ul>
+<p><strong>I frammenti viaggiano come pacchetti indipendenti e possono seguire percorsi diversi per raggiungere la destinazione.</strong> Solo quando arrivano a destinazione vengono riassemblati nell’ordine corretto utilizzando il campo <code>Identification</code> e <code>fragment offset</code>.</p>
+<h2 id="nat">NAT</h2>
+<p>Con il crescere esponenziale del numero di dispositivi connessi a Internet, il numero limitato di indirizzi IPv4 (pari a circa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>32</mn></msup><mo>=</mo><mn>4.3</mn></mrow><annotation encoding="application/x-tex">2^{32}=4.3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4.3</span></span></span></span></span> miliardi) si è rivelato insufficiente.  Questa carenza ha spinto alla ricerca di soluzioni a breve e lungo termine.</p>
+<p>A lungo termine, la soluzione è stata introdurre IPv6, che utilizza indirizzi a 128 bit**.** Questa soluzione, seppur ideale, richiede tempo per essere implementata su larga scala a causa della necessità di aggiornare hardware e software.</p>
+<p>Una soluzione a breve termine è stata l’introduzione del Network Address Translation (NAT)<strong>.</strong> Il NAT è una tecnica che consente di mappare un indirizzo IP pubblico a uno privato, permettendo a più dispositivi in una rete locale (LAN) di condividere un singolo indirizzo IP pubblico per accedere a Internet.</p>
+<h3 id="indirizzi-ip-privati">Indirizzi IP privati</h3>
+<p>Per implementare il NAT, sono state riservate tre classi di indirizzi IP privati:</p>
+<ul>
+<li><code>10.0.0.0</code> - <code>10.255.255.255</code> (<code>/8</code>)</li>
+<li><code>172.16.0.0</code> - <code>172.31.255.255</code> (<code>/20</code>)</li>
+<li><code>192.168.0.0</code> - <code>192.168.255.255</code> (<code>/16</code>)</li>
+</ul>
+<p>Questi indirizzi possono essere <strong>utilizzati liberamente</strong> per i dispositivi nelle <strong>LAN</strong>.</p>
+<p>Nella LAN solo il router connesso ad internet possiede un indirizzo IP pubblico, esso si occupa di tradurre gli indirizzi privati in indirizzi pubblici e viceversa per far accedere ad internet i dispositivi nella sua rete usando il proprio indirizzo pubblico.</p>
+<p>I router connessi a Internet <strong>non</strong> devono <strong>instradare</strong> pacchetti <strong>da/verso indirizzi IP privati</strong>.</p>
+<h3 id="funzionamento-del-nat">Funzionamento del NAT</h3>
+<p>Un router NAT mantiene una tabella che mappa i flussi di traffico in entrata e in uscita. Ogni flusso è identificato da 5 elementi:</p>
+<ul>
+<li>protocollo di trasporto</li>
+<li><strong>sIP (Source IP):</strong> Indirizzo IP del mittente</li>
+<li><strong>dIP (Destination IP):</strong> Indirizzo IP del destinatario</li>
+<li><strong>sPort (Source Port):</strong> Porta del mittente</li>
+<li><strong>dPort (Destination Port):</strong> Porta del destinatario</li>
+</ul>
+<p>Una tabella di questo tipo riesce ad associare i pacchetti in arrivo dalla LAN con i pacchetti mandati su internet e vice versa.</p>
+<p><img src="https://i.ibb.co/MDN0xHv/image.png" alt="https://i.ibb.co/MDN0xHv/image.png"></p>
+<p>Quando un pacchetto proveniente da un dispositivo della LAN (con indirizzo IP privato) arriva al router NAT, il router sostituisce l’indirizzo IP privato con il suo indirizzo IP pubblico e invia il pacchetto al server di destinazione.</p>
+<p>Quando il server risponde, il router NAT utilizza la tabella per identificare il dispositivo della LAN a cui inoltrare il pacchetto, sostituendo l’indirizzo IP pubblico con l’indirizzo IP privato originale.</p>
+<p><img src="https://i.ibb.co/44rwnbk/image.png" alt="https://i.ibb.co/44rwnbk/image.png"></p>
+<p>Quello che potrebbe succedere sulla tabella del NAT è che due host diversi decidano inviare dei pacchetti allo stesso IP di destinazione, usando lo stesso protocollo, con la stessa porta destinazione e scelgano casualmente la stessa porta sorgente. questo genererebbe nella parte destra della tabella due righe completamente uguali e quando arriva la risposta dal server il router non saprebbe a chi inoltrare la risposta.</p>
+<p>Per evitare questa situazione quello che fa il NAT al momento dell’invio di nuovi pacchetti verso internet è incrementare la porta sorgente nel caso in cui la nuova riga da aggiungere sia uguale ad una riga già presente:</p>
+<p><img src="https://i.ibb.co/HYGLws6/image.png" alt="https://i.ibb.co/HYGLws6/image.png"></p>
+<h3 id="note">Note:</h3>
+<ul>
+<li>due host possono avere lo stesso indirizzo privato se sono in LAN differenti</li>
+<li>due host nella stessa LAN non possono avere lo stesso indirizzo privato</li>
+<li>due host su internet non possono avere lo stesso indirizzo pubblico</li>
+<li>un host privato dietro al NAT non può ricevere nuove connessioni, ma le può solo mandare *</li>
+<li>un server che vuole ricevere connessioni deve avere un indirizzo pubblico</li>
+</ul>
+<h3 id="vantaggi-e-svantaggi-del-nat">Vantaggi e svantaggi del NAT</h3>
+<p><strong>Vantaggi:</strong></p>
+<ul>
+<li>Permette a più dispositivi di condividere un singolo indirizzo IP pubblico, riducendo la domanda di indirizzi IPv4.</li>
+<li>I dispositivi con indirizzi IP privati sono invisibili a Internet, rendendo più difficile per gli aggressori esterni di raggiungerli non potendo aprire connessioni dall’esterno verso i singoli host. *</li>
+</ul>
+<p><strong>Svantaggi:</strong></p>
+<ul>
+<li>
+<p>Introduce complessità nell’architettura di rete e richiede la gestione di una tabella sul router NAT (solitamente il NAT è implementato nei firewall).</p>
+</li>
+<li>
+<p><strong>Problemi di prestazioni:</strong> Può causare problemi di prestazioni, soprattutto con un elevato numero di connessioni simultanee.</p>
+<p>Inoltre le connessioni TCP possono essere interrotte improvvisamente allo stesso modo il traffico UDP non posso sapere quando finisce, quindi il NAT deve mantenere dei timer per eliminare delle righe che assume non siano più valide.</p>
+</li>
+<li>
+<p>Il NAT ha anche il compito di <strong>riassemblare i pacchetti</strong>, questo perché la porta (usata per sapere a chi inoltrare i pacchetti) è presente nell’header TCP che è presente solo nel primo frammento del pacchetto. Quindi il NAT deve bufferizzare i frammenti (gran uso di memoria)</p>
+</li>
+<li>
+<p>Il NAT essendo molto dipendente dal livello di trasporto rende l’aggiornamento e la creazione dei protocolli di trasporto molto difficile *</p>
+</li>
+</ul>
+<p>*ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
