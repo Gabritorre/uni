@@ -146,3 +146,153 @@ $$
     $$
     y_j \in \{0, 1\} \hspace{5mm} j=1,2,3
     $$
+    
+
+## Vincoli disgiuntivi
+
+Dal problema:
+
+$$
+\underset{\begin{array}{lcr}x \in A\\
+\end{array}}{\min}\, c^T x
+$$
+
+dove $A$ è un generico poliedro (i vincoli del problema).
+
+Vogliamo aggiungere al problema **due vincoli mutualmente esclusivi**, cioè se si tiene conto di uno allora si ignora l’altro e vice versa. Si proveranno quindi a risolvere entrambe le versioni del problema per determinare la soluzione migliore.
+
+Siano
+
+$$
+a_1^Tx \leq b_1\\
+a_2^T x \leq b_2
+$$
+
+i vincoli mutualmente esclusivi, dove $a_i \in \mathbb{R}^n$ e $b_i \in \mathbb{R}$.
+
+Nota: i vincoli **devono essere in relazione di minore-uguale.**
+
+Per fare in modo che il risolutore del problema di minimizzazione si arrangi a tentare i vari vincoli dobbiamo riformulare il problema nel seguente modo:
+
+$$
+\begin{aligned}    &\min \ c^T x\\
+&x \in A\\
+&a_1^Tx \leq b_1 + \alpha M &M\gg1\\
+&a_2^Tx \leq b_2 + \beta M & M\gg 1\\
+&\alpha + \beta = 1\\
+& \alpha, \beta \in \{0, 1\}
+\end{aligned}
+$$
+
+Abbiamo quindi:
+
+$M$ che è un valore costante, molto maggiore rispetto al valore più grande che può assumere il membro di sinistra della disequazione.
+
+$\alpha, \beta$ sono due variabili che possono assumere solo i valori $0$ e $1$, e solamente uno dei due può essere $1$ (la somma infatti deve fare $1$)
+
+Nell’esempio:
+
+- se $\alpha = 1$ e $\beta = 0$ allora il primo vincolo diventa  $a_1^Tx \leq b_1 + M$ che risulterà essere sempre soddisfatto per come è definito $M$, per cui questo vincolo diventa non significativo per il problema e si può considerare che sparisca.
+    
+    Così facendo solamente il secondo vincolo viene considerato.
+    
+- in modo simmetrico se $\alpha = 0$ e $\beta = 1$ solamente il primo vincolo viene considerato.
+
+Possiamo notare quindi come se la variabile è $0$ allora il rispettivo vincolo rimane, al contrario se la variabile è $1$ allora il vincolo non viene considerato.
+
+### Almeno un vincolo
+
+Se vogliamo riformulare li problema in modo che **almeno un vincolo** venga considerato
+
+$$
+\begin{aligned}    &\min \ c^T x\\
+&x \in A\\
+&a_1^Tx \leq b_1 + \alpha M &M\gg1\\
+&a_2^Tx \leq b_2 + \beta M & M\gg 1\\
+&\alpha + \beta \leq 1\\
+& \alpha, \beta \in \{0, 1\}
+\end{aligned}
+$$
+
+In questo caso cambia solamente la condizione $\alpha + \beta \leq 1$
+
+tale condizione infatti vale perché con:
+
+- $\alpha = 0$ e $\beta = 0$ allora entrambi i vincoli rimangono, e quindi $0+0 \leq 1$ è soddisfatto
+- $\alpha = 1$ e $\beta = 0$ allora solo il secondo vincolo rimane, e quindi $1+0 \leq 1$ è soddisfatto
+- $\alpha = 0$ e $\beta = 1$ allora solo il primo vincolo rimane, e quindi $0+1 \leq 1$ è soddisfatto
+
+L’ultimo caso in cui entrambi i vincoli sono $1$, cioè che vengono entrambi ignorati, non soddisferebbe la condizione $1+1 \leq 1$
+
+### Al più un vincolo
+
+Se vogliamo riformulare li problema in modo che **al più un vincolo** venga considerato
+
+$$
+\begin{aligned}    &\min \ c^T x\\
+&x \in A\\
+&a_1^Tx \leq b_1 + \alpha M &M\gg1\\
+&a_2^Tx \leq b_2 + \beta M & M\gg 1\\
+&\alpha + \beta \geq 1\\
+& \alpha, \beta \in \{0, 1\}
+\end{aligned}
+$$
+
+In questo caso cambia solamente la condizione $\alpha + \beta \geq 1$
+
+tale condizione infatti vale perché con:
+
+- $\alpha = 1$ e $\beta = 1$ allora entrambi i vincoli vengono ignorati, e quindi $1+1 \geq 1$ è soddisfatto
+- $\alpha = 1$ e $\beta = 0$ allora solo il secondo vincolo rimane, e quindi $1+0 \geq 1$ è soddisfatto
+- $\alpha = 0$ e $\beta = 1$ allora solo il primo vincolo rimane, e quindi $0+1 \geq 1$ è soddisfatto
+
+L’ultimo caso in cui entrambi i vincoli sono $0$, cioè che rimangono entrambi, non soddisferebbe la condizione $1+1 \leq 1$
+
+### Caso con più vincoli
+
+Generalizzando le specifiche appena fatte considerando però $m$ vincoli possiamo riformulare i problemi nel seguente modo:
+
+- esattamente $k$ vincoli (con $k \leq m$)
+    
+    $$
+    \begin{aligned}    &\min \ c^T x\\
+    &x \in A\\
+    &a_1^Tx \leq b_1 + \alpha_1 M &M\gg1\\
+    &\vdots\\
+    &a_m^Tx \leq b_m + \alpha_m M & M\gg 1\\
+    &\alpha_1 +...+ \alpha_m = m-k\\
+    & \alpha_1, ..., \alpha_m \in \{0, 1\}
+    \end{aligned}
+    $$
+    
+    In questo modo la condizione $\alpha_1 +...+ \alpha_m = m-k$ sta a significare che ci sono $m-k$ vincoli uguali a $1$ e i $k$ rimanente saranno a $0$.
+    
+- almeno $k$ vincoli (con $k \leq m$)
+    
+    $$
+    \begin{aligned}    &\min \ c^T x\\
+    &x \in A\\
+    &a_1^Tx \leq b_1 + \alpha_1 M &M\gg1\\
+    &\vdots\\
+    &a_m^Tx \leq b_m + \alpha_m M & M\gg 1\\
+    &\alpha_1 +...+ \alpha_m \leq m-k\\
+    & \alpha_1, ..., \alpha_m \in \{0, 1\}
+    \end{aligned}
+    $$
+    
+    In questo modo la condizione $\alpha_1 +...+ \alpha_m \leq m-k$ sta a significare che ci sono al massimo $m-k$ vincoli uguali a $1$ e quindi almeno $k$ saranno a $0$.
+    
+- al più $k$ vincoli (con $k \leq m$)
+    
+    $$
+    \begin{aligned}    &\min \ c^T x\\
+    &x \in A\\
+    &a_1^Tx \leq b_1 + \alpha_1 M &M\gg1\\
+    &\vdots\\
+    &a_m^Tx \leq b_m + \alpha_m M & M\gg 1\\
+    &\alpha_1 +...+ \alpha_m \geq m-k\\
+    & \alpha_1, ..., \alpha_m \in \{0, 1\}
+    \end{aligned}
+    $$
+    
+    In questo modo la condizione $\alpha_1 +...+ \alpha_m \geq m-k$ sta a significare che ci almeno $m-k$ vincoli uguali a $1$ e quindi al massimo $k$ saranno a $0$.
