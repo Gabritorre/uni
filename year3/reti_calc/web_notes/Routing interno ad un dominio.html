@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-12-03_Routing interno ad un dominio</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#routing-interno-ad-un-dominio">Routing interno ad un dominio</a>
+<ul>
+<li><a href="#contesto">Contesto</a></li>
+<li><a href="#routing-dentro-un-dominio">Routing dentro un dominio</a></li>
+<li><a href="#ospf">OSPF</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="routing-interno-ad-un-dominio">Routing interno ad un dominio</h1>
+<h2 id="contesto">Contesto</h2>
+<p>Internet è un’interconnessione di reti, spesso chiamate <strong>domini</strong>. Un dominio può essere una piccola impresa che gestisce pochi router in un singolo edificio, una grande azienda con centinaia di router in diverse sedi, oppure un grande ISP che gestisce migliaia di router.</p>
+<p>Per consentire a questi domini di scambiare informazioni di instradamento in modo efficiente, vengono utilizzate due classi di protocolli di instradamento:</p>
+<ul>
+<li>
+<p>Protocolli di <strong>instradamento dentro un dominio</strong>.</p>
+<p>Questi protocolli hanno solitamente due obiettivi:</p>
+<ul>
+<li>distribuire <strong>informazioni di instradamento</strong> corrispondenti al percorso più breve tra due router all’interno del dominio.</li>
+<li>devono consentire ai router di <strong>recuperare rapidamente in caso di guasti</strong>.</li>
+</ul>
+</li>
+<li>
+<p>Protocolli di <strong>instradamento tra domini</strong>.</p>
+<p>Questi protocolli hanno l’obiettivo è distribuire informazioni di instradamento tra domini, considerando ogni dominio come una “scatola nera” senza quindi sapere come sono fatti e i protocolli utilizzati al loro interno.</p>
+</li>
+</ul>
+<p>Una differenza molto importante tra i due riguarda le <strong>politiche di instradamento:</strong> All’interno di un singolo dominio, tutti i router sono considerati uguali e, quando sono disponibili più percorsi per raggiungere la destinazione, il percorso migliore (percorso con il minor ritardo, il minor numero di hop o la larghezza di banda più alta).</p>
+<p>Quando si considera l’interconnessione di domini gestiti da organizzazioni diverse, questo non è più vero in quanto si vuole trovare il percorso più economico verso ciascuna destinazione in base a degli accordi fatti tra le organizzazioni.</p>
+<h2 id="routing-dentro-un-dominio">Routing dentro un dominio</h2>
+<p>Il routing dentro un dominio si riferisce ai protocolli e alle tecniche utilizzate per instradare i pacchetti all’interno di una singola rete amministrativa (un dominio).</p>
+<p>Le reti di grandi dimensioni hanno spesso topologie interne complesse, con diverse sottoreti interconnesse da router interni al dominio.</p>
+<p>I <strong>router di confine</strong> sono dei router che si possono interfacciare con l’esterno della rete in modo da inoltrare pacchetti da e verso altri domini.</p>
+<h2 id="ospf">OSPF</h2>
+<p>OSPF (<em>Open Shortest Path First</em>) è uno dei protocolli di routing Intradomain più utilizzati.</p>
+<p>Tale protocollo è una versione standardizzata del <strong>routing link-state</strong>, che è più reattivo ai guasti rispetto al routing con <em>distance vector</em>, ma genera un maggiore overhead di rete.</p>
+<p>Dato che un dominio ha in genere un numero limitato di sottoreti, l’overhead generato è gestibile e quindi si ha un buon compromesso.</p>
+<p>OSPF porta alcune modifiche rispetto al routing link-state di base:</p>
+<ul>
+<li>Il concetto di Area</li>
+<li>il supporto alle LAN</li>
+</ul>
+<h3 id="aree">Aree</h3>
+<p>la rete viene suddivisa in <strong>aree.</strong> Un’area è una parte fisicamente contigua della rete in cui sono presenti dei router, tale area è connessa ad altre aree tramite altri router.</p>
+<p>Esistono quindi due tipi di router OSPF:</p>
+<ul>
+<li><strong>Router interni:</strong> connessi solo ad altri router nella stessa area.</li>
+<li><strong>Router di confine:</strong> connessi a router di aree diverse.</li>
+</ul>
+<p>Esiste una speciale area detta <strong>area zero</strong> o <strong>backbone area</strong>,  che raccoglie tutti i router di confine e i router che non fanno parte di nessuna altra area. All’interno di un dominio si ha un’<strong>unica area zero</strong>.</p>
+<p><img src="https://i.ibb.co/fDKbXqD/image.png" alt="https://i.ibb.co/fDKbXqD/image.png"></p>
+<ul>
+<li>R1, R3, R5, R4 sono router interni all’area 1</li>
+<li>R7, R8, R9, R10 sono router interni all’area 2</li>
+<li>RA, RB, RC sono router di confine</li>
+<li>RD è un router interno all’area 0</li>
+</ul>
+<p>OSPF combina link-state e distance vector per ottimizzare le prestazioni e ridurre l’overhead:</p>
+<ul>
+<li><strong>All’interno di un’area</strong> (non l’area 0), i router utilizzano il <strong>routing link-state</strong></li>
+<li><strong>Tra le aree</strong>, i router di confine utilizzano il <strong>routing distance vector</strong> nell’area 0</li>
+</ul>
+<p>In questo modo ogni router di un’area non conosce la topologia delle altre aree ma sa come arrivarci (passando per il proprio router di confine).</p>
+<h3 id="supporto-per-le-lan">Supporto per le LAN</h3>
+<p>Se supponiamo di avere una area con questa situazione, in cui quattro router sono connessi ad uno switch</p>
+<p><img src="https://i.ibb.co/ZW6L8bD/image.png" alt="https://i.ibb.co/ZW6L8bD/image.png"></p>
+<p>In cui supponiamo che R1 e R4 siano router di confine.</p>
+<p>Un modo in cui OSPF potrebbe rappresentare questa area (con il routing link state) sarebbe una full mesh.</p>
+<p><img src="https://i.ibb.co/Mc0nDH9/image.png" alt="https://i.ibb.co/Mc0nDH9/image.png"></p>
+<p>Questa situazione però crea la falsa percezione di percorsi multipli tra i router di confine.</p>
+<p>in caso di <strong>guasto dello switch</strong>, tutti i link sarebbero rotti ma i router notando che il loro attuale percorso non funziona tenterebbero di usare altri percorsi che in realtà non esistono.</p>
+<p>Per evitare ciò, OSPF permette di selezionare un <strong>designated router</strong>. Gli altri router esportano il proprio link state solamente al router designato e non a tutti i router.</p>
+<p>Supponendo di nominare R1 a designated router, al posto di una full mesh si avrebbe una struttura di questo tipo</p>
+<p><img src="https://i.ibb.co/gmqBZ8x/image.png" alt="https://i.ibb.co/gmqBZ8x/image.png"></p>
+<p>In questo modo si riduce il traffico generato dal link state e si velocizza il riconoscimento del fallimento dei link.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>

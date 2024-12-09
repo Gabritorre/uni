@@ -21,6 +21,8 @@
 <li><a href="#header-ipv4">Header IPv4</a></li>
 <li><a href="#frammentazione-dei-pacchetti">Frammentazione dei pacchetti</a></li>
 <li><a href="#nat">NAT</a></li>
+<li><a href="#forwarding-table">Forwarding table</a></li>
+<li><a href="#icmp">ICMP</a></li>
 </ul>
 </li>
 </ul>
@@ -79,6 +81,7 @@
 <p><code>169.254.0.0/16</code><strong>:</strong> detto “<strong>Link-local</strong>”, viene assegnato automaticamente a un dispositivo quando non riesce a ottenere un indirizzo IP dal router, permette la comunicazione locale con altri dispositivi nella stessa sottorete.</p>
 </li>
 </ul>
+<p>Nota: solitamente in ogni sottorete è presente un router, e <strong>anch’esso ha bisogno di un indirizzo IP</strong> sulla sua interfaccia. Quindi con una subnet /24 si hanno 254 indirizzi assegnabili agli host e tra questi, uno va assegnato al router (se presente).</p>
 <h2 id="router">Router</h2>
 <p>La comunicazione all’interno di una sottorete è possibile tra tutti gli host (assumiamo che ciò avvenga grazie ad uno switch). Tuttavia, per comunicare con host in altre sottoreti, è necessario un <strong>router</strong>.</p>
 <p>I router possiedono più interfacce di rete, ciascuna con un indirizzo IP, e sono in grado di instradare i pacchetti tra reti diverse. Ogni host ha un <strong>router predefinito</strong> (<em>gateway</em>) a cui inviare pacchetti destinati a reti diverse dalla propria.</p>
@@ -213,6 +216,103 @@
 </li>
 </ul>
 <p>*ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.</p>
+<h2 id="forwarding-table">Forwarding table</h2>
+<p>La <em>forwarding table</em> di un router mappa indirizzi di rete su un certa interfaccia di rete in uscita, in modo da capire su quale interfaccia mandare il pacchetto in base al suo ip di destinazione.</p>
+<p>Possiamo vederla in questo modo:</p>
+
+<table>
+<thead>
+<tr>
+<th>Rete di destinazione</th>
+<th>notazione binaria</th>
+<th>Interfaccia in uscita</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>0.0.0.0/0</code></td>
+<td><code>00000000.00000000.00000000.00000000</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>124.156.12.0/24</code></td>
+<td><code>01111100.10011100.00001100 . 00000000</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td><code>124.156.13.0/24</code></td>
+<td><code>01111100.10011100.00001101 . 00000000</code></td>
+<td>0</td>
+</tr>
+<tr>
+<td><code>124.156.13.128/26</code></td>
+<td><code>01111100.10011100.00001101.10 000000</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td><code>200.212.12.127/26</code></td>
+<td><code>11001000.11010100.00001100.01 111111</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td><code>200.212.12.64/28</code></td>
+<td><code>11001000.11010100.00001100.0100 0000</code></td>
+<td>4</td>
+</tr>
+</tbody>
+</table><p>Dove <code>0.0.0.0/0</code> è l’interfaccia di default dove vengono instradati i pacchetti nel caso non ci sia una rete corrispondente nella tabella.</p>
+<p>Quando arriva un pacchetto viene scelta l’interfaccia corrispondente all’indirizzo con il netid più lungo uguale al netid dell’indirizzo nel pacchetto.</p>
+<p>Esempi:</p>
+<ul>
+<li>
+<p><code>124.156.12.12 == 01111100.10011100.00001100.00001100</code></p>
+<p>abbiamo un match con <code>0.0.0.0/0</code> e con <code>124.156.12.0/24</code> scegliamo quello con il match più lungo che è <code>124.156.12.0/24</code> quindi l’interfaccia 1</p>
+</li>
+<li>
+<p><code>124.156.13.2 == 01111100.10011100.00001101.00000010</code></p>
+<p>match con <code>0.0.0.0/0</code> e <code>124.156.13.0/24</code>  quindi interfaccia 0</p>
+</li>
+<li>
+<p><code>124.156.13.129 == 01111100.10011100.00001101.10000001</code></p>
+<p>match con <code>0.0.0.0/0</code>, <code>124.156.13.0/24</code> e <code>124.156.13.128/26</code> quindi interfaccia 2</p>
+</li>
+<li>
+<p><code>200.212.12.79 == 11001000.11010100.00001100.01001111</code></p>
+<p>match con <code>0.0.0.0/0</code> e <code>200.212.12.64/28</code> quindi interfaccia 4</p>
+</li>
+<li>
+<p><code>200.212.12.35 == 11001000.11010100.00001100.00100011</code></p>
+<p>match con <code>0.0.0.0/0</code> quindi interfaccia 0</p>
+</li>
+<li>
+<p><code>200.212.12.80 == 11001000.11010100.00001100.01010000</code></p>
+<p>match con <code>0.0.0.0/0</code> e <code>200.212.12.127/26</code> quindi interfaccia 3</p>
+</li>
+</ul>
+<h2 id="icmp">ICMP</h2>
+<p><strong>ICMP</strong> (<em>Internet Control Message Protocol</em>) è un protocollo di rete di segnalazione che trasmette messaggi di errore e messaggi relativi al funzionamento e allo stato della rete. ICMP non utilizza protocolli a livello di trasporto, viene direttamente incapsulato in un pacchetto IP.</p>
+<h3 id="header-icmp">Header ICMP</h3>
+<p><img src="https://i.ibb.co/rcFNMVC/image.png" alt="https://i.ibb.co/rcFNMVC/image.png"></p>
+<p>Quando un pacchetto produce un evento anomalo, viene generato un pacchetto ICMP. Il pacchetto ICMP contiene un header in cui grazie ai campi <em>Type</em> e <em>Code</em> si identifica l’evento.</p>
+<p>Alcuni eventi riconosciuti da ICMP sono:</p>
+<ul>
+<li>Destinazione non raggiungibile</li>
+<li>Porta di destinazione chiusa</li>
+<li>Frammentazione necessaria (<em>Don’t fragment</em> è impostato a 1, ma MTU non è sufficiente).</li>
+<li>TTL superato: il pacchetto è rimasto bloccato in un ciclo.</li>
+</ul>
+<p>Se un messaggio ICMP causa un errore, non viene inviato alcun ulteriore messaggio.</p>
+<h3 id="utilizzi-di-icmp">Utilizzi di ICMP</h3>
+<p>ICMP è utilizzato per la risoluzione dei problemi e il test delle reti, alcune applicazioni che sfruttano  ICMP sono:</p>
+<ul>
+<li>
+<p><strong>Ping</strong>: Con il comando ping è possibile inviare richieste ad un server per eseguire test di base di raggiungibilità e latenza del server.</p>
+</li>
+<li>
+<p><strong>Traceroute</strong>: è un comando che serve a <strong>stimare</strong> il percorso e il numero di hop che un pacchetto compie per raggiungere la destinazione (si tratta di una stima perché il percorso non è predicibile).</p>
+<p>Invia un pacchetto UDP a una destinazione con TTL=1. Il primo router risponderà con un ICMP che segnala l’evento “TTL exceeded”, rivelando il suo IP. Ripetendo l’operazione con TTL=1, 2, 3… fino a quando la destinazione non risponde, si ottiene una stima del numero di hop fino alla destinazione. I router non sono obbligati a generare errori ICMP, quindi questa tecnica non è completamente affidabile.</p>
+</li>
+</ul>
 
     </div>
   </div>
