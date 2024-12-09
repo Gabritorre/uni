@@ -1,0 +1,109 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-12-05_Attacchi web client side</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#attacchi-web-client-side">Attacchi web client side</a>
+<ul>
+<li><a href="#token-di-sessione">Token di sessione</a></li>
+<li><a href="#sop">SOP</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="attacchi-web-client-side">Attacchi web client side</h1>
+<h2 id="token-di-sessione">Token di sessione</h2>
+<p>Oltre agli attacchi diretti al codice lato server o ai database, esistono attacchi che sfruttano il <strong>browser</strong>, sono quindi <strong>lato client</strong>.</p>
+<p>Le applicazioni web di solito mantengono uno <strong>stato</strong>, ad esempio quando un utente fa un login, inizia una sessione tramite un <strong>token di sessione</strong> che identifica l’utente senza che esso si autentichi su ogni pagina (questo meccanismo è dovuto al fatto che HTTP è un protocollo stateless).</p>
+<p>Il token di sessione può essere memorizzato in diversi modi ma quello standard è nei <strong>Cookie del browser</strong>, in questo modo il token viene automaticamente passato assieme ad ogni richiesta verso il server.</p>
+<p>Se un token di sessione viene indovinato o divulgato, l’utente può essere impersonificato da qualcun altro, pertanto, il token deve essere <strong>imprevedibile</strong> <strong>e segreto</strong>.</p>
+<h3 id="cookie">Cookie</h3>
+<p>Un cookie viene impostato nell’header HTTP <code>Set-cookie</code> presente all’interno di una risposta dal server verso il client, è formato nel seguente modo:</p>
+<pre><code>Set-Cookie: NAME=VALUE; Domain=example.com; Path=/; Expires=Wed, 09 Dec 2024 12:00:00 GMT; Secure; HttpOnly; SameSite=Strict
+</code></pre>
+<ul>
+<li><code>NAME=VALUE</code>: Nome e valore del cookie.</li>
+<li><code>Domain=example.com</code> (opzionale): Specifica il dominio per cui il cookie è valido.</li>
+<li><code>Path=/</code> (opzionale): Specifica il percorso del dominio a cui il cookie si applica.</li>
+<li><code>Expires=Wed, 09 Dec 2024 12:00:00 GMT</code> (opzionale): Indica la data e l’ora in cui il cookie scadrà. Se non è specificato verrà eliminato alla chiusura del browser.</li>
+<li><code>Secure</code> (opzionale): Indica che il cookie deve essere trasmesso solo su connessioni HTTPS.</li>
+<li><code>HttpOnly</code> (opzionale): Indica che il cookie non è accessibile tramite JavaScript (ad esempio, usando <code>document.cookie</code>)</li>
+<li><code>SameSite=Strict|Lax|None</code> (opzionale): indica se il cookie deve essere allegato a richieste provenienti da altri siti:
+<ul>
+<li>
+<p><code>Strict</code>: Il cookie viene inviato <strong>solo</strong> quando il client interagisce direttamente con il dominio specificato nel cookie (digitandolo nella barre dell’URL).</p>
+<p>Se l’utente clicca su un link in un altro sito che reindirizza al dominio specificato, il cookie <strong>non</strong> viene inviato.</p>
+</li>
+<li>
+<p><code>Lax</code>: Il cookie viene inviato anche quando il client clicca su un link in un altro sito che lo reindirizza al dominio specificato.</p>
+<p>Il cookie <strong>non</strong> viene inviato per richieste automatiche originate da un altro sito, come caricamenti di immagini o iframe.</p>
+</li>
+<li>
+<p><code>None</code>: Il cookie viene inviato in <strong>tutte le richieste.</strong> Tuttavia, deve essere accompagnato dal flag <code>Secure</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Il browser allega automaticamente a una richiesta web i cookie che soddisfano i seguenti criteri:</p>
+<ul>
+<li>il dominio dell’URL finisce come il dominio specificato nel cookie, ad esempio  <code>sub.example.com</code> finisce come <code>example.com</code> che è specificato nel cookie.</li>
+<li>il path dell’URL inizia come il path specificato nel cookie, ad es <code>https://example.com/app/dashboard</code> inizia per <code>/app</code> che è specificato nel cookie</li>
+<li>il protocollo è HTTPS se il cookie è contrassegnato come <code>secure</code>.</li>
+</ul>
+<p>È possibile <strong>creare ed eliminare i cookie in JavaScript</strong> modificando <code>document.cookie</code>. Per eliminare un cookie, si imposta la sua data di scadenza nel passato.</p>
+<p><strong>È possibile avere due cookie con lo stesso nome ma percorsi diversi.</strong> Se i percorsi non sono disgiunti, entrambi i cookie vengono inviati al server e il modo in cui il server gestisce i cookie con lo stesso nome dipende dal linguaggio di programmazione, dal framework o dalla libreria utilizzata.</p>
+<p>Alcuni linguaggi, come Java, JavaScript e Go, leggono i cookie come una <strong>lista</strong>, mentre altri, come PHP, Python e Node.js, usano un <strong>dizionario</strong>, rendendo imprevedibile quale dei due cookie verrà utilizzato.</p>
+<p>Lo stato della sessione può essere memorizzato sul server o sul client.</p>
+<ul>
+<li>I server con stato utilizzano un cookie di sessione <code>secure</code> e <code>HttpOnly</code> nel browser ma mantiene lo stato nel server. Questo approccio può comportare un sovraccarico eccessivo lato server.</li>
+<li>I server senza stato crittografano i dati di sessione insieme a un ID utente e un timestamp utilizzando una chiave del server. Memorizzano il blob crittografato in un cookie nel browser, nel server viene solo mantenuto un timestamp di login o logout per validare il blob quando viene ricevuto dal client.</li>
+</ul>
+<h2 id="sop">SOP</h2>
+<p>Un browser permette di navigare più siti contemporaneamente, per fornire un adeguato isolamento tra i vari siti si implementa la SOP.</p>
+<p>La <strong>Same Origin Policy (SOP)</strong> è una politica di sicurezza standard dei browser che limita l’accesso tra documenti o script caricati da domini diversi. Questa politica fornisce un isolamento necessario tra le applicazioni web in esecuzione nello stesso browser.</p>
+<p><img src="https://i.ibb.co/gZF4Wcf/image.png" alt="https://i.ibb.co/gZF4Wcf/image.png"></p>
+<p>Due pagine hanno la <strong>stessa origine</strong> se il <strong>protocollo, la porta e l’host</strong> sono gli stessi per entrambe le pagine.</p>
+<p>Ad esempio con la pagina  <code>http://store.company.com/dir/page.html</code></p>
+<pre><code>http://store.company.com/dir2/other.html OK stessa origine
+http://store.company.com/dir/in/pag.html OK stessa origine
+https://store.company.com/secure.html NO protocollo diverso
+http://store.company.com:81/dir/etc.html NO porta diversa
+http://news.company.com/dir/other.html NO host diverso
+</code></pre>
+<p>Se l’origine è diversa (si ha <em>cross-origin</em>), SOP limita o vieta:</p>
+<ul>
+<li>l’accesso alla rete</li>
+<li>script API</li>
+<li>l’archiviazione dei dati e i cookie.</li>
+</ul>
+<h3 id="accesso-alla-rete">Accesso alla rete</h3>
+<p>Le <strong>scritture cross-origin</strong> sono in genere <strong>consentite</strong>, si tratta di inviare dati verso un’altra origine senza aspettarsi di ricevere risposta (seguire un link, il reindirizzamento e l’invio di un form).</p>
+<p>L’<strong>embedding cross-origin</strong> è in genere <strong>consentito</strong>, si tratta di inserire risorse di un’altra origine nella pagina corrente per scopi di visualizzazione o funzionalità (immagini, CSS e JavaScript).</p>
+<p>Le <strong>letture cross-origin</strong>, sono in genere <strong>vietate</strong>, si tratta di cercare di accedere o leggere il contenuto di una risorsa da un’altra origine (usare <code>fetch</code> per ottenere dati JSON da un’API su un dominio diverso e leggere la risposta).</p>
+<h3 id="script-api">Script API</h3>
+<p>Alcune API JavaScript consentono ai documenti di fare riferimento l’uno all’altro, ma l’accesso è limitato se i due documenti hanno origine diversa.</p>
+<p>Questa restrizione può essere allentata modificando <code>document.domain</code>, utile quando le pagine web appartenenti a sottodomini diversi devono comunicare.</p>
+<p><img src="https://i.ibb.co/S6bY39h/image.png" alt="https://i.ibb.co/S6bY39h/image.png"></p>
+<h3 id="archiviazione-e-cookie">Archiviazione e cookie</h3>
+<p>Ogni origine ha il proprio spazio di archiviazione.</p>
+<p>Per i cookie, il protocollo è facoltativo e viene considerato il path invece della porta, quindi l’origine viene identificata da <strong>Protocol, host e path</strong>.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
