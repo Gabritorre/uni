@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-12-11_XSS e CSRF</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#xss-e-csrf">XSS e CSRF</a>
+<ul>
+<li><a href="#reflected-xss">Reflected XSS</a></li>
+<li><a href="#stored-xss">Stored XSS</a></li>
+<li><a href="#dom-based-xss">DOM-based XSS</a></li>
+<li><a href="#prevenire-attacchi-xss">Prevenire attacchi XSS</a></li>
+<li><a href="#csrf">CSRF</a></li>
+<li><a href="#prevenire-attacchi-csrf">Prevenire attacchi CSRF</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="xss-e-csrf">XSS e CSRF</h1>
+<p>Il <strong>Cross-Site Scripting</strong> (XSS) è un attacco di <strong>injection di codice all’interno di pagine web</strong> che può portare a:</p>
+<ul>
+<li>leak di informazioni sensibili</li>
+<li>controllo dell’applicazione</li>
+<li>il dirottamento della sessione</li>
+</ul>
+<p>Il codice iniettato viene <strong>eseguito nel browser della vittima</strong>. XSS bypassa la <em>Same Origin Policy</em> (SOP), consentendo al codice iniettato di accedere direttamente a qualsiasi informazione della pagina vulnerabile, inclusi i cookie di sessione.</p>
+<p><img src="https://i.ibb.co/5K2rm4V/image.png" alt="https://i.ibb.co/5K2rm4V/image.png"></p>
+<p>Esistono tre tipi di vulnerabilità XSS che differiscono in base a come viene iniettato il codice e se esso è persistente o meno:</p>
+<ul>
+<li><strong>Reflected XSS</strong></li>
+<li><strong>Stored XSS</strong></li>
+<li><strong>DOM-based XSS</strong></li>
+</ul>
+<h2 id="reflected-xss">Reflected XSS</h2>
+<p>Assumiamo che la pagina web manda una richiesta al server incorporando l’input dell’utente come parte della richiesta, il server risponde inviando una pagina html in cui inserisce l’input dell’utente.</p>
+<p>Se l’input che inserisce l’utente contiene del codice (ad esempio uno script JavaScript) allora quando il client riceve la risposta dal server, la nuova pagina html contiene lo script che viene eseguito sulla sua macchina.</p>
+<p>Un esempio tipico in cui si può verificare questo attacco è il seguente:</p>
+<ul>
+<li>la vittima riceve una mail di phishing e clicca su un link verso pagina vulnerabile a XSS: su tale link l’attaccante ha scritto anche lo script javascript</li>
+<li>quando la vittima clicca sul link, il server gli risponde con una pagina html contenente lo script malevolo dell’attaccante</li>
+<li>quando il browser renderizza la pagina html ricevuta, lo script malevolo viene eseguito</li>
+</ul>
+<h3 id="esempio-pratico">Esempio pratico</h3>
+<p>Immaginiamo di avere questo file <code>.php</code> che stampa a schermo i parametri <code>name</code> e <code>surname</code> ottenuti da una richiesta GET (sull’URL).</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"X-XSS-Protection: 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_name</span><span class="token punctuation">(</span><span class="token string">"SESSID1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"Welcome, "</span> <span class="token punctuation">.</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'surname'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+
+</code></pre>
+<p>quindi alla seguente richiesta: <code>http://localhost/greet.php?name=Mario%20&amp;surname=Rossi</code></p>
+<p>otteniamo la seguente pagina web</p>
+<p><img src="https://i.ibb.co/7zPvK4L/image.png" alt="https://i.ibb.co/7zPvK4L/image.png"></p>
+<p>Supponiamo che l’attaccante costruisca un link di questo tipo:</p>
+<p><code>http://localhost/greet.php?name=&lt;script&gt;alert("this come from injected code")&lt;/script&gt;</code></p>
+<p>se la vittima clicca su questo link otterrà la seguente pagina web:</p>
+<p><img src="https://i.ibb.co/ZW408jk/image.png" alt="https://i.ibb.co/ZW408jk/image.png"></p>
+<p>Logicamente dentro <code>&lt;script&gt;…&lt;/script&gt;</code> l’attaccante può mettere ciò che vuole, ad esempio ottenere il cookie dell’utente (se non è flaggato con <code>HttpOnly</code>).</p>
+<p>Per nascondere la reale struttura dei link gli attaccanti possono usare degli <strong>URL shortener</strong>.</p>
+<h2 id="stored-xss">Stored XSS</h2>
+<p>Si verifica quando un’applicazione web memorizza l’input utente inviato al server e lo visualizza in una qualche pagina web, ad esempio un post in un forum.</p>
+<p>Se l’input contiene codice dannoso, questo verrà eseguito ogni volta che un utente visita la pagina infetta.</p>
+<h2 id="dom-based-xss"><strong>DOM-based XSS</strong></h2>
+<p>Simile a reflected XSS, ma lo script non viene aggiungo alla pagina html durante la sua creazione nel server ma avviene lato client a causa di script esistenti sul client che ad esempio processano i parametri dell’URL per fare delle azioni.</p>
+<h3 id="esempio-pratico-1">Esempio pratico</h3>
+<p>Immaginiamo di avere questo file <code>.html</code> che contiene uno script JavaScript che crea il primo elemento di un campo <code>&lt;select&gt;&lt;/select&gt;</code> in modo dinamico leggendo il parametro <code>default</code> nell’URL:</p>
+<pre class=" language-html"><code class="prism  language-html">
+Select your language:
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>
+			<span class="token string">"&lt;OPTION value=1&gt;"</span>
+			<span class="token operator">+</span> <span class="token function">decodeURI</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>
+			document<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"default="</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+			<span class="token operator">+</span> <span class="token string">"&lt;/OPTION&gt;"</span>
+		<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;OPTION value=2&gt;English&lt;/OPTION&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">&gt;</span></span>
+
+</code></pre>
+<p>Una richiesta innocente è la seguente <code>http://localhost/page.html?default=Franch</code> che genera la seguente pagina:</p>
+<p><img src="https://i.ibb.co/Z89wQr4/image.png" alt="https://i.ibb.co/Z89wQr4/image.png"></p>
+<p>Mentre una richiesta malevola può essere la seguente <code>http://localhost/page.html?default=&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code> che genera la seguente pagina</p>
+<p><img src="https://i.ibb.co/r3x9YfQ/image.png" alt="https://i.ibb.co/r3x9YfQ/image.png"></p>
+<h2 id="prevenire-attacchi-xss"><strong>Prevenire attacchi XSS</strong></h2>
+<p>Per prevenire attacchi XSS è importante fare:</p>
+<ul>
+<li><strong>Validazione dell’output:</strong> codificare i caratteri HTML (ad esempio, con htmlspecialchars in PHP) ed evitare di inserire input esterni direttamente dentro script JS.</li>
+<li><strong>Validazione dell’input:</strong> consentire solo ciò che è ci si aspetta in termini di lunghezza, caratteri e corrispondenza con le espressioni regolari. Utilizzare delle <em>whitelist</em> sull’input quando possibile.</li>
+</ul>
+<p>controllare la presenza di “</p><p>Sono inoltre molto importanti le seguenti pratiche:</p>
+<ul>
+<li><strong>Mettere il flag</strong> <code>HttpOnly</code> <strong>ai cookie:</strong> impediscono agli script di leggere i cookie di sessione, proteggendoli dagli attacchi XSS.</li>
+<li><strong>Content Security Policy (CSP):</strong> specifica i domini fidati per gli script e può disabilitare gli script inline.</li>
+<li><strong>XSS Auditor</strong> (ormai deprecato)<strong>:</strong> blocca il codice nella pagina web che appare anche nella richiesta, mitigando gli attacchi XSS reflected.</li>
+</ul>
+<h2 id="csrf">CSRF</h2>
+<p><strong>Cross-Site Request Forgery (CSRF)</strong> è un attacco in cui l’attaccante crea richieste dannose per un’applicazione web in cui <strong>l’utente è attualmente autenticato</strong>.</p>
+<p>Il punto cruciale è che i siti web non possono distinguere se le richieste provenienti da utenti già autenticati siano state originate da un’interazione esplicita dell’utente o meno.</p>
+<p>CSRF è un attacco di integrità e <strong>non è bloccato dalla Same Origin Policy (SOP).</strong></p>
+<p><strong>Scenario tipico di un attacco CSRF:</strong></p>
+<p><img src="https://i.ibb.co/BKkJhs2/image.png" alt="https://i.ibb.co/BKkJhs2/image.png"></p>
+<ul>
+<li>Un utente è autenticato su un’applicazione web, ad esempio il suo sito di banking online.</li>
+<li>L’utente clicca su un link su un sito malevolo.</li>
+<li>Il sito web malevolo invia una richiesta all’applicazione web vulnerabile, ad esempio per effettuare un bonifico.</li>
+<li>Il browser dell’utente invia la richiesta all’applicazione web, includendo i cookie di autenticazione.</li>
+<li>L’applicazione web elabora la richiesta, credendo che provenga dall’utente, ed esegue l’operazione.</li>
+</ul>
+<h2 id="prevenire-attacchi-csrf"><strong>Prevenire attacchi</strong> CSRF</h2>
+<p>Diverse tecniche possono essere utilizzate per prevenire gli attacchi CSRF:</p>
+<ul>
+<li>
+<p><strong>Token anti-CSRF:</strong> un valore casuale associato alla sessione dell’utente e rigenerato a ogni richiesta. Il token è nascosto in ogni form e, quando il form viene inviato, il token viene confrontato con quello corrente. L’operazione è consentita solo se corrispondono.</p>
+<p>Il token anti-CSRF può anche essere salvato in un cookie del browser (variante <em>stateless</em>).</p>
+<p><img src="https://i.ibb.co/C9VR8tY/image.png" alt="https://i.ibb.co/C9VR8tY/image.png"></p>
+</li>
+<li>
+<p><strong>Uso degli header</strong> <code>Origin</code> ****e <code>Referer</code>: l’header <code>Origin</code> è stato introdotto specificamente per prevenire CSRF, contenendo solo l’origine e non informazioni sensibili. Il server può verificare che l’origine corrisponda a quella prevista. Se <code>Origin</code> non è presente, è possibile controllare il <code>Referer</code>.</p>
+<p><img src="https://i.ibb.co/bBbq0tB/image.png" alt="https://i.ibb.co/bBbq0tB/image.png"></p>
+</li>
+<li>
+<p><strong>Uso di header personalizzati:</strong> ad esempio per le richieste AJAX, si può verificare la presenza dell’header <code>X-Requested-With</code> con valore <code>XMLHttpRequest</code>. Questo funziona tale header non è impostabile da origini diverse da quella originale.</p>
+</li>
+<li>
+<p><strong>Interazione dell’utente:</strong> per operazioni critiche, come i operazioni bancarie, è consigliabile richiedere un’<strong>interazione esplicita dell’utente</strong> come: riautenticazione, l’utilizzo di <em>One-Time Password</em> o l’inserimento di input extra (ad esempio, CAPTCHA).</p>
+<p>L’attaccante non sarà in grado di risolvere questi controlli prima di effettuare la richiesta e quindi non riuscirà nel suo intento.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
