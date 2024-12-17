@@ -1,0 +1,278 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-11-18_Classi</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#classi">Classi</a>
+<ul>
+<li><a href="#primo-modo-factory-function">Primo modo: factory function</a></li>
+<li><a href="#secondo-modo-costruttore">Secondo modo: costruttore</a></li>
+<li><a href="#terzo-modo-keyword-class">Terzo modo: keyword class</a></li>
+<li><a href="#metodi-statici">Metodi Statici</a></li>
+<li><a href="#campi-di-una-classe">Campi di una classe</a></li>
+<li><a href="#sottoclassi">Sottoclassi</a></li>
+<li><a href="#differenze-tra-un-linguaggio-orientato-agli-oggetti-e-javascript">Differenze tra un linguaggio orientato agli oggetti e JavaScript</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="classi">Classi</h1>
+<p>In JavaScript una classe è un insieme di oggetti che ereditano delle proprietà dallo stesso oggetto prototype.</p>
+<p>Non sono quindi dei template che rappresentano il tipo degli oggetti, come avviene nei linguaggi orientati agli oggetti.</p>
+<p>Vediamo diversi modi per creare classi in JavaScript</p>
+<h2 id="primo-modo-factory-function">Primo modo: factory function</h2>
+<p>Voglio costruire una classe di oggetti che rappresentano un range di valori.</p>
+<p>Ricordiamo che un modo per creare nuovi oggetti era usare <code>Object.create(my_prototype)</code>.</p>
+<p>Se costruiamo un nostro prototype e una funzione (generalmente riferita come <em>factory function</em>) che sfrutta <code>Object.create()</code> per creare nuovi  oggetti a partire dal nostro prototype abbiamo creato una classe.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"> <span class="token comment">// This is a factory function that returns a new range object.</span>
+ <span class="token keyword">function</span> <span class="token function">range</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		<span class="token comment">// Use Object.create() to create an object that inherits from the </span>
+		<span class="token comment">// prototype object defined below. The prototype object is stored as </span>
+		<span class="token comment">// a property of this function</span>
+		<span class="token keyword">let</span> r <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>range<span class="token punctuation">.</span>methods<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+		
+		<span class="token comment">// Store the start and end points of this new range object. </span>
+		<span class="token comment">// These are noninherited properties that are unique to this object.</span>
+		r<span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span> 
+		r<span class="token punctuation">.</span>to <span class="token operator">=</span> to<span class="token punctuation">;</span> 
+	
+		<span class="token keyword">return</span> r<span class="token punctuation">;</span>
+ <span class="token punctuation">}</span> 
+
+<span class="token comment">// This prototype object defines methods inherited by all range objects.</span>
+range<span class="token punctuation">.</span>methods <span class="token operator">=</span> <span class="token punctuation">{</span>
+		<span class="token comment">// Return true if x is in the range, false otherwise </span>
+		<span class="token function">includes</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">&lt;=</span> x <span class="token operator">&amp;&amp;</span> x <span class="token operator">&lt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+		
+		<span class="token comment">// Return a string representation of the range</span>
+		<span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"("</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">+</span> <span class="token string">"..."</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+ <span class="token punctuation">}</span><span class="token punctuation">;</span> 
+
+<span class="token comment">// Here are example uses of a range object.</span>
+<span class="token keyword">let</span> r <span class="token operator">=</span> <span class="token function">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>      
+r<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>             <span class="token comment">// =&gt; true: 2 is in the range</span>
+r<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment">// =&gt; "(1...3)"</span>
+</code></pre>
+<p>Nell’esempio viene definita una funzione <code>range</code> che crea nuovi oggetti.</p>
+<p>Dato che la funzione range è a sua volta un oggetto, possiamo aggiungere alla funzione un campo <code>methods</code> in cui definire il prototype degli oggetti che verranno creati. Nota che <code>methods</code> è a sua volta un oggetto in cui vengono definiti dei campi (in particolare dei metodi) che ogni oggetto creato con prototype <code>methods</code> condividerà.</p>
+<p>Vediamo quindi come gli <strong>oggetti ereditano direttamente da altri oggetti</strong>.</p>
+<h2 id="secondo-modo-costruttore">Secondo modo: costruttore</h2>
+<p>Questo modo è quello che veniva utilizzato prima dell’introduzione della keyword <code>class</code>.</p>
+<p>Il <strong>costruttore</strong> è una funzione che si occupa di inizializzare gli oggetti appena creati.</p>
+<p>I costruttori invocati con la keyword <code>new</code> creano automaticamente un nuovo oggetto, quindi nel corpo del costruttore è solo necessario inizializzare i campi.</p>
+<p>È impostante sottolineare che tra tutti gli oggetti <strong>solamente le funzioni possiedono un campo chiamato</strong> <code>prototype</code> <strong>che contiene l’oggetto prototype</strong>, che viene usato quando la funzione viene invocato con un <code>new</code> per impostare il prototype del nuovo oggetto creato. Mentre gli oggetti che non sono funzioni hanno un prototipo interno ma non hanno un campo <code>prototype</code>.</p>
+<p>Voglio costruire una classe di oggetti che rappresentano un range di valori.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// This is a constructor function.</span>
+<span class="token comment">// Note that it does not create or return the object. It just initializes 'this'.</span>
+<span class="token keyword">function</span> <span class="token function">Range</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+	<span class="token comment">// Store the start and end points of this new range object. </span>
+	<span class="token comment">// These are noninherited properties that are unique to this object. </span>
+	<span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span>
+	<span class="token keyword">this</span><span class="token punctuation">.</span>to <span class="token operator">=</span> to<span class="token punctuation">;</span>
+<span class="token punctuation">}</span> 
+
+<span class="token comment">// All Range objects inherit from the following object.</span>
+<span class="token comment">// Note that the property name must be "prototype" for this to work.</span>
+Range<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token punctuation">{</span> 
+	<span class="token comment">// Return true if x is in the range, false otherwise </span>
+	includes<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">&lt;=</span> x <span class="token operator">&amp;&amp;</span> x <span class="token operator">&lt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+	
+	<span class="token comment">// Return a string representation of the range </span>
+	toString<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"("</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">+</span> <span class="token string">"..."</span> <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to <span class="token operator">+</span> <span class="token string">")"</span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
+
+<span class="token comment">// Here are example uses of this new Range class</span>
+<span class="token keyword">let</span> r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+r<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>             <span class="token comment">// =&gt; true: 2 is in the range</span>
+r<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment">// =&gt; "(1...3)"</span>
+</code></pre>
+<p>Nota come il costruttore per convenzione si indica con l’iniziale maiuscola.</p>
+<p>L’oggetto viene creato sul <code>new</code>, e nel costruttore ci possiamo riferire all’oggetto tramite la keyword <code>this</code>.</p>
+<p>Possiamo pensare che il <strong>nome del costruttore sia il nome della classe</strong>.</p>
+<h3 id="instanceof">Instanceof</h3>
+<p><code>Instanceof</code> è un operatore che alla sua sinistra ha un oggetto e a destra un costruttore (che in un certo senso da il nome alla classe).</p>
+<p>Serve per testare l’appartenenza di un oggetto ad una classe:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx">r <span class="token keyword">instanceof</span> <span class="token class-name">Range</span>   <span class="token comment">// =&gt; true: r inherits from Range.prototype</span>
+</code></pre>
+<p>l’appartenenza non deve necessariamente essere diretta: cioè se <code>r</code> eredita da un oggetto, che a sua volta eredita da <code>Range.prototype</code> verrà valutata comunque come <code>true</code>.</p>
+<p>Siccome si guarda il prototype del costruttore e non il costruttore in sè, anche il seguente caso restituisce <code>true</code>:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"> <span class="token keyword">function</span> <span class="token function">Strange</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+ Strange<span class="token punctuation">.</span>prototype <span class="token operator">=</span> Range<span class="token punctuation">.</span>prototype<span class="token punctuation">;</span>
+ 
+ s <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Strange</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+ s <span class="token keyword">instanceof</span> <span class="token class-name">Range</span>   <span class="token comment">// =&gt; true</span>
+</code></pre>
+<h2 id="terzo-modo-keyword-class">Terzo modo: keyword class</h2>
+<p>Questo è il modo più moderno per fare le classi</p>
+<p>Nonostante il leggero cambio di sintassi il funzionamento alla base non cambia rispetto ai modi precedenti, la keyword <code>class</code> è solo un zucchero sintattico completamente equivalente al secondo modo con il costruttore che abbiamo visto.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span> 
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token comment">// Store the start and end points of this new range object. </span>
+        <span class="token comment">// These are noninherited properties that are unique to this object. </span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>to <span class="token operator">=</span> to<span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+ 
+    <span class="token comment">// Return true if x is in the range, false otherwise  </span>
+    <span class="token function">includes</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">&lt;=</span> x <span class="token operator">&amp;&amp;</span> x <span class="token operator">&lt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token punctuation">;</span> <span class="token punctuation">}</span> 
+ 
+    <span class="token comment">// Return a string representation of the range </span>
+    <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">...</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)`</span></span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span> 
+ 
+<span class="token comment">// Here are example uses of this new Range class</span>
+<span class="token keyword">let</span> r <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+r<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>             <span class="token comment">// =&gt; true: 2 is in the range</span>
+r<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span>              <span class="token comment">// =&gt; "(1...3)"</span>
+</code></pre>
+<p>In questo caso il corpo della classe contiene il costruttore e i campi aggiuntivi del prototype che avranno gli oggetti.</p>
+<p>È importante sottolineare che “costructor” è il nome obbligatorio per indicare il costruttore ma non è il vero e proprio nome della funzione costruttore, questo perché viene creata automaticamente una variabile chiamata come la classe, in questo caso <code>Range</code>, e gli viene assegnata la funzione costruttore. Quindi si può invocare il costruttore sempre chiamando <code>new Range()</code>.</p>
+<p>Nota che la dichiarazione di una classe in questo modo non è <em>hoisted</em>, non è quindi possibile istanziare un oggetto della classe prima di aver dichiarato la classe.</p>
+<h2 id="metodi-statici"><strong>Metodi Statici</strong></h2>
+<p>Un <strong>metodo statico</strong> (o metodo di classe) viene definito all’interno di una classe utilizzando <code>static</code> prima della dichiarazione del metodo.</p>
+<p>I metodi statici definiti nella classe non vanno a finire dentro l’oggetto prototype, quindi gli oggetti di tale classe non avranno tali metodi nel loro prototype.</p>
+<p>Per invocare i metodi statici bisogna passare attraverso la classe stessa (il suo costruttore).</p>
+<p>Per esempio:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span> 
+    <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+        <span class="token comment">// Store the start and end points of this new range object. </span>
+        <span class="token comment">// These are noninherited properties that are unique to this object. </span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span> 
+        <span class="token keyword">this</span><span class="token punctuation">.</span>to <span class="token operator">=</span> to<span class="token punctuation">;</span> 
+    <span class="token punctuation">}</span> 
+ 
+    <span class="token comment">// Return true if x is in the range, false otherwise  </span>
+    <span class="token function">includes</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">&lt;=</span> x <span class="token operator">&amp;&amp;</span> x <span class="token operator">&lt;=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token punctuation">;</span> <span class="token punctuation">}</span> 
+ 
+    <span class="token comment">// Return a string representation of the range </span>
+    <span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`(</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">...</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>to<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">)`</span></span><span class="token punctuation">;</span> <span class="token punctuation">}</span>
+    
+		<span class="token keyword">static</span> <span class="token function">parse</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		    <span class="token keyword">let</span> matches <span class="token operator">=</span> s<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token regex">/^\((\d+)\.\.\.(\d+)\)$/</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>matches<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		        <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">TypeError</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Cannot parse Range from "</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>s<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">".`</span></span><span class="token punctuation">)</span>
+		    <span class="token punctuation">}</span>
+		    <span class="token keyword">return</span> <span class="token keyword">new</span> <span class="token class-name">Range</span><span class="token punctuation">(</span><span class="token function">parseInt</span><span class="token punctuation">(</span>matches<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">parseInt</span><span class="token punctuation">(</span>matches<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span> 
+
+<span class="token keyword">let</span> r <span class="token operator">=</span> Range<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'(1...10)'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Returns a new Range object</span>
+r<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span><span class="token string">'(1...10)'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>             <span class="token comment">// TypeError: r.parse is not a function</span>
+</code></pre>
+<h2 id="campi-di-una-classe"><strong>Campi di una classe</strong></h2>
+<p>Se si vuole <strong>definire un campo</strong> di classe, si può fare nel costruttore (tecnica vecchia) oppure nel corpo della classe assieme ai metodi (tecnica nuova).</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Buffer</span> <span class="token punctuation">{</span> 
+		size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+		capacity <span class="token operator">=</span> <span class="token number">4096</span><span class="token punctuation">;</span> 
+		buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>capacity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nota che le inizializzazioni vengono comunque fatte all’interno di un costruttore implicito.</p>
+<p>È comunque necessario usare <code>this</code> quando si vuole accedere ai campi.</p>
+<p>È possibile anche definire <strong>campi privati</strong>, i cui nomi iniziano con <code>#</code>.</p>
+<p>Questi campi sono <strong>utilizzabili solo all’interno del corpo della classe</strong>, e quindi inaccessibili per qualsiasi codice al di fuori del corpo della classe.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Buffer</span> <span class="token punctuation">{</span> 
+		#size <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> 
+		capacity <span class="token operator">=</span> <span class="token number">4096</span><span class="token punctuation">;</span> 
+		buffer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>capacity<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		
+		<span class="token keyword">get</span> <span class="token function">size</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>#size<span class="token punctuation">;</span> <span class="token punctuation">}</span>  <span class="token comment">// read-only getter</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Anche i <strong>campi</strong> possono essere <strong>statici</strong> e si comporteranno come i metodi statici, cioè si accedono tramite la classe.</p>
+<h2 id="sottoclassi">Sottoclassi</h2>
+<p>Se si vuole definire una classe come sottoclasse da un’altra classe si può usare la keyword <code>extends</code></p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// A Span is like a Range, but instead of initializing it with</span>
+<span class="token comment">// a start and an end, we initialize it with a start and a length</span>
+<span class="token keyword">class</span> <span class="token class-name">Span</span> <span class="token keyword">extends</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span> 
+	<span class="token function">constructor</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> length<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		<span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">&gt;=</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+			<span class="token keyword">super</span><span class="token punctuation">(</span>start<span class="token punctuation">,</span> start <span class="token operator">+</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span> 
+			<span class="token keyword">super</span><span class="token punctuation">(</span>start <span class="token operator">+</span> length<span class="token punctuation">,</span> start<span class="token punctuation">)</span><span class="token punctuation">;</span> 
+		<span class="token punctuation">}</span> 
+	<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo caso <code>Span</code> si dice <strong>sottoclasse</strong>, mentre <code>Range</code> si dice <strong>superclasse</strong>.</p>
+<p>Le istanze di <code>Span</code> ereditano i metodi di <code>Range</code>. Inoltre <code>Span</code> può definirsi altri metodi e sovrascrivere quelli ereditati.</p>
+<p>La keyword <code>super</code> viene utilizzata per invocare il costruttore della superclasse, inoltre in caso in cui dei metodi siano stati sovrascritti, utilizzando <code>super</code> si può invocare la versione del metodo della superclasse</p>
+<p>Note su <code>super</code>:</p>
+<ul>
+<li>Se si definisce una classe con <code>extends</code>, il costruttore della sottoclasse <strong>deve</strong> usare <code>super()</code> per invocare il costruttore della superclasse.</li>
+<li>Se non si definisce un costruttore nella sottoclasse, ne verrà definito automaticamente uno che prende i valori passati e li passa a <code>super()</code>.</li>
+<li>Non si può usare <code>this</code> nel costruttore prima di aver invocato <code>super()</code>.</li>
+<li>Quando si usa <code>super()</code> all’interno del costruttore di una sottoclasse, il costruttore della superclasse vedrà il costruttore della sottoclasse come valore di <code>new.target</code>.</li>
+</ul>
+<h3 id="new.target">new.target</h3>
+<p><code>new.target</code> è una espressione utile all’interno dei costruttori, essa assume valori diversi in base al tipo di invocazione:</p>
+<ul>
+<li>è <code>undefined</code> se la funzione viene invocata <strong>senza</strong> il <code>new</code>, quindi come funzione normale e non come costruttore</li>
+<li>è il <strong>riferimento al costruttore</strong> quando viene invocato con <code>new</code></li>
+<li>è il <strong>riferimento al costruttore della sottoclasse</strong> quando viene invocato con <code>super</code></li>
+</ul>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Base</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">new</span><span class="token punctuation">.</span>target <span class="token operator">===</span> Base<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">Error</span><span class="token punctuation">(</span><span class="token string">"La classe 'Base' non può essere direttamente istanziata."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">"Costruttore chiamato da una sottoclasse."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nota: con la definizione di classe con la keyword <code>class</code> non è possibile invocare il costruttore senza <code>new</code>, quindi <code>new.target</code> potrà assumere il valore <code>undefined</code> solo nei modi vecchi di creare classi.</p>
+<h2 id="differenze-tra-un-linguaggio-orientato-agli-oggetti-e-javascript"><strong>Differenze tra un linguaggio orientato agli oggetti e JavaScript</strong></h2>
+<ol>
+<li>
+<p><strong>significato di classe</strong></p>
+<p>In JavaScript una classe è un insieme di oggetti che ereditano delle proprietà dallo stesso oggetto prototype.</p>
+<p>Non sono quindi dei template che rappresentano il tipo degli oggetti, come avviene nei linguaggi orientati agli oggetti.</p>
+</li>
+<li>
+<p><strong>Mancanza di Information Hiding</strong></p>
+<p>In JavaScript manca il meccanismo di <em>information hiding</em>, ovvero la protezione dei dati interni di un oggetto tramite modificatori di accesso (come <code>private</code> o <code>protected</code>).</p>
+</li>
+<li>
+<p><strong>Le Funzioni sono Campi</strong></p>
+<p>In JavaScript, un oggetto ha solo campi e anche le funzioni sono trattate come campi.</p>
+<p>Le funzioni stesse sono oggetti, dove i parametri sono campi.</p>
+</li>
+<li>
+<p><strong>Ereditarietà Basata su Prototipi</strong></p>
+<p>In JavaScript non esistono classi vere e proprie che fungono da template per gli oggetti.</p>
+<p>Gli oggetti ereditano direttamente da altri oggetti tramite il <strong>meccanismo dei prototipi</strong>.</p>
+<p>Nei linguaggi OOP, invece, l’ereditarietà è basata su classi.</p>
+</li>
+<li>
+<p><strong>Modificabilità Dinamica degli Oggetti e dei prototipi</strong></p>
+<p>In OOP, gli oggetti sono istanze di una classe che definisce il loro <strong>tipo</strong>.</p>
+<p>In JavaScript, gli oggetti possono essere modificati dinamicamente a runtime aggiungendo o rimuovendo proprietà e metodi.</p>
+<p>Analogamente anche i <strong>prototipi</strong> in JavaScript possono essere modificati dinamicamente a runtime, permettendo di alterare l’ereditarietà anche dopo la creazione dell’oggetto.</p>
+</li>
+<li>
+<p><strong>Mancanza di Overloading dei Metodi</strong></p>
+<p>In JavaScript non è possibile effettuare l’<strong>overload</strong> dei metodi, ovvero definire più metodi con lo stesso nome ma con un numero o tipo diverso di parametri.</p>
+<p>Se si ridefinisce un metodo con lo stesso nome, l’ultima definizione sovrascrive le precedenti.</p>
+</li>
+</ol>
+
+    </div>
+  </div>
+</body>
+
+</html>
