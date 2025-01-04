@@ -25,9 +25,9 @@ $$
 
 Ovviamente ogni componente ha il proprio costo fisso. Può anche accadere che il costo fisso dipenda da più componenti, ad esempio se $x_1 > 0 \lor x_2 >0 \lor x_6>0$ allora si paga il costo fisso.
 
-l’obiettivo è quindi di minimizzare la funzione considerando anche i costi fissi che hanno le componenti oltre ai costi variabili.
+L’obiettivo è quindi di minimizzare la funzione considerando anche i costi fissi che hanno le componenti oltre ai costi variabili.
 
-Cioè se $x_i$ è “attivo” ($>0$) allora pago un costo fisso $P$ più il costo variabile in base al valore specifico che assume $x_i$
+Cioè se $x_i$ è “attivo” (quindi $>0$) allora pago un costo fisso $P$ più il costo variabile in base al valore specifico che assume $x_i$ (il costo variabile è dato da $c_i\cdot x_i$).
 
 Considerando una sola componente possiamo mostrare in questo grafico di come se $x_i > 0$ allora bisogna pagare un costo fisso.
 
@@ -45,9 +45,9 @@ $$
 $$
 
 Nella funzione obiettivo abbiamo quindi aggiunto il costo fisso $P$ moltiplicato per una variabile $y$ la quale può essere $0$ oppure $1$, cioè il suo ruolo è quello di attivare/disattivare il costo fisso. 
-Dai vincoli notiamo che $y\geq 0$ quando $x_i=0$ e dato che il problema è di minimizzazione $y$ verrà impostato al valore più basso possibile, quindi $y= 0$.
+Dai vincoli notiamo che $y\geq 0$ quando $x_i=0$ e dato che il problema è di minimizzazione $y$ verrà impostato al valore più basso possibile, ovvero $y= 0$, di conseguenza il costo fisso viene ignorato.
 
-Altrimenti, quando $x_i>0$, si avrà $y$ maggiore uguale ad una quantità compresa tra $0$ e $1$, quindi potrà essere solamente uguale a $1$ (perché $y$ è $0$ oppure $1$).
+Altrimenti, quando $x_i>0$, si avrà $y$ maggiore uguale ad una quantità compresa tra $0$ (escluso) e $1$, quindi potrà essere solamente uguale a $1$ (perché $y$ è $0$ oppure $1$).
 
 Nota che $M \gg 1$ è una simbologia che in questo contesto sta a significare che $M$ è un valore molto maggiore rispetto al più grande valore che può assumere $x_i$.
 
@@ -202,7 +202,7 @@ Possiamo notare quindi come se la variabile è $0$ allora il rispettivo vincolo 
 
 ### Almeno un vincolo
 
-Se vogliamo riformulare li problema in modo che **almeno un vincolo** venga considerato
+Vogliamo riformulare li problema in modo che **almeno un vincolo** venga considerato:
 
 $$
 \begin{aligned}    &\min \ c^T x\\
@@ -214,7 +214,7 @@ $$
 \end{aligned}
 $$
 
-In questo caso cambia solamente la condizione $\alpha + \beta \leq 1$
+Cambia solamente la condizione $\alpha + \beta \leq 1$
 
 tale condizione infatti vale perché con:
 
@@ -226,7 +226,7 @@ L’ultimo caso in cui entrambi i vincoli sono $1$, cioè che vengono entrambi i
 
 ### Al più un vincolo
 
-Se vogliamo riformulare li problema in modo che **al più un vincolo** venga considerato
+Vogliamo riformulare li problema in modo che **al più un vincolo** venga considerato
 
 $$
 \begin{aligned}    &\min \ c^T x\\
@@ -238,7 +238,7 @@ $$
 \end{aligned}
 $$
 
-In questo caso cambia solamente la condizione $\alpha + \beta \geq 1$
+Cambia solamente la condizione $\alpha + \beta \geq 1$
 
 tale condizione infatti vale perché con:
 
@@ -246,7 +246,7 @@ tale condizione infatti vale perché con:
 - $\alpha = 1$ e $\beta = 0$ allora solo il secondo vincolo rimane, e quindi $1+0 \geq 1$ è soddisfatto
 - $\alpha = 0$ e $\beta = 1$ allora solo il primo vincolo rimane, e quindi $0+1 \geq 1$ è soddisfatto
 
-L’ultimo caso in cui entrambi i vincoli sono $0$, cioè che rimangono entrambi, non soddisferebbe la condizione $1+1 \leq 1$
+L’ultimo caso in cui entrambi i vincoli sono $0$, cioè che rimangono entrambi, non soddisferebbe la condizione $0+0 \geq 1$
 
 ### Caso con più vincoli
 
@@ -265,7 +265,7 @@ Generalizzando le specifiche appena fatte considerando però $m$ vincoli possiam
     \end{aligned}
     $$
     
-    In questo modo la condizione $\alpha_1 +...+ \alpha_m = m-k$ sta a significare che ci sono $m-k$ vincoli uguali a $1$ e i $k$ rimanente saranno a $0$.
+    In questo modo la condizione $\alpha_1 +...+ \alpha_m = m-k$ sta a significare che ci sono $m-k$ vincoli uguali a $1$ e i $k$ rimanenti saranno a $0$.
     
 - almeno $k$ vincoli (con $k \leq m$)
     

@@ -32,7 +32,7 @@ Nella seguente immagine viene rappresentato in blu il poliedro $Q_i$ e come quad
 
 Nota: il fatto che i vertici del poliedro facciano tutti parte di $S_i$ è solamente un caso, non è sempre così.
 
-Mentre con le variabili reali si può ottenere un punto di minimo preciso all’interno del poliedro, con variabili intere non è detto che il minimo si trovi in un punto a coordinate intere e quindi verrà selezionato un minimo approssimativo a quello vero.
+Mentre con le variabili reali si può ottenere un punto di minimo preciso all’interno del poliedro, con variabili intere non è detto che il minimo si trovi in un punto a coordinate intere e quindi verrà selezionato un minimo approssimativo a quello vero ma che ha coordinate intere.
 
 In modo matematico se 
 
@@ -57,18 +57,18 @@ Allora sicuramente si avrà $f(\tilde x_0) \leq f(\overline x_0)$, cioè $\overl
 
 ## Idea del metodo Branch and Bound
 
-Il metodo Branch and Bound è una tecnica iterativa che partiziona il problema iniziale in più sottoproblemi (branching), stima un limite superiore o inferiore della funzione obiettivo in ogni sottoproblema (bounding) e utilizza queste stime per escludere i sottoproblemi che non avranno una soluzione migliore di quella attuale.
+Il metodo Branch and Bound è una tecnica iterativa che partiziona il problema iniziale in più sottoproblemi (*branching*), stima un limite superiore o inferiore della funzione obiettivo in ogni sottoproblema (*bounding*) e utilizza queste stime per escludere i sottoproblemi che non avranno una soluzione migliore di quella attuale.
 
 È importante sottolineare che in questo metodo **non viene mai risolto un problema a variabili intere** ma sempre la versione del problema lineare (a variabili continue).
 
-Durante l’algoritmo la regione ammissibile di punti $S_0$ viene partizionata in sotto-regioni $S_i, i = 1, 2, …, k$ in modo che:
+Durante l’algoritmo la regione ammissibile di punti iniziale $S_0$ viene partizionata in sotto-regioni $S_i, i = 1, 2, …, k$ in modo che:
 
 $$
 S_0 = \bigcup_{i=1}^{k}S_i\\
 S_i\cap S_j = \emptyset,\hspace{5mm} i,j \in [0, 1, 2, ..., k] \land i \neq j 
 $$
 
-Cioè in regioni non sovrapposte ma che unite comprendono tutti i punti ammissibili.
+Cioè in regioni non sovrapposte e che unite comprendono tutti i punti ammissibili.
 
 L’algoritmo cercherà quindi di trovare una **stima** alla soluzione del sotto-problema detto “aperto” $(P_i)$
 
@@ -88,13 +88,13 @@ $$
 
 ottenendo quindi un punto di minimo $x_i$ per quel sottoproblema rilassato, che sarà sicuramente migliore o al più uguale alla soluzione del sottoproblema $(P_i)$.
 
-La soluzione al problema rilassato potrebbe non essere compatibile con il problema originale, poiché non rispetta la condizione di integrità delle variabili. L’algoritmo utilizza tale soluzione come guida per suddividere lo spazio delle soluzioni e individuare un'eventuale soluzione intera ottima.
+La soluzione al problema rilassato potrebbe non essere compatibile con il problema originale, poiché non rispetta la condizione di integrità delle variabili. L’algoritmo infatti utilizza tale soluzione come guida per suddividere ulteriormente lo spazio delle soluzioni e individuare un'eventuale soluzione intera ottima.
 
 ## Algoritmo
 
-1. Sia $\tilde x$ **l’ottimo corrente** (cioè il punto a coordinate intere migliore trovato fino a questo momento durante l’algoritmo).
+1. Sia $\tilde x$ la variabile che rappresenta **l’ottimo corrente** (cioè il punto a coordinate intere migliore trovato fino a questo momento durante l’algoritmo).
     
-    Tale punto può essere inizializzato attraverso una ispezioni visiva del problema, altrimenti si inizializza come “non noto”
+    Tale punto può essere inizializzato attraverso una ispezioni visiva del problema, oppure si inizializza come “non noto”
     
 2. Sia $\mathcal{L}$ una lista contenente i **problemi aperti**, cioè quelli in cui non si è ancora cercata una soluzione. Tale lista viene inizializzata con il problema iniziale:
     
@@ -103,13 +103,13 @@ La soluzione al problema rilassato potrebbe non essere compatibile con il proble
     $$
     
 3. Si estrae un problema qualsiasi $P_i$ dalla lista $\mathcal{L}$ e risolvo la sua versione rilassata $PL_i$:
-    1. se $PL_i$ **ha soluzione** $x_i$ **non migliore** di $\tilde x$ (cioè $c^T\tilde x\leq c^Tx_i$) **allora chiudo il problema** $P_i$ rimuovendolo dalla lista (se la soluzione continua, e quindi precisa, è peggiore di quella attuale, la versione intera della soluzione sarà addirittura peggiore o al più uguale)
+    1. se $PL_i$ **ha soluzione** $x_i$ **non migliore** di $\tilde x$ (cioè $c^T\tilde x\leq c^Tx_i$) **allora chiudo il problema** $P_i$ rimuovendolo dalla lista (se la soluzione continua, e quindi precisa, è peggiore di quella attuale, la versione intera sarà peggiore o al più uguale)
     2. se $PL_i$ **non può contenere alcuna soluzione** allora chiudo il problema $P_i$ (se non ci sono soluzioni continue non ce ne sono nemmeno di intere)
     3. se $PL_i$ **ha soluzione** $x_i$ **migliore** di $\tilde x$ (cioè $c^T \tilde x > c^Tx_i)$ allora ci sono due possibili casi
-        - se $x_i$ ha tutte le **componenti intere**, allora **si aggiorna l’ottimo corrente** $\tilde x = x_i$ e si chiude il problema $P_i$ rimuovendolo dalla lista
-        - se $x_i$ ha **almeno una componente non intera**, allora si partiziona $P_i$ in due sottoproblemi $P_{i+1}$ e $P_{i+2}$. si rimuove quindi $P_i$ e si inseriscono i due sottoproblemi
+        - se $x_i$ ha già tutte le **componenti intere**, allora **si aggiorna l’ottimo corrente** $\tilde x = x_i$ e si chiude il problema $P_i$ rimuovendolo dalla lista
+        - se $x_i$ ha **almeno una componente non intera**, allora si partiziona $P_i$ in due sottoproblemi $P_{i+1}$ e $P_{i+2}$. si rimuove quindi $P_i$ e si inseriscono i due sottoproblemi.
             
-            Per definire le due partizioni, consideriamo una componente qualsiasi $j$ non intera del vettore soluzione $x_i$ che indichiamo con $x_i^j$ allora i due sottoproblemi saranno:
+            Per definire le due partizioni, consideriamo una componente qualsiasi $j$ non intera del vettore soluzione $x_i$ che indichiamo con $x_i^j$, allora i due sottoproblemi saranno:
             
             $$
             (P_{i+1}): \underset{\begin{array}{lcr}x \in S_i\\
@@ -162,11 +162,11 @@ a_1x_1 + ... + a_nx_n \leq b\\
 \end{array}}{\max}\, c_1x_1 + ... +c_nx_n 
 $$
 
-Per risolvere la versione rilassata possiamo fare le seguenti considerazioni tramite una ispezione visiva (ricordiamo che l’obiettivo è massimizzare la funzione obiettivo e minimizzare il membro di sinistra vincolo):
+Per risolvere la versione rilassata possiamo fare le seguenti considerazioni tramite una ispezione visiva (ricordiamo che l’obiettivo è massimizzare la funzione obiettivo e minimizzare il membro di sinistra del primo vincolo):
 
 1. se $c_j = 0$ allora l’oggetto $j$-esimo non ha utilità e quindi:
     - se $a_j \geq 0$ (cioè l’oggetto $j$ occupa del volume) allora $x_j = 0$ (non porto l’oggetto)
-    - se $a_j < 0$ (possiamo pensare che l’oggetto $j$ si un accessore che aumenta il volume disponibile nello zaino) allora $x_j = 1$ (porto l’oggetto)
+    - se $a_j < 0$ (possiamo pensare che l’oggetto $j$ si un accessorio che aumenta il volume disponibile nello zaino) allora $x_j = 1$ (porto l’oggetto)
 2. se $a_j = 0$ allora l’oggetto $j$-esimo non influenza il volume e quindi:
     - se $c_j \leq 0$ allora $x_j =0$ (non porto l’oggetto)
     - se $c_j > 0$ allora $x_j = 1$ (porto l’oggetto)
@@ -174,7 +174,7 @@ Per risolvere la versione rilassata possiamo fare le seguenti considerazioni tra
 4. se $c_j > 0$ (utile) e $a_j < 0$ (guadagno volume) pongo $x_j = 1$ (porto l’oggetto)
 5. se $c_j < 0$ e $a_j < 0$ non posso determinare $x_j$ ma effettuo un cambio di variabile $x_j = 1-y_j$ con $y_j \in \{0, 1\}$ che attiva o disattiva il vincolo
     
-    In questo modo quando moltiplicherò $c_j \cdot y_j$ e $a_j \cdot y_j$ otterrò una quantità positiva
+    In questo modo quando moltiplicherò $c_j \cdot y_j$ e $a_j \cdot y_j$ otterrò quantità positive
     
 6. se $c_j>0$ e $a_j > 0$ non posso determinare $x_j$
 
@@ -196,7 +196,7 @@ $$
 \sum_{j=1}^{h} a_j \leq b \hspace{5mm} \sum_{j=1}^{h+1}a_j > b
 $$
 
-$h$ mi dice quanti oggetti partendo dal migliore posso portare prima di sforare il volume massimo.
+cioè $h$ mi dice quanti oggetti partendo dal migliore posso portare prima di sforare il volume massimo. Se infatti portassi l’oggetto $h+1$, che è il migliore tra i rimanenti, sforerei il volume dello zaino.
 
 Si determina infine
 
@@ -208,7 +208,7 @@ x_j = 0 & j = h+2, ..., m
 \end{cases}
 $$
 
-I primi $h$ oggetti (seguendo l’ordinamento fatto) li porto.
+I primi $h$ oggetti (seguendo l’ordinamento dal migliore al peggiore) li porto.
 
 Per l’oggetto $h+1$ ne porto solamente una quantità che mi sta nel volume rimanente.
 
@@ -263,7 +263,7 @@ $$
 \underbrace{\frac{3}{1}}_{x_3} \geq \underbrace{\frac{4}{3}}_{x_1} \geq \underbrace{\frac{1}{1}}_{y_5}
 $$
 
-siccome $\frac{3}{1} + \frac{4}{3} = \frac{13}{3}\leq \frac{9}{2}$ e sommandoci $\frac{1}{1}$ sforeremo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$
+siccome $\frac{3}{1} + \frac{4}{3} = \frac{13}{3}\leq \frac{9}{2}$ e sommandoci $\frac{1}{1}$ sforeremmo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$ (i primi due mi stanno ma il terzo no)
 
 allora determiniamo:
 
@@ -271,7 +271,7 @@ allora determiniamo:
 - $x_1 = 1$
 - $y_5 = \frac{4.5 - (1 +3)}{1} = 0.5$
 
-Quindi la soluzione finale è data dai seguenti valori di $x_j$
+Quindi la soluzione finale del problema rilassato è data dai seguenti valori di $x_j$
 
 $$
 x_1 = 1;\hspace{2mm} x_2 = 1;\hspace{2mm} x_3 = 1;\hspace{2mm} x_4 = 0;\hspace{2mm} x_5 = 1-y_5 =0.5;\hspace{2mm} x_6 = 1
