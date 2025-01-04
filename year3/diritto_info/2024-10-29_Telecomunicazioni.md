@@ -1,6 +1,6 @@
 ﻿# Telecomunicazioni
 
-I **principi generali del diritto** rappresentano norme di fondo, riconosciute come universali o di ampio consenso, che guidano l’interpretazione e l'applicazione del diritto stesso. Hanno la principale funzione di essere **Colmativi, cioè** intervengono laddove manca una norma specifica.
+I **principi generali del diritto** rappresentano norme di fondo, riconosciute come universali o di ampio consenso, che guidano l’interpretazione e l'applicazione del diritto stesso. Hanno la principale funzione di essere **Colmativi**, cioè intervengono laddove manca una norma specifica.
 
 In ambito delle **telecomunicazioni**, i principi generali del diritto sono importanti per garantire un equilibrio tra la veloce innovazione tecnologica e la tutela dei diritti fondamentali degli utenti, operatori, e dell'intero sistema.
 

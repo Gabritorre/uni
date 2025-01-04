@@ -10,6 +10,6 @@ Il contratto non deve necessariamente essere un documento scritto, è obbligator
 
 Il contratto nei social network non è regolato dal codice civile, per cui viene detto **contratto atipico**.
 
-Dato che non è regolato ciò che vale sono solo le **clausole del contratto** (fintanto che non si va nell’illecito)
+Dato che non è regolato ciò che ha rilevanza sono solo le **clausole del contratto** (fintanto che non si va nell’illecito)
 
-Se siamo consumatori e quindi utilizziamo social network per la vita quotidiana, siamo protetti da varie norme europee presenti nel codice del consumo
+Se siamo consumatori e quindi utilizziamo social network per la vita quotidiana, siamo protetti da varie norme europee presenti nel codice del consumo.

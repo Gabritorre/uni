@@ -8,7 +8,7 @@ Il motivo principale per cui è necessario proteggere chi crea qualcosa è che s
 
 Il diritto d’autore fornisce due tipi di protezione:
 
-- Il **diritto morale** è il diritto che ha l'autore di rendere pubblica la sua opera, di vietare che sia resa pubblica, di vietare di modificarla (attribuendo le modifiche all’autore) e di essere riconosciuto come autore della stessa, vale per tutta la vita e alla sua morte spetta ai suoi discendenti, e non si può vendere.
+- Il **diritto morale** è il diritto che ha l'autore di rendere pubblica la sua opera, di vietare che sia resa pubblica, di vietare di modificarla (attribuendo le modifiche all’autore) e di essere riconosciuto come autore della stessa. Questo diritto vale per tutta la vita e alla sua morte spetta ai suoi discendenti, e non si può vendere.
 - Il **diritto patrimoniale** è il diritto di utilizzare la propria opera e di farne tutto il guadagno che quell'opera consegue, questo si estingue dopo 70 anni dalla morte dell’autore.
 
 Nota: I diritti patrimoniali si possono cedere ad enti che si occupano della distribuzione. Con la prima vendita di un opera, i diritti di autore si esauriscono
