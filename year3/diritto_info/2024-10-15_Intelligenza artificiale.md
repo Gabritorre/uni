@@ -18,8 +18,8 @@ Definiamo:
 
 - **Dato**: è un fatto o osservazione verificabile, descrivibile con simboli
 - **Informazione**: collezione di dati a cui è associato un **significato**
-- **Coscienza**: informazione a cui è associato un **contesto**
-- **Saggezza**: coscienza a cui è associato un **giudizio**
+- **Conoscenza**: informazione a cui è associato un **contesto**
+- **Saggezza**: Conoscenza a cui è associato un **giudizio**
 
 L’IA sta nel livello di saggezza.
 
