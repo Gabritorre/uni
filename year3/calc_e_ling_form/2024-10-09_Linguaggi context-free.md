@@ -1,5 +1,4 @@
-﻿
-# Linguaggi context-free
+﻿# Linguaggi context-free
 
 Vediamo un nuovo metodo per descrivere linguaggi con struttura ricorsiva, questo metodo si chiama ***Context-Free Grammar*** (CFG).
 
@@ -17,7 +16,7 @@ Le due righe di esempio si chiamano **produzioni**, in particolare significano c
 1. $A$ si può riscrivere come $0A1$ oppure come $B$.
 2. $B$ si può riscrivere come $\#$
 
-per convenzione abbiamo dei simboli detti **non-terminali** (o variabili), che si indicano con lettere maiuscole.
+Per convenzione abbiamo dei simboli detti **non-terminali** (o variabili), che si indicano con lettere maiuscole.
 
 Abbiamo poi dei simboli detti **terminali**, che si indicano con **lettere minuscole, cifre e simboli speciali**
 
@@ -52,7 +51,7 @@ Vediamo delle definizioni formali della teoria dei linguaggi context-free
 **CFG**: Una CFG $G$ è una quadrupla $(V, \Sigma, R, S)$ in cui
 
 - $V$ è un insieme finito di non-terminali
-- $\Sigma$ è un insieme finito di terminali tale che $V \cap \Sigma = \emptyset$ (cioè sono insieme disgiunti)
+- $\Sigma$ è un insieme finito di terminali tale che $V \cap \Sigma = \emptyset$ (cioè sono insiemi disgiunti)
 - $R$ è un insieme finito di produzioni (o regole) dalla forma $A \to w$ dove $A \in V$ e $w \in (V \cup \Sigma)^*$
 - $S \in V$ è lo *start symbol*
 
@@ -64,11 +63,16 @@ $$
 
 ### Terminologia
 
-Siano $u, v, w \in (V \cup \Sigma)^*$ e sia $A\to w \in R$
+Siano $u, v, w \in (V \cup \Sigma)^*$ delle ripetizioni indefinite di terminali e non terminali
+
+e sia $A\to w \in R$ (una produzione)
 
 Diciamo che $uAv$ **produce** $uwv$ con questa simbologia: $uAv \Rightarrow uwv$.
 
-Diciamo che $u$ **deriva** $v$ con questa simbologia: $u \Rightarrow^* v$ se e solo se $u=v$ oppure se esiste una sequenza di riscritture per cui $u \Rightarrow w_1 \Rightarrow w_2 \Rightarrow … \Rightarrow v$
+Diciamo che $u$ **deriva** $v$ con questa simbologia: $u \Rightarrow^* v$ se e solo se:
+
+- $u=v$ oppure
+- se esiste una sequenza di riscritture per cui si ha $u \Rightarrow w_1 \Rightarrow w_2 \Rightarrow … \Rightarrow v$
 
 ## Esempi
 
@@ -113,9 +117,9 @@ Forniamo il CFG con il seguente alfabeto $\Sigma = \{0, 1\}$ per:
 
 Qualche volta una grammatica può generare la stessa stringa in più modi diversi, quando ciò accade diciamo che la CFG è **ambigua**.
 
-In altre parole possiamo dire che una CFG è ambigua se e solo se esiste una stringa $w \in L(G)$ tale che $w$ ha almeno due *parse tree* diversi oppure almeno due derivazioni a sinistra diverse.
+In altre parole possiamo dire che una CFG è ambigua se e solo se esiste una stringa $w \in L(G)$ tale che $w$ ha almeno due *parse tree* diversi oppure almeno due *derivazioni a sinistra* **diverse**.
 
-**derivazione a sinistra**: è un derivazione in cui ad ogni passo la variabile sostituita è quella più a sinistra
+**derivazione a sinistra**: è un derivazione in cui ad ogni passo la variabile sostituita è sempre quella più a sinistra
 
 Ad esempio considerando la grammatica:
 
@@ -127,11 +131,17 @@ genera la stessa stringa con due parse tree diversi:
 
 ![https://i.ibb.co/3NKMs2V/image.png](https://i.ibb.co/3NKMs2V/image.png)
 
+## Chiusura dei linguaggi context free
+
+I linguaggi context free **sono chiusi rispetto alle operazioni regolari** (unione, concatenazione e start).
+
+mentre **non** sono chiusi rispetto a **intersezione e complemento**
+
 ## Forma normale di Chomsky
 
 Vediamo una forma semplificata delle CFG, chiamata **forma normale di Chomsky.**
 
-Una CFG è in forma normale Chomsky se e solo se ognuna delle sue produzioni è nella forma:
+Una CFG è in **forma normale Chomsky** se e solo se ognuna delle sue produzioni è nella forma:
 
 $$
 A \to BC
@@ -167,20 +177,20 @@ Tale algoritmo farà delle modifiche alla grammatica, assicurandosi di mantenere
 
 1. Garantiamo che lo *start symbol* non appaia mai sul lato destro delle regole.
 
-	$$
-	\text{Genera un nuovo start symbol } S'\text{ e aggiungi la produzione } S' \to S
-	$$
+$$
+\text{Genera un nuovo start symbol } S'\text{ e aggiungi la produzione } S' \to S
+$$
 
 1. Garantiamo che solamente lo *start symbol* possa avere $\epsilon$-transizioni
     
     $$
-    \text{Elimina le produzioni nella forma } A \to \epsilon \text{ dove }A \text{ non è uno start symbol.}
+    \text{Elimina le produzioni } A \to \epsilon \text{ dove }A \text{ non è il nuovo start symbol.}
     \\
     \\
     \text{Inoltre per tutte le regole che hanno } A \text{ nella parte destra, }\\
-    \text{aggiungi una nuova regola con quell'occorrenza cancellata}
+    \text{aggiungi una nuova regola con quell'occorrenza cancellata.}
     \\
-    \text{ad esempio } R \to uAvAw \text{ introduco delle nuove regole:}
+    \text{Ad esempio per } R \to uAvAw \text{ introduco delle nuove regole:}
     \\
     R\to uvAw \\
     R\to uAvw \\
@@ -189,25 +199,28 @@ Tale algoritmo farà delle modifiche alla grammatica, assicurandosi di mantenere
     
 2. Garantiamo che non ci siano produzioni unitarie, cioè nella forma $A \to B$
 
-	$$
-	\text{Elimina  le regole nella forma } A \to B.
-	\\
-	\text{per ogni regola nella forma } B \to u \text{ introduci una nuova regola:}
-	\\
-	A \to u
-	$$
+$$
+\text{Elimina  le regole nella forma } A \to B.
+\\
+\text{per ogni regola nella forma } B \to u \text{ introduci una nuova regola:}
+\\
+A \to u
+$$
 
 1. Garantiamo che non appaiano regole nella forma $A \to u_1 … u_k$ con $k \geq 3$ dove $u_i$ possono essere sia terminali che non terminali.
 E garantiamo che a destra delle regole non ci sia un misto di terminali e non terminali
-	$$
-	\text{Rimpiazza ogni regola nella forma } A \to u_1 ...u_k \text{ con } k \geq 3 \text{ con le seguenti regole:}\\
-	A_0 \to u_1A_1\\
-	A_1 \to u_2A_2\\
-	...\\
-	A_{k-2} \to u_{k-1} u_k\\
-	\text{in queste nuove regole rimpiazza ogni terminale } u_i \text{ con un nuovo non terminale } U_i\\
-	\text{e aggiungi la regola } U_i \to u_i
-	$$
+    
+    $$
+    \text{Rimpiazza ogni regola nella forma } A \to u_1 ...u_k \text{ con } k \geq 3 \text{ con le seguenti regole:}\\
+    A_0 \to u_1A_1\\
+    A_1 \to u_2A_2\\
+    ...\\
+    A_{k-2} \to u_{k-1} u_k\\
+    \text{nelle regole rimanenti rimpiazza ogni terminale } u_i \\
+    \text{affiancato da un non terminale, con un non terminale } U_i\\
+    \text{e aggiungi la regola } U_i \to u_i
+    $$
+    
 
 **Nota 1**: seguire gli step nell’ordine indicato è fondamentale per evitare che uno step invalidi quelli precedenti.
 
@@ -238,7 +251,7 @@ Seguiamo l’algoritmo:
         - $S \to ASA \, |\,aB\,|\,a$
         - $A \to B \,|\, S \,|\, \epsilon$
     
-    Risultato:
+    Risultato Step 2 intermedio
     
     $S_0 \to S$
     
@@ -251,7 +264,7 @@ Seguiamo l’algoritmo:
     - $A \to B\,|\,S\,|\,\cancel{\epsilon}$
         - $S \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS\,|\,S$
     
-    Risultato:
+    **Risultato Step 2**
     
     $S_0 \to S$
     
@@ -272,7 +285,7 @@ Seguiamo l’algoritmo:
 - Step 3 iterazione 4
     - $A \to \cancel{S}\,|\,b$
         - $A \to b\,|\,ASA\,|\,aB\,|\,a\,|\,SA\,|\,AS$
-- Risultato Step 3
+- **Risultato Step 3**
     
     $S_0 \to ASA \,|\, aB \,|\, a\,|\, SA\,|\, AS$
     

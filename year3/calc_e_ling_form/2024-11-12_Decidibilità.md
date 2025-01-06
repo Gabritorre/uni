@@ -1,5 +1,6 @@
-﻿
-# Decidibilità
+﻿# Decidibilità
+
+## Problemi decidibili
 
 Vediamo la potenza degli algoritmi presentando alcuni problemi che si possono **risolvere in maniera algoritmica**, tali problemi sono detti **problemi decidibili**.
 
@@ -74,7 +75,7 @@ Costruisco un decisore $M$ nel seguente modo:
     2. finché è possibile marcare nuovi stati, marca gli stati che possiedono una transizione in entrata proveniente da stati già marcati
     3. Se ho marcato almeno uno stato accettante allora rifiuta, altrimenti accetta
 
-Nota come il rifiuto avviene se troviamo uno stato accettante raggiungibile, cioè ci sono stringhe che vengono accettate, noi vogliamo accettare se non esistono tali stringhe, cioè quando gli stati accettanti non sono raggiungibili.
+Nota come il rifiuto avviene se troviamo uno stato accettante raggiungibile, cioè ci sono stringhe che vengono accettate, ma noi vogliamo accettare se non esistono tali stringhe, cioè quando gli stati accettanti non sono raggiungibili.
 
 ## Problema 5
 
@@ -170,3 +171,78 @@ Abbiamo quindi che la stringa $w$ viene accettata da $M$ se viene riconosciuta d
 Da questo teorema possiamo organizzare le classi di linguaggio viste fino ad ora nel seguente modo:
 
 ![https://i.ibb.co/Qfz4T0b/image.png](https://i.ibb.co/Qfz4T0b/image.png)
+
+## Chiusura dei linguaggi decidibili
+
+Dimostriamo che i **linguaggi decidibili** sono chiusi rispetto a: **unione, concatenazione, star, intersezione e anche complemento**
+
+### Unione
+
+Dimostro che se $A, B$ sono due linguaggi decidibili allora $A\cup B$ è decidibile.
+
+Dato che $A, B$ sono decidibili allora esistono due decisori $M, N$ tali che $L(M) = A$ e $L(N) = B$.
+
+Costruisco un nuovo decisore $M’$.
+
+$M’ =$ su input $w$:
+
+- simula $M$ su $w$
+- se $M$ accetta, allora accetta
+- se $M$ rifiuta, simula $N$ su $w$ e ritorna il suo output
+
+### Concatenazione
+
+Dimostro che se $A, B$ sono due linguaggi decidibili allora $A\circ B$ è decidibile.
+
+Dato che $A, B$ sono decidibili allora esistono due decisori $M, N$ tali che $L(M) = A$ e $L(N) = B$.
+
+Costruisco un nuovo decisore $M’$.
+
+$M’ =$ su input $w$:
+
+- per tutti i modi in cui $w$ può essere divisa in due stringhe $w_1, w_2$:
+    - simula $M_1$ su $w_1$
+    - simula $M_2$ su $w_2$
+    - se $M_1$ e $M_2$ accettano, allora accetta
+- se nessuna suddivisione di $w$ ha portato ad una accettazione, allora rifiuta
+
+### Star
+
+Dimostro che se $A$ è un linguaggio decidibile allora $A^*$ è decidibile.
+
+Dato che $A$ è decidibile allora esiste un decisore $M$ tale che $L(M) = A$.
+
+Costruisco un nuovo decisore $M’$.
+
+$M’ =$ su input $w$:
+
+- per tutti i possibili modi in cui $w$ può essere spezzata in $w_1, w_2 ... w_n$ per qualche $n \leq |w|$
+    - esegui $M$ su $w_i$, per ogni $i \leq n$, se $M$ le accetta tutte allora accetta, altrimenti rifiuta
+
+### Intersezione
+
+Dimostro che se $A, B$ sono due linguaggi decidibili allora $A\cap B$ è decidibile.
+
+Dato che $A, B$ sono decidibili allora esistono due decisori $M, N$ tali che $L(M) = A$ e $L(N) = B$.
+
+Costruisco un nuovo decisore $M’$.
+
+$M’ =$ su input $w$:
+
+- simula $M$ su $w$
+- se $M$ accetta simula $N$ su $w$, se $N$ accetta allora accetta, altrimenti rifiuta.
+- se $M$ rifiuta allora rifiuta
+
+### Complemento
+
+Dimostro che se $A$ è un linguaggio decidibile allora $\overline A$ è decidibile.
+
+Dato che $A$ è decidibile allora esiste un decisore $M$ tale che $L(M) = A$.
+
+Costruisco un nuovo decisore $M’$.
+
+$M’ =$ su input $w$:
+
+- simula $M$ su $w$
+- se $M$ accetta, allora rifiuta
+- se $M$ rifiuta, allora accetta

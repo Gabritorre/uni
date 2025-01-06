@@ -1,7 +1,6 @@
-﻿
-# Automi a pila
+﻿# Automi a pila
 
-Vediamo un nuovo modello computazionale chiamato automa a pila (*pushdown automata*, **PDA**) capace di riconoscere alcuni linguaggi non regolari.
+Vediamo un nuovo modello computazionale chiamato **automa a pila** (*pushdown automata*, **PDA**) capace di riconoscere alcuni linguaggi non regolari.
 
 Questi automi sono come gli automi non deterministici (NFA) con l’aggiunta di una componente chiamata pila (***stack***).
 
@@ -19,16 +18,16 @@ Possiamo descrivere il suo comportamento come:
 
 Vediamo il comportamento a grandi linee di un PDA per il seguente linguaggio (non regolare) $\{0^n1^n | n\geq 0\}$
 
-- leggi i simboli di input
-- quando incontri uno $0$ fai un *push* nello stack di $0$
-- quando incontri un $1$ passa ad un nuovo stato e fai un *pop* dallo stack,
+- legge i simboli di input
+- quando incontra uno $0$ fa un *push* nello stack di $0$
+- quando incontra un $1$ passa ad un nuovo stato e fa un *pop* dallo stack,
     
-    finché leggo $1$ continuo a fare *pop* dallo stack
+    finché legge $1$ continua a fare *pop* dallo stack
     
-    - Se ho finito di leggere l’input e lo stack è vuoto, **accetto**
-    - Se ho finito di leggere l’input e lo stack non è vuoto, **rifiuto** (ho più $0$ che $1$)
-    - Se leggo uno $0$ dopo un $1$, **rifiuto** (l’ordine non è rispettato)
-    - Se ho ancora input da leggere ma lo stack è finito, **rifiuto** (ho più $1$ che $0$)
+    - Se ha finito di leggere l’input e lo stack è vuoto, **accetta**
+    - Se ha finito di leggere l’input e lo stack non è vuoto, **rifiuta** (ci sono più $0$ che $1$)
+    - Se legge uno $0$ dopo un $1$, **rifiuta** (l’ordine non è rispettato)
+    - Se ha ancora input da leggere ma lo stack è finito, **rifiuta** (ci sono più $1$ che $0$)
 
 ## Definizione formale
 
@@ -37,7 +36,7 @@ Un PDA è una sestupla $(Q, \Sigma, \Gamma, \delta, q_0, F)$ dove:
 - $Q$ è un insieme finito di stati
 - $\Sigma$ è un insieme finito di input, chiamato alfabeto
 - $\Gamma$ è un insieme finito di simboli che posso mettere nello stack, detto alfabeto dello stack (gli elementi non sono necessariamente correlati con gli elementi di $\Sigma$)
-- $\delta : Q \times \Sigma_\epsilon \times \Gamma_\epsilon \rightarrow \mathcal{P}(Q \times \Gamma_\epsilon)$ è la funzione di transizione, che prende in **input** uno stato, un input e l’elemento in cima allo stack. Da in output un insieme di coppie composte da: il nuovo stato e il nuovo elemento messo cima allo stack.
+- $\delta : Q \times \Sigma_\epsilon \times \Gamma_\epsilon \rightarrow \mathcal{P}(Q \times \Gamma_\epsilon)$ è la funzione di transizione, che prende in **input** uno stato, un input e l’elemento in cima allo stack. Dà in output un insieme di coppie composte da: il nuovo stato e il nuovo elemento messo cima allo stack.
 - $q_0 \in Q$ è lo stato iniziale
 - $F \subseteq Q$ è l’insieme degli stati accettanti
 
@@ -55,7 +54,7 @@ Sia $M = (Q, \Sigma, \Gamma, \delta, q_0, F)$ un PDA, diciamo che **accetta** la
     Questo punto ci dice che la sequenza degli stati e l’aggiornamento dello stack devono rispettare la funzione di transizione, in particolare:
     
     - $r_{i+1}$ rappresenta il prossimo stato e $r_i$ lo stato attuale
-    - $a$ rappresenta l’attuale elemento in cima allo stack, mentre $b$ rappresenta la nuova cima dello stack
+    - $a$ rappresenta l’attuale elemento in cima allo stack, mentre $b$ rappresenta la nuova cima dello stack dopo la transizione
     - $w_{i+1}$ rappresenta il prossimo input
 3. $r_m \in F \hspace{5mm}$Alla fine dell’input il PDA si trova in uno stato accettante
 
@@ -232,7 +231,7 @@ Definiamo come start symbol dalla CFG il non terminale $A_{q_0,q_{\text{accept}}
 
 **Dimostrazione**: Sia $A$ un linguaggio regolare, allora esiste un NFA $N$ tale che $L(N) = A$.
 
-Un NFA è un PDA che non tolla lo stack, quindi $N$ è un PDA, concludo che $A$ è context free.
+Un NFA è un PDA che non tocca lo stack, quindi $N$ è un PDA, concludo che $A$ è context free.
 
 Da questo corollario possiamo derivare il seguente diagramma:
 

@@ -14,7 +14,7 @@ In particolare il linguaggio dell’espressione nell’esempio può essere descr
 
 ## Definizione formale di espressione regolare
 
-Sia $\Sigma$ un alfabeto, definiamo l’insieme delle regex definite su $\Sigma$ è definito come segue:
+Sia $\Sigma$ un alfabeto, l’insieme delle regex definite su $\Sigma$ è definito come segue:
 
 1. Se $a \in \Sigma$ allora $a$ è una regex
 2. La stringa vuota $\epsilon$ è una regex
@@ -31,15 +31,17 @@ Vediamo delle convenzioni usate nelle espressioni regolari:
 - L’operatore di concatenazione $\circ$ di solito si omette, quindi $r_1 \circ r_2$ diventa $r_1r_2$
 - Gli operatori hanno una precedenza, in particolare gli operatori vanno valutati in questo ordine:
 
-$$^* \to \circ \to \cup$$
+$$
+^* \to \circ \to \cup
+$$
 
 ## Linguaggio di una regex
 
 Abbiamo detto che il valore finale di una espressione regolare è un linguaggio, definiamo questo linguaggio.
 
-Sia $R$ una regex, definiamo il suo linguaggio $L(R)$ come:
+Sia $R$ una regex, definiamo il suo linguaggio $L(R)$ in questo modo:
 
-1.  Se $R$ è un singolo carattere $a$, allora $L(R) = \{a\}$
+1. Se $R$ è un singolo carattere $a$, allora $L(R) = \{a\}$
 2. Se $R = \epsilon$, allora $L(R) = \{\epsilon\}$
 3. Se $R = \emptyset$, allora $L(R) = \emptyset$
 4. Se $R = R_1 \cup R_2$, allora $L(R) = L(R_1) \cup L(R_2)$
@@ -69,7 +71,7 @@ Vediamo una serie di esempi a cui diamo una descrizione verbale, consideriamo $\
 
 ## Teorema
 
-Un linguaggio è regolare $A$ se e solo se esiste una espressione regolare $R$ tale che $L(R) = A$
+Un linguaggio $A$ è regolare se e solo se esiste una espressione regolare $R$ tale che $L(R) = A$
 
  Dimostriamo il teorema in entrambi i versi attraverso la dimostrazione di due lemmi.
 
@@ -123,11 +125,11 @@ In particolare lavoreremo con GNFA che soddisfano i seguenti vincoli:
 1. Hanno un solo stato iniziale e un solo stato accettante (diverso dallo stato iniziale).
 2. Lo stato iniziale ha archi in uscita verso tutti gli altri stati e nessun arco entrante
 3. Lo stato accettante ha archi in entrata da tutti gli stati e nessun arco in uscita
-4. Tutti gli altri stati sono connessi direttamente tra loro da un arco (anche connessi con se stessi)
+4. Tutti gli altri stati sono connessi direttamente tra loro da un arco (anche connessi con se stessi)  fatta eccezione per stato iniziale e stato finale
 
 Il procedimento si fa in questo modo:
 
-Si parte da un DFA con $k$ stati. Lo si trasforma in un GNFA con $k+2$ stati. lo si riduce ad un GNFA con uno stato in meno fino ad ottenere un GNFA con 2 soli stati.
+Si parte da un DFA con $k$ stati. Lo si trasforma in un GNFA con $k+2$ stati. Lo si continua a trasformare in un GNFA con uno stato in meno fino ad ottenere un GNFA con 2 soli stati.
 
 ### Da DFA a GNFA
 
@@ -151,3 +153,41 @@ Identificato lo stato da rimuovere, $q_{\text{rip}}$, dobbiamo modificare gli ar
 Esempio:
 
 ![https://i.ibb.co/Cm0yhxR/image.png](https://i.ibb.co/Cm0yhxR/image.png)
+
+## Esempio completo da DFA a regex
+
+Consideriamo il seguente DFA
+
+![https://i.ibb.co/cCWDLjm/image.png](https://i.ibb.co/cCWDLjm/image.png)
+
+Costruiamo il GNFA:
+
+![https://i.ibb.co/MG13PYd/image.png](https://i.ibb.co/MG13PYd/image.png)
+
+Adesso dobbiamo rimuovere uno ad uno gli stati intermedi fino a rimanere solamente con gli stati $s$ e $a$:
+
+- partiamo con l’eliminare lo stato $1$, in tal caso dobbiamo aggiornare gli archi:
+    - da $s$ a $2$ aggiungendo il cammino che passava da $1$
+    - da $s$ a $3$ aggiungendo il cammino che passava da $1$
+    - da $2$ a $2$ aggiungendo il cammino che passava da $1$
+    - da $3$ a $3$ aggiungendo il cammino che passava da $1$
+    - da $2$ a $3$ aggiungendo il cammino che passava da $1$
+    - da $3$ a $2$ aggiungendo il cammino che passava da $1$
+    
+    ![https://i.ibb.co/yqhKVd9/image.png](https://i.ibb.co/yqhKVd9/image.png)
+    
+- eliminiamo lo stato $2$, in tal caso dobbiamo aggiornare gli archi:
+    - da $s$ ad $a$ aggiungendo il cammino che passava da $2$
+    - da $s$ a $3$ aggiungendo il cammino che passava da $2$
+    - da $3$ a $3$ aggiungendo il cammino che passava da $2$
+    - da $3$ ad $a$ aggiungendo il cammino che passava da $2$
+    
+    ![https://i.ibb.co/ZmJWS8Q/image.png](https://i.ibb.co/ZmJWS8Q/image.png)
+    
+- elimino lo stato 3, in tal caso dobbiamo aggiornare l’arco:
+    - da $s$ ad $a$ aggiungendo il cammino che passava da $3$
+    
+    ![https://i.ibb.co/6tz5Jx5/image.png](https://i.ibb.co/6tz5Jx5/image.png)
+    
+
+ottengo così la regex equivalente al DFA iniziale

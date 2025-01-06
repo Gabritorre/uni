@@ -6,13 +6,13 @@ Per dimostrare che un linguaggio non è context free bisogna dimostrare che esso
 
 Il principio è lo stesso che abbiamo visto per dimostrare che un linguaggio non è regolare, cioè usare il **pumping lemma** in una versione modificata.
 
-## Pumping lemma  per linguaggi context free
+## Pumping lemma per linguaggi context free
 
 Il pumping lemma per i linguaggi context free stabilisce che esiste un valore (*pumping length*) tale che le stringhe più lunghe di tale valore possono essere replicate in un certo modo restando comunque nel linguaggio. 
 
 ### Definizione
 
-Sia $A$ un linguaggio context free, allora esiste un intero $p \geq 0$ (*pumping length*) tale che ogni stringa $s \in A$ con $|s| \geq p$ ($|s|$  è la lunghezza della stringa) può essere divisa in cinque parti
+Sia $A$ un linguaggio context free, allora esiste un intero $p \geq 0$ (*pumping length*) tale che ogni stringa $s \in A$ con $|s| \geq p$ ($|s|$ è la lunghezza della stringa) può essere divisa in cinque parti
 
 $$
 s = u\,v\,x\,y\,z
@@ -20,8 +20,8 @@ $$
 
 che soddisfano le seguenti condizioni:
 
-1. $\forall i \geq 0 \hspace{3mm} u\,v^i\,x\,y^i\,z \in A \hspace{3mm} \text{ iterando } v \text{ e } y \text{ la stringa rimane nel linguaggio}$
-2. $|vy| > 0 \hspace{7mm} v\text{ oppure } y \text{non sono vuote}$
+1. $\forall i \geq 0 \hspace{3mm} u\,v^i\,x\,y^i\,z \in A \hspace{7mm} \text{ iterando } v \text{ e } y \text{ la stringa rimane nel linguaggio}$
+2. $|vy| > 0 \hspace{7mm} v\text{ oppure } y \text{ non sono vuote}$
 3. $|vxy| \leq p \hspace{5mm} vxy \text{ insieme hanno una lunghezza al masssimo } p$
 
 **Idea della dimostrazione**:
@@ -73,7 +73,7 @@ Sfruttando il fatto che $|vy| > 0$ cioè che $v$ o $y$ non è vuota per consider
     \underbrace{a}_u \underbrace{aa}_{v^2} \underbrace{abab}_{y^2} \underbrace{bbccc}_z
     $$
     
-2. Quando entrambe $v$ e $y$ contengono un solo tipo di simbolo, abbiamo che un carattere non sta nè in $v$ ne in $y$ quindi $u\,v^i\,x\,y^i\,z$ non sta nel linguaggio per che un carattere apparirà un numero minore di volte
+2. Quando entrambe $v$ e $y$ contengono un solo tipo di simbolo, abbiamo che un carattere non sta né in $v$ né in $y$ quindi $u\,v^i\,x\,y^i\,z$ non sta nel linguaggio perché un carattere apparirà un numero minore di volte
     
     $$
     \underbrace{a}_u \underbrace{a}_v \underbrace{b}_y \underbrace{bcc}_z

@@ -21,7 +21,7 @@ Vediamo un esempio grafico di un DFA:
 
 I cerchi rappresentano gli **stati**, le frecce le **transazioni** le cui etichette sono gli **input**.
 
-La freccia più spessa verso $q_1$ indica lo **stato iniziale**, mentre il cerchio doppio in $q_2$ indica lo stato finale.
+La freccia più spessa verso $q_1$ indica lo **stato iniziale**, mentre il cerchio doppio in $q_2$ indica lo **stato finale**.
 
 Possiamo vedere il DFA come un **riconoscitore di stringhe**, se una stringa termina nello stato $q_2$ allora è valida, altrimenti non lo è.
 
@@ -53,11 +53,11 @@ $$
 
 - $Q$: è l’insieme finito degli stati
 - $\Sigma$: è l’insieme finito degli input (chiamato **alfabeto**)
-- $\delta$: è la funzione di transizione $Q \times \Sigma \rightarrow Q$ che definisce i cambiamenti tra gli stati, useremo questa sintassi $\delta(s_1, \text{input}) = s_2$
+- $\delta$: è la funzione di transizione $Q \times \Sigma \rightarrow Q$ che definisce i cambiamenti tra gli stati, useremo questa sintassi: $\delta(s_1, \text{input}) = s_2$
 - $q_0$: indica lo stato iniziale
-- $F \subseteq Q$ : indica l’insieme degli stati finali (può anche essere insieme vuoto, ma di conseguenza il DFA rifiuterà ogni input)
+- $F \subseteq Q$ : indica l’insieme degli stati accettanti (può anche essere insieme vuoto, ma di conseguenza il DFA rifiuterà ogni input)
 
-Sempre nel solito esempio
+Sempre nel solito esempio:
 
 ![https://i.ibb.co/jw9wmkp/dfa.png](https://i.ibb.co/jw9wmkp/dfa.png)
 
@@ -81,7 +81,7 @@ Ricordiamo che il numero di istanze della funzione $\delta$ è $|Q| \times |\Sig
 
 Diamo una definizione formale di linguaggio di un DFA.
 
-Sia $M=(Q, \Sigma, \delta, q_0, F)$ e sia $w=w_1w_2...w_n$ una stringa tale che $\forall i \in [1...n],\, w_i\in \Sigma$ diciamo che $M$ **accetta** $w$ se e solo se esiste una sequenza di stati $r_0, r_1, …r_n \in Q$  tali che:
+Sia $M=(Q, \Sigma, \delta, q_0, F)$ e sia $w=w_1w_2...w_n$ una stringa tale che $\forall i \in [1...n],\, w_i\in \Sigma$. Diciamo che $M$ **accetta** $w$ se e solo se esiste una sequenza di stati $r_0, r_1, …r_n \in Q$  tali che:
 
 1. $r_0 = q_0 \hspace{5mm}$ (parte dallo stato iniziale di $M$)
 2. $r_n \in F \hspace{6mm}$(l’ultimo stato è uno stato accettante)
@@ -91,7 +91,7 @@ Il linguaggio di un DFA $M$ si indica con $L(M)$.
 
 In altre parole possiamo dire che **il linguaggio di un DFA è l’insieme di tutte le stringhe che esso accetta**.
 
-Inoltre un linguaggio $A$ si dice **regolare** se e solo se esiste un DFA il cui linguaggio è uguale ad $A$
+**Linguaggio regolare**: Un linguaggio $A$ si dice **regolare** se e solo se esiste un DFA il cui linguaggio è uguale ad $A$
 
 Esempio:
 
@@ -110,7 +110,7 @@ Note:
 
 ### Esercizio
 
-Dimostrare che il DFA precedente accetti la stringa $110$
+Dimostrare che il DFA precedente accetta la stringa $110$
 
 Per farlo devo trovare una sequenza di stati lunga $n+1$.
 
@@ -121,11 +121,12 @@ $$
 q_1 \to ? \to ? \to ?
 $$
 
-Guardando il grafico possiamo analizzare il passaggio tra gli stati e concludiamo che la sequenza per questa stringa è 
-
-$$
-q_1 \to q_2 \to q_2 \to q_1
-$$
+- Guardando il grafico possiamo analizzare il passaggio tra gli stati e concludiamo che la sequenza per questa stringa è
+    
+    $$
+    q_1 \to q_2 \to q_2 \to q_1
+    $$
+    
 
 Lo stato finale è accettante e quindi la stringa è riconosciuta dal DFA.
 
@@ -161,9 +162,17 @@ $B = \{a, cc\}$
 
 La classe dei linguaggi regolari è chiusa rispetto alle operazioni regolari. Ciò significa che se $A, B$sono linguaggi regolari allora $A\cup B, A \circ B, A^*, B^*$ formano linguaggi regolari
 
-### Dimostrazione
+Inoltre i linguaggi regolari sono chiusi anche rispetto **all’intersezione** e al **complemento**.
 
-Dimostriamo per costruzione che se $A, B$ sono linguaggi regolari allora lo è anche il linguaggio formato dalla loro unione.
+### Chiusura rispetto al complemento
+
+Sia $A$ un linguaggio regolare, allora esiste un DFA  $M$ tale che $L(M) = A$. Sia $M = (Q, \Sigma, \delta, q_0, F)$. Costruiamo un nuovo DFA $N = (Q, \Sigma, \delta, q_0, Q \setminus F)$.
+
+Poiché $N$ accetta una stringa $w$ se e solo se $M$ non la accetta, abbiamo che $L(N) = \overline{A}$.
+
+### Chiusura rispetto all’unione (e intersezione)
+
+Dimostriamo per costruzione che se $A, B$ sono linguaggi regolari allora lo è anche il linguaggio formato dalla loro **unione**.
 
 Dato che $A, B$ sono linguaggi regolari allora esistono due DFA
 
@@ -172,7 +181,7 @@ Dato che $A, B$ sono linguaggi regolari allora esistono due DFA
 
 tali che $L(M_1)$ = A e $L(M_2) = B$.
 
-Costruiamo un nuovo linguaggio $M$ tale che $L(M) = A\cup B$ 
+Costruiamo un nuovo DFA $M$ tale che $L(M) = A\cup B$ 
 
 L’idea è quella che $M$ simuli il comportamento di $M_1$ e $M_2$ in parallelo su ogni simbolo di input:
 
@@ -188,9 +197,9 @@ Definiamo ogni elemento della quintupla, è sufficiente ricordare lo stato in cu
     
 2. $\Sigma = \Sigma_1 = \Sigma_2$
     
-    per semplicità assumiamo che l’alfabeto di $M1$ e $M2$ siano uguali, il teorema resterebbe comunque vero anche con alfabeti diversi.
+    per semplicità assumiamo che l’alfabeto di $M_1$ e $M_2$ siano uguali, il teorema resterebbe comunque vero anche con alfabeti diversi: $\Sigma = \Sigma_1 \cup \Sigma_2$.
     
-3. $\delta((r_1, r2), a) = (\delta_1(r_1, a), \delta_2(r_2, a))$
+3. $\delta((r_1, r_2), a) = (\delta_1(r_1, a), \delta_2(r_2, a))$
     
     per ogni coppia $(r_1, r_2) \in Q$ e ogni $a \in \Sigma$
     

@@ -1,4 +1,5 @@
-﻿# Storie di computazione accettanti
+﻿
+# Storie di computazione accettanti
 
 Vediamo una particolare tecnica per dimostrare la riducibilità di certi linguaggi. Questo metodo è utile quando la dimostrazione dell’indecidibilità di un problema comporta la dimostrazione dell’esistenza di qualcosa.
 
@@ -105,7 +106,7 @@ $N$ per stabilire che $x$ sia una stringa che rappresenta una storia di computaz
 2. controllare che $C_K$ sia una configurazione accettante, cioè deve verificare che $C_K = uq_{\text{accept}}v$
 3. controllare che per ogni $i$, $C_{i+1}$ discende da $C_i$ secondo la funzione di transizione di $M$.
     
-    Cioè deve verificare che per ogni coppia di configurazioni adiacenti nella stringa esse differiscano in modo da rispettare la funzione di transizione di $M$
+    Cioè deve verificare che per ogni coppia di configurazioni adiacenti nella stringa, esse differiscano in modo da rispettare la funzione di transizione di $M$
     
 
 Concludiamo la dimostrazione dicendo quindi che se esistesse il decisore $R$ potemmo risolvere il problema $A_{\text{TM}}$ che però è stato dimostrato essere indecidibile, pertanto $R$ non esiste e $\text{E}_{\text{LBA}}$ è indecidibile.
@@ -168,3 +169,31 @@ $P$ per stabilire che $x$ **non** sia una stringa che rappresenta una storia di 
     $$
     
     invertendo quindi, in modo alternato, le stringhe delle singole configurazioni.
+    
+
+## Esempio di indecidibilità
+
+Dimostro che il problema di determinare se due CFG hanno lo stesso linguaggio è indecidibile.
+
+$$
+\text{EQ}_{\text{CFG}} = \{<G, H> | G,H \text{ sono CFG tali che } L(G) = L(H)\}\\
+\text{è indecidibile}
+$$
+
+**Teorema**: $\text{EQ}_{\text{CFG}}$ è indecidibile
+
+**Dimostrazione:** dimostro che $\text{ALL}_{\text{CFG}}$ è riducibile a $\text{EQ}_{\text{CFG}}$, cioè dimostro che se avessi un decisore per $\text{EQ}_{\text{CFG}}$ allora potrei costruire un decisore per $\text{ALL}_{\text{TM}}$ (ma ciò è impossibile, abbiamo appena dimostrato essere indecidibile).
+
+Assumiamo per assurdo che $R$ sia un decisore per il problema $\text{EQ}_{\text{CFG}}$, sfruttandolo costruisco il seguente decisore $S$ per il problema $\text{ALL}_{\text{CFG}}$:
+
+$S=$ su input $<G>$ (dove $G$ è una CFG)
+
+1. costruisce una CFG $H$ tale che $L(H) = \Sigma^*$
+2. eseguo il decisore $R$ su input $<G, H>$
+3. ritorno il suo output
+
+la CFG $H$ sarà definita in questo modo: 
+
+per ogni $a \in \Sigma$:
+
+$S\to aS| \epsilon$

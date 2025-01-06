@@ -6,11 +6,11 @@ Per dimostrare che un linguaggio non è regolare ci serviamo del ***Pumping lemm
 
 ## Pumping lemma
 
-Enunciato: Se $A$ è un linguaggio regolare, allora esiste un intero $p\geq 1$ tale che se $s \in A$ di lunghezza $|s| \geq p$, allora tale stringa può essere divisa in tre parti $s = xyz$ in modo che soddisfi le seguenti condizioni
+Enunciato: Se $A$ è un linguaggio regolare, allora esiste un intero $p\geq 1$ tale che ogni stringa $s \in A$ di lunghezza $|s| \geq p$, può essere divisa in tre parti $s = xyz$ in modo che soddisfi le seguenti condizioni:
 
 1. $\forall i \geq 0, xy^iz \in A \hspace{7mm} y^i$ significa $i$ copie concatenate di $y$, racchiudere tali copie tra $x$ e $z$ mantiene la stringa nel linguaggio $A$
 2. $|y| > 0 \hspace{7mm}$ $y$ deve essere composto da almeno una stringa ($y\neq \epsilon$)
-3. $|xy|\leq p \hspace{7mm}$le prime due parti della stringa $s$ devono apparire prima di $p$ caratteri
+3. $|xy|\leq p \hspace{7mm}$le prime due parti della stringa $s$ devono apparire entro $p$ caratteri
 
 In pratica il lemma dice che una stringa appartenente ad un linguaggio regolare, ha una parte che può essere ripetuta in numero qualsiasi di volte, ottenendo una stringa ancora appartenente al linguaggio di partenza.
 
@@ -24,9 +24,9 @@ Poniamo $p$ uguale al numero di stati del DFA $D$.
 
 Consideriamo una stringa $s = w_1w_2 … w_n$ di lunghezza almeno $p$ (quindi $n \geq p$), e che appartenga al linguaggio $A$ (quindi $s \in A$).
 
-Visto che $s \in A$ esiste una sequenza di stati $q_0, q_1, … q_n$ tali che $q_0$ è lo stato iniziale e $q_n$ è lo stato finale e ogni altro stato rispetti la funzione di transizione.
+Visto che $s \in A$, allora esiste una sequenza di stati $q_0, q_1, … q_n$ tali che $q_0$ è lo stato iniziale e $q_n$ è lo stato finale e ogni altro stato rispetta la funzione di transizione.
 
-Dato che $n$ è la lunghezza della stringa, la sequenza degli stati del DFA avrà lunghezza $n+1$ (a causa dello stato iniziale). Abbiamo quindi che la sequenza degli stati è maggiore di 1 rispetto al numero totale di stati. Di conseguenza nella sequenza ci sarà sicuramente uno stato ripetuto.
+Dato che $n$ è la lunghezza della stringa, la sequenza degli stati del DFA avrà lunghezza $n+1$ (a causa dello stato iniziale). Abbiamo quindi che la sequenza degli stati è maggiore di 1 rispetto al numero totale di stati diversi. Di conseguenza nella sequenza ci sarà sicuramente uno stato ripetuto.
 
 Chiamiamo $q_i$ lo stato che si ripete, e rappresentiamo graficamente come apparirebbe il DFA e localizziamo le tre parti della stringa $s$
 
@@ -83,10 +83,22 @@ Assumiamo per assurdo che $F$ sia regolare.
 
 Prendiamo come controesempio la stringa $s = 0^p10^p1$
 
-$s$ appartiene al linguaggio e è lunga almeno quanto $p$.
+$s$ appartiene al linguaggio ed è lunga almeno quanto $p$.
 
 Possiamo quindi dividerla in tre parti $s = xyz$ con $|y| > 0$ e $|xy| \leq p$
 
 Applicando la condizione $|xy| \leq p$ sappiamo che $y$ sta nei primi $p$ zeri.
 
 Quindi considerando $i = 2$: la stringa $xy^2z$ ha forma $0^{p+k}10^p1$ con $k> 0$ che non sta nel linguaggio $F$ (k è il numero di $0$ derivati dalla ripetizione di $y$ una seconda volta)
+
+## Consigli
+
+Se il problema richiedere di mantenere esplicitamente il conto di un numero arbitrario di simboli, potrebbe non essere regolare, ad esempio
+
+$\{0^n1^n|n\geq 0\}$ implica mantenere il conto di quanti $0$ si ha incontrato
+
+$\{a^{2^n} | n\geq 0\}$ implica che devi mantenere il conto di quanti simboli si hanno letti in modo da sapere se sono quantità che sono potenze di due.
+
+Inoltre per dimostrare che certi linguaggi non sono regolari può essere utile sfruttare la chiusura rispetto al complemento: cioè applicare il pumping lemma sul complemento del linguaggio, se il complemento non è regolare allora non lo è nemmeno il linguaggio di partenza.
+
+ad esempio per dimostrare che $\{w | w\in\{0, 1\}^* \text{non è palindroma}\}$ non è regolare, può essere più semplice dimostrare che il suo complemento non lo sia $\{w | w\in\{0, 1\}^* \text{ palindroma}\}$

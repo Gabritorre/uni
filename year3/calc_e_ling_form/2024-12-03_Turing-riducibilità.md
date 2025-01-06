@@ -2,11 +2,11 @@
 
 La mapping riducibilità non sempre riesce a catturare il concetto di riducibilità, cioè che se $A$ è riducibile a $B$ e troviamo una soluzione per $B$ allora possiamo ottenere una soluzione per $A$.
 
-Un esempio in cui la mapping-riducibilità non è intuitiva è il seguente: consideriamo i linguaggi $A_{TM}$ e $\overline{A_{TM}}$, intuitivamente uno è riducibile all’altro perché basterebbe trovare una soluzione per uno, e invertire l’output di quella soluzione per ottenere l’altro.
+Un esempio in cui la mapping-riducibilità non è intuitiva è il seguente: consideriamo i linguaggi $A_{TM}$ e $\overline{A_{TM}}$, intuitivamente uno è riducibile all’altro perché basterebbe trovare una soluzione per uno, e invertire l’output per ottenere la soluzione dell’altro.
 
 Tuttavia sappiamo che $A_{TM}$ è turing riconoscibile, mentre $\overline{A_{TM}}$ non lo è, perciò $\overline{A_{TM}}$ **non è mapping-riducibile** ad $A_{TM}$ 
 
-**Non vale quindi la proprietà**: “se $A\leq_m B$ e $A$ non è TR, allora $B$ non è TR”
+**Non vale infatti la proprietà**: “se $A\leq_m B$ e $A$ non è TR, allora $B$ non è TR”
 
 ## Turing-riducibilità
 
@@ -37,7 +37,7 @@ $N=$ su input $x$
 
 Dimostro che $E_{TM} \leq_T A_{TM}$
 
-Dimostro che esiste una MdT con oracolo per $A_{TM}$, che diamo $S$, che decide $E_{TM}$
+Dimostro che esiste una MdT con oracolo per $A_{TM}$, che chiamo $S$, che decide $E_{TM}$
 
 $S=$ su input $<M>$
 
@@ -103,6 +103,6 @@ Quindi se l’oracolo accetta significa che $f(w) \in B$ e di conseguenza $w \in
 
 ## Confronto con mapping-riducibilità
 
-Il vantaggio che offre la mapping riducibilità è quello di verificare che certi problemi non sono TR, cosa che la turin-riducibilità non può fare.
+Il vantaggio che offre la mapping riducibilità è quello di verificare che certi problemi non sono TR, cosa che la turing-riducibilità non può fare.
 
 D’altra parte la turing-riducibilità ci aiuta a dimostrare più facilmente la non decidibilità dei problemi (in quanto gli oracoli sono strumenti più generali ed astratti dei decisori)

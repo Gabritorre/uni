@@ -1,10 +1,10 @@
-﻿# Riducibilità attraverso funzioni
+﻿# Mapping-riducibilità
 
-Diamo una definizione più formale di riducibilità, ci sono vari metodi per formalizzare il concetto di riducibilità, noi useremo la **riduzione tramite funzioni** (anche detta **mapping-riducibilità**).
+Diamo una definizione più formale di riducibilità. Ci sono vari metodi per formalizzare il concetto di riducibilità, uno di questi è la **riduzione tramite funzioni** (anche detta **mapping-riducibilità**).
 
 Per definire la mapping riducibilità, dobbiamo prima definire cosa è una **funzione calcolabile.**
 
-**Definizione di funzione calcolabile**: Una funzione $f:\Sigma^* \rightarrow \Sigma^*$ si dice calcolabile se e solo se esiste una MdT $M$ tale che per ogni stringa di input $w$, $M$ su $w$ termina lasciando solamente l’output di $f(w)$ sul nastro.
+**Funzione calcolabile**: Una funzione $f:\Sigma^* \rightarrow \Sigma^*$ si dice **calcolabile** se e solo se esiste una MdT $M$ tale che per ogni stringa di input $w$, $M$ su $w$ **termina** lasciando solamente l’output di $f(w)$ sul nastro.
 
 **Definiamo la mapping-riducibilità**: un linguaggio $A$ si dice mapping-riducibile ad un linguaggio $B$ (indicato con la sintassi $A\leq_mB$)  se e solo se esiste una funzione calcolabile $f$ tale che per ogni stringa $w$, $w \in A$ se e solo se $f(w) \in B$.
 
@@ -18,6 +18,8 @@ $$
 A\leq_mB \iff \overline{A} \leq_m \overline{B}
 $$
 
+Cioè la mapping riducibilità viene mantenuta anche complementando entrambi i linguaggi.
+
 Questo risultato può essere utile in quei problemi dove risulta più facile lavorare con i complementi dei problemi.
 
 ## Teorema
@@ -26,7 +28,7 @@ Questo risultato può essere utile in quei problemi dove risulta più facile lav
 
 **Dimostrazione**: dato che $A$ è mapping-riducibile a $B$, allora esiste una funzione calcolabile $f$ tale che per ogni stringa $w$, $w \in A$ se e solo se $f(w) \in B$.
 
-Siccome $B$ è decidibile allora esiste un decisore $M$ tale che $L(M) = B$, costruisco quindi un decisore $S$ per $A$ dimostrando che anch’esso è indecidibile:
+Siccome $B$ è decidibile allora esiste un decisore $M$ tale che $L(M) = B$, costruisco quindi un decisore $S$ per $A$ dimostrando che anch’esso è decidibile:
 
 $S=$ su input $w$
 
@@ -67,7 +69,7 @@ $F =$ su input $<M, w>$
 
 1. costruisco una nuova MdT $N$ definita come segue
     
-    $N=$ su input x
+    $N=$ su input $x$
     
     1. simula $M$ su $x$
     2. se $M$ accetta, allora accetta

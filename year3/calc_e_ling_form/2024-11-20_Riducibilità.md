@@ -1,6 +1,7 @@
-﻿# Riducibilità
+﻿
+# Riducibilità
 
-Introduciamo un metodo per dimostrare l’indecidibilità di un problema, tale metodo si chiama **riducibilità.**
+Introduciamo un metodo per dimostrare l’indecidibilità di un problema, chiamato **riducibilità.**
 
 Intuitivamente diciamo che un problema $A$ è **riducibile** al problema $B$ (indicato con la simbologia: $A\leq B$) quando una soluzione per il problema $B$ ci consente di costruire una soluzione per il problema $A$.
 
@@ -84,6 +85,8 @@ L(N) = \begin{cases}
 \emptyset &\text{altrimenti}
 \end{cases}
 $$
+
+Nota importante: all’interno del decisore $S$, la macchina di turing $N$ non viene **mai eseguita** ma viene **solo costruita** e data in pasto al decisore $R$, pertanto $S$ non può andare in loop e quindi è un decisore.
 
 Se quindi esistesse il decisore $R$ potemmo risolvere il problema $A_{\text{TM}}$ che però è stato dimostrato essere indecidibile, pertanto $R$ non esiste e $\text{E}_{\text{TM}}$ è indecidibile.
 

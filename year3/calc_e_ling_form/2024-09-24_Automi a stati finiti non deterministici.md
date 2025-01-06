@@ -26,7 +26,7 @@ Un NFA $N$ è una quintupla $(Q, \Sigma, \delta, q_0, F)$ dove:
 - $Q$ insieme finito di stati
 - $\Sigma$ alfabeto finito
 - $q_0 \in Q$ stato iniziale
-- $F \subseteq Q$ insieme di stati finali
+- $F \subseteq Q$ insieme di stati accettanti
 - $\delta : Q \times (\Sigma \cup \{\epsilon\}) \rightarrow \mathcal{P}(Q)$
 
 La differenza rispetto alla definizione di DFA sta sostanzialmente nella definizione della funzione di transizione $\delta$. Nei NFA tale funzione prende uno stato e un simbolo di input oppure una stringa vuota e produce l’insieme dei possibili stati successivi che indichiamo con $\mathcal{P}(Q)$.
@@ -43,9 +43,9 @@ Sia $N=(Q, \Sigma, \delta, q_0, F)$ e sia $w=y_1y_2...y_m$ una stringa tale che 
 2. $r_m \in F \hspace{6mm}$(l’ultimo stato è uno stato accettante)
 3. $\forall i \in [0…m-1]: r_{i+1} \in\delta(r_i, y_{i+1}) \hspace{5mm}$ (la sequenza di stati rispetta la funzione di transizione)
 
-In particolare la terza condizione dice che lo stato $r_{i+1}$ è uno dei possibili stati successivi quando il NFA è nello stato $r_i$ e sta leggendo $y_{i+1}$.
+In particolare la terza condizione dice che lo stato $r_{i+1}$ è uno dei possibili stati successivi quando l’NFA è nello stato $r_i$ e sta leggendo $y_{i+1}$.
 
-Riprendendo un esempio precedente:
+Riprendendo l’esempio precedente:
 
 ![https://i.ibb.co/C0PDctk/nfa.png](https://i.ibb.co/C0PDctk/nfa.png)
 
@@ -60,10 +60,14 @@ Possiamo definire:
     - $\delta(q_1, 1) = \{q_1, q_2\}$
     - $\delta(q_1, \epsilon) = \emptyset$
     - $\delta(q_2, 0) = \{q_3\}$
+    - $\delta(q_2, 1) = \emptyset$
+    - $\delta(q_2, \epsilon) = \{q_3\}$
+    - … sono in totale $4\cdot 3 = 12$
 
-Esempi di input accettati sono $w=101$ la cui sequenza di stati è $q_1 \to q_1 \to q_2 \to q_3 \to q_4$
+Esempi di input accettati sono
 
-$w = 11$ in questo caso posso raggiungere lo stato accettante sfruttando una $\epsilon$-transizione, in particolare posso trasformare l’input in $w = 1\epsilon1$ ottenendo così la sequenza di stati $q_1 \to q_2 \to q_3 \to q_4$
+- $w=101$ la cui sequenza di stati è $q_1 \to q_1 \to q_2 \to q_3 \to q_4$
+- $w = 11$ in questo caso posso raggiungere lo stato accettante sfruttando una $\epsilon$-transizione, in particolare posso trasformare l’input in $w = 1\epsilon1$ ottenendo così la sequenza di stati $q_1 \to q_2 \to q_3 \to q_4$
 
 Posso sempre mettere delle $\epsilon$ (stringa vuota) dove mi è più comodo se serve a raggiungere lo stato accettante.
 
@@ -166,7 +170,7 @@ Adesso che conosciamo il non determinismo possiamo dimostrare che dati due lingu
 
 Siano $A$ e $B$ due linguaggi regolari, prendiamo due NFA $N_1$ e $N_2$ tali che $L(N_1) = A$, $L(N_2) = B$.
 
-Costruiamo un nuovo linguaggio $N$ tale che $L(N) = A \circ B$.
+Costruiamo un nuovo NFA $N$ tale che $L(N) = A \circ B$.
 
 $N_1 = (Q_1, \Sigma, \delta_1, q_1, F_1)$
 
@@ -210,7 +214,7 @@ Se lo stato attuale appartiene a $Q_2$ la transizione si comporta come la transi
 
 Se lo stato attuale appartiene a $Q_1$, è uno stato accettante e la stringa non è una stringa vuota, la transizione si comporta come la transizione di $N_1$
 
-Se lo stato attuale appartiene a $Q_1$, è uno stato accettante e la string è una stringa vuota, allora la transizione si comporta come la transizione di $N_1$ oppure si passa allo stato $q_2$ (cioè passi all’automa $N_2$). Questo è corretto perché in $N_1$ si può avere una $\epsilon$-transizione sia verso $q_2$ sia verso un altro stato sempre di $N_1$ e quest’ultimo non lo possiamo ignorare.
+Se lo stato attuale appartiene a $Q_1$, è uno stato accettante e la stringa è una stringa vuota, allora la transizione si comporta come la transizione di $N_1$ oppure si passa allo stato $q_2$ (cioè passi all’automa $N_2$). Questo è corretto perché in $N_1$ si può avere una $\epsilon$-transizione sia verso $q_2$ sia verso un altro stato sempre di $N_1$ e quest’ultimo non lo possiamo ignorare.
 
 ## Chiusura rispetto alla star
 

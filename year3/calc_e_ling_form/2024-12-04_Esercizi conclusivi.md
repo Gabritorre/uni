@@ -1,4 +1,5 @@
-﻿# Esercizi conclusivi
+﻿
+# Esercizi conclusivi
 
 ## Es 1
 
@@ -8,7 +9,7 @@ $$
 \text{EQ}_{\text{CFG}} = \{<G, H> | G,H \text{ sono CFG e } L(G) = L(H)\}
 $$
 
-per dimostrare che un linguaggio è co-turing-riconoscibile dobbiamo dimostrare che il suo complemento è turin-riconoscibile, dobbiamo quindi dimostrare che $\overline{\text{EQ}_{\text{CFG}}}$ è TR.
+per dimostrare che un linguaggio è co-turing-riconoscibile dobbiamo dimostrare che il suo complemento è turing-riconoscibile, dobbiamo quindi dimostrare che $\overline{\text{EQ}_{\text{CFG}}}$ è TR.
 
 Costruisco una MdT $M$ tale che $L(M) = \overline{\text{EQ}_{\text{CFG}}}$
 
@@ -119,8 +120,8 @@ Dimostrare che $A$ è decidibile se e solo se $A \leq_m 0^*1^*$
     
     $F=$ su input $w$:
     
-    1. se $M$ accetta, scrivo sul nastro $01$
-    2. se $M$ rifiuta, scrivo sul nastro $10$
+    1. se $M$ accetta $w$, scrivo sul nastro $01$
+    2. se $M$ rifiuta $w$, scrivo sul nastro $10$
 
 La funzione è calcolabile perché $M$ è un decisore e quindi non può andare in loop.
 
@@ -133,7 +134,7 @@ Si consideri il problema di determinare se una MdT con due nastri scrive un simb
 diverso da $\sqcup$ (carattere *blank*) sul secondo nastro durante una computazione su un certo input $w$.
 
 1. Formalizzare tale problema come un linguaggio
-2. dimostrarne l’indecidibilità.
+2. Dimostrarne l’indecidibilità.
 
 Definiamo il linguaggio nel seguente modo:
 
@@ -152,12 +153,12 @@ Sia $N$ il decisore per $A_{TM}$
 $N=$ su input $<M, w>$
 
 1. costruisco una nuova MdT $T$ con 2 nastri, tale che se $M$ accetta $w$ allora $T$ scrive un carattere qualsiasi diverso da $\sqcup$ sul secondo nastro (ad esempio il carattere `0`), Se $M$ non accetta $w$ allora $T$ non tocca il secondo nastro.
-2. eseguo il decisore $R$ su input $<T, w>$ (dove al posto di $w$ ci può essere una qualsiasi altra stringa)
+2. eseguo il decisore $R$ su input $<T, w>$ (dove al posto di $w$ ci può essere una qualsiasi altra stringa, la $w$ è già hardcodata in $T$)
 3. ritorno il suo output
 
 in particolare:
 
-- se $T$ scrive $0$ sul secondo nastro significa che $M$ accetta $w$, allora il decisore $R$ accetta (perché ha scritto $0$ sul secondo nastro) e di conseguenza anche $N$ accetta
+- se $T$ scrive $0$ sul secondo nastro significa che $M$ accetta $w$, allora il decisore $R$ accetta (perché ha scritto un carattere diverso da $\sqcup$ sul secondo nastro) e di conseguenza anche $N$ accetta
 - se $T$ non tocca il secondo nastro, significa che $M$ non accetta $w$, allora il decisore $R$ rifiuta (perché sul secondo nastro ci sono solo caratteri $\sqcup$) e di conseguenza $N$ rifiuta
 
 Definiamo la MdT $T$:

@@ -21,8 +21,8 @@ Degli esempi che rientrano in questo teorema sono $A_{TM}, E_{TM}, \text{REG}_{T
 
 Il fatto che la proprietà sia non banale e del linguaggio è fondamentale al fine del funzionamento del teorema:
 
-- se la proprietà fosse banale, si avrebbe che o tutte le MdT la soddisfano o nessuna MdT la soddisfa. Questo rende la proprietà decidibile (sempre vera o sempre falsa)
-- se non la proprietà non fosse del linguaggio non avremmo informazioni sulle stringhe riconosciute dalla MdT ma solo della sua struttura, ma la struttura di una MdT si può decidere semplicemente analizzando come è costruita (contare il numero di stati è decidibile)
+- Se la proprietà fosse banale, si avrebbe che o tutte le MdT la soddisfano o nessuna MdT la soddisfa. Questo rende la proprietà banalmente decidibile (sempre vera o sempre falsa)
+- Se la proprietà non riguardasse linguaggio allora non avremmo informazioni sulle stringhe riconosciute dalla MdT ma solo della sua struttura, ma la struttura di una MdT si può decidere semplicemente analizzando come è costruita (ad esempio contare il numero di stati è decidibile)
 
 ### Dimostrazione
 
@@ -32,7 +32,7 @@ In tal caso riusciremmo a costruire un decisore per $A_{TM}$ $U$, che sarebbe as
 
 $U=$ su input $<M, w>$
 
-1. costruisco una nuova MdT $N$ tale che ha la proprietà $P$ se $M$ accetta $w$ e non la ha se $M$ non accetta $w$
+1. costruisce una nuova MdT $N$ tale che ha la proprietà $P$ se $M$ accetta $w$ e non la ha se $M$ non accetta $w$
 2. eseguo $H$ su input $<N>$
 3. ritorno il suo output
 
@@ -45,11 +45,11 @@ In particolare:
 
 Dato che $P$ è non banale devono esistere almeno una MdT che soddisfa $P$ e una MdT che non la soddisfa.
 
-Siano questi MdT $T, S$ tali che $<T> \in P$ e $<S> \notin P$
+Siano queste MdT $T, S$ tali che $<T> \in P$ e $<S> \notin P$
 
-Possiamo assumere senza perdita di generalità che $L(S) = \emptyset$, e dato che $P$ non è banale allora deve esistere $T$ tale che $L(T) \neq \emptyset$ che appartenga a $P$
+Possiamo assumere senza perdita di generalità che $L(S) = \emptyset$, infatti dato che $P$ non è banale allora deve esistere $T$ tale che $L(T) \neq \emptyset$ che appartenga a $P$
 
-Da MdT $N$ è definita nel seguente modo:
+La MdT $N$ è definita nel seguente modo:
 
 $N=$ su input $x$
 

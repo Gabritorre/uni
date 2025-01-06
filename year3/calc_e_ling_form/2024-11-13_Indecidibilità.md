@@ -1,4 +1,5 @@
-﻿# Indecidibilità
+﻿
+# Indecidibilità
 
 Affrontiamo ora l’indecidibilità di alcuni problemi, cioè problemi che **non ammettono una soluzione algoritmica**.
 
@@ -63,7 +64,7 @@ Per come è stato costruito questo numero, esso sarà diverso da tutti i numeri 
 
 ## Esistenza dei linguaggi indecidibili
 
-Dimostriamo l’esistenza dei linguaggi indecidibili, per farlo dimostriamo che esistono dei linguaggi fuori dall’insieme dei linguaggi turing riconoscibili, che quindi non sono nemmeno decidibili.
+Dimostriamo l’esistenza dei linguaggi indecidibili, per farlo dimostriamo che esistono dei linguaggi fuori dall’insieme dei linguaggi turing riconoscibili, che di conseguenza non sono nemmeno decidibili.
 
 **Teorema**: Esistono dei linguaggi che non sono Turing riconoscibili
 
@@ -98,7 +99,7 @@ Qualsiasi macchina di Turing può essere codificata come una stringa, di consegu
 
 ### insieme dei linguaggi non è numerabile
 
-Per dimostrarlo dobbiamo prima osservare osservare che l’insieme di **sequenze binarie infinite** non è numerabile, essendo poi che tale insieme ha la stessa cardinalità con l’insieme dei linguaggi allora anche l’insieme dei linguaggi non è numerabile.
+Per dimostrarlo dobbiamo prima osservare che l’insieme di **sequenze binarie infinite** non è numerabile, essendo poi che tale insieme ha la stessa cardinalità con l’insieme dei linguaggi allora anche l’insieme dei linguaggi non è numerabile.
 
 Osserviamo che un qualsiasi linguaggio si può rappresentare come una stringa binaria infinita.
 
@@ -128,7 +129,7 @@ Assumiamo per assurdo che l’insieme delle stringhe binarie infinite sia numera
 | 5 | $1110\underline0…$ |
 | … | … |
 
-Costruisco una nuova stringa binaria che non compare nella seconda colonna, l’ha costruisco nello stesso modo fatto per i numeri reali, ottengo quindi $10011...$
+Costruisco una nuova stringa binaria che non compare nella seconda colonna, la costruisco nello stesso modo fatto per i numeri reali, ottengo quindi $10011...$
 
 ## Esempio di linguaggio indecidibile
 
@@ -202,24 +203,15 @@ Un linguaggio $A$ è **decidibile** se e solo se sia $A$ che $\overline A$ sono 
     
     Dato che $A$ è decidibile esso è anche Turing riconoscibile (un problema decidibile è sottoinsieme di un problema Turing riconoscibile)
     
-    Dato che $A$ è decidibile, la classe dei linguaggi decidibili è chiusa rispetto al complemento quindi $\overline A$ è decidibile e di conseguenza Turing riconoscibile
+    La classe dei linguaggi decidibili è chiusa rispetto al complemento quindi anche $\overline A$ è decidibile e di conseguenza Turing riconoscibile
     
 - Secondo verso della doppia implicazione: Assumo che $A$ e $\overline A$ siano Turing riconoscibili, allora esistono due MdT $M, N$ tali che $L(M) = A$, $L(N) = \overline A$
     
-    Costruisco un decisore $D$ per il linguaggio $A$ sfruttando il fatto che una qualsiasi stringa per forza di cose o sta in $A$ o non sta in $A$ (cioè sta nel suo complemento, $\overline A$), quindi eseguendo in parallelo $M$ e $N$ (su due nastri diversi) uno dei due sicuramente accetterà l’input di conseguenza il decisore termina sempre.
+    Costruisco un decisore $D$ per il linguaggio $A$ sfruttando il fatto che una qualsiasi stringa per deve necessariamente o stare in $A$ o non stare in $A$ (cioè sta nel suo complemento, $\overline A$), quindi eseguendo in parallelo $M$ e $N$ (su due nastri diversi) uno dei due sicuramente accetterà l’input di conseguenza il decisore termina sempre.
     
     $D =$ su input $w$
     
-    1. simula $M$ su $w$ per un passo di computazione sul primo nastro
-        
-        Se $M$ accetta, allora accetta
-        
-        Se $M$ rifiuta, allora rifiuta
-        
+    1. Simula $M$ su $w$ per un passo di computazione sul primo nastro
     2. Simula $N$ su $w$ per un passo di computazione sul secondo nastro
-        
-        Se $N$ accetta, allora rifiuta
-        
-        se $N$ rifiuta, allora accetta
-        
-    3. Ripeti dal passo 1
+        1. Se $M$ accetta, allora accetta, se invece $N$ accetta, allora rifiuta
+    3. Se nessuno dei due ha terminato ripeti dal passo 1

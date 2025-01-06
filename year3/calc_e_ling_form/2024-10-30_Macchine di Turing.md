@@ -10,7 +10,7 @@ Viene utilizzato un **nastro infinito** come memoria illimitata e una **testina*
 - La memoria è infinita e viene rappresentata da un nastro
 - L’input si trova sul nastro e può essere sia letto che scritto
 - La testina può spostarsi sia a destra che a sinistra
-- Accetto o rifiuto un input immediatamente quando entro in uno stato di accettazione o rifiuto (non è quindi necessario consumare tutto l’input)
+- Accetta o rifiuta un input immediatamente quando entra in uno stato di accettazione o rifiuto (non è quindi necessario consumare tutto l’input)
 
 ## Definizione formale
 
@@ -26,7 +26,7 @@ Una macchina di Turing è una 7-tupla $(Q, \Sigma, \Gamma, \delta, q_0, q_{\text
 
 ## Come computa
 
-Inizialmente la MdT riceve un input di $n$ simboli che vengono posizionate nelle $n$ celle più a sinistra del nastro, il restro del nastro avrà caratteri *blank*. La testina parte dalla posizione più a sinistra del nastro e la computazione inizia.
+Inizialmente la MdT riceve un input di $n$ simboli che vengono posizionate nelle $n$ celle più a sinistra del nastro, il resto del nastro avrà caratteri *blank*. La testina parte dalla posizione più a sinistra del nastro e la computazione inizia.
 
 Possiamo descrivere la computazione definendo delle **configurazioni** composte da tre elementi:
 
@@ -40,7 +40,7 @@ Ad esempio
 
 ![https://i.ibb.co/FqsDmvq/image.png](https://i.ibb.co/FqsDmvq/image.png)
 
-la configurazione si scrive come $1011q_701111$. È importante notare come la testina stia puntando all’elemento subito dopo lo stato $q_7$
+la configurazione si scrive come $1011q_701111$. È importante notare come la testina sta puntando all’elemento subito dopo lo stato $q_7$
 
 Una macchina di Turing computa passando da una configurazione alla successiva secondo quanto definito dalla funzione di transizione $\delta$
 
@@ -75,7 +75,7 @@ Una MdT che non va mai in loop per nessun input è detta **decisore**.
 
 Un linguaggio $A$ si dice **decidibile** se e solo se esiste una **MdT decisore** $M$ tale che $L(M) = A$ 
 
-È immediato che **ogni linguaggio decidibile è anche Turing-riconoscibile** (il contrario non vale).
+È immediato che **ogni linguaggio decidibile è anche Turing-riconoscibile** (il contrario non è necessariamente vero).
 
 ## Esempio di MdT
 
@@ -139,7 +139,7 @@ dove $k$ è il numero di nastri.
 
 Per ogni macchina di Turing multinastro esiste una macchina di Turing a singolo nastro equivalente.
 
-**Dimostrazione**: Sfruttando il fatto che il singolo nastro della MdT è infinito, possiamo memorizzare le informazioni dei nastri in uno singolo concatenandone il contenuto. Viene utilizzato un simbolo speciale come delimitatore per i contenuti dei vari nastri (ad esempio il simbolo `#`).
+**Dimostrazione**: Sfruttando il fatto che il singolo nastro della MdT è infinito, possiamo memorizzare le informazioni degli altri nastri in quel singolo nastro concatenando il contenuto degli altri. Viene utilizzato un simbolo speciale come delimitatore per i contenuti dei vari nastri (ad esempio il simbolo `#`).
 
 Inoltre serve tenere traccia della posizione della testina sul k-esimo nastro, anche questo lo possiamo fare aggiungendo un simbolo nella cella puntata dalla testina (ad esempio il simbolo •)
 
@@ -199,9 +199,9 @@ In questo modo possono anche uscire indirizzi che in realtà non sono presenti s
 
 Vediamo il funzionamento della macchina:
 
-1. metti l’input nel nastro 1, il nastro 2 è vuoto e metti $\epsilon$ nel nastro 3
+1. mette l’input nel nastro 1, il nastro 2 è vuoto e metti $\epsilon$ nel nastro 3
 2. copia il nastro 1 nel nastro 2
-3. Utilizza il nastro 2 per simulare la computazione non deterministica, consultando il nastro 3 per determinare la prossima scelta. Se giungi i uno stato di accettazione allora accetta, altrimenti (stato di rifiuto o indirizzo invalido) vai al punto 4
+3. Utilizza il nastro 2 per simulare la computazione non deterministica, consultando il nastro 3 per determinare la prossima scelta. Se giunge in uno stato di accettazione allora accetta, altrimenti (stato di rifiuto o indirizzo invalido) va al punto 4
 4. aggiorna il nastro 3 con la prossima stringa e torna al punto 2
 
 ## Enumeratori
@@ -222,16 +222,16 @@ Un linguaggio $A$ è Turing-riconoscibile se e solo se esiste un enumeratore $E$
     
     La MdT $M$ funziona come segue:
     
-    $M =$ “Su input $w$:
+    $M =$ Su input $w$:
     
     1. Esegue $E$. Ogni volta che $E$ genera una stringa $w’$, la confronta con $w$
-    2. Se $w'=w$, accetta”
+    2. Se $w'=w$, accetta
     
 - Secondo verso della doppia implicazione: Se $A$ è turing-riconoscibile allora dimostro che esiste un enumeratore $E$ tale che $L(E) = A$
     
     Se il linguaggio è turing riconoscibile allora esiste una MdT $M$ che riconosce il linguaggio, costruiamo un enumeratore
     
-    $E =$ “per $i = 1, 2, 3, …$:
+    $E =$ per $i = 1, 2, 3, …$:
     
     1. Esegui $M$ per $i$ passi di computazione su $s_1, s_2, s_3, …$ (cioè computa le stringhe in parallelo)
     2. Se una qualche computazione accetta allora stampa la corrispondente stringa
@@ -303,19 +303,19 @@ $$
 
 Dove $<\cdot>$ è una funzione che trasforma polinomi in una rappresentazione come stringa
 
-Siccome abbiamo definito i linguaggio come un insieme di stringhe è importante che nel linguaggio $A$ ci siano stringhe e non polinomi. È a discrezione del singolo stabilire quale rappresentazione come stringa utilizzare fintanto che sia possibile passare alla rappresentazione come polinomio e vice versa.
+Siccome abbiamo definito i linguaggi come un insieme di stringhe è importante che nel linguaggio $A$ ci siano stringhe e non polinomi. È a discrezione del singolo stabilire quale rappresentazione come stringa utilizzare, fintanto che sia possibile passare alla rappresentazione come polinomio e vice versa.
 
-Per la tesi di Church-Turing, questo problema ammette soluzione algoritmica se e solo se esiste un **decisore** (macchina di turing che accetta o rifiuta senza andare mai in loop) che riconosce $A$.
+Per la tesi di Church-Turing, questo problema ammette soluzione algoritmica se e solo se esiste un **decisore** (macchina di Turing che accetta o rifiuta senza andare mai in loop) che riconosce $A$.
 
 Provo a costruire il decisore $M$ che riconosce il linguaggio:
 
-$M =$  “Su input $<p>$:
+$M =$  Su input $<p>$:
 
 1. Per tutti gli $x = 0, 1, -1, 2, -2, 3, -3, …$
     - calcola il valore di $p(x)$
     - se $p(x) = 0$ allora ritorna accetta
 
-Al momento questa macchina dimostra che $A$ è turing-riconoscibile ma non dimostra che è decidibile (cioè $M$ non è un decisore) in quanto può andare in loop infinito se non trova una soluzione.
+Al momento questa macchina dimostra che $A$ è **turing-riconoscibile** ma non dimostra che è decidibile (cioè $M$ non è un decisore) in quanto può andare in loop infinito se non trova una soluzione.
 
 Se imposto un limite ai numeri da tentare e aggiungo un secondo step in cui se non viene trovata la radice entro questo limite allora rifiuto, allora abbiamo creato un decisore.
 
@@ -333,7 +333,7 @@ dove:
 
 Il decisore diventa quindi:
 
-$M =$  “Su input $<p>$:
+$M =$  Su input $<p>$:
 
 1. Per tutti gli $x \in \left[-k\frac{c_{\text{max}}}{c_1}, +k\frac{c_{\text{max}}}{c_1}\right]$
     - calcola il valore di $p(x)$
@@ -354,10 +354,10 @@ Dato che $A, B$ sono TR allora esistono due MdT $M, N$ tali che $L(M) = A$ e $L(
 
 Costruisco una nuova MdT $M’$ con due nastri.
 
-$M’ =$ “su input $w$:
+$M’ =$ su input $w$:
 
 - copia $w$ sul secondo nastro
-- simula $M$ su $w$ sul primo nasto per un passo di computazione
+- simula $M$ su $w$ sul primo nastro per un passo di computazione
 - simula $N$ su $w$ sul secondo nastro per un passi di computazione
 - se $M$ o $N$ accettano allora accetta
 
@@ -371,7 +371,7 @@ Dato che $A, B$ sono TR allora esistono due MdT $M, N$ tali che $L(M) = A$ e $L(
 
 Costruisco una nuova MdT $M’$.
 
-$M’ =$ “su input $w$:
+$M’ =$ su input $w$:
 
 - simula $M$ su $w$
 - se $M$ accetta simula $N$ su $w$, se $N$ accetta allora accetta, altrimenti rifiuta.
@@ -387,7 +387,7 @@ Dato che $A, B$ sono TR allora esistono due MdT $M, N$ tali che $L(M) = A$ e $L(
 
 Costruisco una nuova MdT non deterministica $M’$.
 
-$M’ =$ “su input $w$:
+$M’ =$ su input $w$:
 
 - spezza $w$ in $w_1, w_2$ non deterministicamente
 - esegui $M$ su $w_1$, se rifiuta allora rifiuta
@@ -403,11 +403,7 @@ Dato che $A$ è TR allora esiste un MdT $M$ tale che $L(M) = A$.
 
 Costruisco una nuova MdT non deterministica $M’$.
 
-$M’ =$ “su input $w$:
+$M’ =$ su input $w$:
 
 - spezza $w$ in $w_1, w_2 ... w_n$ non deterministicamente per qualche $n \leq |w|$
 - esegui $M$ su $w_i$, per ogni $i \leq n$, se $M$ le accetta tutte allora accetta, altrimenti rifiuta
-
-## Chiusura dei linguaggi decidibili
-
-È anche possibile dimostrare che i **linguaggi decidibili** sono chiusi rispetto a: **unione, concatenazione, star, intersezione e anche complemento**
