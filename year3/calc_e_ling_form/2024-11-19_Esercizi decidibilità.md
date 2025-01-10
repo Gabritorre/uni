@@ -33,7 +33,7 @@ $M=$ su input $<D>$:
     
     ![https://i.ibb.co/h8WMP9t/DFA-1.png](https://i.ibb.co/h8WMP9t/DFA-1.png)
     
-2. Eseguo il decisore per $EQ_{\text{DFA}}$ su $D’$
+2. Eseguo il decisore per $EQ_{\text{DFA}}$ su $<D,D’>$
 3. ritorno il suo output
 
 ## Es 2
