@@ -137,6 +137,53 @@ I linguaggi context free **sono chiusi rispetto alle operazioni regolari** (unio
 
 mentre **non** sono chiusi rispetto a **intersezione e complemento**
 
+### Unione
+
+Siano $A$ e $B$ due linguaggi context free, allora esistono due grammatiche $G, H$ tali che $L(G) = A$ e $L(H) = B$
+
+$G = (V_1, \Sigma_1, R_1, S_1)$
+
+$H = (V_2, \Sigma_2, R_2, S_2)$
+
+costruisco una grammatica $I = (V_3, \Sigma_3, R_3, S_3)$ tale che $L(I) = A\cup B$
+
+- $V_3 = V_1 \cup V_2 \cup \{S_3\}\hspace{5mm}$ dove $S_3 \notin V_1 \cup V_2$
+- $\Sigma_3 = \Sigma_1 \cup \Sigma_2$
+- $R_3 = R_1 \cup R_2 \cup \{S_3 \to S_1 \,|\, S_2\}$
+- $S_3$ è lo start symbol nuovo
+
+Assumiamo senza perdita di generalità che $V_1 \cap V_2 = \emptyset$ in quanto non terminali con lo stesso nome si possono rinominare
+
+### Concatenazione
+
+Siano $A$ e $B$ due linguaggi context free, allora esistono due grammatiche $G, H$ tali che $L(G) = A$ e $L(H) = B$
+
+$G = (V_1, \Sigma_1, R_1, S_1)$
+
+$H = (V_2, \Sigma_2, R_2, S_2)$
+
+costruisco una grammatica $I = (V_3, \Sigma_3, R_3, S_3)$ tale che $L(I) = A\circ B$
+
+- $V_3 = V_1 \cup V_2 \cup \{S_3\}\hspace{5mm}$ dove $S_3 \notin V_1 \cup V_2$
+- $\Sigma_3 = \Sigma_1 \cup \Sigma_2$
+- $R_3 = R_1 \cup R_2 \cup \{S_3 \to S_1 S_2\}$
+- $S_3$ è lo start symbol nuovo
+
+Assumiamo senza perdita di generalità che $V_1 \cap V_2 = \emptyset$ in quanto non terminali con lo stesso nome si possono rinominare
+
+### Star
+
+Sia $A$ un linguaggio context free, allora esiste una grammatiche $G$ tale che $L(G) = A$
+
+$G = (V_1, \Sigma_1, R_1, S_1)$
+
+costruisco una grammatica $I = (V_2, \Sigma_2, R_2, S_2)$ tale che $L(I) = A^*$
+
+- $V_2 = V_1  \cup \{S_2\}\hspace{5mm}$ dove $S_2 \notin V_1$
+- $\Sigma_2 = \Sigma_1$
+- $R_2 = R_1\cup \{S_2 \to S_2 S_1\,|\,\epsilon\}$
+- $S_2$ è lo start symbol nuovo
+
 ## Forma normale di Chomsky
 
 Vediamo una forma semplificata delle CFG, chiamata **forma normale di Chomsky.**
