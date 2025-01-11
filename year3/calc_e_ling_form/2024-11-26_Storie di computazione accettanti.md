@@ -148,7 +148,7 @@ Costruiamo la CFG $G$ in modo che $L(G)$ contenga le stringhe che **non** sono s
 
 Specificare concretamente il comportamento di $G$ può risultare abbastanza complesso, definiamo quindi un PDA $P$ equivalente. Nella nostra costruzione della macchina $S$, $G$ sarà quindi la conversione del PDA $P$.
 
-Nel concreto costruiamo $P$ in modo che accetti un input $x$ se tale input è una stringa che codifica una storia di computazione accettante per $M$ su $w$, tale stringa ha il seguente formato:
+Nel concreto costruiamo $P$ in modo che accetti un input $x$ se tale input **non** è una stringa che codifica una storia di computazione accettante per $M$ su $w$, tale stringa ha il seguente formato:
 
 $$
 \#\underbrace{\hspace{8mm}}_{C_1}\#\underbrace{\hspace{8mm}}_{C_2}\#.....\#\underbrace{\hspace{8mm}}_{C_k}\#
