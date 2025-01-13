@@ -216,6 +216,8 @@ I restanti oggetti non li porto.
 
 ## Esempio numerico knapsack binario
 
+Vediamo un esempio in cui risolviamo un solo step di knapsack binario.
+
 Problema di partenza
 
 $$
@@ -263,7 +265,9 @@ $$
 \underbrace{\frac{3}{1}}_{x_3} \geq \underbrace{\frac{4}{3}}_{x_1} \geq \underbrace{\frac{1}{1}}_{y_5}
 $$
 
-siccome $\frac{3}{1} + \frac{4}{3} = \frac{13}{3}\leq \frac{9}{2}$ e sommandoci $\frac{1}{1}$ sforeremmo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$ (i primi due mi stanno ma il terzo no)
+Per determinare $h$ devo sommare in modo ordinato i denominatori dei rapporti, sommandone il più possibile che rispettino però il vincolo.
+
+In questo caso siccome $1 + 3 = 4 \leq \frac{9}{2}$ e sommandoci $1$ sforeremmo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$ (i primi due mi stanno ma il terzo no)
 
 allora determiniamo:
 

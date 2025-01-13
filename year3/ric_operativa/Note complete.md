@@ -1,4 +1,5 @@
-﻿# Spazi vettoriali
+﻿
+# Spazi vettoriali
 
 Lo spazio vettoriale è un insieme di elementi chiamati vettori che soddisfa 8+1 proprietà e che è definito su un insieme di numeri (detti **scalari**) chiamato **campo** (ad esempio il campo del numeri reali $\mathbb{R}$),
 
@@ -2619,7 +2620,8 @@ Generalizzando le specifiche appena fatte considerando però $m$ vincoli possiam
     
     In questo modo la condizione $\alpha_1 +...+ \alpha_m \geq m-k$ sta a significare che ci almeno $m-k$ vincoli uguali a $1$ e quindi al massimo $k$ saranno a $0$.
 
-# Metodo Branch & Bound
+
+# 2024-12-05_Metodo Branch & Bound
 
 Analizziamo il metodo **Branch & Bound** (B&B) per la risoluzione di problemi di **programmazione lineare intera** (PLI), cioè in cui i punti che sono **soluzione** del problema oltre a rispettare i vincoli devo avere **tutte le componenti come numeri interi**.
 
@@ -2837,6 +2839,8 @@ I restanti oggetti non li porto.
 
 ## Esempio numerico knapsack binario
 
+Vediamo un esempio in cui risolviamo un solo step di knapsack binario.
+
 Problema di partenza
 
 $$
@@ -2884,7 +2888,9 @@ $$
 \underbrace{\frac{3}{1}}_{x_3} \geq \underbrace{\frac{4}{3}}_{x_1} \geq \underbrace{\frac{1}{1}}_{y_5}
 $$
 
-siccome $\frac{3}{1} + \frac{4}{3} = \frac{13}{3}\leq \frac{9}{2}$ e sommandoci $\frac{1}{1}$ sforeremmo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$ (i primi due mi stanno ma il terzo no)
+Per determinare $h$ devo sommare in modo ordinato i denominatori dei rapporti, sommandone il più possibile che rispettino però il vincolo.
+
+In questo caso siccome $1 + 3 = 4 \leq \frac{9}{2}$ e sommandoci $1$ sforeremmo $\frac{9}{2}$ allora possiamo stabilire che $h = 2$ (i primi due mi stanno ma il terzo no)
 
 allora determiniamo:
 
