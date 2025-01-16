@@ -1662,7 +1662,7 @@ $$
 L’insieme $C$ invece lo possiamo scrivere come un insieme di vincoli, anch’essi lineari, in particolare i vincoli possono apparire come:
 
 - $a^Tx \geq b$ oppure $a^Tx \leq b$ l’insieme dei punti dato da tali disequazioni prende il nome di **semispazio** ($a \in \mathbb{R}^n; b \in \mathbb{R}$)
-- $a^T = b$ l’insieme dei punti dato da tale equazione prende il nome di **iperpiano** ($a \in \mathbb{R}^n; b \in \mathbb{R}$)
+- $a^Tx = b$ l’insieme dei punti dato da tale equazione prende il nome di **iperpiano** ($a \in \mathbb{R}^n; b \in \mathbb{R}$)
 
 Tali vincoli essendo lineari sono anche **convessi**, possiamo visualizzarli nel seguente modo in $\mathbb{R}^2$:
 
