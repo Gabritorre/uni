@@ -1,4 +1,5 @@
 ﻿
+
 # Spazi vettoriali
 
 Lo spazio vettoriale è un insieme di elementi chiamati vettori che soddisfa 8+1 proprietà e che è definito su un insieme di numeri (detti **scalari**) chiamato **campo** (ad esempio il campo del numeri reali $\mathbb{R}$),
@@ -1643,6 +1644,7 @@ che è la definizione di punto di minimo globale
 
 # Poliedri
 
+
 Nella programmazione lineare consideriamo problemi del tipo:
 
 $$
@@ -1882,14 +1884,16 @@ $$
 Tale prodotto scalare lo possiamo scrivere nel seguente modo (proveniente dalla relazione tra norma e prodotto scalare standard):
 
 $$
-||c||_2\cdot ||y-x_1||_2 \cdot \cos(\widehat{x_1y}) > 0
+||c||_2\cdot ||y-x_1||_2 \cdot \cos\left(\phi\right) > 0
 $$
+
+Dove $\phi$ è l’angolo formato dal vettore $c$ con il vettore $(y-x_1)$. 
 
 Dato che per definizione le norme sono positive, affinché il risultato sia maggiore di $0$, il coseno deve essere positivo e per essere positivo l’angolo formato da $c$ $c$$(y-x_1)$ deve essere compreso tra $[0°, 90°)$
 
 Quindi $c$ è orientato nel verso crescente della funzione.
 
-![https://i.ibb.co/44WWGpm/seconda.png](https://i.ibb.co/44WWGpm/seconda.png)
+![https://i.ibb.co/wdFkmGy/esempio.png](https://i.ibb.co/wdFkmGy/esempio.png)
 
 Possiamo quindi sfruttare questa proposizione per risolvere il problema di trovare un minimo per la funzione, infatti sapendo che nella direzione di $c$ la funzione cresce ci basterà cercare nella direzione di $-c$, cioè dove la funzione decresce.
 
@@ -2023,7 +2027,7 @@ $$
 
 ### Vincoli linearmente indipendenti
 
-Presi due vincoli attivi $a_1^T v = b_1$ e $a_5^T = b_5$ essi sono linearmente indipendenti se i rispettivi vettori $a_1$ e $a_5$ sono linearmente indipendenti.
+Presi due vincoli attivi su $v$:  $a_1^T v = b_1$ e $a_5^Tv = b_5$ essi sono linearmente indipendenti se i rispettivi vettori $a_1$ e $a_5$ sono linearmente indipendenti.
 
 cioè se imponendo l’equazione
 
@@ -2168,11 +2172,9 @@ Cerchiamo quindi di riscrivere il teorema nella cosiddetta **forma standard**, c
 
 **Idea**: l’idea è quella che dato il nostro problema di programmazione lineare, costruiamo un nuovo problema legato a quello di partenza, ma che definisce un **poliedro in forma standard**, cioè che è confinato nel primo ortante dello spazio euclideo (in $\mathbb{R}^2$ è il primo quadrante, quello in alto a destra). In questo modo assicuriamo che esso non contenga rette, infatti una retta non può essere mai confinata in un solo ortante.
 
-Nella seguente immagine ci sono degli esempi di **poliedri in forma standard** (segnati in verde):
+La seguente immagine rappresenta un **poliedro in forma standard**:
 
-![https://i.ibb.co/3TQWmjt/standard.png](https://i.ibb.co/3TQWmjt/standard.png)
-
-Quelli rossi non sono poliedri in forma standard in quanto prolungando i loro confini illimitati si esce dal primo quadrante.
+![https://i.ibb.co/JjSVqmG/image.png](https://i.ibb.co/JjSVqmG/image.png)
 
 ## Teorema fondamentale della PL standard
 
@@ -2621,7 +2623,8 @@ Generalizzando le specifiche appena fatte considerando però $m$ vincoli possiam
     In questo modo la condizione $\alpha_1 +...+ \alpha_m \geq m-k$ sta a significare che ci almeno $m-k$ vincoli uguali a $1$ e quindi al massimo $k$ saranno a $0$.
 
 
-# 2024-12-05_Metodo Branch & Bound
+# Metodo Branch & Bound
+
 
 Analizziamo il metodo **Branch & Bound** (B&B) per la risoluzione di problemi di **programmazione lineare intera** (PLI), cioè in cui i punti che sono **soluzione** del problema oltre a rispettare i vincoli devo avere **tutte le componenti come numeri interi**.
 
