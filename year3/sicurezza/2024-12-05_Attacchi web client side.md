@@ -35,10 +35,10 @@ Set-Cookie: NAME=VALUE; Domain=example.com; Path=/; Expires=Wed, 09 Dec 2024 12:
         
     - `None`: Il cookie viene inviato in **tutte le richieste.** Tuttavia, deve essere accompagnato dal flag `Secure`
 
-Il browser allega automaticamente a una richiesta web i cookie che soddisfano i seguenti criteri:
+Il browser allega automaticamente i cookie ad una richiesta web quando:
 
 - il dominio dell'URL finisce come il dominio specificato nel cookie, ad esempio  `sub.example.com` finisce come `example.com` che è specificato nel cookie.
-- il path dell'URL inizia come il path specificato nel cookie, ad es `https://example.com/app/dashboard` inizia per `/app` che è specificato nel cookie
+- il path dell'URL inizia come il path specificato nel cookie, ad esempio `https://example.com/app/dashboard` inizia per `/app` che è specificato nel cookie
 - il protocollo è HTTPS se il cookie è contrassegnato come `secure`.
 
 È possibile **creare ed eliminare i cookie in JavaScript** modificando `document.cookie`. Per eliminare un cookie, si imposta la sua data di scadenza nel passato.
@@ -49,14 +49,14 @@ Alcuni linguaggi, come Java, JavaScript e Go, leggono i cookie come una **lista*
 
 Lo stato della sessione può essere memorizzato sul server o sul client.
 
-- I server con stato utilizzano un cookie di sessione `secure` e `HttpOnly` nel browser ma mantiene lo stato nel server. Questo approccio può comportare un sovraccarico eccessivo lato server.
-- I server senza stato crittografano i dati di sessione insieme a un ID utente e un timestamp utilizzando una chiave del server. Memorizzano il blob crittografato in un cookie nel browser, nel server viene solo mantenuto un timestamp di login o logout per validare il blob quando viene ricevuto dal client.
+- I **server con stato** utilizzano un cookie `secure` e `HttpOnly` nel browser del client ma mantengono lo stato nel server. Questo approccio può comportare un sovraccarico eccessivo lato server.
+- I **server senza stato** crittografano i dati di sessione insieme a un ID utente e un timestamp utilizzando una chiave del server. Memorizzano il blob crittografato in un cookie nel browser del client, nel server viene solo mantenuto un timestamp di login o logout per validare il blob quando viene ricevuto dal client.
 
 ## SOP
 
-Un browser permette di navigare più siti contemporaneamente, per fornire un adeguato isolamento tra i vari siti si implementa la SOP.
+Un browser permette di navigare più siti contemporaneamente, per fornire un adeguato isolamento tra le varie pagine web aperte nello stesso browser si implementa la SOP.
 
-La **Same Origin Policy (SOP)** è una politica di sicurezza standard dei browser che limita l'accesso tra documenti o script caricati da domini diversi. Questa politica fornisce un isolamento necessario tra le applicazioni web in esecuzione nello stesso browser.
+La **Same Origin Policy (SOP)** è una politica di sicurezza standard dei browser che limita l'accesso tra documenti o script caricati da domini diversi.
 
 ![https://i.ibb.co/gZF4Wcf/image.png](https://i.ibb.co/gZF4Wcf/image.png)
 
@@ -65,11 +65,11 @@ Due pagine hanno la **stessa origine** se il **protocollo, la porta e l'host** s
 Ad esempio con la pagina  `http://store.company.com/dir/page.html`
 
 ```
-http://store.company.com/dir2/other.html OK stessa origine
-http://store.company.com/dir/in/pag.html OK stessa origine
-https://store.company.com/secure.html NO protocollo diverso
-http://store.company.com:81/dir/etc.html NO porta diversa
-http://news.company.com/dir/other.html NO host diverso
+http://store.company.com/dir2/other.html  OK stessa origine
+http://store.company.com/dir/in/pag.html  OK stessa origine
+https://store.company.com/secure.html     NO protocollo diverso
+http://store.company.com:81/dir/etc.html  NO porta diversa
+http://news.company.com/dir/other.html    NO host diverso
 ```
 
 Se l'origine è diversa (si ha *cross-origin*), SOP limita o vieta:

@@ -28,7 +28,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="controllo-degli-accessi">Controllo degli accessi</h1>
-<p>Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso ad delle risorse a chi non è autorizzato.</p>
+<p>Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso a delle risorse a chi non è autorizzato.</p>
 <p>Nell’ambito dei sistemi operativi, chi può accedere alle risorse solitamente è un <strong>utente</strong>, un <strong>programma</strong>, un <strong>processo</strong> o <strong>altri sistemi</strong>. L’accesso alle risorse del sistema viene regolato da una <em><strong>security policy.</strong></em></p>
 <p><img src="https://i.ibb.co/KsWbtFz/image.png" alt="https://i.ibb.co/KsWbtFz/image.png"></p>
 <h2 id="politiche-di-controllo-degli-accessi">Politiche di controllo degli accessi</h2>
@@ -67,7 +67,7 @@
 <table>
 <thead>
 <tr>
-<th></th>
+<th>Soggetto/oggetto</th>
 <th>README.txt</th>
 <th>/etc/shadow</th>
 <th>Carol.pdf</th>
@@ -104,9 +104,9 @@
 </ul>
 <h2 id="unix-access-control">Unix Access Control</h2>
 <p>Unix utilizza un controllo degli accessi di tipo DAC.</p>
-<p>Il kernel ha accesso libero a tutto il sistema, i programmi accedono ai file e device attraverso il kernel.</p>
-<p>Ad <strong>ogni file e directory è assegnato esattamente uno</strong> <em><strong>user identifier</strong> (userid, uid)</em> che ne indica il proprietario e contribuisce a determinarne i permessi d’accesso.</p>
-<p>Ad <strong>ogni processo è associato un insieme definito</strong> <strong>di <em>user identifier</em></strong> che contribuiscono a determinare i permessi che il processo ha su file e directory.<br>
+<p>Il kernel ha accesso libero a tutto il sistema, i programmi accedono a file e device attraverso il kernel.</p>
+<p>Ad <strong>ogni file e directory è assegnato uno</strong> <em><strong>user identifier</strong> (userid, uid)</em> che ne indica il proprietario e contribuisce a determinarne i permessi d’accesso.</p>
+<p>Ad <strong>ogni processo è associato un insieme di <em>user identifier</em></strong> che contribuiscono a determinare i permessi che il processo ha su file e directory.<br>
 L’utente root (con userid = 0) ha sempre accesso garantito dal kernel.</p>
 <h3 id="permessi-su-un-file">Permessi su un file</h3>
 <p>In Unix i permessi su un file sono formati da <strong>tre blocchi</strong> che definiscono i permessi del proprietario, del gruppo e di tutti gli altri.</p>
@@ -136,13 +136,13 @@ L’utente root (con userid = 0) ha sempre accesso garantito dal kernel.</p>
 <p>la prima parte: <code>-rwxr-xr--</code> riguarda i permessi, in particolare:</p>
 <ul>
 <li>Il primo carattere riguarda il fatto che il file è una directory (’<code>d</code>’) oppure no (‘<code>-</code>’).</li>
-<li>Le successive <strong>prime tre posizioni</strong> indicano i permessi del proprietario. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (<code>rwx</code>)</li>
-<li>Le <strong>seconde tre posizioni</strong> indicano i permessi per il gruppo. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (<code>r-x</code>)</li>
-<li>Le <strong>ultime tre posizioni</strong> si riferiscono ai permessi per chiunque altro. Nell’esempio chiunque altro può solamente leggere il file (<code>r--</code>).</li>
+<li>Le successive <strong>prime tre posizioni</strong> indicano i permessi del <strong>proprietario</strong>. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (<code>rwx</code>)</li>
+<li>Le <strong>seconde tre posizioni</strong> indicano i permessi per il <strong>gruppo</strong>. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (<code>r-x</code>)</li>
+<li>Le <strong>ultime tre posizioni</strong> si riferiscono ai permessi per <strong>chiunque altro</strong>. Nell’esempio chiunque altro può solamente leggere il file (<code>r--</code>).</li>
 </ul>
 <h3 id="alterare-i-permessi">Alterare i permessi</h3>
 <p>È possibile alterare i permessi con il comando <code>chmod</code> ad esempio <code>chmod 760 myfile</code></p>
-<p>Il numero <code>760</code> viene interpretato come tre cifre distinti in base ottale</p>
+<p>Il numero <code>760</code> viene interpretato come tre cifre distinte in base ottale</p>
 <ul>
 <li>7 = 111 = <code>rwx</code></li>
 <li>6 = 110 = <code>rw-</code></li>

@@ -27,12 +27,12 @@ strings <file> # estrae le stringhe leggibili da un file binario
 
 ## Wildcards
 
-Le wildcards sono dei caratteri speciali che vengono interpretato in modo particolare dai comandi:
+Le wildcards sono dei caratteri speciali che vengono interpretate in modo particolare dai comandi:
 
 ```bash
-* # accetta ogni stringa di caratteri
-? # accetta un singolo carattere
-[...] # accetta un insieme di caratteri specificato
+* # accetta ogni stringa di caratteri. Esempio:   ls *.txt
+? # accetta un singolo carattere. Esempio:        ls file?.txt
+[...] # accetta un insieme di caratteri specificato. Esempio:  ls file[1-3].txt
 ```
 
 Nota che come comportamento di default il ‘.’ all’inizio del nome del file o subito dopo una slash deve essere specificato esplicitamente, le wildcard non lo considerano in automatico.
@@ -41,11 +41,11 @@ Nota che come comportamento di default il ‘.’ all’inizio del nome del file
 
 Ci sono dei simboli per poter reindirizzare input e output:
 
-- `>`  reindirizza l’output di un comando verso un file sovrascrivendone il contenuto già presente
-    - es: `ls > tempfile.txt` scrive l’output di `ls`  nel file chiamato `tempfile.txt`
-- `<` reindirizzo il contenuto di un file come input al comando
+- `>`  reindirizza l’output di un comando verso un file **sovrascrivendone** il contenuto già presente
+    - es: `ls > tempfile.txt` scrive l’output di `ls` nel file chiamato `tempfile.txt`
+- `<` reindirizza il contenuto di un file come input al comando
     - es: `sort < list.txt`
-- `>>`  reindirizza l’output di un comando verso un file aggiungendolo al contenuto già presente
+- `>>`  reindirizza l’output di un comando verso un file **aggiungendolo** al contenuto già presente
 
 Linux ha tre stream di input/output di default:
 
@@ -55,7 +55,7 @@ Linux ha tre stream di input/output di default:
 
 quindi si può anteporre il numero relativo allo stream per reindirizzare lo standard output oppure lo standard error:
 
-`cat test.txt 2> errors.txt`  se “test.txt” non esiste allora l’errore lanciato dal programma andrà nel file “errors.txt”
+`cat test.txt 2> errors.txt` se “test.txt” non esiste allora l’errore lanciato dal programma andrà nel file “errors.txt”
 
 ## Pipe
 
@@ -65,6 +65,10 @@ Le pipe sono la forma base per la comunicazione tra processi, possiamo pensarlo 
 
 l’output di “command1” diventa l’input di “command2”, l’output di “command2” verrà stampato sul terminale.
 
+Un esempio reale è il seguente:
+
 ```bash
 ls | grep Documents
 ```
+
+L’output di `ls` viene dato a `grep` il quale cercherà al suo interno occorrenze della stringa “Documents”, le righe che conterranno questa stringa verranno stampate in output.

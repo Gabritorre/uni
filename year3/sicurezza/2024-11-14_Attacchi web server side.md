@@ -19,7 +19,7 @@ Vediamo quattro esempi di comuni vulnerabilità nel linguaggio PHP.
 
 PHP, non richiede una definizione esplicita del tipo di variabile in quanto viene determinato dinamicamente in base al contesto tramite un meccanismo chiamato t*ype juggling* che esegue conversioni automatiche.
 
-Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l'operatore di confronto debole `==`, dato che questo operatore eseguo il confronto dopo la conversione automatica. Al contrario, l'operatore di confronto stretto `===` verifica l'uguaglianza sia del valore che del tipo senza la conversione automatica.
+Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l'operatore di confronto debole `==`, dato che questo operatore esegue il confronto **dopo** la conversione automatica. Al contrario, l'operatore di confronto stretto `===` verifica l'uguaglianza sia del valore che del tipo senza la conversione automatica.
 
 Gli attacchi basati sul **confronto di stringhe** sfruttano queste comparazioni deboli per modificare il flusso di controllo dell'applicazione.
 
@@ -46,7 +46,7 @@ Vediamo degli esempi di attacco nello specifico
     ?>
     ```
     
-    Se avessimo un token del tipo `“0e394…”` in questo caso tale stringa potrebbe essere convertita in un intero scritto in notazione esponenziale ($0\cdot 10^{394…} = 0$), per cui se l’attaccante fornisce l’input `“0”` supererebbe il confronto debole.
+    Se avessimo un token del tipo `“0e394…”` in questo caso tale stringa potrebbe essere convertita in un intero scritto in notazione esponenziale ($0\cdot 10^{394…} = 0$), per cui se l’attaccante fornisce l’input `“0”` supererebbe il confronto debole, venendo quindi autenticato.
     
     Si potrebbe pensare che usare strcmp renda il codice più sicuro, in quanto viene delegato il controllo ad una funzione nativa, ma il problema comunque rimane se facciamo il confronto in questo modo:
     
@@ -57,7 +57,7 @@ Vediamo degli esempi di attacco nello specifico
 
 ## 2 File inclusion attacks
 
-Supponiamo un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:
+Prendiamo d’esempio un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:
 
 ```php
 <?php
@@ -90,23 +90,22 @@ Il problema risiede nel fatto che la deserializzazione di una stringa provenient
 Questo è possibile perché la deserializzazione può richiamare automaticamente dei metodi speciali, chiamati "**metodi magici**", definiti all'interno della classe dell'oggetto.
 Ad esempio il metodo magico `__wakeup()` viene invocato automaticamente dopo la deserializzazione di un oggetto appartenente a quella classe.
 
-Un attaccante può creare un oggetto appartenente ad una classe presente sul server, inserire del codice malevolo, lo serializza, lo codifica come URL e lo inserisce in un cookie.
+Un attaccante può creare un oggetto appartenente ad una classe presente sul server, inserire del codice malevolo, serializzarlo, codificarlo come URL e inserirlo in un cookie.
 
 Quando il server prenderà il cookie, la stringa verrà deserializzata e il codice malevolo all’interno di `__wakeup()` verrà eseguito.
 
 Codice del server:
 
 ```php
-class Example
-{
+class Example {
 	 private $hook;
 	 // some PHP code...
-	 function __wakeup()
-	 {
+	 function __wakeup() {
 		 if (isset ($this->hook)) eval ($this->hook);
 	 }
 }
-// simulating the attack.
+
+// simulating the attack
 $user_data = unserialize(urldecode('O%3A8%3A%22Example2%22%3A1%3A%7Bs%3A14%3A%22%00Exam ple2%00hook%22%3Bs%3A10%3A%22phpinfo%28%29%3B%22%3B%7D'));
 ```
 
@@ -136,19 +135,21 @@ Nota che `.` serve per concatenare stringhe in PHP.
 
 L’attaccante ha il controllo di una parte della query, cioè `$_POST['lastname']`.
 
-L’attaccante può inserire un `'` per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore
+L’attaccante può inserire un `'` per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore.
+
+Ad esempio ottenendo una query di questo tipo:
 
 `SELECT name, lastname FROM people WHERE lastname = '' OR 1 -- '`
 
 In questo modo la condizione nel `where` sarà sempre vera e l’attaccante ottiene il risultato della query anche se non dovrebbe.
 
-L’attaccante può sfruttare il comando `UNION ALL` per fare il dump di altre tabelle.
-
 ### Attacchi black box al database
 
 L’attaccante potrebbe non sapere i nomi di tabelle e colonne all'interno di un database. 
 
-Un attacca black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query
+Può sfruttare il comando `UNION ALL` per fare il dump di altre tabelle.
+
+Un attacco black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query del tipo
 
 - `... where lastname = '' UNION ALL SELECT 1 #'`
 - `... where lastname = '' UNION ALL SELECT 1,2 #'`
@@ -168,7 +169,7 @@ fino a quando si ottiene una risposta positiva.
 
 Lo stesso metodo può essere applicato per scoprire i nomi delle colonne.
 
-Siccome il comando `UNION ALL` richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima la query andrà in errore, ma possiamo usare a concatenazione di colonne in un'unica colonna utilizzando la funzione `CONCAT()`.
+Siccome il comando `UNION ALL` richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima, la query andrà in errore, ma possiamo usare a concatenazione di colonne in un'unica colonna utilizzando la funzione `CONCAT()`.
 
 Un altra cosa che l’attaccante può fare è dumpare le informazioni contenute nel database `information_schema`, il quale contiene informazioni su tutti gli altri database presenti nel sistema tra cui i nomi dei database, le tabelle e le colonne.
 
@@ -207,4 +208,4 @@ Oltre alle tecniche specifiche per prevenire le SQL injection, vediamo delle *be
     
     Quindi il web server genera una chiave segreta internamente. Quando esporta dati li manda in chiaro affiancati dal rispettivo hash. Quando invece importa dati, prima di utilizzarli (ad esempio fare la deserializzazione) si ricalcola l’hash dei dati e verifica che il risultato combaci con l’hash ricevuto
     
-5. **Funzioni e API sicure**: quando disponibili, utilizzare funzioni e API progettate per essere sicure. Queste funzioni spesso implementano internamente le *best practices* di sicurezza
+5. **Funzioni e API sicure**: quando disponibili, utilizzare funzioni e API standard. Queste funzioni spesso implementano internamente le *best practices* di sicurezza.

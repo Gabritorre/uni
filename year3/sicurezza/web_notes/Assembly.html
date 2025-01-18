@@ -13,7 +13,7 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#assembly">2024-10-02_Assembly</a>
+<li><a href="#assembly">Assembly</a>
 <ul>
 <li><a href="#panoramica-del-linguaggio">Panoramica del linguaggio</a></li>
 <li><a href="#comandi">Comandi</a></li>
@@ -28,9 +28,9 @@
   </div>
   <div class="stackedit__right">
     <div class="stackedit__html">
-      <h1 id="assembly">2024-10-02_Assembly</h1>
+      <h1 id="assembly">Assembly</h1>
 <p>Fare <em>program exploitation</em> significa far fare qualcosa di non pianificato ad un programma.</p>
-<p>Per fare ciò si sfruttano i bug e la manipolazione del codice macchina del file eseguibili.</p>
+<p>Per fare ciò si sfruttano i bug e la manipolazione del codice macchina di file eseguibili.</p>
 <p>Generalmente per fare <em>exploitation</em> non si dispone del codice sorgente ma solo dell’eseguibile scritto in <strong>linguaggio macchina</strong> (un insieme di byte).</p>
 <p>Il linguaggio <strong>assembly</strong> aiuta a rende il linguaggio macchina più leggibile, entrambi il linguaggio macchina e l’assembly dipendono dall’architettura del computer.</p>
 <p>Ci concentreremo sull’assembly <strong>x86-64 con sintassi Intel.</strong></p>
@@ -41,10 +41,10 @@
 <p><code>rax, rbx, rcx, rdx, r8, ..., r15</code></p>
 </li>
 <li>
-<p>Stack: il registro <code>rsp</code> rappresenta lo <em>stack pointer</em>, mentre <code>rbp</code> rappresenta il <em>base pointer</em>. Insieme delimitano la dimensione dello stack</p>
+<p><strong>Stack</strong>: il registro <code>rsp</code> rappresenta lo <em>stack pointer</em>, mentre <code>rbp</code> rappresenta il <em>base pointer</em>. Insieme delimitano la dimensione dello stack</p>
 </li>
 <li>
-<p><code>rip</code> è <em>l’instruction pointer</em> che punta alla prossima istruzione da eseguire</p>
+<p><code>rip</code> è <em>l’instruction pointer</em> che punta alla <strong>prossima istruzione</strong> da eseguire</p>
 </li>
 <li>
 <p><code>rsi</code> e <code>rdi</code> sono registri usati principalmente nelle stringhe e nei parametri delle funzioni</p>
@@ -53,7 +53,7 @@
 <p>Abbiamo poi il <em>flag register <code>rFlag</code></em> che contiene l’informazione sul risultato di precedenti operazioni aritmetiche, logiche e di controllo</p>
 </li>
 </ul>
-<p>Il numero di registri è finito, e in base alla sintassi che utilizziamo ci possiamo riferire ad una porzione specifica di un registro, ad esempio con il registro <code>a</code>:</p>
+<p>Il numero di registri è finito, e in base alla sintassi che utilizziamo ci possiamo riferire ad una porzione specifica di un registro, dal singolo byte fino alla versione a 64 bit, ad esempio con il registro <code>a</code>:</p>
 <p><img src="https://i.ibb.co/NtBDd05/image.png" alt="https://i.ibb.co/NtBDd05/image.png"></p>
 <h2 id="comandi">Comandi</h2>
 <p>Nella seguente tabella sono riassunti i principali comandi assembly:</p>
@@ -69,105 +69,53 @@
 <tbody>
 <tr>
 <td><code>mov dest, src</code></td>
-<td>Copia il valore di <code>src</code> in <code>dest</code>. Usato anche per copiare il valore presente all’indirizzo <code>[src]</code> in <code>dest</code>. Oppure salva il valore di <code>src</code> all’indirizzo contenuto in <code>[dest]</code></td>
-<td><code>mov rax, rbx</code> (copia il contenuto di <code>rbx</code> in <code>rax</code>). <code>mov rax, [rbx]</code> (carica il valore all’indirizzo contenuto in <code>rbx</code> in <code>rax</code>). <code>mov [rbx], rax</code> (memorizza il valore di <code>rax</code> all’indirizzo contenuto in <code>rbx</code>)</td>
-</tr>
-<tr>
-<td><code>add dest, src</code></td>
-<td>Somma il valore di <code>src</code> a <code>dest</code> e memorizza il risultato in <code>dest</code>.</td>
-<td><code>add rax, 10</code> (somma 10 a <code>rax</code>)</td>
-</tr>
-<tr>
-<td><code>sub dest, src</code></td>
-<td>Sottrae il valore di <code>src</code> da <code>dest</code> e memorizza il risultato in <code>dest</code>.</td>
-<td><code>sub rbx, 5</code> (sottrae 5 da <code>rbx</code>)</td>
-</tr>
-<tr>
-<td><code>and dest, src</code></td>
-<td>Esegue l’operazione logica AND tra <code>src</code> e <code>dest</code>, salvando il risultato in <code>dest</code>.</td>
-<td><code>and rax, rbx</code> (AND bit a bit tra <code>rax</code> e <code>rbx</code>)</td>
-</tr>
-<tr>
-<td><code>push src</code></td>
-<td>Salva il valore di <code>src</code> sullo stack.</td>
-<td><code>push rax</code> (salva il contenuto di <code>rax</code> sullo stack)</td>
-</tr>
-<tr>
-<td><code>pop dest</code></td>
-<td>Estrae il valore dallo stack e lo salva in <code>dest</code>.</td>
-<td><code>pop rbx</code> (estrae il valore dallo stack e lo mette in <code>rbx</code>)</td>
-</tr>
-<tr>
-<td><code>cmp dest, src</code></td>
-<td>Confronta <code>dest</code> con <code>src</code> sottraendoli (non salva il risultato, ma aggiorna i flag).</td>
-<td><code>cmp rax, 10</code> (confronta <code>rax</code> con 10)</td>
-</tr>
-<tr>
-<td><code>call label</code></td>
-<td>Salta all’indirizzo indicato da <code>label</code>, salvando l’indirizzo di ritorno sullo stack.</td>
-<td><code>call my_function</code> (chiama la funzione <code>my_function</code>)</td>
-</tr>
-<tr>
-<td><code>ret</code></td>
-<td>Ritorna all’indirizzo salvato sullo stack (usato con <code>call</code>).</td>
-<td><code>ret</code> (ritorna alla chiamata precedente)</td>
-</tr>
-<tr>
-<td><code>leave</code></td>
-<td>Ripristina il valore di <code>rsp</code> da <code>rbp</code>, quindi esegue <code>pop rbp</code> (chiude lo stack frame corrente).</td>
-<td><code>leave</code> (ripristina lo stack frame)</td>
-</tr>
-<tr>
-<td><code>jle label</code></td>
-<td>Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di minore o uguale (se il risultato è ≤ 0).</td>
-<td><code>jle done</code> (salta a <code>done</code> se minore o uguale)</td>
-</tr>
-<tr>
-<td><code>jge label</code></td>
-<td>Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di maggiore o uguale (se il risultato è ≥ 0).</td>
-<td><code>jge loop</code> (salta a <code>loop</code> se maggiore o uguale)</td>
-</tr>
-<tr>
-<td><code>lea dest, [src]</code></td>
-<td>Carica l’indirizzo di <code>src</code> in <code>dest</code> (Load Effective Address).</td>
-<td><code>lea rax, [rbx+4]</code> (carica l’indirizzo <code>rbx + 4</code> in <code>rax</code>)</td>
-</tr>
-<tr>
-<td><code>int imm</code></td>
-<td>Genera un interrupt software, solitamente usato per chiamare funzioni di sistema.</td>
-<td><code>int 0x80</code> (interrompe per una chiamata di sistema su Linux)</td>
-</tr>
-<tr>
-<td><code>nop</code></td>
-<td>Non fa nulla, occupa solo un ciclo.</td>
-<td><code>nop</code> (istruzione vuota)</td>
+<td>Copia il valore di <code>src</code> in <code>dest</code>.</td>
+<td></td>
 </tr>
 </tbody>
-</table><p>Nota l’importante differenza:</p>
+</table><p>Usato anche per copiare il valore presente all’indirizzo <code>[src]</code> in <code>dest</code>.<br>
+Oppure salva il valore di <code>src</code> all’indirizzo contenuto in <code>[dest]</code>  | <code>mov rax, rbx</code> (copia il contenuto di <code>rbx</code> in <code>rax</code>)<br>
+<code>mov rax, [rbx]</code> (carica il valore all’indirizzo contenuto in <code>rbx</code> in <code>rax</code>)<br>
+<code>mov [rbx], rax</code> (memorizza il valore di <code>rax</code> all’indirizzo contenuto in <code>rbx</code>) |<br>
+| <code>add dest, src</code> | Somma il valore di <code>src</code> a <code>dest</code> e memorizza il risultato in <code>dest</code>. | <code>add rax, 10</code> (somma 10 a <code>rax</code>) |<br>
+| <code>sub dest, src</code> | Sottrae il valore di <code>src</code> da <code>dest</code> e memorizza il risultato in <code>dest</code>. | <code>sub rbx, 5</code> (sottrae 5 da <code>rbx</code>) |<br>
+| <code>and dest, src</code> | Esegue l’operazione logica AND tra <code>src</code> e <code>dest</code>, salvando il risultato in <code>dest</code>. | <code>and rax, rbx</code> (AND bit a bit tra <code>rax</code> e <code>rbx</code>) |<br>
+| <code>push src</code> | Salva il valore di <code>src</code> sullo stack. | <code>push rax</code> (salva il contenuto di <code>rax</code> sullo stack) |<br>
+| <code>pop dest</code> | Estrae il valore dallo stack e lo salva in <code>dest</code>. | <code>pop rbx</code> (estrae il valore dallo stack e lo mette in <code>rbx</code>) |<br>
+| <code>cmp dest, src</code> | Confronta <code>dest</code> con <code>src</code> sottraendoli (non salva il risultato, ma aggiorna i flag). | <code>cmp rax, 10</code> (confronta <code>rax</code> con 10) |<br>
+| <code>call label</code> | Salta all’indirizzo indicato da <code>label</code>, salvando l’indirizzo di ritorno sullo stack. | <code>call my_function</code> (chiama la funzione <code>my_function</code>) |<br>
+| <code>ret</code> | Ritorna all’indirizzo salvato sullo stack (usato con <code>call</code>). | <code>ret</code> (ritorna alla chiamata precedente) |<br>
+| <code>leave</code> | Ripristina il valore di <code>rsp</code> da <code>rbp</code>, quindi esegue <code>pop rbp</code> (chiude lo stack frame corrente). | <code>leave</code> (ripristina lo stack frame) |<br>
+| <code>jle label</code> | Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di minore o uguale (se il risultato è ≤ 0). | <code>jle done</code> (salta a <code>done</code> se minore o uguale) |<br>
+| <code>jge label</code> | Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di maggiore o uguale (se il risultato è ≥ 0). | <code>jge loop</code> (salta a <code>loop</code> se maggiore o uguale) |<br>
+| <code>lea dest, [src]</code> | Carica l’indirizzo di <code>src</code> in <code>dest</code> (Load Effective Address). | <code>lea rax, [rbx+4]</code> (carica l’indirizzo <code>rbx + 4</code> in <code>rax</code>) |<br>
+| <code>int imm</code> | Genera un interrupt software, solitamente usato per chiamare funzioni di sistema. | <code>int 0x80</code> (interrompe per una chiamata di sistema su Linux) |<br>
+| <code>nop</code> | Non fa nulla, occupa solo un ciclo. | <code>nop</code> (istruzione vuota) |</p>
+<p>Nota l’importante differenza:</p>
 <pre class=" language-nasm"><code class="prism  language-nasm">mov <span class="token register variable">rax</span>, <span class="token operator">[</span><span class="token register variable">rbx</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token operator">]</span>   <span class="token comment">; Carica il valore contenuto all'indirizzo rbx + 4</span>
 lea <span class="token register variable">rax</span>, <span class="token operator">[</span><span class="token register variable">rbx</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token operator">]</span>   <span class="token comment">; Carica l'indirizzo rbx + 4 in rax</span>
 </code></pre>
 <h2 id="stack-e-chiamata-di-funzione">Stack e chiamata di funzione</h2>
 <p>È utile vedere come è organizzata la memoria di un programma:</p>
 <p><img src="https://i.ibb.co/Bt7wJ9F/image.png" alt="https://i.ibb.co/Bt7wJ9F/image.png"></p>
-<p>Vediamo in particolare come lo stack parte da indirizzi alti e man mano che si riempie cresce verso indirizzi più bassi.</p>
+<p>Vediamo in particolare come lo stack parte da indirizzi alti e man mano che si riempie crescendo verso indirizzi più bassi.</p>
 <p>Lo stack è quella zona di memoria dove vengono salvate le variabili locali.</p>
 <p>supporta le operazioni di <code>push</code> (aggiunta di valori nello stack) e <code>pop</code> (rimozione di valori dallo stack)</p>
 <p>Quando viene chiamata una funzione viene impostato uno <code>stack frame</code>, cioè una zona dello stack (sempre delimitata da <code>rbp</code> e <code>rsp</code>) utilizzata durante l’esecuzione di una funzione, i valori al suo interno sono in particolare:</p>
 <ul>
 <li>eventuali parametri della funzione che non sono stati passati nei registri</li>
-<li>l’indirizzo del vecchio rbp</li>
+<li>l’indirizzo del vecchio <code>rbp</code></li>
 <li>le variabili locali alla funzione</li>
 <li>l’indirizzo di ritorno, cioè dove dovrà andare <em>l’instruction pointer</em> per continuare l’esecuzione una volta terminata la funzione</li>
 </ul>
-<p>Il <strong>passaggio dei parametri</strong> ad una funzione segue una convenzione chiamata <strong>System V AMD64 ABI</strong> la quale dice:</p>
+<p>Il <strong>passaggio dei parametri</strong> ad una funzione segue una convenzione chiamata <strong>System V AMD64 ABI</strong> la quale stabilisce:</p>
 <ul>
 <li>i primi 6 argomenti passati alla funzione verranno salvati in ordine in: <code>rdi, rsi, rdx, rcx, r8, r9</code></li>
 <li>se ci sono altri argomenti, vengono salvati nello stack</li>
-<li>il valore di ritorno arriva fino a 128 usando i registri <code>rax</code>e, se necessario, <code>rdx</code></li>
+<li>il valore di ritorno arriva fino a 128bit e verrà salvato automaticamente nei registri <code>rax</code> e, solo se necessario (se maggiore di 64bit), <code>rdx</code></li>
 </ul>
 <h3 id="chiamata-della-funzione">Chiamata della funzione</h3>
-<p>La chiamata di funzione si divide in quattro parti</p>
+<p>La chiamata di funzione si divide in quattro fasi</p>
 <ol>
 <li>
 <p>salvataggio dei parametri e chiamata alla funzione</p>
@@ -177,14 +125,14 @@ call <span class="token operator">&lt;</span>foo<span class="token operator">&gt
 </code></pre>
 </li>
 <li>
-<p>creazione dello stack frame</p>
+<p>creazione dello stack frame (all’interno del corpo della funzione)</p>
 <pre class=" language-nasm"><code class="prism  language-nasm">push <span class="token register variable">rbp</span>          <span class="token comment">; Salva il vecchio base pointer nello stack</span>
 mov <span class="token register variable">rbp</span>, <span class="token register variable">rsp</span>      <span class="token comment">; Imposta il nuovo base pointer</span>
-sub <span class="token register variable">rsp</span>, <span class="token operator">&lt;</span>size<span class="token operator">&gt;</span>       <span class="token comment">; Riserva spazio per le variabili locali nello stack (se necessario)</span>
+sub <span class="token register variable">rsp</span>, <span class="token operator">&lt;</span>size<span class="token operator">&gt;</span>   <span class="token comment">; Riserva spazio per le variabili locali nello stack (se necessario)</span>
 </code></pre>
 </li>
 <li>
-<p>esecuzione del corpo della funzione</p>
+<p>esecuzione del resto del corpo della funzione</p>
 </li>
 <li>
 <p>ritorno</p>
@@ -204,9 +152,9 @@ ret                      <span class="token comment">; Ritorna alla funzione chi
 		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>compilando il codice con <code>gcc count.c -o count</code> possiamo produrre il codice assembly con il seguente comando: <code>objdump -M intel -ds count &gt; count.s</code></p>
+<p>compilando il codice con <code>gcc count.c -o count</code> possiamo poi produrre il codice assembly con il seguente comando: <code>objdump -M intel -ds count &gt; count.s</code></p>
 <ul>
-<li><code>-M</code> permette di specificare la sintassi, nel nostro caso usiamo la sintassi intel</li>
+<li><code>-M</code> permette di specificare la sintassi, nel nostro caso usiamo la sintassi Intel</li>
 <li><code>-d</code> produce il codice assembly</li>
 <li><code>-s</code> mostra le sezioni del programma</li>
 </ul>
@@ -242,9 +190,9 @@ ret                      <span class="token comment">; Ritorna alla funzione chi
 <p>Un modo per farlo è quello di cambiare il confronto di <code>&lt;=</code> in un <code>&lt;</code>. Quindi dovremmo cambiare i byte corrispondenti al comando assembly <code>jle</code> con i byte del comando <code>jl</code>.</p>
 <ol>
 <li>generiamo un file di testo contenente i byte dell’eseguibile: <code>xxd -g 1 count &gt; count.txt</code></li>
-<li>Dall’immagine precedente notiamo come il i byte del comando <code>jle</code>  sono <code>7e e0</code>, dobbiamo quindi modificare tali byte. Possiamo cercare tali byte del file di testo.</li>
+<li>Dall’immagine precedente notiamo come i byte del comando <code>jle</code> sono <code>7e e0</code>, dobbiamo quindi modificare tali byte.</li>
 <li>Il byte che ci interessa è il <code>7e</code> che corrisponde all’opcode del comando <code>jle</code> (l’altro byte riguarda dove saltare)</li>
-<li>Online si possono trovare gli op code di tutte le istruzioni, e troviamo che l’opcode del comando <code>jl</code> è <code>7c</code> . sostituiamo quindi <code>7e</code> con <code>7c</code></li>
+<li>Online si possono trovare gli opcode di tutte le istruzioni (ad esempio <a href="http://sparksandflames.com/files/x86InstructionChart.html">qui</a> oppure <a href="http://ref.x86asm.net/coder32.html">qui</a>), e troviamo che l’opcode del comando <code>jl</code> è <code>7c</code>. sostituiamo quindi <code>7e</code> con <code>7c</code></li>
 <li>salviamo il file e lo riconvertiamo in eseguibile con: <code>xxd -r count.txt &gt; count2</code></li>
 <li>Diamo i permessi a questo file di essere eseguito con: <code>chmod +x count2</code></li>
 <li>ed eseguendolo notiamo come i numeri stampati arrivano fino a 8.</li>

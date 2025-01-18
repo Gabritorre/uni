@@ -1,6 +1,6 @@
 ﻿# Controllo degli accessi
 
-Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso ad delle risorse a chi non è autorizzato.
+Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso a delle risorse a chi non è autorizzato.
 
 Nell’ambito dei sistemi operativi, chi può accedere alle risorse solitamente è un **utente**, un **programma**, un **processo** o **altri sistemi**. L’accesso alle risorse del sistema viene regolato da una ***security policy.***
 
@@ -41,7 +41,7 @@ Un soggetto può avere vari diritti di accesso su un oggetto:
 
 Una possibile organizzazione dei diritti di accesso che possiedono i soggetti nei confronti degli oggetti è attraverso una **matrice degli accessi**:
 
-|  | README.txt | /etc/shadow | Carol.pdf | /bin/bash |
+| Soggetto/oggetto | README.txt | /etc/shadow | Carol.pdf | /bin/bash |
 | --- | --- | --- | --- | --- |
 | **Alice** | Lettura, Scrittura | Lettura, Scrittura |  | Lettura, Scrittura, Esecuzione |
 | **Bob** | Lettura |  | Lettura | Lettura, Esecuzione |
@@ -56,11 +56,11 @@ La matrice degli accessi si può decomporre per ottenere:
 
 Unix utilizza un controllo degli accessi di tipo DAC.
 
-Il kernel ha accesso libero a tutto il sistema, i programmi accedono ai file e device attraverso il kernel.
+Il kernel ha accesso libero a tutto il sistema, i programmi accedono a file e device attraverso il kernel.
 
-Ad **ogni file e directory è assegnato esattamente uno** ***user identifier** (userid, uid)* che ne indica il proprietario e contribuisce a determinarne i permessi d'accesso.
+Ad **ogni file e directory è assegnato uno** ***user identifier** (userid, uid)* che ne indica il proprietario e contribuisce a determinarne i permessi d'accesso.
 
-Ad **ogni processo è associato un insieme definito** **di *user identifier*** che contribuiscono a determinare i permessi che il processo ha su file e directory.
+Ad **ogni processo è associato un insieme di *user identifier*** che contribuiscono a determinare i permessi che il processo ha su file e directory.
 L'utente root (con userid = 0) ha sempre accesso garantito dal kernel.
 
 ### Permessi su un file
@@ -89,15 +89,15 @@ La seguente stringa di informazioni UNIX (ottenibili con il comando `ls -la`), m
 la prima parte: `-rwxr-xr--` riguarda i permessi, in particolare:
 
 - Il primo carattere riguarda il fatto che il file è una directory (’`d`’) oppure no (‘`-`’).
-- Le successive **prime tre posizioni** indicano i permessi del proprietario. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (`rwx`)
-- Le **seconde tre posizioni** indicano i permessi per il gruppo. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (`r-x`)
-- Le **ultime tre posizioni** si riferiscono ai permessi per chiunque altro. Nell’esempio chiunque altro può solamente leggere il file (`r--`).
+- Le successive **prime tre posizioni** indicano i permessi del **proprietario**. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (`rwx`)
+- Le **seconde tre posizioni** indicano i permessi per il **gruppo**. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (`r-x`)
+- Le **ultime tre posizioni** si riferiscono ai permessi per **chiunque altro**. Nell’esempio chiunque altro può solamente leggere il file (`r--`).
 
 ### Alterare i permessi
 
 È possibile alterare i permessi con il comando `chmod` ad esempio `chmod 760 myfile` 
 
-Il numero `760` viene interpretato come tre cifre distinti in base ottale
+Il numero `760` viene interpretato come tre cifre distinte in base ottale
 
 - 7 = 111 = `rwx`
 - 6 = 110 = `rw-`

@@ -1,6 +1,6 @@
 ﻿# Secure coding
 
-Linguaggi di programmazione come C sono ritenuti ***unsafe*** e richiede molta attenzione ai programmatori per scrivere del codice sicuro. Nonostante questo tutti i linguaggi presentano comportamenti insicuri.
+Linguaggi di programmazione come C sono ritenuti ***unsafe*** e richiedono che ci sia una grossa attenzione da parte degli sviluppatori per scrivere codice sicuro. Nonostante questo, tutti i linguaggi presentano comportamenti insicuri.
 
 ## Analisi
 
@@ -17,8 +17,6 @@ Generalmente si desidera un'analisi **sana** (nessun falso negativo) e **complet
 
 Un concetto chiave nella sicurezza del codice è **l'analisi della contaminazione (*taint analysis*)**, che determina quali valori provenienti dagli input del programma possono influenzare i valori utilizzati in un'operazione rischiosa.
 
-Definiamo:
-
 - **La sorgente contaminata** (*Tainted Source*): Si riferisce a qualsiasi fonte di dati esterni al programma che potrebbe essere controllata da un utente malintenzionato.
 - **Il valore contaminato** (*Tainted Value*): Un valore è considerato contaminato se deriva da una sorgente contaminata e non è stato opportunamente sanificato.
 - ***Restricted Sink*:** Si riferisce a un argomento di una funzione che richiede un insieme specifico di valori accettabili. Utilizzare un valore contaminato in un restricted sink può portare a vulnerabilità di sicurezza.
@@ -27,7 +25,7 @@ Definiamo:
 
 Una contaminazione si può propagare attraverso le operazioni del programma.
 
-Se un'operazione utilizza un dato contaminato, il risultato dell'operazione sarà a sua volta contaminato.  Un banale esempio è copiare una stringa contaminata in un'altra stringa tramite funzioni come `strcpy`.
+Se un'operazione utilizza un dato contaminato, il risultato dell'operazione sarà a sua volta contaminato. Un banale esempio è copiare una stringa contaminata in un'altra stringa tramite funzioni come `strcpy`.
 
 Esempio di propagazione:
 
@@ -55,7 +53,7 @@ Esso definisce:
 
 La valutazione del rischio aiuta a dare priorità alle correzioni delle violazioni delle regole e raccomandazioni. 
 
-Si valuta la **gravità** delle conseguenze, la **probabilità** di sfruttamento e il **costo** della correzione. Le violazioni **più critiche e meno costose** da correggere hanno **più priorità**.
+Si valuta la **gravità** delle conseguenze, la **probabilità** di sfruttamento e il **costo** della correzione. Le violazioni **più critiche e meno costose** hanno **più priorità**.
 
 **Livelli di gravità**:
 
@@ -75,7 +73,7 @@ Si valuta la **gravità** delle conseguenze, la **probabilità** di sfruttamento
 2. Medio: Correzione manuale e rilevamento automatico.
 3. Basso: Correzione automatica e rilevamento automatico.
 
-I valori di questi livelli vengono moltiplicati tra loro producendo i possibili valori di **priorità**:  `1, 2, 3, 4, 6, 8, 9, 12, 18, 27` 
+I valori di questi livelli vengono moltiplicati tra loro producendo i possibili valori di **priorità**:  `1, 2, 3, 4, 6, 8, 9, 12, 18, 27`
 
 | Livello | Priorità | Interpretazione |
 | --- | --- | --- |

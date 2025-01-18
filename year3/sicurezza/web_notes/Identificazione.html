@@ -30,9 +30,9 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="identificazione">Identificazione</h1>
-<p>Passiamo ora a discutere della sicurezza nell’<strong>identificazione di un utente</strong> o in un sistema informatico o una rete.</p>
+<p>Passiamo ora a discutere della sicurezza nell’<strong>identificazione di un utente</strong> in un sistema informatico o una rete.</p>
 <p>L’identificazione o autenticazione di un utente o in generale di una entità è un processo fondamentale per la regolazione dell’<strong>accesso ad una risorsa</strong>.</p>
-<p>Un tipico esempio di identificazione è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.</p>
+<p>Un tipico esempio è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.</p>
 <p>Un buono schema di autenticazione serve ad <strong>impedire</strong> che una entità si <strong>impersonifichi</strong> per qualcun’altra.</p>
 <h2 id="classi-di-schemi-di-identificazione">Classi di schemi di identificazione</h2>
 <p>Vediamo delle categorie che raggruppano gli schemi di identificazione, tali schemi si possono basare su:</p>
@@ -59,7 +59,7 @@
 </li>
 </ol>
 <h2 id="funzioni-hash">Funzioni hash</h2>
-<p>Una <strong>funzione di hash</strong> è una funzione che calcola un valore di lunghezza fissa, chiamato <em>digest</em>, da un input di dimensioni arbitrarie. Sebbene le <strong>collisioni</strong> siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono <strong>computazionalmente impossibile recuperare una password dal suo hash</strong>.</p>
+<p>Una <strong>funzione di hash</strong> è una funzione che calcola un valore di lunghezza fissa, chiamato <em>digest</em>, dato un input di dimensioni arbitrarie. Sebbene le <strong>collisioni</strong> siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono <strong>computazionalmente impossibile recuperare una password dal suo hash</strong>.</p>
 <p>Quindi un server nel momento del login <strong>confronta gli hash</strong> e non le password in chiaro.</p>
 <p>Funzioni hash molto utilizzate oggi e ritenute essere sufficientemente sicure sono le SHA-2 che producono hash da 224 bit in su.</p>
 <p>Un comando per ottenere l’hash di una stringa di testo su Linux:</p>
@@ -70,6 +70,7 @@
 <p>Dai seguenti comandi si nota che la modifica del file viene rilevata confrontando gli hash dello stesso file prima e dopo la modifica:</p>
 <pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"ciao"</span> <span class="token operator">&gt;</span> file.txt
 $ sha256sum file.txt <span class="token operator">&gt;</span> checksum
+
 $ sha256sum -c checksum
 file.txt: OK
 $ <span class="token keyword">echo</span> <span class="token string">"modifica"</span> <span class="token operator">&gt;</span> file.txt
@@ -83,9 +84,9 @@ sha256sum: WARNING: 1 computed checksum did NOT match
 <h3 id="salting-delle-password">Salting delle password</h3>
 <p>Per contrastare quest’ultima tipologia di attacco, si utilizza il <strong>salting delle password</strong>, che consiste nell’aggiungere un valore casuale (il sale) a ciascuna password prima di calcolare l’hash.</p>
 <p><strong>Ogni salt è diverso</strong> per ciascun utente e viene salvato assieme all’hash nel server.</p>
-<p>Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password, l’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.</p>
-<p>In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt (usato prima di fare la ricerca) ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.</p>
-<p>Per migliorare ulteriormente la sicurezza si cerca di <strong>mantenere segreti i salt</strong>. Inoltre le <strong>computazioni dell’hash iterate più volte</strong> (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.</p>
+<p>Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password. L’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.</p>
+<p>In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt, ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.</p>
+<p>Per migliorare ulteriormente la sicurezza si cerca di <strong>mantenere segreti i salt</strong>. Inoltre si cerca di fare <strong>computazioni dell’hash iterate più volte</strong> (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.</p>
 <h2 id="token-based-authentication">Token-based authentication</h2>
 <p>Vediamo adesso l’autenticazione basata su <strong>un oggetto che si possiede.</strong></p>
 <p>Un esempio è una <strong>carta con una piccola memoria</strong> la suo interno (Carte bancomat a Banda Magnetica), La banda magnetica contiene dati statici codificati, come il numero del conto e altre informazioni di base. Spesso si accoppia l’oggetto ad un PIN, in modo che un attaccante abbia bisogno di entrambi. Il problema di queste carte è che sono facili da clonare con dei lettori, e magari l’uso di una telecamera per vedere il pin inserito dal proprietario.</p>

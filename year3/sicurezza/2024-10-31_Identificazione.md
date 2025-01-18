@@ -1,10 +1,10 @@
 ﻿# Identificazione
 
-Passiamo ora a discutere della sicurezza nell'**identificazione di un utente** o in un sistema informatico o una rete.
+Passiamo ora a discutere della sicurezza nell'**identificazione di un utente** in un sistema informatico o una rete.
 
 L’identificazione o autenticazione di un utente o in generale di una entità è un processo fondamentale per la regolazione dell’**accesso ad una risorsa**.
 
-Un tipico esempio di identificazione è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.
+Un tipico esempio è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.
 
 Un buono schema di autenticazione serve ad **impedire** che una entità si **impersonifichi** per qualcun’altra.
 
@@ -37,7 +37,7 @@ L’autenticazione tramite password presenta alcuni problemi:
 
 ## Funzioni hash
 
-Una **funzione di hash** è una funzione che calcola un valore di lunghezza fissa, chiamato *digest*, da un input di dimensioni arbitrarie. Sebbene le **collisioni** siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono **computazionalmente impossibile recuperare una password dal suo hash**.
+Una **funzione di hash** è una funzione che calcola un valore di lunghezza fissa, chiamato *digest*, dato un input di dimensioni arbitrarie. Sebbene le **collisioni** siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono **computazionalmente impossibile recuperare una password dal suo hash**.
 
 Quindi un server nel momento del login **confronta gli hash** e non le password in chiaro.
 
@@ -57,6 +57,7 @@ Dai seguenti comandi si nota che la modifica del file viene rilevata confrontand
 ```bash
 $ echo "ciao" > file.txt
 $ sha256sum file.txt > checksum
+
 $ sha256sum -c checksum
 file.txt: OK
 $ echo "modifica" > file.txt
@@ -77,11 +78,11 @@ Per contrastare quest’ultima tipologia di attacco, si utilizza il **salting de
 
 **Ogni salt è diverso** per ciascun utente e viene salvato assieme all’hash nel server.
 
-Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password, l’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.
+Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password. L’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.
 
-In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt (usato prima di fare la ricerca) ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.
+In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt, ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.
 
-Per migliorare ulteriormente la sicurezza si cerca di **mantenere segreti i salt**. Inoltre le **computazioni dell’hash iterate più volte** (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.
+Per migliorare ulteriormente la sicurezza si cerca di **mantenere segreti i salt**. Inoltre si cerca di fare **computazioni dell’hash iterate più volte** (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.
 
 ## Token-based authentication
 

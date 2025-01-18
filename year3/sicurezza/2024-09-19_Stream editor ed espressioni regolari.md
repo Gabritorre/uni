@@ -1,8 +1,8 @@
 ﻿# Stream editor ed espressioni regolari
 
-Uno **stream editor** è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di basi Unix e si chiama “**sed**”.
+Uno **stream editor** è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di base Unix e si chiama “**sed**”.
 
-La struttura base per invocare il programma sed è il seguente
+La struttura base per invocare il programma *sed* è il seguente
 
 ```bash
 sed <commands> <input_file>
@@ -14,13 +14,13 @@ Esempio, sostituire la stringa “Gigi” con “Franco” da un testo provenien
 sed "s/Gigi/Franco/" input.txt
 ```
 
-Possiamo aggiungere l’opzione `-i`  serve per fare il cambiamento all’interno del file, senza le modifiche vanno solamente nello stream di output, cosicché il file non venga toccato
+Possiamo aggiungere l’opzione `-i` che serve per apportare il cambiamento all’interno del file, senza le modifiche vengono solamente stampate nello stream di output, senza che il file non venga toccato
 
 ### Comandi sed
 
-Vediamo la sintassi dei comandi che sed utilizza per fare le sue trasformazioni.
+Vediamo la sintassi dei comandi che *sed* utilizza per fare le sue trasformazioni.
 
-i comandi sed seguono la seguente struttura:
+I comandi sed seguono la seguente struttura:
 
 ```bash
 [addr]X[options]
@@ -43,7 +43,7 @@ Degli esempi di comandi sono:
     
     - `sed -n “1,3p” input.txt` stampa solo la riga 1, 2 e 3
 - **Substitution**, con lettera `s`
-    - `sed “s/hello/hi” input.txt` sostituisce la **prima occorrenza di ogni riga** della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando `s` usa due opzioni racchiuse tra slash (`/`)
+    - `sed “s/hello/hi” input.txt` sostituisce la **prima occorrenza su ogni riga** della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando `s` usa due opzioni racchiuse tra slash (`/`)
     - `sed “s/hello/hi/g” input.txt` sostituisce **ogni occorrenza** della stringa “hello” con la stringa “hi”
     - `sed “s/HeLlO/hi/gi” input.txt`sostituisce **ogni occorrenza** della stringa “hello” con la stringa “hi” in modo case insensitive
     
@@ -97,15 +97,17 @@ Nota: L'opzione `-E` in sed abilita l'uso di espressioni regolari estese, permet
 
 ### Back reference
 
-Con alcuni comandi è comodo poter fare riferimento al testo *metchato*. questo si può fare con il careattere ‘&’.
+Con alcuni comandi è comodo poter fare riferimento al testo *metchato*. questo si può fare con il carattere `&`.
 
-es. aggiungere “world”  dopo “hello”
+es. aggiungere “world” dopo “hello”
 
 ```bash
 sed "s/hello/& world/g" input.txt
 ```
 
-è possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:
+In questo caso `&` assume il valore della stringa *metchata*, cioè “hello”.
+
+È possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:
 
 Ad esempio, per scambiare l'ordine di due parole:
 
@@ -113,10 +115,12 @@ Ad esempio, per scambiare l'ordine di due parole:
 sed "s/\(hello\) \(world\)/\2 \1/" input.txt
 ```
 
-Questo comando cerca il pattern "hello world" e lo sostituisce con "world hello". Le parentesi tonde creano due gruppi, e \1 e \2 si riferiscono rispettivamente al primo e al secondo gruppo.
+Questo comando cerca il pattern "hello world" e lo sostituisce con "world hello". Le parentesi tonde creano due gruppi, e `\1` e `\2` si riferiscono rispettivamente al primo e al secondo gruppo.
+
+Nota che i `\` sulle parentesi tonde sono necessari per evitare di considerare le parentesi come caratteri da metchare.
 
 Ci sono delle sintassi particolari non standard, ma fornite da GNU:
 
-- `c\{n\}` ripete ‘c’ n volte
+- `c\{n\}` ripete `c` n volte
 - `\L` converte in lowercase
 - `\U` converte in uppercase

@@ -1,8 +1,8 @@
 ﻿# Buffer overflow
 
-Il buffer overflow è una tra le vulnerabilità più comuni tra i software e la principale causa è la scrittura di codice non corretta e sicura.
+Il buffer overflow è una tra le vulnerabilità più comuni tra i software, la principale causa di questa vulnerabilità è la scrittura di codice non corretta e sicura.
 
-Il **buffer overflow** è una condizione in cui è possibile inserire più input in un buffer rispetto alla capacità allocata, andando così a sovrascrivere altre informazioni.
+Il **buffer overflow** è una condizione in cui è possibile riempire un buffer **oltre** alla sua capacità allocata, andando così a sovrascrivere altre informazioni in memoria.
 
 Questa vulnerabilità viene usata principalmente per:
 
@@ -10,7 +10,7 @@ Questa vulnerabilità viene usata principalmente per:
 - inserire dati che rompono l’integrità
 - inserire codice per ottenere il controllo del sistema
 
-Linguaggi come C sono ritenuti “unsafe” e lasciano al programmatore la responsabilità di implementare i dovuti controlli.
+Linguaggi come C sono ritenuti “unsafe” e lasciano al programmatore la responsabilità di implementare i dovuti controlli per proteggersi dalle vulnerabilità sulla memoria.
 
 ## Rompere l’integrità e crash
 
@@ -56,6 +56,8 @@ Please enter your input:
 [AFTER] buffer2 @ 0x7fe3b7d9a020 = two
 ```
 
+Con questo input non è successo nulla di strano, l’input è stato inserito nel primo buffer.
+
 Notiamo come gli indirizzi delle variabili sono sequenziali, distanziati di 8 byte.
 
 Se la dimensione dell’input rientra nella dimensione del buffer non ci sono problemi, ma non abbiamo controlli per forzare che ciò avvenga sempre, infatti è possibile inserire un input più grande:
@@ -71,7 +73,7 @@ Please enter your input:
 [AFTER] buffer2 @ 0x7f92ba1bc020 = two
 ```
 
-la stringa con 8 caratteri ‘A’ va in overflow in quanto la stringa contiene anche il **carattere terminatore ‘0x00’**. Vediamo come viene sovrascritto il valore della variabile `value`.
+la stringa con 8 caratteri ‘A’ va in overflow in quanto la stringa contiene anche il **carattere terminatore** `0x00`. Vediamo infatti che viene sovrascritto il valore della variabile `value`.
 
 Nota che in *little endian* i byte vengono prima scritti quelli meno significativi (quelli più a destra).
 
@@ -88,7 +90,7 @@ Please enter your input:
 [AFTER] buffer2 @ 0x7f669a8de020 = two
 ```
 
-Continuando ad aumentare il numero di caratteri continuiamo a sovrascrivere le zone di memoria successive. Otteniamo quindi un **buffer overlfow**. Ciò che può limitare la dimensione del nostro input è un errore di **segmentation fault** (e quindi crash del programma), che si verificherebbe nel caso arrivassimo a sovrascrivere zone di memoria non assegnate al nostro processo.
+Continuando ad aumentare il numero di caratteri in input, continuiamo a sovrascrivere le zone di memoria successive. Otteniamo quindi un **buffer overflow**. Ciò che può limitare la dimensione del nostro input è un errore di **segmentation fault** (e quindi crash del programma), che si verificherebbe nel caso arrivassimo a sovrascrivere zone di memoria non assegnate al nostro processo.
 
 La funzione `gets` è *unsafe* perché non limita in alcun modo la dimensione dell’input, e non dovrebbe venir mai utilizzata, inoltre durante la compilazione appare un *warning* che avverte di ciò.
 
@@ -108,9 +110,9 @@ typedef struct element {
 } element_t;
 ```
 
-contenente un buffer e puntatore ad una funzione.
+contenente un buffer e un puntatore ad una funzione.
 
-In questo modo un buffer overflow può sovrascrivere il puntatore alla funzione, in modo da eseguire una funzione differente da quella attesa.
+In questo caso un buffer overflow può sovrascrivere il puntatore alla funzione, in modo da eseguire una funzione differente da quella attesa.
 
 Ad esempio:
 
@@ -129,16 +131,16 @@ void show_data(char *s) {
 
 int main(int argc, char *argv[]) {
 	 element_t e;
-	 e.f = show_data; // legitimate function
+	 e.f = show_data;   // legitimate function
 	 printf("Insert data: ");
-	 gets(e.data); // reads data, unsafe!
+	 gets(e.data);      // reads data, possible buffer overflow
 	 e.f(e.data);
 }
 ```
 
-L’obiettivo dell’attacco è quello di far invocare la funzione `secret_function()`:
+L’obiettivo dell’attacco è quello di far invocare la funzione `secret_function()` invece di `show_data()`:
 
-Per semplificare l’attacco disabilitiamo l’opzione di compilazione **PIE** (*Position Independent Executable*) che rende più difficile exploitare la vulnerabilità rendendo randomizzata la posizione in memoria del programma.
+Per semplificare l’attacco disabilitiamo l’opzione di compilazione **PIE** (*Position Independent Executable*) che rende più difficile exploitare la vulnerabilità in quanto renderebbe randomizzata la posizione in memoria del programma.
 
 `$ gcc overflow-struct.c -o overflow-struct --no-pie --static`
 
@@ -162,10 +164,9 @@ Insert data: Secret function!
 
 ## Off-by-one bug
 
-Un tipico errore di programmazione può essere il seguente, in qui viene sbagliato il controllo sull’indice finale.
+Un tipico errore di programmazione può essere il seguente, in cui viene sbagliato il controllo sull’indice finale di un ciclo.
 
 ```c
-
 typedef struct element {
 	 char data[16];
 	 void (*f)(char *);
@@ -184,7 +185,8 @@ int main(int argc, char *argv[]) {
 	 printf("Insert data: ");
 	 memset(e.data, 0, sizeof(e.data));
 	
-	 //errore: i<=sizeof(e.data)
+	 //the error in the following line is: i<=sizeof(e.data)
+	 //it should be i<sizeof(e.data)
 	 for (i=0; i<=sizeof(e.data) && (c=getc(stdin))!= EOF && c != '\n'; i++) {
 		 e.data[i] = c;
 	 }
@@ -194,18 +196,21 @@ int main(int argc, char *argv[]) {
 
 Con l’ultima `printf` andiamo a controllare gli indirizzi assegnati alle due funzioni: `show_data` e `secret_function`. 
 
-eseguendo il programma più volte notiamo come gli indirizzi delle due funzioni **cambiano solo per l’ultimo byte**.
+eseguendo il programma più volte notiamo come gli indirizzi delle due funzioni **cambiano solo per l’ultimo byte** (una termina sempre con `dd` e l’altra con `ca` e il resto dell’indirizzo è comune per entrambi).
 
 ```c
 $ echo -e "AAAAAAAAAAAAAAA" | ./overflow-struct-offbyone
 Insert data: Data = AAAAAAAAAAAAAAA
 show_data = 0x560bfd9287dd, secret_function = 0x560bfd9287ca
+
 $ echo -e "AAAAAAAAAAAAAAA" | ./overflow-struct-offbyone
 Insert data: Data = AAAAAAAAAAAAAAA
 show_data = 0x56260d01f7dd, secret_function = 0x56260d01f7ca
+
 $ echo -e "AAAAAAAAAAAAAAA" | ./overflow-struct-offbyone
 Insert data: Data = AAAAAAAAAAAAAAA
 show_data = 0x5646872967dd, secret_function = 0x5646872967ca
+
 $ echo -e "AAAAAAAAAAAAAAA" | ./overflow-struct-offbyone
 Insert data: Data = AAAAAAAAAAAAAAA
 show_data = 0x55f42b85f7dd, secret_function = 0x55f42b85f7ca

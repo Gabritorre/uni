@@ -13,7 +13,7 @@ I **side channels** (o **canali laterali**) nella sicurezza informatica sono met
 - **Attacco alla cache (*Cache attack*)**: un attacco in cui l’attaccante monitora gli accessi alla memoria cache in un sistema che utilizza risorse condivise, come in un ambiente virtualizzato o in certi servizi in cloud
 - **Attacco a cronometro (*Timing attack*)**: un attacco che si basa sulla misura dei tempi di esecuzione di certi calcoli, ad esempio il confronto dei tempi di criptazione della password ignota con i tempi di criptazione di password note
 - **Attacco di monitoraggio dei consumi (*Power-monitoring attack*)**: attacchi che analizzano il consumo di energia del sistema da violare, per capirne le caratteristiche
-- **Attacco elettromagnetico (*Electromagnetic attack*)**: attacchi basati sul rilevamento dell'energia elettromagnetica irraggiata, che possono rivelare direttamente dati e altre informazioni
+- **Attacco elettromagnetico (*Electromagnetic attack*)**: attacchi basati sul rilevamento dell'energia elettromagnetica, che possono rivelare direttamente dati e altre informazioni
 - **Analisi differenziale dei malfunzionamenti (*Differential fault analysis*)**: si deducono informazioni sul sistema analizzando malfunzionamenti provocati appositamente
 
 Ad esempio in un login quando username o password sono errati è raccomandato restituire un generico “credenziali errate” al posto di specificare quale dei due è errato (in quanto potrebbe aiutare un attaccante).
@@ -24,7 +24,7 @@ Un altro esempio è di utilizzare codice ***time-safe***: il controllo di una pa
 
 La **Blind SQL injection** è una tecnica di attacco che sfrutta i side channel per ottenere informazioni da un database.
 
-Si utilizza solitamente quando il risultato di una query non viene visualizzato direttamente sulla pagina web, ma l'applicazione fornisce comunque un feedback osservabile che dipende dallo stato interno del database, come un messaggio particolare, un errore, una pagina rotta, una pagina vuota, ...
+Si utilizza solitamente quando il risultato di una query non viene visualizzato direttamente sulla pagina web, ma l'applicazione fornisce comunque un feedback osservabile che dipende dallo stato interno del database, come un messaggio particolare, un errore, una pagina rotta, o una pagina vuota.
 
 Possiamo pensare quindi di ottenere una risposta boolena, e iterando questa tecnica si riesce ad leakare dati sensibili.
 
@@ -49,7 +49,7 @@ Supponiamo che la query per controllare l’esistenza dell’utente sia del tipo
 dove `EMAIL` è un input utente.
 
 - L'attaccante può modificare il comportamento della query, ad esempio aggiungendo una condizione che è sempre vera (come `'OR 1 #`).
-- Se l'applicazione invia comunque l'email (non viene restituito un errore), significa che il database è vulnerabile a SQL injection.
+- Se l'applicazione invia comunque l'email (e quindi non viene restituito un errore), significa che il database è vulnerabile a SQL injection.
 - A questo punto l’attaccante fa una injection e compone una query di questo tipo con lo scopo di ottenere il nome delle tabelle dal database andando a tentativi:
     
     ```sql
@@ -58,9 +58,9 @@ dove `EMAIL` è un input utente.
      WHERE mail='' OR (SELECT 1 FROM users LIMIT 1)=1 LIMIT 1;
     ```
     
-    In questo modo se viene inviata la mail di recupero scopriamo che la tabella `users` esiste, altrimenti possiamo pensare che la tabella non esista.
+    In questo modo se non viene dato errore scopriamo che la tabella `users` esiste, altrimenti possiamo pensare che la tabella non esista.
     
-- L’attaccante può adesso può controllare l’esistenza di una particolare colonna, tramite la funzione SQL `MID`. Tale funzione prende tre parametri `MID(string, start_pos, len)` e restituisce una sottostringa di `string` di lunghezza `len` partendo dalla posizione `start_pos` (nota che gli indici in SQL partono da 1).
+- L’attaccante può adesso controllare l’esistenza di una particolare colonna, tramite la funzione SQL `MID`. Tale funzione prende tre parametri `MID(string, start_pos, len)` e restituisce una sottostringa di `string` di lunghezza `len` partendo dalla posizione `start_pos` (nota che gli indici in SQL partono da 1, non da 0).
     
     Verrà composta la seguente query per controllare l’esistenza della colonna `password`:
     
@@ -70,7 +70,7 @@ dove `EMAIL` è un input utente.
     WHERE mail=' ' OR (SELECT MID(password,1,0) FROM people LIMIT 1)='' #
     ```
     
-    se password non esiste la query darà errore, altrimenti darà successo in quanto stiamo prendendo una sottostringa di lunghezza zero uguale quindi a `''`.
+    se la colonna `password` non esiste la query darà errore, altrimenti darà successo in quanto stiamo prendendo una sottostringa di lunghezza zero uguale quindi a `''`.
     
 - A questo punto l'attaccante può fare la query carattere per carattere fino a scoprire la password completa.
     
@@ -82,23 +82,23 @@ dove `EMAIL` è un input utente.
     SELECT 1
     FROM people
     WHERE mail=' ' OR (SELECT ORD(MID(password,1,1)) FROM people LIMIT 0,1)<=ORD('m') #
-    					 > FALSE
+    					 -> FALSE
     SELECT 1
     FROM people
     WHERE mail=' ' OR (SELECT ORD(MID(password,1,1)) FROM people LIMIT 0,1)<=ORD('t') #
-    					 > FALSE
+    					 -> FALSE
     SELECT 1
     FROM people
     WHERE mail=' ' OR (SELECT ORD(MID(password,1,1)) FROM people LIMIT 0,1)<=ORD('w') #
-    					 > FALSE
+    					 -> FALSE
     SELECT 1
     FROM people
     WHERE mail=' ' OR (SELECT ORD(MID(password,1,1)) FROM people LIMIT 0,1)<=ORD('y') #
-    					 > TRUE
+    					 -> TRUE
     SELECT 1
     FROM people
     WHERE mail=' ' OR (SELECT ORD(MID(password,1,1)) FROM people LIMIT 0,1)<=ORD('x') #
-    					 > TRUE
+    					 -> TRUE
     ```
     
     ![https://i.ibb.co/X2yDcTk/image.png](https://i.ibb.co/X2yDcTk/image.png)

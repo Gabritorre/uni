@@ -1,8 +1,8 @@
-﻿# 2024-10-04_Analisi dei programmi
+﻿# Analisi dei programmi
 
 I programmi possono essere analizzati in due modi:
 
-- **Analisi statica**: che avviene ispezionando il codice assembly e provare a capire la logica
+- **Analisi statica**: che avviene ispezionando il codice assembly dell’eseguibile e provare a capire la logica del programma
 - **Analisi dinamica**: che avviene tramite l’uso di programmi chiamati **debugger**, in grado di osservare il comportamento del programma durante l’esecuzione.
     
     Un debugger molto utilizzato è **gdb**.
@@ -31,16 +31,16 @@ $ gdb -q count
 
 nota che l’opzione `-g` sulla compilazione è importante perché aggiunge delle informazioni utili che gdb può utilizzare per migliorare la visualizzazione del debugging.
 
-una volta eseguito gdb apparirà la sua cli, prima di passare al disassemblaggio del programma, impostiamo la sintassi da utilizzare
+Una volta eseguito gdb apparirà la sua linea di comando, prima di passare al disassemblaggio del programma, impostiamo la sintassi da utilizzare:
 
 ```c
 (gdb) set disassembly-flavor intel
 ```
 
-disassembliamo la funzione main:
+disassembliamo la funzione `main`:
 
 ```c
-(gdb) disassemple main
+(gdb) disassemble main
 ```
 
 ottenendo un output del genere
@@ -59,7 +59,7 @@ Possiamo lanciare l’esecuzione:
 (gdb) run
 ```
 
-e l’esecuzione si fermerà sul main.
+la quale si fermerà sul main.
 
 Rilanciando il disassembly notiamo come gli indirizzi sono stati rilocati
 
@@ -67,7 +67,7 @@ Rilanciando il disassembly notiamo come gli indirizzi sono stati rilocati
 (gdb) disassembly main
 ```
 
-possiamo quindi mettere un break point sull’indirizzo dell’istruzione che ci interessa, ad esempio sulla riga dentro il ciclo for, con indirizzo di offset <+17>
+possiamo quindi mettere un breakpoint sull’indirizzo dell’istruzione che ci interessa, ad esempio sulla riga dentro il ciclo for, con indirizzo di offset <+17>
 
 ```c
 (gdb) break *0x000055555540069b
@@ -88,7 +88,7 @@ Possiamo ispezionare anche la memoria con il comando
 dove:
 
 - `num`: numero di elementi da ispezionare
-- `format`: formato usato per mostrare il valore in memoria
+- `format`: formato usato per mostrare il valore in memoria, tra cui abbiamo
     - `o`: ottale
     - `x`: esadecimale
     - `u`: decimale senza segno
@@ -98,19 +98,21 @@ dove:
     - `s`: stringa
 - `size`: grandezza degli elementi
     - `b`: byte
-    - `h`: 2 byte
-    - `w`: 4 byte
-    - `g`: 8 byte
+    - `h`: 2 byte (16 bit)
+    - `w`: 4 byte (32 bit)
+    - `g`: 8 byte (64 bit)
 
 Esempi:
 
 - `(gdb) x/i main+22`:
     
-    `0x5555554006a0 <main+22>:    lea    rdi,[rip+0xad]        # 0x555555400754`
-    
     mostra l’istruzione alla posizione `main+22`
     
+    `0x5555554006a0 <main+22>:    lea    rdi,[rip+0xad]        # 0x555555400754`
+    
 - `(gdb) x/4i $rip`:
+    
+    mostra le quattro istruzioni rispetto all’instruction pointer
     
     ```c
     0x555555400692 <main+8>:     mov    DWORD PTR [rbp-0x4],0x0
@@ -119,13 +121,11 @@ Esempi:
     0x55555540069e <main+20>:    mov    esi,eax
     ```
     
-    mostra le quattro istruzioni rispetto all’instruction pointer
-    
 - `(gdb) x/s 0x555555400754`:
     
-    `0x555555400754: "%d “`
-    
     mostra il contenuto di quel registro in formato stringa.
+    
+    `0x555555400754: "%d “`
     
 
 Un utile cheatsheet con i comandi principali di gdb: [https://darkdust.net/files/GDB Cheat Sheet.pdf](https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf)

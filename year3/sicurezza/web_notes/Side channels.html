@@ -36,14 +36,14 @@
 <li><strong>Attacco alla cache (<em>Cache attack</em>)</strong>: un attacco in cui l’attaccante monitora gli accessi alla memoria cache in un sistema che utilizza risorse condivise, come in un ambiente virtualizzato o in certi servizi in cloud</li>
 <li><strong>Attacco a cronometro (<em>Timing attack</em>)</strong>: un attacco che si basa sulla misura dei tempi di esecuzione di certi calcoli, ad esempio il confronto dei tempi di criptazione della password ignota con i tempi di criptazione di password note</li>
 <li><strong>Attacco di monitoraggio dei consumi (<em>Power-monitoring attack</em>)</strong>: attacchi che analizzano il consumo di energia del sistema da violare, per capirne le caratteristiche</li>
-<li><strong>Attacco elettromagnetico (<em>Electromagnetic attack</em>)</strong>: attacchi basati sul rilevamento dell’energia elettromagnetica irraggiata, che possono rivelare direttamente dati e altre informazioni</li>
+<li><strong>Attacco elettromagnetico (<em>Electromagnetic attack</em>)</strong>: attacchi basati sul rilevamento dell’energia elettromagnetica, che possono rivelare direttamente dati e altre informazioni</li>
 <li><strong>Analisi differenziale dei malfunzionamenti (<em>Differential fault analysis</em>)</strong>: si deducono informazioni sul sistema analizzando malfunzionamenti provocati appositamente</li>
 </ul>
 <p>Ad esempio in un login quando username o password sono errati è raccomandato restituire un generico “credenziali errate” al posto di specificare quale dei due è errato (in quanto potrebbe aiutare un attaccante).</p>
 <p>Un altro esempio è di utilizzare codice <em><strong>time-safe</strong></em>: il controllo di una password è più lento di un controllo di un username (a causa dell’hashing per esempio), questo può essere notato da un attaccante e dedurre quale delle due credenziali è errata. Funzioni time-safe impiegano lo stesso tempo indipendentemente dai dati su cui operano.</p>
 <h2 id="blind-sql-injection">Blind SQL injection</h2>
 <p>La <strong>Blind SQL injection</strong> è una tecnica di attacco che sfrutta i side channel per ottenere informazioni da un database.</p>
-<p>Si utilizza solitamente quando il risultato di una query non viene visualizzato direttamente sulla pagina web, ma l’applicazione fornisce comunque un feedback osservabile che dipende dallo stato interno del database, come un messaggio particolare, un errore, una pagina rotta, una pagina vuota, …</p>
+<p>Si utilizza solitamente quando il risultato di una query non viene visualizzato direttamente sulla pagina web, ma l’applicazione fornisce comunque un feedback osservabile che dipende dallo stato interno del database, come un messaggio particolare, un errore, una pagina rotta, o una pagina vuota.</p>
 <p>Possiamo pensare quindi di ottenere una risposta boolena, e iterando questa tecnica si riesce ad leakare dati sensibili.</p>
 <h3 id="funzionamento-generale">Funzionamento generale</h3>
 <ol>
@@ -63,7 +63,7 @@
 <p>L’attaccante può modificare il comportamento della query, ad esempio aggiungendo una condizione che è sempre vera (come <code>'OR 1 #</code>).</p>
 </li>
 <li>
-<p>Se l’applicazione invia comunque l’email (non viene restituito un errore), significa che il database è vulnerabile a SQL injection.</p>
+<p>Se l’applicazione invia comunque l’email (e quindi non viene restituito un errore), significa che il database è vulnerabile a SQL injection.</p>
 </li>
 <li>
 <p>A questo punto l’attaccante fa una injection e compone una query di questo tipo con lo scopo di ottenere il nome delle tabelle dal database andando a tentativi:</p>
@@ -71,16 +71,16 @@
  <span class="token keyword">FROM</span> people
  <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">''</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> users <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">;</span>
 </code></pre>
-<p>In questo modo se viene inviata la mail di recupero scopriamo che la tabella <code>users</code> esiste, altrimenti possiamo pensare che la tabella non esista.</p>
+<p>In questo modo se non viene dato errore scopriamo che la tabella <code>users</code> esiste, altrimenti possiamo pensare che la tabella non esista.</p>
 </li>
 <li>
-<p>L’attaccante può adesso può controllare l’esistenza di una particolare colonna, tramite la funzione SQL <code>MID</code>. Tale funzione prende tre parametri <code>MID(string, start_pos, len)</code> e restituisce una sottostringa di <code>string</code> di lunghezza <code>len</code> partendo dalla posizione <code>start_pos</code> (nota che gli indici in SQL partono da 1).</p>
+<p>L’attaccante può adesso controllare l’esistenza di una particolare colonna, tramite la funzione SQL <code>MID</code>. Tale funzione prende tre parametri <code>MID(string, start_pos, len)</code> e restituisce una sottostringa di <code>string</code> di lunghezza <code>len</code> partendo dalla posizione <code>start_pos</code> (nota che gli indici in SQL partono da 1, non da 0).</p>
 <p>Verrà composta la seguente query per controllare l’esistenza della colonna <code>password</code>:</p>
 <pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token string">''</span> <span class="token comment">#</span>
 </code></pre>
-<p>se password non esiste la query darà errore, altrimenti darà successo in quanto stiamo prendendo una sottostringa di lunghezza zero uguale quindi a <code>''</code>.</p>
+<p>se la colonna <code>password</code> non esiste la query darà errore, altrimenti darà successo in quanto stiamo prendendo una sottostringa di lunghezza zero uguale quindi a <code>''</code>.</p>
 </li>
 <li>
 <p>A questo punto l’attaccante può fare la query carattere per carattere fino a scoprire la password completa.</p>
@@ -89,23 +89,23 @@
 <pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
-					 <span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
 <span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'t'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
-					 <span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
 <span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
-					 <span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
 <span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'y'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
-					 <span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
 <span class="token keyword">SELECT</span> <span class="token number">1</span>
 <span class="token keyword">FROM</span> people
 <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
-					 <span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
 </code></pre>
 <p><img src="https://i.ibb.co/X2yDcTk/image.png" alt="https://i.ibb.co/X2yDcTk/image.png"></p>
 </li>

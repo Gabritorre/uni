@@ -28,7 +28,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="secure-coding">Secure coding</h1>
-<p>Linguaggi di programmazione come C sono ritenuti <em><strong>unsafe</strong></em> e richiede molta attenzione ai programmatori per scrivere del codice sicuro. Nonostante questo tutti i linguaggi presentano comportamenti insicuri.</p>
+<p>Linguaggi di programmazione come C sono ritenuti <em><strong>unsafe</strong></em> e richiedono che ci sia una grossa attenzione da parte degli sviluppatori per scrivere codice sicuro. Nonostante questo, tutti i linguaggi presentano comportamenti insicuri.</p>
 <h2 id="analisi">Analisi</h2>
 <p>Sebbene l’ispezione manuale del codice sia possibile per programmi di piccole dimensioni, gli <strong>strumenti di analisi statica</strong> sono necessari per applicazioni del mondo reale. Tuttavia, le proprietà che dipendono dal flusso di controllo sono generalmente indecidibili, quindi gli strumenti di analisi statica non possono essere precisi al 100%.</p>
 <p>Durante una analisi si possono presentare:</p>
@@ -39,7 +39,6 @@
 <p>Generalmente si desidera un’analisi <strong>sana</strong> (nessun falso negativo) e <strong>completa</strong> (nessun falso positivo), ma nella pratica gli strumenti danno più priorità ad essere <strong>sani</strong> cercando di minimizzare i falsi positivi.</p>
 <h2 id="taint-analysis">Taint analysis</h2>
 <p>Un concetto chiave nella sicurezza del codice è <strong>l’analisi della contaminazione (<em>taint analysis</em>)</strong>, che determina quali valori provenienti dagli input del programma possono influenzare i valori utilizzati in un’operazione rischiosa.</p>
-<p>Definiamo:</p>
 <ul>
 <li><strong>La sorgente contaminata</strong> (<em>Tainted Source</em>): Si riferisce a qualsiasi fonte di dati esterni al programma che potrebbe essere controllata da un utente malintenzionato.</li>
 <li><strong>Il valore contaminato</strong> (<em>Tainted Value</em>): Un valore è considerato contaminato se deriva da una sorgente contaminata e non è stato opportunamente sanificato.</li>
@@ -47,7 +46,7 @@
 </ul>
 <h3 id="propagazione">Propagazione</h3>
 <p>Una contaminazione si può propagare attraverso le operazioni del programma.</p>
-<p>Se un’operazione utilizza un dato contaminato, il risultato dell’operazione sarà a sua volta contaminato.  Un banale esempio è copiare una stringa contaminata in un’altra stringa tramite funzioni come <code>strcpy</code>.</p>
+<p>Se un’operazione utilizza un dato contaminato, il risultato dell’operazione sarà a sua volta contaminato. Un banale esempio è copiare una stringa contaminata in un’altra stringa tramite funzioni come <code>strcpy</code>.</p>
 <p>Esempio di propagazione:</p>
 <p><img src="https://i.ibb.co/S3CwCyc/image.png" alt="https://i.ibb.co/S3CwCyc/image.png"></p>
 <h2 id="sanitizzazione">Sanitizzazione</h2>
@@ -66,7 +65,7 @@
 </ul>
 <h3 id="valutazione-del-rischio">Valutazione del Rischio</h3>
 <p>La valutazione del rischio aiuta a dare priorità alle correzioni delle violazioni delle regole e raccomandazioni.</p>
-<p>Si valuta la <strong>gravità</strong> delle conseguenze, la <strong>probabilità</strong> di sfruttamento e il <strong>costo</strong> della correzione. Le violazioni <strong>più critiche e meno costose</strong> da correggere hanno <strong>più priorità</strong>.</p>
+<p>Si valuta la <strong>gravità</strong> delle conseguenze, la <strong>probabilità</strong> di sfruttamento e il <strong>costo</strong> della correzione. Le violazioni <strong>più critiche e meno costose</strong> hanno <strong>più priorità</strong>.</p>
 <p><strong>Livelli di gravità</strong>:</p>
 <ol>
 <li>Bassa: ad esempio Denial of Service, terminazione anomala.</li>

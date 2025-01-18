@@ -45,11 +45,11 @@
 <li><strong>DOM-based XSS</strong></li>
 </ul>
 <h2 id="reflected-xss">Reflected XSS</h2>
-<p>Assumiamo che la pagina web manda una richiesta al server incorporando l’input dell’utente come parte della richiesta, il server risponde inviando una pagina html in cui inserisce l’input dell’utente.</p>
-<p>Se l’input che inserisce l’utente contiene del codice (ad esempio uno script JavaScript) allora quando il client riceve la risposta dal server, la nuova pagina html contiene lo script che viene eseguito sulla sua macchina.</p>
+<p>Assumiamo che la pagina web mandi una richiesta al server incorporando l’input dell’utente come parte della richiesta, il server risponde inviando una pagina html in cui ha inserito l’input dell’utente.</p>
+<p>Se l’input inserito dall’utente contiene del codice (ad esempio uno script JavaScript) allora quando il client riceve la risposta dal server, la nuova pagina html conterrà tale script che verrà eseguito sulla sua macchina.</p>
 <p>Un esempio tipico in cui si può verificare questo attacco è il seguente:</p>
 <ul>
-<li>la vittima riceve una mail di phishing e clicca su un link verso pagina vulnerabile a XSS: su tale link l’attaccante ha scritto anche lo script javascript</li>
+<li>la vittima riceve una mail di phishing e clicca su un link verso una pagina vulnerabile a XSS: su tale link l’attaccante ha scritto anche lo script javascript</li>
 <li>quando la vittima clicca sul link, il server gli risponde con una pagina html contenente lo script malevolo dell’attaccante</li>
 <li>quando il browser renderizza la pagina html ricevuta, lo script malevolo viene eseguito</li>
 </ul>
@@ -75,7 +75,7 @@
 <p>se la vittima clicca su questo link otterrà la seguente pagina web:</p>
 <p><img src="https://i.ibb.co/ZW408jk/image.png" alt="https://i.ibb.co/ZW408jk/image.png"></p>
 <p>Logicamente dentro <code>&lt;script&gt;…&lt;/script&gt;</code> l’attaccante può mettere ciò che vuole, ad esempio ottenere il cookie dell’utente (se non è flaggato con <code>HttpOnly</code>).</p>
-<p>Per nascondere la reale struttura dei link gli attaccanti possono usare degli <strong>URL shortener</strong>.</p>
+<p>Per nascondere la reale struttura dei link, gli attaccanti possono usare degli <strong>URL shortener</strong>, per cui quando si incontrano link generati da questi shortener bisogna prestare molta attenzione.</p>
 <h2 id="stored-xss">Stored XSS</h2>
 <p>Si verifica quando un’applicazione web memorizza l’input utente inviato al server e lo visualizza in una qualche pagina web, ad esempio un post in un forum.</p>
 <p>Se l’input contiene codice dannoso, questo verrà eseguito ogni volta che un utente visita la pagina infetta.</p>
@@ -83,8 +83,7 @@
 <p>Simile a reflected XSS, ma lo script non viene aggiungo alla pagina html durante la sua creazione nel server ma avviene lato client a causa di script esistenti sul client che ad esempio processano i parametri dell’URL per fare delle azioni.</p>
 <h3 id="esempio-pratico-1">Esempio pratico</h3>
 <p>Immaginiamo di avere questo file <code>.html</code> che contiene uno script JavaScript che crea il primo elemento di un campo <code>&lt;select&gt;&lt;/select&gt;</code> in modo dinamico leggendo il parametro <code>default</code> nell’URL:</p>
-<pre class=" language-html"><code class="prism  language-html">
-Select your language:
+<pre class=" language-html"><code class="prism  language-html">Select your language:
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span><span class="token punctuation">&gt;</span></span>
 	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
 		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>
@@ -96,7 +95,6 @@ Select your language:
 		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;OPTION value=2&gt;English&lt;/OPTION&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">&gt;</span></span>
-
 </code></pre>
 <p>Una richiesta innocente è la seguente <code>http://localhost/page.html?default=Franch</code> che genera la seguente pagina:</p>
 <p><img src="https://i.ibb.co/Z89wQr4/image.png" alt="https://i.ibb.co/Z89wQr4/image.png"></p>
@@ -105,12 +103,12 @@ Select your language:
 <h2 id="prevenire-attacchi-xss"><strong>Prevenire attacchi XSS</strong></h2>
 <p>Per prevenire attacchi XSS è importante fare:</p>
 <ul>
-<li><strong>Validazione dell’output:</strong> codificare i caratteri HTML (ad esempio, con htmlspecialchars in PHP) ed evitare di inserire input esterni direttamente dentro script JS.</li>
-<li><strong>Validazione dell’input:</strong> consentire solo ciò che è ci si aspetta in termini di lunghezza, caratteri e corrispondenza con le espressioni regolari. Utilizzare delle <em>whitelist</em> sull’input quando possibile.</li>
+<li><strong>Validazione dell’output:</strong> codificare i caratteri HTML (ad esempio, con <code>htmlspecialchars</code> in PHP) ed evitare di inserire input esterni direttamente dentro script JS.</li>
+<li><strong>Validazione dell’input:</strong> consentire solo ciò che ci si aspetta in termini di lunghezza, caratteri e corrispondenza con le espressioni regolari. Utilizzare delle <em>whitelist</em> sull’input quando possibile.</li>
 </ul>
 <p>controllare la presenza di “</p><p>Sono inoltre molto importanti le seguenti pratiche:</p>
 <ul>
-<li><strong>Mettere il flag</strong> <code>HttpOnly</code> <strong>ai cookie:</strong> impediscono agli script di leggere i cookie di sessione, proteggendoli dagli attacchi XSS.</li>
+<li><strong>Mettere il flag</strong> <code>HttpOnly</code> <strong>ai cookie:</strong> impediscono agli script JS di leggere i cookie di sessione, proteggendoli dagli attacchi XSS.</li>
 <li><strong>Content Security Policy (CSP):</strong> specifica i domini fidati per gli script e può disabilitare gli script inline.</li>
 <li><strong>XSS Auditor</strong> (ormai deprecato)<strong>:</strong> blocca il codice nella pagina web che appare anche nella richiesta, mitigando gli attacchi XSS reflected.</li>
 </ul>
@@ -122,10 +120,10 @@ Select your language:
 <p><img src="https://i.ibb.co/BKkJhs2/image.png" alt="https://i.ibb.co/BKkJhs2/image.png"></p>
 <ul>
 <li>Un utente è autenticato su un’applicazione web, ad esempio il suo sito di banking online.</li>
-<li>L’utente clicca su un link su un sito malevolo.</li>
-<li>Il sito web malevolo invia una richiesta all’applicazione web vulnerabile, ad esempio per effettuare un bonifico.</li>
+<li>L’utente clicca su un link su un altro sito malevolo.</li>
+<li>Il sito web malevolo fa partire una richiesta dal browser verso all’applicazione web vulnerabile, ad esempio per effettuare un bonifico.</li>
 <li>Il browser dell’utente invia la richiesta all’applicazione web, includendo i cookie di autenticazione.</li>
-<li>L’applicazione web elabora la richiesta, credendo che provenga dall’utente, ed esegue l’operazione.</li>
+<li>L’applicazione web elabora la richiesta, credendo che provenga dall’utente in quanto esso è già autenticato dal cookie, ed esegue l’operazione.</li>
 </ul>
 <h2 id="prevenire-attacchi-csrf"><strong>Prevenire attacchi</strong> CSRF</h2>
 <p>Diverse tecniche possono essere utilizzate per prevenire gli attacchi CSRF:</p>
@@ -140,10 +138,10 @@ Select your language:
 <p><img src="https://i.ibb.co/bBbq0tB/image.png" alt="https://i.ibb.co/bBbq0tB/image.png"></p>
 </li>
 <li>
-<p><strong>Uso di header personalizzati:</strong> ad esempio per le richieste AJAX, si può verificare la presenza dell’header <code>X-Requested-With</code> con valore <code>XMLHttpRequest</code>. Questo funziona tale header non è impostabile da origini diverse da quella originale.</p>
+<p><strong>Uso di header personalizzati:</strong> ad esempio per le richieste AJAX, si può verificare la presenza dell’header <code>X-Requested-With</code> con valore <code>XMLHttpRequest</code>. Questo funziona perché tale header non è impostabile da origini diverse da quella originale.</p>
 </li>
 <li>
-<p><strong>Interazione dell’utente:</strong> per operazioni critiche, come i operazioni bancarie, è consigliabile richiedere un’<strong>interazione esplicita dell’utente</strong> come: riautenticazione, l’utilizzo di <em>One-Time Password</em> o l’inserimento di input extra (ad esempio, CAPTCHA).</p>
+<p><strong>Interazione dell’utente:</strong> per operazioni critiche, come i operazioni bancarie, è consigliabile richiedere un’<strong>interazione esplicita dell’utente</strong> come: ri-autenticazione, l’utilizzo di <em>One-Time Password</em> o l’inserimento di input extra (ad esempio, CAPTCHA).</p>
 <p>L’attaccante non sarà in grado di risolvere questi controlli prima di effettuare la richiesta e quindi non riuscirà nel suo intento.</p>
 </li>
 </ul>

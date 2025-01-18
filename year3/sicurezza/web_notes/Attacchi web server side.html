@@ -45,7 +45,7 @@
 <p>Vediamo quattro esempi di comuni vulnerabilità nel linguaggio PHP.</p>
 <h2 id="string-comparison-attacks">1 String comparison attacks</h2>
 <p>PHP, non richiede una definizione esplicita del tipo di variabile in quanto viene determinato dinamicamente in base al contesto tramite un meccanismo chiamato t<em>ype juggling</em> che esegue conversioni automatiche.</p>
-<p>Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l’operatore di confronto debole <code>==</code>, dato che questo operatore eseguo il confronto dopo la conversione automatica. Al contrario, l’operatore di confronto stretto <code>===</code> verifica l’uguaglianza sia del valore che del tipo senza la conversione automatica.</p>
+<p>Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l’operatore di confronto debole <code>==</code>, dato che questo operatore esegue il confronto <strong>dopo</strong> la conversione automatica. Al contrario, l’operatore di confronto stretto <code>===</code> verifica l’uguaglianza sia del valore che del tipo senza la conversione automatica.</p>
 <p>Gli attacchi basati sul <strong>confronto di stringhe</strong> sfruttano queste comparazioni deboli per modificare il flusso di controllo dell’applicazione.</p>
 <p>Vediamo degli esempi di attacco nello specifico</p>
 <ul>
@@ -68,14 +68,14 @@
 	 <span class="token punctuation">}</span>
 <span class="token delimiter important">?&gt;</span></span>
 </code></pre>
-<p>Se avessimo un token del tipo <code>“0e394…”</code> in questo caso tale stringa potrebbe essere convertita in un intero scritto in notazione esponenziale (<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>394</mn><mo>…</mo></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0\cdot 10^{394…} = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">394</span><span class="minner mtight">…</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>), per cui se l’attaccante fornisce l’input <code>“0”</code> supererebbe il confronto debole.</p>
+<p>Se avessimo un token del tipo <code>“0e394…”</code> in questo caso tale stringa potrebbe essere convertita in un intero scritto in notazione esponenziale (<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>394</mn><mo>…</mo></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0\cdot 10^{394…} = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">394</span><span class="minner mtight">…</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>), per cui se l’attaccante fornisce l’input <code>“0”</code> supererebbe il confronto debole, venendo quindi autenticato.</p>
 <p>Si potrebbe pensare che usare strcmp renda il codice più sicuro, in quanto viene delegato il controllo ad una funzione nativa, ma il problema comunque rimane se facciamo il confronto in questo modo:</p>
 <p><code>if (strcmp($input, $token) == 0) {</code></p>
 <p>se <code>strcmp</code> fallisce ritorna <code>NULL</code>, ma <code>NULL</code> viene convertito in <code>0</code> e quindi si supera il controllo.</p>
 </li>
 </ul>
 <h2 id="file-inclusion-attacks">2 File inclusion attacks</h2>
-<p>Supponiamo un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:</p>
+<p>Prendiamo d’esempio un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:</p>
 <pre class=" language-php"><code class="prism  language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
 	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"p"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		 <span class="token keyword">include</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"p"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -96,19 +96,18 @@ How%20are%20you%3F
 <p>Il problema risiede nel fatto che la deserializzazione di una stringa proveniente da una fonte non affidabile può portare all’esecuzione di codice arbitrario.</p>
 <p>Questo è possibile perché la deserializzazione può richiamare automaticamente dei metodi speciali, chiamati “<strong>metodi magici</strong>”, definiti all’interno della classe dell’oggetto.<br>
 Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamente dopo la deserializzazione di un oggetto appartenente a quella classe.</p>
-<p>Un attaccante può creare un oggetto appartenente ad una classe presente sul server, inserire del codice malevolo, lo serializza, lo codifica come URL e lo inserisce in un cookie.</p>
+<p>Un attaccante può creare un oggetto appartenente ad una classe presente sul server, inserire del codice malevolo, serializzarlo, codificarlo come URL e inserirlo in un cookie.</p>
 <p>Quando il server prenderà il cookie, la stringa verrà deserializzata e il codice malevolo all’interno di <code>__wakeup()</code> verrà eseguito.</p>
 <p>Codice del server:</p>
-<pre class=" language-php"><code class="prism  language-php"><span class="token keyword">class</span> <span class="token class-name">Example</span>
-<span class="token punctuation">{</span>
+<pre class=" language-php"><code class="prism  language-php"><span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token punctuation">{</span>
 	 <span class="token keyword">private</span> <span class="token variable">$hook</span><span class="token punctuation">;</span>
 	 <span class="token comment">// some PHP code...</span>
-	 <span class="token keyword">function</span> <span class="token function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-	 <span class="token punctuation">{</span>
+	 <span class="token keyword">function</span> <span class="token function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">hook</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">eval</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">hook</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 	 <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span class="token comment">// simulating the attack.</span>
+
+<span class="token comment">// simulating the attack</span>
 <span class="token variable">$user_data</span> <span class="token operator">=</span> <span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token function">urldecode</span><span class="token punctuation">(</span><span class="token string">'O%3A8%3A%22Example2%22%3A1%3A%7Bs%3A14%3A%22%00Exam ple2%00hook%22%3Bs%3A10%3A%22phpinfo%28%29%3B%22%3B%7D'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 <p>La stringa codificata è stata prodotta dall’attaccante in questo modo, serializzando una istanza della classe <code>Example</code>:</p>
@@ -127,13 +126,14 @@ Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamen
 <p><code>$query = "SELECT name, lastname FROM people WHERE lastname = '" . $_POST['lastname'] . "'";</code></p>
 <p>Nota che <code>.</code> serve per concatenare stringhe in PHP.</p>
 <p>L’attaccante ha il controllo di una parte della query, cioè <code>$_POST['lastname']</code>.</p>
-<p>L’attaccante può inserire un <code>'</code> per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore</p>
+<p>L’attaccante può inserire un <code>'</code> per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore.</p>
+<p>Ad esempio ottenendo una query di questo tipo:</p>
 <p><code>SELECT name, lastname FROM people WHERE lastname = '' OR 1 -- '</code></p>
 <p>In questo modo la condizione nel <code>where</code> sarà sempre vera e l’attaccante ottiene il risultato della query anche se non dovrebbe.</p>
-<p>L’attaccante può sfruttare il comando <code>UNION ALL</code> per fare il dump di altre tabelle.</p>
 <h3 id="attacchi-black-box-al-database">Attacchi black box al database</h3>
 <p>L’attaccante potrebbe non sapere i nomi di tabelle e colonne all’interno di un database.</p>
-<p>Un attacca black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query</p>
+<p>Può sfruttare il comando <code>UNION ALL</code> per fare il dump di altre tabelle.</p>
+<p>Un attacco black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query del tipo</p>
 <ul>
 <li><code>... where lastname = '' UNION ALL SELECT 1 #'</code></li>
 <li><code>... where lastname = '' UNION ALL SELECT 1,2 #'</code></li>
@@ -150,7 +150,7 @@ Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamen
 </ul>
 <p>fino a quando si ottiene una risposta positiva.</p>
 <p>Lo stesso metodo può essere applicato per scoprire i nomi delle colonne.</p>
-<p>Siccome il comando <code>UNION ALL</code> richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima la query andrà in errore, ma possiamo usare a concatenazione di colonne in un’unica colonna utilizzando la funzione <code>CONCAT()</code>.</p>
+<p>Siccome il comando <code>UNION ALL</code> richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima, la query andrà in errore, ma possiamo usare a concatenazione di colonne in un’unica colonna utilizzando la funzione <code>CONCAT()</code>.</p>
 <p>Un altra cosa che l’attaccante può fare è dumpare le informazioni contenute nel database <code>information_schema</code>, il quale contiene informazioni su tutti gli altri database presenti nel sistema tra cui i nomi dei database, le tabelle e le colonne.</p>
 <h2 id="tecniche-di-difesa">Tecniche di difesa</h2>
 <h3 id="sql-injection">SQL injection</h3>
@@ -185,7 +185,7 @@ Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamen
 <p>Quindi il web server genera una chiave segreta internamente. Quando esporta dati li manda in chiaro affiancati dal rispettivo hash. Quando invece importa dati, prima di utilizzarli (ad esempio fare la deserializzazione) si ricalcola l’hash dei dati e verifica che il risultato combaci con l’hash ricevuto</p>
 </li>
 <li>
-<p><strong>Funzioni e API sicure</strong>: quando disponibili, utilizzare funzioni e API progettate per essere sicure. Queste funzioni spesso implementano internamente le <em>best practices</em> di sicurezza</p>
+<p><strong>Funzioni e API sicure</strong>: quando disponibili, utilizzare funzioni e API standard. Queste funzioni spesso implementano internamente le <em>best practices</em> di sicurezza.</p>
 </li>
 </ol>
 

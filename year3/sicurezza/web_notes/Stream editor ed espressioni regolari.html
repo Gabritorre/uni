@@ -26,17 +26,17 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="stream-editor-ed-espressioni-regolari">Stream editor ed espressioni regolari</h1>
-<p>Uno <strong>stream editor</strong> è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di basi Unix e si chiama “<strong>sed</strong>”.</p>
-<p>La struttura base per invocare il programma sed è il seguente</p>
+<p>Uno <strong>stream editor</strong> è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di base Unix e si chiama “<strong>sed</strong>”.</p>
+<p>La struttura base per invocare il programma <em>sed</em> è il seguente</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token operator">&lt;</span>commands<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>input_file<span class="token operator">&gt;</span>
 </code></pre>
 <p>Esempio, sostituire la stringa “Gigi” con “Franco” da un testo proveniente dal file di testo chiamato “input.txt”.</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/Gigi/Franco/"</span> input.txt
 </code></pre>
-<p>Possiamo aggiungere l’opzione <code>-i</code>  serve per fare il cambiamento all’interno del file, senza le modifiche vanno solamente nello stream di output, cosicché il file non venga toccato</p>
+<p>Possiamo aggiungere l’opzione <code>-i</code> che serve per apportare il cambiamento all’interno del file, senza le modifiche vengono solamente stampate nello stream di output, senza che il file non venga toccato</p>
 <h3 id="comandi-sed">Comandi sed</h3>
-<p>Vediamo la sintassi dei comandi che sed utilizza per fare le sue trasformazioni.</p>
-<p>i comandi sed seguono la seguente struttura:</p>
+<p>Vediamo la sintassi dei comandi che <em>sed</em> utilizza per fare le sue trasformazioni.</p>
+<p>I comandi sed seguono la seguente struttura:</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">[</span>addr<span class="token punctuation">]</span>X<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
 </code></pre>
 <ul>
@@ -67,7 +67,7 @@
 <li>
 <p><strong>Substitution</strong>, con lettera <code>s</code></p>
 <ul>
-<li><code>sed “s/hello/hi” input.txt</code> sostituisce la <strong>prima occorrenza di ogni riga</strong> della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando <code>s</code> usa due opzioni racchiuse tra slash (<code>/</code>)</li>
+<li><code>sed “s/hello/hi” input.txt</code> sostituisce la <strong>prima occorrenza su ogni riga</strong> della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando <code>s</code> usa due opzioni racchiuse tra slash (<code>/</code>)</li>
 <li><code>sed “s/hello/hi/g” input.txt</code> sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi”</li>
 <li><code>sed “s/HeLlO/hi/gi” input.txt</code>sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi” in modo case insensitive</li>
 </ul>
@@ -160,18 +160,20 @@
 </ul>
 <p>Nota: L’opzione <code>-E</code> in sed abilita l’uso di espressioni regolari estese, permettendo una sintassi più avanzata e flessibile per i pattern di ricerca e sostituzione.</p>
 <h3 id="back-reference">Back reference</h3>
-<p>Con alcuni comandi è comodo poter fare riferimento al testo <em>metchato</em>. questo si può fare con il careattere ‘&amp;’.</p>
-<p>es. aggiungere “world”  dopo “hello”</p>
+<p>Con alcuni comandi è comodo poter fare riferimento al testo <em>metchato</em>. questo si può fare con il carattere <code>&amp;</code>.</p>
+<p>es. aggiungere “world” dopo “hello”</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/hello/&amp; world/g"</span> input.txt
 </code></pre>
-<p>è possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:</p>
+<p>In questo caso <code>&amp;</code> assume il valore della stringa <em>metchata</em>, cioè “hello”.</p>
+<p>È possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:</p>
 <p>Ad esempio, per scambiare l’ordine di due parole:</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/\(hello\) \(world\)/\2 \1/"</span> input.txt
 </code></pre>
-<p>Questo comando cerca il pattern “hello world” e lo sostituisce con “world hello”. Le parentesi tonde creano due gruppi, e \1 e \2 si riferiscono rispettivamente al primo e al secondo gruppo.</p>
+<p>Questo comando cerca il pattern “hello world” e lo sostituisce con “world hello”. Le parentesi tonde creano due gruppi, e <code>\1</code> e <code>\2</code> si riferiscono rispettivamente al primo e al secondo gruppo.</p>
+<p>Nota che i <code>\</code> sulle parentesi tonde sono necessari per evitare di considerare le parentesi come caratteri da metchare.</p>
 <p>Ci sono delle sintassi particolari non standard, ma fornite da GNU:</p>
 <ul>
-<li><code>c\{n\}</code> ripete ‘c’ n volte</li>
+<li><code>c\{n\}</code> ripete <code>c</code> n volte</li>
 <li><code>\L</code> converte in lowercase</li>
 <li><code>\U</code> converte in uppercase</li>
 </ul>

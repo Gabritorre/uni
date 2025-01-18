@@ -1,18 +1,18 @@
 ﻿# format strings
 
-Una format string è una stringa che contiene delle direttive di formato. Ad esempio in C le direttiva sono `%d`, `%s`, che vengono molto utilizzate in funzioni come `printf()` .
+Una format string è una stringa che contiene delle direttive di formato. Ad esempio in C le direttiva sono `%d`, `%s`, che vengono utilizzate in funzioni come `printf()` .
 
-Ad esempio con l’istruzione `printf("Result: %d\n",r)` quello che succede è:
+Ad esempio con l’istruzione `printf("Result: %d\n", my_var)` quello che succede è:
 
-- **Parsing a runtime**: La funzione `printf` analizza la stringa `"Result: %d\n"` carattere per carattere a runtime per trovare i caratteri di formattazione (come `%d`).
-- **Sostituzione di valori**: Quando trova un segnaposto (`%d` in questo caso), `printf` cerca i valori corrispondenti nella lista degli argomenti forniti (come `my_var`) e li sostituisce nel testo.
-- **Output finale**: La stringa risultante viene quindi costruita e inviata a allo standard output.
+- **Parsing a runtime**: La funzione `printf` analizza la stringa `"Result: %d\n"` carattere per carattere a runtime per trovare caratteri di formattazione (come `%d`).
+- **Sostituzione di valori**: Quando trova un segnaposto (`%d` in questo caso), `printf` cerca i valori corrispondenti nella lista degli argomenti forniti (come `my_var`) e li sostituisce nella stringa.
+- **Output finale**: La stringa risultante viene quindi costruita e inviata allo standard output.
 
 ### Interpretazione a runtime
 
-Queste direttive vengono quindi **interpretate** a *runtime*, questo permette **l’accesso arbitrario allo stack** quando viene interpretata una string format (se quest’ultima viene controllata da un attaccante).
+Queste direttive sono all’interno di un **parametro** per la funzione `printf` ed vengono **interpretate** a *runtime*, questo permette **l’accesso arbitrario allo stack** quando viene interpretata una string format (se quest’ultima viene controllata da un attaccante).
 
-Nella seguente istruzione `printf(s);`  se `s`  contiene delle direttive di formato queste verranno interpretate:
+Nella seguente istruzione `printf(s);` se `s` contiene delle direttive di formato queste verranno interpretate:
 
 ```c
 char *s = "valore: %d";
@@ -30,15 +30,17 @@ Vediamo come può funzionare questa cosa:
 
 In linguaggio assembly la *format string* viene salvata registro `rdi`, mentre gli argomenti successivi saranno salvati in `rsi, rdx, rcx, r8, r9` e se ce ne sono altri verranno pushati nello stack.
 
-Ad esempio con l’istruzione `printf("%s%s%s%s%s%s","H","e","l","l","o"," World\n");` subito dopo l’invocazione alla funzione `printf` la memoria sarà in questo stato:
+Ad esempio con l’istruzione `printf("%s%s%s%s%s%s","H","e","l","l","o"," World\n");` subito dopo l’invocazione alla funzione `printf`, la memoria sarà in questo stato:
 
 ![https://i.ibb.co/VCvPwGm/image.png](https://i.ibb.co/VCvPwGm/image.png)
+
+Nota come il settimo argomento viene salvato nello stack.
 
 ### Sbagliare il numero di argomenti
 
 Siccome la *format string* viene interpretata a runtime, se si sbaglia il numero di argomenti (mettendone troppi o troppo pochi) non si avranno errori, ma solo un *warning* (se la format string è una variabile allora non c’è nemmeno il *warning)*.
 
-Nel caso di un numero eccessivo di argomenti, quelli in più vengono ignorati. mentre con un numero di argomenti minore di quello richiesto, la funzione tenterà di dereferenziare il registro (il la zona nello stack) corrispondenti agli argomenti mancanti e se è un indirizzo dereferenziato è valido stampa quello che trova altrimenti va in *segmentation fault.*
+Nel caso di un numero eccessivo di argomenti, quelli in più vengono ignorati. Mentre con un numero di argomenti minore di quello richiesto, la funzione tenterà di dereferenziare i registri (o la zona nello stack) corrispondenti agli argomenti mancanti e se è un indirizzo dereferenziato valido allora lo stampa altrimenti va in *segmentation fault.*
 
 ## Vulnerabilità
 
@@ -57,7 +59,7 @@ int main() {
 	 printf("What is your name? ");
 	 fflush(stdout);
 	 
-	 // reads at most 128 bytes, including NULL!
+	 // reads at most 128 bytes from standard input, including NULL
 	 fgets(buffer, sizeof(buffer), stdin);
 	 
 	 // format string vulnerability: the user controls buffer!
@@ -80,7 +82,7 @@ Se facciamo partire il buffer con 8 byte di ‘A’, dopo aver stampato i regist
 
 ## Esercizio
 
-Possiamo ottenere il valore del pin dumpandolo dallo stack nel seguente codice?
+Possiamo ottenere il valore del PIN dumpandolo dallo stack nel seguente codice?
 
 ```c
 #include <stdio.h>
@@ -91,7 +93,7 @@ int main() {
 	 printf("What is your name? ");
 	 fflush(stdout);
 	 
-	 // reads at most 128 bytes, including NULL!
+	 // reads at most 128 bytes from standard input, including NULL!
 	 fgets(buffer,sizeof(buffer),stdin);
 	 
 	 printf("Hello ");
@@ -102,13 +104,13 @@ int main() {
 
 Supponiamo che il PIN venga allocato immediatamente dopo il buffer.
 
-se riuscissimo a inserire abbastanza “`%016lx`” nel buffer in modo da leggere il contenuto dello stack fino al raggiungimento del PIN ce l’avremo fatta:
+se riuscissimo a inserire abbastanza “`%016lx`” nel buffer in modo da leggere il contenuto dei registri e successivamente dello stack fino al raggiungimento del PIN ce l’avremmo fatta:
 
 - il buffer è grande 128 byte, in tale buffer devo metterci le “`%016lx`”
 - Il contenuto del buffer è nel sesto parametro, cioè quando si inizia a leggere lo stack
-- raggiungere il PIN abbiamo bisogno consumare i primi 5 registri per poi leggere 8 byte 16 volte (per consumare il buffer) e infine leggere altri 8 byte per il PIN:
+- Il primo registro conterrà l’input con le direttive, quindi per raggiungere il PIN abbiamo bisogno di consumare i successivi 5 registri per poi leggere 8 byte 16 volte (per consumare il buffer) e infine leggere altri 8 byte per il PIN:
     
-    6 + 16 = 22. Abbiamo quindi bisogno di 22 “`%016lx`” per raggiungere la prima word del PIN
+    5 + 16 + 1 = 22. Abbiamo quindi bisogno di 22 “`%016lx`” per raggiungere la prima word del PIN
     
 - dato che la stringa “`%016lx`” è lunga 6 byte, la stringa totale sarà lunga 22*6 = 132 byte che è maggiore dei 128 byte che il nostro buffer ci permette di inserire
 
@@ -129,7 +131,7 @@ Gli ultimi byte (`37333331`) sono la password: la possiamo convertire da esadeci
 
 ### Soluzione 2
 
-Nelle format string si può specificare il parametro da utilizzare con la seguente sintassi
+Nelle format string si può specificare il parametro da utilizzare con la seguente sintassi:
 
 `%6$016lx`, dove con `6$` indichiamo **l’indice dell’argomento** da utilizzare (che parte da `0`), in questo caso vogliamo che questa direttiva utilizzi il settimo argomento (`6$`)  passato alla `printf`, cioè il primo parametro che sta nello stack.
 
@@ -137,7 +139,7 @@ Nelle format string si può specificare il parametro da utilizzare con la seguen
 printf("%6$d", 1, 2, 3, 4, 5, 6);  //=> 6
 ```
 
-Se usiamo nella direttiva l’argomento con indice 22 otteniamo il PIN
+Se usiamo, nella direttiva, l’argomento con indice 22 otteniamo il PIN
 
 ```bash
 python3 -c 'print("%22$16lx")' | ./vulnerable
@@ -159,7 +161,7 @@ Identificare la posizione del buffer sullo stack:
 Si inizia la stringa di input con `%a$16lx.AAAAAAAA` e si prova con diversi valori di `a` finché non si trova l'output `4141414141414141`.
 
 - Questo indica che l'argomento `a` corrisponde alla posizione del buffer sullo stack.
-- Ad esempio, se con `a=7`, vediamo per la prima volta l’output `4141414141414141` significa che il buffer inizia all’argomento che passiamo alla funzione con indice 6 (il quale conterrà `%a$16lx.`) e nella successiva cella dello stack, ad indice 7 invece abbiamo i secondi 8 byte del buffer contenenti `AAAAAAAA`.
+- Ad esempio, se con `a=7`, vediamo per la prima volta l’output `4141414141414141` significa che il buffer inizia all’argomento che passiamo alla funzione con indice 6 (il quale conterrà `%a$16lx.`) e nella successiva cella dello stack, ad indice 7, invece abbiamo i secondi 8 byte del buffer contenenti `AAAAAAAA`.
 
 Notare che `%a$16lx.` occupa esattamente 8 byte, quindi prende una intera cella dello stack.
 

