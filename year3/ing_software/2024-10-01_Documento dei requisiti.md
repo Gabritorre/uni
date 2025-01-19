@@ -1,9 +1,9 @@
-﻿# 2024-10-01_Documento dei requisiti
+﻿# Documento dei requisiti
 
 Il documento dei requisiti deve avere un **indice**, i punti di questo indice sono i seguenti:
 
 1. **Introduzione**: descrizione delle funzionalità generali del sistema, e i contenuti del documento
-2. **Glossario**: Definizioni dei termini tecnici usati nel documento (il lettore sarà anche un non tecnico)
+2. **Glossario**: Definizioni dei termini tecnici usati nel documento (il documento è destinato anche ai non tecnici)
 3. **Modelli del sistema**: mostrare dei modelli che evidenziano le componenti del sistema e le relazioni tra loro
 4. Definizione dei **requisiti funzionali**
 5. Definizione dei **requisiti non funzionali**
@@ -17,9 +17,9 @@ Un **modello** è una presentazione astratta del sistema di cui si stanno analiz
 
 Un esempio di modello di sistema è **UML (Unified Modeling Language)**, un linguaggio di modellazione che usa una notazione standard per rappresentare un sistema a livello astratto.
 
-Si tratta di una **modellazione universale** quindi è abbastanza generica da ricoprire vari tipologie di sistema (modelli per programmazione ad oggetti, database, modelli web, …)
+Si tratta di una **modellazione universale** quindi è abbastanza generica da ricoprire vari tipologie di sistema (modelli per programmazione ad oggetti, database, modelli web, …).
 
-ogni sotto-categoria di modellazione UML serve per una determinata fase processo di sviluppo: ad esempio il **diagramma dei casi d’uso** serve nella fase della **specifica,** il *collaboration diagram* serve nella fase di progettazione, il *Component diagram* serve nella fase di sviluppo.
+Ogni sotto-categoria di modellazione UML serve per una determinata fase del processo di sviluppo: ad esempio il **diagramma dei casi d’uso** serve nella fase della **specifica,** il *collaboration diagram* serve nella fase di progettazione, il *Component diagram* serve nella fase di sviluppo.
 
 ## Diagramma dei casi d’uso
 
@@ -31,17 +31,17 @@ Questo diagramma ci mostra:
 
 Un **caso d’uso**:
 
-- rappresenta un possibile scenario di utilizzo del sistema dal punto di vista di chi la utilizza
+- rappresenta un possibile scenario di utilizzo del sistema dal punto di vista di chi lo utilizza
 - descrive l’interazione tra attori e sistema (ma non la logica interna)
-- cattura **chi** fa **cosa** con quale **scopo**
+- cattura **chi** fa **cosa** e con quale **scopo**
 - è composto da un linguaggio visuale accompagnato da documentazione (nella quale si usa un vocabolario dell’ambiente di utilizzo e non di sviluppo interno)
 
 è importate costruire dei casi d’uso per:
 
 - esplicitare e comunicare a tutti gli stakeholder i requisiti funzionali e gli usi tipici del sistema
-- verificare che il sistema corrisponda a soddisfare le necessità dell’utente
+- verificare che il sistema soddisfi le necessità dell’utente
 
-Quindi in UML:
+In particolare, in UML:
 
 - il **caso d’uso** è rappresentato da **un’ellisse**, e rappresenta una interazione tra attori e sistema
 - **L’attore**, rappresentato da un **omino,** indica un ruolo (indicato con una etichetta testuale)
@@ -51,11 +51,11 @@ Quindi in UML:
 ## Template scenario
 
 - **Nome caso d'uso** - Ogni caso d'uso deve avere un nome; il nome esprime il goal dell'utente nell'utilizzo del sistema.
-- **Goal** (summary description) - descrizione della funzionalità fornita dal sistema e che soddisfa una necessità dell'utente, ossia che è percepita dallo stesso utente come "valore".
+- **Goal** - descrizione della funzionalità fornita dal sistema e che soddisfa una necessità dell'utente, ossia che è percepita dallo stesso utente come "valore".
 - **Attori** - persona, dispositivo o altra entità esterna al sistema che interagisce con il sistema. Per ogni caso d'uso esiste sempre un attore primario che è colui che inizia il caso d'uso stesso.
 - **Precondizioni** - Condizioni che devono essere soddisfatte all'inizio del caso d'uso. Rappresentano le "garanzie minime" che devono essere soddisfatte per poter attivare lo scenario di utilizzo del sistema (Garanzie fornite dagli attori al sistema).
 - **Trigger** - evento trigger che attiva il caso d'uso
-- **Descrizione** (main success scenario o scenario principale) - descrizione della sequenza di interazioni più comune tra gli attori e il sistema. In particolare viene descritta la sequenza principale che porta alla conclusione del caso d'uso con successo. La descrizione è definita in termini di input forniti dall'attore e di risposta del sistema. Il sistema è trattato secondo un modello di tipo black-box, concentrandosi su cosa esso fa in risposta agli input, e non su come internamente queste risposte vengano prodotte.
+- **Descrizione** - descrizione della sequenza di interazioni più comune tra gli attori e il sistema. In particolare viene descritta la sequenza principale che porta alla conclusione del caso d'uso con successo. La descrizione è definita in termini di input forniti dall'attore e di risposta del sistema. Il sistema è trattato secondo un modello di tipo black-box, concentrandosi su cosa esso fa in risposta agli input, e non su come internamente queste risposte vengano prodotte.
 - **Alternative** (estensioni) - descrizioni delle variazioni dalla sequenza di passi tipica del main success scenario. Tali alternative estendono lo scenario principale. La gestione delle eccezioni è un esempio tipico di tali estensioni. Non tutte le alternative portano necessariamente ad un fallimento del caso d'uso.
 - **Postcondizioni** - Condizioni sempre soddisfatte al termine del caso d'uso (Garanzie fornite dal sistema agli attori)
 
@@ -111,7 +111,7 @@ Quindi in UML:
 
 ## Relazione tra i casi d’uso
 
-I casi d’uso possono essere relazionati tra loro, in particolare in 3 modi
+I casi d’uso possono essere relazionati tra loro in 3 modi.
 
 ### Relazione di inclusione
 
@@ -137,7 +137,7 @@ Si identifica questo tipo di relazione con una etichetta `<<extend>>`  sulla fre
 
 ![https://i.ibb.co/LnKvbT9/image.png](https://i.ibb.co/LnKvbT9/image.png)
 
-Il cliente effettua un ordine e si presuppone che l’utente sia già registrato, se non lo è allora si deve anche registrare
+Il cliente effettua un ordine e si presuppone che l’utente sia già registrato, se non lo è allora si deve anche registrare.
 
 ## Specifica dei requisiti
 

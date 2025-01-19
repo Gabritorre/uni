@@ -2,7 +2,7 @@
 
 ## Sistema
 
-Un **sistema** è un insieme di componenti (software, hardware, risorse umane, dati) che insieme realizzano un obiettivo comune.
+Un **sistema** è un insieme di componenti (software, hardware, risorse umane, dati) realizzano un obiettivo comune.
 
 Un sistema è caratterizzato da:
 
@@ -53,12 +53,12 @@ Ci sono anche le cosiddette **attività di funzione** cioè le operazioni ordina
 
 |  | Attività di funzione | Attività di progetto |
 | --- | --- | --- |
-| **Obiettivo** | è implicito nell’attività | specifiche del progetto |
-| **Qualità** | conformità agli standard | conformità ai requisiti del progetto |
-| **Tempo** | tempi standard, costanti | fissata dal piano di progetto |
-| **Costo** | standard | budget di spesa |
-| **Carattere** | ripetitive | temporanee e legate al team |
-| **Esempi** | attività didattica, pagamenti, andare a lavoro | corso universitario, matrimonio, trasloco, campagne di marketing |
+| Obiettivo | è implicito nell’attività | specifiche del progetto |
+| Qualità | conformità agli standard | conformità ai requisiti del progetto |
+| Tempo | tempi standard, costanti | fissata dal piano di progetto |
+| Costo | standard | budget di spesa |
+| Carattere | ripetitive | temporanee e legate al team |
+| Esempi | attività didattica, pagamenti, andare a lavoro | corso universitario, matrimonio, trasloco, campagne di marketing |
 
 ## Studio di fattibilità
 
@@ -76,7 +76,7 @@ Lo studio di fattibilità ha l’obiettivo di:
 Per valutare qualitativamente un progetto oltre a considerare il raggiungimento degli obiettivi nei tempi previsti bisogna considerare le aspettative *espresse* e *implicite* del committente:
 
 - Le **aspettative espresse** sono legate alle specifiche tecniche del progetto
-- Le aspettative implicite sono legate alla sfera “emozionale” dei requisiti del committente
+- Le **aspettative implicite** sono legate alla sfera “emozionale” dei requisiti del committente
 
 ## Caratteristiche di un progetto
 
@@ -98,7 +98,7 @@ Possiamo rappresentare il ciclo di vita di un progetto con il seguente schema
 
 ## Struttura organizzativa
 
-L’organizzazione può essere strutturato in 3 modi:
+L’organizzazione del team può essere strutturato in 3 modi:
 
 1. **Per funzione**: non è assegnato personale allo specifico progetto e non c’è un coordinatore delle attività (ideale per grandi aziende ben strutturate)
     
@@ -113,7 +113,7 @@ L’organizzazione può essere strutturato in 3 modi:
     (Nota che il rettangolo “Risorse” andrebbe di fianco a “controllo progetti”)
     
 
-	![https://i.ibb.co/wNK2d7K/image.png](https://i.ibb.co/wNK2d7K/image.png)
+![https://i.ibb.co/wNK2d7K/image.png](https://i.ibb.co/wNK2d7K/image.png)
 
 ### Vantaggi e svantaggi
 
@@ -134,9 +134,9 @@ Il project manager è un ruolo di coordinamento per le varie fasi del progetto, 
 
 ### Grandezza del team
 
-L’efficienza non migliora proporzionalmente rispetto al numero di componenti del team, quindi a volte un team piccolo lavora meglio di un team di grandi dimensioni. Questo perché alcuni lavori non posso essere parallelizzati e con più persone si forma un overhead per coordinamento e comunicazione
+L’efficienza non migliora proporzionalmente rispetto al numero di componenti del team, quindi a volte un team piccolo lavora meglio di un team di grandi dimensioni. Questo perché alcuni lavori non posso essere parallelizzati e con più persone si forma un overhead per coordinamento e comunicazione.
 
-La “forza lavoro” si misura in termini **mesi uomo:**
+La “forza lavoro” si misura in termini di **mesi uomo:**
 
 $$
 \text{RisorseUmane} = \frac{\text{Persone}}{\text{mese}} \cdot \text{Durata}
@@ -155,7 +155,7 @@ Possiamo avere vari tipi di team:
     - non è scalabile (valido per gruppi piccoli)
 2. **Controllato decentralizzato**
     - leader riconosciuto
-    - la risoluzione è di gruppo ma l’implementazione è assegnata a sottogruppi
+    - la risoluzione dei problemi è di gruppo ma l’implementazione è assegnata a sottogruppi
     - comunicazione verticale con i leader e orizzontale tra sottogruppi
 3. **Controllato centralizzato**
     - Team leader decide sulle soluzione e sull’organizzazione

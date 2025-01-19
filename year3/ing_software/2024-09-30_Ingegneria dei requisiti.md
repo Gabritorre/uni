@@ -2,15 +2,15 @@
 
 I requisiti rappresentano la base del contratto e quindi è necessario prestarci attenzione per ridurre la probabilità di controversie a progetto consegnato.
 
-È importante definire il livello di dettaglio dei vincoli: assenza di vincoli significa che qualsiasi sistema è valido, mentre avere troppi riduce la possibilità di trovare una soluzione che li rispetta tutti.
+È importante definire il livello di dettaglio dei vincoli: assenza di vincoli significa che qualsiasi sistema è valido, mentre averne troppi riduce la possibilità di trovare una soluzione che li rispetta tutti.
 
-Ci deve anche essere coerenza tra i requisiti (due requisiti non si devono contrastare)
+Ci deve anche essere coerenza tra i requisiti (due requisiti non si devono contrastare a vicenda)
 
 Con **requisito** si intende una caratteristica che il prodotto deve possedere o un servizio che il prodotto deve offrire.
 
 L’origine dei requisiti può essere: una richiesta dal committente oppure proviene dagli utilizzatori finali, oppure da vincoli normativi, oppure da una esperienza pregressa, …
 
-Ogni requisito ha un proprio **scopo** all’interno del prodotto, quindi i requisiti sono delle caratteristiche che permettono di raggiungere un determinato scopo
+Ogni requisito ha un proprio **scopo** all’interno del prodotto, quindi i requisiti sono delle caratteristiche che permettono di raggiungere un determinato scopo.
 
 ## Processo di analisi
 
@@ -20,7 +20,16 @@ Per analizzare i requisiti è necessario fare:
 
 - uno studio della realtà applicativa: capire in che ambiente deve collocarsi il prodotto (attraverso ricerche, competitors, fonti dei dati)
 - comprendere quali sono livelli di qualità richiesti
-- a questo punto non bisogna pensare al “come“ ma a “**cosa”** offrire
+- in questa fase non bisogna pensare al “come“ ma a “**cosa”** offrire
+
+## Requisiti funzionali e non funzionali
+
+Una principale suddivisione dei requisiti è tra requisiti funzionali e non:
+
+- **requisiti funzionali**: Definiscono le funzionalità specifiche che il software deve fornire.
+- **requisiti non funzionali**: Definiscono le qualità del sistema, come prestazioni, sicurezza e usabilità.
+
+Quindi in sostanza i requisiti funzionali si concentrano su **cosa fa il sistema**, mentre i requisiti non funzionali si concentrano su **come il sistema funziona**.
 
 ## Motivazione dei requisiti
 
@@ -37,17 +46,17 @@ I requisiti servono per:
     
     Approcci tipici sono quelli delle **interviste** (strutturate oppure informali), dei **questionari** oppure tramite **osservazioni** sul campo
     
-3. Descrivere in linguaggio naturale dei servizi che il sistema offre e dei suoi vincoli (requisiti non funzionali)
+3. Descrivere in linguaggio naturale i servizi che il sistema offre e i suoi vincoli (requisiti non funzionali)
 4. Specificare i requisiti funzionali in dettaglio
 
-Per definire i requisiti si possono adottare due tipi di stili:
+Per descrivere i requisiti si possono adottare due tipi di stili:
 
 - **Operazionale**: viene descritto il comportamento in modo algoritmico
-- **Descrittivo**: viene descritto attraverso le proprietà in linguaggio naturale (approccio preferito)
+- **Descrittivo**: viene descritto attraverso in linguaggio naturale (approccio preferito)
 
 ## Evoluzione dei requisiti
 
-I requisiti si possono evolvere nel corso del progetto, il sistema è quindi necessario che sia aperto a modifiche
+I requisiti si possono evolvere nel corso del progetto, il sistema è quindi necessario che sia aperto a modifiche.
 
 **Requisiti durevoli**: sono quei requisiti che difficilmente potranno variare
 
@@ -70,8 +79,8 @@ Vediamo delle pratica da adottare per una buona definizione dei requisiti:
 
 - Il soggetto è sempre il sistema e non l’utente (non devono comparire frasi come “l’utente deve…”)
 - Aderire a formati standard nella definizione dei requisiti
-- Raggruppare i requisiti che sono legati in qualche modo alla stesso ambito
-- Legare ai requisiti la motivazione
+- Raggruppare i requisiti che sono legati alla stesso ambito
+- Legare ai requisiti la motivazione per cui sono stati definiti
 
 ## Classificazione dei requisiti non funzionali
 

@@ -4,7 +4,7 @@ In un progetto è importante saper stimare i costi in termini di tempo, risorse,
 
 ## Metrica di sforzo
 
-Per sforzo (effort) si intende la misura del quantitativo di lavoro umano necessario per svolgere il processo.
+Per sforzo (*effort*) si intende la misura del quantitativo di lavoro umano necessario per svolgere il processo.
 
 L’unità di misura comunemente usata è il **mese-uomo** (man-month), un mese-uomo si definisce come il **quantitativo di lavoro che un singolo dipendente può svolgere in un mese lavorativo.**
 
@@ -35,9 +35,9 @@ Però la relazione tra costo e prezzo non è sempre semplice. Il prezzo viene sp
 
 Abbiamo diversi approcci:
 
-- Basare la stima su progetti simili già sviluppati. Ci deve quindi trovare analogia tra il progetto e quelli presi come riferimento in termini di dimensione, scopi e metodo di lavoro.
+- Basare la stima su progetti simili già sviluppati. Si deve quindi trovare analogia tra il progetto e quelli presi come riferimento in termini di dimensione, scopi e metodo di lavoro.
 - approccio *Price-to-win*: basare il costo su quanto il cliente è disposto a spendere, con il rischio che la cifra concordata non sia sufficiente per realizzare un progetto di qualità
-- Misurare la complessità del sistema dall’esterno (dal lato utente) ad esempio:
+- Misurare la complessità del sistema dall’esterno (dal lato utente), ad esempio:
     - numero di input, di output, di richieste, di file utilizzati, di interfacce esterne
     - necessità di fare backup
     - le prestazioni sono un elemento importante?

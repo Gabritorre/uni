@@ -12,7 +12,7 @@ Durante la progettazione vanno tenuti in considerazione dei fattori cognitivi de
 - **Memoria a breve termine**: capacità limitata, persistenza di alcuni secondi
 - **Memoria a lungo termine**: capacità illimitata, durata illimitata
 
-L’obiettivo è quello di fare affidamento sulla memoria al ungo termine, cioè su conoscenza semantica (ricordo perché so il significato) o procedurale (ricordo perché l’ho fatto).
+L’obiettivo è quello di fare affidamento sulla memoria a lungo termine, cioè su conoscenza semantica (ricordo perché so il significato) o procedurale (ricordo perché l’ho fatto).
 
 ## Principi di progettazione
 

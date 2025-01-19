@@ -1,10 +1,10 @@
 ﻿# UML e progettazione software
 
-UML (Unified Modeling Language) rappresenta un linguaggio per creare dei modelli che rappresentano vari punti di vista di una progettazione, possiamo pensare alla progettazione di una casa in cui vengono disegnate varie piantine (vista orizzontale, vista verticale, vista impianto idraulico, vista impianto elettrico, ecc…)
+UML (*Unified Modeling Language*) rappresenta un linguaggio per creare dei modelli che rappresentano vari punti di vista di una progettazione, possiamo pensare alla progettazione di una casa in cui vengono disegnate varie piantine (vista orizzontale, vista verticale, vista impianto idraulico, vista impianto elettrico, ecc…)
 
 Si possono categorizzare i modelli UML in:
 
-- Modelli a **vista statica: il** tempo viene ignorato
+- Modelli a **vista statica**: il tempo viene ignorato
     - Diagramma dei casi d’uso (già visto)
     - Diagramma delle classi
     - Diagramma dei componenti
@@ -23,17 +23,17 @@ Rappresentano classi di oggetti con i loro attributi e operazioni, e le interazi
 
 Definisce la logica di uno scenario corrispondente ad un caso d’uso.
 
-Lo use case che avevo già definito mi diceva cosa doveva fare, con questo diagramma specifico come lo si deve fare. Descrive, quindi, interazioni tra oggetti che collaborano per svolgere un compito, le interazioni sono paragonabili alla chiamata di funzioni.
+Il caso d’uso che avevo già definito mi diceva **cosa** doveva fare il sistema, con questo diagramma specifico **come** lo si deve fare. Descrive, quindi, interazioni tra oggetti che collaborano per svolgere un compito, le interazioni sono paragonabili alla chiamata di funzioni.
 
 Si tratta di un modello dinamico in quanto la **sequenza temporale delle azioni è importante**.
 
-L’aspetto di questo diagramma è il seguente
+L’aspetto di questo diagramma è il seguente:
 
 ![https://i.ibb.co/16Lktqr/image.png](https://i.ibb.co/16Lktqr/image.png)
 
 Lo scambio di messaggio può essere **sincrono o asincrono:**
 
-- il **messaggio sincrono** (rappresentato con una freccia piena) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È sincrono in quanto il chiamante attende che il metodo finisca prima di proseguire. La freccia tratteggiata rappresenta il ritorno
+- il **messaggio sincrono** (rappresentato con una freccia piena) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È sincrono in quanto il chiamante attende che il metodo finisca prima di proseguire. La freccia tratteggiata rappresenta il ritorno.
 - il **messaggio asincrono** (rappresentato con una freccia non riempita) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È asincrono in quanto il chiamante non attende che il metodo finisca prima di proseguire, si formano delle interazioni concorrenti.
 
 ### Condizioni
@@ -44,13 +44,13 @@ Si rappresenta aggiungendo la condizione tra parentesi quadre prima del nome del
 
 ### Iterazioni
 
-Posso rappresentare una esecuzione ciclica di messaggi, si rappresenta aggiungendo un asterisco * tra la condizione e il messaggio
+Posso rappresentare una esecuzione ciclica di messaggi, si rappresenta aggiungendo un asterisco * tra la condizione e il messaggio.
 
 Si possono iterare anche blocchi di più messaggi, racchiudendo i messaggi in un box e si scrive solitamente in alto a sinistra la condizione
 
 ### Auto-chiamata
 
-L’auto chiamata descrive l’invocazione di un metodo appartenente allo stesso oggetto, si rappresenta con una freccia circolare che torna su se stessa
+L’auto-chiamata descrive l’invocazione di un metodo appartenente allo stesso oggetto, si rappresenta con una freccia circolare che torna su se stessa
 
 ### Creazione di un oggetto
 
@@ -60,7 +60,7 @@ L’auto chiamata descrive l’invocazione di un metodo appartenente allo stesso
 
 ### Eliminazione di un oggetto
 
-È possibile terminare prematuramente la vita di un oggetto, rendendo da quel momento in poi illegale ogni chiamata ad un suo metodo.
+È possibile terminare prematuramente la vita di un oggetto, rendendo, da quel momento in poi, illegale ogni chiamata ad un suo metodo.
 
 Si rappresenta mettendo una “X” sulla sua linea di vita
 
@@ -70,7 +70,7 @@ Si rappresenta mettendo una “X” sulla sua linea di vita
 
 ## Diagramma di stato
 
-Questo tipo di diagramma ha un punto di vista sugli stati assunti dagli oggetti durante la loro vita.
+Questo tipo di diagramma dà un punto di vista sugli stati assunti dagli oggetti durante la loro vita.
 
 Gli **eventi,** che possiamo ricondurre ai messaggi nei diagrammi di sequenza, attivano delle **transazioni di stato**, lo **stato** è costituito dai valori assunti dalla proprietà dell’oggetto
 
@@ -79,7 +79,7 @@ Abbiamo due stati speciali (*pseudostati*):
 - lo stato iniziale
 - lo stato finale
 
-gli stati si rappresentano con dei rettangolo stondati
+Gli stati si rappresentano con dei rettangolo stondati
 
 L’evento può essere:
 
@@ -87,7 +87,7 @@ L’evento può essere:
 - una condizione predefinita che diventa vera
 - un periodo di tempo
 
-gli eventi si rappresentano con delle frecce con una etichetta al nome dell’evento.
+Gli eventi si rappresentano con delle frecce con una etichetta al nome dell’evento.
 
 ### Nome evento
 

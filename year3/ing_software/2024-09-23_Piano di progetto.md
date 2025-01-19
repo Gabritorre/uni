@@ -2,7 +2,7 @@
 
 ## Piano di progetto
 
-Il **piano di progetto** è un documento formale che descrive e accompagna lo sviluppo del progetto dal suo inizio fino alla sua fine.
+Il **piano di progetto** è un documento formale che descrive e accompagna lo sviluppo del progetto dal suo inizio alla sua fine.
 
 Il piano di progetto segue questa struttura:
 
@@ -41,14 +41,16 @@ Vediamo dei modelli usati per organizzare le attività di un processo
     
     Le varie attività sono in sequenza con l’obiettivo di minimizzare la possibilità di tornare indietro.
     
-    Il vantaggio è che se le attività vengono rispettate in modo rigoroso i lavoro per le attività successive è ridotto. Un cambiamento in corso d’opera risulta molto costoso (sconsigliato per progetti innovativi)
+    Il vantaggio è che se le attività vengono rispettate in modo rigoroso il lavoro per le attività successive è ridotto.
+    
+    Un cambiamento in corso d’opera risulta però molto costoso (sconsigliato per progetti innovativi)
     
     ![https://i.ibb.co/Mn8kC8s/image.png](https://i.ibb.co/Mn8kC8s/image.png)
     
 
 1. **Modello evolutivo**:
     
-    ciclicamente svolgo delle attività parallelamente che pian piano mi porteranno verso la versione finale. Un approccio di questo tipo prende anche il nome di DevOps. Valido per sistemi di vita breve o per sotto-sistemi di sistemi più grandi
+    Ciclicamente si svolgono attività parallelamente che pian piano porteranno verso la versione finale. Un approccio di questo tipo prende anche il nome di **DevOps**. Valido per sistemi di vita breve o per sotto-sistemi di sistemi più grandi
     
     ![https://i.ibb.co/9s6ykp6/image.png](https://i.ibb.co/9s6ykp6/image.png)
     
@@ -65,6 +67,8 @@ Vediamo dei modelli usati per organizzare le attività di un processo
     si basa sul riutilizzo di componenti
     
 4. **Metodo di sviluppo *Agile***
+    
+    Si basa cicli brevi (**sprint**) di sviluppo (comprendenti di pianificazione, sviluppo, testing, review e rilascio)
     
     è una metodologia che segue quattro punti:
     
@@ -95,16 +99,17 @@ Ci sono due approcci per gestire i rischi:
 
 - **Strategia reattiva**: si posticipa il trovare una soluzione ad una fase più avanzata del progetto
 - **Strategia preventiva**: Si gioca di anticipo, valutando i possibili rischi con le loro probabilità e il loro impatto e si stabiliscono delle priorità. Si predisporrà quindi un piano di reazione a forma di tabella
+    
+    ![https://i.ibb.co/MGJpFC3/image.png](https://i.ibb.co/MGJpFC3/image.png)
+    
 
-![https://i.ibb.co/MGJpFC3/image.png](https://i.ibb.co/MGJpFC3/image.png)
-
-Un rischio si può **classificare** secondo il seguente schema che relazione la probabilità di accadimento con l’impatto:
+Un rischio si può **classificare** secondo il seguente schema che relazione la probabilità di accadimento con l’impatto che esso provocherebbe:
 
 ![https://i.ibb.co/27682Jw/image.png](https://i.ibb.co/27682Jw/image.png)
 
 ## Pianificazione, Scheduling, Analisi dei costi
 
-La pianificazione delle attività si può struttura in una sequenza fasi con un input e un output
+La pianificazione delle attività si può struttura in una sequenza fasi con un input e un output:
 
 1. **Input**: l’obiettivo del progetto
     
@@ -135,23 +140,23 @@ La pianificazione delle attività si può struttura in una sequenza fasi con un 
 Due definizioni importanti sono:
 
 - *Milestones,* cioè i punti finali di ogni singola attività (ciò che determina quando una attività può considerarsi conclusa)
-- *Deliverables*, cioè i risultati che sono forniti al committente (sono un sottoinsieme delle *milestones*)
+- *Deliverables*, cioè i risultati intermedi che sono forniti al committente (sono un sottoinsieme delle *milestones*)
 
-### Work breakdown structure
+### Work Breakdown Structure (WBS)
 
-La strutturazione del progetto in attività segue questo schema
+La strutturazione del progetto in attività segue questo schema:
 
 ![https://i.ibb.co/sRMfqXq/wbs.png](https://i.ibb.co/sRMfqXq/wbs.png)
 
 Le **funzioni** sono della attività che seguono l’intero progetto.
 
-Le **attività** sono delle suddivisione del progetto in compiti, per ogni attività ci possono essere delle sotto-attività (per ogni attività è importante specificare il momento di inizio e fine)
+Le **attività** sono delle suddivisioni del progetto in compiti, per ogni attività ci possono essere delle sotto-attività (per ogni attività è importante specificare il momento di inizio e fine)
 
-I **task** (non strettamente necessari) sono delle attività di lavoro atomiche figlie di una specifica attività, hanno durata stimabile, necessitano di certe risorse, producono risultati tangibili
+I **task** (non strettamente necessari) ****sono delle attività di lavoro atomiche figlie di una specifica attività, hanno durata stimabile, necessitano di certe risorse, producono risultati tangibili
 
 ## Diagramma di Pert
 
-Dal WBS realizzo il diagramma di Pert, cioè un grafo che rappresenta le attività, le dipendenze e vari tipi di tempi di realizzazione.
+Dalla WBS si realizza il **diagramma di Pert**, cioè un grafo che rappresenta le attività, le dipendenze e vari tipi di tempi di realizzazione previsti.
 
 Nel diagramma di Pert devono essere presenti 4 tipi di tempi:
 
@@ -160,27 +165,30 @@ Nel diagramma di Pert devono essere presenti 4 tipi di tempi:
 3. **LF (latest finish time)**: l’ultimo giorno in cui quell’attività deve finire senza comportare un ritardo nelle attività che dipendono da essa.
 4. **LS (latest start time)**: l’ultimo giorno in cui quell’attività deve iniziare senza comportare un ritardo nelle attività che dipendono da essa (calcolato da $\text{LF} - \text{durata dell’attività}$)
 
+Esempio di diagramma di Pert
+
 ![https://i.ibb.co/GJMSzhQ/pert.png](https://i.ibb.co/GJMSzhQ/pert.png)
 
 Il modo più comodo per compilarlo è partire da T1 e andare fino a T7 compilando ES e EF.
 
-Una volta finito si parte da T7 e andare fino a T1 compilando LF e LS.
+Una volta finito, si parte da T7 e si ritorna fino a T1 compilando LF e LS.
 
 **Cammino critico**: è la successione di attività che richiede il massimo tempo, è composto dai nodi i quali non hanno una elasticità tra la prima riga (ES e EF) e la seconda (LS e LF), nell’esempio il cammino critico sarebbe
 
- $$T1 \to T4 \to T5 \to T7$$
+$$
+T1 \to T4 \to T5 \to T7
+$$
 
 se una di queste attività accumula ritardo lo propaga all’intero progetto.
 
 ## Diagramma di Gantt
 
-Una volta ottenute le attività con i relativi tempi e le relazioni tra di esse, posso costruire un diagramma di Gantt, cioè una grafico che mette le attività su un asse temporale.
+Una volta ottenute le attività con i relativi tempi e le relazioni tra di esse, posso costruire un **diagramma di Gantt**, cioè una grafico che mette le attività su un asse temporale.
 
 ![https://i.ibb.co/JsYtLkW/image.png](https://i.ibb.co/JsYtLkW/image.png)
 
 Ovviamente i ritardi possono formarsi ma possono essere categorizzati in 2 modi:
 
-- **ritardi di una fase critica:** comporta un ritardo sulla conclusione del progetto (es. un ritardo nell’attività A porta ad uno shift di tutte le successive attività che dipendono da essa).
- Le fasi critiche si ottengono dal cammino critico nel diagramma di Pert
-    
-- **ritardi di una fase non critica**: non comportano un ritardo sulla conclusione del progetto (es. un ritardo nell’attività D che riesce comunque a terminare prima di C non comporta una ritardo sul progetto in quanto le attività successive dipendono sia da C che da D. Ovviamente se D va oltre a C allora il ritardo sul progetto si forma.
+- **ritardi di una fase critica:** comporta un ritardo sulla conclusione del progetto (es. un ritardo nell’attività A porta ad uno *shift* di tutte le successive attività che dipendono da essa). Le fasi critiche si ottengono dal cammino critico nel diagramma di Pert
+- **ritardi di una fase non critica**: non comportano un ritardo sulla conclusione del progetto (es. un ritardo nell’attività D che riesce comunque a terminare prima di C non comporta una ritardo sul progetto, in quanto le attività successive dipendono sia da C che da D. Ovviamente se D va oltre a C allora il ritardo sul progetto si forma.
+

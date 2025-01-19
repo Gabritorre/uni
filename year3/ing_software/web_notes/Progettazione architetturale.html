@@ -41,13 +41,13 @@
 <li><strong>Glossario</strong></li>
 </ul>
 <h2 id="architettura-del-sistema">Architettura del sistema</h2>
-<p>L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli tramite un diagramma a blocchi.</p>
+<p>L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli, tramite un diagramma a blocchi.</p>
 <p>Un <strong>sottosistema</strong> è un sistema indipendente dagli altri sottosistemi.</p>
 <p>Un <strong>modulo</strong> è una componente del sistema che quindi non può essere considerato un sistema a se stante.</p>
 <p>Un esempio (robot di impacchettamento) in cui vede la divisione in sistemi:</p>
 <p><img src="https://i.ibb.co/Bj0SNPj/image.png" alt="https://i.ibb.co/Bj0SNPj/image.png"></p>
 <h2 id="modello-dei-dati">Modello dei dati</h2>
-<p>Il prossimo passo è la <strong>modellazione dei dati</strong> in cui si identifica come i sottosistemi si scambiano i dati:</p>
+<p>Il prossimo passo è la <strong>modellazione dei dati</strong> in cui si identifica come i sottosistemi si scambiano i dati. Alcuni modi possibili sono i seguenti:</p>
 <ul>
 <li>I dati sono <strong>condivisi</strong> in un repository comune in cui tutti i sottosistemi possono accedere
 <ul>
@@ -103,9 +103,9 @@ altri sottosistemi.
 </li>
 <li><strong>Progettazione orientata agli oggetti</strong>: Il sistema è un insieme di oggetti, ognuno con il proprio stato. Attraverso le interfacce degli oggetti posso passare loro il controllo in modo da cambiare il loro stato interno in un certo modo</li>
 </ul>
-<p>In alternativa se si vuole realizzare una architettura simile a quelle già esistenti bisogna cercare se esistono già dei modelli esistenti e quindi:</p>
+<p>In alternativa se si vuole realizzare una architettura simile a quelle già esistente bisogna cercare se esistono già dei modelli esistenti e quindi:</p>
 <ul>
-<li>Ispirarmi a <strong>modelli generici</strong>: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).</li>
+<li>Ispirarsi a <strong>modelli generici</strong>: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).</li>
 <li>seguire <strong>modelli di riferimento</strong>: cioè modelli ideali standard che non hanno una implementazione diretta, ma forniscono solo delle direttive (es. modello TCP/IP)</li>
 </ul>
 <h2 id="qualità-della-progettazione">Qualità della progettazione</h2>
@@ -120,7 +120,7 @@ altri sottosistemi.
 </ul>
 <h3 id="accoppiamento">2. Accoppiamento</h3>
 <p>Misura la dipendenza delle componenti.</p>
-<p>Più le componenti sono indipendenti meglio è, infatti il cambiamento di una componente non ha forti effetti sulle altre.</p>
+<p>Più le componenti sono indipendenti meglio è, in questo modo il cambiamento di una componente non ha forti effetti sulle altre.</p>
 <p>Bisogna quindi ridurre l’uso di variabile condivise e il passaggio di dati per riferimento. Inoltre, come nel punto precedente anche qui bisogna cercare di ridurre lunghe catene di ereditarietà.</p>
 <h3 id="comprensibilità">3. Comprensibilità</h3>
 <p>Ricordando che questo documento deve essere utilizzabile da chi andrà ad implementare il sistema e deve essere verificabile da chi ha fatto la specifica. Quindi bisogna rendere il documento più comprensibile possibile:</p>

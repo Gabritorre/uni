@@ -1,0 +1,1111 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Note complete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#introduzione">Introduzione</a>
+<ul>
+<li><a href="#prodotto-software">Prodotto software</a></li>
+<li><a href="#processo-di-produzione">Processo di produzione</a></li>
+<li><a href="#qualità-del-software">Qualità del software</a></li>
+</ul>
+</li>
+<li><a href="#ingegneria-di-sistema">Ingegneria di sistema</a>
+<ul>
+<li><a href="#sistema">Sistema</a></li>
+<li><a href="#requisiti-di-un-sistema">Requisiti di un sistema</a></li>
+<li><a href="#software-project-management">Software project management</a></li>
+<li><a href="#studio-di-fattibilità">Studio di fattibilità</a></li>
+<li><a href="#qualità-di-un-progetto">Qualità di un progetto</a></li>
+<li><a href="#caratteristiche-di-un-progetto">Caratteristiche di un progetto</a></li>
+<li><a href="#ciclo-di-vita-di-un-progetto">Ciclo di vita di un progetto</a></li>
+<li><a href="#struttura-organizzativa">Struttura organizzativa</a></li>
+<li><a href="#team-di-progetto">Team di progetto</a></li>
+</ul>
+</li>
+<li><a href="#piano-di-progetto">Piano di progetto</a>
+<ul>
+<li><a href="#piano-di-progetto-1">Piano di progetto</a></li>
+<li><a href="#modelli-di-processo">Modelli di processo</a></li>
+<li><a href="#analisi-dei-rischi">Analisi dei rischi</a></li>
+<li><a href="#pianificazione-scheduling-analisi-dei-costi">Pianificazione, Scheduling, Analisi dei costi</a></li>
+<li><a href="#diagramma-di-pert">Diagramma di Pert</a></li>
+<li><a href="#diagramma-di-gantt">Diagramma di Gantt</a></li>
+</ul>
+</li>
+<li><a href="#stima-dei-costi">Stima dei costi</a>
+<ul>
+<li><a href="#metrica-di-sforzo">Metrica di sforzo</a></li>
+<li><a href="#fattori-di-costo">Fattori di costo</a></li>
+<li><a href="#prezzo">Prezzo</a></li>
+<li><a href="#come-stimare-i-costi">Come stimare i costi</a></li>
+</ul>
+</li>
+<li><a href="#ingegneria-dei-requisiti">Ingegneria dei requisiti</a>
+<ul>
+<li><a href="#processo-di-analisi">Processo di analisi</a></li>
+<li><a href="#requisiti-funzionali-e-non-funzionali">Requisiti funzionali e non funzionali</a></li>
+<li><a href="#motivazione-dei-requisiti">Motivazione dei requisiti</a></li>
+<li><a href="#step-per-determinare-i-requisiti">Step per determinare i requisiti</a></li>
+<li><a href="#evoluzione-dei-requisiti">Evoluzione dei requisiti</a></li>
+<li><a href="#errori-nella-definizione-dei-requisiti">Errori nella definizione dei requisiti</a></li>
+<li><a href="#regole-di-stesura">Regole di stesura</a></li>
+<li><a href="#classificazione-dei-requisiti-non-funzionali">Classificazione dei requisiti non funzionali</a></li>
+</ul>
+</li>
+<li><a href="#documento-dei-requisiti">Documento dei requisiti</a>
+<ul>
+<li><a href="#modelli-di-sistema">Modelli di sistema</a></li>
+<li><a href="#diagramma-dei-casi-d’uso">Diagramma dei casi d’uso</a></li>
+<li><a href="#template-scenario">Template scenario</a></li>
+<li><a href="#esempio">Esempio</a></li>
+<li><a href="#relazione-tra-i-casi-d’uso">Relazione tra i casi d’uso</a></li>
+<li><a href="#specifica-dei-requisiti">Specifica dei requisiti</a></li>
+<li><a href="#tracciabilità-dei-requisiti">Tracciabilità dei requisiti</a></li>
+</ul>
+</li>
+<li><a href="#testing">Testing</a>
+<ul>
+<li><a href="#casi-di-test">Casi di test</a></li>
+<li><a href="#specifica-dei-casi-di-test">Specifica dei casi di test</a></li>
+<li><a href="#test-di-moduli">Test di moduli</a></li>
+<li><a href="#incremental-testing">Incremental testing</a></li>
+<li><a href="#thread-testing">Thread testing</a></li>
+<li><a href="#stress-testing">Stress testing</a></li>
+<li><a href="#back-to-back-testing">Back to back testing</a></li>
+<li><a href="#black-box-testing">Black-box testing</a></li>
+<li><a href="#white-box-testing">White-box testing</a></li>
+<li><a href="#verifica-statica">Verifica statica</a></li>
+</ul>
+</li>
+<li><a href="#progettazione-architetturale">Progettazione architetturale</a>
+<ul>
+<li><a href="#architettura-del-sistema">Architettura del sistema</a></li>
+<li><a href="#modello-dei-dati">Modello dei dati</a></li>
+<li><a href="#modello-del-controllo">Modello del controllo</a></li>
+<li><a href="#strategie-di-progettazione">Strategie di progettazione</a></li>
+<li><a href="#qualità-della-progettazione">Qualità della progettazione</a></li>
+</ul>
+</li>
+<li><a href="#uml-e-progettazione-software">UML e progettazione software</a>
+<ul>
+<li><a href="#diagramma-delle-classi">Diagramma delle classi</a></li>
+<li><a href="#diagramma-di-sequenza">Diagramma di sequenza</a></li>
+<li><a href="#diagramma-di-stato">Diagramma di stato</a></li>
+<li><a href="#diagramma-dei-componenti">Diagramma dei componenti</a></li>
+<li><a href="#diagramma-di-distribuzione">Diagramma di distribuzione</a></li>
+</ul>
+</li>
+<li><a href="#progettazione-di-interfacce-utenti">Progettazione di interfacce utenti</a>
+<ul>
+<li><a href="#principi-di-progettazione">Principi di progettazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="introduzione">Introduzione</h1>
+<p>Si può definire “<em>software engineering</em>” come la disciplina che fornisce delle regole per il processo di produzione del software.</p>
+<h2 id="prodotto-software">Prodotto software</h2>
+<p>Un <strong>prodotto software</strong> è composto da:</p>
+<ul>
+<li>Codice</li>
+<li>Dati</li>
+<li>Documentazione
+<ul>
+<li>Documentazione del sistema (come funziona il software)</li>
+<li>Documentazione dell’utente (come utilizzare il software)</li>
+</ul>
+</li>
+</ul>
+<p>Le caratteristiche di un prodotto software sono:</p>
+<ul>
+<li>l’intangibilità</li>
+<li>Si “sviluppa” e non si “fabbrica”</li>
+<li>È facilmente duplicabile e distribuibile</li>
+<li>Si deteriora nel tempo (cambia l’ambiente su cui lavora, si aggiornano gli standard)</li>
+<li>Viene acquisito su licenza</li>
+</ul>
+<p>In particolare presenta una curva dei guasti di questo tipo:</p>
+<p><img src="https://i.ibb.co/YWHn23V/image.png" alt="https://i.ibb.co/YWHn23V/image.png"></p>
+<p>La curva ideale porterebbe a pensare che più applico delle <em>fix</em> più il software diventerà tollerante ai guasti, ma non è così, infatti ogni modifica porta con sé la probabilità di generare nuovi <em>bug.</em></p>
+<h2 id="processo-di-produzione">Processo di produzione</h2>
+<p>Il processo di produzione di un software inizia con l’analisi dei requisiti e finisce con il ritiro dal mercato del prodotto.</p>
+<p>Possiamo elencare le fasi in questo modo (indipendentemente dal tipo di processo impiegato):</p>
+<ol>
+<li><strong>Analisi dei requisiti</strong>: specificare cosa deve fare il sistema e quali sono i vincoli sul sistema</li>
+<li><strong>Specifica</strong>: Documentazione delle funzioni del sistema</li>
+<li><strong>Progettazione</strong>: Creare una soluzione al problema attraverso un modello astratto</li>
+<li><strong>Implementazione</strong>: Codificare il modello astratto</li>
+<li><strong>Integrazione</strong>: collegamento dei sotto-sistemi e dell’ambiente con il sistema principale</li>
+<li><strong>Mantenimento</strong>: Aggiornare il sistema con modifiche correttive e di aggiunta di funzionalità</li>
+<li><strong>Ritiro</strong>: Dismissione del sistema ed eventuale migrazione di dati nel nuovo sistema</li>
+</ol>
+<p>L’organizzazione di tutte queste fasi, quindi il tempo, l’energia, il personale da impiegare, prende il nome di <strong>Piano di progetto</strong></p>
+<p>Il processo include anche gli strumenti utilizzati, le tecniche di sviluppo, e le risorse umane.</p>
+<h2 id="qualità-del-software">Qualità del software</h2>
+<p>Per determinare la qualità di un software si valutano le <strong>proprietà intrinseche</strong> del prodotto, quindi solitamente non visibili direttamente dall’utente (es. copertura dei test case, manutenibilità del codice, struttura del codice) e le <strong>proprietà percepite</strong> dal committente (es. usabilità dell’interfaccia, tasso di errori).</p>
+<p>Esiste uno standard ISO/IEC 25010 (2017) che permette di misurare la qualità del software con delle <strong>metriche</strong> (es. come si misura il fattore di facilità d’uso di una interfaccia?)</p>
+<p>Lo standard definisce due tipi di qualità:</p>
+<ul>
+<li><strong>Qualità interna</strong>: tutte quelle proprietà che sono rilevanti durante le fasi di sviluppo e di manutenzione del software stesso.</li>
+<li><strong>Qualità esterna</strong>: tutte le proprietà rilevanti in fase di esecuzione</li>
+</ul>
+<p>Queste qualità sono:</p>
+<ul>
+<li><strong>Functional stability</strong>: Assicurare il corretto e completo funzionamento delle funzioni di base</li>
+<li><strong>Efficiency / performance</strong>: tempo di esecuzione, utilizzo di risorse, spazio occupato</li>
+<li><strong>Compatibility</strong>: interoperabilità con i sistemi con cui si appoggia (es. una applicazione con quali versioni di Android è compatibile?)</li>
+<li><strong>Usability</strong>: facilità di apprendimento, prevenzione degli errori, estetica</li>
+<li><strong>Reliability</strong>: tolleranza ai guasti, disponibilità, recupero</li>
+<li><strong>Security</strong>: confidenzialità, integrità, autenticazione</li>
+<li><strong>Maintainability</strong>: eleganza, modificabilità, riuso, analisi del codice</li>
+<li><strong>Portability</strong>: facilità di portare il sistema in un ambiente diverso (modificare il codice senza stravolgere tutto)</li>
+</ul>
+<p>Si è notato che la <strong>maggior parte del costo</strong> relativo al processo di produzione del software (le 7 fasi) risiede nel <strong>mantenimento.</strong></p>
+<p>Questo comporta che più tardi ci si accorge di un errore maggiore saranno i costi per sistemare il problema.</p>
+<h1 id="ingegneria-di-sistema">Ingegneria di sistema</h1>
+<h2 id="sistema">Sistema</h2>
+<p>Un <strong>sistema</strong> è un insieme di componenti (software, hardware, risorse umane, dati) realizzano un obiettivo comune.</p>
+<p>Un sistema è caratterizzato da:</p>
+<ul>
+<li>La presenza di un obiettivo</li>
+<li>È composto da delle componenti</li>
+<li>Ha degli attributi derivati dalle componenti (caratteristiche, configurazione, qualità, vincoli, stati)</li>
+<li>Ha delle relazioni tra le componenti</li>
+</ul>
+<p>Un sistema ha delle cosiddette <strong>proprietà emergenti</strong> cioè delle proprietà non riconducibili alle singole componenti di cui è composto, ma che sono generate delle relazioni tra le componenti.</p>
+<p><strong>Ingegnerizzare un sistema</strong> significa progettare, implementare e installare i sistemi</p>
+<h2 id="requisiti-di-un-sistema">Requisiti di un sistema</h2>
+<p>I requisiti, e quindi gli obiettivi, di un sistema di dividono in:</p>
+<ul>
+<li><strong>requisiti funzionali</strong>: i servizi che il sistema deve offrire</li>
+<li><strong>requisiti non funzionali</strong>: le proprietà, i vincoli, le caratteristiche che caratterizzano il sistema</li>
+</ul>
+<h3 id="affidabilità-di-un-sistema">Affidabilità di un sistema</h3>
+<p>Una proprietà fondamentale dei sistemi è <strong>l’affidabilità</strong>, cioè la capacità del sistema di rispondere all’obiettivo anche in caso di fallimento di una delle sue componenti</p>
+<h3 id="l’ambiente">L’ambiente</h3>
+<p>I sistemi sono dipendenti da un ambiente in cui essi funzionano.</p>
+<p>La progettazione del sistema deve considerare anche <strong>l’ambiente</strong> su cui può operare attraverso delle opportune assunzioni.</p>
+<h2 id="software-project-management">Software project management</h2>
+<p>Il <em>Software project management</em> è un insieme di attività necessarie per poter sviluppare un software:</p>
+<ul>
+<li>rispettando delle scadenze</li>
+<li>rispettando degli standard</li>
+</ul>
+<p>Riguarda sia aspetti organizzativi (budget, risorse umane, …) sia aspetti tecnici.</p>
+<p>Un <strong>progetto</strong> è un insieme di attività che:</p>
+<ul>
+<li>ha un inizio e una fine</li>
+<li>realizza un obiettivo</li>
+<li>è realizzato da un team di persone</li>
+<li>utilizza un certo insieme di risorse</li>
+<li>una volta terminato non ricomincia</li>
+</ul>
+<p>Ci sono anche le cosiddette <strong>attività di funzione</strong> cioè le operazioni ordinarie che servono ad accompagnare le attività di progetto (sono le generiche attività della vita quotidiana)</p>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Attività di funzione</th>
+<th>Attività di progetto</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Obiettivo</td>
+<td>è implicito nell’attività</td>
+<td>specifiche del progetto</td>
+</tr>
+<tr>
+<td>Qualità</td>
+<td>conformità agli standard</td>
+<td>conformità ai requisiti del progetto</td>
+</tr>
+<tr>
+<td>Tempo</td>
+<td>tempi standard, costanti</td>
+<td>fissata dal piano di progetto</td>
+</tr>
+<tr>
+<td>Costo</td>
+<td>standard</td>
+<td>budget di spesa</td>
+</tr>
+<tr>
+<td>Carattere</td>
+<td>ripetitive</td>
+<td>temporanee e legate al team</td>
+</tr>
+<tr>
+<td>Esempi</td>
+<td>attività didattica, pagamenti, andare a lavoro</td>
+<td>corso universitario, matrimonio, trasloco, campagne di marketing</td>
+</tr>
+</tbody>
+</table><h2 id="studio-di-fattibilità">Studio di fattibilità</h2>
+<p>Il primo step di un progetto è lo studio di fattibilità, cioè un insieme di attività che portano a decidere se la realizzazione di un progetto è fattibile, con i relativi vincoli.</p>
+<p>Lo studio di fattibilità ha l’obiettivo di:</p>
+<ul>
+<li>esaminare varie alternative di realizzazione</li>
+<li>definire architetture tecniche e applicative</li>
+<li>valutare costi e benefici</li>
+<li>produrre un piano di progetto</li>
+</ul>
+<h2 id="qualità-di-un-progetto">Qualità di un progetto</h2>
+<p>Per valutare qualitativamente un progetto oltre a considerare il raggiungimento degli obiettivi nei tempi previsti bisogna considerare le aspettative <em>espresse</em> e <em>implicite</em> del committente:</p>
+<ul>
+<li>Le <strong>aspettative espresse</strong> sono legate alle specifiche tecniche del progetto</li>
+<li>Le <strong>aspettative implicite</strong> sono legate alla sfera “emozionale” dei requisiti del committente</li>
+</ul>
+<h2 id="caratteristiche-di-un-progetto">Caratteristiche di un progetto</h2>
+<p>Le caratteristiche di un progetto sono:</p>
+<ul>
+<li>Obiettivo e qualità</li>
+<li>tempo</li>
+<li>costo e risorse</li>
+</ul>
+<p>Queste caratteristiche sono in competizione tra loro: se vogliamo migliorare un punto in particolare gli altri peggioreranno (es +qualità nello stesso tempo = aumento di costi e risorse, oppure -tempo con uguali costi = minor qualità)</p>
+<h2 id="ciclo-di-vita-di-un-progetto">Ciclo di vita di un progetto</h2>
+<p>Possiamo rappresentare il ciclo di vita di un progetto con il seguente schema</p>
+<p><img src="https://i.ibb.co/YfM4HDG/image.png" alt="https://i.ibb.co/YfM4HDG/image.png"></p>
+<p><img src="https://i.ibb.co/Z1JMhsr/image.png" alt="https://i.ibb.co/Z1JMhsr/image.png"></p>
+<h2 id="struttura-organizzativa">Struttura organizzativa</h2>
+<p>L’organizzazione del team può essere strutturato in 3 modi:</p>
+<ol>
+<li>
+<p><strong>Per funzione</strong>: non è assegnato personale allo specifico progetto e non c’è un coordinatore delle attività (ideale per grandi aziende ben strutturate)</p>
+<p><img src="https://i.ibb.co/pfb80ZD/image.png" alt="https://i.ibb.co/pfb80ZD/image.png"></p>
+</li>
+<li>
+<p><strong>Per progetto</strong>: esiste un coordinatore (<em>project manager</em>) e il personale dipende direttamente da lui (ideale per aziende la cui struttura interna è molto dinamica e di dimensioni medio-piccole )</p>
+<p><img src="https://i.ibb.co/0Js5syB/image.png" alt="https://i.ibb.co/0Js5syB/image.png"></p>
+</li>
+<li>
+<p><strong>A matrice</strong>: esiste un coordinatore e il personale è in parte assegnato al team di progetto</p>
+<p>(Nota che il rettangolo “Risorse” andrebbe di fianco a “controllo progetti”)</p>
+</li>
+</ol>
+<p><img src="https://i.ibb.co/wNK2d7K/image.png" alt="https://i.ibb.co/wNK2d7K/image.png"></p>
+<h3 id="vantaggi-e-svantaggi">Vantaggi e svantaggi</h3>
+<p><img src="https://i.ibb.co/1rJNRB3/image.png" alt="https://i.ibb.co/1rJNRB3/image.png"></p>
+<h3 id="il-project-manager">Il project manager</h3>
+<p>Il project manager è un ruolo di coordinamento per le varie fasi del progetto, si occupa di:</p>
+<ul>
+<li>stesura della proposta di progetto</li>
+<li>stima dei costi</li>
+<li>planning e scheduling</li>
+<li>monitoraggio e revisione del progetto</li>
+<li>selezione e valutazione del personale</li>
+<li>stesura di rapporti e prestazioni</li>
+</ul>
+<h2 id="team-di-progetto">Team di progetto</h2>
+<h3 id="grandezza-del-team">Grandezza del team</h3>
+<p>L’efficienza non migliora proporzionalmente rispetto al numero di componenti del team, quindi a volte un team piccolo lavora meglio di un team di grandi dimensioni. Questo perché alcuni lavori non posso essere parallelizzati e con più persone si forma un overhead per coordinamento e comunicazione.</p>
+<p>La “forza lavoro” si misura in termini di <strong>mesi uomo:</strong></p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mtext>RisorseUmane</mtext><mo>=</mo><mfrac><mtext>Persone</mtext><mtext>mese</mtext></mfrac><mo>⋅</mo><mtext>Durata</mtext></mrow><annotation encoding="application/x-tex">
+\text{RisorseUmane} = \frac{\text{Persone}}{\text{mese}} \cdot \text{Durata}
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">RisorseUmane</span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 2.04633em; vertical-align: -0.686em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 1.36033em;"><span class="" style="top: -2.314em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">mese</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.677em;"><span class="pstrut" style="height: 3em;"></span><span class="mord"><span class="mord text"><span class="mord">Persone</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.686em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">Durata</span></span></span></span></span></span></span></p>
+<h3 id="tipologie-di-team">Tipologie di team</h3>
+<p>Possiamo avere vari tipi di team:</p>
+<ol>
+<li><strong>Democratico e decentralizzato</strong>
+<ul>
+<li>assenza di un leader (può anche essere temporaneo a rotazione)</li>
+<li>consenso di gruppo alle soluzioni</li>
+<li>comunicazione orizzontale</li>
+<li>funziona bene per problemi difficili</li>
+<li>è difficile da imporre</li>
+<li>non è scalabile (valido per gruppi piccoli)</li>
+</ul>
+</li>
+<li><strong>Controllato decentralizzato</strong>
+<ul>
+<li>leader riconosciuto</li>
+<li>la risoluzione dei problemi è di gruppo ma l’implementazione è assegnata a sottogruppi</li>
+<li>comunicazione verticale con i leader e orizzontale tra sottogruppi</li>
+</ul>
+</li>
+<li><strong>Controllato centralizzato</strong>
+<ul>
+<li>Team leader decide sulle soluzione e sull’organizzazione</li>
+<li>comunicazione solo verticale tra leader e membri</li>
+</ul>
+</li>
+</ol>
+<p></p>
+<h1 id="piano-di-progetto">Piano di progetto</h1>
+<h2 id="piano-di-progetto-1">Piano di progetto</h2>
+<p>Il <strong>piano di progetto</strong> è un documento formale che descrive e accompagna lo sviluppo del progetto dal suo inizio alla sua fine.</p>
+<p>Il piano di progetto segue questa struttura:</p>
+<ol>
+<li><strong>Introduzione</strong>:
+<ol>
+<li>una sintesi degli aspetti più rilevanti del progetto e del prodotto</li>
+<li>scadenze intermedie per marcare lo stato di avanzamento</li>
+<li>cambiamenti in corso d’opera</li>
+<li>materiali di riferimento</li>
+<li>definizioni di termini tecnici e abbreviazioni</li>
+</ol>
+</li>
+<li><strong>Organizzazione del progetto</strong>
+<ol>
+<li>scelta del modello di processo</li>
+<li>struttura organizzativa</li>
+<li>interfacce organizzative (relazioni con enti esterni al team di lavoro, come committente, finanziatore, utenti finali, …)</li>
+<li>Individuazione della responsabilità nei ruoli del progetto</li>
+</ol>
+</li>
+<li><strong>Descrizione dei processi gestionali</strong>
+<ol>
+<li>obiettivi e priorità</li>
+<li>assunzioni, dipendenze e vincoli</li>
+<li>gestione dei rischi</li>
+<li>meccanismi di monitoraggio e di controllo (meeting regolari, revisioni delle modifiche)</li>
+<li>pianificazione dello staff (organizzazione in base a competenze e difficoltà dei membri)</li>
+</ol>
+</li>
+<li><strong>Descrizione dei processi tecnici</strong>
+<ol>
+<li>metodi, strumenti e tecniche (ambiente di sviluppo, linguaggi)</li>
+<li>documentazione (strumenti per redigere la documentazione)</li>
+<li>funzionalità di supporto al progetto</li>
+</ol>
+</li>
+<li><strong>Pianificazione del lavoro, delle risorse umane e del budget</strong>
+<ol>
+<li>suddividere il progetto in piccole attività, descrivendo per ognuna: tempo, obiettivi e personale</li>
+<li>dipendenze tra le attività</li>
+<li>risorse necessarie alle attività</li>
+<li>pianificazione delle attività</li>
+</ol>
+</li>
+</ol>
+<h2 id="modelli-di-processo">Modelli di processo</h2>
+<p>Vediamo dei modelli usati per organizzare le attività di un processo</p>
+<ol>
+<li>
+<p><strong>Modello a cascata:</strong></p>
+<p>Le varie attività sono in sequenza con l’obiettivo di minimizzare la possibilità di tornare indietro.</p>
+<p>Il vantaggio è che se le attività vengono rispettate in modo rigoroso il lavoro per le attività successive è ridotto.</p>
+<p>Un cambiamento in corso d’opera risulta però molto costoso (sconsigliato per progetti innovativi)</p>
+<p><img src="https://i.ibb.co/Mn8kC8s/image.png" alt="https://i.ibb.co/Mn8kC8s/image.png"></p>
+</li>
+<li>
+<p><strong>Modello evolutivo</strong>:</p>
+<p>Ciclicamente si svolgono attività parallelamente che pian piano porteranno verso la versione finale. Un approccio di questo tipo prende anche il nome di <strong>DevOps</strong>. Valido per sistemi di vita breve o per sotto-sistemi di sistemi più grandi</p>
+<p><img src="https://i.ibb.co/9s6ykp6/image.png" alt="https://i.ibb.co/9s6ykp6/image.png"></p>
+<p>Si possono realizzare due approcci per la prototipazione:</p>
+<ul>
+<li>una <strong>prototipazione di tipo evolutivo</strong>: in cui l’obiettivo è lavorare con il cliente per ottenere un sistema finale partendo da una specifica più generica</li>
+<li>una <strong>prototipazione di tipo usa e getta</strong>: in cui l’obiettivo è capire i requisiti sperimentando le parti del sistema non ancora comprese</li>
+</ul>
+</li>
+<li>
+<p><strong>Modello trasformazionale</strong>:</p>
+<p>Basato sulla trasformazione di una specifica matematica in un programma eseguibile. Questo modello viene impiegato per componenti critiche del sistema</p>
+</li>
+<li>
+<p><strong>Modello basato sul riutilizzo</strong>:</p>
+<p>si basa sul riutilizzo di componenti</p>
+</li>
+<li>
+<p><strong>Metodo di sviluppo <em>Agile</em></strong></p>
+<p>Si basa cicli brevi (<strong>sprint</strong>) di sviluppo (comprendenti di pianificazione, sviluppo, testing, review e rilascio)</p>
+<p>è una metodologia che segue quattro punti:</p>
+<ul>
+<li>le persone e le interazioni sono più importanti dei<br>
+processi e degli strumenti</li>
+<li>è più importante avere software funzionante che documentazione</li>
+<li>bisogna collaborare con i clienti indipendentemente dal contratto</li>
+<li>bisogna essere pronti a rispondere ai cambiamenti piuttosto che rimanere aderenti al progetto (il team è invitato a suggerire delle modifiche in ogni momento)</li>
+</ul>
+</li>
+</ol>
+<h2 id="analisi-dei-rischi">Analisi dei rischi</h2>
+<p>L’analisi dei rischi è una analisi sistematica e completa di tutti i possibili rischi che possono far fallire o intralciare la realizzazione del sistema in una qualunque fase dello sviluppo.</p>
+<p>Un rischio è caratterizzato da due fattori:</p>
+<ul>
+<li>la probabilità con cui può accadere</li>
+<li>l’impatto che provoca nel caso accadesse</li>
+</ul>
+<p>Identifichiamo delle categorie di rischio:</p>
+<ul>
+<li><strong>Rischi relativi ai requisiti</strong>: I requisiti sono perfettamente noti?</li>
+<li><strong>Rischi relativi alle risorse umane</strong>: è possibile contare sulle competenze dei membri per sviluppare il progetto?</li>
+<li><strong>Rischi tecnologici</strong>: Si sta scegliendo la tecnologia corretta? anche in vista di sviluppi futuri?</li>
+</ul>
+<h3 id="gestione-dei-rischi">Gestione dei rischi</h3>
+<p>Ci sono due approcci per gestire i rischi:</p>
+<ul>
+<li>
+<p><strong>Strategia reattiva</strong>: si posticipa il trovare una soluzione ad una fase più avanzata del progetto</p>
+</li>
+<li>
+<p><strong>Strategia preventiva</strong>: Si gioca di anticipo, valutando i possibili rischi con le loro probabilità e il loro impatto e si stabiliscono delle priorità. Si predisporrà quindi un piano di reazione a forma di tabella</p>
+<p><img src="https://i.ibb.co/MGJpFC3/image.png" alt="https://i.ibb.co/MGJpFC3/image.png"></p>
+</li>
+</ul>
+<p>Un rischio si può <strong>classificare</strong> secondo il seguente schema che relazione la probabilità di accadimento con l’impatto che esso provocherebbe:</p>
+<p><img src="https://i.ibb.co/27682Jw/image.png" alt="https://i.ibb.co/27682Jw/image.png"></p>
+<h2 id="pianificazione-scheduling-analisi-dei-costi">Pianificazione, Scheduling, Analisi dei costi</h2>
+<p>La pianificazione delle attività si può struttura in una sequenza fasi con un input e un output:</p>
+<ol>
+<li>
+<p><strong>Input</strong>: l’obiettivo del progetto</p>
+<p><strong>Elaborazione</strong>: identificare i compiti necessari per raggiungere l’obiettivo</p>
+<p><strong>Output</strong>: creazione di una WBS (<em>Work breakdown structure</em>), cioè una scomposizione del progetto in piccole attività con opportuna descrizione</p>
+</li>
+<li>
+<p><strong>Input</strong>: WBS e struttura organizzativa dei membri</p>
+<p><strong>Elaborazione</strong>: assegnazione delle responsabilità</p>
+<p><strong>Output</strong>: matrice compiti-responsabilità</p>
+</li>
+<li>
+<p><strong>Input</strong>: vincoli temporali, di risorse, tecnici</p>
+<p><strong>Elaborazione</strong>: stimare i tempi necessari per ogni attività</p>
+<p><strong>Output</strong>: diagramma di PERT</p>
+</li>
+<li>
+<p><strong>Input</strong>: legami logici e scadenze tra le attività</p>
+<p><strong>Elaborazione</strong>: schedulazione della attività su un asse temporale</p>
+<p><strong>Output</strong>: diagramma di Gantt</p>
+</li>
+</ol>
+<p>Due definizioni importanti sono:</p>
+<ul>
+<li><em>Milestones,</em> cioè i punti finali di ogni singola attività (ciò che determina quando una attività può considerarsi conclusa)</li>
+<li><em>Deliverables</em>, cioè i risultati intermedi che sono forniti al committente (sono un sottoinsieme delle <em>milestones</em>)</li>
+</ul>
+<h3 id="work-breakdown-structure-wbs">Work Breakdown Structure (WBS)</h3>
+<p>La strutturazione del progetto in attività segue questo schema:</p>
+<p><img src="https://i.ibb.co/sRMfqXq/wbs.png" alt="https://i.ibb.co/sRMfqXq/wbs.png"></p>
+<p>Le <strong>funzioni</strong> sono della attività che seguono l’intero progetto.</p>
+<p>Le <strong>attività</strong> sono delle suddivisioni del progetto in compiti, per ogni attività ci possono essere delle sotto-attività (per ogni attività è importante specificare il momento di inizio e fine)</p>
+<p>I <strong>task</strong> (non strettamente necessari) ****sono delle attività di lavoro atomiche figlie di una specifica attività, hanno durata stimabile, necessitano di certe risorse, producono risultati tangibili</p>
+<h2 id="diagramma-di-pert">Diagramma di Pert</h2>
+<p>Dalla WBS si realizza il <strong>diagramma di Pert</strong>, cioè un grafo che rappresenta le attività, le dipendenze e vari tipi di tempi di realizzazione previsti.</p>
+<p>Nel diagramma di Pert devono essere presenti 4 tipi di tempi:</p>
+<ol>
+<li><strong>ES (earliest start time</strong>): minimo giorno di inizio dell’attività</li>
+<li><strong>EF (earliest finish time)</strong>: minimo giorno in cui l’attività può terminare (calcolato da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>ES</mtext><mo>+</mo><mrow><mtext>durata&nbsp;dell’attivit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover></mrow></mrow><annotation encoding="application/x-tex">\text{ES} + \text{durata dell’attività}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">ES</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">durata&nbsp;dell’attivit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span></span></span></span></span></span>)</li>
+<li><strong>LF (latest finish time)</strong>: l’ultimo giorno in cui quell’attività deve finire senza comportare un ritardo nelle attività che dipendono da essa.</li>
+<li><strong>LS (latest start time)</strong>: l’ultimo giorno in cui quell’attività deve iniziare senza comportare un ritardo nelle attività che dipendono da essa (calcolato da <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>LF</mtext><mo>−</mo><mrow><mtext>durata&nbsp;dell’attivit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover></mrow></mrow><annotation encoding="application/x-tex">\text{LF} - \text{durata dell’attività}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.76666em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">LF</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord text"><span class="mord">durata&nbsp;dell’attivit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span></span></span></span></span></span>)</li>
+</ol>
+<p>Esempio di diagramma di Pert</p>
+<p><img src="https://i.ibb.co/GJMSzhQ/pert.png" alt="https://i.ibb.co/GJMSzhQ/pert.png"></p>
+<p>Il modo più comodo per compilarlo è partire da T1 e andare fino a T7 compilando ES e EF.</p>
+<p>Una volta finito, si parte da T7 e si ritorna fino a T1 compilando LF e LS.</p>
+<p><strong>Cammino critico</strong>: è la successione di attività che richiede il massimo tempo, è composto dai nodi i quali non hanno una elasticità tra la prima riga (ES e EF) e la seconda (LS e LF), nell’esempio il cammino critico sarebbe</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>T</mi><mn>1</mn><mo>→</mo><mi>T</mi><mn>4</mn><mo>→</mo><mi>T</mi><mn>5</mn><mo>→</mo><mi>T</mi><mn>7</mn></mrow><annotation encoding="application/x-tex">
+T1 \to T4 \to T5 \to T7
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">1</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">T</span><span class="mord">7</span></span></span></span></span></span></p>
+<p>se una di queste attività accumula ritardo lo propaga all’intero progetto.</p>
+<h2 id="diagramma-di-gantt">Diagramma di Gantt</h2>
+<p>Una volta ottenute le attività con i relativi tempi e le relazioni tra di esse, posso costruire un <strong>diagramma di Gantt</strong>, cioè una grafico che mette le attività su un asse temporale.</p>
+<p><img src="https://i.ibb.co/JsYtLkW/image.png" alt="https://i.ibb.co/JsYtLkW/image.png"></p>
+<p>Ovviamente i ritardi possono formarsi ma possono essere categorizzati in 2 modi:</p>
+<ul>
+<li><strong>ritardi di una fase critica:</strong> comporta un ritardo sulla conclusione del progetto (es. un ritardo nell’attività A porta ad uno <em>shift</em> di tutte le successive attività che dipendono da essa). Le fasi critiche si ottengono dal cammino critico nel diagramma di Pert</li>
+<li><strong>ritardi di una fase non critica</strong>: non comportano un ritardo sulla conclusione del progetto (es. un ritardo nell’attività D che riesce comunque a terminare prima di C non comporta una ritardo sul progetto, in quanto le attività successive dipendono sia da C che da D. Ovviamente se D va oltre a C allora il ritardo sul progetto si forma.</li>
+</ul>
+<h1 id="stima-dei-costi">Stima dei costi</h1>
+<p>In un progetto è importante saper stimare i costi in termini di tempo, risorse, sforzo e saper stimare il valore monetario del progetto.</p>
+<h2 id="metrica-di-sforzo">Metrica di sforzo</h2>
+<p>Per sforzo (<em>effort</em>) si intende la misura del quantitativo di lavoro umano necessario per svolgere il processo.</p>
+<p>L’unità di misura comunemente usata è il <strong>mese-uomo</strong> (man-month), un mese-uomo si definisce come il <strong>quantitativo di lavoro che un singolo dipendente può svolgere in un mese lavorativo.</strong></p>
+<p>Ogni persona ha una propria produttività, che dipende dalla sua età, competenza, esperienza, affinità con il team, …</p>
+<p>Quindi questa metrica è difficilmente stimabile.</p>
+<h2 id="fattori-di-costo">Fattori di costo</h2>
+<p>I principali fattori che influenzano il costo (quindi le spese per portare a termine il progetto) sono:</p>
+<ul>
+<li>Stipendi del personale</li>
+<li>Strumentazione (HW e SW)</li>
+<li>Viaggi e formazione</li>
+<li>Rifornimento, riscaldamento, illuminazione</li>
+<li>amministrazione, tecnici, pulizie</li>
+<li>rete e telecomunicazione</li>
+</ul>
+<p>Una stima a grandi linee stabilisce che una volta determinati gli stipendi del personale, il resto dei fattori valgono almeno quanto gli stipendi, quindi si può stabilire che all’incirca il costo del progetto è il doppio del costo indirizzato agli stipendi.</p>
+<h2 id="prezzo">Prezzo</h2>
+<p>Il prezzo che un eventuale cliente dovrebbe pagare per il progetto dovrebbe essere la somma tra il costo e il profitto.</p>
+<p>Però la relazione tra costo e prezzo non è sempre semplice. Il prezzo viene spesso influenzato da fattori esterni (organizzativi, politici, aziendali, reputazione, mercato, stato finanziario dello sviluppatore, contratti)</p>
+<h2 id="come-stimare-i-costi">Come stimare i costi</h2>
+<p>Abbiamo diversi approcci:</p>
+<ul>
+<li>Basare la stima su progetti simili già sviluppati. Si deve quindi trovare analogia tra il progetto e quelli presi come riferimento in termini di dimensione, scopi e metodo di lavoro.</li>
+<li>approccio <em>Price-to-win</em>: basare il costo su quanto il cliente è disposto a spendere, con il rischio che la cifra concordata non sia sufficiente per realizzare un progetto di qualità</li>
+<li>Misurare la complessità del sistema dall’esterno (dal lato utente), ad esempio:
+<ul>
+<li>numero di input, di output, di richieste, di file utilizzati, di interfacce esterne</li>
+<li>necessità di fare backup</li>
+<li>le prestazioni sono un elemento importante?</li>
+<li>sono richieste comunicazioni online</li>
+</ul>
+</li>
+</ul>
+<p>È comune che la stima dei costi fatta nelle fasi iniziali del progetto risulti poi essere sballata e man mano che si prosegue con il progetto si dovrebbe ottenere una stima sempre più realistica.</p>
+<h1 id="ingegneria-dei-requisiti">Ingegneria dei requisiti</h1>
+<p>I requisiti rappresentano la base del contratto e quindi è necessario prestarci attenzione per ridurre la probabilità di controversie a progetto consegnato.</p>
+<p>È importante definire il livello di dettaglio dei vincoli: assenza di vincoli significa che qualsiasi sistema è valido, mentre averne troppi riduce la possibilità di trovare una soluzione che li rispetta tutti.</p>
+<p>Ci deve anche essere coerenza tra i requisiti (due requisiti non si devono contrastare a vicenda)</p>
+<p>Con <strong>requisito</strong> si intende una caratteristica che il prodotto deve possedere o un servizio che il prodotto deve offrire.</p>
+<p>L’origine dei requisiti può essere: una richiesta dal committente oppure proviene dagli utilizzatori finali, oppure da vincoli normativi, oppure da una esperienza pregressa, …</p>
+<p>Ogni requisito ha un proprio <strong>scopo</strong> all’interno del prodotto, quindi i requisiti sono delle caratteristiche che permettono di raggiungere un determinato scopo.</p>
+<h2 id="processo-di-analisi">Processo di analisi</h2>
+<p>Il documento dei requisiti deve essere fatto da una collaborazione tra il committente e il fornitore, trovando dei compromessi tra necessità e possibilità.</p>
+<p>Per analizzare i requisiti è necessario fare:</p>
+<ul>
+<li>uno studio della realtà applicativa: capire in che ambiente deve collocarsi il prodotto (attraverso ricerche, competitors, fonti dei dati)</li>
+<li>comprendere quali sono livelli di qualità richiesti</li>
+<li>in questa fase non bisogna pensare al “come“ ma a “<strong>cosa”</strong> offrire</li>
+</ul>
+<h2 id="requisiti-funzionali-e-non-funzionali">Requisiti funzionali e non funzionali</h2>
+<p>Una principale suddivisione dei requisiti è tra requisiti funzionali e non:</p>
+<ul>
+<li><strong>requisiti funzionali</strong>: Definiscono le funzionalità specifiche che il software deve fornire.</li>
+<li><strong>requisiti non funzionali</strong>: Definiscono le qualità del sistema, come prestazioni, sicurezza e usabilità.</li>
+</ul>
+<p>Quindi in sostanza i requisiti funzionali si concentrano su <strong>cosa fa il sistema</strong>, mentre i requisiti non funzionali si concentrano su <strong>come il sistema funziona</strong>.</p>
+<h2 id="motivazione-dei-requisiti">Motivazione dei requisiti</h2>
+<p>I requisiti servono per:</p>
+<ul>
+<li>definire i bisogni del committente, quindi il documento deve essere comprensibili da non tecnici.</li>
+<li>Deve anche essere chiaro e preciso dato che andrà in mano a chi si occuperà della fase successiva</li>
+<li>Servirà in fase di manutenzione, se si nota un comportamento del prodotto strano si va a guardare nel documento dei requisiti se era stato pensato così oppure se è un <em>bug</em></li>
+</ul>
+<h2 id="step-per-determinare-i-requisiti">Step per determinare i requisiti</h2>
+<ol>
+<li>
+<p>Definire gli obiettivi generali</p>
+</li>
+<li>
+<p>Identificare e modellare i servizi, i vincoli, l’ambiente che riguardano il sistema (vengono coinvolti sia esperti del dominio applicativo sia potenziali utilizzatori)</p>
+<p>Approcci tipici sono quelli delle <strong>interviste</strong> (strutturate oppure informali), dei <strong>questionari</strong> oppure tramite <strong>osservazioni</strong> sul campo</p>
+</li>
+<li>
+<p>Descrivere in linguaggio naturale i servizi che il sistema offre e i suoi vincoli (requisiti non funzionali)</p>
+</li>
+<li>
+<p>Specificare i requisiti funzionali in dettaglio</p>
+</li>
+</ol>
+<p>Per descrivere i requisiti si possono adottare due tipi di stili:</p>
+<ul>
+<li><strong>Operazionale</strong>: viene descritto il comportamento in modo algoritmico</li>
+<li><strong>Descrittivo</strong>: viene descritto attraverso in linguaggio naturale (approccio preferito)</li>
+</ul>
+<h2 id="evoluzione-dei-requisiti">Evoluzione dei requisiti</h2>
+<p>I requisiti si possono evolvere nel corso del progetto, il sistema è quindi necessario che sia aperto a modifiche.</p>
+<p><strong>Requisiti durevoli</strong>: sono quei requisiti che difficilmente potranno variare</p>
+<p><strong>Requisiti volatili</strong>: sono requisiti che possono facilmente variare durante lo sviluppo</p>
+<h2 id="errori-nella-definizione-dei-requisiti">Errori nella definizione dei requisiti</h2>
+<p>Il modo usuale per scrivere le definizioni dei requisiti è tramite linguaggio naturale accompagnato da schemi.</p>
+<p>Possono accadere dei problemi:</p>
+<ul>
+<li>mancanza di chiarezza</li>
+<li>confusione tra i requisiti, requisiti funzionali e non funzionali vengono mescolati</li>
+<li>raggruppare requisiti diversi in uno unico anziché tenerli distinti</li>
+<li>mancanza di precisione e completezza, anche ciò che sembra più banale da specificare non va tralasciato (es. dire che si può abilitare una determinata funzionalità nel software necessita anche di esplicitare se si può disattivare o meno, non va dato per scontato anche se banale)</li>
+</ul>
+<h2 id="regole-di-stesura">Regole di stesura</h2>
+<p>Vediamo delle pratica da adottare per una buona definizione dei requisiti:</p>
+<ul>
+<li>Il soggetto è sempre il sistema e non l’utente (non devono comparire frasi come “l’utente deve…”)</li>
+<li>Aderire a formati standard nella definizione dei requisiti</li>
+<li>Raggruppare i requisiti che sono legati alla stesso ambito</li>
+<li>Legare ai requisiti la motivazione per cui sono stati definiti</li>
+</ul>
+<h2 id="classificazione-dei-requisiti-non-funzionali">Classificazione dei requisiti non funzionali</h2>
+<p>Abbiamo già visto che i requisiti non funzionali sono le caratteristiche del prodotto, e possono riguardare tre categorie:</p>
+<ul>
+<li><strong>Requisiti di prodotto</strong>: il prodotto deve comportarsi in un certo modo (es. velocità di esecuzione, affidabilità)</li>
+<li><strong>Requisiti di processo</strong>: riguardano il processo di produzione (es. conformità con degli standard, utilizzo di particolari strumenti di sviluppo)</li>
+<li><strong>Requisiti esterni</strong>: requisiti derivati da fattori esterni al sistema e al processo di sviluppo (es. requisiti normativi, etici)</li>
+</ul>
+<p>Per i requisiti non funzionali è importante specificare le metriche di appartenenza e le unità di misura, evitando di usare termini vaghi per descrivere il requisiti ma invece di quantificare le metriche</p>
+<h1 id="documento-dei-requisiti">Documento dei requisiti</h1>
+<p>Il documento dei requisiti deve avere un <strong>indice</strong>, i punti di questo indice sono i seguenti:</p>
+<ol>
+<li><strong>Introduzione</strong>: descrizione delle funzionalità generali del sistema, e i contenuti del documento</li>
+<li><strong>Glossario</strong>: Definizioni dei termini tecnici usati nel documento (il documento è destinato anche ai non tecnici)</li>
+<li><strong>Modelli del sistema</strong>: mostrare dei modelli che evidenziano le componenti del sistema e le relazioni tra loro</li>
+<li>Definizione dei <strong>requisiti funzionali</strong></li>
+<li>Definizione dei <strong>requisiti non funzionali</strong></li>
+<li><strong>Evoluzione del sistema</strong>: possibili cambiamenti dovuti all’evoluzione hardware o software</li>
+<li><strong>Specifica dei requisiti</strong> per gli addetti alle fasi successive del progetto</li>
+<li><strong>Appendici</strong></li>
+</ol>
+<h2 id="modelli-di-sistema">Modelli di sistema</h2>
+<p>Un <strong>modello</strong> è una presentazione astratta del sistema di cui si stanno analizzando i requisiti, serve per rappresentare le funzionalità e comunicare con il cliente.</p>
+<p>Un esempio di modello di sistema è <strong>UML (Unified Modeling Language)</strong>, un linguaggio di modellazione che usa una notazione standard per rappresentare un sistema a livello astratto.</p>
+<p>Si tratta di una <strong>modellazione universale</strong> quindi è abbastanza generica da ricoprire vari tipologie di sistema (modelli per programmazione ad oggetti, database, modelli web, …).</p>
+<p>Ogni sotto-categoria di modellazione UML serve per una determinata fase del processo di sviluppo: ad esempio il <strong>diagramma dei casi d’uso</strong> serve nella fase della <strong>specifica,</strong> il <em>collaboration diagram</em> serve nella fase di progettazione, il <em>Component diagram</em> serve nella fase di sviluppo.</p>
+<h2 id="diagramma-dei-casi-d’uso">Diagramma dei casi d’uso</h2>
+<p>Questo diagramma ci mostra:</p>
+<ul>
+<li>le modalità di utilizzo del sistema (i casi d’uso)</li>
+<li>gli attori, quindi gli utilizzatori e coloro che interagiscono con il sistema</li>
+<li>le relazione tra casi d’uso e attori</li>
+</ul>
+<p>Un <strong>caso d’uso</strong>:</p>
+<ul>
+<li>rappresenta un possibile scenario di utilizzo del sistema dal punto di vista di chi lo utilizza</li>
+<li>descrive l’interazione tra attori e sistema (ma non la logica interna)</li>
+<li>cattura <strong>chi</strong> fa <strong>cosa</strong> e con quale <strong>scopo</strong></li>
+<li>è composto da un linguaggio visuale accompagnato da documentazione (nella quale si usa un vocabolario dell’ambiente di utilizzo e non di sviluppo interno)</li>
+</ul>
+<p>è importate costruire dei casi d’uso per:</p>
+<ul>
+<li>esplicitare e comunicare a tutti gli stakeholder i requisiti funzionali e gli usi tipici del sistema</li>
+<li>verificare che il sistema soddisfi le necessità dell’utente</li>
+</ul>
+<p>In particolare, in UML:</p>
+<ul>
+<li>il <strong>caso d’uso</strong> è rappresentato da <strong>un’ellisse</strong>, e rappresenta una interazione tra attori e sistema</li>
+<li><strong>L’attore</strong>, rappresentato da un <strong>omino,</strong> indica un ruolo (indicato con una etichetta testuale)</li>
+<li>Lo <strong>scenario</strong> è una sequenza di azioni tra attore e sistema</li>
+<li>La <strong>descrizione</strong> è del testo che descrive lo scenario (attori coinvolti, trattamento degli errori, ordine temporale delle azioni)</li>
+</ul>
+<h2 id="template-scenario">Template scenario</h2>
+<ul>
+<li><strong>Nome caso d’uso</strong> - Ogni caso d’uso deve avere un nome; il nome esprime il goal dell’utente nell’utilizzo del sistema.</li>
+<li><strong>Goal</strong> - descrizione della funzionalità fornita dal sistema e che soddisfa una necessità dell’utente, ossia che è percepita dallo stesso utente come “valore”.</li>
+<li><strong>Attori</strong> - persona, dispositivo o altra entità esterna al sistema che interagisce con il sistema. Per ogni caso d’uso esiste sempre un attore primario che è colui che inizia il caso d’uso stesso.</li>
+<li><strong>Precondizioni</strong> - Condizioni che devono essere soddisfatte all’inizio del caso d’uso. Rappresentano le “garanzie minime” che devono essere soddisfatte per poter attivare lo scenario di utilizzo del sistema (Garanzie fornite dagli attori al sistema).</li>
+<li><strong>Trigger</strong> - evento trigger che attiva il caso d’uso</li>
+<li><strong>Descrizione</strong> - descrizione della sequenza di interazioni più comune tra gli attori e il sistema. In particolare viene descritta la sequenza principale che porta alla conclusione del caso d’uso con successo. La descrizione è definita in termini di input forniti dall’attore e di risposta del sistema. Il sistema è trattato secondo un modello di tipo black-box, concentrandosi su cosa esso fa in risposta agli input, e non su come internamente queste risposte vengano prodotte.</li>
+<li><strong>Alternative</strong> (estensioni) - descrizioni delle variazioni dalla sequenza di passi tipica del main success scenario. Tali alternative estendono lo scenario principale. La gestione delle eccezioni è un esempio tipico di tali estensioni. Non tutte le alternative portano necessariamente ad un fallimento del caso d’uso.</li>
+<li><strong>Postcondizioni</strong> - Condizioni sempre soddisfatte al termine del caso d’uso (Garanzie fornite dal sistema agli attori)</li>
+</ul>
+<h2 id="esempio">Esempio</h2>
+<p><img src="https://i.ibb.co/8rNRhTJ/image.png" alt="https://i.ibb.co/8rNRhTJ/image.png"></p>
+<ul>
+<li>
+<p><strong>Nome caso d’uso</strong>: Withdraw Funds</p>
+</li>
+<li>
+<p><strong>Scope</strong>: ATM system</p>
+</li>
+<li>
+<p><strong>Goal</strong>: L’utente dell’ATM preleva una specifica somma di denaro da un conto corrente bancario valido.</p>
+</li>
+<li>
+<p><strong>Dipendenza con altri casi d’uso</strong>: nessuna</p>
+</li>
+<li>
+<p><strong>Attori</strong>: cliente del terminale ATM</p>
+</li>
+<li>
+<p><strong>Trigger</strong>: inserimento di una carte di credito nel lettore del terminale ATM</p>
+</li>
+<li>
+<p><strong>Precondizioni</strong>: il terminale dell’ATM è in attesa  e visualizza un messaggio di benvenuto</p>
+</li>
+<li>
+<p><strong>Descrizione</strong>:</p>
+<ol>
+<li>Il cliente inserisce nel lettore del terminale ATM la sua carta di credito.</li>
+<li>Il sistema riconosce la carta e ne legge il numero (card number).</li>
+<li>Il sistema visualizza a terminale la richiesta di inserimento del PIN utente.</li>
+<li>Il cliente inserisce il suo PIN.</li>
+<li>Il sistema verifica che la carta non è scaduta, né è stata rubata o risulta smarrita.</li>
+<li>Il sistema verifica che il PIN inserito dal cliente corrisponda con quello della carta.</li>
+<li>Il sistema controlla che il conto corrente sia accessibile mediante l’utilizzo della carta.</li>
+<li>Il sistema visualizza il conto corrente del cliente e visualizza le possibili operazioni che il cliente può effettuare (Prelievo, Ultimi Movimenti, Saldo Disponibile, Altri Servizi).</li>
+<li>Il cliente seleziona il conto corrente desiderato (nel caso il cliente ne abbia più di uno) e seleziona l’operazione Prelievo.</li>
+<li>Il sistema visualizza la richiesta dell’ammontare da prelevare.</li>
+<li>Il cliente inserisce l’ammontare da prelevare.</li>
+<li>Il sistema verifica che il conto corrente contenga sufficienti fondi per consentire la conclusione dell’operazione e che non sia stato superato il limite massimo giornaliero per il prelievo.</li>
+<li>Il sistema autorizza il prelievo.</li>
+<li>Il sistema emette il denaro, registrando la transazione sul conto corrente.</li>
+<li>Il sistema stampa la ricevuta mostrando il numero della transazione, il tipo di operazione effettuata, la quantità di denaro prelevata e il saldo del conto corrente.</li>
+<li>Il sistema espelle la carta.</li>
+<li>Il sistema ritorna nello stato iniziale di attesa (idle), visualizzando il messaggio di “Benvenuto”</li>
+</ol>
+</li>
+<li>
+<p><strong>Alternative</strong>:</p>
+<p><em>2.a.</em> Se il sistema non riconosce la carta dell’utente, quest’ultima viene espulsa dal lettore.</p>
+<p><em>5.a.</em> Se la carta risulta scaduta, il sistema la confisca.<br>
+<em>5.b.</em> Se la carta risulta smarrita, il sistema la confisca.<br>
+<em>5.c.</em> Se la carta risulta rubata, il sistema la confisca.</p>
+<p><em>6.a.</em> Se il cliente ha inserito un PIN che non corrisponde con quello della carta, il sistema visualizza una nuova richiesta di inserimento del PIN. Se il cliente inserisce per tre volte un PIN errato, il sistema confisca la carta.</p>
+<p><em>7.a.</em> Se il sistema verifica che il numero di conto non è valido, viene visualizzato un messaggio di errore e la carta viene espulsa dal lettore.</p>
+<p><em>12.a.</em> Se non ci sono sufficienti fondi nel conto corrente, il sistema visualizza un messaggio di errore ed espelle la carta. Il terminale ATM viene riportato allo stato di attesa (idle) e viene visualizzato il messaggio di “Benvenuto”.<br>
+<em>12.b.</em> Se il limite giornaliero massimo di prelievo è stato già raggiunto, il sistema visualizza un messaggio di errore ed espelle la carta. Il terminale ATM viene riportato allo stato di attesa (idle) e viene visualizzato il messaggio di “Benvenuto”.</p>
+<p><em>14.a.</em> Se lil terminale ATM non ha sufficienti fondi per completare la transazione, il sistema visualizza un messaggio di errore, espelle la carta, il terminale ATM viene riportato allo stato di attesa (idle) e viene visualizzato il messaggio di “Benvenuto”.<br>
+<em>14.b.</em> Se il cliente seleziona da terminale il pulsante Cancel, il sistema cancella la transazione ed espelle la carta. Il terminale ATM viene riportato allo stato di attesa (idle) e viene visualizzato il messaggio di “Benvenuto”.</p>
+</li>
+<li>
+<p><strong>Postcondizioni</strong>: L’utente ha ottenuto la somma di denaro che aveva richiesto di prelevare.</p>
+</li>
+<li>
+<p><strong>Questioni aperte</strong>: nessuna</p>
+</li>
+</ul>
+<h2 id="relazione-tra-i-casi-d’uso">Relazione tra i casi d’uso</h2>
+<p>I casi d’uso possono essere relazionati tra loro in 3 modi.</p>
+<h3 id="relazione-di-inclusione">Relazione di inclusione</h3>
+<p>Questa relazione rappresenta l’invocazione di un caso d’uso da parte di un altro, utile per scomporre casi d’uso complessi in vari casi d’uso più semplici, utile anche per il riutilizzo di casi d’uso.</p>
+<p>Si identifica questo tipo di relazione con una etichetta <code>&lt;&lt;include&gt;&gt;</code>  sulla freccia che collega i due casi d’uso.</p>
+<p><img src="https://i.ibb.co/Cn6Gcn9/image.png" alt="https://i.ibb.co/Cn6Gcn9/image.png"></p>
+<h3 id="relazione-di-generalizzazione">Relazione di generalizzazione</h3>
+<p>Questa relazione lega un caso d’uso generico ad uno più specializzato, la logica del caso specifico è simile ma non uguale a quello generico.</p>
+<p><img src="https://i.ibb.co/1ZWbKwY/image.png" alt="https://i.ibb.co/1ZWbKwY/image.png"></p>
+<h3 id="relazione-di-estensione">Relazione di estensione</h3>
+<p>Questa relazione rappresenta una estensione della logica di base del caso d’uso.</p>
+<p>Il caso d’uso esteso continua il comportamento del caso d’uso di base inserendovi delle azioni alternative da un certo punto in poi (chiamato <strong>punto di estensione,</strong> dichiarati nel caso d’uso base).</p>
+<p>Si identifica questo tipo di relazione con una etichetta <code>&lt;&lt;extend&gt;&gt;</code>  sulla freccia che collega i due casi d’uso.</p>
+<p><img src="https://i.ibb.co/LnKvbT9/image.png" alt="https://i.ibb.co/LnKvbT9/image.png"></p>
+<p>Il cliente effettua un ordine e si presuppone che l’utente sia già registrato, se non lo è allora si deve anche registrare.</p>
+<h2 id="specifica-dei-requisiti">Specifica dei requisiti</h2>
+<p>La specifica dei requisiti è una descrizione dettagliata delle funzionalità del sistema, utile sia in fase contrattuale sia per la progettazione e sviluppo.</p>
+<p>Deve essere consistente con la precedente definizione dei requisiti.</p>
+<p>Solitamente si utilizzano dei <strong>form strutturati</strong>.</p>
+<p>Questi <strong>form</strong> hanno una forma più strutturata e formale:</p>
+<ul>
+<li>descrizione della funzione</li>
+<li>descrizione di input e la loro provenienza</li>
+<li>descrizione degli output e dove vanno a finire</li>
+<li>indicazione delle altre entità richieste</li>
+<li>pre e post condizioni</li>
+<li>specificare eventuali effetti collaterali</li>
+</ul>
+<p><img src="https://i.ibb.co/CnWhF8Q/image.png" alt="https://i.ibb.co/CnWhF8Q/image.png"></p>
+<h2 id="tracciabilità-dei-requisiti">Tracciabilità dei requisiti</h2>
+<p>Per tracciabilità si intende che i requisiti sono in qualche modo correlati tra loro.</p>
+<p>Per mantenere una tracciabilità di queste correlazione è importante dare dei <strong>numeri univoci</strong> ai requisiti e indicare i riferimenti ai requisiti correlati.</p>
+<p>È anche utile creare una <strong>matrice di riferimenti.</strong></p>
+<p>Alcuni requisiti potranno anche essere in conflitto (es. garantire sia sicurezza che efficienza può essere complesso) in tal caso si da un peso in percentuale che rappresenta la priorità del requisito.</p>
+<h1 id="testing">Testing</h1>
+<p>Basandosi sul documento dei requisiti è già possibile definire le modalità di collaudo del sistema, generando così un <strong>piano di testing.</strong></p>
+<p>Il piano di testing definisce in che modo le attività di testing accompagnano lo sviluppo del progetto.</p>
+<p>Vediamo alcune definizioni utili:</p>
+<ul>
+<li><strong>Errore</strong>: incomprensione umana riguardo l’interpretazione del problema, la risoluzione del problema o nell’uso di strumenti</li>
+<li><strong>Difetto</strong>: manifestazione software dell’errore umano (<em>bug</em>)</li>
+<li><strong>Malfunzionamento</strong>: situazione in cui il software non si comporta come previsto a causa di un difetto</li>
+</ul>
+<p>La fase di testing consiste nel ottenere un malfunzionamento, trovare il difetto relativo e cercare di capire l’errore che ha generato quel difetto.</p>
+<p>Un test ha successo quando trova malfunzionamenti, il fatto di non trovare malfunzionamenti non assicura la loro assenza (il testing è quindi una condizione necessaria ma non sufficiente per garantire la correttezza del codice)</p>
+<h2 id="casi-di-test">Casi di test</h2>
+<p><strong>Casi di test</strong> (<em>test case</em>): insieme di input per testare il sistema (chiamati “dati di test”) e i corrispettivi output attesi.</p>
+<p>Un criterio per generare dei test si dice:</p>
+<ul>
+<li><strong>Affidabile</strong> se il criterio genera dei test case che danno sempre lo stesso risultato (sempre un successo o sempre un insuccesso)</li>
+<li><strong>Valido</strong> se qualora il programma non sia corretto esiste almeno un test che fa emergere un malfunzionamento</li>
+</ul>
+<p>Garantire entrambe le proprietà non è sempre banale, è quindi importante dare delle <strong>priorità</strong>.</p>
+<p>Vediamo delle regole generali:</p>
+<ul>
+<li>i test devono testare le caratteristiche globali del sistema piuttosto che testare le singole componenti</li>
+<li>se il sistema è una nuova versione è più importante testare le caratteristiche che erano già presenti nella precedente versione</li>
+<li>testare le situazione più comuni è più importante di testare casi atipici (hanno meno probabilità di accadere)</li>
+</ul>
+<h2 id="specifica-dei-casi-di-test">Specifica dei casi di test</h2>
+<p>La documentazione dei casi di test dovrebbe seguire questi campi:</p>
+<ul>
+<li>Identificativo del test case</li>
+<li>descrizione</li>
+<li>precondizioni</li>
+<li>valori in input</li>
+<li>output attesi</li>
+<li>output riscontrato</li>
+<li>esito: positivo (rilevato malfunzionamento), negativo (nessun malfunzionamento)</li>
+<li>postcondizioni (simili agli output attesi ma verificabili sulle risorse, come database, file, device, …)</li>
+<li>priorità</li>
+</ul>
+<p>La specifica serve sia in fase di sviluppo per identificare delle correzioni necessarie, ma anche per dimostrare che il software è fatto bene.</p>
+<h2 id="test-di-moduli">Test di moduli</h2>
+<p>Un <strong>modulo</strong> in questo caso rappresenta un blocco di codice da testare.</p>
+<p>Per testare un modulo occorre simulare i chiamanti del modulo (<strong>DRIVER</strong>) e gli utilizzatori del risultato prodotto dal modulo (<strong>STUB</strong>)</p>
+<p>Esistono diverse tipologie di testing:</p>
+<ul>
+<li>Incremental testing
+<ul>
+<li>Top-down testing</li>
+<li>Bottom-up testing</li>
+</ul>
+</li>
+<li>Thread testing</li>
+<li>Stress testing</li>
+<li>Back-to-back testing</li>
+<li>Black-box testing</li>
+<li>White-box testing</li>
+<li>Verifica statica</li>
+</ul>
+<h2 id="incremental-testing">Incremental testing</h2>
+<p>È un modo di testare ripetutamente, ad ogni passo si aggiungono dei moduli con i relativi test case.</p>
+<p>L’approccio <strong>top-down</strong> consiste nel testare prima i livelli più generici del sistema in cui i livelli più basse vengono temporaneamente implementati come STUB (chiamate di funzioni con la stessa firma delle funzioni vere ma che non fanno niente) e man mano si testano i livelli più specifici</p>
+<p>L’approccio <strong>bottom-up</strong> consiste nel testare prima i livelli più profondi del sistema in cui temporaneamente i livelli più alti vengono implementati come DRIVER (chiamanti che simulano l’ambiente reale) e man mano si testano livelli più generici</p>
+<h2 id="thread-testing">Thread testing</h2>
+<p>Consiste nel testare tutte le possibili strade che l’esecuzione può intraprendere in base all’input.</p>
+<p>Gli <code>if</code> nel codice rappresenta una divisione dell’esecuzione.</p>
+<h2 id="stress-testing">Stress testing</h2>
+<p>Si basa sul fatto che mettendo il sistema sotto pressione è più probabile che si verifichino malfunzionamenti.</p>
+<p>Si cerca si superare i limiti previsti in fase di progettazione e si vede fino a che punto il sistema regge e quali sono le conseguenze quando si verifica il fallimento.</p>
+<h2 id="back-to-back-testing">Back to back testing</h2>
+<p>Si utilizzano diverse versione software per testare che durante lo sviluppo gli output di componenti comuni siano uguali. Se non fossero uguali significa o che le nuove aggiunte e modifiche hanno rotto qualcosa oppure che la componente in comune ha leggermente cambiato il suo scopo</p>
+<h2 id="black-box-testing">Black-box testing</h2>
+<p>Si vede il sistema come una scatola nera, si basano quindi i test sulla specifica del sistema ancora prima passare all’implementazione.</p>
+<p>Bisogna quindi fare un partizionamento degli input per separare tutti i tipi di input validi e invalidi</p>
+<h2 id="white-box-testing">White-box testing</h2>
+<p>I casi di test sono ottenuti da codice, si cerca quindi di testare tutti i comandi e i cammini di esecuzione del codice.</p>
+<p>In questo metodo bisogna rispettare dei criteri:</p>
+<ul>
+<li>Copertura delle istruzioni: esercitare almeno una volta ogni istruzione durante il test</li>
+<li>Copertura delle decisioni: ogni percorso di esecuzione deve venir testato, nelle condizioni (gli if) devo testare sia il caso in cui entro sia il caso in cui non entro (è importante testare i valori ai limiti della condizione).</li>
+<li>Copertura dei cammini: bisognerebbe testate le combinazioni di tutti i percorsi, ma sono potenzialmente infiniti. Bisogna calcolare un numero minimo di test per testare le combinazioni indipendenti, tramite la <strong>complessità ciclomatica</strong></li>
+</ul>
+<h3 id="complessità-ciclomatica">Complessità ciclomatica</h3>
+<p>Il numero minimo di test necessari per attraversare tutti i cammini indipendenti è uguale alla complessità ciclomatica che si calcola a partire dal <strong>diagramma di flusso</strong> del programma e si ottiene con la seguente formula</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mrow><mtext>Complessit</mtext><mover accent="true"><mtext>a</mtext><mo>ˋ</mo></mover><mtext>&nbsp;ciclomatica&nbsp;=&nbsp;</mtext></mrow><mtext>Numero&nbsp;di&nbsp;archi</mtext><mo>−</mo><mtext>Numero&nbsp;di&nbsp;nodi</mtext><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">
+\text{Complessità ciclomatica = }\text{Numero di archi} - \text{Numero di nodi} + 1
+</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">Complessit</span><span class="mord accent"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.69444em;"><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="mord">a</span></span><span class="" style="top: -3em;"><span class="pstrut" style="height: 3em;"></span><span class="accent-body" style="left: -0.25em;"><span class="mord">ˋ</span></span></span></span></span></span></span><span class="mord">&nbsp;ciclomatica&nbsp;=&nbsp;</span></span><span class="mord text"><span class="mord">Numero&nbsp;di&nbsp;archi</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.77777em; vertical-align: -0.08333em;"></span><span class="mord text"><span class="mord">Numero&nbsp;di&nbsp;nodi</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span></span></p>
+<p>(per dettagli e altre versioni leggermente diverse della formula guarda <a href="https://it.wikipedia.org/wiki/Complessit%C3%A0_ciclomatica#Descrizione">https://it.wikipedia.org/wiki/Complessità_ciclomatica#Descrizione</a></p>
+<p>Esempio</p>
+<p><img src="https://i.ibb.co/bL9T76S/image.png" alt="https://i.ibb.co/bL9T76S/image.png"></p>
+<p><strong>Numero di archi: 17</strong> (si conta anche la freccia verso il nodo 1 perché si immagina una freccia dal nodo di fine (13) verso l’inizio (1) per far ripartire il programma. Da questo motivo deriva il fatto di fare +1 nella formula)</p>
+<p>Numero di nodi: 13</p>
+<p>Complessità ciclomatica: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>17</mn><mo>−</mo><mn>13</mn><mo>+</mo><mn>1</mn><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">17-13 + 1 = 5</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">17</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">13</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">5</span></span></span></span></span></p>
+<p>Quindi fare meno di 5 test <strong>non è sufficiente</strong>, però farne di più non assicura che sia sufficiente.</p>
+<h2 id="verifica-statica">Verifica statica</h2>
+<p>Finora abbiamo visto metodi di testing durante l’esecuzione del programma, ma si può testare il codice anche prima dell’esecuzione tramite l’analisi mirata del codice sorgente (terminazione dei cicli, variabili non inizializzate, mancata deallocazione, …) ed esecuzioni mentali o a voce (assieme a collaboratori) del codice per identificare incoerenze o dubbi.</p>
+<h1 id="progettazione-architetturale">Progettazione architetturale</h1>
+<p>Il documento di progettazione ha come obiettivo quello di definire come (a livello astratto) realizzare ciò che è stato definito nel modello dei requisiti.</p>
+<p>Quindi è una fase intermedia che parte dal documento dei requisiti e produce un documento di progettazione da passare poi a chi si occuperà dell’implementazione.</p>
+<p>Il documento è strutturato sarà composto nel seguente modo:</p>
+<ul>
+<li><strong>Introduzione</strong>: riassunto degli elementi fondamentali del documento</li>
+<li><strong>Architettura del sistema</strong>: organizzazione del sistema in sottosistemi</li>
+<li><strong>Modello dei dati e del controllo</strong></li>
+<li><strong>Modelli UML</strong></li>
+<li><strong>Progettazione dell’interfaccia utente</strong>: mockup con spiegazione</li>
+<li><strong>Glossario</strong></li>
+</ul>
+<h2 id="architettura-del-sistema">Architettura del sistema</h2>
+<p>L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli, tramite un diagramma a blocchi.</p>
+<p>Un <strong>sottosistema</strong> è un sistema indipendente dagli altri sottosistemi.</p>
+<p>Un <strong>modulo</strong> è una componente del sistema che quindi non può essere considerato un sistema a se stante.</p>
+<p>Un esempio (robot di impacchettamento) in cui vede la divisione in sistemi:</p>
+<p><img src="https://i.ibb.co/Bj0SNPj/image.png" alt="https://i.ibb.co/Bj0SNPj/image.png"></p>
+<h2 id="modello-dei-dati">Modello dei dati</h2>
+<p>Il prossimo passo è la <strong>modellazione dei dati</strong> in cui si identifica come i sottosistemi si scambiano i dati. Alcuni modi possibili sono i seguenti:</p>
+<ul>
+<li>I dati sono <strong>condivisi</strong> in un repository comune in cui tutti i sottosistemi possono accedere
+<ul>
+<li>efficiente per grandi quantità di dati</li>
+<li>i sottosistemi non si preoccupano della gestione dei dati (backup, sicurezza, produzione)</li>
+<li>evoluzione dei dati dispendiosa</li>
+<li>il modello dei dati deve essere un compromesso tra le varia esigenze dei sottosistemi</li>
+</ul>
+</li>
+<li>Ogni sottosistema mantiene una propria base di dati isolata dagli altri (modello “client-server”)
+<ul>
+<li>i dati sono gestiti in modo distribuito dai singoli componenti che offrono i servizi</li>
+<li>la distribuzione non è semplice</li>
+<li>è richiesta una rete, quindi è semplice aggiungere nuovi server e fare upgrade di quelli esistenti</li>
+<li>lo scambio di dati tra sottosistemi può risultare inefficiente perché ogni sottosistema utilizza il proprio modello</li>
+</ul>
+</li>
+<li>I sottosistemi sono organizzati a cipolla (modello “macchina astratta”)
+<ul>
+<li>il sistema è fatto a livelli in cui ogni livello comunica con il livello inferiore e superiore</li>
+</ul>
+</li>
+</ul>
+<h2 id="modello-del-controllo">Modello del controllo</h2>
+<p>Vediamo come viene passato il controllo nelle azioni del sistema:</p>
+<ul>
+<li>Controllo <strong>centralizzato,</strong> Un sottosistema ha il controllo globale e dà inizio e fine agli<br>
+altri sottosistemi.
+<ul>
+<li>modello “<strong>call-return</strong>”: il controllo viene gestito top-down tramite la chiamata di procedure: il sistema principale chiama delle procedure nei sottosistemi. Il controllo lo ha la procedura in esecuzione</li>
+<li>modello “<strong>manager</strong>”: Il controllo viene gestito da un componente del sistema</li>
+</ul>
+</li>
+<li>Controllo basato su <strong>eventi</strong>, guidato da eventi esterni che non si sa a priori quando accadano
+<ul>
+<li>modello “<strong>broadcast</strong>”: l’evento è trasmesso a tutti i sottosistemi, ogni sottosistema può gestirlo.
+<ul>
+<li>i sottosistemi dichiarano di essere “interessati” a degli specifici eventi.</li>
+<li>le politiche di controllo sono interne al sottosistema</li>
+</ul>
+</li>
+<li>modello “<strong>interrupt-driven</strong>”: all’evento corrisponde un solo sottosistema che lo gestisce</li>
+</ul>
+</li>
+</ul>
+<h2 id="strategie-di-progettazione">Strategie di progettazione</h2>
+<p>Possiamo pensare alla nostra soluzione progettuale in due modi:</p>
+<ul>
+<li><strong>Progettazione funzionale</strong>: lo <strong>stato</strong> del sistema è centralizzato e condiviso, le componenti operano su quello stato modificandolo.
+<ul>
+<li>Ne è un esempio il modello “data-flow”: l’esecuzione del sistema è composto da passaggi da un funzione all’altra le quali cambiano lo stato comune, passando quindi da uno stato iniziale ad uno finale.</li>
+</ul>
+</li>
+<li><strong>Progettazione orientata agli oggetti</strong>: Il sistema è un insieme di oggetti, ognuno con il proprio stato. Attraverso le interfacce degli oggetti posso passare loro il controllo in modo da cambiare il loro stato interno in un certo modo</li>
+</ul>
+<p>In alternativa se si vuole realizzare una architettura simile a quelle già esistente bisogna cercare se esistono già dei modelli esistenti e quindi:</p>
+<ul>
+<li>Ispirarsi a <strong>modelli generici</strong>: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).</li>
+<li>seguire <strong>modelli di riferimento</strong>: cioè modelli ideali standard che non hanno una implementazione diretta, ma forniscono solo delle direttive (es. modello TCP/IP)</li>
+</ul>
+<h2 id="qualità-della-progettazione">Qualità della progettazione</h2>
+<p>Vediamo degli attributi per determinare una progettazione di buona qualità:</p>
+<h3 id="coesione">1. Coesione</h3>
+<p>Misura quanto la divisione del sistema in componenti è fatta bene.</p>
+<p>Un sistema coeso è un sistema in cui ogni componente ha tutte e sole le funzioni che devono stare legate. In questo modo quando devo fare una modifica al sistema è sufficiente toccare un singolo componente.</p>
+<p>Ci possono essere vari criteri per raggruppare le funzionalità nei componenti, le migliori sono:</p>
+<ul>
+<li>coesione funzionale: ogni parte del componente è necessario solo per l’esecuzione di una funzione di quel componente</li>
+<li>coesione d’oggetto: la componente ha tutti gli attributi e tutti le operazioni per modificare o ispezionare lo stato dell’oggetto. Bisogna cercare di ridurre lunghe catene di ereditarietà</li>
+</ul>
+<h3 id="accoppiamento">2. Accoppiamento</h3>
+<p>Misura la dipendenza delle componenti.</p>
+<p>Più le componenti sono indipendenti meglio è, in questo modo il cambiamento di una componente non ha forti effetti sulle altre.</p>
+<p>Bisogna quindi ridurre l’uso di variabile condivise e il passaggio di dati per riferimento. Inoltre, come nel punto precedente anche qui bisogna cercare di ridurre lunghe catene di ereditarietà.</p>
+<h3 id="comprensibilità">3. Comprensibilità</h3>
+<p>Ricordando che questo documento deve essere utilizzabile da chi andrà ad implementare il sistema e deve essere verificabile da chi ha fatto la specifica. Quindi bisogna rendere il documento più comprensibile possibile:</p>
+<ul>
+<li>dare nomi corretti e significativi</li>
+<li>ridurre la complessità</li>
+<li>fare una buona documentazione</li>
+</ul>
+<h3 id="adattabilità">4. Adattabilità</h3>
+<p>Un progetto si dice adattabile se è facilmente adattabile in caso di modifiche sui requisiti:</p>
+<ul>
+<li>buona documentazione</li>
+<li>isolare i componenti</li>
+<li>tracciare i legami tra componenti e requisiti</li>
+</ul>
+<h1 id="uml-e-progettazione-software">UML e progettazione software</h1>
+<p>UML (<em>Unified Modeling Language</em>) rappresenta un linguaggio per creare dei modelli che rappresentano vari punti di vista di una progettazione, possiamo pensare alla progettazione di una casa in cui vengono disegnate varie piantine (vista orizzontale, vista verticale, vista impianto idraulico, vista impianto elettrico, ecc…)</p>
+<p>Si possono categorizzare i modelli UML in:</p>
+<ul>
+<li>Modelli a <strong>vista statica</strong>: il tempo viene ignorato
+<ul>
+<li>Diagramma dei casi d’uso (già visto)</li>
+<li>Diagramma delle classi</li>
+<li>Diagramma dei componenti</li>
+<li>Diagramma di distribuzione</li>
+</ul>
+</li>
+<li>Modelli a <strong>vista dinamica</strong>: la sequenza di azioni nel tempo viene considerata
+<ul>
+<li>Diagramma di sequenza</li>
+<li>Diagramma di stato</li>
+</ul>
+</li>
+</ul>
+<h2 id="diagramma-delle-classi">Diagramma delle classi</h2>
+<p>Sono gli stessi diagrammi utilizzati nella programmazione ad oggetti e nei database.</p>
+<p>Rappresentano classi di oggetti con i loro attributi e operazioni, e le interazioni tra le classi.</p>
+<h2 id="diagramma-di-sequenza">Diagramma di sequenza</h2>
+<p>Definisce la logica di uno scenario corrispondente ad un caso d’uso.</p>
+<p>Il caso d’uso che avevo già definito mi diceva <strong>cosa</strong> doveva fare il sistema, con questo diagramma specifico <strong>come</strong> lo si deve fare. Descrive, quindi, interazioni tra oggetti che collaborano per svolgere un compito, le interazioni sono paragonabili alla chiamata di funzioni.</p>
+<p>Si tratta di un modello dinamico in quanto la <strong>sequenza temporale delle azioni è importante</strong>.</p>
+<p>L’aspetto di questo diagramma è il seguente:</p>
+<p><img src="https://i.ibb.co/16Lktqr/image.png" alt="https://i.ibb.co/16Lktqr/image.png"></p>
+<p>Lo scambio di messaggio può essere <strong>sincrono o asincrono:</strong></p>
+<ul>
+<li>il <strong>messaggio sincrono</strong> (rappresentato con una freccia piena) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È sincrono in quanto il chiamante attende che il metodo finisca prima di proseguire. La freccia tratteggiata rappresenta il ritorno.</li>
+<li>il <strong>messaggio asincrono</strong> (rappresentato con una freccia non riempita) va da chiamante a chiamato, il nome dovrebbe rappresentare il metodo invocato. È asincrono in quanto il chiamante non attende che il metodo finisca prima di proseguire, si formano delle interazioni concorrenti.</li>
+</ul>
+<h3 id="condizioni">Condizioni</h3>
+<p>Possiamo avere anche una <strong>esecuzione condizionale di un messaggio</strong>, cioè un messaggio (metodo) viene chiamato solo se una condizione si avvera.</p>
+<p>Si rappresenta aggiungendo la condizione tra parentesi quadre prima del nome del messaggio</p>
+<h3 id="iterazioni">Iterazioni</h3>
+<p>Posso rappresentare una esecuzione ciclica di messaggi, si rappresenta aggiungendo un asterisco * tra la condizione e il messaggio.</p>
+<p>Si possono iterare anche blocchi di più messaggi, racchiudendo i messaggi in un box e si scrive solitamente in alto a sinistra la condizione</p>
+<h3 id="auto-chiamata">Auto-chiamata</h3>
+<p>L’auto-chiamata descrive l’invocazione di un metodo appartenente allo stesso oggetto, si rappresenta con una freccia circolare che torna su se stessa</p>
+<h3 id="creazione-di-un-oggetto">Creazione di un oggetto</h3>
+<p>È possibile che un oggetto venga creato durante le sequenza di azioni del diagramma, la freccia avrà una etichetta “new” o “create” e il rettangolo rappresentante l’oggetto creato andrà posizionato nel corretto momento temporale nel diagramma</p>
+<p><img src="https://i.ibb.co/ysJ3jyz/image.png" alt="https://i.ibb.co/ysJ3jyz/image.png"></p>
+<h3 id="eliminazione-di-un-oggetto">Eliminazione di un oggetto</h3>
+<p>È possibile terminare prematuramente la vita di un oggetto, rendendo, da quel momento in poi, illegale ogni chiamata ad un suo metodo.</p>
+<p>Si rappresenta mettendo una “X” sulla sua linea di vita</p>
+<h3 id="esempio-completo">Esempio completo</h3>
+<p><img src="https://i.ibb.co/kM1ZWjq/esempio-completo.png" alt="https://i.ibb.co/kM1ZWjq/esempio-completo.png"></p>
+<h2 id="diagramma-di-stato">Diagramma di stato</h2>
+<p>Questo tipo di diagramma dà un punto di vista sugli stati assunti dagli oggetti durante la loro vita.</p>
+<p>Gli <strong>eventi,</strong> che possiamo ricondurre ai messaggi nei diagrammi di sequenza, attivano delle <strong>transazioni di stato</strong>, lo <strong>stato</strong> è costituito dai valori assunti dalla proprietà dell’oggetto</p>
+<p>Abbiamo due stati speciali (<em>pseudostati</em>):</p>
+<ul>
+<li>lo stato iniziale</li>
+<li>lo stato finale</li>
+</ul>
+<p>Gli stati si rappresentano con dei rettangolo stondati</p>
+<p>L’evento può essere:</p>
+<ul>
+<li>una chiamata sincrona o asincrona</li>
+<li>una condizione predefinita che diventa vera</li>
+<li>un periodo di tempo</li>
+</ul>
+<p>Gli eventi si rappresentano con delle frecce con una etichetta al nome dell’evento.</p>
+<h3 id="nome-evento">Nome evento</h3>
+<p>Il nome dell’evento segue una sintassi particolare:</p>
+<p><code>nome_evento(parametri_separati_da_virgola)[condizione_di_attivazione]/[azioni_di_risposta_all'evento]</code></p>
+<p><img src="https://i.ibb.co/X4j4kkS/image.png" alt="https://i.ibb.co/X4j4kkS/image.png"></p>
+<p><img src="https://i.ibb.co/tLrDg2y/esempio.png" alt="https://i.ibb.co/tLrDg2y/esempio.png"></p>
+<p>Quando si verifica un evento l’ordine di esecuzione è il seguente:</p>
+<ol>
+<li>Se è in esecuzione una attività, questa viene interrotta</li>
+<li>si esegue l’azione di uscita dall’attuale stato</li>
+<li>si esegue l’azione di entrata nel nuovo stato</li>
+<li>si inizia l’attività del nuovo stato</li>
+</ol>
+<h2 id="diagramma-dei-componenti">Diagramma dei componenti</h2>
+<p>Evidenzia l’organizzazione e le dipendenze delle componenti software (i file che poi si andranno a scrivere)</p>
+<p><img src="https://i.ibb.co/N7cLK9N/image.png" alt="https://i.ibb.co/N7cLK9N/image.png"></p>
+<h2 id="diagramma-di-distribuzione">Diagramma di distribuzione</h2>
+<p>Mostra come sono configurate e allocate le unità HW e SW dell’applicazione, cosa va su un server, cosa va sul client, cosa è in cloud e come questi nodi comunicano.</p>
+<p><img src="https://i.ibb.co/X8vKQQz/image.png" alt="https://i.ibb.co/X8vKQQz/image.png"></p>
+<h1 id="progettazione-di-interfacce-utenti">Progettazione di interfacce utenti</h1>
+<p>All’interno del documento di progettazione si deve anche progettare l’interfaccia utente.</p>
+<p>Bisogna fare delle scelte per avere una visione astratta dell’interfaccia basandosi sull’analisi dei requisiti. È una fase importante della progettazione perché la UI è la prima cosa che viene vista dall’utente e spesso l’utente giudica il prodotto dalla sua interfaccia.</p>
+<p>Una interfaccia ben sviluppata deve ridurre il più possibile la probabilità che un utente possa commettere un errore, è quindi importante consultare l’utenza target del prodotto.</p>
+<p>Durante la progettazione vanno tenuti in considerazione dei fattori cognitivi dell’utente finale, un esempio è la <strong>memoria:</strong></p>
+<ul>
+<li><strong>Memoria sensoriale</strong>: capacità illimitata ma decadenza quasi immediata</li>
+<li><strong>Memoria a breve termine</strong>: capacità limitata, persistenza di alcuni secondi</li>
+<li><strong>Memoria a lungo termine</strong>: capacità illimitata, durata illimitata</li>
+</ul>
+<p>L’obiettivo è quello di fare affidamento sulla memoria a lungo termine, cioè su conoscenza semantica (ricordo perché so il significato) o procedurale (ricordo perché l’ho fatto).</p>
+<h2 id="principi-di-progettazione">Principi di progettazione</h2>
+<p>Vediamo dei principi da tenere in considerazione durante la progettazione dell’interfaccia:</p>
+<ul>
+<li>Usare termini usati dall’utente (non troppo tecnici ed evitare inglesismi spinti)</li>
+<li>Il sistema deve essere consistente (comandi e menu devono seguire lo stesso formato)</li>
+<li>Bisogna prevedere la possibilità che l’utente possa sbagliare, va quindi predisposto un UNDO o una conferma</li>
+<li>Fornire guide e manuali in caso di necessità</li>
+<li>Gli errori devono essere gentili, consistenti e con un linguaggio non tecnico</li>
+<li>Implementare un sistema di help
+<ul>
+<li>“help?” inteso come ottenere più informazioni</li>
+<li>“help!” inteso come bisogno di aiuto</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>

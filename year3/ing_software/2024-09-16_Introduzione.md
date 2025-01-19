@@ -1,4 +1,4 @@
-# 2024-09-16_Introduzione
+﻿# Introduzione
 
 Si può definire “*software engineering*” come la disciplina che fornisce delle regole per il processo di produzione del software.
 
@@ -24,7 +24,7 @@ In particolare presenta una curva dei guasti di questo tipo:
 
 ![https://i.ibb.co/YWHn23V/image.png](https://i.ibb.co/YWHn23V/image.png)
 
-La curva ideale porta a pensare più applico delle *fix* più il software diventerà tollerante ai guasti, ma non è così, infatti ogni modifica porta con sé la probabilità di generare nuovi *bug.*
+La curva ideale porterebbe a pensare che più applico delle *fix* più il software diventerà tollerante ai guasti, ma non è così, infatti ogni modifica porta con sé la probabilità di generare nuovi *bug.*
 
 ## Processo di produzione
 
@@ -38,9 +38,9 @@ Possiamo elencare le fasi in questo modo (indipendentemente dal tipo di processo
 4. **Implementazione**: Codificare il modello astratto
 5. **Integrazione**: collegamento dei sotto-sistemi e dell’ambiente con il sistema principale
 6. **Mantenimento**: Aggiornare il sistema con modifiche correttive e di aggiunta di funzionalità
-7. **Ritiro**: Dismissione del sistema ed eventuale migrazione i dati nel nuovo sistema
+7. **Ritiro**: Dismissione del sistema ed eventuale migrazione di dati nel nuovo sistema
 
-L’organizzazione di tutte queste fasi, quindi il tempo, l’energia, il personale da impiegare su ogni fase prende il nome di **Piano di progetto**
+L’organizzazione di tutte queste fasi, quindi il tempo, l’energia, il personale da impiegare, prende il nome di **Piano di progetto**
 
 Il processo include anche gli strumenti utilizzati, le tecniche di sviluppo, e le risorse umane.
 
@@ -68,4 +68,4 @@ Queste qualità sono:
 
 Si è notato che la **maggior parte del costo** relativo al processo di produzione del software (le 7 fasi) risiede nel **mantenimento.**
 
-Questo comporta che più tardi nel processo di produzione ci si accorge di un errore maggiore saranno i costi per sistemare il problema.
+Questo comporta che più tardi ci si accorge di un errore maggiore saranno i costi per sistemare il problema.

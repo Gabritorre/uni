@@ -13,7 +13,7 @@
     <div class="stackedit__toc">
       
 <ul>
-<li><a href="#documento-dei-requisiti">2024-10-01_Documento dei requisiti</a>
+<li><a href="#documento-dei-requisiti">Documento dei requisiti</a>
 <ul>
 <li><a href="#modelli-di-sistema">Modelli di sistema</a></li>
 <li><a href="#diagramma-dei-casi-d’uso">Diagramma dei casi d’uso</a></li>
@@ -30,11 +30,11 @@
   </div>
   <div class="stackedit__right">
     <div class="stackedit__html">
-      <h1 id="documento-dei-requisiti">2024-10-01_Documento dei requisiti</h1>
+      <h1 id="documento-dei-requisiti">Documento dei requisiti</h1>
 <p>Il documento dei requisiti deve avere un <strong>indice</strong>, i punti di questo indice sono i seguenti:</p>
 <ol>
 <li><strong>Introduzione</strong>: descrizione delle funzionalità generali del sistema, e i contenuti del documento</li>
-<li><strong>Glossario</strong>: Definizioni dei termini tecnici usati nel documento (il lettore sarà anche un non tecnico)</li>
+<li><strong>Glossario</strong>: Definizioni dei termini tecnici usati nel documento (il documento è destinato anche ai non tecnici)</li>
 <li><strong>Modelli del sistema</strong>: mostrare dei modelli che evidenziano le componenti del sistema e le relazioni tra loro</li>
 <li>Definizione dei <strong>requisiti funzionali</strong></li>
 <li>Definizione dei <strong>requisiti non funzionali</strong></li>
@@ -45,8 +45,8 @@
 <h2 id="modelli-di-sistema">Modelli di sistema</h2>
 <p>Un <strong>modello</strong> è una presentazione astratta del sistema di cui si stanno analizzando i requisiti, serve per rappresentare le funzionalità e comunicare con il cliente.</p>
 <p>Un esempio di modello di sistema è <strong>UML (Unified Modeling Language)</strong>, un linguaggio di modellazione che usa una notazione standard per rappresentare un sistema a livello astratto.</p>
-<p>Si tratta di una <strong>modellazione universale</strong> quindi è abbastanza generica da ricoprire vari tipologie di sistema (modelli per programmazione ad oggetti, database, modelli web, …)</p>
-<p>ogni sotto-categoria di modellazione UML serve per una determinata fase processo di sviluppo: ad esempio il <strong>diagramma dei casi d’uso</strong> serve nella fase della <strong>specifica,</strong> il <em>collaboration diagram</em> serve nella fase di progettazione, il <em>Component diagram</em> serve nella fase di sviluppo.</p>
+<p>Si tratta di una <strong>modellazione universale</strong> quindi è abbastanza generica da ricoprire vari tipologie di sistema (modelli per programmazione ad oggetti, database, modelli web, …).</p>
+<p>Ogni sotto-categoria di modellazione UML serve per una determinata fase del processo di sviluppo: ad esempio il <strong>diagramma dei casi d’uso</strong> serve nella fase della <strong>specifica,</strong> il <em>collaboration diagram</em> serve nella fase di progettazione, il <em>Component diagram</em> serve nella fase di sviluppo.</p>
 <h2 id="diagramma-dei-casi-d’uso">Diagramma dei casi d’uso</h2>
 <p>Questo diagramma ci mostra:</p>
 <ul>
@@ -56,17 +56,17 @@
 </ul>
 <p>Un <strong>caso d’uso</strong>:</p>
 <ul>
-<li>rappresenta un possibile scenario di utilizzo del sistema dal punto di vista di chi la utilizza</li>
+<li>rappresenta un possibile scenario di utilizzo del sistema dal punto di vista di chi lo utilizza</li>
 <li>descrive l’interazione tra attori e sistema (ma non la logica interna)</li>
-<li>cattura <strong>chi</strong> fa <strong>cosa</strong> con quale <strong>scopo</strong></li>
+<li>cattura <strong>chi</strong> fa <strong>cosa</strong> e con quale <strong>scopo</strong></li>
 <li>è composto da un linguaggio visuale accompagnato da documentazione (nella quale si usa un vocabolario dell’ambiente di utilizzo e non di sviluppo interno)</li>
 </ul>
 <p>è importate costruire dei casi d’uso per:</p>
 <ul>
 <li>esplicitare e comunicare a tutti gli stakeholder i requisiti funzionali e gli usi tipici del sistema</li>
-<li>verificare che il sistema corrisponda a soddisfare le necessità dell’utente</li>
+<li>verificare che il sistema soddisfi le necessità dell’utente</li>
 </ul>
-<p>Quindi in UML:</p>
+<p>In particolare, in UML:</p>
 <ul>
 <li>il <strong>caso d’uso</strong> è rappresentato da <strong>un’ellisse</strong>, e rappresenta una interazione tra attori e sistema</li>
 <li><strong>L’attore</strong>, rappresentato da un <strong>omino,</strong> indica un ruolo (indicato con una etichetta testuale)</li>
@@ -76,11 +76,11 @@
 <h2 id="template-scenario">Template scenario</h2>
 <ul>
 <li><strong>Nome caso d’uso</strong> - Ogni caso d’uso deve avere un nome; il nome esprime il goal dell’utente nell’utilizzo del sistema.</li>
-<li><strong>Goal</strong> (summary description) - descrizione della funzionalità fornita dal sistema e che soddisfa una necessità dell’utente, ossia che è percepita dallo stesso utente come “valore”.</li>
+<li><strong>Goal</strong> - descrizione della funzionalità fornita dal sistema e che soddisfa una necessità dell’utente, ossia che è percepita dallo stesso utente come “valore”.</li>
 <li><strong>Attori</strong> - persona, dispositivo o altra entità esterna al sistema che interagisce con il sistema. Per ogni caso d’uso esiste sempre un attore primario che è colui che inizia il caso d’uso stesso.</li>
 <li><strong>Precondizioni</strong> - Condizioni che devono essere soddisfatte all’inizio del caso d’uso. Rappresentano le “garanzie minime” che devono essere soddisfatte per poter attivare lo scenario di utilizzo del sistema (Garanzie fornite dagli attori al sistema).</li>
 <li><strong>Trigger</strong> - evento trigger che attiva il caso d’uso</li>
-<li><strong>Descrizione</strong> (main success scenario o scenario principale) - descrizione della sequenza di interazioni più comune tra gli attori e il sistema. In particolare viene descritta la sequenza principale che porta alla conclusione del caso d’uso con successo. La descrizione è definita in termini di input forniti dall’attore e di risposta del sistema. Il sistema è trattato secondo un modello di tipo black-box, concentrandosi su cosa esso fa in risposta agli input, e non su come internamente queste risposte vengano prodotte.</li>
+<li><strong>Descrizione</strong> - descrizione della sequenza di interazioni più comune tra gli attori e il sistema. In particolare viene descritta la sequenza principale che porta alla conclusione del caso d’uso con successo. La descrizione è definita in termini di input forniti dall’attore e di risposta del sistema. Il sistema è trattato secondo un modello di tipo black-box, concentrandosi su cosa esso fa in risposta agli input, e non su come internamente queste risposte vengano prodotte.</li>
 <li><strong>Alternative</strong> (estensioni) - descrizioni delle variazioni dalla sequenza di passi tipica del main success scenario. Tali alternative estendono lo scenario principale. La gestione delle eccezioni è un esempio tipico di tali estensioni. Non tutte le alternative portano necessariamente ad un fallimento del caso d’uso.</li>
 <li><strong>Postcondizioni</strong> - Condizioni sempre soddisfatte al termine del caso d’uso (Garanzie fornite dal sistema agli attori)</li>
 </ul>
@@ -151,7 +151,7 @@
 </li>
 </ul>
 <h2 id="relazione-tra-i-casi-d’uso">Relazione tra i casi d’uso</h2>
-<p>I casi d’uso possono essere relazionati tra loro, in particolare in 3 modi</p>
+<p>I casi d’uso possono essere relazionati tra loro in 3 modi.</p>
 <h3 id="relazione-di-inclusione">Relazione di inclusione</h3>
 <p>Questa relazione rappresenta l’invocazione di un caso d’uso da parte di un altro, utile per scomporre casi d’uso complessi in vari casi d’uso più semplici, utile anche per il riutilizzo di casi d’uso.</p>
 <p>Si identifica questo tipo di relazione con una etichetta <code>&lt;&lt;include&gt;&gt;</code>  sulla freccia che collega i due casi d’uso.</p>
@@ -164,7 +164,7 @@
 <p>Il caso d’uso esteso continua il comportamento del caso d’uso di base inserendovi delle azioni alternative da un certo punto in poi (chiamato <strong>punto di estensione,</strong> dichiarati nel caso d’uso base).</p>
 <p>Si identifica questo tipo di relazione con una etichetta <code>&lt;&lt;extend&gt;&gt;</code>  sulla freccia che collega i due casi d’uso.</p>
 <p><img src="https://i.ibb.co/LnKvbT9/image.png" alt="https://i.ibb.co/LnKvbT9/image.png"></p>
-<p>Il cliente effettua un ordine e si presuppone che l’utente sia già registrato, se non lo è allora si deve anche registrare</p>
+<p>Il cliente effettua un ordine e si presuppone che l’utente sia già registrato, se non lo è allora si deve anche registrare.</p>
 <h2 id="specifica-dei-requisiti">Specifica dei requisiti</h2>
 <p>La specifica dei requisiti è una descrizione dettagliata delle funzionalità del sistema, utile sia in fase contrattuale sia per la progettazione e sviluppo.</p>
 <p>Deve essere consistente con la precedente definizione dei requisiti.</p>

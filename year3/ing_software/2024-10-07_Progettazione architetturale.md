@@ -15,7 +15,7 @@ Il documento è strutturato sarà composto nel seguente modo:
 
 ## Architettura del sistema
 
-L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli tramite un diagramma a blocchi.
+L’obiettivo è quello di stabilire la struttura globale di un sistema in sottosistemi e moduli, tramite un diagramma a blocchi.
 
 Un **sottosistema** è un sistema indipendente dagli altri sottosistemi.
 
@@ -27,7 +27,7 @@ Un esempio (robot di impacchettamento) in cui vede la divisione in sistemi:
 
 ## Modello dei dati
 
-Il prossimo passo è la **modellazione dei dati** in cui si identifica come i sottosistemi si scambiano i dati:
+Il prossimo passo è la **modellazione dei dati** in cui si identifica come i sottosistemi si scambiano i dati. Alcuni modi possibili sono i seguenti:
 
 - I dati sono **condivisi** in un repository comune in cui tutti i sottosistemi possono accedere
     - efficiente per grandi quantità di dati
@@ -64,9 +64,9 @@ Possiamo pensare alla nostra soluzione progettuale in due modi:
     - Ne è un esempio il modello “data-flow”: l’esecuzione del sistema è composto da passaggi da un funzione all’altra le quali cambiano lo stato comune, passando quindi da uno stato iniziale ad uno finale.
 - **Progettazione orientata agli oggetti**: Il sistema è un insieme di oggetti, ognuno con il proprio stato. Attraverso le interfacce degli oggetti posso passare loro il controllo in modo da cambiare il loro stato interno in un certo modo
 
-In alternativa se si vuole realizzare una architettura simile a quelle già esistenti bisogna cercare se esistono già dei modelli esistenti e quindi:
+In alternativa se si vuole realizzare una architettura simile a quelle già esistente bisogna cercare se esistono già dei modelli esistenti e quindi:
 
-- Ispirarmi a **modelli generici**: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).
+- Ispirarsi a **modelli generici**: cioè delle astrazioni di modelli già esistenti (es. modello astratto di un compilatore).
 - seguire **modelli di riferimento**: cioè modelli ideali standard che non hanno una implementazione diretta, ma forniscono solo delle direttive (es. modello TCP/IP)
 
 ## Qualità della progettazione
@@ -88,7 +88,7 @@ Ci possono essere vari criteri per raggruppare le funzionalità nei componenti, 
 
 Misura la dipendenza delle componenti.
 
-Più le componenti sono indipendenti meglio è, infatti il cambiamento di una componente non ha forti effetti sulle altre.
+Più le componenti sono indipendenti meglio è, in questo modo il cambiamento di una componente non ha forti effetti sulle altre.
 
 Bisogna quindi ridurre l’uso di variabile condivise e il passaggio di dati per riferimento. Inoltre, come nel punto precedente anche qui bisogna cercare di ridurre lunghe catene di ereditarietà.
 
