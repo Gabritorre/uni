@@ -17,6 +17,7 @@
 <ul>
 <li><a href="#creazione-degli-oggetti">Creazione degli oggetti</a></li>
 <li><a href="#accesso-alle-proprietà">Accesso alle proprietà</a></li>
+<li><a href="#creazione-delle-proprietà">Creazione delle proprietà</a></li>
 <li><a href="#cancellazione-delle-proprietà">Cancellazione delle proprietà</a></li>
 <li><a href="#estendere-oggetti">Estendere oggetti</a></li>
 <li><a href="#serializzazione-degli-oggetti">Serializzazione degli oggetti</a></li>
@@ -33,31 +34,31 @@
     <div class="stackedit__html">
       <h1 id="oggetti">Oggetti</h1>
 <p>Gli oggetti in JavaScript sono una collezioni non ordinata di proprietà, in altre parole un <strong>dizionario</strong> (coppie chiave-valore, con chiavi univoche).</p>
-<p>Tali proprietà sono valori con tipo primitivo, altri oggetti, oppure metodi.</p>
-<p>Un oggetto può ereditare delle proprietà da un altro oggetto, tale oggetto è il suo <strong>prototipo</strong> (<em>prototype</em>), quando un oggetto eredità delle proprietà di un altro oggetto si parla di <em><strong>prototypal inheritance</strong></em>.</p>
+<p>Le proprietà sono valori primitivi, altri oggetti, oppure metodi.</p>
+<p>Un oggetto può ereditare delle proprietà da un altro oggetto, quest’ultimo viene chiamato il suo <strong>prototipo</strong> (<em>prototype</em>), quando un oggetto eredità delle proprietà di un altro oggetto si parla di <em><strong>prototypal inheritance</strong></em>.</p>
 <p>È possibile ottenere il prototipo di un oggetto in questi modi:</p>
 <ul>
-<li><code>Object.prototype</code> : da usare con le classi</li>
-<li><code>Object.getPrototypeOf(obj)</code>: da usare con gli oggetti</li>
-<li><code>obj.__proto__</code> (deprecato)</li>
+<li><code>&lt;Object&gt;.prototype</code> : da usare con le classi</li>
+<li><code>Object.getPrototypeOf(&lt;obj&gt;)</code>: da usare con gli oggetti</li>
+<li><code>&lt;obj&gt;.__proto__</code> (deprecato)</li>
 </ul>
-<p>È possibile verificare il <em>prototype</em> di un oggetto con il metodo <code>isPrototypeOf()</code>  ad esempio:<br>
-<code>Object.prototype.isPrototypeOf(obj)</code></p>
+<p>È possibile verificare il <em>prototype</em> di un oggetto con il metodo <code>isPrototypeOf()</code> ad esempio:<br>
+<code>&lt;Object&gt;.prototype.isPrototypeOf(&lt;obj&gt;)</code></p>
 <p>Gli oggetti sono:</p>
 <ul>
 <li><strong>dinamici:</strong> è quindi possibile aggiungere e rimuovere proprietà</li>
 <li><strong>mutabili</strong>: è possibile modificare i valori al suo interno senza bisogno di creare un nuovo oggetto</li>
-<li><strong>Sono manipolati per reference</strong>: assegnare un oggetto copia il suo riferimento, non fa un copia dell’oggetto.</li>
+<li><strong>Sono manipolati per reference</strong> (shallow copy): assegnare un oggetto copia il suo riferimento, non fa un copia dei valori dell’oggetto.</li>
 </ul>
 <p>Le proprietà di un oggetto possono avere degli attributi:</p>
 <ul>
 <li><code>writable</code>: specifica se la proprietà può essere modificata</li>
-<li><code>enumerable</code>: specifica se la proprietà deve apparire all’interno di un ciclo <code>for-in</code> o restituita dalla chiamata a  <code>Object.keys()</code></li>
+<li><code>enumerable</code>: specifica se la proprietà può apparire all’interno di un ciclo <code>for-in</code> e se può essere restituita dalla chiamata a <code>Object.keys()</code></li>
 <li><code>configurable</code>: specifica se la proprietà può essere eliminata e se si possono modificare i suoi attributi</li>
 </ul>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">const</span> person <span class="token operator">=</span> <span class="token punctuation">{</span>
 	age <span class="token operator">=</span> <span class="token number">34</span><span class="token punctuation">,</span> <span class="token comment">//proprietà 'age' come writable, configurable ed enumerable</span>
-	<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
 
 <span class="token comment">// Definisco la proprietà 'nome' come writable, configurable e non-enumerable</span>
 Object<span class="token punctuation">.</span><span class="token function">defineProperty</span><span class="token punctuation">(</span>person<span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
@@ -80,7 +81,9 @@ Object<span class="token punctuation">.</span><span class="token function">defin
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Create an empty object: same as {}.</span>
 <span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Array</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Create an empty array: same as [].</span>
 <span class="token keyword">let</span> d <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// Create a Date object representing the current time</span>
+<span class="token keyword">let</span> e <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">;</span> <span class="token comment">// same as the previous line</span>
 </code></pre>
+<p>Nota: non è obbligatorio usare le parentesi tonde se il costruttore non richiede parametri.</p>
 <p>Tutti gli oggetti creati in questo modo avranno come <strong>prototype</strong> il prototipo del costruttore, ad esempio<code>Object.prototype</code> per l’oggetto <code>o</code>, <code>Array.prototype</code> per l’oggetto <code>a</code> e <code>Date.prototype</code> per l’oggetto <code>d</code>.</p>
 <p>Nota che esiste la cosi detta <em><strong>prototype chain</strong></em>, infatti tutti gli oggetti ereditano da <code>Object.prototype</code> e a loro volta possono estendere tale prototipo formando una catena di prototipi.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
@@ -110,7 +113,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 o1<span class="token punctuation">.</span>x <span class="token operator">+</span> o1<span class="token punctuation">.</span>y <span class="token comment">// =&gt; 3</span>
 </code></pre>
 <p>è possibile passare <code>null</code>, in questo caso si avrà un oggetto che non eredita nulla, nemmeno il prototipo di <code>Object</code>.</p>
-<p>Alternativamente possiamo creare un oggetto come si farebbe con <code>{}</code> oppure new <code>Object()</code></p>
+<p>Alternativamente possiamo creare un oggetto come si farebbe con <code>{}</code> oppure <code>new Object()</code></p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> o3 <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>Object<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// o3 is like {} or new Object().</span>
 </code></pre>
 <h2 id="accesso-alle-proprietà">Accesso alle proprietà</h2>
@@ -119,27 +122,44 @@ o1<span class="token punctuation">.</span>x <span class="token operator">+</span
 <li><code>obj.property_name</code></li>
 <li><code>obj[”property_name”]</code></li>
 </ul>
-<p>Allo stesso modo si possono usare per <strong>creare delle nuove proprietà</strong>, se messe a sinistra di un assegnamento.</p>
 <p>L’accesso alle proprietà attraverso la sintassi con parentesi quadre, utilizza delle stringhe che possono essere manipolate da JavaScript, è quindi legale un codice del tipo:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> addr <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
+<pre class=" language-jsx"><code class="prism  language-jsx">customer <span class="token operator">=</span> <span class="token punctuation">{</span>address0<span class="token punctuation">:</span><span class="token string">"ciao"</span><span class="token punctuation">,</span> address1<span class="token punctuation">:</span><span class="token string">"hello"</span><span class="token punctuation">,</span> address2<span class="token punctuation">:</span><span class="token string">"hi"</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> addr <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
 <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
- addr <span class="token operator">+=</span> customer<span class="token punctuation">[</span><span class="token template-string"><span class="token string">`address</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">"\n"</span><span class="token punctuation">;</span>
+ addr <span class="token operator">+=</span> customer<span class="token punctuation">[</span><span class="token string">"address"</span> <span class="token operator">+</span> i<span class="token punctuation">]</span> <span class="token operator">+</span> <span class="token string">" "</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
+addr        <span class="token comment">// =&gt; "ciao hello hi "</span>
 </code></pre>
 <p>Nell’esempio viene manipolata la stringa di accesso alle proprietà dell’oggetto <code>customer</code>, in modo da accedere con un ciclo ad <code>address0</code>, <code>address1</code>, <code>address2</code>.</p>
 <h3 id="prototype-chain">Prototype chain</h3>
-<p>Ogni oggetto ha delle proprie proprietà (<em><strong>own proprieties</strong></em>) e delle proprietà ereditate dal prototipo.</p>
+<p>Ogni oggetto ha delle proprie proprietà proprie (<em><strong>own proprieties</strong></em>) e delle proprietà ereditate dal prototipo.</p>
 <p>Quando si tenta di accedere ad una proprietà viene prima cercata tra le <em>own proprieties</em>, se non viene trovata allora si scorre la <em>prototype chain:</em> si cerca quindi nel prototipo dell’oggetto e se non viene trovata e il prototipo ha a sua volta un prototipo allora viene cercato anche lì.</p>
+<h2 id="creazione-delle-proprietà">Creazione delle proprietà</h2>
+<p>La stessa sintassi dell’accesso alle proprietà si può usare per <strong>creare delle nuove proprietà</strong>, se messe a sinistra di un assegnamento.</p>
+<p>Se una proprietà con lo stesso nome è già presente nella <em>prototype chain</em> questa non viene sovrascritta, viene invece creata una nuova variabile come <em>own property</em> dell’oggetto, la quale “nasconde” la proprietà con lo stesso nome nella <em>prototype chain.</em></p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">const</span> proto <span class="token operator">=</span> <span class="token punctuation">{</span> 
+  shared<span class="token punctuation">:</span> <span class="token string">"Sono nel prototipo"</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> obj <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span>proto<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// obj eredita da proto</span>
+
+obj<span class="token punctuation">.</span>shared <span class="token operator">=</span> <span class="token string">"Sono nell'oggetto"</span><span class="token punctuation">;</span> <span class="token comment">// Nasconde la proprietà del prototipo</span>
+obj<span class="token punctuation">.</span>newProperty <span class="token operator">=</span> <span class="token string">"Proprietà propria dell'oggetto"</span><span class="token punctuation">;</span> <span class="token comment">// Crea una nuova proprietà</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>shared<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "Sono nell'oggetto"</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>newProperty<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// "Proprietà propria dell'oggetto"</span>
+
+</code></pre>
 <h2 id="cancellazione-delle-proprietà">Cancellazione delle proprietà</h2>
 <p>Attraverso l’operatore <code>delete</code> è possibile eliminare proprietà da un oggetto</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">delete</span> book<span class="token punctuation">.</span>author<span class="token punctuation">;</span>        <span class="token comment">// The book object now has no author property.</span>
 <span class="token keyword">delete</span> book<span class="token punctuation">[</span><span class="token string">"main title"</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Now it doesn't have "main title", either.</span>
 </code></pre>
-<p>È importante precisare che l’operatore <code>delete</code>può cancellare <strong>solo</strong> le <em>own properties</em>, non quelle ereditate.</p>
-<p>Per cancellare una proprietà di un prototipo bisogna eseguire il <code>delete</code> sulla proprietà specificando il prototipo, ma così facendo tutti gli oggetti che ereditano da quel prototipo ne saranno affetti.</p>
+<p>È importante precisare che l’operatore <code>delete</code> può cancellare <strong>solo</strong> le <em>own properties</em>, non quelle ereditate.</p>
+<p>Per cancellare una proprietà del prototipo bisogna eseguire il <code>delete</code> sulla proprietà specificando il prototipo, ma così facendo tutti gli oggetti che ereditano da quel prototipo ne saranno affetti.</p>
 <h2 id="estendere-oggetti">Estendere oggetti</h2>
 <p>Una pratica comune è quella di copiare il contenuto di un oggetto in un altro, il metodo <code>Object.assign()</code> permette di farlo facilmente.</p>
-<p>Il metodo <code>Object.assign(destination_obj, source_obj)</code> si aspetta almeno due argomenti, in cui il primo è l’oggetto che verrà modificato (e anche ritornato), mentre gli altri sono oggetti da cui ricavare le proprietà.</p>
+<p>Il metodo <code>Object.assign(destination_obj, source_obj)</code> si aspetta almeno due argomenti, il primo è l’oggetto che verrà modificato (e anche ritornato), mentre gli altri sono oggetti da cui ricavare le proprietà.</p>
 <p>In pratica ogni <em>own property enumerable</em> dell’oggetto sorgente viene copiata nell’oggetto destinazione. Le proprietà già esistenti nell’oggetto destinazione vengono sovrascritte.</p>
 <p>Nota: eventuali metodi getter e setter vengono invocati durante la copia (ma non copiati essi stessi)</p>
 <p>Solamente con la creazione tramite gli <em>object literal</em>, è possibile utilizzare una sintassi particolare (<code>...</code>) per copiare le <em>own property enumerable</em> di un oggetto in un altro durante la sua creazione:</p>
@@ -161,41 +181,41 @@ rect<span class="token punctuation">.</span>x <span class="token operator">+</sp
 <span class="token keyword">let</span> s <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>o<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// s == '{"x":1,"y":{"z":[false,null,""]}}'</span>
 <span class="token keyword">let</span> p <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">;</span>     <span class="token comment">// p == {x: 1, y: {z: [false, null, ""]}}</span>
 </code></pre>
-<p>JSON supporta un solo una parte della sintassi che JavaScript offre, ad esempio <code>NaN, -Infinity, +Infinity</code> vengono convertiti a <code>null</code>. Oggetti come <code>Function, RegExp, Error</code> vengono ignorati dalla serializzazione. Infine <code>undefined</code> viene ignorato dalla serializzazione</p>
+<p>JSON supporta solo una parte della sintassi che JavaScript offre, ad esempio <code>NaN, -Infinity, +Infinity</code> vengono convertiti a <code>null</code>. Oggetti come <code>Function, RegExp, Error</code> vengono ignorati dalla serializzazione. Infine <code>undefined</code> viene ignorato dalla serializzazione.</p>
 <h2 id="metodi-dell’oggetto-object">Metodi dell’oggetto Object</h2>
 <p>Vediamo alcuni metodi offerti dall’oggetto <code>Object</code>, da cui ogni altro oggetto eredita le proprietà.</p>
 <ol>
-<li><strong><code>Object.hasOwnProperty(property)</code></strong>
+<li><code>Object.hasOwnProperty(property)</code>
 <ul>
 <li>Verifica se l’oggetto ha una <em>own property</em> con il nome specificato, senza cercarla nella catena dei prototipi.</li>
 </ul>
 </li>
-<li><strong><code>Object.propertyIsEnumerable(property)</code></strong>
+<li><code>Object.propertyIsEnumerable(property)</code>
 <ul>
-<li>Controlla se una proprietà specificata è enumerabile, cioè se appare nei cicli <code>for...in</code> o con <code>Object.keys()</code>.</li>
+<li>Controlla se una proprietà specificata è enumerabile, cioè se appare nei cicli <code>for...in</code> e con <code>Object.keys()</code>.</li>
 </ul>
 </li>
-<li><strong><code>Object.create(prototype)</code></strong>
+<li><code>Object.create(prototype)</code>
 <ul>
 <li>Crea un nuovo oggetto con il prototipo specificato</li>
 </ul>
 </li>
-<li><strong><code>Object.keys(obj)</code></strong>
+<li><code>Object.keys(obj)</code>
 <ul>
 <li>Restituisce un array contenente i nomi delle <em>own property</em> <strong>enumerabili</strong> di un oggetto.</li>
 </ul>
 </li>
-<li><strong><code>Object.toString()</code></strong>
+<li><code>Object.toString()</code>
 <ul>
 <li>Restituisce una rappresentazione in formato stringa dell’oggetto.</li>
 </ul>
 </li>
-<li><strong><code>Object.valueOf()</code></strong>
+<li><code>Object.valueOf()</code>
 <ul>
 <li>Restituisce il valore primitivo che rappresenta l’oggetto.</li>
 </ul>
 </li>
-<li><strong><code>Object.toJSON()</code></strong>
+<li><code>Object.toJSON()</code>
 <ul>
 <li>Restituisce una rappresentazione JSON dell’oggetto.</li>
 </ul>
@@ -223,7 +243,7 @@ square<span class="token punctuation">.</span><span class="token function">area<
 </code></pre>
 </li>
 </ol>
-<p>I due modi sono equivalente, su entrambi il nome della proprietà è “area”.</p>
+<p>I due modi sono equivalenti, su entrambi il nome della proprietà è “area”.</p>
 <h2 id="getter-e-setter">Getter e setter</h2>
 <p>JavaScript supporta le così dette proprietà accessorie (<em>accessor properties</em>) che hanno due particolari metodi associati: un getter e/o un setter.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -237,25 +257,24 @@ square<span class="token punctuation">.</span><span class="token function">area<
   <span class="token comment">// Setter</span>
   <span class="token keyword">set</span> <span class="token function">value</span><span class="token punctuation">(</span>new_value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">typeof</span> new_value <span class="token operator">===</span> <span class="token string">'number'</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">this</span><span class="token punctuation">.</span>internal_value<span class="token operator">=</span> new_value<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>internal_value <span class="token operator">=</span> new_value<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 
   <span class="token comment">// Getter per nextVal</span>
   <span class="token keyword">get</span> <span class="token function">nextVal</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>internal_value<span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>internal_value <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
 obj<span class="token punctuation">.</span>value <span class="token operator">=</span> <span class="token number">10</span><span class="token punctuation">;</span>      <span class="token comment">// Setter is used</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>value<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// =&gt; 10, Getter is used</span>
 console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>nextVal<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// =&gt; 11, Getter is used</span>
-
 </code></pre>
 <p>Quando si tenta di ottenere il valore di una proprietà, l’interprete chiama il getter (se presente).</p>
 <p>Quando si tenta di modificare il valore di una proprietà, l’interprete chiama il setter (se presente).</p>
 <p>Se una proprietà ha solo un getter si dice che è una proprietà <strong>read-only</strong>, se ha solo il setter allora è <strong>write-only</strong> (la lettura restituisce un <code>undefined</code>)</p>
-<p><strong>Attenzione</strong>: se si da lo stesso identico nome ai metodi getter e setter e alla variabile, il codice andrebbe in ricorsione, è convenzione pre-pendere un <code>_</code> prima del nome della variabile per indicare che è una variabile di uso interno all’oggetto.</p>
+<p><strong>Attenzione</strong>: se si da lo stesso identico nome ai metodi getter e setter e alla variabile, il codice andrebbe in ricorsione infinita, è convenzione pre-pendere un <code>_</code> prima del nome della variabile per indicare che è una variabile di uso interno all’oggetto.</p>
 
     </div>
   </div>

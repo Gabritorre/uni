@@ -4,7 +4,7 @@ Le **espressioni** sono dei pezzi di codice che possono essere valutati per prod
 
 ## Espressioni primarie
 
-Le espressioni primarie sono il tipo di espressioni più semplici che non includono sotto-espressioni, che sono i **letterali**, cioè dei valori scritti direttamente nel codice dal programmatore.
+Le espressioni primarie sono il tipo di espressioni più semplici che non includono sotto-espressioni, essi sono i **letterali**, cioè dei valori scritti direttamente nel codice dal programmatore.
 
 ```jsx
 1.23      // A number literal
@@ -17,7 +17,7 @@ sum       // Evaluates to the value of the variable "sum" in the global object.
 undefined // The value of the "undefined" property of the global object
 ```
 
-## Espressioni di Inizializzazioni di oggetti e array
+## Espressioni di Inizializzazione di oggetti e array
 
 Queste sono delle espressioni il cui valore ritornato è l’oggetto o l’array appena creato, spesso chiamati *object literals* e *array literals*. Non fanno parte delle espressioni primarie perché la loro creazione prevede delle sotto-espressioni per specificare proprietà e valori.
 
@@ -66,13 +66,14 @@ expression.identifier   // first style
 expression[expression]  // second style
 ```
 
-Nel primo stile, l’*expression* specifica l’oggetto mentre l’*identifier* specifica il nome della proprietà
+Nel primo stile, l’*expression* specifica l’oggetto mentre l’*identifier* specifica il nome della proprietà.
 
 Nel secondo stile, la prima *expression* specifica l’oggetto o l’array, e la seconda *expression* specifica la proprietà dell’oggetto (usando una stringa) o l’indice dell’array (usando un intero)
 
 ```jsx
 let o = {x: 1, y: {z: 3}}; // An example object
 let a = [o, 4, [5, 6]];    // An example array that contains the object
+
 o.x                        // => 1: property x of expression o
 o.y.z                      // => 3: property z of expression o.y
 o["x"]                     // => 1: property x of object o
@@ -81,7 +82,7 @@ a[2]["1"]                  // => 6: element at index 1 of expression a[2]
 a[0].x                     // => 1: property x of expression a[0]
 ```
 
-Se si accede ad una proprietà che non esiste verrà restituito un `undefined`
+Se si accede ad una proprietà che non esiste verrà restituito un `undefined.`
 
 ### Accessi condizionali alle proprietà
 
@@ -92,9 +93,9 @@ expression?.identifier
 expression?.[expression]
 ```
 
-Se l’accesso alle proprietà diretto viene tentato sui valori `null` e `undefined` verrà lanciato un `TypeError`, gli accessi condizionali prevengono questo comportamento.
+Se l’accesso alle proprietà diretto (quello visto precedentemente, senza `?`) viene tentato sui valori `null` e `undefined` verrà lanciato un `TypeError`, gli accessi condizionali prevengono questo comportamento.
 
-Nell’espressione `a?.b` se `a` è `null` oppure `undefined`, l’espressione viene valutata come `undefined` senza tentare di accedere alla proprietà `b`, se invece `a` è un qualche altro valore allora il comportamento è il medesimo dell’accesso diretto.
+Nell’espressione `a?.b` se `a` è `null` oppure `undefined`, l’espressione viene valutata come `undefined` senza tentare di accedere alla proprietà `b` (evitando quindi di lanciare il `TypeError`), se invece `a` è un qualche altro valore allora il comportamento è il medesimo dell’accesso diretto.
 
 Vediamo un particolare comportamento concatenando gli accessi:
 
@@ -107,26 +108,25 @@ a.b?.c              // => undefined
 a.b?.c.d            // => undefined
 ```
 
-L’ultima riga ha il comportamento che può risultare più inaspettato, ma viene restituito un `undefined` perché appena si ha `null` o `undefined` sinistra dell’operatore `?.` viene fatto un “corto-circuito” e viene subito valutata l’intera espressione come `undefined` senza proseguire con la valutazione.
+Nota come appena si ha `null` o `undefined` sinistra dell’operatore `?.` viene fatto un “corto-circuito” e viene subito valutata l’espressione come `undefined` senza proseguire con la valutazione.
 
 Il comportamento è del tutto analogo con l’operatore `?.[]`:
 
 ```jsx
-let a;           // Oops, we forgot to initialize this variable!
+let a;             // Oops, we forgot to initialize this variable!
 let index = 0;
 try {
    a[index++];     // Throws TypeError
 } catch(e) {
    index           // => 1: increment occurs before TypeError is thrown
 }
-a?.[index++]     // => undefined: because a is undefined
-index            // => 1: not incremented because ?.[] short-circuits
-a[index++]       // !TypeError: can't index undefined.
+a?.[index++]       // => undefined: because a is undefined
+index              // => 1: not incremented because ?.[] short-circuits
 ```
 
 ## Espressioni di invocazione
 
-Questo tipo di espressione è data dall’invocazione di un metodo o una funzione
+Questo tipo di espressione è data dall’invocazione di un metodo o una funzione:
 
 ```jsx
 f(0)               // f is the function expression; 0 is the argument expression.
@@ -140,7 +140,7 @@ Il valore generato dall’invocazione sarà il valore di ritorno della funzione,
 
 Come per l’accesso alle proprietà anche per le funzioni esiste una invocazione condizionale con la sintassi `?.()`.
 
-In questo caso se l’espressione a sinistra dell’operatore `?.()` è `null` oppure `undefined` al posto di essere lanciato un `TypeError`, l’intera invocazione viene valutata come `undefined`
+In questo caso se l’espressione a sinistra dell’operatore `?.()` è `null` oppure `undefined` al posto di essere lanciato un `TypeError`, l’intera invocazione viene valutata come `undefined:`
 
 ```jsx
 function square(x, log) { // The second argument is an optional function
@@ -172,7 +172,7 @@ eval("5*3" )  // => 15
 
 La funzione prende in input una stringa e tenta di fare un parsing in codice JavaScript, se ci riesce esegue poi il codice e ritorna l’ultima espressione (oppure `undefined`).
 
-Il codice passato ad eval, può riferisci al codice locale JavaScript scritto in precedenza, permettendo così di leggere valori e anche modificarli.
+Il codice passato ad eval, può fare riferimento al codice locale JavaScript scritto in precedenza, permettendo così di leggere valori e anche modificarli.
 
 L’uso di questa funzione può rappresentare un problema di sicurezza se si passa una stringa proveniente dallo user input in quanto è difficile sanitizzare completamente l’input.
 

@@ -39,23 +39,28 @@ sum   <span class="token comment">// =&gt; 6</span>
 </code></pre>
 <h2 id="come-funzionano-gli-iteratori">Come funzionano gli iteratori</h2>
 <p>Gli <strong>Oggetti iterabili</strong> sono oggetti come Array, Set e Map che possono essere iterati, ovvero i loro contenuti possono essere “visitati” in sequenza. Questi oggetti hanno un metodo speciale chiamato <strong>iterator method</strong> che restituisce un <strong>Iteratore</strong>.</p>
-<p>Un <strong>iteratore</strong> è un oggetto che esegue l’iterazione. Ha un metodo <code>next()</code> che restituisce un nuovo oggetto con proprietà <code>value</code> e <code>done</code>. La proprietà <code>value</code> contiene il valore corrente dell’iterazione, mentre <code>done</code> è un booleano che indica se tutti gli elementi dell’iterable sono stati visitati.</p>
-<p>Il punto particolare è che il metodo per ottenere l’iteratore è tramite <code>Symbol.iterator</code></p>
+<p>Un <strong>iteratore</strong> è un oggetto che esegue l’iterazione, ha un metodo <code>next()</code> che restituisce un nuovo oggetto con proprietà <code>value</code> e <code>done</code>. La proprietà <code>value</code> contiene il valore dell’iterazione corrente, mentre <code>done</code> è un booleano che indica se tutti gli elementi dell’iterable sono stati visitati.</p>
+<p>Il metodo per ottenere l’iteratore è <code>Symbol.iterator</code>.</p>
 <p>Il ciclo <code>for/of</code> e l’operatore spread utilizzano internamente questo meccanismo per iterare sugli oggetti:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> iterable <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token keyword">let</span> iterator <span class="token operator">=</span> iterable<span class="token punctuation">[</span>Symbol<span class="token punctuation">.</span>iterator<span class="token punctuation">]</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> result <span class="token operator">=</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> result<span class="token punctuation">.</span>done <span class="token operator">===</span> <span class="token boolean">false</span><span class="token punctuation">;</span> result <span class="token operator">=</span> iterator<span class="token punctuation">.</span><span class="token function">next</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> 
 	console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>result<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
-
 </code></pre>
 <p>Il ciclo <code>for</code> continua a chiamare il metodo <code>next()</code> dell’iteratore finché <code>result.done</code> non diventa <code>true</code>, stampando il valore di <code>result.value</code> a ogni iterazione.</p>
+<p>I <strong>Symbol</strong> in JavaScript sono un tipo di dato primitivo. Un Symbol è un valore unico e immutabile che può essere utilizzato come chiave per le proprietà di un oggetto.</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">const</span> sym1 <span class="token operator">=</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token string">"description"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> sym2 <span class="token operator">=</span> <span class="token function">Symbol</span><span class="token punctuation">(</span><span class="token string">"description"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>sym1 <span class="token operator">===</span> sym2<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// false</span>
+</code></pre>
+<p><code>Symbol.iterator</code> è un Symbol predefinito nel linguaggio.</p>
 <h2 id="creare-oggetti-iterabili">Creare oggetti iterabili</h2>
-<p>Per rendere una classe iterabile bisogna creare un metodo <code>Symbol.iterator</code> che ritorna un oggetto iterator che possiede il metodo <code>next()</code>, il quale ritorna un oggetto con i campi <code>value</code> e <code>done</code></p>
+<p>Per rendere una classe iterabile bisogna creare un metodo <code>Symbol.iterator</code> che ritorna un oggetto iterator il quale possiede il metodo <code>next()</code> che ritorna un oggetto con i campi <code>value</code> e <code>done</code></p>
 <p>Vediamo un esempio:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">/* A Range object represents a range of numbers [from, ..., to]
 Range is iterable and iterates all integers within the range.
- */</span>
+*/</span>
 <span class="token keyword">class</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span>
 	<span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
 			<span class="token keyword">this</span><span class="token punctuation">.</span><span class="token keyword">from</span> <span class="token operator">=</span> <span class="token keyword">from</span><span class="token punctuation">;</span> 
@@ -87,14 +92,23 @@ Range is iterable and iterates all integers within the range.
 
 <span class="token punctuation">[</span><span class="token operator">...</span><span class="token keyword">new</span> <span class="token class-name">Range</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">]</span>       <span class="token comment">// =&gt; [-2, -1, 0, 1, 2]</span>
 </code></pre>
+<p>Nota: in generale se vogliamo utilizzare un valore dinamico o un’espressione come chiave di un oggetto o di un metodo, dobbiamo racchiuderlo tra <code>[]</code>. Questo vale anche per i Symbol, che non sono stringhe, ma tipi primitivi:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">const</span> dynamicKey <span class="token operator">=</span> <span class="token string">"greet"</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
+  <span class="token punctuation">[</span>dynamicKey<span class="token punctuation">]</span><span class="token punctuation">:</span> <span class="token string">"Hello"</span>
+<span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>obj<span class="token punctuation">.</span>greet<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment">// =&gt; "Hello"</span>
+<span class="token comment">// se avessimo omesso le [], avremmo dovuto fare obj.dynamicKey</span>
+</code></pre>
 <p>Oltre al metodo <code>next()</code>, in un iteratore si può definire anche il metodo <code>return()</code>, il cui scopo è quello di gestire la <strong>pulizia e il rilascio di risorse</strong> quando l’iterazione non viene completata fino alla fine.</p>
-<p>Ad esempio se l’iteratore sta leggendo mano a mano il contenuto da un file, se il ciclo di iterazione venisse interrotto improvvisamente da un <code>return</code>, <code>break</code>, o una exception, l’interprete va a cercare il metodo <code>return()</code> e lo chiama.</p>
+<p>Ad esempio se l’iteratore sta leggendo mano a mano il contenuto da un file, e il ciclo di iterazione venisse interrotto improvvisamente da un <code>return</code>, <code>break</code>, o una exception, l’interprete va a cercare il metodo <code>return()</code> e lo chiama.</p>
 <h2 id="generatori">Generatori</h2>
 <p>Un <strong>generatore</strong> è un tipo di iteratore particolarmente utile quando gli elementi da iterare sono il risultato di una computazione.</p>
 <p>Per creare un generatore bisogna creare una <em>generator function</em>, cioè una normale funzione solamente scritta con <code>function*</code>.</p>
 <p>Quando viene invocata la <em>generator function</em> non viene eseguito il suo corpo, ma viene ritornato un oggetto generatore, che altro non è che un iteratore.</p>
 <p>Chiamare il metodo <code>next()</code> del generatore, implica che viene eseguito il corpo della <em>generator function</em> fino a che non raggiunge un <code>yield</code> statement, che possiamo paragonare ad un <code>return</code>, e il valore dello <code>yield</code> sarà il valore inserito nel campo <code>value</code> dell’oggetto ritornato dalla <code>next()</code>.</p>
-<p>Quando verrà richiamato nuovamente <code>next()</code> l’esecuzione ripartirà dal punto in cui si era fermata nella precedente chiamata.</p>
+<p>Quando verrà chiamato nuovamente <code>next()</code> l’esecuzione ripartirà dal punto in cui si era fermata nella precedente chiamata.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// A generator function that yields the set of one digit primes.</span>
 <span class="token keyword">function</span><span class="token operator">*</span> <span class="token function">oneDigitPrimes</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">yield</span> <span class="token number">2</span><span class="token punctuation">;</span> 

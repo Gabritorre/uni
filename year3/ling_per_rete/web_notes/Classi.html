@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-11-18_Classi</title>
+  <title>2024-11-04_Classi</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -33,11 +33,11 @@
       <h1 id="classi">Classi</h1>
 <p>In JavaScript una classe è un insieme di oggetti che ereditano delle proprietà dallo stesso oggetto prototype.</p>
 <p>Non sono quindi dei template che rappresentano il tipo degli oggetti, come avviene nei linguaggi orientati agli oggetti.</p>
-<p>Vediamo diversi modi per creare classi in JavaScript</p>
+<p>Vediamo diversi modi per creare classi in JavaScript.</p>
 <h2 id="primo-modo-factory-function">Primo modo: factory function</h2>
 <p>Voglio costruire una classe di oggetti che rappresentano un range di valori.</p>
 <p>Ricordiamo che un modo per creare nuovi oggetti era usare <code>Object.create(my_prototype)</code>.</p>
-<p>Se costruiamo un nostro prototype e una funzione (generalmente riferita come <em>factory function</em>) che sfrutta <code>Object.create()</code> per creare nuovi  oggetti a partire dal nostro prototype abbiamo creato una classe.</p>
+<p>Se costruiamo un nostro prototype e una funzione (generalmente riferita come <em>factory function</em>) che sfrutta <code>Object.create()</code> per creare nuovi oggetti a partire dal nostro prototype abbiamo creato una classe.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"> <span class="token comment">// This is a factory function that returns a new range object.</span>
  <span class="token keyword">function</span> <span class="token function">range</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
 		<span class="token comment">// Use Object.create() to create an object that inherits from the </span>
@@ -74,7 +74,7 @@ r<span class="token punctuation">.</span><span class="token function">toString</
 <p>Questo modo è quello che veniva utilizzato prima dell’introduzione della keyword <code>class</code>.</p>
 <p>Il <strong>costruttore</strong> è una funzione che si occupa di inizializzare gli oggetti appena creati.</p>
 <p>I costruttori invocati con la keyword <code>new</code> creano automaticamente un nuovo oggetto, quindi nel corpo del costruttore è solo necessario inizializzare i campi.</p>
-<p>È impostante sottolineare che tra tutti gli oggetti <strong>solamente le funzioni possiedono un campo chiamato</strong> <code>prototype</code> <strong>che contiene l’oggetto prototype</strong>, che viene usato quando la funzione viene invocato con un <code>new</code> per impostare il prototype del nuovo oggetto creato. Mentre gli oggetti che non sono funzioni hanno un prototipo interno ma non hanno un campo <code>prototype</code>.</p>
+<p>È importante sottolineare che tra tutti gli oggetti <strong>solamente le funzioni possiedono un campo chiamato</strong> <code>prototype</code> <strong>che contiene l’oggetto prototype</strong>, che viene usato quando la funzione viene invocato con un <code>new</code> per impostare il prototype del nuovo oggetto creato. Mentre gli oggetti che non sono funzioni hanno un prototipo interno ma non hanno un campo <code>prototype</code>.</p>
 <p>Voglio costruire una classe di oggetti che rappresentano un range di valori.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// This is a constructor function.</span>
 <span class="token comment">// Note that it does not create or return the object. It just initializes 'this'.</span>
@@ -117,7 +117,7 @@ r<span class="token punctuation">.</span><span class="token function">toString</
  s <span class="token keyword">instanceof</span> <span class="token class-name">Range</span>   <span class="token comment">// =&gt; true</span>
 </code></pre>
 <h2 id="terzo-modo-keyword-class">Terzo modo: keyword class</h2>
-<p>Questo è il modo più moderno per fare le classi</p>
+<p>Questo è il modo moderno per fare le classi.</p>
 <p>Nonostante il leggero cambio di sintassi il funzionamento alla base non cambia rispetto ai modi precedenti, la keyword <code>class</code> è solo un zucchero sintattico completamente equivalente al secondo modo con il costruttore che abbiamo visto.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">class</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span> 
     <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token keyword">from</span><span class="token punctuation">,</span> to<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
@@ -195,7 +195,7 @@ r<span class="token punctuation">.</span><span class="token function">parse</spa
 </code></pre>
 <p>Anche i <strong>campi</strong> possono essere <strong>statici</strong> e si comporteranno come i metodi statici, cioè si accedono tramite la classe.</p>
 <h2 id="sottoclassi">Sottoclassi</h2>
-<p>Se si vuole definire una classe come sottoclasse da un’altra classe si può usare la keyword <code>extends</code></p>
+<p>Se si vuole definire una classe come sottoclasse di un’altra si può usare la keyword <code>extends</code></p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// A Span is like a Range, but instead of initializing it with</span>
 <span class="token comment">// a start and an end, we initialize it with a start and a length</span>
 <span class="token keyword">class</span> <span class="token class-name">Span</span> <span class="token keyword">extends</span> <span class="token class-name">Range</span> <span class="token punctuation">{</span> 
@@ -210,8 +210,8 @@ r<span class="token punctuation">.</span><span class="token function">parse</spa
 <span class="token punctuation">}</span>
 </code></pre>
 <p>In questo caso <code>Span</code> si dice <strong>sottoclasse</strong>, mentre <code>Range</code> si dice <strong>superclasse</strong>.</p>
-<p>Le istanze di <code>Span</code> ereditano i metodi di <code>Range</code>. Inoltre <code>Span</code> può definirsi altri metodi e sovrascrivere quelli ereditati.</p>
-<p>La keyword <code>super</code> viene utilizzata per invocare il costruttore della superclasse, inoltre in caso in cui dei metodi siano stati sovrascritti, utilizzando <code>super</code> si può invocare la versione del metodo della superclasse</p>
+<p>Le istanze di <code>Span</code> ereditano i metodi di <code>Range</code>. Inoltre <code>Span</code> può definire altri metodi e sovrascrivere quelli ereditati.</p>
+<p>La keyword <code>super</code> viene utilizzata per invocare il costruttore della superclasse, inoltre in caso in cui dei metodi siano stati sovrascritti, utilizzando <code>super</code> si può invocare la versione del metodo della superclasse.</p>
 <p>Note su <code>super</code>:</p>
 <ul>
 <li>Se si definisce una classe con <code>extends</code>, il costruttore della sottoclasse <strong>deve</strong> usare <code>super()</code> per invocare il costruttore della superclasse.</li>
@@ -242,10 +242,6 @@ r<span class="token punctuation">.</span><span class="token function">parse</spa
 <p><strong>significato di classe</strong></p>
 <p>In JavaScript una classe è un insieme di oggetti che ereditano delle proprietà dallo stesso oggetto prototype.</p>
 <p>Non sono quindi dei template che rappresentano il tipo degli oggetti, come avviene nei linguaggi orientati agli oggetti.</p>
-</li>
-<li>
-<p><strong>Mancanza di Information Hiding</strong></p>
-<p>In JavaScript manca il meccanismo di <em>information hiding</em>, ovvero la protezione dei dati interni di un oggetto tramite modificatori di accesso (come <code>private</code> o <code>protected</code>).</p>
 </li>
 <li>
 <p><strong>Le Funzioni sono Campi</strong></p>

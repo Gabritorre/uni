@@ -35,33 +35,33 @@
       <h1 id="tipi-di-dato-e-valori">Tipi di dato e valori</h1>
 <p>I tipi di JavaScript possono essere divisi in due categorie:</p>
 <ul>
-<li>Tipi primitivi: sono i tipi classici, quindi stringhe, numeri e boolean
+<li><strong>Tipi primitivi</strong>: sono i tipi classici, quindi stringhe, numeri e boolean
 <ul>
 <li>Ci sono anche due valori speciali, <code>null</code> e <code>undefined</code> che fanno parte dei tipi primitivi</li>
 </ul>
 </li>
-<li>Tipi oggetto (o <em>reference type</em>): sono tipi più complessi, un oggetto possiamo immaginarlo come una collezione di proprietà dotate di nome e valore (ad esempio, <code>Set</code>, <code>Map</code>, <code>Error</code>, array, dizionari, …)
+<li><strong>Tipi oggetto</strong> (o <em>reference type</em>): sono tipi più complessi, un oggetto possiamo immaginarlo come una collezione di proprietà dotate di nome e valore (ad esempio, <code>Set</code>, <code>Map</code>, <code>Error</code>, array, dizionari, …)
 <ul>
 <li>Anche <strong>funzioni</strong> e <strong>classi</strong> sono un particolare tipo di oggetto.</li>
 </ul>
 </li>
 </ul>
-<p>JavaScript ha un garbage collector integrato, quindi quando delle variabili non sono più raggiungibili si arrangia a deallocarle.</p>
-<p>JavaScript supporta una stile di programmazione orientato agli oggetti, sia i tipi primitivi che i tipi oggetto possono comportarsi come degli oggetti e quindi invocare dei metodi su di loro (<code>null</code> e <code>undefined</code> sono l’unica eccezione).</p>
+<p>JavaScript ha un garbage collector integrato, quindi quando degli oggetti non sono più raggiungibili vengono deallocati automaticamente.</p>
+<p>JavaScript supporta uno stile di programmazione orientato agli oggetti, sia i tipi primitivi che i tipi oggetto possono comportarsi come degli oggetti e quindi invocare dei metodi su di loro (<code>null</code> e <code>undefined</code> sono l’unica eccezione).</p>
 <h2 id="immutabilità">Immutabilità</h2>
-<p>I tipi primitivi sono immutabili, mentre i tipi oggetti sono mutabili.</p>
-<p>quindi quando si vuole modificare un tipo primitivo si fa sempre un nuovo assegnamento creando un nuovo valore.</p>
-<p>quindi ogni volta che viene invocato un metodo su una stringa quel metodo restituirà una nuova stringa e non modifica se stessa.</p>
+<p>In JavaScript, i tipi primitivi sono immutabili, mentre gli oggetti sono mutabili. Questo significa che i valori primitivi (numeri, stringhe, booleani, ecc.) non possono essere modificati direttamente. Se si desidera modificarne il valore, è necessario creare un nuovo valore e assegnarlo a una variabile.</p>
+<p>Quindi ogni volta che viene invocato un metodo su una stringa quel metodo restituirà una nuova stringa e non modifica se stessa.</p>
+<p>Al contrario, gli oggetti possono essere modificati direttamente, aggiornando o aggiungendo proprietà al loro stato.</p>
 <h2 id="type-conversion">Type conversion</h2>
-<p>La principale filosofia di JavaScript è quella di continuare l’esecuzione nonostante tutto, cercando di ridurre al minimo l’apparizione di errori, un conseguenza di questa filosofia è la <em>type conversion</em> molto “spinta” che possiede il linguaggio.</p>
-<p>JavaScript esegue delle conversioni di tipo in modo automatico, ad esempio se un programma si aspetta una stringa ma gli viene passato un intero viene convertito da solo.</p>
-<p>Gli <strong>operatori sono polimorfi</strong>, quindi cambiano il loro comportamento in base ai tipi dei valori, un esempio è sommare una stringa ad un numero che genererà il risultato come una stringa concatenata al numero (il quale è stato convertito in stringa)</p>
-<p>Da qui nasce la differenza tra l’eguaglianza con <em>type conversion</em>, chiamata <em>equality</em> (<code>==</code>) e quella senza, chiamata <em>strict equality</em> (<code>===</code>).</p>
-<p>quindi l’operatore <code>==</code> esegue una conversione per “avvicinare” il più possibile i tipi tra loro e poi fa il confronto, comportamento che può portare ad errori.</p>
-<p>mentre l’operatore <code>===</code> esegue un confronto diretto sui tipi (questo è il confronto voluto nella maggior parte dei casi).</p>
-<p>Nota che anche <code>===</code> sugli oggetti effettua un confronto <code>shallow</code> sui riferimenti, non vengono confrontate le proprietà degli oggetti. In altre parole due oggetti con lo stesso numero di proprietà, che hanno gli stessi nomi e gli stessi valori sono comunque due oggetti differenti.</p>
+<p>La principale filosofia di JavaScript è quella di continuare l’esecuzione nonostante tutto, cercando di ridurre al minimo l’apparizione di errori. Una conseguenza di questa filosofia è la <em>type conversion</em> molto spinta che possiede il linguaggio.</p>
+<p>JavaScript esegue delle conversioni di tipo in modo automatico, ad esempio se un programma si aspetta una stringa ma gli viene passato un intero, esso viene convertito autonomamente in stringa.</p>
+<p>Gli <strong>operatori sono polimorfi</strong>, quindi cambiano il loro comportamento in base ai tipi. Un esempio è sommare una stringa ad un numero che genererà una stringa concatenata al numero (il quale è stato convertito in stringa)</p>
+<p>Da qui nasce la differenza tra l’eguaglianza <strong>con</strong> <em>type conversion</em>, chiamata <em>equality</em> (<code>==</code>) e quella <strong>senza</strong>, chiamata <em>strict equality</em> (<code>===</code>).</p>
+<p>L’operatore <code>==</code> esegue una conversione per “avvicinare” il più possibile i tipi tra loro e poi fa il confronto, questo comportamento può portare a risultati inaspettati.</p>
+<p>Mentre l’operatore <code>===</code> esegue un confronto diretto sui tipi e sul valore (questo è il confronto voluto nella maggior parte dei casi).</p>
+<p>Nota che anche <code>===</code> sugli oggetti effettua un confronto <em>shallow</em> sui riferimenti, non vengono confrontate le proprietà interne degli oggetti. In altre parole due oggetti con lo stesso numero di proprietà, che hanno gli stessi nomi e gli stessi valori possono essere comunque due oggetti differenti.</p>
 <h3 id="valori-di-verità">Valori di verità</h3>
-<p>Le <code>type conversion</code> considerano i seguenti valori come valore booleano <code>false</code> :</p>
+<p>Le <code>type conversion</code> considerano i seguenti valori come valore booleano <code>false</code>:</p>
 <ul>
 <li><code>false</code></li>
 <li><code>null</code></li>
@@ -71,35 +71,35 @@
 <li><code>NaN</code></li>
 <li><code>""</code></li>
 </ul>
-<p>Mentre tutti gli altri valori, inclusi gli oggetti, sono convertiti con il valore booleano <code>true</code></p>
+<p>Mentre tutti gli altri valori, inclusi gli oggetti, sono convertiti con il valore booleano <code>true</code>.</p>
 <h2 id="conversioni-esplicite">Conversioni esplicite</h2>
 <p>Nonostante il linguaggio cerchi il più possibile di fare delle conversioni in automatico, è comunque consigliato fare delle conversioni esplicite per ridurre la possibilità di errori non previsti e mantenere un codice più chiaro.</p>
 <p>Ad esempio si possono usare i costrutti <code>Number(), String(), Boolean()</code> per fare delle conversioni oppure i metodi <code>parseInt()</code>, <code>parseFloat()</code>.</p>
-<p>Tutti i valori tranne <code>null</code> e <code>undefined</code> possiedono il metodo <code>toString()</code> per fare la conversione a stringa del tipo.</p>
+<p>Tutti i valori tranne <code>null</code> e <code>undefined</code> possiedono il metodo <code>toString()</code> per fare la conversione a una stringa che li rappresenta in qualche modo.</p>
 <p>Un altro metodo è <code>valueOf()</code> che ogni oggetto possiede e il cui scopo è quello di restituire un valore di tipo primitivo che rappresenti l’oggetto su cui è chiamato il metodo.</p>
 <h2 id="const-let-var">Const, let, var</h2>
-<p>Abbiamo tre <code>keyword</code> per dichiarare variabili e in nessuna viene specificato il tipo di dato, viene determinato dall’interprete quando gli vengono assegnati dei valori in base alla loro sintassi.</p>
+<p>Abbiamo tre <code>keyword</code> per dichiarare variabili e in nessuna di esse si specifica il tipo di dato, viene infatti determinato dall’interprete basandosi sulla sintassi dei valori che gli vengono assegnati.</p>
 <ul>
-<li><code>const</code> usato per dichiarare costanti nel blocco di scope più stretto racchiuso tra <code>{}</code> definito <em><strong>block scope</strong></em>
+<li><code>const</code> usato per dichiarare costanti nel blocco di scope più stretto racchiuso tra <code>{}</code>, definito <em><strong>block scope</strong></em>
 <ul>
 <li>Una variabile dichiarata <code>const</code> non può essere riassegnata.</li>
-<li>Se la costante è un oggetto è comunque possibile modificare i suoi attributi interni (ad esempio negli array è possibile modificarci i valori, aggiungere e togliere elementi ecc…).</li>
+<li>Se la costante è un oggetto è comunque possibile modificare i suoi attributi interni (ad esempio negli array è possibile modificare i valori, aggiungere e togliere elementi ecc…).</li>
 </ul>
 </li>
-<li><code>let</code>  usato per dichiarare variabili nel blocco di scope più stretto racchiuso tra <code>{}</code> definito <em><strong>block scope</strong></em>
+<li><code>let</code> usato per dichiarare variabili nel blocco di scope più stretto racchiuso tra <code>{}</code>, definito <em><strong>block scope</strong></em>
 <ul>
 <li>Generalmente è il modo di dichiarazione preferito.</li>
 </ul>
 </li>
 <li><code>var</code> usato per dichiarare variabili nello scope della funzione, chiamato <em><strong>function scope</strong></em>
 <ul>
-<li>Hanno anche un comportamento particolare detto <em>hoisting</em> cioè vengono salvate nello scopo come <code>undefined</code> ancora prima di raggiungere la riga di dichiarazione. È quindi possibile accedere alla variabile ancora prima di raggiungere la sua dichiarazione (conterrà comunque <code>undefined</code> finche non viene raggiunta la riga di inizializzazione)</li>
+<li>Hanno un comportamento particolare detto <em>hoisting,</em> cioè vengono salvate nello scope come <code>undefined</code> prima di raggiungere la riga di dichiarazione, solamente quando l’esecuzione raggiunge la riga di dichiarazione allora la variabile assume il suo valore.</li>
 </ul>
 </li>
-<li>Si può anche dichiarare senza le keyword precedenti, semplicemente scrivendo il nome della variabile e assegnandogli un valore. In questo caso il suo scope sarà globale (anche se dichiarata all’interno di funzioni)</li>
+<li>Si può anche dichiarare variabili senza le keyword precedenti, semplicemente scrivendo il nome della variabile e assegnandogli un valore. In questo caso il suo scope sarà globale (anche se dichiarata all’interno di funzioni)</li>
 </ul>
 <h2 id="assegnamenti-destrutturati">Assegnamenti destrutturati</h2>
-<p>JavaScript supporta gli assegnamenti destrutturati, cioè un particolare tipo di assegnamento in cui a destra dell’uguale si ha un tipo strutturato (ad esempio un array o un oggetto)  e sinistra si hanno un insieme di variabili. Quello che accade è che il valore strutturato di destra viene scomposto in più parti che vengono assegnate alle singole variabili.</p>
+<p>JavaScript supporta gli assegnamenti destrutturati, cioè un particolare tipo di assegnamento in cui a destra dell’uguale si ha un tipo strutturato (ad esempio un array o un oggetto) e sinistra si hanno un insieme di variabili. Quello che accade è che il valore strutturato di destra viene scomposto in più parti che vengono assegnate alle singole variabili.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> <span class="token punctuation">[</span>x<span class="token punctuation">,</span>y<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>        <span class="token comment">// Same as let x=1, y=2</span>
 <span class="token punctuation">[</span>x<span class="token punctuation">,</span>y<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span>x<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">,</span>y<span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>        <span class="token comment">// Same as x = x + 1, y = y + 1</span>
 <span class="token punctuation">[</span>x<span class="token punctuation">,</span>y<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span>y<span class="token punctuation">,</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>            <span class="token comment">// Swap the value of the two variables</span>
@@ -111,23 +111,23 @@
      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">,</span> value<span class="token punctuation">)</span><span class="token punctuation">;</span>       <span class="token comment">// Prints "x 1" and "y 2"</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>se si mettono troppe variabili a sinistra, esse verranno impostate ad <code>undefined</code>, mentre se sono troppo poche i valori in più sulla destra verranno ignorati.</p>
-<p>Si possono però raccogliere tutti i rimanenti dati in questo modo</p>
+<p>Se si mettono troppe variabili a sinistra, esse verranno impostate ad <code>undefined</code>, mentre se sono troppo poche, i valori in eccedenza (a destra dell’assegnamento) più a destra verranno ignorati.</p>
+<p>Si possono però raccogliere tutti i rimanenti valori in questo modo:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> <span class="token punctuation">[</span>x<span class="token punctuation">,</span> <span class="token operator">...</span>y<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// y == [2,3,4]</span>
 </code></pre>
 <h2 id="null-e-undefined">Null e undefined</h2>
 <p>Quando viene dichiarata una variabile senza assegnamento, assume il <strong>tipo e il valore</strong> <code>undefined</code>, che serve proprio a rappresentare la non inizializzazione. Quindi può essere interpretato come una mancanza di valore non prevista, o proprio un errore.</p>
-<p>il valore <code>null</code> (che ha tipo <code>object</code>) invece rappresenta la mancanza di un valore voluta.</p>
+<p>il valore <code>null</code> (che ha tipo <code>object</code>) invece rappresenta la mancanza intenzionale di un valore.</p>
 <p>Entrambi sono codificati come valore booleano falso e sono valori distinti per l’operatore di uguaglianza <code>===</code>.</p>
 <p>Su entrambi non è possibile invocare metodi.</p>
 <h2 id="infinity-value">Infinity value</h2>
-<p>Operazioni aritmetiche non sollevano eccezioni in caso di <em>overflow</em>, <em>underflow</em> o divisione per zero, piuttosto viene usato il valore speciale <code>Infinity</code> oppure <code>-Infinity</code>.</p>
+<p>Operazioni aritmetiche non sollevano eccezioni in caso di <em>overflow</em>, <em>underflow</em> e divisione per zero, piuttosto viene usato il valore speciale <code>Infinity</code> oppure <code>-Infinity</code>.</p>
 <h2 id="nan-not-a-number">NaN (Not a number)</h2>
-<p>Un caso particolare però è <code>0/0</code> (e altre operazioni particolari) che non ha un valore definito e viene quindi assegnato un <code>NaN</code> (<em>not a number</em>)</p>
+<p>In casi particolari come <code>0/0</code> e altre operazioni particolari che non hanno un valore definito e viene assegnato un <code>NaN</code> (<em>Not a Number</em>).</p>
 <p>Una caratteristica particolare di <code>NaN</code> è l’impossibilità di essere comparato con altri valori, per controllare che una variabile sia <code>NaN</code> si usa il metodo <code>Number.isNaN()</code></p>
 <h2 id="il-global-object">Il Global object</h2>
 <p>Esiste un particolare oggetto chiamato <strong>Global object</strong>, è un regolare oggetto che possiede delle proprietà accessibili globalmente.</p>
-<p>Quando si carica un sito web viene creato questo oggetto che contiene costanti come <code>NaN</code> e <code>Infinity</code>, funzioni globali, costruttori globali, e oggetti globali come <code>Math</code> e <code>JSON</code></p>
+<p>Quando si carica un sito web viene creato questo oggetto che contiene costanti come <code>NaN</code> e <code>Infinity</code>, funzioni globali, costruttori globali, e oggetti globali come <code>Math</code> e <code>JSON</code>.</p>
 <p>Nei browser il global object è riferibile tramite la proprietà <code>window</code> oppure <code>globalThis</code></p>
 
     </div>

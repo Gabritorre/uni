@@ -20,9 +20,9 @@ let chars = [..."abcd"]; // chars == ["a", "b", "c", "d"]
 
 Gli **Oggetti iterabili** sono oggetti come Array, Set e Map che possono essere iterati, ovvero i loro contenuti possono essere "visitati" in sequenza. Questi oggetti hanno un metodo speciale chiamato **iterator method** che restituisce un **Iteratore**.
 
-Un **iteratore** è un oggetto che esegue l'iterazione. Ha un metodo `next()` che restituisce un nuovo oggetto con proprietà `value` e `done`. La proprietà `value` contiene il valore corrente dell'iterazione, mentre `done` è un booleano che indica se tutti gli elementi dell’iterable sono stati visitati.
+Un **iteratore** è un oggetto che esegue l'iterazione, ha un metodo `next()` che restituisce un nuovo oggetto con proprietà `value` e `done`. La proprietà `value` contiene il valore dell'iterazione corrente, mentre `done` è un booleano che indica se tutti gli elementi dell’iterable sono stati visitati.
 
-Il punto particolare è che il metodo per ottenere l’iteratore è tramite `Symbol.iterator`
+Il metodo per ottenere l’iteratore è `Symbol.iterator`.
 
 Il ciclo `for/of` e l'operatore spread utilizzano internamente questo meccanismo per iterare sugli oggetti:
 
@@ -32,21 +32,30 @@ let iterator = iterable[Symbol.iterator]();
 for (let result = iterator.next(); result.done === false; result = iterator.next()) { 
 	console.log(result.value)
 }
-
 ```
 
 Il ciclo `for` continua a chiamare il metodo `next()` dell'iteratore finché `result.done` non diventa `true`, stampando il valore di `result.value` a ogni iterazione.
 
+I **Symbol** in JavaScript sono un tipo di dato primitivo. Un Symbol è un valore unico e immutabile che può essere utilizzato come chiave per le proprietà di un oggetto.
+
+```jsx
+const sym1 = Symbol("description");
+const sym2 = Symbol("description");
+console.log(sym1 === sym2); // false
+```
+
+`Symbol.iterator` è un Symbol predefinito nel linguaggio.
+
 ## Creare oggetti iterabili
 
-Per rendere una classe iterabile bisogna creare un metodo `Symbol.iterator` che ritorna un oggetto iterator che possiede il metodo `next()`, il quale ritorna un oggetto con i campi `value` e `done`
+Per rendere una classe iterabile bisogna creare un metodo `Symbol.iterator` che ritorna un oggetto iterator il quale possiede il metodo `next()` che ritorna un oggetto con i campi `value` e `done`
 
 Vediamo un esempio:
 
 ```jsx
 /* A Range object represents a range of numbers [from, ..., to]
 Range is iterable and iterates all integers within the range.
- */
+*/
 class Range {
 	constructor(from, to) { 
 			this.from = from; 
@@ -79,9 +88,21 @@ for (let x of r)
 [...new Range(-2,2)]       // => [-2, -1, 0, 1, 2]
 ```
 
+Nota: in generale se vogliamo utilizzare un valore dinamico o un'espressione come chiave di un oggetto o di un metodo, dobbiamo racchiuderlo tra `[]`. Questo vale anche per i Symbol, che non sono stringhe, ma tipi primitivi:
+
+```jsx
+const dynamicKey = "greet";
+const obj = {
+  [dynamicKey]: "Hello"
+};
+
+console.log(obj.greet); // => "Hello"
+// se avessimo omesso le [], avremmo dovuto fare obj.dynamicKey
+```
+
 Oltre al metodo `next()`, in un iteratore si può definire anche il metodo `return()`, il cui scopo è quello di gestire la **pulizia e il rilascio di risorse** quando l'iterazione non viene completata fino alla fine.
 
-Ad esempio se l’iteratore sta leggendo mano a mano il contenuto da un file, se il ciclo di iterazione venisse interrotto improvvisamente da un `return`, `break`, o una exception, l’interprete va a cercare il metodo `return()` e lo chiama.
+Ad esempio se l’iteratore sta leggendo mano a mano il contenuto da un file, e il ciclo di iterazione venisse interrotto improvvisamente da un `return`, `break`, o una exception, l’interprete va a cercare il metodo `return()` e lo chiama.
 
 ## Generatori
 
@@ -93,7 +114,7 @@ Quando viene invocata la *generator function* non viene eseguito il suo corpo, m
 
 Chiamare il metodo `next()` del generatore, implica che viene eseguito il corpo della *generator function* fino a che non raggiunge un `yield` statement, che possiamo paragonare ad un `return`, e il valore dello `yield` sarà il valore inserito nel campo `value` dell’oggetto ritornato dalla `next()`.
 
-Quando verrà richiamato nuovamente `next()` l’esecuzione ripartirà dal punto in cui si era fermata nella precedente chiamata.
+Quando verrà chiamato nuovamente `next()` l’esecuzione ripartirà dal punto in cui si era fermata nella precedente chiamata.
 
 ```jsx
 // A generator function that yields the set of one digit primes.

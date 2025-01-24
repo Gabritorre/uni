@@ -31,8 +31,8 @@
     <div class="stackedit__html">
       <h1 id="funzioni">Funzioni</h1>
 <p>Una <strong>funzione</strong> in JavaScript è un blocco di codice che viene definito una sola volta, ma può essere  invocato più volte. Le funzioni possono accettare un elenco di identificatori chiamati <strong>parametri</strong>, che fungono da variabili locali per la funzione. Quando si invoca una funzione, si possono fornire degli <strong>argomenti</strong> ai suoi parametri. Le funzioni possono terminare ritornando un valore, detto <strong>valore di ritorno</strong> (se non è specificato viene ritornato <code>undefined</code>).</p>
-<p>Una funzione può accedere ai campi dell’oggetto che ha invocato la funzione con la keyword <code>this</code>.</p>
-<p>Quando una funzione viene assegnata come proprietà di un oggetto la funzione prende il nome di <strong>metodo</strong>.</p>
+<p>Una funzione può accedere ai campi dell’oggetto che l’ha invocata con la keyword <code>this</code>.</p>
+<p>Quando una funzione viene assegnata come proprietà di un oggetto, la funzione prende il nome di <strong>metodo</strong>.</p>
 <p>Quando una funzione viene utilizzata per inizializzare un nuovo oggetto, la funzione prende il nome di <strong>costruttore</strong>.</p>
 <p>Per JavaScript le funzioni sono oggetti, quindi:</p>
 <ul>
@@ -62,22 +62,22 @@
 </code></pre>
 </li>
 <li>
-<p>Definizione come <strong>espressioni:</strong> la definizione come espressioni assomiglia alla dichiarazione, ma appaiono all’interno di un’espressione più ampia. Il nome della funzione è opzionale in questo caso.</p>
+<p>Definizione come <strong>espressioni:</strong> la definizione come espressioni assomiglia alla dichiarazione, ma appare all’interno di un’espressione più ampia. Il nome della funzione è opzionale in questo caso.</p>
 <p>A differenza delle dichiarazioni, le espressioni di funzione non sono <em>hoisted</em> e devono essere definite prima di poter essere invocate.</p>
 <p>Esempio:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// Note that we assign it to a variable</span>
- <span class="token keyword">const</span> <span class="token function-variable function">square</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> x<span class="token operator">*</span>x<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span> 
+<span class="token keyword">const</span> <span class="token function-variable function">square</span> <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> x<span class="token operator">*</span>x<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span> 
 
 <span class="token comment">// Function expressions can include names, which is useful for recursion.</span>
- <span class="token keyword">const</span> <span class="token function-variable function">f</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">fact</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">const</span> <span class="token function-variable function">f</span> <span class="token operator">=</span> <span class="token keyword">function</span> <span class="token function">fact</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
 	 <span class="token keyword">if</span> <span class="token punctuation">(</span>x <span class="token operator">&lt;=</span> <span class="token number">1</span><span class="token punctuation">)</span>
 		 <span class="token keyword">return</span> <span class="token number">1</span><span class="token punctuation">;</span>
 	 <span class="token keyword">else</span>
 		 <span class="token keyword">return</span> x <span class="token operator">*</span> <span class="token function">fact</span><span class="token punctuation">(</span>x <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token punctuation">}</span><span class="token punctuation">;</span> 
+<span class="token punctuation">}</span><span class="token punctuation">;</span> 
 
 <span class="token comment">// Function expressions can also be used as arguments to other functions:</span>
- <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> a<span class="token operator">-</span>b<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">sort</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> a<span class="token operator">-</span>b<span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 </code></pre>
 </li>
 <li>
@@ -104,10 +104,10 @@
  <span class="token punctuation">}</span>
 </code></pre>
 <h2 id="invocare-le-funzioni">Invocare le funzioni</h2>
-<p>Vediamo cinque modi in cui le funzioni JavaScript possono essere invocate</p>
+<p>Vediamo cinque modi in cui le funzioni JavaScript possono essere invocate.</p>
 <h3 id="invocazione-come-funzione">Invocazione come funzione</h3>
 <p>Questo è il modo più comune di invocare una funzione.</p>
-<p>Un’espressione di invocazione consiste nel nome della funzione seguita da parentesi che racchiudono una lista di espressioni che vengono valutate e passate come argomento.</p>
+<p>Un’espressione di invocazione consiste nel nome della funzione seguita da parentesi che racchiudono la lista di espressioni che vengono valutate e passate come argomento.</p>
 <p>Il valore di ritorno della funzione diventa il valore dell’espressione di invocazione.</p>
 <p>Il contesto di invocazione (il valore di <code>this</code>) è l’<strong>oggetto globale</strong>, ma in genere non viene utilizzato.</p>
 <p>Esempio</p>
@@ -129,7 +129,7 @@
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> calculator <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token comment">// An object literal </span>
 	operand1<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
 	operand2<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-	<span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>        
+	<span class="token function">add</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
 		 <span class="token comment">// Note the use of the "this" keyword to refer to the containing object. </span>
 		 <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>operand1 <span class="token operator">+</span> <span class="token keyword">this</span><span class="token punctuation">.</span>operand2<span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
@@ -138,20 +138,20 @@ calculator<span class="token punctuation">.</span><span class="token function">a
 calculator<span class="token punctuation">.</span>result  <span class="token comment">// =&gt; 2</span>
 </code></pre>
 <p>Un aspetto importante è che le funzioni innestate dentro i metodi non possono usare <code>this</code> per riferirsi all’oggetto che le contiene (questo non vale per le arrow function, le quali ereditano il valore di <code>this</code>):</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> o <span class="token operator">=</span> <span class="token punctuation">{</span>      <span class="token comment">// An object o.            </span>
-		m<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>      <span class="token comment">// Method m of the object. </span>
-			<span class="token keyword">let</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>  <span class="token comment">// Save the "this" value in a variable. </span>
-			<span class="token keyword">this</span> <span class="token operator">===</span> o        <span class="token comment">// =&gt; true: "this" is the object o. </span>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> o <span class="token operator">=</span> <span class="token punctuation">{</span>                 <span class="token comment">// An object o.            </span>
+		m<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>       <span class="token comment">// Method m of the object. </span>
+			 <span class="token keyword">let</span> self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>   <span class="token comment">// Save the "this" value in a variable. </span>
+			 <span class="token keyword">this</span> <span class="token operator">===</span> o         <span class="token comment">// =&gt; true: "this" is the object o. </span>
 			
-			<span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>              <span class="token comment">// call the nested function f();              </span>
-			<span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token comment">// define the nested function f </span>
-				<span class="token keyword">this</span> <span class="token operator">===</span> o    <span class="token comment">// =&gt; false: "this" is the global object</span>
-				self <span class="token operator">===</span> o    <span class="token comment">// =&gt; true: self is the outer "this" value. </span>
-			<span class="token punctuation">}</span>
+			 <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>               <span class="token comment">// call the nested function f();              </span>
+			 <span class="token keyword">function</span> <span class="token function">f</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>     <span class="token comment">// define the nested function f </span>
+				  <span class="token keyword">this</span> <span class="token operator">===</span> o      <span class="token comment">// =&gt; false: "this" is the global object</span>
+				  self <span class="token operator">===</span> o      <span class="token comment">// =&gt; true: self is the outer "this" value. </span>
+			 <span class="token punctuation">}</span>
 			
-			<span class="token keyword">const</span> <span class="token function-variable function">f2</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
-				<span class="token keyword">this</span> <span class="token operator">===</span> o  <span class="token comment">// true, since arrow functions inherit this</span>
-		  <span class="token punctuation">}</span><span class="token punctuation">;</span>
+			 <span class="token keyword">const</span> <span class="token function-variable function">f2</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+				 <span class="token keyword">this</span> <span class="token operator">===</span> o       <span class="token comment">// true, since arrow functions inherit this</span>
+		   <span class="token punctuation">}</span><span class="token punctuation">;</span>
 	  <span class="token punctuation">}</span>
  <span class="token punctuation">}</span><span class="token punctuation">;</span>
 </code></pre>
@@ -159,7 +159,9 @@ calculator<span class="token punctuation">.</span>result  <span class="token com
 <p>Se un’invocazione di funzione o metodo è preceduta dalla parola chiave <code>new</code>, si tratta di un’invocazione di costruttore. Le invocazioni di costruttore creano un nuovo oggetto inizializzandone anche i campi.</p>
 <p>Le funzioni costruttore in genere non usano la parola chiave <code>return</code>.</p>
 <p>Esempio:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx">o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token comment">// the following two lines are equivalent</span>
+o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+o <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Object</span><span class="token punctuation">;</span>
 </code></pre>
 <h3 id="invocazione-indiretta">Invocazione indiretta</h3>
 <p>I metodi <code>call()</code> e <code>apply()</code> consentono di invocare una funzione come se fosse un metodo di un altro oggetto.</p>
@@ -181,7 +183,7 @@ introduce<span class="token punctuation">.</span><span class="token function">ap
 <h3 id="invocazione-implicita">Invocazione implicita</h3>
 <p>Alcune funzionalità del linguaggio JavaScript, come getter e setter, conversioni di tipo implicite e iteratori, possono causare l’invocazione implicita di funzioni.</p>
 <h2 id="argomenti-e-parametri">Argomenti e parametri</h2>
-<p>In Javascript, le definizioni delle funzioni non specificano un tipo previsto per i parametri, non viene eseguito alcun controllo di tipo sui valori degli argomenti passati e non viene controllato nemmeno il numero di argomenti che vengono passati.</p>
+<p>In Javascript, le definizioni delle funzioni non specificano un tipo previsto per i parametri, non viene eseguito alcun controllo di tipo sugli argomenti passati e non viene controllato nemmeno il numero di argomenti che vengono passati.</p>
 <h3 id="parametri-opzionali-e-valori-di-default">Parametri opzionali e valori di default</h3>
 <p>Quando una funzione viene invocata con meno argomenti rispetto ai parametri dichiarati, quelli aggiuntivi vengono impostati sul loro valore di default, che normalmente è <code>undefined</code>.</p>
 <p>È possibile definire un <strong>valore di default</strong> per ciascuno dei parametri della funzione direttamente nell’elenco dei parametri della funzione:</p>
@@ -201,16 +203,16 @@ introduce<span class="token punctuation">.</span><span class="token function">ap
     <span class="token keyword">return</span> greeting<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>I valori di default si possono usare in tutti i modi per definire le funzioni.</p>
+<p>I valori di default si possono usare anche negli altri modi per definire le funzioni visti precedentemente.</p>
 <h3 id="parametri-rest-ed-elenchi-di-argomenti-di-lunghezza-variabile">Parametri rest ed elenchi di argomenti di lunghezza variabile</h3>
 <p>Mentre i valori di default permettono di chiamare la funzione con meno argomenti di quelli richiesti, i <strong>parametri <em>rest</em></strong> permettono di scrivere funzioni che possono essere invocate con un numero arbitrariamente maggiore di argomenti rispetto ai parametri.</p>
 <p>Un parametro rest è preceduto da tre punti <code>...</code> e deve essere l’ultimo parametro in una dichiarazione di funzione.</p>
 <p>Il valore di un parametro rest sarà sempre un <strong>array</strong>. L’array può essere vuoto, ma un parametro rest non sarà mai <code>undefined</code></p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">function</span> <span class="token function">max</span><span class="token punctuation">(</span>first<span class="token operator">=</span><span class="token operator">-</span><span class="token number">Infinity</span><span class="token punctuation">,</span> <span class="token operator">...</span>rest<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
-		<span class="token keyword">let</span> maxValue <span class="token operator">=</span> first<span class="token punctuation">;</span> <span class="token comment">// Start by assuming the first arg is biggest </span>
+		<span class="token keyword">let</span> maxValue <span class="token operator">=</span> first<span class="token punctuation">;</span> <span class="token comment">// Start by assuming the first arg is the biggest </span>
 		
 		<span class="token comment">// Then loop through the rest of the arguments, looking for bigger </span>
-		<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> n <span class="token keyword">of</span> rest<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
+		<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> n <span class="token keyword">of</span> rest<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
 				<span class="token keyword">if</span> <span class="token punctuation">(</span>n <span class="token operator">&gt;</span> maxValue<span class="token punctuation">)</span> <span class="token punctuation">{</span> 
 				maxValue <span class="token operator">=</span> n<span class="token punctuation">;</span> 
 				<span class="token punctuation">}</span> 
@@ -222,7 +224,7 @@ introduce<span class="token punctuation">.</span><span class="token function">ap
 <span class="token function">max</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">)</span>  <span class="token comment">// =&gt; 1000</span>
 </code></pre>
 <h3 id="l’oggetto-arguments">L’oggetto Arguments</h3>
-<p>I parametri rest sono stati introdotti nelle nuove versioni di Javascript. Prima di quella versione del linguaggio, le funzioni che accettavano un numero arbitrario di parametri venivano scritte usando l’oggetto <code>Arguments</code>.</p>
+<p>I parametri rest sono stati introdotti nelle nuove versioni di JavaScript. Prima dei parametri rest, le funzioni che accettavano un numero arbitrario di parametri venivano scritte usando l’oggetto <code>Arguments</code>.</p>
 <p>All’interno del corpo di una qualsiasi funzione, l’identificatore <code>arguments</code> si riferisce all’oggetto <code>Arguments</code> per quella chiamata. L’oggetto <code>Arguments</code> è un oggetto array-like che permette di recuperare i valori degli argomenti passati alla funzione tramite indice numerico.</p>
 <h3 id="destrutturazione-degli-argomenti-di-funzione-nei-parametri">Destrutturazione degli argomenti di funzione nei parametri</h3>
 <p>Se si definisce una funzione che ha i nomi dei parametri tra parentesi quadre, si sta dicendo alla funzione di aspettarsi che venga passato un array per ogni parametro tra parentesi quadre.</p>
@@ -241,12 +243,12 @@ introduce<span class="token punctuation">.</span><span class="token function">ap
 </code></pre>
 <h3 id="tipi-degli-argomenti">Tipi degli argomenti</h3>
 <p>I parametri dei metodi Javascript non hanno tipi dichiarati e non viene eseguito alcun controllo di tipo sui valori passati a una funzione.</p>
-<p>JavaScript esegue conversioni di tipo secondo le necessità. Quindi, se si scrive una funzione che si aspetta un argomento stringa e poi si chiama quella funzione con un valore di qualche altro tipo, il valore passato verrà semplicemente convertito in una stringa quando dentro la funzione si cerca di usarlo come stringa.</p>
+<p>JavaScript esegue conversioni di tipo secondo le necessità. Quindi, se si scrive una funzione che si aspetta un argomento stringa e poi si chiama quella funzione con un valore di qualche altro tipo, il valore passato verrà convertito in una stringa quando dentro la funzione si cerca di usarlo come stringa.</p>
 <p>È quindi buona pratica aggiungere del codice per controllare i tipi degli argomenti (usando <code>typeof</code> e l’operatore di confronto stretto <code>===</code>). È meglio che una funzione fallisca immediatamente con un errore chiaro, piuttosto che iniziare l’esecuzione e fallire in seguito con un messaggio di errore ambiguo.</p>
 <h2 id="funzioni-come-valori">Funzioni come valori</h2>
 <p>In JavaScript le funzioni sono anche <strong>valori</strong> veri e propri. Questo significa che possono essere:</p>
 <ul>
-<li><strong>Assegnate a variabili:</strong> Il nome della funzione diventa quindi solo un riferimento a all’oggetto funzione.</li>
+<li><strong>Assegnate a variabili:</strong> Il nome della funzione diventa quindi solo un riferimento all’oggetto funzione.</li>
 <li><strong>Memorizzate in proprietà di oggetti:</strong> in questo caso la chiamiamo “metodo”.</li>
 <li><strong>Inserite in array:</strong> le funzioni possono essere elementi di un array.</li>
 <li><strong>Passate come argomenti ad altre funzioni:</strong> Questo permette di creare funzioni generiche e flessibili.</li>
@@ -256,8 +258,8 @@ introduce<span class="token punctuation">.</span><span class="token function">ap
 <span class="token function">square</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>        <span class="token comment">// =&gt; 16</span>
 <span class="token function">s</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span>             <span class="token comment">// =&gt; 16</span>
 </code></pre>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token operator">=&gt;</span> x<span class="token operator">*</span>x<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// An array literal</span>
-a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>              <span class="token comment">// =&gt; 400</span>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span>x <span class="token operator">=&gt;</span> x<span class="token operator">*</span>x<span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// An array literal containing a function and 20</span>
+a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">)</span>               <span class="token comment">// =&gt; 400</span>
 </code></pre>
 <h3 id="definire-proprietà-nelle-funzioni">Definire Proprietà nelle Funzioni</h3>
 <p>Essendo oggetti, le funzioni possono avere anche <strong>proprietà</strong> al loro interno. Questo è utile per memorizzare informazioni statiche che devono persistere tra diverse chiamate alla funzione.</p>
@@ -284,7 +286,7 @@ uniqueInteger<span class="token punctuation">.</span>counter <span class="token 
 <p>Le parentesi attorno alla definizione della funzione sono necessarie per farla interpretare come espressione, e le parentesi finali servono per invocarla subito.</p>
 <p>L’uso delle IIFE è diventato meno comune con l’introduzione dei <strong>moduli</strong> in JavaScript.</p>
 <h2 id="chiusure">Chiusure</h2>
-<p>Le funzioni JS hanno uno scope lessicale, questo significa che <strong>quando vengono eseguite utilizzano lo scope di quando sono state definite</strong> e non lo scope di quando vengono invocate.</p>
+<p>Le funzioni JS hanno uno scope lessicale, questo significa che <strong>quando vengono eseguite utilizzano lo scope di quando sono state definite</strong> e non solo lo scope di quando vengono invocate.</p>
 <p>Quindi una funzione oltre ad includere il proprio codice deve anche mantenere un riferimento allo scope in cui la funzione era stata definita.</p>
 <p>Questo concetto si chiama <strong>chiusura</strong>.</p>
 <p>Tutti le funzioni JavaScript sono tecnicamente chiusure, ma la loro vera utilità si manifesta quando vengono invocate da un scope diverso da quello in cui sono state definite, come nel caso di funzioni annidate.</p>
@@ -299,17 +301,22 @@ uniqueInteger<span class="token punctuation">.</span>counter <span class="token 
 <span class="token function">inner_func</span><span class="token punctuation">(</span><span class="token punctuation">)</span>                    <span class="token comment">// =&gt; "local scope"</span>
 </code></pre>
 <p>La funzione <code>checkscope()</code> restituisce una funzione annidata <code>f</code>. Anche se <code>f()</code> viene invocata al di fuori di <code>checkscope()</code>, accede comunque alla variabile <code>scope</code> nel suo ambiente di definizione originale.</p>
-<p>Un altro esempio, per una funzione che incrementa un contatore. Al posto di avere il contatore come una proprietà interna alla funzione (che chiunque potrebbe modificare) usiamo una funzione con uno scope privato:</p>
-<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> uniqueInteger <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token comment">// Define and invoke </span>
-		<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>               
-		<span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token keyword">return</span> counter<span class="token operator">++</span><span class="token punctuation">;</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
- <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
- <span class="token function">uniqueInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// =&gt; 0</span>
- <span class="token function">uniqueInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token comment">// =&gt; 1</span>
+<p>Vediamo un altro esempio, per una funzione che incrementa un contatore. Al posto di avere il contatore come una proprietà interna alla funzione (che chiunque potrebbe modificare) usiamo una funzione con uno scope privato:</p>
+<pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">function</span> <span class="token function">createCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+	 <span class="token keyword">let</span> value <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+	 <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+		 <span class="token keyword">return</span> value<span class="token operator">++</span><span class="token punctuation">;</span>
+	 <span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+ 
+<span class="token keyword">let</span> uniqueInteger <span class="token operator">=</span> <span class="token function">createCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">uniqueInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// =&gt; 0</span>
+<span class="token function">uniqueInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// =&gt; 1</span>
+<span class="token function">uniqueInteger</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// =&gt; 2</span>
 </code></pre>
-<p>In questo caso a <code>uniqueInteger</code> è stata assegnata la funzione interna che ha il suo stato privato contenente <code>counter</code>. In questo modo la funzione <code>uniqueInteger</code> ha accesso esclusivo alla variabile counter.</p>
+<p>In questo caso viene creata una funzione <code>createCounter()</code> che restituisce una nuova funzione. La funzione restituita ha un proprio stato privato contenente la variabile <code>value</code>. In questo modo la variabile (che è una funzione) <code>uniqueInteger</code> ha un accesso esclusivo alla variabile <code>value</code> (nessuno da fuori può modificare il valore del counter interno)</p>
 <p>Un altro esempio molto comune è il seguente, in cui si vuole associare una funzione al verificarsi di un evento su un componente HTML.</p>
-<p>Ad esempio se abbiamo due bottoni e vogliamo che uno incrementi una variabile contatore e l’altro bottone che la decrementi possiamo sfruttare le chiusure per farlo su un variabile condivisa <code>counter</code>:</p>
+<p>Ad esempio se abbiamo due bottoni e vogliamo che uno incrementi un contatore e l’altro bottone che lo decrementi possiamo sfruttare le chiusure per farlo su un variabile condivisa <code>counter</code>:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">function</span> <span class="token function">setupCounterHandlers</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> <span class="token comment">// Variabile privata nella closure</span>
 
@@ -326,7 +333,6 @@ uniqueInteger<span class="token punctuation">.</span>counter <span class="token 
 
 <span class="token comment">// Inizializza gli event listener</span>
 <span class="token function">setupCounterHandlers</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
 </code></pre>
 <p>Quando i bottoni verranno premuti verranno eseguite le funzioni interne che fanno l’incremento/decremento.</p>
 <p>Le chiusure offrono quindi i <strong>vantaggi</strong> di:</p>

@@ -1,6 +1,6 @@
 ﻿# Operatori
 
-Il modo più comune per creare delle espressioni complesse è tramite l’utilizzo di **operatori**, cioè dei simboli che, operano su dei valori e ne producono uno nuovo.
+Il modo più comune per creare delle espressioni complesse è tramite l’utilizzo di **operatori**, cioè dei simboli che operano su dei valori e ne producono uno nuovo.
 
 Gli operatori sono utilizzati per: espressioni aritmetiche, espressioni di confronto, espressioni logiche, espressioni di assegnamento, ecc…
 
@@ -10,7 +10,7 @@ Analizziamo degli aspetti importanti che riguardano gli operatori.
 
 ## Numero di operandi
 
-Gli operatori si possono categorizzare in base al numero di operandi su cui lavorano. La maggior parte degli operatori sono **operatori binari**, cioè che lavorano su due operandi. Ci sono anche **operatori unari** e un **operatore ternario**
+Gli operatori si possono categorizzare in base al numero di operandi su cui lavorano. La maggior parte degli operatori sono **operatori binari**, cioè che lavorano su due operandi. Ci sono anche **operatori unari** (`!` (*not* logico), `-` (simbolo di negazione), `++`, `--`, `typeof`) e un **operatore ternario** (`condizione ? valore_se_vero : valore_se_falso`)
 
 ## Tipi degli operandi
 
@@ -18,7 +18,7 @@ Alcuni operatori accettano un tipo di operandi qualsiasi, altri vogliono dei tip
 
 JavaScript tenta sempre di convertire un tipo sbagliato nel tipo che si aspetta.
 
-Alcuni operatori però si comportano in modo differente in base al tipo degli operatori (ad esempio l’operatore `+` che può fare somma tra due numeri oppure la concatenazione tra stringhe)
+Alcuni operatori però sono polimorfi, cioè si comportano in modo differente in base al tipo degli operatori (ad esempio l’operatore `+` può fare somma tra due numeri oppure la concatenazione tra stringhe)
 
 ## Precedenza degli operatori
 

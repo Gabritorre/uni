@@ -42,14 +42,14 @@ o<span class="token punctuation">[</span><span class="token string">"1"</span><s
 <p>Un aspetto particolare è che gli array possono essere <strong>sparsi</strong>, cioè ci possono essere dei buchi tra gli indici e non necessariamente il primo indice è 0. In questi array il campo <code>length</code> non corrisponde al numero reale di elementi nell’array.</p>
 <p>Nota: le <strong>stringhe</strong> sono trattabili come <strong>array read-only di caratteri</strong></p>
 <h2 id="creazione">Creazione</h2>
-<p>Ci sono vari modi per creare array, in ogni modo gli array creati possiedono come prototype l’oggetto <code>Array.prototype</code> che possiede molti metodi utili per operare sugli array.</p>
+<p>Ci sono vari modi per creare array, in ogni modo gli array creati possiedono come prototype l’oggetto <code>Array.prototype</code> in cui ci sono molti metodi utili per operare sugli array.</p>
 <h3 id="array-letterali">Array letterali</h3>
 <p>Il modo più semplici è quello di creare gli array come letterali:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> empty <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>                 <span class="token comment">// An array with no elements</span>
 <span class="token keyword">let</span> primes <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">11</span><span class="token punctuation">]</span><span class="token punctuation">;</span>  <span class="token comment">// An array with 5 numeric elements</span>
 <span class="token keyword">let</span> misc <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token number">1.1</span><span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">,</span> <span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// 3 elements of various types + trailing comma</span>
 </code></pre>
-<p>è possibile creare array sparsi in questo modo</p>
+<p>è possibile creare array sparsi in questo modo:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// Elements at indexes 0 and 2. No element at index 1. length:3</span>
 </code></pre>
 <p>Se si accede all’elemento con indice <code>1</code> si otterrà <code>undefined</code> (in generale questo accade quando si tenta di accedere ad una proprietà non esistente di un oggetto)</p>
@@ -58,7 +58,7 @@ o<span class="token punctuation">[</span><span class="token string">"1"</span><s
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// b == [0, 1, 2, 3, 4]</span>
 </code></pre>
-<p>Può essere usato per fare una <strong>copia superficiale</strong> (shallow copy) degli elementi (cioè se gli elementi sono oggetti copierà solo il riferimento)</p>
+<p>Può essere usato per fare una <strong>copia superficiale</strong> (shallow copy) degli elementi (cioè se gli elementi sono oggetti verrà copiato solo il riferimento)</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> original <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token keyword">let</span> copy <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>original<span class="token punctuation">]</span><span class="token punctuation">;</span>
 copy<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>        <span class="token comment">// Modifying the copy does not change the original</span>
@@ -92,7 +92,7 @@ a<span class="token punctuation">[</span>i <span class="token operator">+</span>
 a<span class="token punctuation">[</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">;</span>        <span class="token comment">// Write element 3</span>
 </code></pre>
 <p>è possibile anche usare come indice numeri negativi, numeri con la virgola, stringhe… Questi verranno convertiti come stringhe e saranno dei nomi di proprietà valide.</p>
-<p>È importante notare che però non verranno utilizzati come propri indici dell’array, ma solo come proprietà dell’oggetto</p>
+<p>È importante notare che però non verranno utilizzati come indici dell’array, ma solo come proprietà dell’oggetto</p>
 <pre class=" language-jsx"><code class="prism  language-jsx">a<span class="token punctuation">[</span><span class="token operator">-</span><span class="token number">1.23</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>  <span class="token comment">// This creates a property named "-1.23"</span>
 a<span class="token punctuation">[</span><span class="token string">"1000"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>    <span class="token comment">// This the 1001st element of the array</span>
 a<span class="token punctuation">[</span><span class="token number">1.000</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>     <span class="token comment">// Array index 1. Same as a[1] = 1;</span>
@@ -111,9 +111,9 @@ a<span class="token punctuation">.</span>length <span class="token operator">=</
 <p>Oltre ad aggiungere elementi esplicitandone l’indice è possibile usare:</p>
 <ul>
 <li><code>push(element)</code>: aggiunge un elemento alla fine dell’array</li>
-<li><code>unshift(element)</code>: aggiunge un elemento all’inizio dell’array e shift gli elementi di una posizione avanti</li>
+<li><code>unshift(element)</code>: aggiunge un elemento all’inizio dell’array e fa shift degli elementi di una posizione avanti</li>
 </ul>
-<p>Contrariamente possiamo rimuovere elementi usando:</p>
+<p>Analogamente possiamo rimuovere elementi usando:</p>
 <ul>
 <li><code>pop()</code>: rimuove l’elemento alla fine dell’array</li>
 <li><code>shift()</code>: rimuove l’elemento all’inizio dell’array e shifta gli elementi di una posizione indietro</li>
@@ -124,26 +124,26 @@ a<span class="token punctuation">.</span>length <span class="token operator">=</
 <p>Il modo più semplice per iterare un array è tramite il ciclo <code>for of</code> che ritorna gli elementi con indice crescente:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> letters <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span><span class="token string">"Hello world"</span><span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token comment">// An array of letters</span>
 <span class="token keyword">let</span> string <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> letter <span class="token keyword">of</span> letters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> letter <span class="token keyword">of</span> letters<span class="token punctuation">)</span> <span class="token punctuation">{</span>
    string <span class="token operator">+=</span> letter<span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 string <span class="token comment">// =&gt; "Hello world"; we reassembled the original text</span>
 </code></pre>
 <p>Si può utilizzare il metodo <code>entries()</code> per ottenere coppie indice-valore:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> everyother <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>index<span class="token punctuation">,</span> letter<span class="token punctuation">]</span> <span class="token keyword">of</span> letters<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>index<span class="token punctuation">,</span> letter<span class="token punctuation">]</span> <span class="token keyword">of</span> letters<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
    <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span> everyother <span class="token operator">+=</span> letter<span class="token punctuation">;</span> <span class="token comment">// letters at even indexes</span>
 <span class="token punctuation">}</span>
 everyother    <span class="token comment">// =&gt; "Hlowrd"</span>
 </code></pre>
 <p>Esiste anche un approccio più orientato alla programmazione funzionale usando il metodo <code>forEach()</code>. Questo metodo prende una funzione come argomento e tale funzione verrà chiamata su ogni elemento dell’array.</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> uppercase <span class="token operator">=</span> <span class="token string">""</span><span class="token punctuation">;</span>
-letters<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>letter <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>    <span class="token comment">// Note arrow function syntax ere</span>
+letters<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>letter <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>    <span class="token comment">// Note arrow function syntax here</span>
    uppercase <span class="token operator">+=</span> letter<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 uppercase <span class="token comment">// =&gt; "HELLO WORLD"</span>
 </code></pre>
-<p>Generalmente le funzioni come <code>forEach()</code> invocano la funzione passata come argomento con 3 parametri: il <strong>valore</strong> dell’elemento, <strong>l’indice</strong> dell’elemento e <strong>l’array stesso</strong>.</p>
+<p>Generalmente le funzioni come <code>forEach()</code> invocano la funzione passata come argomento con 3 parametri: il <strong>valore</strong> dell’elemento, <strong>l’indice</strong> dell’elemento e <strong>l’array stesso</strong>. Nell’esempio viene data una funzione che richiede un solo parametro (<code>letter</code>).</p>
 <p>Altri metodi per iterare array sono i seguenti:</p>
 
 <table>
@@ -210,7 +210,7 @@ table<span class="token punctuation">[</span><span class="token number">5</span>
 </code></pre>
 <h2 id="oggetti-array-like">Oggetti array-like</h2>
 <p>Gli oggetti <strong>array-like</strong> sono oggetti che non sono propriamente array ma che hanno una lunghezza e le proprietà hanno un nome numerico.</p>
-<p>Tali oggetti non hanno come prototipo <code>Array.prototype</code> quindi non si possono chiamare i relativi metodi e aspettarsi l’aggiornamento automatico di <code>length</code>.</p>
+<p>Tali oggetti non hanno come prototipo <code>Array.prototype</code> quindi non si possono chiamare i relativi metodi e nemmeno aspettarsi l’aggiornamento automatico di <code>length</code>.</p>
 <p>D’altra parte molti algoritmi che funzionano sugli array funzionano anche sugli oggetti array-like a causa di come sono fatti.</p>
 <p>In questo codice viene creato un oggetto normale e viene trattato come un oggetto array-like:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token comment">// Start with a regular empty object</span>
@@ -228,7 +228,7 @@ a<span class="token punctuation">.</span>length <span class="token operator">=</
 	 total <span class="token operator">+=</span> a<span class="token punctuation">[</span>j<span class="token punctuation">]</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 </code></pre>
-<p>Nella realtà molti metodi che interagiscono con pagine HTML ritornano oggetti array-like</p>
+<p>Nella realtà molti metodi che interagiscono con pagine HTML ritornano oggetti array-like.</p>
 
     </div>
   </div>
