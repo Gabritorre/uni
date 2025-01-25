@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2024-12-02_SVG e canvas</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#svg-e-canvas">SVG e canvas</a>
+<ul>
+<li><a href="#svg">SVG</a></li>
+<li><a href="#canvas">Canvas</a></li>
+<li><a href="#differenze-tra-svg-e-canvas">Differenze tra SVG e Canvas:</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="svg-e-canvas">SVG e canvas</h1>
+<h2 id="svg">SVG</h2>
+<p><strong>SVG</strong> (<em>Scalable Vector Graphics</em>) è un formato di immagine, dove le immagini sono descritte da file di testo utilizzando il linguaggio XML contenenti gli step per rappresentare la grafica (differentemente da formati come PNG e JPEG che specificano valori di una matrice di pixel).</p>
+<p>le SVG possono essere integrate in HTML in tre modi:</p>
+<ol>
+<li>usando il tag <code>&lt;img&gt;</code> inserendo un file con estensione <code>.svg</code></li>
+<li>integrare le istruzioni XML direttamente nel codice HTML usando il tag <code>&lt;svg&gt;</code></li>
+<li>usare delle API per modificare dinamicamente elementi SVG e crearne di nuovi da capo</li>
+</ol>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>This is a red square: <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>svg</span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>10<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>10<span class="token punctuation">"</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>rect</span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>10<span class="token punctuation">"</span></span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>10<span class="token punctuation">"</span></span> <span class="token attr-name">fill</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>red<span class="token punctuation">"</span></span> <span class="token punctuation">/&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>svg</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<h2 id="canvas">Canvas</h2>
+<p><strong>Canvas</strong>, d’altra parte, crea una superficie di disegno all’interno del documento ed espone un’API di disegno a JavaScript. Un canvas si crea con il tag <code>&lt;canvas&gt;</code> e tramite JavaScript si può ottenere il canvas, e poi ottenere il contesto (tramite <code>getContext()</code>) per poi disegnare la grafica.</p>
+<pre class=" language-html"><code class="prism  language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">&gt;</span></span>This is a red square: <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>canvas</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>square<span class="token punctuation">"</span></span> <span class="token attr-name">width</span><span class="token attr-value"><span class="token punctuation">=</span>10</span> <span class="token attr-name">height</span><span class="token attr-value"><span class="token punctuation">=</span>10</span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>canvas</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">&gt;</span></span><span class="token script language-javascript">
+	<span class="token keyword">let</span> canvas <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">"#square"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// Get first canvas element</span>
+	<span class="token keyword">let</span> context <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">"2d"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>           <span class="token comment">// Get 2D drawing context</span>
+	context<span class="token punctuation">.</span>fillStyle <span class="token operator">=</span> <span class="token string">"#f00"</span><span class="token punctuation">;</span>                      <span class="token comment">// Set fill color to red</span>
+	context<span class="token punctuation">.</span><span class="token function">fillRect</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">;</span>                     <span class="token comment">// Fill a square</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">&gt;</span></span>
+</code></pre>
+<h2 id="differenze-tra-svg-e-canvas">Differenze tra SVG e Canvas:</h2>
+<p>SVG è più adatto per immagini vettoriali scalabili e interattive, mentre Canvas è più indicato per grafica raster, manipolazione di pixel e visualizzazioni dinamiche di dati.</p>
+<ul>
+<li><strong>Modalità di disegno:</strong> Con Canvas, si creano disegni <strong>chiamando metodi</strong>, mentre con SVG si crea un <strong>albero di elementi XML</strong>.</li>
+<li><strong>Scalabilità:</strong> Le immagini SVG sono scalabili senza perdita di qualità, mentre le immagini create con Canvas possono diventare sfocate se ingrandite.</li>
+<li><strong>Modificabilità:</strong> Gli elementi SVG possono essere facilmente modificati o rimossi dal loro albero, mentre in Canvas, le modifiche spesso richiedono di cancellare l’intero disegno e ridisegnarlo.</li>
+<li><strong>Creazione:</strong> Gli elementi SVG possono essere inclusi direttamente in HTML o creati dinamicamente con il DOM API. Canvas viene creato con l’elemento <code>&lt;canvas&gt;</code> e il suo contenuto viene disegnato tramite l’API JavaScript.</li>
+<li><strong>Grafica 3D:</strong> Canvas supporta anche la grafica 3D tramite WebGL. SVG non ha supporto nativo per la grafica 3D.</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
