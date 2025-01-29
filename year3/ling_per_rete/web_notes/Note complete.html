@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-12-02_SVG e canvas</title>
+  <title>Note complete</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -153,7 +153,6 @@
 <p>Il fatto che il nome della variabile sia salvato come stringa non è banale, infatti è possibile fare modifiche al nome della variabile oppure decidere il nome della variabile a <em>runtime</em>.</p>
 <p>Lo <strong>statement</strong> è del testo che non produce un valore, ma altera lo stato dell’esecuzione, esempi di statement includono i cicli (<code>for</code>, <code>while</code>), i blocchi condizionali (<code>if</code>, <code>else</code>), le istruzioni <code>return</code>, <code>throw</code>, gli assegnamenti e le dichiarazioni di variabili o funzioni.</p>
 <h2 id="struttura-lessicale">Struttura lessicale</h2>
-<p>Vediamo le regole lessicali degli elementi basilari di JavaScript.</p>
 <p>JavaScript è <strong>case-sensitive</strong>, cioè distingue tra lettere maiuscole e minuscole, quindi keyword e identificatori che differiscono anche solo per l’uso di lettere maiuscole o minuscole sono considerati nomi distinti.</p>
 <p>JavaScript generalmente ignora gli spazi, le <em>new line</em> e le tabulazioni.</p>
 <p>Supporta due stili di <strong>commento</strong>:</p>
@@ -162,7 +161,7 @@
 <li>il commento multi-line con i caratteri <code>/* */</code></li>
 </ul>
 <p>I <strong>letterali</strong> (o <em>literal</em>) sono dei valori direttamente scritti nel codice, si oppongono ai valori derivanti dall’esterno (input utente, input da sensori, input da API, ecc…)</p>
-<p>Gli <strong>identificativi</strong>, che includono nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un <em>underscore</em> (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.</p>
+<p>Gli <strong>identificativi</strong> che includono, nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un <em>underscore</em> (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.</p>
 <p>Come <em>naming convention</em> per nomi di variabili e funzioni si usa il camel-case.</p>
 <p>L’utilizzo del punto e virgola (<code>;</code>) per indicare la fine di uno <em>statement</em> è <strong>opzionale</strong>, anche se con particolari stili di programmazione aiuta a disambiguare la fine degli statement. Generalmente (ma ci sono dei casi particolari) JavaScript tratta un accapo come un punto e virgola solo quando non riesce a parsare il codice a meno di aggiungere un ‘;’</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a
@@ -275,7 +274,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <h2 id="infinity-value">Infinity value</h2>
 <p>Operazioni aritmetiche non sollevano eccezioni in caso di <em>overflow</em>, <em>underflow</em> e divisione per zero, piuttosto viene usato il valore speciale <code>Infinity</code> oppure <code>-Infinity</code>.</p>
 <h2 id="nan-not-a-number">NaN (Not a number)</h2>
-<p>In casi particolari come <code>0/0</code> e altre operazioni particolari che non hanno un valore definito e viene assegnato un <code>NaN</code> (<em>Not a Number</em>).</p>
+<p>In casi particolari come <code>0/0</code> e altre operazioni particolari che non hanno un valore definito, viene assegnato <code>NaN</code> (<em>Not a Number</em>).</p>
 <p>Una caratteristica particolare di <code>NaN</code> è l’impossibilità di essere comparato con altri valori, per controllare che una variabile sia <code>NaN</code> si usa il metodo <code>Number.isNaN()</code></p>
 <h2 id="il-global-object">Il Global object</h2>
 <p>Esiste un particolare oggetto chiamato <strong>Global object</strong>, è un regolare oggetto che possiede delle proprietà accessibili globalmente.</p>
@@ -695,7 +694,7 @@ w <span class="token operator">=</span> x <span class="token operator">=</span> 
 <li><code>while</code> e <code>for</code></li>
 <li><code>break</code>, <code>return</code> e <code>throw</code></li>
 </ul>
-<p>Gli statement terminano con un <code>;</code>. È possibili racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:</p>
+<p>Gli statement terminano con un <code>;</code>. È possibile racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token punctuation">{</span>
  x <span class="token operator">=</span> Math<span class="token punctuation">.</span>PI<span class="token punctuation">;</span>
  cx <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">cos</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -759,7 +758,7 @@ sum <span class="token comment">// =&gt; 6</span>
 pairs <span class="token comment">// =&gt; "x1y2z3"</span>
 </code></pre>
 <h2 id="for-in">for in</h2>
-<p>Il <code>for in</code> è un particolare tipo di ciclo for che torna utili con oggetti anche non iterabili.</p>
+<p>Il <code>for in</code> è un particolare tipo di ciclo for che torna utile con oggetti anche non iterabili.</p>
 <p>Il funzionamento è simile al <code>for of</code> ma questo ciclo itera attraverso le <strong>proprietà</strong> di un oggetto (tranne quelle marcate come non <code>enumerable</code>).</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> p <span class="token keyword">in</span> o<span class="token punctuation">)</span> <span class="token punctuation">{</span>     <span class="token comment">// Assign property names of o to variable p</span>
    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>o<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token comment">// Print the value of each property</span>
@@ -974,6 +973,7 @@ console<span class="token punctuation">.</span><span class="token function">log<
 <p>Il metodo <code>Object.assign(destination_obj, source_obj)</code> si aspetta almeno due argomenti, il primo è l’oggetto che verrà modificato (e anche ritornato), mentre gli altri sono oggetti da cui ricavare le proprietà.</p>
 <p>In pratica ogni <em>own property enumerable</em> dell’oggetto sorgente viene copiata nell’oggetto destinazione. Le proprietà già esistenti nell’oggetto destinazione vengono sovrascritte.</p>
 <p>Nota: eventuali metodi getter e setter vengono invocati durante la copia (ma non copiati essi stessi)</p>
+<p>Nota: <code>Object.assign()</code> esegue una <strong>shallow copy</strong>, per una deep copy si usa il metodo <code>structuredClone()</code> che prende come parametro un oggetto e ritorna una copia.</p>
 <p>Solamente con la creazione tramite gli <em>object literal</em>, è possibile utilizzare una sintassi particolare (<code>...</code>) per copiare le <em>own property enumerable</em> di un oggetto in un altro durante la sua creazione:</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> position <span class="token operator">=</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
 <span class="token keyword">let</span> dimensions <span class="token operator">=</span> <span class="token punctuation">{</span> width<span class="token punctuation">:</span> <span class="token number">10</span><span class="token punctuation">,</span> height<span class="token punctuation">:</span> <span class="token number">7</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>

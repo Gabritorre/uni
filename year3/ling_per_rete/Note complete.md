@@ -23,9 +23,7 @@ Lo **statement** è del testo che non produce un valore, ma altera lo stato dell
 
 ## Struttura lessicale
 
-Vediamo le regole lessicali degli elementi basilari di JavaScript.
-
-JavaScript è **case-sensitive**, cioè distingue tra lettere maiuscole e minuscole,, quindi keyword e identificatori che differiscono anche solo per l'uso di lettere maiuscole o minuscole sono considerati nomi distinti.
+JavaScript è **case-sensitive**, cioè distingue tra lettere maiuscole e minuscole, quindi keyword e identificatori che differiscono anche solo per l'uso di lettere maiuscole o minuscole sono considerati nomi distinti.
 
 JavaScript generalmente ignora gli spazi, le *new line* e le tabulazioni.
 
@@ -36,7 +34,7 @@ Supporta due stili di **commento**:
 
 I **letterali** (o *literal*) sono dei valori direttamente scritti nel codice, si oppongono ai valori derivanti dall’esterno (input utente, input da sensori, input da API, ecc…)
 
-Gli **identificativi**, che includono nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un *underscore* (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.
+Gli **identificativi** che includono, nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un *underscore* (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.
 
 Come *naming convention* per nomi di variabili e funzioni si usa il camel-case.
 
@@ -195,7 +193,7 @@ Operazioni aritmetiche non sollevano eccezioni in caso di *overflow*, *underflow
 
 ## NaN (Not a number)
 
-In casi particolari come `0/0` e altre operazioni particolari che non hanno un valore definito e viene assegnato un `NaN` (*Not a Number*).
+In casi particolari come `0/0` e altre operazioni particolari che non hanno un valore definito, viene assegnato `NaN` (*Not a Number*).
 
 Una caratteristica particolare di `NaN` è l’impossibilità di essere comparato con altri valori, per controllare che una variabile sia `NaN` si usa il metodo `Number.isNaN()`
 
@@ -500,7 +498,7 @@ Gli statement più comuni sono quelli che modificano il normale flusso di esecuz
 - `while` e `for`
 - `break`, `return` e `throw`
 
-Gli statement terminano con un `;`. È possibili racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:
+Gli statement terminano con un `;`. È possibile racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:
 
 ```jsx
 {
@@ -597,7 +595,7 @@ pairs // => "x1y2z3"
 
 ## for in
 
-Il `for in` è un particolare tipo di ciclo for che torna utili con oggetti anche non iterabili.
+Il `for in` è un particolare tipo di ciclo for che torna utile con oggetti anche non iterabili.
 
 Il funzionamento è simile al `for of` ma questo ciclo itera attraverso le **proprietà** di un oggetto (tranne quelle marcate come non `enumerable`).
 
@@ -903,6 +901,8 @@ Il metodo `Object.assign(destination_obj, source_obj)` si aspetta almeno due arg
 In pratica ogni *own property enumerable* dell’oggetto sorgente viene copiata nell’oggetto destinazione. Le proprietà già esistenti nell’oggetto destinazione vengono sovrascritte.
 
 Nota: eventuali metodi getter e setter vengono invocati durante la copia (ma non copiati essi stessi)
+
+Nota: `Object.assign()` esegue una **shallow copy**, per una deep copy si usa il metodo `structuredClone()` che prende come parametro un oggetto e ritorna una copia.
 
 Solamente con la creazione tramite gli *object literal*, è possibile utilizzare una sintassi particolare (`...`) per copiare le *own property enumerable* di un oggetto in un altro durante la sua creazione:
 

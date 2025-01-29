@@ -10,7 +10,7 @@ Gli statement più comuni sono quelli che modificano il normale flusso di esecuz
 - `while` e `for`
 - `break`, `return` e `throw`
 
-Gli statement terminano con un `;`. È possibili racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:
+Gli statement terminano con un `;`. È possibile racchiudere più statement in un blocco racchiuso tra parentesi graffe in modo che risulti uno statement unico:
 
 ```jsx
 {
@@ -107,7 +107,7 @@ pairs // => "x1y2z3"
 
 ## for in
 
-Il `for in` è un particolare tipo di ciclo for che torna utili con oggetti anche non iterabili.
+Il `for in` è un particolare tipo di ciclo for che torna utile con oggetti anche non iterabili.
 
 Il funzionamento è simile al `for of` ma questo ciclo itera attraverso le **proprietà** di un oggetto (tranne quelle marcate come non `enumerable`).
 

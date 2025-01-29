@@ -116,7 +116,7 @@ Operazioni aritmetiche non sollevano eccezioni in caso di *overflow*, *underflow
 
 ## NaN (Not a number)
 
-In casi particolari come `0/0` e altre operazioni particolari che non hanno un valore definito e viene assegnato un `NaN` (*Not a Number*).
+In casi particolari come `0/0` e altre operazioni particolari che non hanno un valore definito, viene assegnato `NaN` (*Not a Number*).
 
 Una caratteristica particolare di `NaN` è l’impossibilità di essere comparato con altri valori, per controllare che una variabile sia `NaN` si usa il metodo `Number.isNaN()`
 

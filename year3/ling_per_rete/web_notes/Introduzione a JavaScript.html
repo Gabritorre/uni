@@ -37,7 +37,6 @@
 <p>Il fatto che il nome della variabile sia salvato come stringa non è banale, infatti è possibile fare modifiche al nome della variabile oppure decidere il nome della variabile a <em>runtime</em>.</p>
 <p>Lo <strong>statement</strong> è del testo che non produce un valore, ma altera lo stato dell’esecuzione, esempi di statement includono i cicli (<code>for</code>, <code>while</code>), i blocchi condizionali (<code>if</code>, <code>else</code>), le istruzioni <code>return</code>, <code>throw</code>, gli assegnamenti e le dichiarazioni di variabili o funzioni.</p>
 <h2 id="struttura-lessicale">Struttura lessicale</h2>
-<p>Vediamo le regole lessicali degli elementi basilari di JavaScript.</p>
 <p>JavaScript è <strong>case-sensitive</strong>, cioè distingue tra lettere maiuscole e minuscole, quindi keyword e identificatori che differiscono anche solo per l’uso di lettere maiuscole o minuscole sono considerati nomi distinti.</p>
 <p>JavaScript generalmente ignora gli spazi, le <em>new line</em> e le tabulazioni.</p>
 <p>Supporta due stili di <strong>commento</strong>:</p>
@@ -46,7 +45,7 @@
 <li>il commento multi-line con i caratteri <code>/* */</code></li>
 </ul>
 <p>I <strong>letterali</strong> (o <em>literal</em>) sono dei valori direttamente scritti nel codice, si oppongono ai valori derivanti dall’esterno (input utente, input da sensori, input da API, ecc…)</p>
-<p>Gli <strong>identificativi</strong>, che includono nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un <em>underscore</em> (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.</p>
+<p>Gli <strong>identificativi</strong> che includono, nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un <em>underscore</em> (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.</p>
 <p>Come <em>naming convention</em> per nomi di variabili e funzioni si usa il camel-case.</p>
 <p>L’utilizzo del punto e virgola (<code>;</code>) per indicare la fine di uno <em>statement</em> è <strong>opzionale</strong>, anche se con particolari stili di programmazione aiuta a disambiguare la fine degli statement. Generalmente (ma ci sono dei casi particolari) JavaScript tratta un accapo come un punto e virgola solo quando non riesce a parsare il codice a meno di aggiungere un ‘;’</p>
 <pre class=" language-jsx"><code class="prism  language-jsx"><span class="token keyword">let</span> a

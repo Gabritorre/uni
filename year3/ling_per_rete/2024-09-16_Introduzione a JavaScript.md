@@ -22,9 +22,7 @@ Lo **statement** è del testo che non produce un valore, ma altera lo stato dell
 
 ## Struttura lessicale
 
-Vediamo le regole lessicali degli elementi basilari di JavaScript.
-
-JavaScript è **case-sensitive**, cioè distingue tra lettere maiuscole e minuscole,, quindi keyword e identificatori che differiscono anche solo per l'uso di lettere maiuscole o minuscole sono considerati nomi distinti.
+JavaScript è **case-sensitive**, cioè distingue tra lettere maiuscole e minuscole, quindi keyword e identificatori che differiscono anche solo per l'uso di lettere maiuscole o minuscole sono considerati nomi distinti.
 
 JavaScript generalmente ignora gli spazi, le *new line* e le tabulazioni.
 
@@ -35,7 +33,7 @@ Supporta due stili di **commento**:
 
 I **letterali** (o *literal*) sono dei valori direttamente scritti nel codice, si oppongono ai valori derivanti dall’esterno (input utente, input da sensori, input da API, ecc…)
 
-Gli **identificativi**, che includono nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un *underscore* (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.
+Gli **identificativi** che includono, nomi di variabili, nomi di funzioni, constanti ecc… devono iniziare con una lettera oppure un *underscore* (_) oppure un dollaro ($). Non possono quindi iniziare con un numero e devono essere diversi da parole chiave riservate.
 
 Come *naming convention* per nomi di variabili e funzioni si usa il camel-case.
 
