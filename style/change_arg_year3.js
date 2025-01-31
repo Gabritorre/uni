@@ -1,7 +1,7 @@
 let courses = {
 	calc_e_ling_form : ["Note complete", "Automi a stati finiti deterministici", "Automi a stati finiti non deterministici", "Espressioni regolari", "Linguaggi non regolari", "Linguaggi context-free", "Automi a pila", "Linguaggi non context free", "Macchine di Turing", "Decidibilità", "Indecidibilità", "Esercizi decidibilità", "Riducibilità", "Storie di computazione accettanti", "Mapping-riducibilità", "Turing-riducibilità", "Teorema di Rice", "Esercizi conclusivi"],
  	diritto_info : ["Note complete", "Ordinamento giuridico italiano", "Principio di neutralità", "Documenti informatici", "Monete virtuali", "Privacy", "Il commercio elettronico", "Servizi digitali", "Contratto nei social network", "Intelligenza artificiale", "Reati", "Diritto d'autore", "Telecomunicazioni", "Codice di condotta social network"],
- 	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti", "Testing", "Progettazione architetturale", "UML e progettazione software", "Progettazione di interfacce utenti"],
+ 	ing_software : ["Note complete", "Introduzione", "Ingegneria di sistema", "Piano di progetto", "Stima dei costi", "Ingegneria dei requisiti", "Documento dei requisiti", "Testing", "Progettazione architetturale", "UML e progettazione software", "Progettazione di interfacce utenti", "Progetto Impakt"],
 	ling_per_rete : ["Note complete", "Introduzione a JavaScript", "Tipi di dato e valori", "Espressioni", "Operatori", "Statement", "Oggetti", "Array", "Funzioni", "Classi", "Iteratori e generatori", "JavaScript nel browser", "SVG e canvas"],
 	reti_calc : ["Note complete", "Introduzione", "Livello fisico", "Livello di collegamento", "Gestione degli errori", "Condivisione delle risorse", "Livello di rete", "Count-to-Infinity", "Link-State routing", "Livello di trasporto", "Livello applicativo", "Sicurezza della rete", "HMAC, MD5 e cifratura a chiave simmetrica", "Cifratura a chiave pubblica", "Public key infrastructure", "DNS", "Posta elettronica", "Tecniche anti-spam", "HTTP", "UDP e TCP", "Controllo della congestione", "TLS", "IPv4", "Esercizi IPv4", "IPv6", "Routing interno ad un dominio", "Routing tra domini", "Ethernet", "Wi-Fi"],
 	ric_operativa : ["Note complete", "Spazi vettoriali", "Funzioni lineari, continuità e derivabilità", "Esercizi derivata direzionale", "Programmazione matematica", "Esercizi programmazione matematica", "Problemi convessi", "Esercizi convessità", "Programmazione lineare", "Poliedri", "Costi fissi e vincoli disgiunti", "Metodo Branch & Bound"],
@@ -19,15 +19,21 @@ function show_arguments(subj) {
 		let elem = document.createElement("li");
 		arg_link.appendChild(link_text);
 
-		if (selected_subject[i].includes("Esercizi")){
+		if (selected_subject[i] == "Progetto Impakt") {
+			arg_link.href = "https://github.com/Gabritorre/impakt";
+			arg_link.target = "_blank";
 			arg_link.classList.add("exercise");
 		}
-		else if (selected_subject[i] == "Note complete"){
-			arg_link.classList.add("full_notes");
+		else{
+			if (selected_subject[i].includes("Esercizi")){
+				arg_link.classList.add("exercise");
+			}
+			else if (selected_subject[i] == "Note complete"){
+				arg_link.classList.add("full_notes");
+			}
+			arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
+			arg_link.target = "_blank";
 		}
-		arg_link.href = subj + "/web_notes/" + selected_subject[i] + ".html";
-		arg_link.target = "_blank";
-		
 		elem.appendChild(arg_link);
 		argument_list.append(elem);
 	}
