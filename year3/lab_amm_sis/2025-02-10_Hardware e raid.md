@@ -33,32 +33,6 @@ Non fa altro che eseguire le istruzioni di un programma. Un programma è formato
 È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati
 attraverso il bus alla periferica desiderata.
 
-## Server
-
-Un server architetturalmente non è molto differente da un PC casalingo.
-
-Differenze rispetto ai PC casalinghi:
-
-- una differenza importante è che i server hanno più **ridondanza di componenti** (più alimentatori, più CPU, più dischi) per garantire più resistenza ai guasti.
-- Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.
-- Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.
-- I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in **RAID**
-    
-    Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.
-    
-- numero molto alto di interfacce di rete
-- presenza di **iLO** (*Integrated Light-Out*), Fisicamente è una porta Ethernet, la quale
-semplifica le operazioni di gestione e monitoraggio remoto.
-- un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)
-
-I server possono essere:
-
-- **server rack**: sono dei moduli (degli effettivi computer) inseriti in un armadio armadio rack con dei carrelli a scorrimento impilati uno sopra l’altro.
-    
-    ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.
-    
-- **server blade**: Sono dei moduli più compatti (computer minimali, solo CPU e ram), inseriti in uno *chassis* condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.
-
 ## RAID
 
 il RAID (*Redundant Arrays of Inexpensive Disks*) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.
@@ -94,11 +68,13 @@ Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e 
 
 ![https://i.ibb.co/9mD4XmRJ/image.png](https://i.ibb.co/9mD4XmRJ/image.png)
 
-### RAID 4
+### RAID 3 e 4
 
 Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di *xor* tra i dischi rimanenti.
 
 Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.
+
+Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.
 
 ![https://i.ibb.co/DH1MC60w/image.png](https://i.ibb.co/DH1MC60w/image.png)
 

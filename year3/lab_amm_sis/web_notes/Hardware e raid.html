@@ -17,7 +17,6 @@
 <ul>
 <li><a href="#memorie">Memorie</a></li>
 <li><a href="#cpu">CPU</a></li>
-<li><a href="#server">Server</a></li>
 <li><a href="#raid">RAID</a></li>
 </ul>
 </li>
@@ -55,44 +54,6 @@
 <p>Non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.<br>
 È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati<br>
 attraverso il bus alla periferica desiderata.</p>
-<h2 id="server">Server</h2>
-<p>Un server architetturalmente non è molto differente da un PC casalingo.</p>
-<p>Differenze rispetto ai PC casalinghi:</p>
-<ul>
-<li>
-<p>una differenza importante è che i server hanno più <strong>ridondanza di componenti</strong> (più alimentatori, più CPU, più dischi) per garantire più resistenza ai guasti.</p>
-</li>
-<li>
-<p>Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.</p>
-</li>
-<li>
-<p>Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.</p>
-</li>
-<li>
-<p>I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in <strong>RAID</strong></p>
-<p>Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.</p>
-</li>
-<li>
-<p>numero molto alto di interfacce di rete</p>
-</li>
-<li>
-<p>presenza di <strong>iLO</strong> (<em>Integrated Light-Out</em>), Fisicamente è una porta Ethernet, la quale<br>
-semplifica le operazioni di gestione e monitoraggio remoto.</p>
-</li>
-<li>
-<p>un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)</p>
-</li>
-</ul>
-<p>I server possono essere:</p>
-<ul>
-<li>
-<p><strong>server rack</strong>: sono dei moduli (degli effettivi computer) inseriti in un armadio armadio rack con dei carrelli a scorrimento impilati uno sopra l’altro.</p>
-<p>ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.</p>
-</li>
-<li>
-<p><strong>server blade</strong>: Sono dei moduli più compatti (computer minimali, solo CPU e ram), inseriti in uno <em>chassis</em> condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.</p>
-</li>
-</ul>
 <h2 id="raid">RAID</h2>
 <p>il RAID (<em>Redundant Arrays of Inexpensive Disks</em>) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.</p>
 <p>L’idea di base è quella di combinare più dischi indipendenti per ottenere o <strong>velocità, o sicurezza o capacità superiori</strong> a quelle ottenibili con un qualunque disco SLED (<em>Single Large Expensive Drive</em>)</p>
@@ -116,9 +77,10 @@ semplifica le operazioni di gestione e monitoraggio remoto.</p>
 <p>Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta <em><strong>mirroring</strong></em>), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).</p>
 <p>Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.</p>
 <p><img src="https://i.ibb.co/9mD4XmRJ/image.png" alt="https://i.ibb.co/9mD4XmRJ/image.png"></p>
-<h3 id="raid-4">RAID 4</h3>
+<h3 id="raid-3-e-4">RAID 3 e 4</h3>
 <p>Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di <em>xor</em> tra i dischi rimanenti.</p>
 <p>Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.</p>
+<p>Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.</p>
 <p><img src="https://i.ibb.co/DH1MC60w/image.png" alt="https://i.ibb.co/DH1MC60w/image.png"></p>
 <h3 id="raid-5">RAID 5</h3>
 <p><strong>Raid 5</strong>: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.</p>

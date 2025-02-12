@@ -1,0 +1,105 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-02-11_La sala server</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#la-sala-server">La sala server</a>
+<ul>
+<li><a href="#server">Server</a></li>
+<li><a href="#sala-server">Sala server</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="la-sala-server">La sala server</h1>
+<h2 id="server">Server</h2>
+<p>L’architettura di un server non è molto differente da un PC casalingo.</p>
+<p>Differenze rispetto ai PC casalinghi:</p>
+<ul>
+<li>
+<p>La più importante è che i server hanno più <strong>ridondanza di componenti</strong> (più alimentatori, più CPU, più dischi) per garantire più resistenza ai guasti.</p>
+</li>
+<li>
+<p>Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.</p>
+</li>
+<li>
+<p>Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.</p>
+</li>
+<li>
+<p>I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in <strong>RAID</strong></p>
+<p>Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.</p>
+</li>
+<li>
+<p>numero molto alto di interfacce di rete</p>
+</li>
+<li>
+<p>presenza di <strong>iLO</strong> (<em>Integrated Light-Out</em>), Fisicamente è una porta Ethernet, la quale<br>
+semplifica le operazioni di gestione e monitoraggio remoto.</p>
+</li>
+<li>
+<p>un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)</p>
+</li>
+</ul>
+<p>I server possono essere:</p>
+<ul>
+<li>
+<p><strong>server rack</strong>: sono dei moduli (degli effettivi computer) inseriti in un armadio armadio rack con dei carrelli a scorrimento impilati uno sopra l’altro.</p>
+<p>ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.</p>
+</li>
+<li>
+<p><strong>server blade</strong>: Sono dei moduli più compatti (computer minimali, solo CPU e ram), inseriti in uno <em>chassis</em> condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.</p>
+</li>
+</ul>
+<h3 id="rack-unit">Rack unit</h3>
+<p>Una rack unit, abbreviata in <strong>U</strong> (oppure RU, HU, height unit) è un’unità di misura usata per indicare l’altezza dei componenti installati in un rack. Un apparato alto un’unità rack è spesso indicato come<br>
+<code>1U</code>, e per altezze maggiori <code>2U</code>, <code>4U</code> e così via.</p>
+<p>Per comodità una unità equivale a 3 buchi nelle lastre metalliche dove si infilano i server</p>
+<p><img src="https://i.ibb.co/JjPSNKkV/image.png" alt="https://i.ibb.co/JjPSNKkV/image.png"></p>
+<h2 id="sala-server">Sala server</h2>
+<p>Una sala server è una stanza contenente vari server ospitati in armadi rack.</p>
+<p>È una stanza delimitata da grosse pareti, possibilmente <strong>insonorizzate e isolate termicamente</strong>. L’accesso ad essa dovrebbe essere consentito solo attraverso una o più porte di sicurezza.</p>
+<p>Devono esserci 4 tipi di <strong>impianti</strong>:</p>
+<ul>
+<li>
+<p><strong>di condizionamento</strong>:</p>
+<p>I server scaldano molto, serve quindi un adeguato sistema di raffreddamento, anche i condizioni devono essere ridondati per gestire il guasto di un condizionatore</p>
+</li>
+<li>
+<p><strong>elettrico</strong>:</p>
+<p>I server consumano molta corrente elettrica, servono quindi molti alimentatori e molto grandi.</p>
+<p>Dovrebbe esserci un <strong>UPS</strong> e un sistema di <strong>gruppi elettrogeni</strong></p>
+<ul>
+<li><strong>UPS</strong> (<em>Uninterruptible Power Supply</em>) è un dispositivo in grado di erogare energia, con l’ausilio<br>
+di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le variazioni di tensione.</li>
+<li><strong>gruppo elettrogeno</strong>: un motore diesel che in mancanza di corrente aziona una specie di turbina che genera elettricità (sta a monte dell’UPS perché il suo avvio può produrre pericolosi picchi di tensione che vengono tagliati dall’UPS).</li>
+</ul>
+</li>
+<li>
+<p><strong>anti-incendio</strong>:</p>
+<p>a causa del calore generato e dai tanti dispositivi elettronici presenti nella sala, è necessario un sistema in caso di incendio <strong>a secco</strong>, cioè con gas che rimuovono l’ossigeno dall’aria estinguendo così le fiamme, senza impattare sui componenti</p>
+</li>
+<li>
+<p><strong>di rete</strong>:</p>
+<p>Deve essere predisposta una adeguata cablatura di rete, i cavi dovrebbero essere messi in modo ordinato e colorati in base alla funzione.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
