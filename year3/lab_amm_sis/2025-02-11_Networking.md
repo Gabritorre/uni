@@ -87,3 +87,62 @@ I 48 bit sono suddivisi in 12 cifre esadecimali nel formato `XX:XX:XX:XX:XX:XX`
 
 - le prime 6 cifre individuano il produttore dell'interfaccia di rete.
 - mentre le successive 6 corrispondono al numero di serie della scheda stessa.
+
+## IPv4
+
+Gli indirizzi IP versione 4, sono composti da una sequenza di **32 bit**, suddivisi in quattro gruppi di 8 bit, e rappresentati in modo decimale separati da un punto (`157.138.22.21`).
+
+All'interno di un indirizzo si distinguono due parti: **l'indirizzo di rete e l'indirizzo dell’host**. Queste due parti si distinguono tramite l’utilizzo di un **maschera di rete** (***netmask***), un indirizzo che indica quali bit dell’indirizzo identificano la rete.
+
+L’indirizzo di rete si ottiene come risultato di una operazione AND tra l’indirizzo IP e la
+sua netmask: `157.138.22.21 AND 255.255.255.0 = 157.138.22.0`
+
+Si può rappresentare la netmask in modo compatto tramite un numero che rappresenta quanti bit sono riservati alla rete (`192.168.0.0/24`)
+
+### Classi
+
+Gli indirizzi IP sono suddivisi in **cinque classi:**
+
+- Classe A (netmask `/8`, `255.0.0.0`): Il valore del primo ottetto (byte) è compreso tra 1 e 126. È rappresentata da indirizzi di tipo: `Rete.Host.Host.Host` ovvero 8 bit per identificare la rete e 24 per identificare gli host. Permette di ottenere 126 reti formate da circa 16 milioni di host ciascuna.
+- Classe B (netmask `/16`, `255.255.0.0`): Il valore del primo ottetto (byte) è compreso tra 128 e 191. È rappresentata da indirizzi di tipo: `Rete.Rete.Host.Host` ovvero 16 bit per identificare la rete e 16 per identificare gli host. È possibile ottenere circa 16 mila reti formate da circa 65 mila host ciascuna.
+- Classe C (netmask `/24`, `255.255.255.0`): Il valore del primo ottetto (byte) è compreso tra 192 e 223. È rappresentata da indirizzi di tipo: `Rete.Rete.Rete.Host` ovvero 24 bit per identificare la rete e 8 per identificare gli host. E' possibile ottenere circa  2 milioni di reti con 254 host ciascuna.
+- Classe D: Il valore del primo ottetto (byte) è compreso tra 224 e 239. Sono indirizzi di rete riservati ai gruppi multicast e non assegnabili ai singoli host.
+- Classe E: Il valore del primo ottetto (byte) è compreso tra 240 e 255. Sono indirizzi riservati per usi futuri.
+
+| Classe | Range |
+| --- | --- |
+| A | `1.0.0.0 - 127.255.255.255` |
+| B | `128.0.0.0 - 191.255.255.255` |
+| C | `192.0.0.0 - 223.255.255.255` |
+| D | `224.0.0.0 - 239.255.255.255` |
+| E | `240.0.0.0 - 255.255.255.255` |
+
+### Indirizzi speciali
+
+Esistono diversi indirizzi particolari che sono riservati a scopi specifici e non possono essere assegnati agli host:
+
+- `0.0.0.0` (**default route**): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.
+- **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.
+- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete specificata nell’indirizzo.
+- **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host e la rete hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete.
+- **Loopback**: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (*localhost*), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo `127.0.0.1`
+
+### Indirizzi privati
+
+Ci sono dei range di indirizzi (chiamati **indirizzi privati**), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host su internet.
+
+| Classe | Range indirizzi privati |
+| --- | --- |
+| A | `10.0.0.0 - 10.255.255.255` |
+| B | `172.16.0.0 - 172.31.255.255` |
+| C | `192.168.0.0 - 192.168.255.255` |
+
+## IPv6
+
+È la versione più recente del protocollo IP, che fa uso di indirizzi a 128 bit composti da 8 gruppi di numeri esadecimali separati dal carattere `:`. Ogni gruppo è composto da un massimo di quattro lettere e numeri (ad esempio `2001:db8:1f70:999:de8:7648:6e8:1`)
+
+L’introduzione di questo protocollo è dovuta al fatto che la disponibilità degli indirizzi IPv4 si sta esaurendo.
+
+In questo protocollo non è previsto l’utilizzo di maschera di rete e nemmeno l’utilizzo del NAT.
+
+L’idea sarebbe quella di riuscire ad identificare ogni dispositivo esistente con un indirizzo univoco.
