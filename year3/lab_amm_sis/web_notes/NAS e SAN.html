@@ -1,0 +1,62 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-02-17_NAS e SAN</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#nas-e-san">NAS e SAN</a>
+<ul>
+<li><a href="#nas">NAS</a></li>
+<li><a href="#san">SAN</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="nas-e-san">NAS e SAN</h1>
+<p>Nelle reti aziendali intervenire sui dispositivi già installati (come espandere la capacità di storage) può essere un problema.</p>
+<p>In particolare per lo storage, qualche decennio fa si utilizzava la tecnologia DAS (<em>Direct Attached Storage</em>) in cui lo storage era direttamente collegato al server (questo approccio è comunemente utilizzato nel PC casalinghi).</p>
+<p>Oggi è molto più comune usare un sistema <strong>NAS</strong>, che offre una buona scalabilità.</p>
+<h2 id="nas">NAS</h2>
+<p>Il NAS (<em>Network Attached Storage</em>) fisicamente è un computer (un server) dotato quindi di:</p>
+<ul>
+<li>una o più CPU</li>
+<li>scheda madre</li>
+<li>più hard disk in raid</li>
+<li>più SSD da utilizzare come cache</li>
+<li>varie schede di rete</li>
+<li>un sistema operativo</li>
+</ul>
+<p>Il <strong>NAS</strong> è progettato per gestire l’archiviazione e la condivisione dei dati all’interno di una rete (possiamo pensarlo come un cloud storage ma locale alla nostra rete).</p>
+<p>La sua peculiarità è quella di essere sempre connesso alla rete, permettendo a più dispositivi di accedere, archiviare e condividere dati in modo <strong>centralizzato</strong>.</p>
+<p>Collegandosi all’interfaccia del server, tramite browser o un’applicazione dedicata, gli utenti possono aggiungere o modificare i file.</p>
+<p>Nota: anche il NAS andrebbe ridondato e andrebbe fatto un backup dei dati al suo interno.</p>
+<h2 id="san">SAN</h2>
+<p>Una SAN (Storage Area Network) può essere vista come una rete LAN secondaria dedicata a dispositivi per lo storage che viene affiancata alla LAN dove sono collegati tutti gli altri dispositivi.</p>
+<p>Un sistema senza SAN abbiamo i dispositivi di storage attaccati direttamente ai server che condividono informazioni sulla LAN, questo porta un rapido degrado delle performance in quanto le richieste provenienti dalla rete che riguardano un grande trasferimento di dati potrebbero saturare la banda.</p>
+<p>Realizzare una rete separata per i dispositivi di storage permette una grande scalabilità in termini di storage e di connettività, infatti tutta la potenza di calcolo dei server è utilizzata per le applicazioni, in quanto i dati non risiedono in questi, ma sulla rete SAN appunto.</p>
+<p>Ci possono essere casi in cui si vuole accedere ad una SAN da diversi posti geografici, in tali casi si può usare un canale in fibra se la distanza non è molta oppure di sono dei protocolli di <em>storage over IP:</em></p>
+<ul>
+<li>ISCSI</li>
+<li>IFCP</li>
+<li>FCIP</li>
+</ul>
+<p>Il <strong>cloud</strong> può essere visto come una grande SAN.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
