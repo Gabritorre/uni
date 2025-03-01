@@ -1,0 +1,92 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-02-18_Virtualizzazione</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#virtualizzazione">Virtualizzazione</a>
+<ul>
+<li><a href="#virtualizzazione-dei-server">Virtualizzazione dei server</a></li>
+<li><a href="#virtualizzazione-del-desktop">Virtualizzazione del desktop</a></li>
+<li><a href="#virtualizzazione-della-rete">Virtualizzazione della rete</a></li>
+<li><a href="#virtualizzazione-dello-storage">Virtualizzazione dello storage</a></li>
+<li><a href="#macchina-virtuale">Macchina virtuale</a></li>
+<li><a href="#sistemi-di-virtualizzazione">Sistemi di virtualizzazione</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="virtualizzazione">Virtualizzazione</h1>
+<p>Con Virtualizzazione si intende il processo di creazione di una rappresentazione virtuale (software) di un oggetto, al fine principale di ridurre i costi e aumentare efficienza e scalabilità.</p>
+<p>Si utilizza il software per simulare l’esistenza dell’hardware.</p>
+<p>È possibile virtualizzare:</p>
+<ul>
+<li>Server</li>
+<li>Desktop</li>
+<li>Storage</li>
+<li>Reti</li>
+</ul>
+<p>Vantaggi:</p>
+<ul>
+<li>costI molto ridotti</li>
+<li>downtime del sistema ridotto</li>
+<li>aumento della produttività e dell’efficienza</li>
+<li>fornitura più rapida dei servizi</li>
+<li>semplificazione di gestione del sistema</li>
+<li>abilitazione a <em>business continuity</em> (assicurare l’operatività delle funzioni di base in caso di disastri) e <em>disaster recovery</em> (recuperare le attività e i dati in seguito ad un disastro)</li>
+</ul>
+<h2 id="virtualizzazione-dei-server">Virtualizzazione dei server</h2>
+<p>Tramite la virtualizzazione dei server è possibile eseguire <strong>più sistemi operativi sotto forma di macchine virtuali</strong> all’interno di un server fisico. In questo modo in un unica macchina si hanno degli ambienti isolati che si occupano della propria specifica funzione.</p>
+<p>Es. al posto di avere un server per la posta e un web server, mantengo un server con due macchine virtuali.</p>
+<h2 id="virtualizzazione-del-desktop">Virtualizzazione del desktop</h2>
+<p>Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo ma che si agganciano ad una macchina virtuale offerta da un server.</p>
+<p>I tre tipi principali di virtualizzazione del desktop sono:</p>
+<ul>
+<li><strong>VDI</strong> (<em>Virtual Desktop Infrastructure</em>): l’utente interagisce con un sistema operativo di macchina virtuale che gira su un server della propria infrastruttura</li>
+<li><strong>RDS</strong> (<em>Remote Desktop Service</em>): In questo caso sole le applicazioni vengono trasmesse in streaming al dispositivo locale</li>
+<li><strong>DaaS</strong> (<em>Desktop as a Service</em>): è un servizio cloud che fornisce desktop virtuali tramite internet</li>
+</ul>
+<h2 id="virtualizzazione-della-rete">Virtualizzazione della rete</h2>
+<p>In questo caso si vuole riprodurre una rete fisica via software che simula il comportamento dei vari apparati come switch, router, VPN, ecc…</p>
+<h2 id="virtualizzazione-dello-storage">Virtualizzazione dello storage</h2>
+<p>Si combinano più dischi di storage per creare un unico pool di storage virtuale da distribuire alle applicazioni, ottimizzando l’utilizzo delle risorse e migliorando la gestione dello spazio disponibile.</p>
+<p>Software-Defined Storage è un approccio di questo tipo utilizzato in servizi come Google Drive e Dropbox</p>
+<h2 id="macchina-virtuale">Macchina virtuale</h2>
+<p>Una macchina virtuale è un software dotato di sistema operativo e applicazioni che gira su una macchina fisica ma è completamente isolata dalle altre applicazioni.</p>
+<p>Quindi collocando più macchine virtuali su un host consente di eseguire più sistemi operativi isolati.</p>
+<p>Lo strato software che separa l’host dalle macchine virtuali e si occupa di assegnarli dinamicamente le risorse hardware si chiama <em><strong>hypervisor.</strong></em></p>
+<p>Possiamo identificare le seguenti proprietà delle macchine virtuali:</p>
+<ul>
+<li><strong>Partizionamento</strong>: possibilità di eseguire più sistemi operativi sulla stessa macchina fisica suddividendo le risorse fisiche disponibili tra le varie macchine virtuali.</li>
+<li><strong>Isolamento</strong>: ogni macchina virtuale gira in un ambiente isolato rispetto agli altri software in esecuzione sulla macchina fisica</li>
+<li><strong>Incapsulamento</strong>: lo stato della macchina virtuale è salvato su file, facilitando la copia e lo spostamento delle macchine virtuali su altri host.</li>
+<li><strong>Indipendenza dall’hardware</strong>: le macchine virtuali non dipendono strettamente dall’hardware della macchina fisica, sono invece dipendenti dall’hardware emulato dall’hypervisor. Quindi migrare una VM su un’altra macchina fisica è semplice, migrarla su un altro sistema di virtualizzazione è più difficile.</li>
+</ul>
+<h2 id="sistemi-di-virtualizzazione">Sistemi di virtualizzazione</h2>
+<p>Alcuni famosi sistemi di virtualizzazione sono:</p>
+<ul>
+<li>VMware</li>
+<li>Microsoft Hyper-V</li>
+<li>KVM (Kernel-based Virtual Machine), usato in ambito Linux</li>
+<li>Docker: isola i singoli processi in ambienti controllati chiamati <strong>container</strong></li>
+</ul>
+<p>Mentre per i datacenter si utilizzano sistemi operativi progettati apposta per la virtualizzazione, per i dispostivi casalinghi che hanno OS più general purpose i software di virtualizzazione sono meno ottimizzati, per questo motivo eseguendo una VM sul proprio computer di casa si percepisce una netta differenza di prestazioni rispetto all’ambiente host.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
