@@ -1,0 +1,119 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-02-25_File system</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#file-system">File system</a>
+<ul>
+<li><a href="#file">File</a></li>
+<li><a href="#directory">Directory</a></li>
+<li><a href="#struttura-del-file-system-in-linux">Struttura del File system in Linux</a></li>
+<li><a href="#journaling">Journaling</a></li>
+<li><a href="#alcuni-file-system">Alcuni File system</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="file-system">File system</h1>
+<p>Un <strong>filesystem</strong> è la parte del sistema operativo che si occupa della gestione dei file, formattando le unità di memoria, archiviando e leggendo i file.</p>
+<p>Il filesystem presenta due differenti viste:</p>
+<ul>
+<li><strong>Vista Utente</strong>: appare come un insieme di file e directory in modo che siano accessibili al sistema e ai suoi utenti.</li>
+<li><strong>Vista OS</strong>: è un insieme di strutture di controllo e blocchi di dati localizzati in una specifica partizione della memoria di massa e permette di memorizzare e gestire i dati.</li>
+</ul>
+<h2 id="file">File</h2>
+<p>Un <strong>file</strong> una unità logica di memorizzazione, cioè una collezione di informazioni correlate.</p>
+<p>Il sistema operativo fa questa astrazione <strong>che permette di usare in modo semplice ed efficiente i dispositivi di memoria secondaria</strong>.</p>
+<p>Ogni file possiede attributi come:</p>
+<ul>
+<li>nome</li>
+<li>tipo</li>
+<li>dimensione</li>
+<li>protezione</li>
+<li>data e ora.</li>
+<li>ecc…</li>
+</ul>
+<p>I file possono essere:</p>
+<ul>
+<li>creati</li>
+<li>letti</li>
+<li>scritti</li>
+<li>cancellati</li>
+</ul>
+<p>La lunghezza massima per un nome di file può variare in base al sistema operativo: in Linux, per la maggior parte dei filesystem, è di 255 caratteri, con un percorso massimo di 4096 caratteri.</p>
+<p>I file si distinguono in diverse tipologie:</p>
+<ul>
+<li><strong>File regolari (o file utente)</strong>: possono essere testuali o binari.</li>
+<li><strong>Directory</strong> (cartelle): contengono file regolari e non, e sono organizzate in una struttura gerarchica.</li>
+<li><strong>File speciali a blocchi</strong>: utilizzati per l’interfacciamento con device di I/O a blocchi (come i dischi).</li>
+<li><strong>File speciali a caratteri</strong>: utilizzati per l’interfacciamento con device di I/O a caratteri (terminali, stampanti, reti).</li>
+</ul>
+<p>I file si distinguono anche per le <strong>estensioni</strong> come exe, jpg, gif, mov, mkv ecc…</p>
+<p>In Windows, un file speciale è quello di Swap, presente ora anche in quasi tutte le distribuzioni Linux, il cui scopo è riservare una piccola porzione del disco fisso come memoria aggiuntiva alla RAM.</p>
+<h2 id="directory">Directory</h2>
+<p>Una <strong>directory è un elenco di nomi di file</strong> (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una <strong>struttura gerarchica al filesystem</strong> (ad albero), con una radice indicata da <code>/</code> in Linux e <code>c:\</code> in Windows.</p>
+<p>Sulle directory si possono effettuare operazioni come creazione, cancellazione, collegamenti e ridenominazione.</p>
+<h2 id="struttura-del-file-system-in-linux">Struttura del File system in Linux</h2>
+<p>La struttura del filesystem in Linux/Unix presenta diverse directory con un ruolo specifico:</p>
+<ul>
+<li><code>/etc</code>: contiene i file di configurazione del sistema.</li>
+<li><code>/bin</code>: contiene alcuni programmi essenziali come <code>ls</code>, <code>cd</code>, <code>mkdir</code>, <code>rm</code>, …</li>
+<li><code>/sbin</code>: contiene programmi essenziali utilizzabili dai superuser, contengono principalmente programmi per installare / cancellare cose dal sistema.</li>
+<li><code>/lib</code>: contiene le librerie dinamiche necessarie ai programmi in <code>/bin</code> e <code>/sbin</code>. Contiene anche i moduli kernel che servono a far funzionare schede video, schede audio, wifi, stampanti, …</li>
+<li><code>/usr</code>: contiene programmi non necessari all’avvio, librerie e file accessori nelle sottodirectory <code>/usr/[s]bin</code>, <code>/usr/lib</code> e <code>/usr/share</code>.</li>
+<li><code>/usr/local</code>: simile a <code>/usr</code>, per programmi e librerie installati localmente.</li>
+<li><code>/opt</code>: simile a <code>/usr/local</code>, per programmi che non seguono la convenzione di separazione tra binari, librerie e file accessori.</li>
+<li><code>/home</code>: contiene i file personali degli utenti.</li>
+<li><code>/root</code>: è la home directory dell’utente root.</li>
+<li><code>/var</code>: contiene dati di applicazioni di uso generale, non riferite al singolo utente.</li>
+<li><code>/var/log</code>: di particolare importanza perché contiene i <strong>log del sistema</strong>, gestiti dalle relative applicazioni o dal servizio syslog.</li>
+<li><code>/dev</code>: contiene file che rappresentano i dispositivi del sistema.</li>
+<li><code>/tmp</code> e <code>/var/tmp</code>: servono per memorizzare file temporanei.</li>
+<li><code>/boot</code>: contiene i file necessari all’avvio del sistema, il kernel e alcuni file di supporto.</li>
+<li><code>/proc</code>: contiene file e directory che rappresentano i processi in esecuzione e lo stato del sistema. Ad esempio, <code>/proc/cpuinfo</code> contiene informazioni sui processori, e <code>/proc/sys</code> permette di modificare parametri del sistema a tempo d’esecuzione.</li>
+<li><code>/sys</code>: rappresenta altre configurazioni a tempo d’esecuzione legate all’hardware, con una struttura più regolare di <code>/proc</code>.</li>
+<li><code>/run</code>: mantiene piccoli file di stato delle applicazioni di sistema necessari per la cooperazione.</li>
+</ul>
+<h2 id="journaling">Journaling</h2>
+<p>Il <strong>journaling</strong> è una tecnica utilizzata da molti filesystem moderni per preservare l’integrità dei dati in caso di interruzioni di corrente.</p>
+<p>Si basa sul concetto di <strong>transazione</strong>: ogni scrittura su disco viene registrata prima su un file di log e poi eseguita sul disco. In caso di problemi, il filesystem analizza il log per completare le operazioni interrotte. Una transazione è una sequenza di operazioni che, se eseguita correttamente, produce un cambiamento permanente nello stato del sistema, in caso contrario si deve tornare allo stato precedente.</p>
+<h2 id="alcuni-file-system">Alcuni File system</h2>
+<p>Ogni sistema operativo ha il suo filesystem personalizzato:</p>
+<ul>
+<li><strong>DOS e DOSLike</strong> (Windows 95/98/Me): FAT(8), FAT16, VFAT, <strong>FAT32</strong>.</li>
+<li><strong>Windows NT, 2000, … , 10, 11</strong>: <strong>NTFS</strong> e sue evoluzioni.</li>
+<li><strong>MAC OS X</strong>: HFS, <strong>HFS+</strong> e <strong>APFS</strong>.</li>
+<li><strong>Linux/Unix-Like</strong>: <strong>ext4</strong>, minix, btrfs ecc…</li>
+</ul>
+<h3 id="fat32">FAT32</h3>
+<p><strong>FAT32</strong> è l’ultimo FS della famiglia FAT, inizialmente sviluppata da IBM e Digital e poi da Microsoft. La sua facilità di implementazione dei driver lo ha reso l’unico filesystem compatibile con tutti i sistemi, compresi i vecchi DOS. Si basa su una tabella chiamata <em>File Allocation Table</em> (FAT) ridondata in più parti del disco.</p>
+<p>Oggi si trova principalmente sulle chiavette USB, ma è poco affidabile, lento e soggetto a frammentazione.</p>
+<p>Non supporta file più grandi di 4 GB.</p>
+<h3 id="ntfs">NTFS</h3>
+<p><strong>NTFS</strong> è stato sviluppato da Microsoft per i sistemi Windows NT. Permette di gestire un gran numero di file e si basa sulla <em>Master File Table</em> (MFT). È <strong>sicuro, stabile, flessibile e journaled</strong>. La MFT è anch’essa ridondata per sicurezza.</p>
+<h3 id="exfat">exFAT</h3>
+<p><strong>exFAT</strong> (<em>Extended File Allocation Table</em>) o FAT64 è stato introdotto da Microsoft per memorie flash e dispositivi di archiviazione di dimensioni contenute. Offre miglioramenti rispetto a FAT32, come limiti di dimensione dei file e delle cartelle maggiori, supporto per ACL e migliori prestazioni.</p>
+<h3 id="ext4">Ext4</h3>
+<p>È il file system di default su Linux, è una versione successiva dei suoi predecessori ext2 e ext3. È più performante, journaled e retrocompatibile con le versioni precedenti, supporta file di dimensione fino a 16TB.</p>
+<h3 id="hfs-e-apfs">HFS+ e APFS</h3>
+<p><strong>HFS+</strong> è una versione journaled del vecchio HFS, utilizzato da macOS. Sebbene sia stabile e affidabile, le sue prestazioni possono essere limitate. Apple ha sviluppato <strong>APFS</strong> come alternativa a HFS+, ottimizzato per memorie flash e SSD, implementando un meccanismo di copy-on-write. <strong>Copy-on-write</strong> è una tecnica per ridurre la duplicazione delle risorse di sistema.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
