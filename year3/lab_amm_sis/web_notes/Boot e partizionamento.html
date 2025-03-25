@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-03-03_Boot e partizionamento</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#boot-e-partizionamento">Boot e partizionamento</a>
+<ul>
+<li><a href="#bios">BIOS</a></li>
+<li><a href="#fase-di-avvio-di-linux">Fase di avvio di Linux</a></li>
+<li><a href="#fase-di-avvio---kernel">Fase di avvio - Kernel</a></li>
+<li><a href="#partizionamento">Partizionamento</a></li>
+<li><a href="#lvm">LVM</a></li>
+<li><a href="#esempi-di-partizionamento">Esempi di partizionamento</a></li>
+<li><a href="#ssh">SSH</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="boot-e-partizionamento">Boot e partizionamento</h1>
+<h2 id="bios">BIOS</h2>
+<p>All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, chiamato BIOS. Il <strong>BIOS</strong> (<em>Basic Input-Output System</em>) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:</p>
+<ul>
+<li>effettua controlli hardware del sistema</li>
+<li>cerca e controlla le periferiche</li>
+<li>infine carica l’unità di memoria di massa da cui avviare il sistema operativo</li>
+</ul>
+<p>Nonostante il termine BIOS sia ancora molto utilizzato, in realtà si riferisce ad un sistema <em>legacy</em> che ora è stato sostituito da <strong>(BIOS) UEFI</strong> (<em>Unified Extensible Firmware Interface</em>).</p>
+<p>Il sistema UEFI presenta alcuni <strong>vantaggi</strong> rispetto al vecchio sistema BIOS:</p>
+<ul>
+<li><strong>avvio da dischi grandi più di 2 TB</strong>, grazie all’utilizzo di GPT (<em>GUID Partition Table</em>). Il vecchio BIOS basato su MBR (<em>Master Boot Record</em>) non era in grado di farlo</li>
+<li><strong>Ambiente preOS molto più completo</strong>, versatile e più facilmente navigabile</li>
+<li>implementa il <strong>Secure Boot</strong>, una funzione di sicurezza che garantisce che vengano eseguiti solo software firmati e certificati durante l’avvio del sistema.</li>
+<li><strong>non è legato all’architettura della CPU e dai driver</strong>, funziona quindi su più sistemi senza essere riscritto</li>
+<li>è <strong>modulare</strong>, i produttori di hardware e software possono quindi modificare specifiche funzionalità senza dover riscrivere l’intero firmware.</li>
+<li>Può emulare il vecchio BIOS con MBR</li>
+</ul>
+<h2 id="fase-di-avvio-di-linux">Fase di avvio di Linux</h2>
+<p>Il vecchio BIOS è più semplice, per cui ci baseremo su quello.</p>
+<p>Una volta finiti i check HW il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.</p>
+<p>MBR cerca la prima <strong>partizione attiva</strong> del disco (cioè quella flaggata come <em>bootable)</em>, una volta trovata, legge il suo contenuto che contiene informazioni su come caricare il boot loader. Una volta caricato il boot loader, quest’ultimo si occuperà di avviare il sistema operativo.</p>
+<h3 id="windows">Windows</h3>
+<p>Su Windows il compito del boot loader veniva svolto dal file <code>NTLDR.exe</code> che permetteva di selezionare il sistema operativo con le informazioni contenuto del file <code>boot.ini</code>, un file di testo nascosto e in sola lettura.</p>
+<h3 id="linux">Linux</h3>
+<p>Su Linux il boot loader più utilizzato è GRUB (<em>GRand Unified Bootloader</em>). GRUB si configura tramite il file <code>/boot/grub/menu.lst</code>, anche se in base al sistema ci possono essere più file in posti diversi</p>
+<h2 id="fase-di-avvio---kernel">Fase di avvio - Kernel</h2>
+<p>Dopo aver scelto l’opzione nel boot loader, il sistema carica il kernel del sistema selezionato. Il kernel svolge dei controlli vari e il caricamento dei driver e poi cede il controllo al processo di <strong>init.</strong></p>
+<p>Il processo <strong>init</strong> controlla l’esecuzione del software di avvio del sistema operativo, nei sistemi Unix moderni si basa sul concetto di <strong>runlevel</strong>, una particolare configurazione del sistema che definisce quali servizi del sistema sono operativi. Sono in totale 7 (da 0 a 6) e ad esempio quello di default è 5: modalità multi-utente con interfaccia grafica.</p>
+<p>il runlevel è solitamente descritto nel file <code>/etc/inittab</code>, ad esempio:</p>
+<pre><code># inittab         This file describes how the INIT process should
+#                 set up the system in a certain run-level.
+# [...]
+# id:3:initdefault: (Default runlevel).
+# The runlevels used by RHS are:
+# 0 - halt (Do NOT set initdefault to this)
+# 1 - Single user mode
+# 2 - Multiuser, without NFS (The same as 3, if you do not have networking)
+# 3 - Full multiuser mode
+# 4 - unused
+# 5 - X11
+# 6 - reboot (Do NOT set initdefault to this)
+</code></pre>
+<p>Una volta lanciato il processo init, esso diventa il padre di tutti i successivi processi.</p>
+<h3 id="systemd-e-upstart">Systemd e Upstart</h3>
+<p>Nelle moderni distribuzioni di Linux init è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:</p>
+<ul>
+<li>Upstart</li>
+<li>Systemd (il più diffuso)</li>
+</ul>
+<h2 id="partizionamento">Partizionamento</h2>
+<p>Durante l’installazione di un sistema operativo, c’è una fase molto importante che è il <strong>partizionamento dello storage</strong>, che deve essere fatto in modo adeguato a seconda della tipologie di server che stiamo installando.</p>
+<p>Questa fase consiste nel suddividere le unità di storage in partizioni, cioè in porzioni di disco.</p>
+<p>Per PC da casa il partizionamento di default va già bene, al massimo si può decidere di posizionare <code>/home</code> in una partiziona separata da <code>/</code>.</p>
+<h3 id="swap">Swap</h3>
+<p>Nel partizionamento spesso viene menzionata la <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
+<p>Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.</p>
+<p>Ci sono due approcci per gestire la Swap:</p>
+<ul>
+<li>una partizione interamente dedicata allo swap</li>
+<li>un file di swap che risiede nel file system come gli altri file</li>
+</ul>
+
+<table>
+<thead>
+<tr>
+<th>Area di Swap</th>
+<th>File di Swap</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Dimensione fissa: per estenderla è necessario ripartizionare i dischi</td>
+<td>Dimensione variabile: spesso gestita automaticamente dal sistema operativo</td>
+</tr>
+<tr>
+<td>Nessuna frammentazione: tutti i dati sono nella stessa partizione</td>
+<td>Rischio di frammentazione: i dati non sono necessariamente salvati in zone contigue</td>
+</tr>
+<tr>
+<td>Migliori performance: i dati sono salvati in zone contigue</td>
+<td>Performance peggiori: overhead sulle operazione di I/O sui file</td>
+</tr>
+<tr>
+<td>mentre anni fa si consigliava una dimensione della partizione almeno pari alla quantità di RAM, oggi con l’aumentare della memoria, è sufficiente una porzione della RAM (10% - 50%)</td>
+<td>la dimensione viene gestita in Windows dal file <code>pagefile.sys</code>. L’utente può impostare una quantità minima da usare come swap</td>
+</tr>
+<tr>
+<td>Approccio di Linux</td>
+<td>Approccio di Windows</td>
+</tr>
+</tbody>
+</table><h2 id="lvm">LVM</h2>
+<p><em>Logical Volume Manager</em> è un software per la gestione dello storage per rendere più flessibile il partizionamento dei dischi.</p>
+<p>L’idea dietro questo software è quella di trattare i vari dischi come una memoria unificata e dando la possibilità di creare dei volumi logici, evitando quindi le limitazioni fisiche dei dischi.</p>
+<p>Nella seguente immagine:</p>
+<ul>
+<li>Physical Volumes (PV): rappresentano i dischi fisici o le partizioni fisiche</li>
+<li>Volumes Group (VG): è un disco virtuale composto da uno o più dischi fisici</li>
+<li>Logical Volumes (LV): sono le partizioni logiche create all’interno di un Volume Group</li>
+</ul>
+<p><img src="https://i.ibb.co/NgwmV08z/image.png" alt=""></p>
+<p>Vantaggi di LVM:</p>
+<ul>
+<li>Flessibilità: è possibile ridimensionare i volumi logici senza la necessità di smontare il file system o interrompere il servizio</li>
+<li>Snapshot: permette di creare snapshot dei volumi per backup o testing</li>
+<li>Migrazione: permette di spostare dati da un disco fisico all’altro senza interruzioni</li>
+<li>Gestione semplificata: la gestione è centralizzata</li>
+</ul>
+<h2 id="esempi-di-partizionamento">Esempi di partizionamento</h2>
+<p>Supponiamo di avere 1TB di storage e 64 Gb di RAM</p>
+<h3 id="esempio-1---web-server">Esempio 1 - web server</h3>
+<p>Useremo 10 GB a sito con 50 siti</p>
+<ul>
+<li><code>/</code>  max 50 GB</li>
+<li><code>/var</code> almeno 50 GB se c’è un database</li>
+<li><code>/var/www</code> calcolato come lo spazio per un sito moltiplicato per il numero di siti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>/var/log</code> almeno 10 GB</li>
+<li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+<h3 id="esempio-2---home-server--ssh">Esempio 2 - home server / ssh</h3>
+<p>Useremo 10 GB per ogni utente con 50 utenti</p>
+<ul>
+<li><code>/</code>  almeno 50 GB</li>
+<li><code>/home</code> calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>/var</code> almeno 50 GB se c’è un database</li>
+<li><code>/var/log</code> almeno 10 GB</li>
+<li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span>
+<ul>
+<li>oppure <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>∗</mo><mn>50</mn><mi mathvariant="normal">%</mi><mo>=</mo><mn>32</mn><mo>≈</mo><mn>40</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 * 50\% = 32 \approx 40GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">50%</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">32</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">40</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li>oppure <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>∗</mo><mn>10</mn><mi mathvariant="normal">%</mi><mo>=</mo><mn>6.4</mn><mo>≈</mo><mn>7</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 * 10\% = 6.4 \approx7GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">10%</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">6.4</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">7</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="esempio-3---database-server">Esempio 3 - database server</h3>
+<p>Useremo 10 GB per database con 50 database</p>
+<ul>
+<li><code>/</code>  almeno 50 GB</li>
+<li><code>/home</code> calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>/var</code> generalmente almeno 100 GB, calcolato come lo spazio per un database moltiplicato per il numero di database + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>/var/log</code> almeno 10 GB</li>
+<li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span>
+<ul>
+<li>oppure <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>∗</mo><mn>75</mn><mi mathvariant="normal">%</mi><mo>=</mo><mn>48</mn><mo>≈</mo><mn>50</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 * 75\% = 48 \approx 50GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">75%</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">48</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">50</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="esempio-4---mail-server">Esempio 4 - mail server</h3>
+<p>Useremo 10 GB per le mail di un utente con 50 utenti</p>
+<ul>
+<li><code>/</code>  almeno 50 GB</li>
+<li><code>/mailstore</code> calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>/var</code> almeno 50 GB</li>
+<li><code>/var/log</code> almeno 10 GB</li>
+<li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span>
+<ul>
+<li>oppure <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>∗</mo><mn>25</mn><mi mathvariant="normal">%</mi><mo>=</mo><mn>16</mn><mo>≈</mo><mn>20</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 * 25\% = 16 \approx 20GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">25%</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">16</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">20</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+</li>
+</ul>
+<h3 id="esercizio">Esercizio</h3>
+<p>Supponendo di avere uno storage pari a 10TB e 512GB di RAM, partizioniamo il sistema Linux con autenticazione centralizzata ed export delle Home.</p>
+<p>Supponiamo di dover gestire 50 utenti e ogni utente può occupare al massimo 100GB.</p>
+<p>Considerare swap nei seguenti modi:</p>
+<ul>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>25</mn><mi mathvariant="normal">%</mi><mo>⋅</mo><mi>R</mi><mi>A</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">25\% \cdot RAM</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">25%</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right: 0.10903em;">M</span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>50</mn><mi mathvariant="normal">%</mi><mo>⋅</mo><mi>R</mi><mi>A</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">50\% \cdot RAM</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">50%</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right: 0.10903em;">M</span></span></span></span></span></li>
+<li><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>75</mn><mi mathvariant="normal">%</mi><mo>⋅</mo><mi>R</mi><mi>A</mi><mi>M</mi></mrow><annotation encoding="application/x-tex">75\% \cdot RAM</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">75%</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">A</span><span class="mord mathnormal" style="margin-right: 0.10903em;">M</span></span></span></span></span></li>
+</ul>
+<p>quanti utenti possono essere gestiti nei vari casi?</p>
+<p>Partizionamento generale:</p>
+<ul>
+<li><code>/</code> 500 GB</li>
+<li><code>/home</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>50</mn><mo>⋅</mo><mn>100</mn><mo>+</mo><mn>10</mn><mi mathvariant="normal">%</mi><mo>=</mo><mn>5.5</mn><mi>T</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">50 \cdot 100 + 10\% = 5.5 TB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">100</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.80556em; vertical-align: -0.05556em;"></span><span class="mord">10%</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">5.5</span><span class="mord mathnormal" style="margin-right: 0.05017em;">TB</span></span></span></span></span></li>
+<li><code>/var</code> 1TB</li>
+<li><code>/var/log</code> 500GB</li>
+<li><code>/usr</code> 1.5TB</li>
+</ul>
+<p>Soluzione Swap 1:</p>
+<ul>
+<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.25</mn><mo>=</mo><mn>128</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.25 = 128GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.25</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">128</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+<p>Soluzione Swap 2:</p>
+<ul>
+<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.50</mn><mo>=</mo><mn>256</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.50 = 256GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.50</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">256</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+<p>Soluzione Swap 3:</p>
+<ul>
+<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.25</mn><mo>=</mo><mn>384</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.25 = 384GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.25</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">384</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+</ul>
+<p>in tutti i casi possiamo ospitare circa 100 utenti</p>
+<h2 id="ssh">SSH</h2>
+<p>SSH (Secure SHell) è un protocollo che permette di stabilire una sessione remota cifrata tramite riga di comando verso un altro host.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">ssh</span> -p <span class="token operator">&lt;</span>port<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>username<span class="token operator">&gt;</span>@<span class="token operator">&lt;</span>host<span class="token operator">&gt;</span>
+</code></pre>
+<p>è anche possibile sfruttare il protocollo ssh per inviare e ricevere file, due programmi che fanno questo sono <strong>scp</strong> e <strong>sftp</strong>. FileZilla è un client grafico per il trasferimento di file via SSH disponibile su Windows, MacOS e Linux</p>
+<p>L’autenticazione con SSH può avvenire tramite password ma può essere sostituita da una autenticazione tramite coppia di chiavi (pubblica e privata) con, eventualmente, una passphrase per sbloccare la chiave privata.</p>
+<p>si può generare questa coppia in questo modo:</p>
+<pre class=" language-bash"><code class="prism  language-bash">ssh-keygen -t rsa -b 2048
+</code></pre>
+<p>normalmente le chiavi generate vengono salvate in <code>~/.ssh/</code></p>
+<p>L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite ssh-agent per mettere in cache la passphrase per la durata della sessione</p>
+<pre class=" language-bash"><code class="prism  language-bash">ssh-add ~/.ssh/id_rsa
+</code></pre>
+<p>quando ci si è connessi poi bisogna copiare la chiave pubblica nel server, nel file <code>~/.ssh/authorized_keys</code>. Si può anche usare lo script ssh-copy-id per copiarla in modo automatizzato:</p>
+<pre class=" language-bash"><code class="prism  language-bash">ssh-copy-id -i ~/.ssh/id_rsa.pub utente@server
+</code></pre>
+
+    </div>
+  </div>
+</body>
+
+</html>
