@@ -1,0 +1,451 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-03-11_Shell</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#shell">Shell</a>
+<ul>
+<li><a href="#bash">BASH</a></li>
+<li><a href="#comandi">Comandi</a></li>
+<li><a href="#batch">Batch</a></li>
+<li><a href="#vbscript">VBScript</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="shell">Shell</h1>
+<p>La shell è un programma che gestisce la comunicazione tra l’utente e il sistema operativo interpretando dei comandi.</p>
+<p>Su Linux le principali shell che possiamo trovare sono:</p>
+<ul>
+<li>Bourne Shell (<strong>sh</strong>): la shell originale di Unix</li>
+<li>Bourne Again Shell (<strong>bash</strong>): la shell attualmente di default su Linux, compatibile con sh</li>
+<li><strong>Zsh</strong>: estensione di bash con caratteristiche prese da altre shell, usata di default su Mac OS</li>
+</ul>
+<p>Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire <code>less /etc/shells</code></p>
+<p>Su Windows abbiamo:</p>
+<ul>
+<li><strong>Prompt dei comandi</strong> (cmd): è un porting della shell usata in Microsoft DOS, permette sia l’esecuzione di comandi che la creazione di script batch e l’esecuzione di VBscript.</li>
+<li><strong>PowerShell</strong>: è la versione più moderna del cmd basata sul framework .net e sulla programmazione ad oggetti, che oltre a basarsi su dati testuali, usa gli oggetti .net come input e output.</li>
+</ul>
+<h2 id="bash">BASH</h2>
+<p>Quando apriamo un terminale, il sistema lancia la shell bash che cerca di aprire determinati file di configurazione:</p>
+<ol>
+<li>
+<p><code>/etc/profile</code></p>
+<p>Contiene impostazioni di sistema come variabili d’ambiente, percorsi e configurazioni generali che si applicano a tutti gli utenti del sistema.</p>
+<p>Viene eseguito solamente all’apertura della prima shell</p>
+</li>
+<li>
+<p><code>~/.bash_profile</code></p>
+<p>È utilizzato per impostare variabili d’ambiente personali, percorsi e altre configurazioni che si desidera applicare solo a quell’utente.</p>
+<p>Viene eseguito solamente all’apertura della prima shell</p>
+<ul>
+<li><code>~/.bash_login</code>: Se il file <code>~/.bash_profile</code> non è presente, Bash cerca questo file. Anch’esso viene eseguito all’avvio di una shell di login e può contenere impostazioni personali dell’utente.</li>
+<li><code>~/.profile</code>: se né <code>~/.bash_profile</code> né <code>~/.bash_login</code> sono presenti, Bash cerca questo file. È utilizzato per impostare variabili d’ambiente e configurazioni personali.</li>
+</ul>
+</li>
+<li>
+<p><code>~/.bashrc</code></p>
+<p>Questo file viene eseguito all’avvio di tutte le shell successive a quella di login. Contiene alias, variabili d’ambiente e altre configurazioni specifiche dell’utente per le sessioni interattive.</p>
+</li>
+</ol>
+<h3 id="history">History</h3>
+<p>La shell memorizza lo storico dei comandi inseriti nel file <code>~/.bash_history</code> e usando il comando <code>history</code> è possibile interagire con il contenuto di quel file.</p>
+<h3 id="sintassi-caratteri-speciali">Sintassi caratteri speciali</h3>
+<p>Come ogni interprete anche bash ha la propria sintassi, partiamo dai caratteri speciali:</p>
+<ul>
+<li><code>;</code> permette di separare più comandi sulla stessa riga.</li>
+<li><code>&amp;</code> esegue il comando che lo precede in background, permettendo alla shell di accettare nuovi comandi senza attendere il completamento del precedente.</li>
+<li><code>()</code> creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. i comandi all’interno non influenzano l’ambiente della shell principale. Ad esempio, <code>(cd /tmp; ls)</code> non modifica la directory corrente della shell principale.</li>
+<li><code>{}</code> raggruppano comandi da eseguire nel contesto della shell corrente. A differenza delle parentesi tonde, i comandi all’interno influenzano l’ambiente della shell principale. È importante notare che <code>{</code> e <code>}</code> devono essere separati dai comandi da spazi e che il blocco deve terminare con un punto e virgola o una nuova riga prima della parentesi chiusa.</li>
+<li><code>|</code> (pipe) prende l’output del comando a sinistra e lo passa come input al comando a destra.</li>
+<li><code>&lt;&gt; &amp;</code> reindirizzamento dell’input e dell’output</li>
+<li><code>* ? [] ~ !</code> simboli jolly usati nei pattern dei nomi dei file</li>
+<li><code>#</code> rappresenta un commento</li>
+</ul>
+<h2 id="comandi">Comandi</h2>
+<p>Oltre ad usare i comandi direttamente nella shell del terminale è possibili creare degli script, cioè dei file di testo contenenti una serie di comandi bash.</p>
+<p>Questo file di testo deve iniziare con una riga che indica con quale shell eseguire lo script:</p>
+<p><code>#!&lt;tipo di shell&gt;</code> ad esempio <code>#!/bin/bash</code></p>
+<p>Il file può avere estensione <code>.sh</code> oppure non avere nessuna estensione (consigliato).</p>
+<p>Per eseguire il file bisogna dare i permessi di esecuzione con <code>chmod +x &lt;script filename&gt;</code></p>
+<h3 id="variabili">Variabili</h3>
+<p>per inizializzare una variabili si usa la seguente sintassi</p>
+<pre class=" language-bash"><code class="prism  language-bash">MYVAR<span class="token operator">=</span><span class="token string">"hello"</span>
+</code></pre>
+<p>Nota: è necessario non mettere degli spazi attorno al simbolo di <code>=</code></p>
+<p>per stamparne il contenuto:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">echo</span> <span class="token variable">$MYVAR</span>
+</code></pre>
+<p>Si possono inizializzare array in questo modo</p>
+<pre class=" language-bash"><code class="prism  language-bash">A<span class="token punctuation">[</span>0<span class="token punctuation">]</span><span class="token operator">=</span>1
+A<span class="token punctuation">[</span>1<span class="token punctuation">]</span><span class="token operator">=</span>2
+A<span class="token punctuation">[</span>2<span class="token punctuation">]</span><span class="token operator">=</span>3
+
+B<span class="token operator">=</span><span class="token punctuation">(</span>1 2 3<span class="token punctuation">)</span>
+
+<span class="token keyword">echo</span> <span class="token variable">${A[1]}</span>
+</code></pre>
+<h3 id="variabili-speciali">Variabili speciali</h3>
+
+<table>
+<thead>
+<tr>
+<th>Variabile</th>
+<th>Significato</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>$0</code></td>
+<td>Indica il nome del programma</td>
+</tr>
+<tr>
+<td><code>${n}</code></td>
+<td>indica gli argomenti passati dalla riga di comando dove n=1…9</td>
+</tr>
+<tr>
+<td><code>$#</code></td>
+<td>indica il numero di argomenti passati dalla riga di comando</td>
+</tr>
+<tr>
+<td><code>$*</code></td>
+<td>indica tutti gli argomenti della riga di comando</td>
+</tr>
+<tr>
+<td><code>$$</code></td>
+<td>indica il PID del processo che esegue lo script</td>
+</tr>
+<tr>
+<td><code>$?</code></td>
+<td>restituisce lo status code dell’ultimo comando eseguito</td>
+</tr>
+<tr>
+<td><code>$!</code></td>
+<td>indica il PID dell’ultimo processo mandato in background</td>
+</tr>
+</tbody>
+</table><h3 id="costrutto-if">costrutto if</h3>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">if</span> <span class="token punctuation">[</span> condizione1 <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token comment"># Comandi se condizione1 è vera</span>
+<span class="token keyword">elif</span> <span class="token punctuation">[</span> condizione2 <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">then</span>
+    <span class="token comment"># Comandi se condizione2 è vera</span>
+<span class="token keyword">else</span>
+    <span class="token comment"># Comandi se nessuna delle condizioni precedenti è vera</span>
+<span class="token keyword">fi</span>
+</code></pre>
+<p>Operatori di confronto:</p>
+
+<table>
+<thead>
+<tr>
+<th><strong>Categoria</strong></th>
+<th><strong>Operatore</strong></th>
+<th><strong>Descrizione</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Comparazione tra stringhe</strong></td>
+<td><code>==</code></td>
+<td>Uguale a</td>
+</tr>
+<tr>
+<td></td>
+<td><code>!=</code></td>
+<td>Diverso da</td>
+</tr>
+<tr>
+<td></td>
+<td><code>\&lt;</code></td>
+<td>Minore (ordine alfabetico)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>\&gt;</code></td>
+<td>Maggiore (ordine alfabetico)</td>
+</tr>
+<tr>
+<td><strong>Comparazione tra numeri</strong></td>
+<td><code>-eq</code></td>
+<td>Uguale a</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-ne</code></td>
+<td>Diverso da</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-lt</code></td>
+<td>Minore di</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-le</code></td>
+<td>Minore o uguale a</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-gt</code></td>
+<td>Maggiore di</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-ge</code></td>
+<td>Maggiore o uguale a</td>
+</tr>
+<tr>
+<td><strong>Test vuoto/non vuoto</strong></td>
+<td><code>-z</code></td>
+<td>Stringa vuota</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-n</code></td>
+<td>Stringa non vuota</td>
+</tr>
+<tr>
+<td><strong>Test esistenza file</strong></td>
+<td><code>-e</code></td>
+<td>Esiste (file o directory)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-f</code></td>
+<td>Esiste ed è un file</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-d</code></td>
+<td>Esiste ed è una directory</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-r</code></td>
+<td>Ha permessi di lettura</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-w</code></td>
+<td>Ha permessi di scrittura</td>
+</tr>
+<tr>
+<td></td>
+<td><code>-x</code></td>
+<td>Ha permessi di esecuzione</td>
+</tr>
+<tr>
+<td><strong>Operatori logici</strong></td>
+<td><code>&amp;&amp;</code></td>
+<td>AND logico</td>
+</tr>
+<tr>
+<td></td>
+<td><code>||</code></td>
+<td>OR logico</td>
+</tr>
+<tr>
+<td></td>
+<td><code>!</code></td>
+<td>NOT logico</td>
+</tr>
+</tbody>
+</table><h3 id="ciclo-for">Ciclo for</h3>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">for</span> variabile <span class="token keyword">in</span> lista<span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token comment"># Comandi da eseguire ad ogni iterazione</span>
+<span class="token keyword">done</span>
+</code></pre>
+<p>Esempi:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">for</span> nome <span class="token keyword">in</span> Alice Bob Charlie<span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token keyword">echo</span> <span class="token string">"Ciao, <span class="token variable">$nome!</span>"</span>
+<span class="token keyword">done</span>
+</code></pre>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token punctuation">{</span>1<span class="token punctuation">..</span>5<span class="token punctuation">}</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token keyword">echo</span> <span class="token string">"Numero: <span class="token variable">$i</span>"</span>
+<span class="token keyword">done</span>
+</code></pre>
+<h3 id="ciclo-while">Ciclo while</h3>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token keyword">while</span> <span class="token punctuation">[</span> condizione <span class="token punctuation">]</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token comment"># Comandi da eseguire</span>
+<span class="token keyword">done</span>
+</code></pre>
+<h3 id="select">Select</h3>
+<p>Il comando <strong><code>select</code></strong> è usato per creare menu interattivi a scelta multipla.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
+
+<span class="token keyword">echo</span> <span class="token string">"Scegli un'opzione:"</span>
+<span class="token keyword">select</span> opzione <span class="token keyword">in</span> <span class="token string">"Avvia"</span> <span class="token string">"Arresta"</span> <span class="token string">"Esci"</span><span class="token punctuation">;</span> <span class="token keyword">do</span>
+    <span class="token keyword">case</span> <span class="token variable">$opzione</span> <span class="token keyword">in</span>
+        <span class="token string">"Avvia"</span><span class="token punctuation">)</span>
+            <span class="token keyword">echo</span> <span class="token string">"Hai scelto di avviare il servizio."</span>
+            <span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token string">"Arresta"</span><span class="token punctuation">)</span>
+            <span class="token keyword">echo</span> <span class="token string">"Hai scelto di arrestare il servizio."</span>
+            <span class="token punctuation">;</span><span class="token punctuation">;</span>
+        <span class="token string">"Esci"</span><span class="token punctuation">)</span>
+            <span class="token keyword">echo</span> <span class="token string">"Uscita dal menu."</span>
+            <span class="token keyword">break</span>
+            <span class="token punctuation">;</span><span class="token punctuation">;</span>
+        *<span class="token punctuation">)</span>
+            <span class="token keyword">echo</span> <span class="token string">"Scelta non valida!"</span>
+            <span class="token punctuation">;</span><span class="token punctuation">;</span>
+    esac
+<span class="token keyword">done</span>
+</code></pre>
+<h3 id="ifs">IFS</h3>
+<p>IFS (<em>Internal Field Separator</em>) è una variabile speciale che determina i caratteri usati per separare i campi quando si lavora con stringhe o input.</p>
+<p>Di default, IFS contiene spazio, tabulazione e newline (<code>" \t\n"</code>)</p>
+<p>Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perchè potrebbe contenere caratteri non stampabili:</p>
+<p>Esempio: elencare i file e le directory presenti nella directory corrente e calcolare il loro dimensione su disco. Modifichiamo IFS in modo che Bash non utilizzi gli spazi come delimitatori, ma solo le tabulazioni e i ritorni a capo</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
+OLDIFS<span class="token operator">=</span><span class="token string">"<span class="token variable">$IFS</span>"</span><span class="token punctuation">;</span> 
+IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span><span class="token punctuation">;</span>      <span class="token comment"># default IFS=$' \t\n' </span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> -1<span class="token variable">)</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> 
+	<span class="token function">du</span> -hs <span class="token variable">$i</span><span class="token punctuation">;</span> 
+<span class="token keyword">done</span><span class="token punctuation">;</span>
+<span class="token variable">$IFS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$OLDIFS</span>"</span>
+</code></pre>
+<h2 id="batch">Batch</h2>
+<p>L’approccio più vecchio per scrivere script su Windows era tramite <strong>file batch</strong> (con estensione <code>.bat</code>), l’approccio moderno è tramite <strong>VBscript</strong>.</p>
+<p>All’interno di un file batch si possono trovare solamente i comandi usabili direttamente nel prompt dei comandi.</p>
+<h3 id="istruzioni">Istruzioni</h3>
+<ul>
+<li>
+<p><code>echo</code> serve per mostrare a video del testo.</p>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token function">echo</span> Ciao<span class="token punctuation">,</span> mondo<span class="token operator">!</span>
+</code></pre>
+<p>tramite <code>@echo on</code> e <code>@echo off</code> è possibile abilitare/disabilitare il fatto che i comandi vengano stampati a video prima di essere eseguiti (se si toglie <code>@</code>, allora mostra/nasconde anche il comando stesso, altrimenti agisce solo su quelli successivi)</p>
+</li>
+<li>
+<p><code>pause</code> sospende l’esecuzione dello script fino a quando l’utente preme un tasto.</p>
+</li>
+<li>
+<p><code>type &lt;filename&gt;</code> visualizza il contenuto di un file di testo nel terminale.</p>
+</li>
+<li>
+<p>Per leggere gli argomenti passati da riga di comando si utilizzano <code>%1</code>, <code>%2</code>, <code>%N</code> e così via…</p>
+</li>
+<li>
+<p><code>IF</code> esegue condizioni</p>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token keyword">IF</span> condizione <span class="token punctuation">(</span>comando1<span class="token punctuation">)</span> <span class="token keyword">ELSE</span> <span class="token punctuation">(</span>comando2<span class="token punctuation">)</span>
+</code></pre>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token keyword">IF</span> EXIST file<span class="token punctuation">.</span>txt <span class="token function">ECHO</span> Il file esiste
+</code></pre>
+</li>
+<li>
+<p><code>set</code> per impostare variabili:</p>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token function">SET</span> MIA_VAR=Hello
+</code></pre>
+<p>per estrarne il valore:</p>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token function">ECHO</span> <span class="token operator">%</span>MIA_VAR<span class="token operator">%</span>
+</code></pre>
+</li>
+<li>
+<p><code>rem</code> per fare commenti</p>
+<pre class=" language-powershell"><code class="prism  language-powershell">REM Questo è un commento
+</code></pre>
+</li>
+<li>
+<p>cicli for</p>
+<pre class=" language-powershell"><code class="prism  language-powershell"><span class="token keyword">FOR</span> <span class="token operator">%</span><span class="token operator">%</span>V IN <span class="token punctuation">(</span>1 2 3<span class="token punctuation">)</span> <span class="token keyword">DO</span> <span class="token function">ECHO</span> <span class="token operator">%</span><span class="token operator">%</span>V
+</code></pre>
+</li>
+</ul>
+<h2 id="vbscript">VBScript</h2>
+<p>è un sottoinsieme di Visual Basic usato come linguaggio per fare scripting come sostituto per i file batch</p>
+<ul>
+<li>
+<p>le variabili vengono dichiarata con il costrutto <code>Dim</code> e poi assegnate con l’uguaglianza.</p>
+<p>mettere in testa al file <code>Option Explicit</code> obbliga a dichiarare sempre le variabili prima di usarle.</p>
+</li>
+<li>
+<p>per stampare a video</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">WScript.Echo "hello"
+</code></pre>
+</li>
+<li>
+<p>I commenti si fanno con <code>‘</code></p>
+<pre class=" language-visual"><code class="prism -basic language-visual">Option Explicit
+Dim a,b
+Dim c(3) 'array
+a=”ciao”
+b=1
+c(0)=1
+c(1)=2
+c(2)=3
+wscript.echo a
+wscript.echo b
+wscript.echo c(2)
+</code></pre>
+<p>output:</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">&gt; ciao
+&gt; 1
+&gt; 2
+</code></pre>
+</li>
+<li>
+<p>Gli operatori matematici e di confronto sono i classici usati nei linguaggi moderni, tranne che <code>&lt;&gt;</code> indica il diverso, e <code>^</code> l’elevamento a potenza.</p>
+</li>
+<li>
+<p>Gli operatori logici si indicano con <code>AND</code>, <code>OR</code>, <code>NOT</code></p>
+</li>
+<li>
+<p>costrutto if:</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">If condizione1 Then
+    ' Codice se condizione1 è vera
+ElseIf condizione2 Then
+    ' Codice se condizione2 è vera
+Else
+    ' Codice se nessuna condizione è vera
+End If
+</code></pre>
+</li>
+<li>
+<p>ciclo for</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">For &lt;variabile&gt; = &lt;inizio&gt; To &lt;fine&gt; Step &lt;passo&gt;
+    ' Codice da eseguire
+Next
+</code></pre>
+</li>
+<li>
+<p>ciclo for each</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">For Each &lt;variabile&gt; In &lt;collezione&gt;
+    ' Codice da eseguire
+Next
+</code></pre>
+</li>
+<li>
+<p>ciclo while</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">Do While &lt;condizione&gt;
+   ' Codice da eseguire
+Loop  
+</code></pre>
+</li>
+<li>
+<p>Per prendere l’input dell’utente si usa <code>InputBox</code>. Questo comando apre una finestra di dialogo in cui l’utente può inserire del testo.</p>
+<pre class=" language-visual"><code class="prism -basic language-visual">variabile = InputBox("Messaggio da visualizzare", "Titolo della finestra")
+
+</code></pre>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
