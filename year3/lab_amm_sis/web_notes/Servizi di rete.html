@@ -1,0 +1,184 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-03-17_Servizi di rete</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#servizi-di-rete">Servizi di rete</a>
+<ul>
+<li><a href="#porte-e-socket">Porte e socket</a></li>
+<li><a href="#operazioni-periodiche-con-cron">Operazioni periodiche con cron</a></li>
+<li><a href="#inetd">Inetd</a></li>
+<li><a href="#ntp">NTP</a></li>
+<li><a href="#dhcp">DHCP</a></li>
+<li><a href="#dns">DNS</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="servizi-di-rete">Servizi di rete</h1>
+<h2 id="porte-e-socket">Porte e socket</h2>
+<p>Ogni processo locale che comunica con uno remoto viene identificato in una connessione TCP/IP tramite una <strong>porta</strong>. Una <strong>porta</strong> è un numero a 16 bit (da 0 a 65535) all’interno di un pacchetto TCP/UDP.</p>
+<p>Le porte vengono suddivise in tre categorie:</p>
+<ul>
+<li>
+<p><strong>Well Known Ports</strong>: da 0 a 1023. Queste porte sono assegnate a specifici protocolli dalla <em>Internet Assigned Number Authority</em> (IANA).</p>
+<p>Alcuni esempi di porte conosciute sono:</p>
+<ul>
+<li>21 FTP</li>
+<li>22 SSH</li>
+<li>53 DNS</li>
+<li>80 HTTP</li>
+<li>443 HTTPS</li>
+</ul>
+</li>
+<li>
+<p><strong>Registered Ports</strong>: da 1024 a 49151. Queste porte sono registrate a nome delle società che hanno sviluppato specifiche applicazioni.</p>
+</li>
+<li>
+<p><strong>Dynamic and/or Private Ports</strong>: da 49152 a 65535. Sono porte libere che vengono assegnate dinamicamente ai processi quando un client si connette a un host remoto.</p>
+</li>
+</ul>
+<p>La combinazione di <strong>indirizzo IP</strong>, <strong>protocollo di trasporto</strong> (TCP o UDP) e <strong>numero di porta</strong> prende il nome di <strong>Socket</strong>. Per instaurare una connessione tra due socket sono necessarie due condizioni:</p>
+<ul>
+<li><strong>apertura passiva lato server</strong>: il server sceglie una porta sulla quale vengono accettate le connessioni.</li>
+<li><strong>apertura attiva lato client</strong>: il client sceglie una porta per connettersi all’host remoto.</li>
+</ul>
+<h2 id="operazioni-periodiche-con-cron">Operazioni periodiche con cron</h2>
+<p><strong>Cron</strong> è un <strong>gestore di operazioni eseguite periodicamente</strong> presente nei sistemi UNIX.</p>
+<p>Cron permette di pianificare l’esecuzione di comandi su base temporale (ogni ora, ogni giorno, al riavvio ecc…), consentendo anche di specificare l’utente con cui devono essere eseguiti.</p>
+<p>La configurazione di Cron è suddivisa tra il file <code>/etc/crontab</code> e i file presenti in <code>/etc/cron.*</code>.</p>
+<p>In alcune distribuzioni, esistono delle ****directory contenenti script periodici del sistema:</p>
+<ul>
+<li><code>/etc/cron.daily/</code>: per esecuzioni giornaliere.</li>
+<li><code>/etc/cron.weekly/</code>: per esecuzioni settimanali.</li>
+<li><code>/etc/cron.monthly/</code>: per esecuzioni mensili.</li>
+</ul>
+<p>Nella directory, <strong>/etc/cron.d</strong>, che contiene script eseguiti arbitrariamente o auto-schedulati.</p>
+<p><strong>Ogni utente ha la propria crontab</strong>, modificabile tramite il comando <code>crontab -e</code>.</p>
+<p>Esempio di uno script che viene eseguito ogni giorno alle 12:15:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token comment"># Example of job definition:</span>
+<span class="token comment"># .---------------- minute (0 - 59)</span>
+<span class="token comment"># |  .------------- hour (0 - 23)</span>
+<span class="token comment"># |  |  .---------- day of month (1 - 31)</span>
+<span class="token comment"># |  |  |  .------- month (1 - 12) OR jan,feb,mar,apr ...</span>
+<span class="token comment"># |  |  |  |  .---- day of week (0 - 6) (Sunday=0 or 7) OR sun,mon,tue,wed,thu,fri,sat</span>
+<span class="token comment"># |  |  |  |  |</span>
+<span class="token comment"># *  *  *  *  * user-name command to be executed</span>
+ 15 12  *  *  *   root      /path/to/my_script
+</code></pre>
+<h2 id="inetd">Inetd</h2>
+<p><strong>inetd</strong> è un demone che rimane in ascolto sulle porte configurate. Quando <strong>inetd</strong> riceve una richiesta di connessione o un semplice pacchetto, si occupa di <strong>lanciare il programma desiderato</strong>.</p>
+<p>Spesso, l’uso di <strong>inetd</strong> è abbinato a <strong>tcpd</strong>, il quale si occupa di <strong>registrare le richieste in entrata</strong> e di <strong>accettarle o rifiutarle</strong> in base a semplici regole definite nei file <code>/etc/hosts.allow</code> e <code>/etc/hosts.deny</code>.</p>
+<p>È generalmente preferibile bloccare tutto in ****<code>/etc/hosts.deny</code> e aprire solo i servizi desiderati in ****<code>/etc/hosts.allow</code>.</p>
+<h2 id="ntp">NTP</h2>
+<p><strong>NTP (Network Time Protocol)</strong> è un protocollo che permette ai client di sincronizzarsi con dei server, chiamati <strong>Time Server</strong>, al fine di mantenere data e ora sincronizzati all’interno di un sistema distribuito.</p>
+<p>Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici o ponti radio, stazioni di misurazione, o altri server NTP.</p>
+<p>I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti <strong>strato 0</strong>. I server NTP direttamente collegati a essi sono <strong>server allo strato 1 (primari)</strong>. I dispositivi che ottengono l’ora da server allo strato n sono allo strato n+1.</p>
+<p>Su sistemi Debian/Ubuntu, è possibile <strong>installare il pacchetto ntp</strong></p>
+<pre class=" language-bash"><code class="prism  language-bash">apt <span class="token function">install</span> ntp
+</code></pre>
+<p>La <strong>configurazione</strong> avviene modificando il file <code>/etc/ntp.conf</code>. All’interno di questo file, è necessario inserire nella direttiva <code>server</code> l’indirizzo del server NTP di riferimento.</p>
+<pre class=" language-bash"><code class="prism  language-bash">server <span class="token operator">&lt;</span>ntp_server_name / address<span class="token operator">&gt;</span>
+</code></pre>
+<h3 id="chrony">Chrony</h3>
+<p><strong>Chrony</strong> è un’implementazione versatile del Network Time Protocol (NTP).</p>
+<p><strong>Chrony</strong> può sincronizzare l’orologio di sistema con server NTP, orologi di riferimento (come ricevitori GPS) e input manuale. Può anche funzionare come server NTPv4 per altri computer nella rete.</p>
+<p>È progettato per funzionare bene anche in condizioni di rete difficili e offre una precisione tipica di pochi millisecondi su Internet e di decine di microsecondi su una LAN.</p>
+<h2 id="dhcp">DHCP</h2>
+<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> è un protocollo sche permette la <strong>configurazione automatica dei parametri di rete</strong> al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.</p>
+<p><strong>Funzionalità principali</strong>:</p>
+<ul>
+<li>
+<p><strong>Assegnazione dinamica di parametri di rete</strong>: Un server DHCP assegna dinamicamente ai client che ne fanno richiesta parametri come <strong>indirizzo IP, netmask, gateway, hostname e una lista di server DNS</strong>.</p>
+</li>
+<li>
+<p><strong>Assegnazione di IP statici tramite MAC address</strong>: È possibile configurare il server DHCP in modo che assegni sempre lo stesso indirizzo IP a uno specifico host (identificato dal suo indirizzo MAC).</p>
+<p>Il DHCP può essere configurato per assegnare indirizzi IP solo a indirizzi MAC conosciuti.</p>
+</li>
+</ul>
+<p><strong>Come funziona:</strong></p>
+<ol>
+<li><strong>DHCPDISCOVER</strong>: All’avvio della configurazione di rete, il client invia un pacchetto <strong>DHCPDISCOVER in broadcast</strong> (all’indirizzo 255.255.255.255) per cercare un server DHCP.</li>
+<li><strong>DHCPOFFER</strong>: Se un server DHCP è presente nella rete, riceve la richiesta, verifica (eventualmente) l’indirizzo MAC del client e invia un <strong>indirizzo IP al client tramite un pacchetto DHCPOFFER</strong>.</li>
+<li><strong>DHCPREQUEST</strong>: Se il client accetta la configurazione offerta, invia un pacchetto di <strong>DHCPREQUEST</strong> al server.</li>
+<li><strong>DHCPACK</strong>: Il server risponde al client con un pacchetto di <strong>DHCPACK</strong> contenente l’indirizzo IP assegnato e le altre informazioni sulla configurazione di rete.</li>
+</ol>
+<p>L’implementazione di DHCP più comune nei sistemi derivati da UNIX è <strong>ISC DHCP</strong>.</p>
+<p>Per installare il server e il client DHCP su Debian/Ubuntu:</p>
+<pre class=" language-bash"><code class="prism  language-bash">apt <span class="token function">install</span> isc-dhcp-server isc-dhcp-client
+</code></pre>
+<p>La configurazione del server DHCP si trova nel file <code>/etc/dhcp/dhcp.conf</code>. Permette di definire diverse opzioni, come il nome del dominio, i server DNS, la durata predefinita e massima del lease degli indirizzi IP, la subnet da servire e le opzioni specifiche per quella subnet.</p>
+<h2 id="dns">DNS</h2>
+<p>Il <strong>Domain Name System (DNS)</strong> è un sistema usato per <strong>tradurre gli indirizzi IP in nomi simbolici e viceversa</strong>.</p>
+<p>Il DNS gestisce una <strong>tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)</strong>.</p>
+<p>Il DNS è fondamentalmente un <strong>database distribuito</strong> basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.</p>
+<p>Il DNS possiede:</p>
+<ol>
+<li>
+<p><strong>una gerarchia dei nomi di dominio</strong>: La posizione più alta è occupata dai <strong>Top Level Domain (TLD)</strong> come <code>.com</code>, <code>.it</code>, <code>.uk</code>, <code>.edu</code>, ecc. Al di sotto si trovano altri domini come <code>amazon.it</code>, <code>google.it</code>, ecc…</p>
+<p><img src="https://i.ibb.co/BVjGj0fN/image.png" alt=""></p>
+</li>
+<li>
+<p><strong>una gerarchia dei server che forniscono i dati</strong>: Le informazioni sono suddivise in <strong>zone</strong>, cioè una porzione di nomi di dominio sotto una gestione amministrativa. La gerarchia dei name server parte dai <strong>root name server</strong> e si realizza tramite <strong>deleghe sulle zone</strong>, aventi come radice la zona “.”.</p>
+<p>La gestione di una zona è <strong>delegata dalla zona superiore tramite dei record di tipo NS</strong> (Name Server). Per garantire ridondanza, ogni zona è <strong>replicata su più server</strong>.</p>
+<p><img src="https://i.ibb.co/fGPMkfZL/image.png" alt=""></p>
+</li>
+</ol>
+<h3 id="risoluzione-di-un-nome-di-domino-e-risoluzione-inversa">Risoluzione di un nome di domino e risoluzione inversa</h3>
+<p>Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogarlo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.</p>
+<p>I server DNS, provvedono anche alla <strong>risoluzione inversa</strong>: da indirizzi IP a nomi. Quest’ultima avviene tramite la gerarchia di zone <code>in-addr.arpa</code> per IPv4 (<code>ip6.arpa</code> per IPv6).</p>
+<p>Le zone DNS contengono diversi tipi di informazioni, memorizzate in <strong>record</strong>. Ogni record contiene una specifica tipologia di informazione:</p>
+<ul>
+<li><strong>Record SOA (Start Of Authority)</strong>: fornisce informazioni generali sulla zona, inclusi un identificativo sequenziale della versione (serial number), l’email del responsabile e il TTL.
+<ul>
+<li>Il <strong>serial number</strong> è solitamente una sequenza numerica che include la data dell’ultima modifica.</li>
+<li>Il <strong>TTL</strong> indica per quanto tempo altri server DNS possono considerare valida l’informazione ricevuta.</li>
+</ul>
+</li>
+<li><strong>Record NS (Name Server)</strong>: indica i <strong>server DNS autoritativi</strong> per una determinata zona, cioè quelli responsabili di rispondere alle query su quel dominio.</li>
+<li><strong>Record MX (Mail Exchanger)</strong>: definisce gli hostname dei server di posta in entrata responsabili per il dominio.</li>
+<li><strong>Record A</strong>: associa un nome di dominio a un indirizzo <strong>IPv4</strong> (es. <code>example.com → 192.168.1.1</code>).</li>
+<li><strong>Record AAAA</strong>: come il record A, ma per gli <strong>indirizzi IPv6</strong> (es. <code>example.com → 2001:db8::1</code>).</li>
+<li><strong>Record CNAME</strong>: rappresenta nomi alternativi (alias) per un host.</li>
+<li><strong>Record TXT</strong>: permette di associare stringhe arbitrarie ad un nome.</li>
+<li><strong>Record SRV</strong>: permette di associare informazioni strutturate al nome di un servizio…</li>
+<li><strong>Record PTR</strong>: nelle zone per la risoluzione inversa, rappresenta le traduzioni nella forma IP → nome.</li>
+</ul>
+<h3 id="dns-su-linux">DNS su Linux</h3>
+<p>Nei sistemi Unix/Linux, un sistema DNS può essere realizzato principalmente in due modi:</p>
+<ol>
+<li>
+<p><strong>Utilizzando il file</strong> <code>/etc/hosts</code>: Inserendo l’elenco di tutte le coppie <strong>IP-nome</strong> della propria rete con la seguente sintassi: <code># IP FQDN ALIAS</code>.</p>
+<pre class=" language-bash"><code class="prism  language-bash">192.168.0.150 www.example.com example
+</code></pre>
+</li>
+<li>
+<p><strong>Utilizzando un server DNS</strong>, come BIND. Per la gestione si possono utilizzare tool utili come <code>host</code> e <code>dig</code>.</p>
+<p>In una stessa zona possono esserci più server DNS, classificati come:</p>
+<ul>
+<li><strong>master</strong>: primario, contiene la copia principale e propaga le modifiche</li>
+<li><strong>slave</strong>: secondario, possiede una replica e può fungere da primario in caso di necessità</li>
+<li><strong>caching</strong>: tiene solo una cache delle informazioni).</li>
+</ul>
+</li>
+</ol>
+
+    </div>
+  </div>
+</body>
+
+</html>
