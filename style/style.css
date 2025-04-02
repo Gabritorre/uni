@@ -32,26 +32,19 @@ body {
 
 .head {
 	width: 100%;
+	height: 90px;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .head img{
-	padding-top:10px;
+	padding: 0px 10px;
 }
 
 .img {
 	margin: 10px;
-}
-
-.head-subject{
-	width: 100%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	padding: 10px 0px;
-	align-items: center;
 }
 
 .curses{
@@ -87,20 +80,30 @@ body {
 	margin-top: 15px;
 	width:100%;
 	display: flex;
+	flex-direction: row;
+	align-items: flex-start;
+	justify-content: space-around;
+	flex-wrap: wrap;
+}
+
+.arguments-container {
+	margin-top: 15px;
+	width:100%;
+	display: flex;
 	flex-direction: column;
 	align-items: center;
 }
 
 h1 {
-	margin-top: 0px;
-	padding-top: 15px;
+	margin: 0px;
+	padding: 0px;
 	font-size: 48px;
 }
 
 h2 {
 	font-size: 32px;
-	margin-top: 0px;
-	margin-bottom: 20px;
+	padding: 0px;
+	margin: 0px;
 }
 
 h3 {
@@ -116,7 +119,7 @@ hr {
 
 ul {
 	padding:0px;
-	margin-bottom: 5px;
+	margin: 10px 0px;
 }
 
 li {
@@ -172,6 +175,8 @@ li a:hover:after {
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
+	justify-content: flex-start;
+	width: 100%;
 }
 
 button a {
@@ -211,6 +216,18 @@ button:hover, button:focus {
 
 .main button a {
 	font-size: 22px;
+}
+
+.year_container {
+	display: flex;
+    flex-direction: column;
+	margin: 0px 10px;
+}
+
+.button_container {
+	display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .date_reference {

@@ -42,4 +42,6 @@ Notes for my bachelor degree
  ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/ling_per_rete">Linguaggi per la rete</a> <br>
  ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/reti_calc">Reti di calcolatori</a> <br>
  ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/ric_operativa">Ricerca operativa</a> <br>
-  ⠀⠀⠀    │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/sicurezza">Sicurezza</a> <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/sicurezza">Sicurezza</a> <br>
+ ⠀⠀⠀     │------------------------ <br>
+ ⠀⠀⠀     │ <a href="https://github.com/Gabritorre/uni/tree/main/year3/lab_amm_sis">Laboratorio di amministrazione di sistema</a> <br>
