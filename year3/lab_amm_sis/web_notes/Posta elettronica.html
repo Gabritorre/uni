@@ -1,0 +1,158 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-03-25_Posta elettronica</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#posta-elettronica">Posta elettronica</a>
+<ul>
+<li><a href="#flusso">Flusso</a></li>
+<li><a href="#protocolli">Protocolli</a></li>
+<li><a href="#spam">Spam</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="posta-elettronica">Posta elettronica</h1>
+<p>La posta elettronica è un sistema di comunicazione su larga scala.</p>
+<p>È composto da vari attori:</p>
+<ul>
+<li>Il <strong>Mail User Agent (MUA)</strong> o client di posta (come Thunderbird, Outlook) è un programma utilizzato da un utente per inviare e consultare i messaggi. Può anche essere un’applicazione web (webmail).</li>
+<li>Il <strong>Mail Submission Agent (MSA)</strong> riceve i messaggi da un MUA e li invia a un MTA.</li>
+<li>Il <strong>Mail Transit Agent (MTA)</strong> riceve email da un MSA o da un altro MTA e le instrada verso un altro MTA oppure verso un LDA.</li>
+<li>Il <strong>Mail Delivery Agent (MDA)</strong> o <strong>Local Delivery Agent (LDA)</strong> consegna il messaggio alla casella di posta dell’utente indicato se la destinazione finale del messaggio si trova nel sistema corrente.</li>
+<li>Il <strong>Mail Access Agent (MAA)</strong> permette di consultare e scaricare i messaggi.</li>
+<li>Il <strong>Mail Retrival Agent (MRA)</strong> scarica la posta da un MAA e la rende disponibile in locale.</li>
+</ul>
+<p>Tutte le comunicazioni tra i vari agenti, ad eccezione delle interazioni tra MRA e MAA, avvengono attraverso il protocollo SMTP (<em>Simple Mail Transfer Protocol</em>).</p>
+<h2 id="flusso">Flusso</h2>
+<p><img src="https://i.ibb.co/39Yp9XdB/image.png" alt=""></p>
+<ol>
+<li>
+<p>Il mittente scrive una email usando un MUA.</p>
+</li>
+<li>
+<p>MUA invia la mail a un MSA/MTA.</p>
+</li>
+<li>
+<p>L’MTA controlla l’indirizzo di destinazione (<code>utente@dominio</code>).</p>
+<ul>
+<li>Se il dominio rientra tra quelli gestiti dall’MTA (e quindi è un indirizzo locale) e l’utente è valido, l’email viene inoltrata all’LDA, che la consegna nella casella di posta associata, terminando il processo.</li>
+<li>Se l’indirizzo non è locale e l’MTA accetta di inoltrare il messaggio (<em>relay</em>), l’MTA inserisce il messaggio in una coda.</li>
+</ul>
+</li>
+<li>
+<p>Dopo aver estratto il messaggio dalla coda, l’MTA controlla il record <code>DNS MX</code> associato al dominio del destinatario e contatta l’MTA che risponde a quell’host, cercando di inviargli il messaggio.</p>
+</li>
+<li>
+<p>Se l’invio avviene correttamente, il messaggio viene gestito dall’MTA di destinazione, che procede dal punto 3.</p>
+<p>Se l’MTA contattato non risponde, il messaggio torna in coda.</p>
+<p>Se l’MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all’indirizzo del mittente, e il procedimento termina.</p>
+</li>
+</ol>
+<h3 id="relay">Relay</h3>
+<p>Il <strong>relay</strong> è un’operazione in cui un MTA accetta un’email da un altro server, anche se non è indirizzata a un dominio da esso servito, con lo scopo di inoltrarla a un destinatario terzo.</p>
+<p>Questa funzionalità non è sempre consentita. Un MTA accetterà una richiesta di relay se proviene da un <strong>host conosciuto</strong> oppure da un <strong>utente autenticato</strong>. In tutti gli altri casi, il messaggio viene immediatamente rifiutato.</p>
+<p>È importante notare che il servizio di posta <strong>non garantisce la consegna delle email, la notifica degli errori, l’identità del mittente o la privacy della comunicazione</strong>. Per superare questi limiti, è necessario ricorrere a sistemi a livello applicazione.</p>
+<h2 id="protocolli">Protocolli</h2>
+<p>Il protocollo utilizzato tra MUA e MTA e tra MTA e MTA si chiama <strong>Simple Mail Transfer Protocol (SMTP)</strong> o <strong>Extended SMTP (ESMTP)</strong> che fa una sorta di handshake per stabilire la connessione prima di inviare dati. La comunicazione tra MTA e LDA può avvenire internamente (scambio diretto di file) o tramite il <strong>Local Mail Transfer Protocol (LMPT)</strong>.</p>
+<p>La comunicazione tra il MAA e il MUA (tramite l’MRA) avviene tramite il <strong>Post Office Protocol versione 3 (POP3)</strong> o l’<strong>Internet Message Access Protocol versione 4 (IMAP4)</strong>.</p>
+<ul>
+<li><strong>IMAP</strong> mantiene le email sul server, consentendo la gestione da diversi dispositivi conservando una copia centralizzata.</li>
+<li><strong>POP</strong>, invece, scarica le email sul dispositivo utilizzato per la consultazione, e la connessione è necessaria solo per inviare e ricevere.</li>
+</ul>
+<p><strong>IMAP è generalmente preferibile per prestazioni ottimali</strong>, specialmente su reti lente, mentre POP può essere utile in caso di connessioni non persistenti.</p>
+<p><img src="https://i.ibb.co/mFFLG7nQ/protocolli.png" alt=""></p>
+<h3 id="implementazioni-mta"><strong>Implementazioni MTA</strong></h3>
+<ul>
+<li><strong>Sendmail:</strong> È stato il <strong>primo demone</strong> ad implementare il protocollo SMTP. Tuttavia, la sua <strong>progettazione rigida e la complessità della configurazione</strong> ne hanno progressivamente ridotto la popolarità fino alla sua quasi scomparsa. Inoltre, presentava <strong>molti bug e problemi di sicurezza</strong>.</li>
+<li><strong>Postfix:</strong> È l’<strong>MTA di riferimento in ambiente Linux</strong>. È <strong>facile da configurare</strong>, <strong>modulare</strong> e supporta diversi tipi di autenticazione. Permette una facile integrazione con sistemi di controllo della posta e sistemi <strong>antispam.</strong></li>
+<li><strong>MS Exchange:</strong> Introdotto da Microsoft nel 1996, è oggi uno dei <strong>mail server più potenti e utilizzati</strong>, soprattutto in contesti aziendali che impiegano infrastrutture e tecnologie Microsoft. Le sue funzionalità principali includono la <strong>gestione centralizzata di posta elettronica, calendari e rubriche condivise</strong>. Il client più comune per connettersi a Exchange è <strong>Microsoft Outlook.</strong></li>
+</ul>
+<h3 id="implementazioni-maa"><strong>Implementazioni MAA</strong></h3>
+<ul>
+<li>
+<p><strong>Dovecot:</strong> Permette l’utilizzo dei protocolli <strong>IMAP e POP</strong> e supporta diversi <strong>formati di memorizzazione</strong> della posta. Tramite un plugin, offre un sistema di <strong>filtri server-side</strong> gestibili tramite il protocollo <strong>SIEVE</strong> per lo smistamento della posta in cartelle e l’inoltro ad altri indirizzi.</p>
+<p>Alcuni tipi di formati di memorizzazione della posta sono i seguenti:</p>
+<ul>
+<li><strong>Mbox:</strong> È il formato più <strong>vecchio</strong> e ha una struttura semplice: la casella di posta è un <strong>file di testo</strong> in cui i messaggi sono memorizzati uno dopo l’altro, separati da tag.</li>
+<li><strong>Maildir:</strong> In questo formato, la singola casella di posta è una <strong>directory</strong>, e ogni messaggio è un <strong>singolo file</strong> al suo interno. Ciò consente <strong>accessi contemporanei</strong> e garantisce una <strong>maggiore flessibilità</strong>.</li>
+<li><strong>D-box:</strong> A differenza di Maildir, utilizza file di indice per gestire i metadati e mantiene i nomi dei file delle email stabili nel tempo. Questo approccio riduce l’uso del filesystem e migliora la gestione dei flag e degli stati dei messaggi. In caso di corruzione o perdita degli indici, Dovecot è in grado di rigenerarli automaticamente grazie alle informazioni contenute nei file D-box.</li>
+<li><strong>Mdbox (Dovecot &gt; 2.0):</strong> Permette di memorizzare <strong>più messaggi in un singolo file</strong>, e una singola casella di posta può contenere <strong>più file</strong>. I file hanno una dimensione configurabile di circa <strong>2 MB</strong>. Questo formato si sforza di preservare quanti più dati possibile in caso di corruzione del file system, in modo che crash o perdite di alimentazione non possano corrompere o perdere dati.</li>
+</ul>
+</li>
+</ul>
+<h2 id="spam">Spam</h2>
+<p>Lo <strong>SPAM</strong> è definito come <strong>uno o più messaggi non richiesti, facenti parte di un più insieme di messaggi, tutti aventi contenuto sostanzialmente identico</strong>. Le email indesiderate possono essere collocate in <strong>cinque diverse categorie</strong>:</p>
+<ul>
+<li><strong>Hoax:</strong> Bufale e catene di Sant’Antonio.</li>
+<li><strong>Worm:</strong> Email mandate da virus.</li>
+<li><strong>UCE (Unsolicited Commercial Email):</strong> Email di spam dal contenuto commerciale.</li>
+<li><strong>UBE (Unsolicited Bulk Email):</strong> Email indesiderate inviate in grandi quantità.</li>
+<li>Messaggi derivanti da iscrizioni a mailing list.</li>
+</ul>
+<p>Non è possibile arginare completamente il problema dello spam con una policy statica, poiché gli spammer inventano continuamente nuove strategie per aggirare i filtri. È possibile solo filtrare le email in ingresso con vari meccanismi, tenendo presente che una filtratura eccessiva potrebbe compromettere il servizio scartando email legittime.</p>
+<h3 id="tecniche-di-difesa">Tecniche di Difesa</h3>
+<ul>
+<li>
+<p><strong>Greylisting:</strong></p>
+<p>questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo</p>
+<ol>
+<li>Un’email proveniente da un dominio sconosciuto viene <strong>temporaneamente rifiutata</strong> con un errore di “temporaneamente non disponibile: 450 <em>try again later</em>” per un numero preimpostato di volte.</li>
+<li>Ad ogni rifiuto, l’MTA mittente rimette la mail in coda e, dopo un certo periodo di tempo, tenta il reinvio.</li>
+<li>Al tentativo N, la mail viene accettata dall’MTA ricevente, e l’MTA mittente viene inserito in una <strong>whitelist</strong>, in modo che tutte le email successive vengano accettate direttamente.</li>
+</ol>
+<p><strong>Problematiche:</strong> Alla lunga, questa tecnica <strong>perde di efficacia</strong> poiché i bot di spam implementano algoritmi che ritentano l’invio. Possono anche verificarsi <strong>lievi ritardi nella consegna</strong> delle email.</p>
+<p><strong>Vantaggi:</strong> <strong>Nessuna email lecita viene scartata</strong>, poiché i mail server legittimi re-inviano la mail. Si ha comunque un <strong>buon filtraggio di base</strong>.</p>
+</li>
+<li>
+<p><strong>RBL</strong> (<em>Real-time Blackhole List</em>):</p>
+<p>Sono liste contenenti <strong>IP non “autorizzati” ad inviare e-mail</strong>.</p>
+<p><strong>Problematiche:</strong> È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.</p>
+</li>
+<li>
+<p><strong>SPF</strong> (<em>Sender Policy Framework</em>):</p>
+<p>È uno standard che, tramite un <strong>record TXT nel DNS</strong>, dichiara quali <strong>IP o nomi possono inviare mail per un determinato dominio</strong>. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.</p>
+<p><strong>Problematiche: Non tutti i domini implementano il record TXT</strong>. L’implementazione può essere difficoltosa.</p>
+</li>
+<li>
+<p><strong>SpamAssassin:</strong></p>
+<p>È un demone che utilizza un sistema di filtri che cercando di “indovinare” se una mail è valida assegnandole un punteggio in base a vari aspetti (lingua della mail, presenza di tag HTML, presenza di parole chiave).</p>
+<p>In base al punteggio, può far passare l’email, segnalarla come spam, o scartarla.</p>
+<p><strong>Problematiche:</strong> Richiede continui aggiustamenti e notevole esperienza per essere mantenuto.</p>
+</li>
+<li>
+<p><strong>Controlli MTA:</strong></p>
+<p>Un MTA può implementare controlli sfruttando il <strong>formato del protocollo SMTP</strong> per ridurre il flusso di spam.</p>
+<p><strong>Esempi in Postfix:</strong></p>
+<ul>
+<li><code>smtpd_helo_required = yes</code>: Controlla che il mittente inizi la comunicazione con il comando <code>ehlo</code>.</li>
+<li><code>smtpd_sender_restrictions</code>: Controlla chi, dopo essersi identificato con <code>ehlo</code>, può inviare email.</li>
+<li><code>smtpd_recipient_restrictions</code>: Effettua controlli sul destinatario.</li>
+</ul>
+</li>
+<li>
+<p><strong>AMAVIS:</strong></p>
+<p>È un <strong>demone</strong> che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica e interfacciandosi con altri sistemi di filtraggio spam e virus come quelli che abbiamo visto precedentemente.</p>
+<p>Permette di rilevare virus, spam, contenuti vietati; bloccare, etichettare, reindirizzare email; mettere in quarantena o rilasciare messaggi; eliminare virus tramite antivirus esterni.</p>
+</li>
+</ul>
+
+    </div>
+  </div>
+</body>
+
+</html>
