@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-03-31_File system distribuiti</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#file-system-distribuiti">File system distribuiti</a>
+<ul>
+<li><a href="#caratteristiche-dfs">Caratteristiche DFS</a></li>
+<li><a href="#implementazioni">Implementazioni</a></li>
+<li><a href="#quota">Quota</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="file-system-distribuiti">File system distribuiti</h1>
+<p>Un <strong>Filesystem Distribuito (DFS)</strong> è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell’utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.</p>
+<p>Un <strong>File Server</strong> è un host che ospita un DFS. Sui client è installata un’interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.</p>
+<h2 id="caratteristiche-dfs"><strong>Caratteristiche DFS</strong></h2>
+<p>Le caratteristiche principali di un DFS includono:</p>
+<ul>
+<li>
+<p><strong>Trasparenza:</strong></p>
+<p>La trasparenza ideale fa sì che un DFS appaia all’utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L’interfaccia utente non dovrebbe distinguere tra file locali e remoti.</p>
+</li>
+<li>
+<p><strong>Prestazioni:</strong><br>
+Il modo più conveniente per misurare le prestazioni di un DFS è quantificare il tempo impiegato per soddisfare una richiesta. Nei sistemi convenzionali (non distribuiti), questo tempo è dato principalmente dall’accesso al disco locale e da una piccola quantità di elaborazione della CPU.</p>
+<p>Nei sistemi distribuiti, a questo si aggiunge il <strong>ritardo dovuto alle comunicazioni di rete</strong>. Le prestazioni di un DFS influenzano il suo livello di trasparenza, idealmente, un sistema distribuito dovrebbe avere una velocità paragonabile a quella di un sistema convenzionale.</p>
+</li>
+<li>
+<p><strong>Accesso Concorrente:</strong><br>
+Un filesystem distribuito deve gestire anche la modifica dei file. È fondamentale che <strong>gli aggiornamenti operati da un client non interferiscano con gli accessi e le modifiche fatte da altri client</strong>. Per questo motivo, sono necessari meccanismi di controllo della concorrenza e di <em>locking</em>.</p>
+</li>
+</ul>
+<p>Dal lato server le implementazioni possono variare, con il file server a volte eseguito su una singola macchina dedicata, mentre in altri casi il client può accedere simultaneamente a più file server. È anche possibile che la stessa macchina ospiti sia un file server che un client.</p>
+<h2 id="implementazioni">Implementazioni</h2>
+<p>Vediamo varie implementazioni di DFS.</p>
+<h3 id="nfs-network-file-system"><strong>NFS (Network File System)</strong>:</h3>
+<p>Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il <strong>primo DFS ad essere sviluppato</strong> ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull’idea che ogni host fornisce una vista unificata del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.</p>
+<p>NFS utilizza un <em><strong>remote access model</strong></em> in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file.</p>
+<p>Dalla versione 4:</p>
+<ul>
+<li>supporta server <em>stateful</em>, mantenendo lo stato delle operazioni, a differenza delle versioni precedenti dove era il client a doverlo fare.</li>
+<li>introdotto le <em><strong>Compound Operations</strong></em> (CP), che consistono in inserire più operazioni in una singola chiamata, migliorando così l’efficienza. La chiamata però non viene trattata come una transazione: se una operazione interna fallisce, le successive non vengono eseguite e viene ritornato un messaggio di errore senza che venga fatto un rollback.</li>
+<li>Utilizza il protocollo TCP (in precedenza UDP).</li>
+<li>Per il riconoscimento dell’utente, dalla versione 4 si usa una stringa arbitraria, come un username (prima era solo tramite indirizzo IP)</li>
+</ul>
+<p>La sua configurazione avviene nel file <code>/etc/exports</code> e usa la seguente sintassi:</p>
+<pre class=" language-bash"><code class="prism  language-bash">/percorso/cartella/condivisa     indirizzo_ip<span class="token punctuation">(</span>opzioni<span class="token punctuation">)</span>
+/percorso/cartella/condivisa     hostname<span class="token punctuation">(</span>opzioni<span class="token punctuation">)</span>
+/percorso/cartella/condivisa     rete<span class="token punctuation">(</span>opzioni<span class="token punctuation">)</span>
+
+<span class="token comment"># Ad esempio:</span>
+/srv/nfs     192.168.100.0/24<span class="token punctuation">(</span>rw,sync,no_subtree_check<span class="token punctuation">)</span>
+</code></pre>
+<p>Per utilizzare un’area condivisa vi sono tre modalità:</p>
+<ol>
+<li>effettuare un mount manuale della directory condivisa</li>
+<li>effettuare il mount in <code>/etc/fstab</code> in modo che la directory venga montata all’avvio</li>
+<li>Usare <strong>automount</strong></li>
+</ol>
+<p><strong>Automount</strong> è un meccanismo implementato da vari sistemi UNIX per gestire il montaggio di filesystem remoti in modo dinamico, cioè montandolo solamente quando serve e smontandolo quando non serve più.</p>
+<p>Il problema che automount mira a risolvere è che <strong>non è consigliabile mantenere un file system remoto montato permanentemente su un sistema</strong>. in caso di disconnessione il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può svorareil limite massimo di mount.</p>
+<p><strong>Funzionamento:</strong></p>
+<ul>
+<li>Quando un processo accede ad un file all’interno di un certo percorso gestito da un DFS, questo viene <strong>montato all’istante</strong>.</li>
+<li>Dopo un certo periodo di <strong>inattività</strong>, e dopo che tutti i file sotto quel punto di mount sono stati chiusi, il filesystem viene <strong>smontato</strong>.</li>
+<li>In Linux, il sistema automount è gestito direttamente dal kernel.</li>
+<li>La <strong>tabella di corrispondenza tra percorso e locazione</strong> del filesystem remoto, sono mantenute da un programma in user space chiamato <strong>autofs</strong>.</li>
+</ul>
+<h3 id="cifssmb-common-internet-file-systemserver-message-block"><strong>CIFS/SMB (Common Internet File System/Server Message Block)</strong></h3>
+<p>In generale, in un dominio <strong>Active Directory</strong> di Windows, esistono due tipologie di cartelle condivise  legate agli utenti del sistema:</p>
+<ul>
+<li>
+<p><strong>Profili utente:</strong> Possono risiedere solo sulla macchina locale (client), oppure sul server come <em>Roaming Profiles</em>. Con i <em>Roaming Profiles</em>, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l’utente si collega.</p>
+<p>I profili vengono scaricati/caricati dal server a ogni login/logout.</p>
+</li>
+<li>
+<p><strong>Home directory:</strong> È una cartella personale destinata principalmente all’archiviazione di file e documenti dell’utente.</p>
+</li>
+</ul>
+<p>La condivisione dei file in Windows è gestita principalmente dal protocollo <strong>CIFS (Common Internet File System)</strong>.</p>
+<p><strong>CIFS</strong> è un protocollo standard che permette la condivisione di file e risorse all’interno di una LAN nata come versione migliorata del protocollo <strong>SMB (Server Message Block)</strong> di Microsoft.</p>
+<p>Caratteristiche:</p>
+<ul>
+<li><strong>Integrità e concorrenza:</strong> Permette l’accesso multiplo allo stesso file evitando conflitti tramite <em>file locking</em>.</li>
+<li><strong>Ottimizzazioni per connessioni lente</strong>.</li>
+<li><strong>Sicurezza:</strong> Supporta sia trasferimento anonimo che accesso autenticato e crittografato.</li>
+<li><strong>Performance e scalabilità:</strong> migliori grazie all’integrazione diretta nel sistema operativo</li>
+<li><strong>Nomi file unicode:</strong> Supporta varie codifiche.</li>
+<li><strong>Nomi file globali (UNC):</strong> Gli utenti possono riferirsi ai file usando il formato UNC (Uniform Naming Convention) <code>\\server\share\percorso\file</code> senza dover necessariamente montare il filesystem remoto.</li>
+</ul>
+<h3 id="samba">SAMBA</h3>
+<p><strong>SAMBA</strong> è un software per piattaforme Unix che permette di interagire con i sistemi Windows fornendo servizi di condivisione file e stampanti. Grazie a SAMBA, è possibile inserire una macchina Linux all’interno di un dominio Windows.</p>
+<p>Le directory UNIX configurate come condivisibili tramite SAMBA appaiono agli utenti Windows come normali cartelle di rete. Gli utenti Unix possono accedere a queste condivisioni tramite la utility <code>smbclient</code>. La configurazione di Samba avviene modificando il file <code>/etc/smb.conf</code> (oppure <code>/etc/samba/smb.conf</code>).</p>
+<p>Dalla versione 4, Samba è in grado di svolgere quasi tutte le funzioni di un Domain Controller (DC) e integrarsi con Active Directory (AD) di Windows Server. Risulta quindi uno strumento fondamentale per l’interconnessione tra domini Microsoft e tecnologie non Microsoft, offrendo servizi di condivisione di risorse di rete.</p>
+<h2 id="quota">Quota</h2>
+<p>Un problema fondamentale è che in un ambiente con molti utenti, spesso si verifica una competizione per l’uso delle risorse, in particolare lo <strong>spazio di memorizzazione</strong>.</p>
+<p>Lo spazio di memorizzazione su sistemi come NAS o file server è generalmente <strong>molto più costoso</strong> rispetto a quello dei personal computer, a causa delle necessità di prestazioni elevate, affidabilità e disponibilità continua.</p>
+<p>Di conseguenza, è necessario proteggersi dalla possibilità che qualche utente monopolizzi lo spazio di archiviazione.</p>
+<p>Per risolvere questo problema, viene introdotto il concetto di <strong>quota disco</strong>, un limite oltre il quale uno specifico utente non può più occupare spazio.</p>
+<p>In <strong>Linux</strong>, il sistema di gestione delle quote è integrato direttamente nel Kernel. Le utility per la gestione delle quote sono disponibili nel pacchetto <code>quota</code>. Quando le quote sono attive sul server, vengono automaticamente applicate anche alle operazioni sui filesystem esportati.</p>
+<p>Una quota è definita da quattro quantità:</p>
+<ul>
+<li>La <strong>soft quota</strong> sul <strong>numero di blocchi (spazio disco)</strong>. Raggiungendo questo limite, l’utente riceve un avviso.</li>
+<li>La <strong>hard quota</strong> sul <strong>numero di blocchi (spazio disco)</strong>. Al raggiungimento di questo limite, ogni ulteriore tentativo di allocazione di spazio viene respinto.</li>
+<li>La <strong>soft quota</strong> sugli <strong>inode (numero di file)</strong>.</li>
+<li>La <strong>hard quota</strong> sugli <strong>inode (numero di file)</strong>.</li>
+</ul>
+<p>È importante notare che la <em>soft quota</em> è sempre inferiore alla <em>hard quota</em>.</p>
+<p>Per le <em>soft quota</em> è possibile impostare un <strong>grace period</strong>. Se un utente supera la <em>soft quota</em> e continua a farlo oltre questo periodo, ogni ulteriore allocazione di spazio verrà rifiutata, trasformando di fatto la <em>soft quota</em> in una <em>hard quota</em>.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
