@@ -1,0 +1,78 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-04-08_Database server</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#database-server">Database server</a>
+<ul>
+<li><a href="#dbms">DBMS</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="database-server">Database server</h1>
+<p>Un <strong>database</strong> è una raccolta di dati, anche eterogenei, che possono essere interrogati e messi in relazione tra loro. Un <strong>DBMS</strong> (DataBase Management System) è il software che si occupa di gestire i database e fa da intermediario tra gli utenti (e le applicazioni) e i database. Inoltre definisce gli utenti e gli amministratori che accedono ai dati e fornisce meccanismi di sicurezza, protezione e controllo dell’integrità dei dati.</p>
+<p>Nella gestione di un database sono solitamente coinvolte le seguenti figure:</p>
+<ul>
+<li>
+<p><strong>DBA (DataBase Administrator)</strong>: gestisce gli accessi, predispone tabelle, indici, viste, ottimizza lo spazio disco ed effettua backup e restore.</p>
+<p>La persona che ricopre questo ruolo deve conoscere i rudimenti del linguaggio SQL e i DBMS più diffusi, assicurare i backup e l’integrità dei vari DBMS, suggerirne la ridondanza e capire quale DBMS sia più adatto a una specifica applicazione, tenendo conto delle licenze aziendali pre-esistenti.</p>
+</li>
+<li>
+<p><strong>Programmatori</strong>: scrivono applicazioni che utilizzano i dati del DB.</p>
+</li>
+<li>
+<p><strong>Utenti finali</strong>: utilizzano le applicazioni per interrogare il DB.</p>
+</li>
+<li>
+<p><strong>Sistemisti</strong>: verificano il corretto funzionamento dei sistemi hardware e software su cui gira il DBMS. Spesso questo ruolo coincide con il DBA.</p>
+</li>
+</ul>
+<h2 id="dbms">DBMS</h2>
+<p>Tra i più diffusi DBMS open source troviamo</p>
+<ul>
+<li><strong>MySQL (MariaDB)</strong></li>
+<li><strong>PostgreSQL</strong></li>
+<li>SQLite</li>
+<li>Firebird</li>
+</ul>
+<p>Tra i DBMS commerciali più diffusi si trovano:</p>
+<ul>
+<li><strong>Oracle</strong></li>
+<li><strong>MS SQL Server</strong></li>
+<li>Sybase</li>
+<li><strong>MS Access</strong></li>
+</ul>
+<p>tutti questi <strong>DBMS</strong> sono <strong>relazionali basati su SQL (RDBMS</strong>), ma vi sono anche DBMS non relazionali che non usano SQL.</p>
+<h3 id="mysql">MySQL</h3>
+<p><strong>MySQL</strong>: È un <strong>RDBMS</strong> composto da un client a riga di comando e un server, scritto in C e C++. È disponibile su numerosi sistemi operativi e si interfaccia con diversi linguaggi di programmazione come Java, .NET, PHP, Python, C#. È considerato più adatto ad applicazioni non intensive, con prestazioni che possono peggiorare con query su milioni di record e in termini di sicurezza. Il suo sistema di gestione più comune è <strong>phpmyadmin,</strong> un’interfaccia realizzata in php che permette di effettuare operazioni anche complesse con il database.</p>
+<p>Da scegliere: per blog, siti web, piccoli forum e applicazioni di medie dimensioni.</p>
+<h3 id="postgresql"><strong>PostgreSQL</strong></h3>
+<p>Probabilmente il DBMS open source più avanzato, paragonabile a Oracle. È un <strong>ORDBMS</strong> (Object Relational DataBase Management System) che supporta un modello di database <em>Object Oriented</em> e permette l’estensione tipi di dato e metodi personalizzati. Scritto in C/C++ e basato su un’architettura Client/Server, è supportato dai maggiori sistemi operativi. Viene utilizzato per applicazioni web, realtime, e sistemi di data warehousing. Supporta gli stessi linguaggi di programmazione di MySQL. È considerato molto sicuro, e più veloce di MySQL. I suoi sistemi di gestione includono <strong>phppgAdmin, pgAdmin3 e HeidiSQL</strong>.</p>
+<p>Da scegliere: per chi necessita di un database relazionale serio ma non ha un budget elevato.</p>
+<h3 id="oracle"><strong>Oracle</strong></h3>
+<p>È un <strong>ORDBMS</strong> come PostgreSQL, basato su un’architettura Client/Server. Dalla versione 10g ha introdotto il concetto di <strong>grid computing</strong>, vedendo il DBMS come una griglia di risorse per migliorare scalabilità e condivisione. Le ultime versioni introducono miglioramenti di performance e nuove funzionalità, ma mantiene ancora vari bug di sicurezza. È disponibile per Windows e Linux e ha un sistema di gestione sviluppato in Java servlet. Esiste una versione <em>express</em> gratuita, incompleta, poco supportata e senza bugfix, adatta solo per lo sviluppo.</p>
+<p>Da scegliere: per grandi aziende con gestionali (come SAP) e applicazioni pesanti.</p>
+<h3 id="ms-sql-server"><strong>MS SQL Server</strong></h3>
+<p>È il database relazionale di Microsoft, un RDBMS inizialmente utilizzato per basi dati medio-piccole, ma adatto anche a grandi dimensioni dalla versione 2000. Dalla versione 2017 è disponibile per Windows, Linux e Docker. Si interfaccia con i maggiori linguaggi di programmazione Microsoft, ma esistono anche driver per Java, C, PHP. Esiste una versione COMPACT per piccole applicazioni e sviluppo. <strong>MS SQL Server Management Studio</strong> è il sistema di gestione del DBMS. Esiste una versione <em>express</em> gratuita per studenti e sviluppatori.</p>
+<p>Da scegliere: in ambienti Windows con applicazioni di terze parti che lo richiedono esplicitamente.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
