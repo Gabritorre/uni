@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-04-15_Firewall</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#firewall">Firewall</a>
+<ul>
+<li><a href="#classificazione">Classificazione</a></li>
+<li><a href="#limiti">Limiti</a></li>
+<li><a href="#iptables">Iptables</a></li>
+<li><a href="#nat">NAT</a></li>
+<li><a href="#vpn">VPN</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="firewall">Firewall</h1>
+<p>Un firewall è un sistema di sicurezza di rete che monitora e controlla il traffico in entrata e in uscita decidendo le azioni da intraprendere (accettare o scartare) in base a regole di sicurezza (<em>policy</em>).</p>
+<p>Nello specifico, verifica i pacchetti in transito attraverso l’<strong>IP filtering</strong>, può effettuare il <strong>mascheramento degli indirizzi interni (NAT)</strong> e <strong>blocca i pacchetti pericolosi e/o non ammessi</strong> dalle policy.</p>
+<p>I firewall permettono diversi tipi di controllo:</p>
+<ul>
+<li><strong>Controllo dei servizi</strong>: può bloccare o permettere l’accesso a determinati <strong>servizi di rete</strong> (navigazione web, email) sia per il traffico in entrata che in uscita.</li>
+<li><strong>Controllo della direzione</strong>: Serve a definire <strong>da dove a dove</strong> può viaggiare il traffico. Ad esempio, permettere richieste in uscita per la navigazione web, ma bloccare connessioni in entrata dall’esterno, che potrebbero essere pericolose.</li>
+<li><strong>Controllo utente</strong>: regolano l’accesso a un servizio basandosi sull’utente che ha effettuato la richiesta.</li>
+<li><strong>Controllo del comportamento</strong>: permettono di controllare come vengono utilizzati certi servizi, come ad esempio il filtraggio dello spam.</li>
+</ul>
+<h2 id="classificazione">Classificazione</h2>
+<p>I firewall si possono classificare in vari modi. Una prima suddivisione è tra firewall <strong>hardware</strong> e firewall <strong>software:</strong></p>
+<ol>
+<li>I <strong>firewall hardware</strong> si presentano come dispositivi fisici, simili a degli switch, che possono montare più schede di rete e spesso hanno un sistema operativo dedicato.</li>
+<li>I <strong>firewall software</strong>, invece, sono programmi che utilizzano l’hardware di un PC o server su cui sono installati, appoggiandosi su un sistema operativo preesistente. Esempi noti includono Windows Firewall, Iptables (per Linux).</li>
+</ol>
+<p>Un altro modo per classificare i firewall si basa sulle loro <strong>politiche di protezione (policy) di default</strong>. Esistono due policy principali:</p>
+<ol>
+<li>il firewall <strong>blocca tutto il traffico di default</strong>, e ogni servizio che si vuole abilitare deve essere configurato esplicitamente. Questo approccio offre maggiore sicurezza perché blocca nuove minacce sul nascere, ma può essere <strong>più oneroso da gestire e limita il numero di servizi</strong> disponibili all’utente, richiedendo elasticità.</li>
+<li>Il firewall <strong>inoltra tutto il traffico di default</strong>, e solo i servizi dannosi devono essere esplicitamente esclusi. Questo approccio offre <strong>minor sicurezza</strong> perché permette qualsiasi nuovo protocollo senza controllo ed è <strong>più difficile garantire la sicurezza</strong> all’aumentare della dimensione della rete.</li>
+</ol>
+<p>Una ulteriore classificazione si basa sulla <strong>tipologia</strong> del firewall, distinguendo in base al <strong>livello dello stack TCP/IP</strong> in cui operano. Le due tipologie principali sono:</p>
+<ul>
+<li>
+<p><strong>Packet filtering</strong>: Operano al <strong>livello di rete</strong>. Vengono installati a monte della rete protetta e bloccano o inoltrano i pacchetti IP basandosi sulla lettura degli <strong>Header IP</strong> e su regole predefinite. In particolare possono utilizzare come parametri indirizzi sorgente/destinazione, protocollo di trasporto, numeri di porta e flag TCP (SYN, ACK) per filtrare i pacchetti.</p>
+<ul>
+<li>
+<p>I <em>firewall packet filter</em> possono essere <strong>Stateless</strong> o <strong>Stateful</strong>.</p>
+<p>Uno <strong>Stateless firewall</strong> osserva il traffico e blocca i pacchetti singolarmente basandosi solo su indirizzi, porte o altri valori, senza tenere dello stato delle connessioni TCP.</p>
+<p>Un <strong>Stateful firewall</strong>, invece è a conoscenza dello <strong>stato di una connessione TCP</strong> (aperta, stabilita, invalida ecc.). Considera il traffico come uno scambio bidirezionale che costituisce una <strong>sessione di conversazione</strong>, all’interno di questa sessione il firewall può generare dinamicamente regole per i pacchetti successivi.</p>
+</li>
+</ul>
+</li>
+<li>
+<p><strong>Circuit/Application Gateway</strong>: Operano al <strong>livello trasporto/applicazione</strong>. Filtrano il traffico leggendo gli header TCP/UDP e sfruttando quindi la conoscenza del servizio specifico.</p>
+<ul>
+<li>Un esempio è il <strong>Proxy Server</strong>. I proxy server sono applicazioni software che mediano il traffico tra la rete esterna e quella interna, consentendo l’accesso a servizi specifici (HTTP, HTTPS, FTP, ecc.) e regolando l’accesso tramite liste di controllo accessi (ACL).</li>
+</ul>
+</li>
+</ul>
+<h2 id="limiti">Limiti</h2>
+<p>Un firewall è un applicatore di regole, quindi è tanto importante quanto le regole che gli vengono imposte. Inoltre, controlla solo il traffico che lo attraversa, non può agire contro intrusioni che avvengono all’interno della rete, né può fare nulla se il traffico dall’esterno arriva attraverso un percorso non controllato dal firewall. Essendo una macchina, un firewall può essere violato, diventare obsoleto e, idealmente, dovrebbe svolgere solo la funzione di firewall ed essere la macchina più protetta della rete.</p>
+<h2 id="iptables">Iptables</h2>
+<p>Iptables è un firewall implementato a livello kernel in Linux in grado di fornire una protezione tramite il <strong>filtraggio del traffico di rete</strong>, basandosi sulla definizione di <strong>regole</strong>. Può essere utilizzato per realizzare sia <strong>firewall di rete</strong> (proteggendo intere sottoreti) che <strong>firewall locali</strong> all’interno di server specifici che erogano servizi.</p>
+<p>La sua struttura si basa su un meccanismo di <strong>regole</strong> organizzate in <strong>catene</strong> (<em>chains</em>). Le catene di default esistenti sono:</p>
+<ul>
+<li><strong>INPUT</strong>: gestisce i pacchetti in entrata destinati al sistema locale.</li>
+<li><strong>OUTPUT</strong>: gestisce i pacchetti in uscita generati dal sistema locale.</li>
+<li><strong>FORWARD</strong>: gestisce i pacchetti che attraversano il sistema e sono diretti verso un altro host della rete (il sistema agisce come un router).</li>
+<li><strong>PREROUTING</strong>: lavora sui pacchetti in entrata <em>prima</em> che vengano instradati (nel sistema locale o altrove).</li>
+<li><strong>POSTROUTING</strong>: lavora sui pacchetti in uscita <em>dopo</em> che è stato deciso il loro instradamento.</li>
+</ul>
+<p>Ogni catena appartiene a una <strong>tabella</strong>. Le tabelle principali citate sono:</p>
+<ul>
+<li><strong>Filter</strong>: contiene le regole per il <strong>filtraggio</strong> dei pacchetti. Le catene associate sono INPUT, OUTPUT, FORWARD.</li>
+<li><strong>Nat</strong>: contiene le regole per l’<strong>instradamento</strong> dei pacchetti, specificamente per manipolare gli indirizzi (NAT). Le catene associate sono OUTPUT, PREROUTING, POSTROUTING.</li>
+<li><strong>Mangle</strong>: utilizzata raramente, serve per <strong>modificare le opzioni</strong> dei pacchetti “al volo”, alterando header IP o TCP.</li>
+</ul>
+<p><img src="https://i.ibb.co/j9sXQ0G6/esempio-chain.png" alt=""></p>
+<p>La <strong>logica di attraversamento</strong> dei pacchetti nel kernel, segue sequenze precise a seconda del percorso che il pacchetto deve intraprendere:</p>
+<ol>
+<li>Pacchetti <strong>destinati</strong> al <strong>sistema locale</strong>:
+<ol>
+<li>interfaccia di rete</li>
+<li>PREROUTING</li>
+<li>INPUT</li>
+<li>applicazione</li>
+</ol>
+</li>
+<li>Pacchetti in <strong>uscita</strong> dal <strong>sistema locale</strong>:
+<ol>
+<li>applicazione</li>
+<li>OUTPUT</li>
+<li>POSTROUTING</li>
+<li>interfaccia di rete</li>
+</ol>
+</li>
+<li>Pacchetti che attraversano il firewall:
+<ol>
+<li>interfaccia di rete</li>
+<li>PREROUTING</li>
+<li>FORWARD</li>
+<li>POSTROUTING</li>
+<li>interfaccia di rete</li>
+</ol>
+</li>
+</ol>
+<p>Un esempio di Iptables è il seguente in cui blocchiamo tutto tranne SSH e il traffico interno.</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token variable">$IPTABLES</span> -P INPUT DROP
+<span class="token variable">$IPTABLES</span> -A INPUT -i lo -j ACCEPT
+<span class="token variable">$IPTABLES</span> -A INPUT -p tcp --dport 22 -j ACCEPT
+</code></pre>
+<ul>
+<li>la prima riga imposta la <strong>politica predefinita</strong> della catena <code>INPUT</code> su <strong>DROP</strong> in questo modo qualsiasi pacchetto in ingresso che <strong>non corrisponde a una regola esplicita</strong> sarà <strong>scartato</strong>.</li>
+<li>la seconda riga consente il traffico interno tra processi sulla stessa macchina.
+<ul>
+<li><code>-A INPUT</code>: fa l’append di una regola alla catena <code>INPUT</code>.</li>
+<li><code>-i lo</code>: applica la regola solo all’interfaccia di loopback, cioè localhost.</li>
+<li><code>-j ACCEPT</code>: l’azione da compiere è <strong>accettare</strong> i pacchetti.</li>
+</ul>
+</li>
+<li>la terza riga permette connessioni SSH in ingresso
+<ul>
+<li><code>-p tcp</code>: la regola vale solo per il <strong>protocollo TCP</strong>.</li>
+<li><code>--dport 22</code>: filtra i pacchetti destinati alla <strong>porta 22</strong> (<strong>SSH</strong>).</li>
+<li><code>-j ACCEPT</code>: l’azione da compiere è <strong>accettare</strong> i pacchetti.</li>
+</ul>
+</li>
+</ul>
+<p>IPTABLES implementa è in grado di implementare firewall <strong>Stateless</strong> e <strong>Stateful</strong>. L’esempio precedente è un firewall <em>stateless</em> poiché momento che si avvia lo script tutte le connessioni pre-esistenti vengono troncate (anche SHH).</p>
+<p>Il firewall <strong>Stateful</strong> è reso possibile dal <strong>modulo CONNTRACK</strong>, che classifica i pacchetti in stati come <strong>NEW</strong> (nuova connessione), <strong>ESTABLISHED</strong> (pacchetto che fa parte di una connessione tracciata), <strong>RELATED</strong> (non parte di un flusso, ma atteso da un socket esistente), e <strong>INVALID</strong> (nessuno stato applicabile, spesso pacchetti fraudolenti o inaspettati).</p>
+<p>Un aspetto importante è l’<strong>ordine in cui le regole sono inserite</strong>. Quando un pacchetto arriva, IPTABLES scorre le regole in sequenza ed esegue la prima regola che corrisponde al pacchetto, ignorando le successive.</p>
+<h2 id="nat">NAT</h2>
+<p>Il <strong>NAT (Network Address Translation)</strong> è una funzionalità che permette di manipolare un pacchetto IP <strong>modificando l’indirizzo IP sorgente o di destinazione</strong> in esso contenuto. Il dispositivo che esegue il NAT, al ricevimento del pacchetto di ritorno, esegue l’operazione inversa, mantenendo una <strong>tabella di natting</strong> in memoria per questo scopo.</p>
+<p>Le modalità principali di NAT sono due:</p>
+<ol>
+<li><strong>SNAT (Source NAT)</strong>: Consiste nell’<strong>alterazione dell’IP sorgente</strong> del primo pacchetto che apre una connessione. Avviene sempre <strong>dopo che il pacchetto ha subito il routing</strong>, e per questo motivo le regole SNAT sono tipicamente inserite nella catena <strong>POSTROUTING</strong>. Viene utilizzato quando si vuole che le connessioni originate da una rete interna presentino verso l’esterno un indirizzo diverso.</li>
+<li><strong>DNAT (Destination NAT)</strong>: Consiste nell’<strong>alterazione dell’IP di destinazione</strong> del primo pacchetto che apre una connessione. Avviene <strong>prima che il pacchetto subisca il routing</strong>, ed è quindi implementato nella catena <strong>PREROUTING</strong>. Viene utilizzato per ridirezionare le connessioni in ingresso verso indirizzi IP diversi da quelli originali.</li>
+</ol>
+<p>Per gestire le regole NAT tramite il comando <code>iptables</code>, si utilizza sempre l’opzione <code>-t nat</code> seguita dal comando desiderato (es. <code>-L</code> per listare, <code>-F</code> per cancellare, <code>-A</code> per appendere, <code>-Z</code> per azzerare i contatori). L’ordine delle regole è importante anche nella tabella <code>nat</code>.</p>
+<p><img src="https://i.imgur.com/aDScXjD.png" alt=""></p>
+<h2 id="vpn">VPN</h2>
+<p>Una <strong>VPN</strong> (<em>Virtual Private Network</em>), letteralmente <strong>Rete Privata Virtuale</strong>, è pensata per permettere ai dipendenti delle aziende di <strong>accedere in modo sicuro alle risorse all’interno dell’azienda</strong> pur trovandosi al di fuori della rete aziendale.</p>
+<p>Il suo funzionamento si basa sulla creazione di un <strong>tunnel virtuale cifrato</strong> tra un host esterno e un server di proprietà del fornitore del servizio VPN. Tutto il traffico transita in modo <strong>criptato dal computer client al server VPN</strong>. Da lì, il traffico può uscire “normalmente” attraverso la rete aziendale.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
