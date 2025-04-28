@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2025-04-21_Docker</title>
+  <link rel="stylesheet" href="https://stackedit.io/style.css" />
+</head>
+
+<body class="stackedit">
+  <div class="stackedit__left">
+    <div class="stackedit__toc">
+      
+<ul>
+<li><a href="#docker">Docker</a>
+<ul>
+<li><a href="#proprietà">Proprietà</a></li>
+<li><a href="#immagini">Immagini</a></li>
+<li><a href="#isolamento-dei-container">Isolamento dei container</a></li>
+<li><a href="#dockerfile">Dockerfile</a></li>
+<li><a href="#docker-compose">Docker compose</a></li>
+<li><a href="#gestire-i-container">Gestire i container</a></li>
+<li><a href="#portainer">Portainer</a></li>
+</ul>
+</li>
+</ul>
+
+    </div>
+  </div>
+  <div class="stackedit__right">
+    <div class="stackedit__html">
+      <h1 id="docker">Docker</h1>
+<p>Docker è un software opensource nato con l’obiettivo di automatizzare e semplificare la distribuzione delle applicazioni grazie al meccanismo dei <strong>container e delle immagini</strong>.</p>
+<ul>
+<li>Una i<strong>mmagine</strong>: Una sorta di file system minimale strutturato a <em>layer</em> contenente l’eseguibile, le dipendenze e librerie che necessita l’applicazione per funzionare.</li>
+<li>Un <strong>container</strong> può essere visto come un processo (o insieme di processi) eseguiti in isolamento sul nostro sistema che rappresenta una istanza dell’immagine.</li>
+</ul>
+<p>Usando un’analogia OOP, possiamo pensare all’immagine come a una classe contenente tutti i dati necessari all’applicazione. Mentre il Container è l’istanza di quella immagine che eseguirà l’applicazione.</p>
+<p>Ogni container avviato è identificato da un <strong>ID alfanumerico unico</strong> e da un nome (assegnato automaticamente o manualmente). Per interagire con un container, si fa riferimento al suo ID o nome.  L’ID e il nome (se assegnato automaticamente) cambiano a ogni riavvio del container, quindi assegnare un nome manualmente garantisce di avere un riferimento stabile.</p>
+<h2 id="proprietà">Proprietà</h2>
+<p>I container:</p>
+<ul>
+<li>Sono <strong>autosufficienti</strong> perché includono già tutte le dipendenze dell’applicazione e non richiedono configurazioni particolari sull’host.</li>
+<li>Sono <strong>portabili</strong> perché sono distribuiti in un formato standard che può essere letto ed eseguito da qualsiasi server Docker.</li>
+<li>Sono <strong>leggeri</strong> perché, a differenza delle macchine virtuali (VM) che richiedono un kernel virtualizzato, sfruttano i servizi direttamente dal kernel del sistema operativo ospitante. Questo consente di ospitare un gran numero di container sulla stessa macchina fisica e offre ottime prestazioni.</li>
+</ul>
+<p>In un ambiente containerizzato, il <strong>kernel del sistema operativo ospitante</strong> si occupa della gestione delle risorse e dell’isolamento, funzioni che nelle VM sono a carico dell’Hypervisor (un ulteriore strato software), mentre su Docker sono gestite dai <strong>Control Groups (cgroups)</strong> e dai <strong>Namespaces</strong>.</p>
+<h3 id="control-groups">Control Groups</h3>
+<p>I <strong>Control Groups</strong> sono lo strumento del kernel Linux che gestisce l’utilizzo delle <strong>risorse</strong> da parte di gruppi di processi. Grazie a questo strumento è possibile limitare la quantità di risorse utilizzate da specifici processi, come ad esempio la memoria RAM massima allocabile. Docker sfrutta i <em>cgroups</em> per implementare i limiti di risorse configurati per i container.</p>
+<h3 id="namespaces">Namespaces</h3>
+<p>I <strong>Namespaces</strong> sono lo strumento del kernel Linux che implementano l’<strong>isolamento</strong>. I processi che fanno parte di un certo <em>namespace</em> possono accedere solo alle risorse presenti in quel <em>namespace</em>.</p>
+<p>Per ciascun container, Docker crea un gruppo di <em>namespace</em> dedicati, associando i processi del container a quel gruppo. Questo impedisce ai processi del container di accedere direttamente alle risorse della macchina ospitante o di altri container.</p>
+<h2 id="immagini">Immagini</h2>
+<p>Le immagini sono spesso disponibili in <strong>repository</strong>, che contengono varie versioni di immagini per una determinata applicazione, le diverse versioni sono identificate da un <strong>tag</strong>. per riferirsi a un’immagine specifica si usa la sintassi <code>repository:tag</code>, se il tag non viene specificato viene usato di default il tag <code>latest</code>.</p>
+<p>Se un’immagine non è presente localmente quando si cerca di avviare un container da essa, Docker la scarica automaticamente dal repository predefinito.</p>
+<p>Una caratteristica particolare delle immagini è la loro <strong>stratificazione in layer</strong>. Ogni layer contribuisce alla definizione del filesystem del container. Questi layer sono <strong>immutabili</strong> (in sola lettura), il che  permette a diverse immagini di <strong>condividere layer comuni</strong>, risparmiando spazio su disco.</p>
+<p>Quando Docker crea un container da un’immagine, viene creato un ulteriore <strong>layer scrivibile</strong> in cima a tutti gli altri, chiamato <em>layer container</em>. Tutte le modifiche fatte all’interno del container (come la creazione di file) vengono memorizzate in questo layer, che viene distrutto quando il container viene spento.</p>
+<h2 id="isolamento-dei-container">Isolamento dei container</h2>
+<p>L’<strong>isolamento</strong> dei container si manifesta a diversi livelli:</p>
+<ul>
+<li><strong>Filesystem:</strong> Ogni container ha un filesystem isolato dall’host e dagli altri container. Per salvare dati generati all’interno di un container, è necessario usare i <strong>data volume</strong>, che creano un “ponte”  mappando una directory sull’host a una directory all’interno del container.</li>
+<li><strong>Processi:</strong> Ogni container vede solo i propri processi. Non conosce i processi dell’host o di altri container.</li>
+<li><strong>Rete:</strong> Anche la rete è (quasi del tutto) isolata. Per rendere accessibile un servizio dall’esterno, è necessario mappare una porta della macchina ospitante alla porta su cui il servizio è in ascolto all’interno del container. L’indirizzo IP a cui collegarsi dall’esterno sarà l’indirizzo IP dell’host.</li>
+</ul>
+<h2 id="dockerfile">Dockerfile</h2>
+<p>Un <strong>Dockerfile</strong> è un file di testo che serve a descrivere le personalizzazioni da apportare alle immagini base per creare un’immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all’engine Docker, che lo <strong>valida e genera una nuova immagine</strong>.</p>
+<p>All’interno di un Dockerfile, troviamo diverse istruzioni, tra le più importanti ci sono:</p>
+<ul>
+<li>
+<p><code>FROM</code>: Specifica l’immagine di base da cui partire per costruire la nuova immagine personalizzata.</p>
+<p>es. <code>FROM ubuntu:latest</code></p>
+</li>
+<li>
+<p><code>ENV</code>: Permette di impostare variabili d’ambiente valide per l’intero contesto di esecuzione del Dockerfile. La sintassi è <code>ENV &lt;chiave&gt;=&lt;valore&gt;</code>, per riferirsi successivamente alla variabile si antepone <code>$</code> al suo nome.</p>
+<p>es. <code>ENV WWW_HOME='/var/www/'</code></p>
+</li>
+<li>
+<p><code>RUN</code>: Utilizzata per eseguire comandi all’interno dell’immagine durante il processo di costruzione. È importante notare che ogni istruzione ****<code>RUN</code> ****crea un nuovo layer nell’immagine. Per questo motivo, è consigliabile riunire più comandi correlati all’interno di una singola istruzione <code>RUN</code>, concatenandoli con <code>&amp;&amp;</code>.</p>
+<p>es.</p>
+<pre class=" language-docker"><code class="prism  language-docker"><span class="token keyword">FROM</span> ubuntu<span class="token punctuation">:</span>latest
+<span class="token keyword">ENV</span> DA_INSTALLARE=<span class="token string">'vim apache2'</span>
+<span class="token keyword">RUN</span> apt install $DA_INSTALLARE
+</code></pre>
+</li>
+<li>
+<p><code>ADD</code>/<code>COPY</code>: Servono a spostare file e directory dal “build context” (la directory sul computer locale contenente il Dockerfile) all’interno del filesystem dell’immagine.</p>
+<p>es. <code>COPY *.txt /docs</code></p>
+</li>
+<li>
+<p><code>ENTRYPOINT</code>: Definisce il comando che viene eseguito non appena il container si avvia. Si differenzia da <code>RUN</code> perché agisce sul container e non crea un nuovo layer.</p>
+<p>es. <code>ENTRYPOINT vsftpd</code></p>
+</li>
+<li>
+<p><code>CMD</code>: Permette anch’essa di eseguire un comando all’avvio del container. Ha un comportamento diverso a seconda che ****<code>ENTRYPOINT</code> sia presente o meno.</p>
+<ul>
+<li>Se <code>ENTRYPOINT</code> non c’è, <code>CMD</code> definisce il comando shell da eseguire all’avvio. Questo comando può essere sovrascritto specificando un comando diverso nel <code>docker run</code>.</li>
+<li>Se <code>ENTRYPOINT</code> è presente, <code>CMD</code> ha il compito di fornire i parametri di default al comando specificato in <code>ENTRYPOINT</code>. In questo caso, il comando definito in <code>ENTRYPOINT</code> non è sovrascrivibile facilmente da <code>docker run</code>, mentre i parametri in <code>CMD</code> lo sono. È ammessa una sola istruzione <code>CMD</code> in un Dockerfile.</li>
+</ul>
+<p>es.</p>
+<pre class=" language-docker"><code class="prism  language-docker"><span class="token keyword">ENTRYPOINT</span> du
+<span class="token keyword">CMD</span> <span class="token punctuation">[</span>“<span class="token punctuation">-</span>hs”<span class="token punctuation">]</span>
+</code></pre>
+</li>
+<li>
+<p><code>WORKDIR</code>: Viene usata per impostare la directory di lavoro predefinita all’interno del container, che sarà il punto di partenza per le successive istruzioni (<code>RUN</code>, <code>CMD</code>, <code>ENTRYPOINT</code>, …). Si possono usare path assoluti o relativi. Se non specificata, la directory di default è <code>/</code>.</p>
+<p>es. <code>WORKDIR /usr</code></p>
+</li>
+<li>
+<p><code>LABEL</code>: Permette di aggiungere metadati all’immagine, come autore, versione o descrizione come coppie chiave-valore.</p>
+<p>es. <code>LABEL VERSION=”1.0.0” MAINTAINER=”gg76”</code></p>
+</li>
+<li>
+<p><code>EXPOSE</code>: Dichiara su quali porte il container resterà in ascolto. Indica a Docker che, in fase di avvio del container, potrebbe essere necessario effettuare il <em>port forwarding</em>.</p>
+<p>es. <code>EXPOSE 80 443</code></p>
+</li>
+<li>
+<p><code>VOLUME</code>: Permette di specificare un punto di mount all’interno del filesystem del container che dovrebbe essere gestito come un volume. Questo facilita la <strong>comunicazione tra il filesystem dell’host e quello del container</strong> e la persistenza dei dati.</p>
+<p>es. <code>VOLUME ["/var/www"]</code></p>
+</li>
+</ul>
+<p>Per creare un’immagine da un Dockerfile, si usa il comando <code>docker build [opzioni] &lt;build context&gt;</code>. Il <code>&lt;build context&gt;</code> indica all’engine la directory di riferimento, pesso è indicato con la directory corrente (<code>.</code>). Il build context è fondamentale per risolvere i path relativi usati in istruzioni come <code>COPY</code> o <code>ADD</code>.</p>
+<h2 id="docker-compose">Docker compose</h2>
+<p>Quando un’applicazione è composta da <strong>più container</strong>, può risultare utile utilizzare <strong>Docker Compose</strong>.</p>
+<p>Docker Compose è uno strumento progettato per la definizione e l’esecuzione di applicazioni Docker multi-container.</p>
+<p>Si utilizza un <strong>file YAML</strong> (spesso chiamato <code>docker-compose.yml</code>) per configurare le immagini, i volumi e tutte le altre configurazioni che compongono l’applicazione.</p>
+<p>esempio di <code>docker-compose.yml</code>:</p>
+<pre class=" language-yaml"><code class="prism  language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.8"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+	 <span class="token key atrule">web</span><span class="token punctuation">:</span>
+		 <span class="token key atrule">build</span><span class="token punctuation">:</span> .
+		 <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+		 <span class="token punctuation">-</span> <span class="token string">"5000:5000"</span>
+		 <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+		 <span class="token punctuation">-</span> .<span class="token punctuation">:</span>/code
+		 <span class="token punctuation">-</span> logvolume01<span class="token punctuation">:</span>/var/log
+		 <span class="token key atrule">links</span><span class="token punctuation">:</span>
+		 <span class="token punctuation">-</span> redis
+	 <span class="token key atrule">redis</span><span class="token punctuation">:</span>
+		 <span class="token key atrule">image</span><span class="token punctuation">:</span> redis
+<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+	 <span class="token key atrule">logvolume01</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+</code></pre>
+<p>definisce due immagini, di cui la prima viene definita in un dockerfile presente nella stessa direcotry e la seconda è Redis.</p>
+<h2 id="gestire-i-container">Gestire i container</h2>
+<p>I repository che contengono le immagini con le loro versioni sono disponibili in dei registri online come Docker Hub o Github container registry.</p>
+<p>Per impostazione predefinita, Docker si collega a <strong>Docker Hub</strong>, un registro centralizzato gestito dalla società Docker, da cui è possibile scaricare la maggior parte delle immagini necessarie, e in cui  chiunque può ospitare le proprie immagini.</p>
+<p>È possibile cercare le immagini disponibili su Docker Hub utilizzando il comando <code>docker search &lt;nome_immagine&gt;</code>. L’output di questo comando mostra diverse immagini con varie informazioni. Se si desidera scaricare esplicitamente un’immagine, si usa il comando <code>docker pull &lt;nome_immagine&gt;</code>.</p>
+<p>Per gestire container e immagini, si utilizzano diversi comandi. La sintassi generale è</p>
+<pre class=" language-bash"><code class="prism  language-bash">docker <span class="token punctuation">[</span>opzioni<span class="token punctuation">]</span> <span class="token punctuation">[</span>comando<span class="token punctuation">]</span> <span class="token punctuation">[</span>argomenti<span class="token punctuation">]</span>
+</code></pre>
+<p>Ad esempio, per avviare un container da un’immagine si usa <code>docker run &lt;immagine&gt;</code>, con opzioni come <code>-it</code> per la modalità interattiva, <code>-d</code> per la modalità <em>detached</em> (in background), o <code>--name</code> per assegnare un nome al container. Si possono elencare le immagini scaricate con <code>docker images</code> e i container (in esecuzione) con <code>docker ps</code>. È anche possibile avviare (<code>docker start</code>), fermare (<code>docker stop</code>) o rimuovere (<code>docker rm</code>) i container usando il loro ID o nome.</p>
+<h2 id="portainer">Portainer</h2>
+<p>Per facilitare la gestione di Docker, esiste uno strumento open source con interfaccia grafica chiamato <strong>Portainer</strong>. Portainer permette di amministrare container, immagini, network e volumi tramite una dashboard visuale.</p>
+
+    </div>
+  </div>
+</body>
+
+</html>
