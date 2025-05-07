@@ -8,12 +8,12 @@ I metadati ovviamente non garantiscono una prova affidabile su chi ha generato e
 
 Vediamo alcuni metodi informali per associare una chiave ad una identità:
 
-1. **Key fingerprint**: Alice quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando **Bob** riceve la **chiave controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
+1. **Key fingerprint**: Alice quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando Bob riceve la chiave **controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
 2. **Key server**: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo non garantisce che chi carica la chiave non si spacci per qualcun altro.
 
 ## Web of trust
 
-Un terzo metodo è il **Web of trust**: è una rete di contatti in cui i partecipanti certificano l’identità degli altri. Alice e Bob si fidano di Carl, questo significa che:
+Un terzo metodo è il **Web of trust**: è una rete di contatti in cui i partecipanti certificano l’identità degli altri. Ad esempio Alice e Bob si fidano di Carl, questo significa che:
 
 - possiedono la sua chiave pubblica
 - se lui certifica qualcosa Alice e Bob si fidano che sia vero
@@ -29,30 +29,28 @@ Vediamo come funziona:
     S = E(Priv_C, (Pub_A, "Alice"))
     $$
     
-    Cioè Carl cifra, usando la sua chiave privata, la chiave pubblica di alice con la sua identità (il suo nome). Chiunque in possesso della chiave pubblica di Carl può decifrare $S$ e quindi, se si fidano di Carl, verificano la chiave pubblica di Alice.
+    Cioè Carl cifra, usando la sua chiave privata, la chiave pubblica di alice con la sua identità (il suo nome). Chiunque in possesso della chiave pubblica di Carl può decifrare $S$ e quindi, fidandosi di Carl, verificano la chiave pubblica di Alice.
     
-3. Alice manda a Bob la propria chiave pubblica e $S$ e dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e si fida dell’appartenenza della chiave pubblica di Alice
+3. Alice manda a Bob la propria chiave pubblica e $S$, dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e si verifica l’appartenenza della chiave pubblica di Alice
     
-    ![https://i.ibb.co/HHT5ZhQ/image.png](https://i.ibb.co/HHT5ZhQ/image.png)
+    ![](https://i.ibb.co/HHT5ZhQ/image.png)
     
 
 Notiamo come una volta che Alice riceve la propria *key signature* da Carl, esso non è più necessario ai fine della comunicazione, Alice può usare la *key signature* con chiunque si fidi di Carl.
 
 Il sistema può scalare tramite delle catene di fiducia:
 
-![https://i.ibb.co/30M1B99/image.png](https://i.ibb.co/30M1B99/image.png)
+![](https://i.ibb.co/30M1B99/image.png)
 
 Nell’immagine Alice si fida di Carl, Carl e Dory si fidano a vicenda e Francis si fida di Dory. In questo modo Alice può dare a Francis la propria chiave pubblica e le signature di tutti i certificatori della gerarchia di cui si fida.
 
-Francis che si fida di Dory, può usare la chiave pubblica di Dory per verificare Carl, e a sua volta può usare la chiave pubblica di Carl per verificare Alice.
-
 Quindi fintanto che c’è un percorso di certificatori fidati che connette i due attori che vogliono comunicare allora possono comunicare in modo sicuro
 
-![https://i.ibb.co/SwWfZHg/image.png](https://i.ibb.co/SwWfZHg/image.png)
+![](https://i.ibb.co/SwWfZHg/image.png)
 
 In questo modo Bob sarà certo della chiave pubblica di alice.
 
-L’approccio del **Web of trust** viene utilizzato in contesti specifici, ma si avvicina al metodo utilizzato oggi per certificare le identità delle chiavi, tra gli aspetti importanti abbiamo:
+L’approccio del **Web of trust** viene utilizzato in contesti specifici, e si avvicina al metodo utilizzato oggi per certificare le identità delle chiavi, tra gli aspetti importanti abbiamo:
 
 - le ***key signature***: il fatto ci firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave
 - la ***trust delegation***: il fatto che se A e B si fidano di C allora C fa da certificatore intermedio
@@ -60,9 +58,9 @@ L’approccio del **Web of trust** viene utilizzato in contesti specifici, ma si
 
 ## PKI
 
-Una **PKI** (*Public key infrastructure*) è insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
+Una **PKI** (*Public Key Infrastructure*) è insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
 
-La ***Certification Authority*** (CA) è una entità specifica della PKI di cui tutti gli attori nella comunicazione si fidano, è quella che in passato abbiamo definito essere la *trusted third party*
+La ***Certification Authority*** (CA) è una entità specifica della PKI di cui tutti gli attori nella comunicazione si fidano, è quella che in passato abbiamo definito essere la *trusted third party.*
 
 Le CA firmano digitalmente le chiavi pubbliche generando così dei certificati per garantire l’integrità e autenticità delle chiavi:
 
@@ -102,12 +100,12 @@ I certificati seguono un formato standard chiamato X.509, composto principalment
 - la chiave pubblica
 - firma del certificato
 
-![https://i.ibb.co/7tx282v/image.png](https://i.ibb.co/7tx282v/image.png)
+![](https://i.ibb.co/7tx282v/image.png)
 
 Note:
 
-- Questo processo viene fatto solamente una volta finche non scade il certificato
-- Una volta ottenuto il certificato la CA non è più necessaria ai fini della comunicazione
+- Questo processo viene fatto solamente una volta finché non scade il certificato
+- Una volta ottenuto il certificato, la CA non è più necessaria ai fini della comunicazione
 - La CA non viene mai a conoscenza delle chiavi private degli attori che certifica
 - Per questioni di performance (dato che il certificato contiene molte cose) la CA firma un hash del certificato (dall’hash è esclusa la firma stessa).
 
@@ -122,7 +120,7 @@ Quando Bob riceve un certificato da Alice:
 5. Computa per conto suo l’hash del certificato (escludendo il campo della firma della CA)
 6. Se l’hash computato è uguale all’hash ottenuto dalla decifratura allora il certificato è valido
 
-In questo contesto possiamo pensare ad Alice nella realtà come una persona fisica, una rete wifi o un dominio per un sito web.
+In questo contesto possiamo pensare ad Alice nella realtà come una persona fisica, una rete wifi o un dominio per un sito web. Il caso in cui questo sistema viene più utilizzato è verificare un dominio sul web.
 
 ## Fiducia con le CA
 
@@ -130,21 +128,21 @@ Quando Bob deve decidere di quali CA fidarsi si ha una **gerarchia di CA** in cu
 
 Se una CA è certificata da una CA di cui Bob si fida allora Bob si fida anche di quella.
 
-![https://i.ibb.co/N6LM0Kp/image.png](https://i.ibb.co/N6LM0Kp/image.png)
+![](https://i.ibb.co/N6LM0Kp/image.png)
 
 La **Root CA** è una *certification authority* di cui tutti si devono fidare. Ad esempio su Chrome per vedere quali sono le CA di cui il browser si fida è possibile accedere all’url `chrome://certificate-manager/`
 
 Le root CA si firmano i certificati per conto proprio.
 
-Quando Bob visita `www.alice.com` , il server di alice deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
+Quando Bob visita `www.alice.com`, il server di alice deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
 
-Se una qualsiasi CA nel cammino non è valida o scade Bob riceverà un warning e potrà proseguire a proprio rischio.
+Se una qualsiasi CA nel cammino non è valida o scade, Bob riceverà un avviso e potrà proseguire a proprio rischio.
 
-Come per il *Web of Trust* in questo caso il browser dell’utente è riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso è necessario un altro mezzo che generalmente è **l’autenticazione tramite username e password**.
+In questo caso il browser dell’utente riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso di autenticazione è necessario un altro mezzo che generalmente è **l’autenticazione tramite username e password**.
 
 ## Certificate Revocation Lists
 
-In determinate situazioni è necessario revocare un certificato, ad esempio quando viene compromessa la segretezza della chiave privata.
+In determinate situazioni è necessario che una CA revochi dei certificati, ad esempio quando viene compromessa la segretezza della chiave privata di un certificato.
 
 Le C*ertificate Revocation Lists* (CRL) sono liste di certificati che sono stati revocati dalla CA, in modo da far sapere a tutti che tali certificati sono stati **revocati prima della data di scadenza pianificata** e non dovrebbero più essere considerati attendibili.
 
@@ -152,9 +150,9 @@ Un CRL viene generato e pubblicato periodicamente, spesso ad un intervallo di te
 
 ## Insicurezza nelle CA
 
-Abbiamo quindi visto come la comunicazione sicura avviene grazie a delle entità (le CA) di cui ci fidiamo.
+Abbiamo quindi visto come la comunicazione sicura avviene grazie a delle entità (le CA) di cui ci dobbiamo fidare.
 
-È comunque possibile che le CA vengano compromessi ed è già successo in passato con conseguenze molto gravi. È quindi importante avere un alto livello di sicurezza per evitare che le CA vengano compromesse, dato anche che è possibile costruire una propria gerarchia privata di CA.
+È comunque possibile che le CA vengano compromesse, già successo in passato con conseguenze molto gravi. È quindi importante avere un alto livello di sicurezza per evitare che le CA vengano compromesse, dato anche che è possibile costruire una propria gerarchia privata di CA.
 
 ## Let’s Encrypt
 
@@ -162,7 +160,7 @@ Abbiamo quindi visto come la comunicazione sicura avviene grazie a delle entità
 
 L’infrastruttura di Let’s Encrypt è la seguente
 
-![https://i.ibb.co/P1RhTKb/image.png](https://i.ibb.co/P1RhTKb/image.png)
+![](https://i.ibb.co/P1RhTKb/image.png)
 
 - ISGR (*Internet Security Research Group*) è l’infrastruttura che sta dietro a Let’s encrypt
 - ECDSA è un altro metodo di cifratura a chiave pubblica alternativo ad RSA

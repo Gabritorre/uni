@@ -1,8 +1,6 @@
 ﻿# Livello fisico
 
-Indichiamo con **bit-rate** la velocità di un canale di comunicazione, espressa in **bit per secondo** (bit/s).
-
-Ovviamente ci sono tutti i vari multipli
+Indichiamo con **bit-rate** la velocità di un canale di comunicazione, espressa in **bit per secondo** (bit/s) o in suoi multipli (kbit/s, Mbit/s, …).
 
 | Nome | Simbolo | Multiplo |
 | --- | --- | --- |
@@ -13,7 +11,7 @@ Ovviamente ci sono tutti i vari multipli
 
 ## Nozioni di fisica
 
-Vediamo delle nozioni di fisica per andare a definire in modo corretto il **rapporto tra segnale e rumore in una comunicazione.**
+Vediamo delle nozioni di fisica per andare a definire il **rapporto tra segnale e rumore in una comunicazione.**
 
 ## Energia
 
@@ -25,13 +23,13 @@ L’energia può assumere varie forme e si misura in **Joule (J)**. Nell’ambit
 
 La potenza è definita come il trasferimento di energia in unità di tempo, ci dice quanto velocemente un sistema può fornire energia.
 
-Possiamo quindi dire che si misura con il rapporto J/s (Jouse per secondo) che comunemente si rappresenta come **W (Watt)** nel sistema internazionale
+Possiamo quindi dire che si misura con il rapporto J/s (Joule per secondo) che comunemente si rappresenta come **W (Watt)** nel sistema internazionale.
 
 ## Corrente elettrica
 
 Gli elettroni sono particelle con carica negativa che, in alcuni materiali, possono muoversi liberamente all'interno della struttura.
 
-Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati conduttori, mentre quelli in cui il movimento degli elettroni è fortemente limitato o impedito sono chiamati isolanti.
+Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati **conduttori**, mentre quelli in cui il movimento degli elettroni è fortemente limitato o impedito sono chiamati **isolanti**.
 
 La **corrente elettrica** è una misura del flusso di carica per unità di tempo, espressa in Coulomb al secondo (C/s), un'unità che prende il nome di **Ampere**.
 
@@ -60,7 +58,7 @@ In un circuito possiamo aggiungere un interruttore per far passare o meno la cor
 
 Accendere e spegnere l’interruttore periodicamente, permette di generare degli intervalli di potenza che noi interpretiamo come **segnale.**
 
-![https://i.ibb.co/NW5ZXpD/image.png](https://i.ibb.co/NW5ZXpD/image.png)
+![](https://i.ibb.co/NW5ZXpD/image.png)
 
 ## Attenuazione
 
@@ -70,9 +68,9 @@ Questa perdita di potenza si traduce in una **attenuazione del segnale** durante
 
 L’attenuazione dipende principalmente dal tipo di materiale, dalla sua grandezza e dalla sua lunghezza.
 
-In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante.
+In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante in quanto l’ampiezza del segnale ricevuto è minore rispetto all’ampiezza del messaggio trasmesso.
 
-![https://i.ibb.co/VJVZcJs/image.png](https://i.ibb.co/VJVZcJs/image.png)
+![](https://i.ibb.co/VJVZcJs/image.png)
 
 ## Ritardo
 
@@ -86,7 +84,7 @@ In questo contesto è importante la **sincronizzazione** tra il trasmittente e i
 
 ## Rumore
 
-Gli elettroni non sono mai completamente fermi (a meno di essere alla temperatura dello zero assoluto).
+Gli elettroni non sono mai completamente fermi (a meno di essere alla temperatura di zero assoluto).
 
 Quindi non si ha mai veramente zero corrente nel circuito e anche quando si fa passare della corrente non è mai esattamente costante, c’è difatti del **rumore** causato dalle oscillazioni degli elettroni.
 
@@ -102,7 +100,7 @@ $$
 
 Mi dice quanto della potenza che ho ricevuto fa parte del segnale vero e quanto è invece rumore.
 
-La potenza del rumore è una stima che si può ottenere quando nessuno trasmette in quanto si ottiene solo rumore.
+La potenza del rumore è una stima che si può ottenere quando nessuno trasmette, in quanto si ottiene solo rumore.
 
 Quando il ricevitore riceve un segnale e deve decidere se è 0 o 1, calcola SNR e può capire di cosa si tratta in base a dei valori di riferimento. Più è grande il valore più la comunicazione è chiara.
 
@@ -119,11 +117,11 @@ La modulazione è un insieme di tecniche per trasmettere informazioni, è compos
 
 L’idea è quello di andare a influenzare il segnale portante sull’**ampiezza** o sulla **frequenza** in modo da produrre un nuovo segnale (il **segnale modulato**) che codifica una informazione contenuta nel segnale modulante.
 
-![https://upload.wikimedia.org/wikipedia/commons/a/a4/Amfm3-en-de.gif](https://upload.wikimedia.org/wikipedia/commons/a/a4/Amfm3-en-de.gif)
+![](https://upload.wikimedia.org/wikipedia/commons/a/a4/Amfm3-en-de.gif)
 
 ## Modulazione di frequenza (FM)
 
-![https://i.ibb.co/TcSVWPQ/image.png](https://i.ibb.co/TcSVWPQ/image.png)
+![](https://i.ibb.co/TcSVWPQ/image.png)
 
 In questa tecnica di modulazione il segnale viene codificato modificando la frequenza del segnale portante. Possiamo, ad esempio, codificare 1 quando abbiamo una alta frequenza e 0 altrimenti.
 
@@ -174,10 +172,10 @@ Se abbiamo una frequenza $f_p = 4$ e supponiamo che un bit sia determinato da 4 
 
 In questo specifico caso un simbolo corrisponde ad un singolo bit, quindi il **bit-rate è 1 b/s.**
 
-Nota che potremmo avere una codifica diversa in cui ad un simbolo corrispondono 2 bit (usando quindi 4 livelli di frequenza diversi) in questo caso si avrebbe sempre 1 Bd/s e per calcolare il bit-rate si fa
+Nota che potremmo avere una codifica diversa in cui ad un simbolo corrispondono 2 bit (usando quindi 4 livelli di frequenza diversi per rappresentare 00, 01, 10, 11) in questo caso si avrebbe sempre 1 Bd/s e per calcolare il bit-rate si fa
 
 $$
-\text{bit-rate} = \text{numero di bit per simbolo}  \cdot  \text{boud-rate}
+\text{bit-rate} = \text{numero di bit per simbolo} \cdot \text{boud-rate}
 $$
 
 si avrebbe quindi $2 \cdot 1 = 2$ b/s
@@ -205,15 +203,13 @@ Se si vuole aumentare il bit-rate è necessario aumentare la larghezza di banda.
 
 Nell’esempio precedente con un simbolo uguale ad un bit la larghezza di banda andava da $f_p$ a $f_p (1 + \Delta)$
 
-Nelle reti wireless utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore da nei loro segnali.
+Nelle reti wireless utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore nei loro segnali.
 
 Per questo motivo segnali 4G, segnali televisivi, segnali wifi lavorano su bande diverse. 
 
 ## Teorema di Nyquist
 
-Il teorema dice che se la tua comunicazione usa una larghezza di banda $B$, puoi trasmettere $B$ simboli allo stesso momento su frequenze ortogonali.
-
-Se si usano $M$ livelli discreti (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è $C$:
+Il teorema dice che se la tua comunicazione usa una larghezza di banda $B$ e si usano $M$ livelli discreti di frequenza (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è:
 
 $$
 C_N = 2B\log_2(M)
@@ -239,7 +235,7 @@ Si tratta di un limite teorico in quanto non viene considerato il **rumore**
 
 Il teorema di Shannon introduce un limite più stretto alla capacità considerando il rumore
 
-Il teorema dice che la capacità del canale con banda $B$ con aggiunta di una gaussiana di rumore bianco è data da:
+Il teorema dice che la capacità del canale massima in bit/s con banda $B$ con aggiunta di una gaussiana di rumore bianco è data da:
 
 $$
 C_S = B\log_2\left(1+ \frac{S}{N}\right)
@@ -249,11 +245,11 @@ $\frac{S}{N}$ è il rapporto segnale rumore SNR
 
 ## Nyquist vs Shannon
 
-Nyqust opera su una situazione ideale senza rumore. Shanno è più restrittivo considerando il rumore, non puoi raggiungere $C$ anche se Nyquist te lo permetterebbe.
+Nyquist opera su una situazione ideale senza rumore. Shannon è più restrittivo considerando il rumore, non puoi raggiungere $C$ anche se Nyquist te lo permetterebbe.
 
 Se il rapporto segnale rumore è basso sarà più difficile distinguere il rumore dal segnale, in altre parole il rapporto segnale rumore determina il massimo valore di $M$ (il numero di simboli).
 
-B, S, N sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione)
+$B, S, N$ sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione)
 
 ### Esempio
 
@@ -271,7 +267,7 @@ Calcoliamo:
     - SNR: $\frac{0.16}{0.0001} = 1600$
     - $C_S = 2.200.00 \log_2(1 + 1600) \approx 23$ Mb/s
 - La miglior modulazione da usare?
-    - Consideriamo solo modulazioni che sono potenze intere di 2
+    - Consideriamo solo modulazioni che sono potenze di 2
     - dobbiamo trovare $M$ per cui $2B\log_2(M) \leq C_S$
     - dalla formula inversa di Nyquist ottengo $M = 2^{\frac{C_S}{2B}}$
     - $M = 2^{\frac{23.000.000}{4.400.000}} = 2^{\lfloor 5.227\rfloor} = 2^5 = 32$

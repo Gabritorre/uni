@@ -30,30 +30,30 @@
 <h2 id="esercizi-indirizzi-ip">Esercizi indirizzi IP</h2>
 <h3 id="es-1">Es 1</h3>
 <p><strong>Domanda 1:</strong> Data una subnet <code>1.2.1.0/24</code>, è possibile assegnare a uno degli host l’indirizzo <code>1.2.1.255</code>?</p>
-<p><strong>Risposta:</strong> No, l’indirizzo <code>1.2.1.255</code>, avendo tutti i bit dell’hostid impostati a 1 (cioè 255 in decimale), rappresenta l’<strong>indirizzo di broadcast</strong>.</p>
+<p><strong>Risposta:</strong> No, l’indirizzo <code>1.2.1.255</code>, avendo tutti i bit dell’hostid impostati a 1 (cioè 255 in decimale), rappresenta l’<strong>indirizzo di broadcast</strong>, che non è assegnabile.</p>
 <p><strong>Domanda 2:</strong> Data una subnet <code>1.2.0.0/16</code>, è possibile assegnare a uno degli host l’indirizzo <code>1.2.1.0</code>?</p>
 <p><strong>Risposta:</strong> Sì l’indirizzo <code>1.2.1.0</code>, avendo i bit del hostid diversi da tutti 0 o tutti 1, rappresenta un indirizzo IP valido.</p>
 <p><strong>Domanda 3:</strong> Data una subnet <code>1.2.1.0/24</code>, è possibile assegnare a uno degli host l’indirizzo <code>1.2.1.0</code>?</p>
-<p><strong>Risposta:</strong> No l’indirizzo <code>1.2.1.0</code>, avendo tutti i bit del hostid impostati a 0, rappresenta l’indirizzo di rete.</p>
+<p><strong>Risposta:</strong> No l’indirizzo <code>1.2.1.0</code>, avendo tutti i bit del hostid impostati a 0, rappresenta l’<strong>indirizzo di rete</strong>, che non è assegnabile.</p>
 <h2 id="es-2">Es 2</h2>
 <p>Un’organizzazione ha bisogno di <strong>15 indirizzi IP</strong> e deve noleggiarli da un provider di rete. Si supponga che il provider di rete possieda la rete <code>1.2.0.0/16</code>.</p>
-<p>Quale è il minimo valore della subnet di cui l’organizzazione ha bisogno?</p>
-<p>Per contenere 15 indirizzi, sono necessari 4 bit per numerare tutti gli host (2^4 = 16). Quindi, una subnet mask /28 sembrerebbe sufficiente a prima vista. Tuttavia, dobbiamo sottrarre l’indirizzo di rete e quello di broadcast.</p>
-<p>Pertanto, una subnet /28 fornirebbe solo 14 indirizzi utilizzabili (16 - 2 = 14), non sufficienti per l’organizzazione.</p>
-<p>Per ottenere 15 indirizzi utilizzabili, l’organizzazione deve noleggiare una subnet /27, che fornisce 32 indirizzi, di cui 30 utilizzabili.</p>
+<p>Qual è il minimo valore della subnet mask di cui l’organizzazione ha bisogno?</p>
+<p>Per contenere 15 indirizzi, sono necessari 4 bit (2^4 = 16). Quindi, una subnet mask /28 sembrerebbe sufficiente a prima vista. Tuttavia, dobbiamo sottrarre l’indirizzo di rete e quello di broadcast.</p>
+<p>Pertanto, una subnet /28 fornirebbe solo 14 indirizzi utilizzabili, che non sono sufficienti.</p>
+<p>Per ottenere 15 indirizzi utilizzabili, l’organizzazione deve noleggiare una subnet /27, che fornisce 32 indirizzi, di cui 30 assegnabili.</p>
 <h2 id="es-3">Es 3</h2>
 <p>Un’organizzazione ha due reti, A e B. La rete <strong>A ha 14 host</strong>, mentre la rete <strong>B ne ha 16</strong>. L’organizzazione deve noleggiarli da un provider di rete. Si supponga che il provider di rete possieda la rete <code>1.2.0.0/16</code>.</p>
 <p>L’organizzazione è strutturata come segue:</p>
-<p><img src="https://i.ibb.co/NSk3Rnw/image.png" alt="https://i.ibb.co/NSk3Rnw/image.png"></p>
+<p><img src="https://i.ibb.co/NSk3Rnw/image.png" alt=""></p>
 <ul>
 <li>
-<p>Quale è il valore minimo della netmask di cui l’organizzazione ha bisogno?</p>
-<p>Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 30 indirizzi utilizzabili.</p>
+<p>Quale è il valore minimo della subnet mask di cui l’organizzazione ha bisogno?</p>
+<p>Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 30 indirizzi assegnabili.</p>
 <p>siccome si vuole partizionare la rete in due sottoreti, si avranno quindi 2 indirizzi non utilizzabili nella rete A e due indirizzi non utilizzabili nella rete B, in realtà ho bisogno di 34 indirizzi totali, quindi serve una /26.</p>
 </li>
 <li>
 <p>Supponiamo che venga noleggiata una <code>1.2.255.192/26</code>.</p>
-<p>possiamo dividere la questo range in due sottoreti /27 ciascuno contenente quindi 30 indirizzi utilizzabili:</p>
+<p>possiamo dividere questo range in due sottoreti /27 ciascuno contenente quindi 30 indirizzi utilizzabili:</p>
 <ul>
 <li>Rete B: userà la subnet <code>1.2.255.192/27</code> che fornisce indirizzi nel range <code>1.2.255.192 - 1.2.255.223</code></li>
 <li>Rete A: userà la subnet <code>1.2.255.224/27</code> che fornisce indirizzi nel range <code>1.2.255.224 - 1.2.255.255</code></li>
@@ -86,12 +86,12 @@
 </table></li>
 <li>
 <p>In queta configurazione vengono sprecati metà degli indirizzi, l’amministratore potrebbe voler ottimizzare l’utilizzo degli indirizzi IP noleggiando due subnet più piccole invece di una singola /26.</p>
-<p>Si potrebbe noleggiare una /28 sufficiente per la rete A e una /27 per la rete B.</p>
+<p>Si potrebbe noleggiare una /28 per la rete A e una /27 per la rete B.</p>
 <ul>
 <li>Rete B: userà la subnet <code>1.2.255.192/27</code> che fornisce indirizzi nel range <code>1.2.255.192 - 1.2.255.223</code></li>
 <li>Rete A: userà la subnet <code>1.2.255.224/28</code> che fornisce indirizzi nel range <code>1.2.255.224 - 1.2.255.239</code></li>
 </ul>
-<p>In questo caso la forwarding table del router connesso ad internet sarà la seguente:</p>
+<p>In questo caso la forwarding table del router sarà la seguente:</p>
 
 <table>
 <thead>

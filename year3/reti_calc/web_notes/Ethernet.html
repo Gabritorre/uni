@@ -17,7 +17,7 @@
 <ul>
 <li><a href="#indirizzo-mac">Indirizzo MAC</a></li>
 <li><a href="#header-di-un-frame-ethernet">Header di un frame ethernet</a></li>
-<li><a href="#switch-ethernet">Switch ethernet</a></li>
+<li><a href="#switch-ethernet">Switch Ethernet</a></li>
 <li><a href="#spanning-tree-protocol-stp">Spanning Tree Protocol (STP)</a></li>
 <li><a href="#legame-tra-livello-di-rete-e-livello-datalink">Legame tra livello di rete e livello datalink</a></li>
 <li><a href="#protocollo-arp">Protocollo ARP</a></li>
@@ -31,8 +31,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="ethernet">Ethernet</h1>
-<p><strong>Ethernet</strong>, è una famiglia di standard per reti di computer sviluppata a partire dagli anni 70. Oggi, Ethernet è utilizzato principalmente su cavi in rame e fibra ottica.</p>
-<p>I cavi in rame sono formati da  quattro coppie di cavi in rame intrecciati insieme. Esistono diversi tipi di cavi, in cui vengono usati diversi tipi di schermatura per ridurre le interferenze:</p>
+<p><strong>Ethernet</strong>, è una famiglia di standard per le reti sviluppata a partire dagli anni 70. Oggi, Ethernet è utilizzato principalmente su cavi in rame e fibra ottica.</p>
+<p>I cavi in rame sono formati da quattro coppie di cavi in rame intrecciati insieme. Esistono diversi tipi di cavi, in cui vengono usate diverse tipologie di schermatura per ridurre le interferenze:</p>
 <ul>
 <li>I cavi con <strong>nessuna schermatura</strong> sono chiamati <strong>UTP</strong> (<em>Unshielded Twisted Pair</em>).</li>
 <li>I cavi con una <strong>schermatura singola</strong> che racchiude tutte le coppie, sono chiamati <strong>FTP</strong> (<em>Foiled Twisted Pair</em>).</li>
@@ -43,42 +43,45 @@
 <h2 id="indirizzo-mac">Indirizzo MAC</h2>
 <p>L’<strong>indirizzo MAC</strong> (<em>Media Access Control</em>), che identifica una scheda di rete (NIC) a livello di datalink.</p>
 <p>Un indirizzo MAC è composto da <strong>48 bit</strong>:</p>
-<p><img src="https://i.ibb.co/KGpk5Br/image.png" alt="https://i.ibb.co/KGpk5Br/image.png"></p>
+<p><img src="https://i.ibb.co/KGpk5Br/image.png" alt=""></p>
+<ul>
+<li>24 bit per l’identificativo univoco dell’organizzazione che ha prodotto la NIC
 <ul>
 <li>1 bit per il tipo (0 → indirizzo fisico (unicast), 1→ indirizzo logico (multicast))</li>
-<li>24 bit per l’identificativo univoco dell’organizzazione che ha prodotto la NIC</li>
+</ul>
+</li>
 <li>24 bit univoci per la specifica NIC</li>
 </ul>
 <p>Un indirizzo MAC dovrebbe quindi essere <strong>globalmente univoco</strong>.</p>
-<p>Nota tecnica: Ethernet codifica le stringhe (l’indirizzo è una stringa) <strong>invertendo l’ordine dei bit su ogni byte</strong>: avendo quindi il bit meno significativo per primo.</p>
+<p>Nota tecnica: Ethernet codifica le stringhe (tra cui l’indirizzo) <strong>invertendo l’ordine dei bit su ogni byte</strong>: avendo quindi il bit meno significativo per primo.</p>
 <p>Ciò significa che l’indirizzo MAC <code>12-34-56-78-9A-BC</code> viene trasmesso come <code>01001000 00101100 01101010 00011110 01011001 00111101</code> (ogni coppia viene convertita in binario e invertita).</p>
 <p>Un indirizzo MAC è unicast se il suo primo byte è pari, cioè la seconda cifra esadecimale della prima coppia è <code>0,2,4,6,8,A,C,E</code>.</p>
 <p>Gli indirizzi MAC possono essere estesi per diventare <strong>EUI-64</strong> (Extended Unique Identifier a 64 bit) e utilizzati come ID interfaccia in un indirizzo IPv6.</p>
 <h2 id="header-di-un-frame-ethernet">Header di un frame ethernet</h2>
-<p><img src="https://i.ibb.co/qp5NTF2/image.png" alt="https://i.ibb.co/qp5NTF2/image.png"></p>
+<p><img src="https://i.ibb.co/qp5NTF2/image.png" alt=""></p>
 <ul>
-<li><strong>Indirizzo di destinazione (48 bit):</strong> Questo campo specifica l’indirizzo MAC della scheda di rete del destinatario</li>
-<li><strong>Indirizzo di origine (48 bit):</strong> Questo campo specifica l’indirizzo MAC della scheda di rete del mittente</li>
-<li><strong>Length/EtherType (16 bit):</strong> Questo campo specifica la lunghezza del payload del frame, ovvero i dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.</li>
-<li><strong>Payload e padding (46-1500 byte):</strong> Questo campo contiene i dati che vengono trasportati dal frame. Se il payload è inferiore a 46 byte, viene aggiunto del padding per raggiungere la dimensione minima.</li>
-<li><strong>CRC (32 bit):</strong> Questo campo contiene un checksum che viene utilizzato per verificare l’integrità del frame.</li>
+<li><strong>Indirizzo di destinazione (48 bit):</strong> specifica l’indirizzo MAC della scheda di rete del destinatario</li>
+<li><strong>Indirizzo di origine (48 bit):</strong> specifica l’indirizzo MAC della scheda di rete del mittente</li>
+<li><strong>Length/EtherType (16 bit):</strong> specifica la lunghezza del payload del frame, ovvero i dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.</li>
+<li><strong>Payload e padding (46-1500 byte):</strong> Contiene i dati che vengono trasportati dal frame. Se il payload è inferiore a 46 byte, viene aggiunto del padding per raggiungere la dimensione minima.</li>
+<li><strong>CRC (32 bit):</strong> Contiene una checksum che viene utilizzata per verificare l’integrità del frame.</li>
 </ul>
 <p>Inizialmente, l’header Ethernet includeva un campo chiamato <strong>EtherType</strong>, che specificava il protocollo di livello superiore. Ma questo è stato poi sostituito con il campo length.</p>
 <p>Per risolvere questa mancanza, è stato introdotto un nuovo livello: il <strong>livello LLC (Logical Link Control)</strong> il cui scopo era indicare il protocollo di livello superiore. Il livello datalink fu quindi suddiviso in due sottolivelli: il sottolivello MAC e il sottolivello LLC.</p>
 <p><strong>Nella versione attuale di Ethernet quei 16bit vengono utilizzati per interpretare entrambe le cose</strong> (length e EtherType). Di conseguenza, il livello LLC ha perso la maggior parte della sua utilità e viene raramente utilizzato per le reti ethernet.</p>
-<h2 id="switch-ethernet">Switch ethernet</h2>
-<p>Gli <strong>Ethernet Switch</strong> sono dispositivi che estendono una rete interconnettendo più terminali.</p>
-<p><img src="https://i.ibb.co/3TXW8Gz/image.png" alt="https://i.ibb.co/3TXW8Gz/image.png"></p>
-<p>Gli switch sono in grado di instradare il traffico sulla porta corretta. Per fare ciò, si utilizzano degli algoritmi per determinare su quale porta inviare un frame.</p>
+<h2 id="switch-ethernet">Switch Ethernet</h2>
+<p>Gli <strong>Switch Ethernet</strong> sono dispositivi che estendono una rete interconnettendo più terminali.</p>
+<p><img src="https://i.ibb.co/3TXW8Gz/image.png" alt=""></p>
+<p>Gli switch sono in grado di instradare il traffico sulla porta corretta.</p>
 <ul>
 <li>
-<p>Su reti semplici in cui si ha un solo switch a sui sono connessi i terminali si usano algoritmi di backward learning:</p>
+<p>Su reti semplici in cui si ha un solo switch a cui sono connessi i terminali, si usano algoritmi di <em>backward learning</em>:</p>
 <pre class=" language-python"><code class="prism  language-python"><span class="token comment"># Arrival of frame F on port P at time T;</span>
 <span class="token comment"># Table : addr -&gt; [port, time];</span>
 <span class="token comment"># Ports : list of ports</span>
 src <span class="token operator">=</span> F<span class="token punctuation">.</span>SourceAddress
 dst <span class="token operator">=</span> F<span class="token punctuation">.</span>DestinationAddress
-Table<span class="token punctuation">[</span>src<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>P<span class="token punctuation">,</span> T<span class="token punctuation">)</span>  <span class="token comment">#  update the table</span>
+Table<span class="token punctuation">[</span>src<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token punctuation">(</span>P<span class="token punctuation">,</span> T<span class="token punctuation">)</span>  <span class="token comment"># update the table</span>
 <span class="token keyword">if</span> is_unicast<span class="token punctuation">(</span>dst<span class="token punctuation">)</span><span class="token punctuation">:</span>
     <span class="token keyword">if</span> dst <span class="token keyword">in</span> Table<span class="token punctuation">:</span>
         forward_frame<span class="token punctuation">(</span>F<span class="token punctuation">,</span> Table<span class="token punctuation">[</span>dst<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
@@ -98,7 +101,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <h2 id="spanning-tree-protocol-stp">Spanning Tree Protocol (STP)</h2>
 <p>Lo <strong>Spanning Tree Protocol (STP)</strong>, è stato proposto per risolvere il problema dei loop che possono verificarsi in reti con switch Ethernet multipli.</p>
 <p><strong>Problema dei loop</strong>: Quando una rete con switch multipli si avvia, le tabelle degli indirizzi MAC sono vuote. Se un host invia un frame a un altro host sconosciuto, il primo switch, non sapendo dove si trova l’host, inoltra il frame su tutte le porte. Il secondo switch, ricevendo il frame, lo inoltra a sua volta su tutte le porte, e così via, creando un loop infinito (i frame non hanno un campo come TTL).</p>
-<p>STP risolve questo problema creando un albero di copertura (spanning tree) che collega tutti i dispositivi della rete senza creare loop. Si assume che ogni switch abbia un ID univoco di 64 bit, di cui i primi 16 bit sono configurabili dall’amministratore e i restanti 48 sono l’indirizzo MAC.</p>
+<p>STP risolve questo problema creando un albero di copertura (<em>spanning tree</em>) che collega tutti i dispositivi della rete senza creare loop. Si assume che ogni switch abbia un ID univoco di 64 bit, di cui i primi 16 bit sono configurabili dall’amministratore e i restanti 48 sono l’indirizzo MAC.</p>
 <p>Lo switch con l’ID più basso diventa la <strong>radice</strong> dell’albero.</p>
 <p>Le porte dello switch possono essere in tre stati:</p>
 <ul>
@@ -115,20 +118,26 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <ul>
 <li>
 <p>Ogni switch invia periodicamente un frame <strong>Bridge Protocol Data Unit (BPDU)</strong> su tutte le sue porte.</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>B</mi><mi>P</mi><mi>D</mi><mi>U</mi><mo>=</mo><mo>&lt;</mo><mi>R</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>C</mi><mi>o</mi><mi>s</mi><mi>t</mi><mo separator="true">,</mo><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>p</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">
+  BPDU=&lt;RootID, Cost, SenderID, p&gt;
+  </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72243em; vertical-align: -0.0391em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">BP</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mord mathnormal" style="margin-right: 0.10903em;">U</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">oo</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mord mathnormal">os</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right: 0.02778em;">er</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span></span></span></span></span></span></p>
 <p>Il BPDU contiene informazioni come:</p>
 <ul>
-<li><code>RootID</code> l’ID della radice</li>
+<li><code>RootID</code> l’ID dello switch radice</li>
 <li><code>Cost</code> il costo del percorso alla radice</li>
 <li><code>SenderID</code> l’ID di chi ha generato il BPDU</li>
 <li><code>p</code> il numero della porta dello switch mittente da cui è uscito il BPDU</li>
 </ul>
-<p>I BPDU vengono inviati solo agli switch adiacenti e non vengono inoltrati.</p>
+<p>I BPDU vengono inviati solo agli switch adiacenti e non vengono inoltrati ulteriormente.</p>
 <p>Inizialmente ogni switch utilizza il proprio ID come <code>RootID</code> impostando il costo a zero.</p>
 <p>La costruzione dell’albero si basa sull’ordinare i BPDU in modo lessicografico:</p>
 <p>Si confrontano prima le <code>RootID</code>, se sono uguali si confrontano i <code>Cost</code>, se sono uguali si confrontano i <code>SenderID</code>, se sono uguali si confrontano le <code>p</code>.</p>
 </li>
 <li>
-<p>Quando uno switch A riceve il BPDU dallo switch B memorizza il <em>root priority vector</em> <code>Vq</code> per la porta su cui ha ricevuto il BPDU, <code>Vq</code> che è composto da:</p>
+<p>Quando uno switch A riceve il BPDU dallo switch B, memorizza il <em>root priority vector</em> <code>Vq</code> per la porta su cui ha ricevuto il BPDU, il <code>Vq</code> è composto da:</p>
+<p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>V</mi><mi>q</mi><mo>=</mo><mo>&lt;</mo><mi>R</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>c</mi><mo separator="true">,</mo><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>p</mi><mo separator="true">,</mo><mi>q</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">
+  Vq=&lt;RootID, c, SenderID, p, q&gt;
+  </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.87777em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">V</span><span class="mord mathnormal" style="margin-right: 0.03588em;">q</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">oo</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">c</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right: 0.02778em;">er</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">q</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span></span></span></span></span></span></p>
 <ul>
 <li><code>RootID</code></li>
 <li><code>c = Cost + Cab</code> (dove <code>Cab</code> è il costo del link da B ad A)</li>
@@ -139,13 +148,13 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <p>Lo switch memorizza in una tabella il più recente <em>root priority vector</em> per ogni porta.</p>
 </li>
 <li>
-<p>A questo punto lo switch A compara in modo lessicografico <code>Vq</code> con il proprio BPDU, se <code>Vq</code> è minore allora</p>
+<p>A questo punto lo switch A compara in modo lessicografico <code>Vq</code> con il proprio BPDU, se <code>Vq</code> è minore allora:</p>
 <ul>
-<li>lo switch A decide che B è la radice dell’albero e utilizzerà l’ID di B nel campo <code>RootID</code> da ora in poi nei BPDU che genera. Inoltre la porta <code>q</code> entra nello stato <em>root</em> (A diventa un nodo figlio di B)</li>
+<li>lo switch A decide che B è la radice dell’albero e utilizzerà l’ID di B nel campo <code>RootID</code> nei BPDU che genera da ora in poi. Inoltre la porta <code>q</code> entra nello stato <em>root</em> (A diventa un nodo figlio di B)</li>
 </ul>
 </li>
 <li>
-<p>Per determinare lo stato della altre porte lo switch A compara anche in modo lessicografica il BPDU ricevuto con il BPDU proprio:</p>
+<p>Per determinare lo stato delle altre porte lo switch A compara anche in modo lessicografico il BPDU ricevuto con il BPDU proprio:</p>
 <ul>
 <li>se il proprio BPDU è minore, la porta <code>q</code> entra nello stato <em>designated</em> (B diventa un nodo figlio di A)</li>
 <li>se il BPDU ricevuto è minore, la porta <code>q</code> entra nello stato <em>blocked</em> (B è un fratello si A e potrebbe esserci un loop)</li>
@@ -191,35 +200,34 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <h2 id="legame-tra-livello-di-rete-e-livello-datalink">Legame tra livello di rete e livello datalink</h2>
 <p>Vediamo come connettere il livello di rete e il livello datalink.</p>
 <p>Il traffico di rete è suddiviso in pacchetti IP, sia per la comunicazione all’interno della stessa rete sia tra reti diverse.</p>
-<p>La comunicazione a livello di rete si basa sugli <strong>indirizzi IP</strong>, ma, a livello datalink, per il trasferimento fisico dei dati, si utilizzano gli <strong>indirizzi MAC</strong>, che identificano in modo univoco le interfacce fisiche degli host.</p>
+<p>La comunicazione a livello di rete si basa sugli <strong>indirizzi IP</strong>, ma, a livello datalink si utilizzano gli <strong>indirizzi MAC</strong>, che identificano in modo univoco le interfacce fisiche degli host.</p>
 <p>Quando un host vuole inviare pacchetti a un determinato indirizzo IP, è necessario che conosca l’indirizzo MAC del destinatario affinché il livello datalink possa funzionare correttamente.</p>
 <p>Ci sono due scenari possibili:</p>
 <ul>
-<li><strong>indirizzo IP di destinazione locale</strong>: Quando l’IP di destinazione si trova nella stessa rete fisica del mittente, il pacchetto può essere inviato direttamente tramite switch. In questo caso, il mittente deve scoprire l’indirizzo MAC associato all’IP di destinazione.</li>
+<li><strong>indirizzo IP di destinazione locale</strong>: Quando l’IP di destinazione si trova nella stessa rete fisica del mittente, il pacchetto può essere inviato direttamente tramite uno switch. In questo caso, il mittente deve scoprire l’indirizzo MAC associato all’IP di destinazione.</li>
 <li><strong>indirizzo IP di destinazione remoto</strong>: Quando l’IP di destinazione si trova in una sottorete diversa, il pacchetto deve essere inviato al router che funge da gateway per la rete. Il mittente deve conoscere l’indirizzo MAC del router.</li>
 </ul>
 <p>I protocolli <strong>ARP</strong> e <strong>DHCP</strong> vengono utilizzati per risolvere questi problemi.</p>
 <h2 id="protocollo-arp">Protocollo ARP</h2>
-<p>L’<strong>Address Resolution Protocol (ARP)</strong> è un protocollo che consente agli host di <strong>risolvere gli indirizzi IP in indirizzi MAC</strong> all’interno della stessa sottorete, ogni host mantiene una tabella ARP che le varie associazioni IP-MAC.</p>
-<p>Quando un host desidera scoprire l’indirizzo MAC del destinatario, invia un messaggio ARP in broadcast contenete il proprio MAC e IP e l’IP di cui si vuole ottenere il MAC, in questo messaggio viene chiesto a tutti i dispositivi di rispondere se possiedono l’indirizzo IP specificato. L’host che possiede l’indirizzo IP specificato risponde con un <strong>messaggio ARP unicast</strong> diretto all’indirizzo MAC del mittente, fornendo il proprio indirizzo MAC.</p>
-<p>Il mittente può quindi aggiornare la propria <strong>tabella ARP</strong></p>
+<p>L’<strong>Address Resolution Protocol (ARP)</strong> è un protocollo che consente agli host di <strong>risolvere gli indirizzi IP in indirizzi MAC</strong> all’interno della stessa sottorete, ogni host mantiene una tabella ARP che le varie associazioni tra IP e MAC.</p>
+<p>Quando un host desidera scoprire l’indirizzo MAC del destinatario, invia un messaggio ARP in broadcast contenete il proprio MAC, il proprio IP e l’IP di cui si vuole ottenere il MAC. L’host che possiede l’indirizzo IP specificato risponde con un <strong>messaggio ARP unicast</strong> diretto all’indirizzo MAC del mittente, fornendo il proprio indirizzo MAC.</p>
+<p>Il mittente può quindi aggiornare la propria <strong>tabella ARP.</strong></p>
 <h2 id="protocollo-dhcp">Protocollo DHCP</h2>
-<p>Il <strong>Dynamic Host Configuration Protocol (DHCP)</strong> è un protocollo di gestione utilizzato per configurare automaticamente i parametri di rete degli host al loro avvio.</p>
-<p>Quando un host si avvia, ha bisogno di:</p>
+<p>Il <strong>Dynamic Host Configuration Protocol (DHCP)</strong> è un protocollo utilizzato per configurare automaticamente i parametri di rete degli host al loro avvio, tra cui:</p>
 <ul>
 <li>Un indirizzo IP utilizzabile nella rete locale</li>
 <li>L’indirizzo IP del router che funge da gateway per la rete</li>
 <li>L’indirizzo IP del server DNS</li>
 </ul>
 <p>DHCP è un protocollo client-server basato su UDP, che opera sulla porta 67.</p>
-<p><img src="https://i.ibb.co/5LWKwrY/image.png" alt="https://i.ibb.co/5LWKwrY/image.png"></p>
+<p><img src="https://i.ibb.co/5LWKwrY/image.png" alt=""></p>
 <p>Il processo inizia con il client che invia un messaggio di <strong>DHCP Discover</strong> in broadcast all’indirizzo <code>255.255.255.255</code>. In questo messaggio, il client:</p>
 <ul>
 <li>Imposta l’indirizzo IP sorgente a <code>0.0.0.0</code></li>
 <li>Utilizza il proprio indirizzo MAC come indirizzo MAC sorgente</li>
-<li>Include un ID client, generalmente l’indirizzo MAC della propria scheda di rete</li>
+<li>Include un ID client, generalmente l’indirizzo MAC</li>
 </ul>
-<p>I <strong>server DHCP</strong> presenti nella rete possono rispondere al messaggio <em>DHCP Discover</em> con un messaggio di <strong>DHCP Offer</strong>. Questo messaggio contiene:</p>
+<p>I <strong>server DHCP</strong> presenti nella rete possono rispondere con un messaggio di <strong>DHCP Offer</strong>. Questo messaggio contiene:</p>
 <ul>
 <li>L’ID client, estratto dal messaggio <em>DHCP Discover</em></li>
 <li>L’indirizzo IP che il server sta offrendo al client</li>
@@ -231,7 +239,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <p>Il server DHCP corrispondente all’indirizzo presente nel body, invia un messaggio di <strong>DHCP Acknowledgment</strong> direttamente all’indirizzo IP richiesto dal client. Questo messaggio:</p>
 <ul>
 <li>Conferma l’assegnazione dell’indirizzo IP al client</li>
-<li>Specifica la durata del lease</li>
+<li>Specifica la durata del <em>lease</em></li>
 <li>Fornisce eventuali altre informazioni di configurazione, come l’indirizzo del default gateway e l’indirizzo del server DNS</li>
 </ul>
 <h3 id="esempio-di-uso-di-arp-e-dhcp">Esempio di uso di ARP e DHCP</h3>

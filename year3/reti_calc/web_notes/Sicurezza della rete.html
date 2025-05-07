@@ -16,7 +16,6 @@
 <li><a href="#sicurezza-della-rete">Sicurezza della rete</a>
 <ul>
 <li><a href="#servizi-di-sicurezza">Servizi di sicurezza</a></li>
-<li><a href="#integrity">Integrity</a></li>
 <li><a href="#sicurezza-nella-comunicazione">Sicurezza nella comunicazione</a></li>
 <li><a href="#crittografia">Crittografia</a></li>
 <li><a href="#funzioni-hash">Funzioni hash</a></li>
@@ -29,28 +28,28 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="sicurezza-della-rete">Sicurezza della rete</h1>
-<p>Con sicurezza possiamo intendere un insieme di azioni che riguardano ogni aspetto per rendere una rete sicura e mantenerla sicura nel tempo.</p>
+<p>Con sicurezza della rete possiamo intendere un insieme di azioni che riguardano ogni aspetto per rendere una rete sicura e mantenerla sicura nel tempo.</p>
 <p>Lo standard X.800 definisce tre aspetti chiave:</p>
 <ul>
 <li>
 <p><strong>servizi di sicurezza</strong>:</p>
-<p>Ci sono 6+1 servizi che si possono offrire allo strato superiore, questi punti sono:</p>
+<p>Ci sono 6+1 servizi a cui dedicare risorse per rendere più sicuro un sistema:</p>
 <ul>
-<li>Data availability</li>
-<li>Data authentication</li>
-<li>Data integrity</li>
-<li>Secrecy of data (Confidentiality)</li>
-<li>Access control</li>
-<li>Non repudiation</li>
+<li><strong>Data availability</strong></li>
+<li><strong>Data authentication</strong></li>
+<li><strong>Data integrity</strong></li>
+<li><strong>Confidentiality/Secrecy</strong></li>
+<li><strong>Access control</strong></li>
+<li><strong>Non repudiation</strong></li>
 <li>(Anonymity)</li>
 </ul>
 </li>
 <li>
-<p><strong>meccanismi di sicurezza</strong>: sono delle funzioni che hanno lo scopo di mettere in pratica i servizi sopra citati, tali funzioni sono ad esempio:</p>
+<p><strong>meccanismi di sicurezza</strong>: sono delle funzioni che hanno lo scopo di implementare i servizi sopra citati, ad esempio:</p>
 <ul>
-<li>Criptografia</li>
+<li>criptografia</li>
 <li>firma digitale</li>
-<li>meccanismi di integrità</li>
+<li>hashing</li>
 <li>meccanismi di controllo degli accessi</li>
 <li>protocolli di autenticazione</li>
 <li>…</li>
@@ -61,82 +60,92 @@
 </li>
 </ul>
 <h2 id="servizi-di-sicurezza">Servizi di sicurezza</h2>
-<p>Approfondiamo il punto relativo ai servizi di sicurezza.</p>
+<p>Approfondiamo i vari servizi di sicurezza.</p>
 <h3 id="availability">Availability</h3>
 <p>Significa che il sistema deve essere sostanzialmente raggiungibile.</p>
 <p>Gli attacchi DoS minano questo servizio saturando le risorse fisiche necessarie al funzionamento del sistema.</p>
 <p>Per garantire al più possibile l’availability è necessario avere un buon design della rete e minimizzare il danno da un possibile attacco DoS.</p>
 <h3 id="confidentiality">Confidentiality</h3>
-<p>Significa che i dati scambiati siano confidenziali tra i partecipanti dello scambio.</p>
+<p>Significa che i dati scambiati rimangono riservati ai soli partecipanti dello scambio.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi di crittografia</p>
-<h2 id="integrity">Integrity</h2>
+<h3 id="integrity">Integrity</h3>
 <p>Significa che i dati devono raggiungere la destinazione senza subire modifiche nel tragitto.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi di hashing</p>
 <h3 id="authentication">Authentication</h3>
 <p>Si divide in:</p>
 <ul>
-<li><strong>Autenticazione dell’origine dei dati</strong>: chi riceve i dati deve essere certo che ha dato origine hai dati sia chi dice di essere.</li>
-<li><strong>Autenticazione del peer</strong>: chi riceve i dati deve essere certo che chi consegna i dati sia chi dice di essere</li>
+<li>
+<p><strong>Autenticazione dell’origine dei dati</strong>: chi riceve i dati deve essere certo che chi ha dato origine ai dati sia chi dice di essere.</p>
+<p>Ad esempio, se Alice riceve un’email da Bob, l’autenticazione dell’origine dei dati è il servizio che garantisce che il vero autore dell’email sia effettivamente Bob, indipendentemente da chi consegna l’email (ad esempio, Gmail).</p>
+</li>
+<li>
+<p><strong>Autenticazione del peer</strong>: chi riceve i dati deve essere certo che chi consegna i dati sia chi dice di essere.</p>
+<p>Ad esempio, tra Alice e Bob ci sono diversi router che trasportano le informazioni. Alice riceve da Carl (un intermediario lecito) i dati generati da Bob e deve essere sicura che le informazioni appena ricevute siano state effettivamente inviate da Carl e non siano state alterate da un’entità che finge di essere Carl.</p>
+</li>
 </ul>
-<p>Per garantire questo aspetto sono necessari meccanismi di firma digitale</p>
+<p>Per garantire questo aspetto sono necessari meccanismi di firma digitale.</p>
 <h3 id="access-control">Access control</h3>
 <p>L’accesso deve essere permesso solamente a chi è autorizzato ad accedere.</p>
 <p>Non garantire il controllo può permettere situazione in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione</p>
 <h3 id="non-repudiation">Non repudiation</h3>
-<p>Il non repudio previene che un mittente neghi di essere stato lui ad inviare un messaggio, oppure che chi riceve il messaggio neghi di averlo ricevuto.</p>
+<p>Il non ripudio previene che un mittente neghi di essere stato lui ad inviare un messaggio, oppure che chi riceve il messaggio neghi di averlo ricevuto.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi firma digitale</p>
 <h3 id="anonymity">Anonymity</h3>
-<p>Questo non è un servizio canonico</p>
-<p>L’abilità di usare un sistema senza che il sistema sia in grado di identificare l’utente.</p>
+<p>Questo non è un servizio canonico dello standard X.800.</p>
+<p>Indica l’abilità di usare un sistema senza che il sistema sia in grado di identificare l’utente.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi come Tor, freenet, ecc</p>
+<p>Questo servizio ha una doppia faccia: da un lato può essere usato per commettere atti illegali, dall’altro permette di dar voce a chi non può usufruire dei propri diritti civili (a causa di guerre, politiche restrittive, ecc…)</p>
 <h2 id="sicurezza-nella-comunicazione">Sicurezza nella comunicazione</h2>
 <p>Quando si gestisce un sistema di comunicazione si fa riferimento ad una astrazione di questo tipo:</p>
-<p><img src="https://i.ibb.co/H2Jjv8s/image.png" alt="https://i.ibb.co/H2Jjv8s/image.png"></p>
-<p>In cui <strong>Alice</strong> e <strong>Bob</strong> vogliono comunicare tra loro, mentre <strong>Eve</strong> è l’attaccante che controlla il canale di comunicazione.</p>
-<p>Alice e Bob devono scambiarsi dei messaggi e trattano il canale di comunicazione come un tubo in cui mettere o prendere i messaggi.</p>
-<p>Il canale di comunicazione può essere di qualsiasi tipo, ad esempio internet.</p>
-<p>Eve può fare qualsiasi cosa sul canale: intercettare i messaggi, duplicarli, non farli arrivare, modificarli (non può rompere la crittografia dei messaggi).</p>
-<p>Alice e bob trasformano i propri messaggi con dei meccanismi per non inviare il testo in chiaro, ma messaggi crittografati.</p>
+<p><img src="https://i.ibb.co/H2Jjv8s/image.png" alt=""></p>
+<p><strong>Alice</strong> e <strong>Bob</strong> vogliono comunicare tra loro, mentre <strong>Eve</strong> è l’attaccante che controlla il canale di comunicazione.</p>
+<p>Alice e Bob devono scambiarsi dei messaggi e trattano il canale di comunicazione come un tubo in cui mandare o ricevere i messaggi.</p>
+<p>Il canale di comunicazione può essere di qualsiasi tipo, ad esempio Internet.</p>
+<p>Eve può fare qualsiasi cosa sul canale: intercettare i messaggi, duplicarli, non farli arrivare, modificarli (però non può rompere la crittografia dei messaggi).</p>
+<p>Alice e bob trasformano i propri messaggi con dei meccanismi per non inviare il testo in chiaro, ma piuttosto messaggi cifrati.</p>
 <p>Per fare in modo che Alice e Bob si accordino sul sistema di trasformazione devono ricevere delle credenziali da una entità terza affidabile (Anche Eve può interagire con questa entità)</p>
-<p>Un workflow sulla sicurezza consiste nell’identificare gli attori nel modello e fare delle scelte:</p>
+<p>Un workflow per rendere sicuro un sistema consiste nell’identificare gli attori del modello e fare delle scelte:</p>
 <ul>
 <li>di quali servizi di sicurezza ho bisogno?</li>
-<li>in che modo possono attaccare il sistema</li>
+<li>in che modo possono attaccare il sistema?</li>
 <li>da quali attacchi non vale la pena difendersi?</li>
-<li>quasi servizi mi posso permettere?</li>
+<li>quali servizi mi posso permettere?</li>
 <li>quali meccanismi adottare?</li>
 <li>adottando troppe misure di sicurezza sto rendendo inutilizzabile il sistema?</li>
 </ul>
 <p>Si tratta sempre di un <strong>trade-off tra sicurezza e usabilità.</strong></p>
 <h2 id="crittografia">Crittografia</h2>
+<p>La crittografia è la scienza che studio come rendere segrete delle informazioni.</p>
 <p>La crittografia permette di avere:</p>
 <ul>
 <li>integrità (tramite <strong>funzioni hash</strong>)</li>
 <li>segretezza (tramite <strong>cifratura</strong>)</li>
-<li>non repudiation (tramite <strong>firma digitale</strong>)</li>
-<li>componendo varie funzione sopra citate si può ottenere anche
+<li>non ripudio (tramite <strong>firma digitale</strong>)</li>
+<li>componendo varie funzioni sopra citate si può ottenere anche
 <ul>
-<li>controllo degli accessi, anonimità, autenticazione</li>
+<li>controllo degli accessi</li>
+<li>anonimità</li>
+<li>autenticazione</li>
 </ul>
 </li>
 </ul>
 <p><strong>Algoritmo crittografico</strong>: Una sequenza di operazioni matematiche che possono essere applicate ad un messaggio</p>
-<p><strong>Funzione crittografica</strong>: un blocco di codice che implementa l’algoritmo per fornire meccanismi di sicurezza.</p>
+<p><strong>Funzione crittografica</strong>: un blocco di codice che implementa l’algoritmo crittografico per fornire meccanismi di sicurezza.</p>
 <p><strong>Protocollo di sicurezza</strong>: È un insieme di regole che definiscono come devono essere utilizzati algoritmi crittografici e funzioni crittografiche per garantire una comunicazione sicura.</p>
 <p>Per minimizzare il rischio di falle di sicurezza è importante cercare di seguire queste regole:</p>
 <ul>
-<li>non usare algoritmi di crittografia sconosciuti o inventarsene uno</li>
+<li>non usare algoritmi di crittografia sconosciuti e non inventarsene di nuovi per conto proprio</li>
 <li>non usare funzione crittografiche closed source</li>
 <li>usare le funzioni più utilizzate e aggiornate</li>
-<li>usare protocollo standard</li>
+<li>usare protocolli standard</li>
 <li>Restringere il servizio solo ad utenti che supportano la versione più recente dei protocolli</li>
 </ul>
 <h2 id="funzioni-hash">Funzioni hash</h2>
-<p>Una <strong>funzione hash</strong> è una funzione unidirezionale che viene applicata su dei dati di dimensione variabile e genera un <strong>digest</strong>, cioè una stringa di grandezza fissa, più grande è la dimensione della stringa minori saranno le collisioni.</p>
-<p>Le funzioni hash vengono usate per garantire <strong>l’integrità dei dati</strong>: infatti inviando oltre che al messaggio anche il digest generato dalla funzione hash, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.</p>
-<p><img src="https://i.ibb.co/VNpWJ4W/image.png" alt="https://i.ibb.co/VNpWJ4W/image.png"></p>
-<p>Funzioni hash sono ad esempio MD5, SHA1, SHA 256, …</p>
+<p>Una <strong>funzione hash</strong> è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un <strong>digest</strong>, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le collisioni.</p>
+<p>Le funzioni hash vengono usate per garantire <strong>l’integrità dei dati</strong>: infatti inviando oltre che al messaggio anche il digest, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.</p>
+<p><img src="https://i.ibb.co/VNpWJ4W/image.png" alt=""></p>
+<p>Funzioni hash sono ad esempio MD5, SHA 1, SHA 256, …</p>
 <h3 id="proprietà-delle-funzioni-hash">Proprietà delle funzioni hash</h3>
 <ol>
 <li>
@@ -149,13 +158,13 @@
 <p>calcolare la funzione hash di un input deve essere computazionalmente efficiente</p>
 </li>
 <li>
-<p>Data che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle <strong>collisioni</strong> (input diversi generano lo stesso output)</p>
+<p>Dato che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle <strong>collisioni</strong> (input diversi generano lo stesso output)</p>
 </li>
 <li>
-<p>dato l’output, trovare l’input che dato in pasto alla funzione ha generato un tale output deve essere computazionalmente impossibile</p>
+<p>possedendo l’output, trovare l’input che ha generato un tale output deve essere computazionalmente impossibile</p>
 </li>
 <li>
-<p>dato un input trovare un altro input diverso che genera lo stesso output deve essere computazionalmente impossibile.</p>
+<p>dato un input trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.</p>
 <p>input simili non devono generare un output simile, l’output deve essere impredicibile.</p>
 </li>
 <li>
@@ -164,7 +173,7 @@
 </ol>
 <p>Nota: con <strong>computazionalmente impossibile</strong> si intende che ad oggi non si conosce un algoritmo di complessità polinomiale in grado di risolvere il problema.</p>
 <p>Dato che la dimensione dell’output è fissa, se abbiamo un input grande sicuramente delle informazione vengono perse durante l’hashing.</p>
-<p>Inoltre a data la presenza di collisioni se un attaccante che ha un output hashato e trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.</p>
+<p>Inoltre a data la presenza di collisioni se un attaccante che possiede un output, trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.</p>
 
     </div>
   </div>

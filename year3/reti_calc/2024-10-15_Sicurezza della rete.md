@@ -1,24 +1,24 @@
 ﻿# Sicurezza della rete
 
-Con sicurezza possiamo intendere un insieme di azioni che riguardano ogni aspetto per rendere una rete sicura e mantenerla sicura nel tempo.
+Con sicurezza della rete possiamo intendere un insieme di azioni che riguardano ogni aspetto per rendere una rete sicura e mantenerla sicura nel tempo.
 
 Lo standard X.800 definisce tre aspetti chiave: 
 
 - **servizi di sicurezza**:
     
-    Ci sono 6+1 servizi che si possono offrire allo strato superiore, questi punti sono:
+    Ci sono 6+1 servizi a cui dedicare risorse per rendere più sicuro un sistema:
     
-    - Data availability
-    - Data authentication
-    - Data integrity
-    - Secrecy of data (Confidentiality)
-    - Access control
-    - Non repudiation
+    - **Data availability**
+    - **Data authentication**
+    - **Data integrity**
+    - **Confidentiality/Secrecy**
+    - **Access control**
+    - **Non repudiation**
     - (Anonymity)
-- **meccanismi di sicurezza**: sono delle funzioni che hanno lo scopo di mettere in pratica i servizi sopra citati, tali funzioni sono ad esempio:
-    - Criptografia
+- **meccanismi di sicurezza**: sono delle funzioni che hanno lo scopo di implementare i servizi sopra citati, ad esempio:
+    - criptografia
     - firma digitale
-    - meccanismi di integrità
+    - hashing
     - meccanismi di controllo degli accessi
     - protocolli di autenticazione
     - …
@@ -26,7 +26,7 @@ Lo standard X.800 definisce tre aspetti chiave:
 
 ## Servizi di sicurezza
 
-Approfondiamo il punto relativo ai servizi di sicurezza.
+Approfondiamo i vari servizi di sicurezza.
 
 ### Availability
 
@@ -38,11 +38,11 @@ Per garantire al più possibile l’availability è necessario avere un buon des
 
 ### Confidentiality
 
-Significa che i dati scambiati siano confidenziali tra i partecipanti dello scambio.
+Significa che i dati scambiati rimangono riservati ai soli partecipanti dello scambio.
 
 Per garantire questo aspetto sono necessari meccanismi di crittografia
 
-## Integrity
+### Integrity
 
 Significa che i dati devono raggiungere la destinazione senza subire modifiche nel tragitto.
 
@@ -52,10 +52,16 @@ Per garantire questo aspetto sono necessari meccanismi di hashing
 
 Si divide in:
 
-- **Autenticazione dell’origine dei dati**: chi riceve i dati deve essere certo che ha dato origine hai dati sia chi dice di essere.
-- **Autenticazione del peer**: chi riceve i dati deve essere certo che chi consegna i dati sia chi dice di essere
+- **Autenticazione dell’origine dei dati**: chi riceve i dati deve essere certo che chi ha dato origine ai dati sia chi dice di essere.
+    
+    Ad esempio, se Alice riceve un'email da Bob, l'autenticazione dell'origine dei dati è il servizio che garantisce che il vero autore dell'email sia effettivamente Bob, indipendentemente da chi consegna l'email (ad esempio, Gmail).
+    
+- **Autenticazione del peer**: chi riceve i dati deve essere certo che chi consegna i dati sia chi dice di essere.
+    
+    Ad esempio, tra Alice e Bob ci sono diversi router che trasportano le informazioni. Alice riceve da Carl (un intermediario lecito) i dati generati da Bob e deve essere sicura che le informazioni appena ricevute siano state effettivamente inviate da Carl e non siano state alterate da un'entità che finge di essere Carl.
+    
 
-Per garantire questo aspetto sono necessari meccanismi di firma digitale
+Per garantire questo aspetto sono necessari meccanismi di firma digitale.
 
 ### Access control
 
@@ -67,42 +73,44 @@ Per garantire questo aspetto sono necessari meccanismi di autenticazione ed iden
 
 ### Non repudiation
 
-Il non repudio previene che un mittente neghi di essere stato lui ad inviare un messaggio, oppure che chi riceve il messaggio neghi di averlo ricevuto.
+Il non ripudio previene che un mittente neghi di essere stato lui ad inviare un messaggio, oppure che chi riceve il messaggio neghi di averlo ricevuto.
 
 Per garantire questo aspetto sono necessari meccanismi firma digitale
 
 ### Anonymity
 
-Questo non è un servizio canonico
+Questo non è un servizio canonico dello standard X.800.
 
-L’abilità di usare un sistema senza che il sistema sia in grado di identificare l’utente.
+Indica l’abilità di usare un sistema senza che il sistema sia in grado di identificare l’utente.
 
 Per garantire questo aspetto sono necessari meccanismi come Tor, freenet, ecc
+
+Questo servizio ha una doppia faccia: da un lato può essere usato per commettere atti illegali, dall’altro permette di dar voce a chi non può usufruire dei propri diritti civili (a causa di guerre, politiche restrittive, ecc…)
 
 ## Sicurezza nella comunicazione
 
 Quando si gestisce un sistema di comunicazione si fa riferimento ad una astrazione di questo tipo:
 
-![https://i.ibb.co/H2Jjv8s/image.png](https://i.ibb.co/H2Jjv8s/image.png)
+![](https://i.ibb.co/H2Jjv8s/image.png)
 
-In cui **Alice** e **Bob** vogliono comunicare tra loro, mentre **Eve** è l’attaccante che controlla il canale di comunicazione.
+**Alice** e **Bob** vogliono comunicare tra loro, mentre **Eve** è l’attaccante che controlla il canale di comunicazione.
 
-Alice e Bob devono scambiarsi dei messaggi e trattano il canale di comunicazione come un tubo in cui mettere o prendere i messaggi.
+Alice e Bob devono scambiarsi dei messaggi e trattano il canale di comunicazione come un tubo in cui mandare o ricevere i messaggi.
 
-Il canale di comunicazione può essere di qualsiasi tipo, ad esempio internet.
+Il canale di comunicazione può essere di qualsiasi tipo, ad esempio Internet.
 
-Eve può fare qualsiasi cosa sul canale: intercettare i messaggi, duplicarli, non farli arrivare, modificarli (non può rompere la crittografia dei messaggi).
+Eve può fare qualsiasi cosa sul canale: intercettare i messaggi, duplicarli, non farli arrivare, modificarli (però non può rompere la crittografia dei messaggi).
 
-Alice e bob trasformano i propri messaggi con dei meccanismi per non inviare il testo in chiaro, ma messaggi crittografati.
+Alice e bob trasformano i propri messaggi con dei meccanismi per non inviare il testo in chiaro, ma piuttosto messaggi cifrati.
 
 Per fare in modo che Alice e Bob si accordino sul sistema di trasformazione devono ricevere delle credenziali da una entità terza affidabile (Anche Eve può interagire con questa entità)
 
-Un workflow sulla sicurezza consiste nell’identificare gli attori nel modello e fare delle scelte:
+Un workflow per rendere sicuro un sistema consiste nell’identificare gli attori del modello e fare delle scelte:
 
 - di quali servizi di sicurezza ho bisogno?
-- in che modo possono attaccare il sistema
+- in che modo possono attaccare il sistema?
 - da quali attacchi non vale la pena difendersi?
-- quasi servizi mi posso permettere?
+- quali servizi mi posso permettere?
 - quali meccanismi adottare?
 - adottando troppe misure di sicurezza sto rendendo inutilizzabile il sistema?
 
@@ -110,46 +118,50 @@ Si tratta sempre di un **trade-off tra sicurezza e usabilità.**
 
 ## Crittografia
 
+La crittografia è la scienza che studio come rendere segrete delle informazioni.
+
 La crittografia permette di avere:
 
 - integrità (tramite **funzioni hash**)
 - segretezza (tramite **cifratura**)
-- non repudiation (tramite **firma digitale**)
-- componendo varie funzione sopra citate si può ottenere anche
-    - controllo degli accessi, anonimità, autenticazione
+- non ripudio (tramite **firma digitale**)
+- componendo varie funzioni sopra citate si può ottenere anche
+    - controllo degli accessi
+    - anonimità
+    - autenticazione
 
 **Algoritmo crittografico**: Una sequenza di operazioni matematiche che possono essere applicate ad un messaggio
 
-**Funzione crittografica**: un blocco di codice che implementa l’algoritmo per fornire meccanismi di sicurezza.
+**Funzione crittografica**: un blocco di codice che implementa l’algoritmo crittografico per fornire meccanismi di sicurezza.
 
 **Protocollo di sicurezza**: È un insieme di regole che definiscono come devono essere utilizzati algoritmi crittografici e funzioni crittografiche per garantire una comunicazione sicura.
 
 Per minimizzare il rischio di falle di sicurezza è importante cercare di seguire queste regole:
 
-- non usare algoritmi di crittografia sconosciuti o inventarsene uno
+- non usare algoritmi di crittografia sconosciuti e non inventarsene di nuovi per conto proprio
 - non usare funzione crittografiche closed source
 - usare le funzioni più utilizzate e aggiornate
-- usare protocollo standard
+- usare protocolli standard
 - Restringere il servizio solo ad utenti che supportano la versione più recente dei protocolli
 
 ## Funzioni hash
 
-Una **funzione hash** è una funzione unidirezionale che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa, più grande è la dimensione della stringa minori saranno le collisioni.
+Una **funzione hash** è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le collisioni.
 
-Le funzioni hash vengono usate per garantire **l’integrità dei dati**: infatti inviando oltre che al messaggio anche il digest generato dalla funzione hash, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.
+Le funzioni hash vengono usate per garantire **l’integrità dei dati**: infatti inviando oltre che al messaggio anche il digest, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.
 
-![https://i.ibb.co/VNpWJ4W/image.png](https://i.ibb.co/VNpWJ4W/image.png)
+![](https://i.ibb.co/VNpWJ4W/image.png)
 
-Funzioni hash sono ad esempio MD5, SHA1, SHA 256, …
+Funzioni hash sono ad esempio MD5, SHA 1, SHA 256, …
 
 ### Proprietà delle funzioni hash
 
 1. l’input può essere di qualsiasi dimensione
 2. l’output ha dimensione fissa
 3. calcolare la funzione hash di un input deve essere computazionalmente efficiente
-4. Data che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle **collisioni** (input diversi generano lo stesso output)
-5. dato l’output, trovare l’input che dato in pasto alla funzione ha generato un tale output deve essere computazionalmente impossibile
-6. dato un input trovare un altro input diverso che genera lo stesso output deve essere computazionalmente impossibile.
+4. Dato che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle **collisioni** (input diversi generano lo stesso output)
+5. possedendo l’output, trovare l’input che ha generato un tale output deve essere computazionalmente impossibile
+6. dato un input trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.
     
     input simili non devono generare un output simile, l’output deve essere impredicibile.
     
@@ -159,4 +171,4 @@ Nota: con **computazionalmente impossibile** si intende che ad oggi non si conos
 
 Dato che la dimensione dell’output è fissa, se abbiamo un input grande sicuramente delle informazione vengono perse durante l’hashing.
 
-Inoltre a data la presenza di collisioni se un attaccante che ha un output hashato e trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.
+Inoltre a data la presenza di collisioni se un attaccante che possiede un output, trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.

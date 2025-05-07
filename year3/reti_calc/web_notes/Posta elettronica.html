@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>2024-11-12_DNS</title>
+  <title>2024-11-12_Posta elettronica</title>
   <link rel="stylesheet" href="https://stackedit.io/style.css" />
 </head>
 
@@ -30,8 +30,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="posta-elettronica">Posta elettronica</h1>
-<p>L’architettura di un sistema di posta elettronica la possiamo immaginare come segue:</p>
-<p><img src="https://i.ibb.co/9wdgRMG/image.png" alt="https://i.ibb.co/9wdgRMG/image.png"></p>
+<p>L’architettura semplificata di un sistema di posta elettronica la possiamo immaginare come segue:</p>
+<p><img src="https://i.ibb.co/9wdgRMG/image.png" alt=""></p>
 <p>Le e-mail non viaggiano direttamente da un computer all’altro, ma coinvolgono diversi componenti come:</p>
 <ul>
 <li>client di posta elettronica del mittente</li>
@@ -47,16 +47,14 @@
 <li><em>Simple Mail Transfer Protocol</em> (<strong>SMTP</strong>) specifica il protocollo necessario per recapitare il messaggio dal client di Alice al server di Bob.</li>
 <li><em>Post Office Protocol</em> (<strong>POP</strong>) e <em>Internet Message Access Protocol</em> (<strong>IMAP</strong>) specificano come Bob può recuperare le e-mail dal suo server.</li>
 </ul>
-<p><img src="https://i.ibb.co/grXjLk6/image.png" alt="https://i.ibb.co/grXjLk6/image.png"></p>
-<p>Approfondiamo alcuni di questi protocolli.</p>
+<p><img src="https://i.ibb.co/grXjLk6/image.png" alt=""></p>
 <h2 id="formato-delle-e-mail">Formato delle e-mail</h2>
 <p>I messaggi e-mail sono composti da due parti:</p>
 <ul>
-<li>un header contenente i metadati come il mittente, l’oggetto, CC, la data.</li>
+<li>un header contenente i metadati come il mittente, destinatario, l’oggetto, CC, la data.</li>
 <li>Il corpo del messaggio</li>
 </ul>
 <p>I messaggi e-mail sono messaggi di testo, inizialmente formattati in testo ASCII, successivamente la codifica è stata estesa.</p>
-<p>Le e-mail sono composte da più righe, ciascuna delle quali termina con CRLF (due simboli speciali “CR” e “LF” spesso usati per specificare la fine della riga, lo stesso viene usato in Windows).</p>
 <p>Esempio di una mail:</p>
 <pre><code>From: Bob Smith &lt;Bob@machine.example&gt;
 To: Alice Doe &lt;alice@example.net&gt;, Alice Smith &lt;Alice@machine.example&gt;
@@ -76,8 +74,9 @@ This is the second line of the body
 <h3 id="mime">MIME</h3>
 <p>Nel corpo del messaggio, oltre a scrivere del testo ASCII, abbiamo bisogno di inviare file binari e allegati. Con l’introduzione di <strong>MIME (Multipurpose Internet Mail Extensions)</strong>, è diventato possibile inviare diversi tipi di contenuto, inclusi file binari, immagini e audio.</p>
 <p>MIME utilizza header specifici come “<code>Content-Type</code>” (che indica il tipo di contenuto nel messaggio) e “<code>Content-Transfer-Encoding</code>” (che indica come è codificato il contenuto del messaggio) per definire il formato e la codifica del contenuto.</p>
-<p>Esempio:</p>
-<p><img src="https://i.ibb.co/sRh696T/image.png" alt="https://i.ibb.co/sRh696T/image.png"></p>
+<p>Ad esempio questa email:</p>
+<p><img src="https://i.ibb.co/sRh696T/image.png" alt=""></p>
+<p>può essere codificata in questo modo:</p>
 <pre><code>From: Alice &lt;alice@email.it&gt;
 Date: Wed, 18 Oct 2023 16:51:15 +0200
 Message-ID: &lt;CAMJfarHWLkY1hBNiPuxCP9_kV+XJNg-addi3kCCnMrw1-TU6sg@mail.gmail.com&gt;
@@ -121,25 +120,25 @@ R0lGODlhAQABAIAAAP///////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAAQABAAACAkQBADs=
 </ul>
 <h2 id="autenticazione">Autenticazione</h2>
 <p>Inizialmente, i server SMTP permettevano a chiunque di inviare email attraverso di essi. Questo ha portato a una forte diffusione di spam. Per contrastare il problema, i server SMTP moderni implementano dei sistemi di autenticazione e limitano il <strong>relaying</strong> solo ai client autenticati.</p>
-<p>Il relaying si riferisce alla capacità di un server SMTP di <strong>inoltrare email a domini diversi dal proprio</strong>.</p>
+<p>Il <em>relaying</em> si riferisce alla capacità di un server SMTP di <strong>inoltrare email a domini diversi dal proprio</strong>.</p>
 <p>I meccanismi di autenticazione comuni includono:</p>
 <ul>
 <li><strong>PLAIN:</strong> Invia nome utente e password in chiaro (sconsigliato per motivi di sicurezza).</li>
 <li><strong>LOGIN:</strong> Simile a PLAIN, ma codifica nome utente e password usando Base64.</li>
-<li><strong>CRAM-MD5:</strong> Utilizza un sistema di sfida-risposta basato su hash MD5 per autenticare il client senza trasmettere la password in chiaro.</li>
+<li><strong>CRAM-MD5:</strong> Utilizza un sistema di <em>challenge-response</em> basato su hash MD5 per autenticare il client senza trasmettere la password in chiaro.</li>
 </ul>
+<p>Oggi viene usato il <strong>protocollo TLS</strong> che aggiunge crittografia.</p>
 <h2 id="dns">DNS</h2>
 <p>Quando il server SMTP del mittente riceve il messaggio dal client deve conoscere l’indirizzo del successivo server SMTP a cui inoltrare la richiesta.</p>
 <p>Per fare ciò si usa il protocollo DNS per ottenere l’indirizzo.</p>
-<p>A questo punto il server SMTP del mittente si connette al server SMTP del destinatario. Tuttavia, se il server SMTP del mittente non è autenticato, il server SMTP del destinatario non consentirà il relaying.</p>
+<p>A questo punto il server SMTP del mittente si connette al server SMTP del destinatario. Tuttavia, se il server SMTP del mittente non è autenticato, il server SMTP del destinatario non consentirà il <em>relaying</em>.</p>
 <p>Si introduce il concetto di <em>Mail Submission Agent</em> (MSA), un MTA che richiede l’autenticazione a tutti i client che si connettono a loro, indipendentemente dal dominio di destinazione dell’email.</p>
-<p><img src="https://i.ibb.co/JpgCkcB/image.png" alt="https://i.ibb.co/JpgCkcB/image.png"></p>
+<p><img src="https://i.ibb.co/JpgCkcB/image.png" alt=""></p>
 <h2 id="pop">POP</h2>
 <p>Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può ottenere la posta nel server.</p>
-<p>Il protocollo POP è uno dei protocolli che stabilisce come ciò può avvenire.</p>
 <p>Il protocollo POP (Post Office Protocol), attualmente nella versione 3 (POP3), è uno dei protocolli utilizzati per consegnare la posta elettronica alla MUA del destinatario.</p>
 <p>Per farlo si introduce una nuova entità MDA (<em>Mail Delivery Agent</em>) che si occupa di rendere disponibile la posta al client di destinazione con un protocollo dedicato.</p>
-<p>POP è un protocollo testuale basato su comandi. Un server POP in genere è in ascolto sulla porta 110.</p>
+<p>POP è un protocollo testuale basato su comandi che utilizza la porta 110.</p>
 <p>Una sessione POP si compone di tre parti: una fase di <strong>autorizzazione</strong>, una fase di <strong>transazione</strong> e una fase di <strong>aggiornamento</strong>.</p>
 <ul>
 <li><strong>Fase di autorizzazione:</strong> Il client si connette e si autentica al server.</li>

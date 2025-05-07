@@ -6,7 +6,7 @@ La **crittografia a chiave pubblica** risolve questo problema, permettendo ad Al
 
 Questo viene realizzato tramite la creazione di due chiavi, una **chiave pubblica** (distribuita pubblicamente) e una **chiave privata** (che rimane segreta).
 
-Il **principio fondamentale** della crittografia a chiave pubblica è che ciò che viene crittografato con una chiave può essere decifrato solo con l’altra chiave corrispondente.
+Il **principio fondamentale** della crittografia a chiave pubblica è che ciò che viene cifrato con una chiave può essere decifrato solo con l’altra chiave.
 
 Ci sono vari algoritmi che implementano la cifratura a chiave pubblica, tra cui:
 
@@ -15,15 +15,15 @@ Ci sono vari algoritmi che implementano la cifratura a chiave pubblica, tra cui:
 
 ### Intrattabilità dei problemi
 
-Gli algoritmi crittografici spesso si basano operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, semplicemente aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione di tali operazioni.
+Gli algoritmi crittografici spesso si basano operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione.
 
-- La **fattorizzazione in fattori primi** di un numero è un esempio di operazione matematica per cui non esiste un algoritmo efficiente:
+- La **fattorizzazione in fattori primi** di un numero è un esempio di operazione matematica per cui non esiste un algoritmo efficiente.
     
     Se calcoliamo $m = p \cdot q$ dove $p, q$ sono numeri primi, non abbiamo un algoritmo efficiente per ottenere $p$ e $q$ a partire da $m$.
     
-- Il **calcolo del logaritmo discreto** è una altro problema matematico di questo tipo:
+- Il **calcolo del logaritmo discreto** è una altro problema matematico di questo tipo.
     
-    La classica operazione di logaritmo con numeri reali è la seguente
+    La classica operazione di logaritmo con numeri reali è la seguente:
     
     $$
     g^a =m \longrightarrow \log_{g}m = a
@@ -34,22 +34,28 @@ Gli algoritmi crittografici spesso si basano operazioni matematiche le quali non
 
 ## Diffie-Hellman
 
-Lo **scambio di chiavi Diffie-Hellman** è un protocollo che consente a due entità di concordarsi su una chiave simmetrica in un canale insicuro senza essersi prima scambiati informazioni segrete.
+Lo **scambio di chiavi Diffie-Hellman** è un protocollo che consente a due entità di concordarsi su una **chiave simmetrica** in un **canale insicuro** senza essersi prima scambiati informazioni segrete.
 
-Questa chiave può essere utilizzata successivamente per crittografare le comunicazioni tramite un algoritmo a chiave simmetrica, garantendo la segretezza delle informazioni scambiate.
+Questa chiave può essere utilizzata successivamente per cifrare le comunicazioni tramite un algoritmo a chiave simmetrica, garantendo la segretezza delle informazioni scambiate.
 
 Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
 
 ### Funzionamento
 
-![https://i.ibb.co/RcYwpXy/image.png](https://i.ibb.co/RcYwpXy/image.png)
+![](https://i.ibb.co/RcYwpXy/image.png)
 
 - Alice sceglie un numero primo grande $n$, un numero random $a$ (che deve rimanere **segreto**) e una radice primitiva (o generatore) $g$ per $n$.
     
-    (La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio $n = 7, g = 3$)
+    La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio $n = 7, g = 3$:
     
+    - $1 = 3^6 \mod 7$
+    - $2 = 3^2 \mod 7$
+    - $3 = 3^1 \mod 7$
+    - $4 =3^4 \mod 7$
+    - $5 = 3^5 \mod 7$
+    - $6 = 3^3 \mod 7$
 - Alice calcola $m$ come $g^a\mod n$ e manda $m, g, n$ a Bob
-- Bob riceve i dati, sceglie un numero random $b$ (che deve rimanere **segreto**)
+- Bob riceve i dati e sceglie un numero random $b$ (che deve rimanere **segreto**)
 - Bob calcola $r$ come $g^b \mod n$ e lo manda ad Alice
 - La chiave condivisa generata è quindi
     
@@ -65,7 +71,7 @@ Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
     
     - $K = r^a \mod n = (g^b)^a \mod n = g^{ab} \mod n$
 
-Questo sistema permette che anche in caso un **attaccante intercettasse il traffico**, ottenendo quindi $m, g, n, r$ non sarebbe comunque in grado di ottenere $a$ e $b$  (e quindi la chiave) data la complessità computazionale del logaritmo discreto.
+Questo sistema garantisce che, anche se un **attaccante dovesse intercettare il traffico** e ottenere $m,g,n,r$, non sarebbe comunque in grado di risalire ad $a$$ e $b$ (e quindi alla chiave), grazie alla complessità computazionale del logaritmo discreto.
 
 ### Problema
 
@@ -73,9 +79,9 @@ Se però l’attaccante fosse in grado di **modificare il traffico**, nascerebbe
 
 L’attaccante, Eve, potrebbe far fallire lo scambio ma nel caso peggiore potrebbe fingere di essere Bob per Alice e fingere di essere Alice per Bob.
 
-![https://i.ibb.co/6NjV6z3/image.png](https://i.ibb.co/6NjV6z3/image.png)
+![](https://i.ibb.co/6NjV6z3/image.png)
 
-Diffie Hellman **non garantisce quindi l’autenticazione** delle parti, per funzionare questo sistema viene spesso utilizzato in combinazione con meccanismi di autenticazione.
+Diffie Hellman **non garantisce quindi l’autenticazione** delle parti, questo sistema viene spesso utilizzato in combinazione con meccanismi di autenticazione.
 
 ## Principi della crittografia a chiave pubblica
 
@@ -84,12 +90,12 @@ Vediamo i **principi della crittografia a chiave pubblica**:
 - Alice e Bob hanno due chiavi ciascuno
 - Alice genera la propria **chiave pubblica** (accessibile da chiunque) e la propria **chiave privata** (segreta)
 - Bob genera la propria **chiave pubblica** (accessibile da chiunque) e la propria **chiave privata** (segreta)
-- Ciò che viene cifrato con una chiave può essere decifrato solamente con l’altra chiave corrispondente
+- Ciò che viene cifrato con una chiave può essere decifrato solamente con l’altra chiave
 - Le chiavi pubbliche e private vengono generate contemporaneamente attraverso un processo matematico che le lega intrinsecamente. Per come sono generate è computazionalmente impossibile ottenere una chiave possedendo l’altra.
 
 Per garantire la **segretezza** possiamo usare la **chiave pubblica del destinatario per cifrare** il messaggio, così facendo solo il destinatario, con la sua **chiave privata, potrà decifrare il messaggio**.
 
-![https://i.ibb.co/kHk5GXM/image.png](https://i.ibb.co/kHk5GXM/image.png)
+![](https://i.ibb.co/kHk5GXM/image.png)
 
 ## RSA
 
@@ -104,7 +110,7 @@ Il processo semplificato per la **creazione delle chiavi** è il seguente:
     
     La **funzione toziente** (o funzione di Eulero) è una funzione che prende in input un intero $n$ e restituisce il numero di interi compresi tra $1$ e $n$ che sono **coprimi** (non hanno divisori comuni oltre a $1$) con $n$.
     
-    Esempio  $n = 3 \cdot 5 = 15$, $\phi(15) = (3-1)(5-1) = 8$ infatti i coprimi con $15$ compresi tra $1$ e $15$ sono: $1, 2, 4, 7, 8, 11, 13, 14$
+    Esempio  $n = 3 \cdot 5 = 15$, $\phi(15) = (3-1)(5-1) = 8$ infatti i numeri coprimi con $15$ compresi tra $1$ e $15$ sono: $1, 2, 4, 7, 8, 11, 13, 14$
     
 - Scegliere un intero $e$ tale che $2 < e < \phi(n)$ e che sia coprimo con il valore restituito da $\phi (n)$
 - Calcolare $d$ in modo che $d\cdot e \mod \phi(n) = 1$, cioè che sia l’inverso moltiplicativo di $e$ in modulo $\phi(n)$
@@ -169,15 +175,15 @@ Le proprietà che vorremmo avere nel nostro algoritmo sono:
 4. Avendo la chiave $Pub\_A$ sia computazionalmente **impossibile ottenere** $Priv\_A$
 5. Avendo la chiave $Pub\_A$ e il testo cifrato $C$ sia computazionalmente **impossibile ottenere relativo testo in chiaro** $M$
 
-RSA riesce a dare tutte queste proprietà, infatti la **generazione delle chiavi, la cifratura e la decifratura** possono avvenire in tempo **polinomiale**, mentre usando delle **chiavi sufficientemente grandi** (>1024 bit) risulta molto **difficile rompere la cifratura**.
+RSA riesce a dare tutte queste proprietà, infatti la **generazione delle chiavi, la cifratura e la decifratura** avvengono in tempo **polinomiale**, mentre usando delle **chiavi sufficientemente grandi** (>1024 bit) risulta molto **difficile rompere la cifratura**.
 
 ## Attacchi a RSA
 
-Un attaccante può fare la stessa cosa che poteva fare con Diffie-hellman, cioè durante lo scambio delle chiavi pubbliche, Eve si può mettere in mezzo fingendo di essere il destinatario, compromettendo lo scambio e di conseguenza tutta la successiva comunicazione:
+Un attaccante può fare la stessa cosa che poteva fare con Diffie-hellman, cioè durante lo scambio delle chiavi pubbliche, Eve si può mettere in mezzo fingendo di essere il destinatario per entrambe le parti, compromettendo lo scambio e di conseguenza tutta la successiva comunicazione:
 
-![https://i.ibb.co/0QJ9V0P/image.png](https://i.ibb.co/0QJ9V0P/image.png)
+![](https://i.ibb.co/0QJ9V0P/image.png)
 
-Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono quindi essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono pubbliche quindi non abbiamo bisogno di segretezza.
+Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono quindi essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono pubbliche quindi **non abbiamo bisogno di segretezza**.
 
 (Ricordiamo invece che la cifratura a chiave simmetrica richiede un canale autentico, integro e segreto per lo scambio)
 
@@ -185,15 +191,13 @@ Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e int
 
 Invertendo il ruolo delle chiavi è possibile implementare il concetto di **firma digitale.**
 
-Se Alice cifra un messaggio con la propria chiave privata, allora chiunque può decifrarla usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura.
+Se Alice cifra un messaggio con la propria chiave privata, allora chiunque può decifrarla usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura. Al contempo Alice non può negare di essere stata lei ad inviare il messaggio. 
 
-Al contempo Alice non può negare di essere stata lei ad inviare il messaggio. 
-
-In questo modo si può usare RSA per garantire **autenticazione** e il **non ripudio.**
+In questo modo si può usare RSA per garantire **autenticazione** e il **non ripudio** (e usando entrambe le tecniche garantisce anche segretezza).
 
 Così facendo durante lo scambio delle chiavi si può, oltre che a mandare la chiave, mandare anche una firma digitale per autenticare il mittente.
 
-Ancora una volta, però, l’attacco man in the middle è possibile: infatti Bob prima di verificare la firma deve richiedere la chiave pubblica di Alice e questa può essere compromessa, Eve infatti può mandare la sua chiave pubblica, firmata con la sua privata, fingendosi quindi Alice.
+Ancora una volta, però, l’attacco *man in the middle* è possibile: infatti Bob prima di verificare la firma deve richiedere la chiave pubblica di Alice e questa può essere compromessa, Eve infatti può mandare la sua chiave pubblica, firmata con la sua privata, fingendosi quindi Alice.
 
 Quindi finché lo scambio delle chiavi non avviene in modo completamente affidabile, l’attacco man in the middle è possibile.
 
@@ -203,10 +207,21 @@ La differenza di velocità con cui si cripta e di decripta con RSA è molto ampi
 
 Comparato con i tempi di cifratura a chiave simmetrica, **RSA è vari ordini di grandezza più lento**.
 
-In passato su sistemi che usavano RSA per cifrare e decifrare tutto il traffico ci sono stati degli attacchi *DoS* che sfruttavano il fatto che sui client cifrare i messaggi con la chiave pubblica del server era più veloce di quanto il server ci impiegasse e decifrare i messaggi usando la sua chiave privata.
+In passato, alcuni sistemi che utilizzavano RSA per cifrare e decifrare l’intero traffico sono stati vulnerabili ad attacchi *DoS*. Questi attacchi sfruttavano il fatto che, per i client, cifrare i messaggi con la chiave pubblica del server era molto più veloce di quanto non fosse per il server decifrarli con la propria chiave privata.
 
 ### Utilizzo nella realtà di RSA
 
-Quello che si fa nella realtà è quindi di usare **RSA per lo scambio di una chiave segreta condivisa**, e poi si usa un sistema di **crittografia simmetrica con HMAC.**
+Quello che si fa nella realtà è quindi di usare **RSA per lo scambio di una chiave segreta condivisa**, e poi si usa un sistema di **crittografia simmetrica** (ad esempio AES) **con HMAC.**
 
-Per la firma digitale, invece viene prima fatto un hash del messaggio (per ridurne la grandezza) e poi *digest* generato viene cifrato con la propria chiave privata.
+Per la firma digitale, invece viene prima fatto un hash del messaggio (per ridurne la grandezza) e poi il *digest* generato viene cifrato con la propria chiave privata.
+
+In conclusione la cifratura a chiave pubblica fornisce:
+
+- segretezza
+- integrità
+- autenticazione
+- non ripudio
+
+ma ha bisogno di:
+
+- un canale autenticato per fare il set-up della comunicazione

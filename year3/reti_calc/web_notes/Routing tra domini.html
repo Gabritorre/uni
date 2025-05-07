@@ -30,11 +30,11 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="routing-tra-domini">Routing tra domini</h1>
-<p>Dopo aver visto il router all’interno di un dominio parliamo del routing tra domini diversi, cioè tra reti gestite da entità amministrative diverse. Viene utilizzato un solo protocollo chiamato BGP.</p>
+<p>Dopo aver visto il routing all’interno di un dominio parliamo del routing tra domini diversi, cioè tra reti gestite da entità amministrative diverse. Per questo scopo viene utilizzato un solo protocollo, chiamato BGP.</p>
 <h3 id="autonomous-system-as">Autonomous System (AS)</h3>
-<p>Quelli che fino ad ora abbiamo chiamato <strong>domini</strong> sono più comunemente detti <strong>Autonomous system (AS)</strong>, cioè  è una collezione di reti controllate da una singola entità amministrativa (ISP, azienda, governo, università).</p>
+<p>Quelli che fino ad ora abbiamo chiamato <strong>domini</strong> sono più comunemente detti <strong>Autonomous system (AS)</strong>, cioè è una collezione di reti controllate da una singola entità amministrativa (ISP, azienda, governo, università).</p>
 <p>Ogni AS riceve un numero univoco che lo identifica, chiamato <em>autonomous system number</em> (ASN).</p>
-<p>Ad ogni AS viene assegnato un numero di indirizzi IP pubblici, che possono essere distribuiti e che saranno sotto il loro controllo.</p>
+<p>Ad ogni AS viene assegnata una quantità di indirizzi IP pubblici, che possono essere distribuiti e che saranno sotto il loro controllo.</p>
 <p>Gli AS si dividono in due tipi principali:</p>
 <ul>
 <li>
@@ -51,46 +51,46 @@
 <p>Esistono due modi per connettere gli AS:</p>
 <ul>
 <li>
-<p><strong>Private Peering</strong>: Connessione diretta tra due router di due AS diversi. I proprietari degli AS pagano solamente l’installazione dell’infrastruttura necessaria per la connessione (non molto scalabile).</p>
-<p><img src="https://i.ibb.co/khCFPf7/image.png" alt="https://i.ibb.co/khCFPf7/image.png"></p>
+<p><strong>Private Peering</strong>: Connessione diretta punto-punto tra due router di due AS diversi. I proprietari degli AS pagano solamente l’installazione dell’infrastruttura necessaria per la connessione mentre il transito del traffico tra loro è gratuito (non molto scalabile).</p>
+<p><img src="https://i.ibb.co/khCFPf7/image.png" alt=""></p>
 </li>
 <li>
-<p><strong>Internet Exchange Points (IXP)</strong>: Data center condiviso dove gli AS collocano i propri router e si connettono tra loro. Gli AS dovranno pagare il servizio offerto</p>
-<p><img src="https://i.ibb.co/8gWbLrb/image.png" alt="https://i.ibb.co/8gWbLrb/image.png"></p>
+<p><strong>Internet Exchange Points (IXP)</strong>: Data center condiviso dove gli AS collocano i propri router e si connettono tra loro. Gli AS dovranno pagare il servizio offerto.</p>
+<p><img src="https://i.ibb.co/8gWbLrb/image.png" alt=""></p>
 </li>
 </ul>
 <p>L’obiettivo di ogni AS è quello di pagare il meno possibile per le proprie transizioni di pacchetti, quindi di preferire l’instradamento verso un private peering quando possibile (anche se magari passando da un’altra strada sarebbe più veloce).</p>
 <h2 id="bgp">BGP</h2>
-<p>BGP (<em>Border Gateway Protocol</em>) è l’unico protocollo di routing utilizzato dagli AS</p>
-<p>La base del routing è che i router si scambiano i prefissi delle reti che essi possono raggiungere, in questo caso però, non tutti i prefissi raggiungibili vengono esposti a causa di relazioni commerciali.</p>
-<p>Ad esempio nell’immagine precedente del private peering, B potrebbe far passare il traffico destinato a C attraverso A, quindi non pagando e facendo pagare A, questo non deve succedere.</p>
+<p>BGP (<em>Border Gateway Protocol</em>) è l’unico protocollo di routing utilizzato dagli AS.</p>
+<p>Il principio del routing è che i router si scambiano i prefissi delle reti che essi possono raggiungere, in questo caso però, non tutti i prefissi raggiungibili vengono esposti a causa delle relazioni commerciali.</p>
+<p>Ad esempio nell’immagine precedente del private peering, B potrebbe far passare il traffico destinato a C attraverso A, quindi non pagando ma piuttosto facendo pagare A, questo non deve succedere.</p>
 <p>In generale:</p>
 <ul>
 <li>il cliente rivela al provider i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider).</li>
 <li>il provider rivela al cliente tutti i prefissi che conosce.</li>
-<li>In una <strong>relazione di peering</strong>, un AS rivela solo i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider).</li>
+<li>In una <strong>relazione di peering</strong>, un AS rivela all’altro solo i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider).</li>
 </ul>
-<p><img src="https://i.ibb.co/vX3dpT4/image.png" alt="https://i.ibb.co/vX3dpT4/image.png"></p>
+<p><img src="https://i.ibb.co/vX3dpT4/image.png" alt=""></p>
 <h2 id="funzionamento-di-bgp">Funzionamento di BGP</h2>
-<p>Ogni AS necessita di almeno un <strong>router BGP (di bordo)</strong> per annunciare i propri prefissi di rete agli altri AS, possono inoltre inoltrare i prefissi di altri AS.</p>
-<p>I router di bordo, eseguono <strong>sia BGP</strong> che il protocollo di <strong>routing interno dell’AS</strong>, come OSPF, e utilizzano le informazioni ricevute per costruire una <strong>tabella di forwarding</strong> che utilizzerà per decidere dove mandare i pacchetti.</p>
-<p>La tabella di forwarding è una struttura dati che <strong>mappa</strong> ogni <strong>indirizzo di destinazione all’interfaccia</strong> di uscita appropriata per raggiungere tale destinazione.</p>
+<p>Ogni AS necessita di almeno un <strong>router BGP (di bordo)</strong> per annunciare i prefissi di rete agli altri AS.</p>
+<p>I router di bordo, eseguono sia <strong>BGP</strong> che un protocollo di <strong>routing interno dell’AS</strong>, come OSPF, e utilizzano le informazioni ricevute per costruire una <strong>tabella di forwarding</strong> che utilizzerà per decidere dove mandare i pacchetti.</p>
+<p>La <strong>tabella di forwarding</strong> è una struttura dati che <strong>mappa</strong> ogni <strong>indirizzo di destinazione all’interfaccia</strong> di uscita appropriata per raggiungere tale destinazione.</p>
 <h3 id="esempio">Esempio</h3>
-<p><img src="https://i.ibb.co/qCYmjKj/image.png" alt="https://i.ibb.co/qCYmjKj/image.png"></p>
+<p><img src="https://i.ibb.co/qCYmjKj/image.png" alt=""></p>
 <p>Vediamo un esempio di una piccola rete Internet composta da diversi AS (ignoriamo per semplicità i possibili accordi commerciali).</p>
 <p>Vediamo come la rete <code>10.150.0.0/24</code> viene propagata su internet:</p>
 <ol>
 <li>Il router A (all’interno di AS150) annuncia il suo prefisso <code>10.150.0.0/24</code> e il percorso per raggiungerlo (<code>150</code>) al router D (all’interno di AS11)</li>
-<li>Il router A (all’interno di AS150) annuncia il suo prefisso <code>10.150.0.0/24</code> al router B (all’interno di AS151)</li>
-<li>Il router B (all’interno di AS151) propaga il prefisso <code>10.150.0.0/24</code> aggiungendo se stesso al percorso per raggiungerlo (<code>151→150</code>) al router D (all’interno di AS11)</li>
+<li>Il router A (all’interno di AS150) annuncia il suo prefisso <code>10.150.0.0/24</code> e il percorso per raggiungerlo (<code>150</code>) al router B (all’interno di AS151)</li>
+<li>Il router B (all’interno di AS151) propaga il prefisso <code>10.150.0.0/24</code>, aggiungendo se stesso al percorso (<code>151→150</code>), al router D (all’interno di AS11)</li>
 <li>Il router D (all’interno di AS11) propaga il prefisso <code>10.150.0.0/24</code> aggiungendo se stesso al percorso per raggiungerlo (<code>11→150</code>) al router B (all’interno di AS151)</li>
 </ol>
-<p>Nota a questo punto come i router utilizzano <strong>split horizon</strong> (quindi non inviando ad un router le rotte che ha scoperto proprio tramite quel router) per evitare loop sul singolo link.</p>
+<p>Nota a questo punto come i router utilizzano <strong>split horizon</strong> (infatti non ad un router le rotte che ha scoperto proprio tramite quel router) per evitare loop sul singolo link.</p>
 <p>Inoltre il fatto di includere il <strong>percorso completo</strong> permette ai router di evitare di mandare prefissi ad un router se quel router è già all’interno del percorso, questo previene che si creino loop più lunghi di un singolo link.</p>
 <ol>
 <li>
 <p>Nell’AS11 ci sono 3 router di bordo. Facendo parte dello stesso AS essi devono essere sincronizzati, per farlo si utilizza una piccola variazione di BGP, chiamata <strong>IBGP</strong> (Internal BGP).</p>
-<p>In questo caso il router D annuncia ai router F ed E il prefisso <code>10.150.0.0/24</code> <strong>senza aggiungere nulla al percorso</strong> (rimarrà quindi <code>150</code>).  Nota che in questo momento D ne ha due di percorsi per raggiungerlo, ma annuncerà solo il migliore che possiede.</p>
+<p>In questo caso il router D annuncia ai router F ed E il prefisso <code>10.150.0.0/24</code> <strong>senza aggiungere nulla al percorso</strong> (rimarrà quindi <code>150</code>). Nota che in questo momento D ne ha due di percorsi per raggiungerlo, ma annuncerà solo il migliore che possiede.</p>
 </li>
 <li>
 <p>Il router F (all’interno di AS11) propaga prefisso <code>10.150.0.0/24</code> aggiungendo se stesso al percorso per raggiungerlo (<code>11→150</code>) al router G (all’interno di AS3)</p>
@@ -102,28 +102,22 @@
 <h3 id="bgp-path-vector-vs-distance-vector">BGP (path vector) VS distance vector</h3>
 <p>BGP si basa sui principi del <strong>routing distance vector</strong>, ma con alcune differenze chiave:</p>
 <ul>
-<li><strong>Path Vector protocol:</strong> Invece di annunciare solo la distanza dalla destinazione, BGP include l’intero percorso per raggiungere la destinazione.</li>
+<li><strong>Path Vector protocol:</strong> Invece di annunciare solo la distanza dalla destinazione, BGP include l’intero percorso per raggiungerla.</li>
 <li>BGP non invia aggiornamenti regolari, ma solo quando si verificano cambiamenti nella rete o quando un vicino richiede esplicitamente un aggiornamento.</li>
 <li>Gli aggiornamenti BGP contengono informazioni solo su specifici prefissi che hanno subito un cambiamento, non sull’intera tabella di routing.</li>
 </ul>
 <h3 id="cambiamento-alla-rete">Cambiamento alla rete</h3>
-<ul>
-<li>
 <p>Nel caso un AS non hosti più un certo prefisso, esso manderà un messaggio di <strong>withdraw</strong> (ritiro) ai propri vicini, essi propagheranno il messaggio su tutta la rete rendendo così irraggiungibile quel prefisso.</p>
-</li>
-<li>
 <p>Nel caso un link tra due AS si rompa, supponiamo il link tra A e D nell’esempio precedente.</p>
 <p>D potrà fare due cose:</p>
 <ul>
 <li>mandare un messaggio di <strong>withdraw</strong> ai suoi vicini (B, E, F) dicendo di eliminare il percorso che passava attraverso di lui</li>
-<li>mandare un <strong>update</strong> ai suoi vicini (E, F) in cui annuncia un percorso alternativo.</li>
+<li>mandare un <strong>update</strong> ai suoi vicini (E, F) in cui annuncia un percorso alternativo che passa per B.</li>
 </ul>
 <p>In questo caso D ha un percorso alternativo e quindi farà un update (a B non lo manderà perché il percorso alternativo comprende già B)</p>
-</li>
-</ul>
 <h2 id="dettagli-del-protocollo">Dettagli del protocollo</h2>
 <p>BGP si basa su connessione TCP sulla porta 179.</p>
-<p>BGP utilizza <strong>cinque tipi di messaggi</strong> per comunicare con i suoi <strong>peer</strong> (il termine <strong>peer</strong> si riferisce a un router vicino nel grafo BGP, indipendentemente dalla relazione commerciale tra i due AS.):</p>
+<p>BGP utilizza <strong>cinque tipi di messaggi</strong> per comunicare con i suoi <strong>peer</strong> (il termine <strong>peer</strong> si riferisce a un router vicino nel grafo, indipendentemente dalla relazione commerciale tra i due AS):</p>
 <ul>
 <li>
 <p><strong>Open:</strong> Stabilisce la connessione BGP tra due router.</p>
@@ -136,7 +130,7 @@
 <p><strong>Keepalive:</strong> Verifica se i peer sono ancora raggiungibili.</p>
 </li>
 <li>
-<p><strong>Notification:</strong> Notifica gli errori ai peer BGP.</p>
+<p><strong>Notification:</strong> Notifica gli errori ai peer.</p>
 </li>
 <li>
 <p><strong>Route-refresh:</strong> Richiedere di riannunciare dei prefissi.</p>
@@ -146,27 +140,27 @@
 <p>Il <strong>Path Prepending</strong> è una tecnica utilizzata per influenzare il percorso del traffico.</p>
 <p>In sostanza, un AS può annunciare un prefisso di rete a un altro AS includendo più volte se stesso nel percorso in questo modo rende il percorso non voluto artificialmente più lungo, scoraggiando gli altri AS dal sceglierlo.</p>
 <p>Consideriamo una rete di questo tipo con 6 AS</p>
-<p><img src="https://i.ibb.co/JzRtZ1b/image.png" alt="https://i.ibb.co/JzRtZ1b/image.png"></p>
-<p>(in blu sono segnati il numero di hop)</p>
-<p>AS1 possiede due connessioni: una a 10Gb/s usata in condizioni normali e una di backup a 1Gb/s.</p>
+<p><img src="https://i.ibb.co/JzRtZ1b/image.png" alt=""></p>
+<p>(di fianco alle frecce in blu sono segnati il numero di hop)</p>
+<p>AS1 possiede due connessioni: una a 10Gb/s usata in condizioni normali e una di riserva a 1Gb/s.</p>
 <p>In condizioni normali, si desidera che il traffico utilizzi la connessione a 10Gb/s.</p>
 <p>Però AS2, AS4 utilizzerebbero quasi sicuramente il link a 1Gb/s dato che fanno meno salti (AS6 potrebbe utilizzare entrambi i link in modo alternato con una probabilità equa).</p>
 <p>Per forzare ad usare il link più veloce, l’AS1 può annunciare il prefisso di rete alla connessione a 1Gb/s con un percorso “allungato” tramite il <strong>prepending</strong>. Gli altri AS, vedendo un percorso più lungo, preferiranno la connessione a 10Gb/s.</p>
-<p><img src="https://i.ibb.co/q1PLscG/image.png" alt="https://i.ibb.co/q1PLscG/image.png"></p>
-<p>AS1 annuncia quindi ad AS2 che il percorso per raggiungerlo è lungo 6 hop (ripetendo se stesso 6 volte)</p>
-<p>AS6 ne ha possibilità propaga ad AS4 il percorso migliore che ha, il quale li propagherà a sua volta a AS2 che otterrà quindi un percorso migliore di 6 hop (5 hop).</p>
+<p><img src="https://i.ibb.co/q1PLscG/image.png" alt=""></p>
+<p>AS1 annuncia quindi ad AS2 che il percorso per raggiungerlo è lungo 6 hop (ripetendo se stesso 6 volte nel percorso)</p>
+<p>AS6 propaga ad AS4 il percorso migliore che ha, il quale li propagherà a sua volta a AS2 che otterrà quindi un percorso migliore (di 5 hop) rispetto a quello di 6 hop.</p>
 <p>Se dovesse rompersi il link da AS5 a AS3:</p>
-<p><img src="https://i.ibb.co/9b1bPpR/image.png" alt="https://i.ibb.co/9b1bPpR/image.png"></p>
+<p><img src="https://i.ibb.co/9b1bPpR/image.png" alt=""></p>
 <p>AS5 fa un withdraw su tutta la rete, annullando quindi i cammini che passavano verso il link rotto.</p>
 <p>AS6 che era a conoscenza anche del percorso peggiore lo propaga ad AS5.</p>
 <h3 id="bgp-anycast">BGP anycast</h3>
 <p>BGP Anycast, permette a più server di condividere lo stesso indirizzo IP. Questo è utile per servizi dove le richieste vengono indirizzate al server più vicino a livello geografico.</p>
 <p>Esempio:</p>
-<p><img src="https://i.ibb.co/cbxyQnf/image.png" alt="https://i.ibb.co/cbxyQnf/image.png"></p>
+<p><img src="https://i.ibb.co/cbxyQnf/image.png" alt=""></p>
 <p>Entrambi AS1 e AS6 annunciano lo <strong>stesso prefisso</strong>. In questo modo gli altri AS hanno un cammino per raggiungere 1 e uno per raggiungere 6 e utilizzeranno quello più vicino.</p>
 <p>Nel caso un link si rompesse c’è quello di backup verso l’altro AS.</p>
 <p>Possono esserci situazioni di questo tipo:</p>
-<p><img src="https://i.ibb.co/W0Yh6BL/image.png" alt="https://i.ibb.co/W0Yh6BL/image.png"></p>
+<p><img src="https://i.ibb.co/W0Yh6BL/image.png" alt=""></p>
 <p>In questo caso AS7 ha AS1 e AS6 alla stessa distanza, potrebbe quindi mandare un pacchetto verso AS1 e il successivo verso AS6. Per questo motivo questo meccanismo non viene utilizzato per connessioni che mantengono uno stato (ad esempio connessioni TCP) ma con servizi dove ogni <strong>richiesta è indipendente dalla precedente</strong> (come DNS)</p>
 
     </div>

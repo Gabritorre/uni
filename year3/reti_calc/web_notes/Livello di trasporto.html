@@ -31,12 +31,11 @@
     <div class="stackedit__html">
       <h1 id="livello-di-trasporto">Livello di trasporto</h1>
 <p>Per introdurre il livello di trasporto assumiamo che il livello di rete non sia <strong>reliable</strong>, e quindi che i pacchetti sono di grandezza limitata, possono essere persi, corrotti, duplicati e arrivare in modo disordinato.</p>
-<p>D’altra parte permettono lo scambio di pacchetti tra ogni host in una rete.</p>
-<p>Il livello applicazione richiede che i dati:</p>
+<p>Il livello applicazione richiede la consegna dei dati sia affidabile, cioè che:</p>
 <ul>
-<li>arrivino correttamente</li>
-<li>possano essere riordinati dal ricevitore</li>
-<li>duplicati siano rilevati</li>
+<li>i dati arrivino correttamente</li>
+<li>i dati possano essere riordinati dal ricevitore</li>
+<li>i dati duplicati siano rilevati</li>
 </ul>
 <p>Il livello di trasporto deve anche implementare il <strong>multiplexing</strong>: cioè l’utilizzo di un singolo canale per trasmettere dati di applicazioni diverse.</p>
 <p>Il nome attribuito all’unità di dati a livello di trasporto è <strong>segmento</strong>.</p>
@@ -46,17 +45,18 @@
 <li><em>Connection-oriented service</em> (che offre multiplexing e affidabilità)</li>
 </ol>
 <h2 id="connectionless-service">Connectionless service</h2>
-<p>Questo servici fornisce:</p>
+<p>Questo servizio fornisce:</p>
 <ul>
 <li><strong>consegna non affidabile</strong> dei dati</li>
 <li><strong>multiplexing</strong></li>
 </ul>
 <p>Solitamente è <em>stateless</em>: ogni segmento viaggia indipendentemente dai precedenti (il destinatario non possiede variabili che mantengono lo stato).</p>
 <p>Solitamente garantisce almeno <em>l’error detection</em> con una <em>checksum</em>.</p>
-<p>Questo servizio è solitamente usato per applicazioni che accettano la perdita di alcuni dati e non si è interessati a ritrasmetterli.</p>
-<p>È importante anche citare l’utilizzo del <strong>numero di porta</strong>: cioè un numero presente sull’header che identifica una determinata applicazione.</p>
+<p>Questo servizio è usato per applicazioni che accettano la perdita di alcuni dati e non si è interessati a ritrasmetterli (es. video streaming, online gaming).</p>
+<p>È importante anche citare l’utilizzo del <strong>numero di porta</strong>: cioè un numero presente sull’header dei segmenti che identifica una determinata applicazione.</p>
 <p>Alla <strong>richiesta</strong> del client viene inserita la <strong>porta sorgente</strong> che identifica l’applicazione del client e la <strong>porta destinazione</strong> che identifica l’applicazione sul server.</p>
-<p>Alla <strong>risposta</strong> saranno inverse.</p>
+<p>Alla <strong>risposta</strong> saranno invertite.</p>
+<p>Grazie al numero di porta si riesce ad implementare il multiplexing, e quindi ad identificare a che applicazione appartiene il traffico.</p>
 <h2 id="connection-oriented-service">Connection-oriented service</h2>
 <p>Questo servizio crea una <strong>connessione</strong> tra due entità (ad esempio un client e un server) che possiede uno <strong>stato</strong>: cioè delle variabili vengono usate per tracciare l’evoluzione della connessione.</p>
 <p>Abbiamo quindi una <strong>connessione stateful</strong> che ha bisogno di essere <strong>impostata</strong> prima di inviare dati e <strong>distrutta</strong> quando non ci sono più dati da mandare.</p>
@@ -64,35 +64,42 @@
 <h2 id="set-up-della-connessione">Set up della connessione</h2>
 <p>Potremmo pensare che basti lo scambio di due pacchetti per iniziare una connessione ma ricordiamo che il livello sottostante non è affidabile, ci serve quindi un sistema più complesso.</p>
 <h3 id="duplicazione-dei-pacchetti">Duplicazione dei pacchetti</h3>
-<p>I <strong>pacchetti</strong> si possono <strong>duplicare</strong>, ma questo può essere dato da dei loop temporanei. Definiamo quindi un <strong>MSL</strong> (Maximum Segment Life): il massimo tempo che un pacchetto e il suo ACK possono persistere nella rete.</p>
+<p>I <strong>pacchetti</strong> si possono <strong>duplicare</strong>, e questo può essere causato da dei loop temporanei. Definiamo quindi un <strong>MSL</strong> (Maximum Segment Life): il massimo tempo che un pacchetto e il suo ACK possono persistere nella rete.</p>
 <p>Per internet assumiamo che MSL&lt; 120 secondi.</p>
-<p>Per identificare i duplicati abbiamo bisogno di avere dei <strong>numeri di sequenza</strong>,</p>
-<p>Ci serve quindi una variabile che incrementa nel tempo.</p>
+<p>Per identificare i duplicati abbiamo bisogno di avere dei <strong>numeri di sequenza</strong>, ci serve quindi una variabile che incrementa nel tempo.</p>
 <p>Ad ogni richiesta di connessione (che indichiamo con <strong>CR</strong>, <em>Connection Request</em>) viene mandato un <strong>ISN</strong> (<em>Initial Sequence Number</em>), che per semplicità assumiamo essere un contatore, dato che la dimensione dell’header è limitata questo contatore dovrà ricominciare ad un certo punto.</p>
-<p>Il destinatario ritornerà quel numero nella sua risposta (che indichiamo con <strong>CA</strong>, Connection Acknowledgment)</p>
-<p>infine il mittente manderà un ACK riferito all’ACK ricevuto.</p>
+<p>Il destinatario ritornerà quel numero nella sua risposta (che indichiamo con <strong>CA</strong>, <em>Connection Acknowledgment</em>)</p>
+<p>Infine il mittente, controllando che il numero ricevuto sia uguale a quello che aveva mandato lui,  manderà un ACK per confermare la connessione.</p>
 <p>Questa operazione di tre passaggi per stabilire una connessione viene chiamata <strong>three way handshake</strong>.</p>
 <h3 id="relazione-tra-isn-e-msl">Relazione tra ISN e MSL</h3>
 <p>È importante che il tempo necessario affinché il contatore ISN riparta da capo sia di molto maggiore rispetto all’MSL.</p>
 <p>Consideriamo il seguente scenario:</p>
 <ol>
-<li>il client apre una connessione con ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span></li>
-<li>successivamente la connessione termina</li>
-<li>il client apre una nuova connessione verso lo stesso server con ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi mathvariant="normal">Δ</mi></mrow><annotation encoding="application/x-tex">x + \Delta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Δ</span></span></span></span></span> che però deve essere calcolata in modulo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> per poter non andare all’infinito, supponiamo che accada: ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi mathvariant="normal">Δ</mi><mo stretchy="false">)</mo><mi mathvariant="normal">%</mi><mi>n</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">(x + \Delta)\%n = x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">Δ</span><span class="mclose">)</span><span class="mord">%</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> (lo stesso ISN della vecchia connessione)</li>
-<li>il client riceve un ACK per il ISN <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> ma si riferisce alla nuova connessione oppure è una copia di un vecchio ACK?</li>
+<li>
+<p>il client apre una connessione con ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span></p>
+</li>
+<li>
+<p>successivamente la connessione termina improvvisamente</p>
+</li>
+<li>
+<p>il client apre una nuova connessione verso lo stesso server con ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi mathvariant="normal">Δ</mi></mrow><annotation encoding="application/x-tex">x + \Delta</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.66666em; vertical-align: -0.08333em;"></span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">Δ</span></span></span></span></span> che però deve essere calcolata in modulo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> per poter non andare all’infinito, supponiamo che accada: ISN = <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mi>x</mi><mo>+</mo><mi mathvariant="normal">Δ</mi><mo stretchy="false">)</mo><mi mathvariant="normal">%</mi><mi>n</mi><mo>=</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">(x + \Delta)\%n = x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord mathnormal">x</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">Δ</span><span class="mclose">)</span><span class="mord">%</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> (cioè si ottiene lo stesso ISN della vecchia connessione)</p>
+</li>
+<li>
+<p>il client riceve un ACK per il ISN <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi></mrow><annotation encoding="application/x-tex">x</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">x</span></span></span></span></span> ma si riferisce alla nuova connessione oppure è una copia di un vecchio ACK?</p>
+<p>Se il tempo necessario per ricominciare con i numeri di sequenza è paragonabile all’MSL non potremmo determinarlo.</p>
+</li>
 </ol>
-<p>Se il tempo necessario per ricominciare con i numeri di sequenza è paragonabile all’MSL potrebbe trattarsi di entrambi i casi.</p>
 <h2 id="three-way-handshake">Three way handshake</h2>
 <p>In generale vogliamo una connessione bidirezionale, abbiamo quindi bisogno di due numeri di sequenza, uno per ogni direzione della comunicazione.</p>
 <p>In questo modo entrambi gli host possono ricostruire il proprio flusso di segmenti.</p>
-<p><img src="https://i.ibb.co/H2wvZLG/image.png" alt="https://i.ibb.co/H2wvZLG/image.png"></p>
+<p><img src="https://i.ibb.co/H2wvZLG/image.png" alt=""></p>
 <p>Vediamo passo passo cosa accade:</p>
 <ol>
 <li>L’host A fa una richiesta con il numero di sequenza x</li>
 <li>L’host B riceve la richiesta e crea un nuovo stato per la connessione. A questo punto non sa ancora se si tratta di una nuova connessione o un pacchetto duplicato</li>
 <li>L’host B manda un ACK per il numero di sequenza x e manda il proprio numero di sequenza y</li>
-<li>L’host A riceve l’ACK e conferma che l’host B ha ricevuto correttamente la richiesta iniziale</li>
-<li>A questo punto per l’host A la connessione è stabilita e il i numeri di sequenza dei segmenti di dati inviati da A inizieranno da x.</li>
+<li>L’host A riceve l’ACK, questo conferma che l’host B ha ricevuto correttamente la richiesta iniziale</li>
+<li>A questo punto per l’host A la connessione è stabilita e i numeri di sequenza dei segmenti di dati inviati da A inizieranno da x.</li>
 <li>L’host A deve confermare di aver ricevuto l’ACK mandando a sua volta un ACK per il numero di sequenza y</li>
 <li>L’host B riceve l’ACK e adesso è sicuro che non si tratti di un duplicato e anche per lui la connessione è stabilita. I numeri di sequenza dei segmenti di dati inviati da B inizieranno da y.</li>
 </ol>
@@ -106,8 +113,8 @@
 <p>Per implementare la comunicazione di rallentare l’invio dei dati, gli host possono comunicare la dimensione della propria finestra negli ACK. L’host che riceve tale informazione limiterà di conseguenza la dimensione del suo buffer.</p>
 <p>Ogni host avrà quindi due variabili di stato:</p>
 <ul>
-<li><code>swin</code>: la dimensione della finestra di chi invia</li>
-<li><code>rwin</code>: la dimensione della finestra di chi riceve</li>
+<li><code>swin</code>: la dimensione della finestra di chi invia (le celle vuote, e quindi disponibili)</li>
+<li><code>rwin</code>: la dimensione della finestra di chi riceve (le celle vuote, e quindi disponibili)</li>
 </ul>
 <p>Il numero di segmenti inviati e di cui non si è ancora ricevuto l’ACK deve essere al massimo <code>min(swin, rwin)</code></p>
 <p>Vediamo un esempio di evoluzione della <strong>finestra dinamica</strong>, 2 bit sono utilizzati per i numeri di sequenza (4 numeri totali).</p>
@@ -120,13 +127,13 @@
 <li><code>Swin</code> e <code>Rwin</code> si riferiscono alle dimensioni di finestra locali</li>
 <li><code>swin</code> e <code>rwin</code> si riferiscono alle dimensioni di finestra remote</li>
 </ul>
-<p><img src="https://i.ibb.co/tY4yS39/image.png" alt="https://i.ibb.co/tY4yS39/image.png"></p>
-<p>Se la finestra diventa di dimensione zero, significa che il ricevitore è sovraccarico, in tal caso il mittente smette di mandare e attende gli ACK dal ricevitore.</p>
-<p>Periodicamente il mittente rimanda vecchi dati per permettere al ricevitore di mandare rimandare gli ACK nel caso siano stati persi.</p>
+<p><img src="https://i.ibb.co/tY4yS39/image.png" alt=""></p>
+<p>Se la finestra diventa di dimensione zero, significa che il ricevitore è sovraccarico, in tal caso il mittente smette di trasmettere e attende gli ACK dal ricevitore.</p>
+<p>In questo stato periodicamente il mittente rimanda vecchi dati per permettere al ricevitore di mandare rimandare gli ACK nel caso siano stati persi.</p>
 <h3 id="gestione-dei-dati-disordinati">Gestione dei dati disordinati</h3>
 <p>Il livello di trasporto si basa sul numero di sequenza per riordinare i dati ricevuti in ordine sbagliato.</p>
 <p>Il problema è che con il riciclo degli stessi numeri di sequenza quando vengono esauriti, si possono creare situazioni in cui dati vecchi in ritardo vengono accettati:</p>
-<p><img src="https://i.ibb.co/18mnPpZ/image.png" alt="https://i.ibb.co/18mnPpZ/image.png"></p>
+<p><img src="https://i.ibb.co/18mnPpZ/image.png" alt=""></p>
 <p>Quello che accade è:</p>
 <ol>
 <li>A manda D(0, a) che viene ricevuto da B e viene fatto l’ACK</li>
@@ -138,22 +145,22 @@
 <li>A questo punto B si aspetta il numero di sequenza 1</li>
 <li>arriva D(1, b) che è una replica di un vecchio pacchetto ormai inutile (nota che questo deve accadere entro il tempo MSL). Dato che il numero di sequenza è valido il pacchetto viene accettato e lo stream di byte viene quindi corrotto</li>
 </ol>
-<p>Questo era un altro esempio sull’importanza di impostare la grandezza dei numeri di sequenza rispetto all’MSL.</p>
+<p>Questo è un altro esempio sull’importanza di impostare la grandezza dei numeri di sequenza rispetto all’MSL.</p>
 <p>Con connessioni a capacità molto alta i numeri di sequenza potrebbero ricominciare molto prima dell’MSL. Un importante parametro da tenere in considerazione è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>capacity</mtext><mo>×</mo><mtext>delay</mtext></mrow><annotation encoding="application/x-tex">\text{capacity} \times \text{delay}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8623em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">capacity</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">delay</span></span></span></span></span></span>.</p>
 <p>Con capacità molto elevate normalmente i pacchetti viaggiano in reti locali, quindi il delay è molto piccolo. Quindi il MSL è molto più piccolo dei classici 120 secondi.</p>
-<p>Diventano però sempre più diffuse reti gigabit non locali in cui il valore di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>capacity</mtext><mo>×</mo><mtext>delay</mtext></mrow><annotation encoding="application/x-tex">\text{capacity} \times \text{delay}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8623em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">capacity</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">delay</span></span></span></span></span></span> diventa considerevole. In questi casi bisogna aggiornare di conseguenza gli standard.</p>
+<p>Diventano però sempre più diffuse reti gigabit non locali in cui il valore di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext>capacity</mtext><mo>×</mo><mtext>delay</mtext></mrow><annotation encoding="application/x-tex">\text{capacity} \times \text{delay}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.8623em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">capacity</span></span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">×</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord text"><span class="mord">delay</span></span></span></span></span></span> diventa considerevole. Per questa ragione sono state fatte delle modifiche a TCP che rendono il meccanismo un po’ più complesso.</p>
 <h2 id="rilascio-della-connessione">Rilascio della connessione</h2>
-<p>Una volta che tutto il traffico è stato mandato è il momento di chiudere la connessione.</p>
+<p>Una volta che tutto il traffico è stato mandato, è il momento di chiudere la connessione.</p>
 <p>È importante che <strong>tutti e due gli host siano consapevoli della chiusura della connessione</strong>.</p>
 <p>Abbiamo due modi di chiudere la connessione:</p>
 <ul>
 <li>
-<p><strong>Chiusura graduale</strong>: attraverso uno scambio di pacchetti atto a chiudere la connessione in entrambe le direzioni</p>
-<p><img src="https://i.ibb.co/PWCvB2q/image.png" alt="https://i.ibb.co/PWCvB2q/image.png"></p>
+<p><strong>Chiusura graduale</strong> (<em>graceful release</em>): attraverso uno scambio di pacchetti atto a chiudere la connessione in entrambe le direzioni: prima si disconnette un host e l’altro conferma e poi avviene il contrario</p>
+<p><img src="https://i.ibb.co/PWCvB2q/image.png" alt=""></p>
 </li>
 <li>
-<p><strong>Chiusura improvvisa</strong>: quando uno dei due host deve chiudere immediatamente la connessione.</p>
-<p><img src="https://i.ibb.co/TLPg3Cn/image.png" alt="https://i.ibb.co/TLPg3Cn/image.png"></p>
+<p><strong>Chiusura improvvisa</strong> (<em>abrupt release</em>): quando uno dei due host deve chiudere immediatamente la connessione.</p>
+<p><img src="https://i.ibb.co/TLPg3Cn/image.png" alt=""></p>
 </li>
 </ul>
 

@@ -2,13 +2,13 @@
 
 Il livello di collegamento (*data link layer*) ha il compito di dividere i dati in ***frame***, possiamo definire un frame come una sequenza di bit che hanno una particolare struttura e una lunghezza limitata, rappresenta l’unità base di informazione che si scambiano due host.
 
-Le limitazioni del livello fisico (desincronizzazione e disturbo) obbliano il livello di collegamento a codificare i frame in modo da gli errori di comunicazione.
+Le limitazioni del livello fisico (desincronizzazione e disturbo) obbligano il livello di collegamento a codificare i frame in modo da riconoscere gli errori di comunicazione.
 
 ## Bit stuffing
 
 Un problema, ad esempio, è far capire al ricevitore quando inizia e quando finisce il frame.
 
-Quello che possiamo fare è usare delle stringhe di bit particolare per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary maker*.
+Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary maker*.
 
 Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma verrebbe interpretata come la fine del frame.
 
@@ -33,17 +33,17 @@ $$
 
 Questa codifica però provoca un **protocol overhead**: cioè dati extra trasmessi per rendere la comunicazione possibile, riducendo così il bit-rate disponibile calcolato con Shannon e Nyquist.
 
-In particolare abbiamo 16 bit per i marker e con stringhe formate da molti $1$ vanno inseriti molti $0$ per evitare che vengano interpretati come fine frame.
+In particolare abbiamo 16 bit per i marker e con stringhe formate da molti $1$ vengono aggiunti molti $0$ per evitare che siano interpretati come fine frame.
 
 D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i bit stuffed, per compensare bisognerebbe aumentare la grandezza dei frame per evitare di avere più bit di overhead che bit utili.
 
 Tutti questi bit aggiunti vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui *bit stuffed* provocando gravi errori nella decodifica.
 
-Definiamo **BER** (*Bit Error Rate*) come la probabilità che un singolo bit sia decodificato in modo errato
+Definiamo **BER** (*Bit Error Rate*) come la probabilità che un singolo bit sia decodificato in modo errato.
 
 Nelle reti moderne la tecnica del *bit stuffing* non è utilizzata, si utilizza piuttosto un *frame preamble*, cioè un header che marca l’inizio del frame e che contiene varie informazioni tra cui quanto è lungo il frame stesso, così da non avere un marker di fine frame e di conseguenza non si ha bisogno del *bit stuffing*.
 
-![https://i.ibb.co/4Fcsdqq/image.png](https://i.ibb.co/4Fcsdqq/image.png)
+![](https://i.ibb.co/4Fcsdqq/image.png)
 
 Nell’immagine si vede come i livelli interagiscono:
 
@@ -75,13 +75,13 @@ Le `send` e le `recvd`sono di due tipi:
 - la `D` sta per “Data” e indica l’invio o la ricezione dei dati
 - la `C` sta per “Control” e indica l’invio o la ricezione di messaggi di *acknowledgment*
 
-![https://i.ibb.co/vjHgFWw/image.png](https://i.ibb.co/vjHgFWw/image.png)
+![](https://i.ibb.co/vjHgFWw/image.png)
 
 ## Macchina a stati
 
 Possiamo rappresentare il data link layer come una macchina a stati finiti, composta da 2 stati per il mittente e 2 stati per il ricevitore
 
-![https://i.ibb.co/b1z2Kvs/image.png](https://i.ibb.co/b1z2Kvs/image.png)
+![](https://i.ibb.co/b1z2Kvs/image.png)
 
 - I cerchi rappresentano gli stati
 - gli archi rappresentano il cambio di stato
@@ -91,7 +91,7 @@ Possiamo rappresentare il data link layer come una macchina a stati finiti, comp
 
 ## Riconoscimento degli errori
 
-Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in più
+Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso
 
 Vediamo innanzitutto come **riconoscere gli errori** (*error detection*)
 
@@ -201,7 +201,7 @@ $$
 
 verrebbe calcolato la stessa identica checksum, non riconoscendo l’errore.
 
-**Performance**: la checksum viene fatta tantissime volte al secondo dai router, quindi deve essere un calcolo molto veloce. La somma è vantaggioso per due ragioni:
+**Performance**: la checksum viene fatta tantissime volte al secondo dai router, quindi deve essere un calcolo molto veloce. La somma è vantaggiosa per due ragioni:
 
 1. si può computare la somma man mano che arrivano le parole di 16 bit, non serve aspettare che arrivino tutti i dati prima di cominciare
 2. dato che la somma è una operazione associativa, l’ordine in cui si sommano i bit delle parole non importa

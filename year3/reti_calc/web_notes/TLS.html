@@ -38,22 +38,22 @@
 <li>certificati basati su firma digitale per ottenere un un sistema di fiducia (web of trust)</li>
 </ul>
 <p>Dove potremmo inserire ulteriore sicurezza, in particolare ulteriore cifratura?</p>
-<p>Ricordiamo che per far funzionare la crittografia ci deve essere una <em>security association</em>, cioè uno scambio di chiavi concordato per far funzionare la cifratura e decifratura.</p>
+<p>Ricordiamo che per far funzionare la crittografia ci deve essere una <em>security association</em>, cioè uno scambio di chiavi tra le due entità della comunicazione.</p>
 <h3 id="cifrare-il-livello-di-rete">Cifrare il livello di rete?</h3>
 <p>la crittografia dell’intestazione IP è problematica perché i router, necessari per l’instradamento, non fanno parte della <em>security association</em>. I router per instradare i pacchetti devono vedere le informazioni sull’header IP</p>
-<p>Soluzioni come la crittografia a livello MAC o l’uso di una VPN (<em>Virtual Private Network</em>) offrono una crittografia limitata all’interno di una LAN o tra reti proprie, ma non sono soluzioni generali per la crittografia dell’intestazione IP su Internet.</p>
+<p>Soluzioni come la crittografia a livello MAC o l’uso di una VPN (<em>Virtual Private Network</em>) offrono una crittografia limitata all’interno di una LAN o tra reti proprie, ma non sono soluzioni generali su Internet.</p>
 <h3 id="cifrare-il-livello-di-trasporto">Cifrare il livello di trasporto?</h3>
-<p>La crittografia dell’intestazione TCP presenta delle sfide a causa servizi, come NAT, firewall e traffic shaper, che richiedono l’accesso alle informazioni dell’header TCP per funzionare.</p>
+<p>La crittografia dell’intestazione TCP presenta delle sfide a causa di servizi, come NAT, firewall e <em>traffic shaper</em>, che richiedono l’accesso alle informazioni dell’header TCP per funzionare.</p>
 <h3 id="cifrare-sopra-il-livello-di-trasporto">Cifrare sopra il livello di trasporto?</h3>
-<p>Questo risulta essere il compromesso più fattibile, infatti:</p>
+<p>Questo risulta essere il compromesso migliore, infatti:</p>
 <ul>
 <li>Più andiamo in basso nello stack di rete, maggiori sono le informazioni crittografate, ma le cose potrebbero non funzionare, questo perché alcune informazioni devono essere visibili per poter far funzionare la comunicazione.</li>
-<li>Più andiamo in alto nello stack di rete, minore è il supporto necessario dal sistema operativo e più facile è supportare nuove applicazioni, ma più informazioni vengono divulgate.</li>
+<li>Più andiamo in alto nello stack di rete, più facile è supportare nuove applicazioni, ma più informazioni non vengono cifrate.</li>
 </ul>
-<p>Se forniamo un servizio di crittografia sopra TCP (quindi TCP e IP non sono cifrati), l’header TCP e IP rimangono visibili agli attaccanti (numero delle porte e il protocollo usato, gli indirizzi IP), ma il contenuto effettivo viene cifrato.</p>
+<p>Se forniamo un servizio di crittografia sopra TCP, l’header TCP e IP rimangono visibili agli attaccanti (numero delle porte, il protocollo usato, gli indirizzi IP), ma il contenuto effettivo viene cifrato.</p>
 <h2 id="tls-1">TLS</h2>
 <p>TLS (<em>Transport Layer Security</em>) è uno strato di sicurezza che si posiziona sopra il livello di trasporto.</p>
-<p>inizialmente veniva usato un protocollo chiamato SSL (Secure Layer Protocol), tale protocollo è stato standardizzato e trasformato in TLS. Nonostante SSL sia ormai deprecato i termini SSL e TLS vengono usati per riferirsi alla stessa cosa in modo intercambiabile.</p>
+<p>Inizialmente veniva usato un protocollo chiamato SSL (<em>Secure Layer Protocol</em>), tale protocollo è stato standardizzato e trasformato in TLS. Nonostante SSL sia ormai deprecato, i termini SSL e TLS vengono usati per riferirsi alla stessa cosa in modo intercambiabile.</p>
 <p>Al giorno d’oggi vengono usate per la maggior parte le versioni TLS 1.2 e TLS 1.3.</p>
 <h3 id="aggiornamento-dei-protocolli-applicativi">Aggiornamento dei protocolli applicativi</h3>
 <p>L’introduzione di TLS ha permesso di creare versioni sicure di molti protocolli applicativi precedentemente insicuri. Questi protocolli sicuri, come HTTPS, POP3S e IMAPS, mantengono lo stesso nome della loro controparte insicura con l’aggiunta di una “S” finale.</p>
@@ -66,29 +66,26 @@
 <li><strong>Integrità</strong>: viene generata un’altra chiave simmetrica che garantisce l’integrità utilizzando un HMAC</li>
 </ul>
 <h2 id="tls-1.2">TLS 1.2</h2>
-<p>Nella versione 1.2, TLS contiene vari sotto-protocolli, tra cui un protocollo di handshake (usato per negoziare le chiavi) e un protocollo record (usato per cifrare i dati)</p>
+<p>Nella versione TLS 1.2 sono presenti vari sotto-protocolli, tra cui un <strong>protocollo di handshake</strong> (usato per negoziare le chiavi) e un <strong>protocollo record</strong> (usato per cifrare i dati)</p>
 <h2 id="protocollo-di-handshake">Protocollo di handshake</h2>
-<p>32:20</p>
-<p>Il protocollo handshake consente a server e client di autenticarsi a vicenda e di negoziare un algoritmo di crittografia e chiavi crittografiche. Alcuni degli elementi che devono essere negoziati includono:</p>
+<p>Il protocollo handshake consente a server e client di autenticarsi a vicenda e di negoziare un determinato algoritmo di crittografia e delle chiavi crittografiche. Alcuni degli elementi che devono essere negoziati includono:</p>
 <ul>
 <li>le funzioni crittografiche (RSA, crittografia a curva ellittica)</li>
 <li>le funzioni hash (SHA-256, SHA-384)</li>
-<li>il metodo di negoziazione della chiave simmetrica (DH, RSA exchange).</li>
+<li>il metodo di negoziazione della chiave simmetrica (Diffie-Hellman, RSA exchange).</li>
 </ul>
-<p>Questa fase è critica perché un attaccante potrebbe intromettersi durante lo scambio delle chiavi</p>
-<p>Il protocollo handshake TLS garantisce almeno l’<strong>autenticazione del server</strong>: l’identità del server può essere autenticata tramite crittografia a chiave pubblica (RSA, DSA).</p>
-<p>Vediamo nel dettaglio i passaggi dell’handshake:</p>
-<p><img src="https://i.ibb.co/B2DwxSd/image.png" alt="https://i.ibb.co/B2DwxSd/image.png"></p>
+<p>Vediamo i passaggi dell’handshake:</p>
+<p><img src="https://i.ibb.co/B2DwxSd/image.png" alt=""></p>
 <ol>
 <li>
-<p>I primi due messaggi in blue sono quelli dell’handshake di TCP, in particolare SYN e SYN+ACK.</p>
+<p>I primi due messaggi in blue sono quelli dell’handshake base di TCP, in particolare sono SYN e SYN+ACK.</p>
 </li>
 <li>
 <p>Il terzo messaggio <code>ClientHello</code> ha due funzioni: termina l’handshake di TCP e inizia l’handshake di TLS. In tale messaggio c’è la configurazione di TLS (con i vari algoritmi crittografici) che il client supporta</p>
 </li>
 <li>
-<p>il server risponde con un messaggio <code>ServerHello</code>, che include la configurazione più alta di TLS supportata da entrambi</p>
-<p>Il server manda anche la catena di certificati dalla root CA fino al certificato del server.</p>
+<p>il server risponde con un messaggio <code>ServerHello</code>, che include la configurazione più sicura di TLS supportata da entrambi.</p>
+<p>Il server manda anche la catena di certificati (dalla root CA fino al certificato del server).</p>
 </li>
 <li>
 <p>Il client invia un messaggio <code>ClientKeyExchange</code> che contiene le informazioni necessarie per completare lo scambio di chiavi in base all’algoritmo scelto.</p>
@@ -97,21 +94,21 @@
 <p>Sia il client che il server inviano un messaggio <code>ChangeCipherSpec</code> per segnalare che da questo punto in poi tutti i messaggi saranno crittografati e autenticati con le chiavi di sessione appena concordate.</p>
 </li>
 <li>
-<p>Sia il client che il server inviano un messaggio <code>Finished</code> che contiene un hash di tutti i messaggi scambiati durante l’handshake. Questo messaggio, crittografato con le chiavi concordate, serve a confermare che l’handshake si è svolto correttamente e che nessun attacco Man-in-the-Middle ha modificato i messaggi, se i due <code>finished</code> non combaciano l’handshake fallisce.</p>
+<p>Sia il client che il server inviano un messaggio <code>Finished</code> che contiene un hash di tutti i messaggi scambiati durante l’handshake. Questo messaggio è il primo ad essere crittografato con le chiavi concordate e serve a confermare che l’handshake si è svolto correttamente e che nessun attacco Man-in-the-Middle ha modificato i messaggi, se i due <code>finished</code> non combaciano, l’handshake fallisce.</p>
 </li>
 </ol>
 <p>In questo protocollo l’<strong>autenticazione è unidirezionale</strong>, solo il server viene identificato attraverso la catena di certificati. Il client normalmente viene autenticato tramite un login.</p>
 <h2 id="protocollo-record">Protocollo record</h2>
 <p>Dopo aver fatto l’handshake si applica il protocollo record.</p>
-<p>Il protocollo record incapsula i dati applicativi in un processo in cinque fasi:</p>
+<p>Questo protocollo incapsula i dati applicativi in un processo di cinque fasi:</p>
 <ul>
 <li>frammentazione</li>
 <li>compressione (opzionale)</li>
 <li>aggiunta di un MAC tramite funzioni hash</li>
 <li>crittografia</li>
-<li>aggiunta di un’intestazione di record TLS.</li>
+<li>aggiunta di un header del record TLS.</li>
 </ul>
-<p><img src="https://i.ibb.co/1stgppP/image.png" alt="https://i.ibb.co/1stgppP/image.png"></p>
+<p><img src="https://i.ibb.co/1stgppP/image.png" alt=""></p>
 <p>Questo protocollo garantisce quindi <strong>segretezza</strong> utilizzando la crittografia simmetrica per i dati e <strong>integrità</strong> utilizzando funzioni hash sicure.</p>
 <h2 id="tls-1.3">TLS 1.3</h2>
 <p>Negli anni il protocollo TLS 1.2 è stato arricchito di sotto-protocolli, algoritmi crittografici, librerie e funzionalità, allargando di conseguenza la superficie di attacco e il numero di vulnerabilità.</p>
@@ -123,7 +120,7 @@
 </li>
 <li>
 <p>Un handshake iniziale semplificato che può funzionare in un solo RTT:</p>
-<p>Questo è possibile perché il client può indovinare i parametri utilizzati dal server per lo scambio di chiavi Diffie-Hellman e avviare immediatamente lo scambio. Se il client non indovina, il server risponde con i parametri corretti e si perde un RTT.</p>
+<p>Questo è possibile perché il client può indovinare i parametri utilizzati dal server per lo scambio di chiavi Diffie-Hellman e avviare immediatamente lo scambio. Se il client non indovina, il server risponde con i parametri corretti e solo allora si perde un RTT.</p>
 </li>
 <li>
 <p>Forward Secrecy obbligatorio**.**</p>
@@ -132,17 +129,17 @@
 <h3 id="forward-secrecy">Forward Secrecy</h3>
 <p>Il <em>Forward Secrecy</em> è una caratteristica che garantisce che le chiavi di sessione non vengano compromesse anche se la chiave privata del server viene compromessa.</p>
 <p>In pratica, questo significa che se un utente malintenzionato intercetta una comunicazione TLS e successivamente riesce a ottenere la chiave privata del server, non sarà in grado di decifrare il traffico intercettato in precedenza.</p>
-<p>Il Forward Secrecy in genere implica l’utilizzo di chiavi pubbliche effimere: cioè chiavi che vengono generate durante l’handshake e cancellate subito dopo essere state utilizzate.</p>
-<p>Il funzionamento potrebbe essere il seguente:</p>
+<p>Il Forward Secrecy fa uso di chiavi pubbliche effimere: cioè chiavi che vengono generate durante l’handshake e cancellate subito dopo essere state utilizzate.</p>
+<p>Il funzionamento è riassumibile in questo modo:</p>
 <ol>
-<li>Server → Client: Certificato del server</li>
+<li>il server invia il suo certificato al client</li>
 <li>Il client verifica il certificato</li>
-<li>Client → Server: Il client avvia una sessione Diffie-Hellman con una chiave effimera casuale</li>
-<li>Server → Client: Il server completa la sessione Diffie-Hellman con una chiave effimera casuale</li>
+<li>Il client avvia una sessione Diffie-Hellman con una chiave effimera casuale</li>
+<li>Il server completa la sessione Diffie-Hellman con una chiave effimera casuale</li>
 <li>Entrambi ora possiedono una chiave K</li>
 <li>Da ora in poi, il server e il client utilizzano AES e HMAC con K</li>
 <li>Sia il server che il client eliminano le chiavi effimere</li>
-<li>Ora il client utilizza un metodo di password per l’autenticazione</li>
+<li>Ora il client utilizza un login per l’autenticazione</li>
 </ol>
 <p>Questo protocollo garantisce la <em>Forward Secrecy</em> perché la chiave di sessione K viene generata utilizzando chiavi effimere che vengono eliminate dopo l’handshake. Anche se un utente malintenzionato ottiene la chiave privata del server in un secondo momento, non sarà in grado di decifrare il traffico intercettato in precedenza perché non ha accesso alle chiavi effimere utilizzate per generare K.</p>
 

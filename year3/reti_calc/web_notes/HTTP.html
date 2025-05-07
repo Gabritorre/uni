@@ -17,7 +17,7 @@
 <ul>
 <li></li>
 <li><a href="#uri">URI</a></li>
-<li><a href="#creare-documenti-web">Creare documenti web</a></li>
+<li><a href="#html">HTML</a></li>
 <li><a href="#http-1">HTTP</a></li>
 <li><a href="#connessione-persistente">Connessione persistente</a></li>
 <li><a href="#cookie">Cookie</a></li>
@@ -35,18 +35,18 @@
 <h3 id="www">WWW</h3>
 <p>Il World Wide Web (WWW) che possiamo vedere come un grande sistema di condivisione di documenti si basa su tre componenti chiave:</p>
 <ul>
-<li>gli URI per l’identificazione delle risorse</li>
-<li>l’HTML (e altri strumenti) per la creazione delle pagine web</li>
-<li>l’HTTP per il recupero delle pagine.</li>
+<li>gli <strong>URI</strong> per l’identificazione delle risorse</li>
+<li>l’<strong>HTML</strong> (e altri strumenti) per la creazione delle pagine web</li>
+<li>l’<strong>HTTP</strong> per il recupero delle pagine.</li>
 </ul>
 <p>Prima di analizzare i protocolli, vediamo come funziona ad alto livello la comunicazione tra client e server per ottenere una pagina web:</p>
-<p><img src="https://i.ibb.co/6B016Zh/image.png" alt="https://i.ibb.co/6B016Zh/image.png"></p>
+<p><img src="https://i.ibb.co/6B016Zh/image.png" alt=""></p>
 <ol>
 <li>Il browser riceve un numero di porta dal livello TCP (ad esempio 12345), mentre il web server utilizza la porta 80.</li>
 <li>Il browser invia un comando HTTP, che viene incapsulato in un segmento a livello TCP.</li>
 <li>Questo segmento viene poi incapsulato in un segmento IP.</li>
-<li>Quando i dati arrivano al server i livelli IP e TCP sul server lo decompongono.</li>
-<li>il comando viene ricevuto dal web server, che lo elabora e risponde.</li>
+<li>Quando i dati arrivano al server, i livelli IP e TCP sul server lo scompongono.</li>
+<li>il comando viene ricevuto dal web server, che lo elabora e genera una risposta.</li>
 </ol>
 <h2 id="uri">URI</h2>
 <p>Un <strong>URI</strong> (Uniform <em>Resource Identifier</em>) è una stringa di caratteri che <strong>identifica</strong> in modo univoco una <strong>risorsa sul web</strong>, la risorsa può essere identificata in due modi**:**</p>
@@ -56,26 +56,26 @@
 </ul>
 <p>Generalmente nel web si usano gli URL.</p>
 <p>Un esempio di come è formato un URL è il seguente:</p>
-<p><img src="https://i.ibb.co/1R9PcBj/image.png" alt="https://i.ibb.co/1R9PcBj/image.png"></p>
+<p><img src="https://i.ibb.co/1R9PcBj/image.png" alt=""></p>
 <ul>
 <li>
 <p><strong>Scheme:</strong> indica il significato dei campi successivi e spesso identifica il protocollo a livello di applicazione che il client deve utilizzare per recuperare il documento (es. http, https, ftp…)</p>
 </li>
 <li>
 <p><strong>Hostname:</strong> Include il nome di dominio o l’indirizzo IP del server da cui è possibile recuperare il documento. Può essere preceduto da informazioni sull’utente (<strong>UserInfo</strong>) che richiede le informazioni (es. username e password).</p>
-<p>Il simbolo ‘@’ separa hostname e UserInfo.</p>
+<p>Il simbolo <code>@</code> separa hostname e UserInfo.</p>
 </li>
 <li>
-<p><strong>Port</strong>: dopo l’hostname, separato da un simbolo ‘:’ ci può essere il numero di porta utilizzato dal server in ascolto. Solitamente dal protocollo utilizzato si ricava implicitamente il numero di porta</p>
+<p><strong>Port</strong>: dopo l’hostname, separato da un simbolo <code>:</code> ci può essere il numero di porta utilizzato dal server in ascolto. Solitamente dal protocollo utilizzato si ricava implicitamente il numero di porta</p>
 </li>
 <li>
-<p><strong>Path:</strong> Indica il percorso del documento sul server, strutturato una sintassi simile a quella di Unix. Se non è specificato un percorso, il server restituirà un documento predefinito.</p>
+<p><strong>Path:</strong> Indica il percorso del documento sul server, strutturato con una sintassi simile a quella di Unix. Se non è specificato un percorso, il server restituirà un documento predefinito.</p>
 </li>
 <li>
-<p><strong>Query:</strong> Serve per fornire parametri testuali al server, si separa dal path con il simbolo ‘?’ ed è seguito da una lista di coppie chiave-valore, in cui ogni coppia è separata da un simbolo ‘&amp;’.</p>
+<p><strong>Query:</strong> Serve per fornire parametri testuali al server, si separa dal path con il simbolo <code>?</code> ed è seguito da una lista di coppie chiave-valore, in cui ogni coppia è separata da un simbolo <code>&amp;</code>.</p>
 </li>
 <li>
-<p><strong>Fragment:</strong> Indica una specifica sezione all’interno del documento richiesto</p>
+<p><strong>Fragment:</strong> Indica una specifica sezione all’interno del documento richiesto.</p>
 </li>
 </ul>
 <p>Esempio: <code>https://en.wikipedia.org/wiki/Italy#Name</code></p>
@@ -87,20 +87,20 @@
 </ul>
 <p>Vediamo un esempio di URL potenzialmente fraudolento:</p>
 <p><code>https://cnn.example.com&amp;story=breaking_news@10.0.0.1/top_story.htm</code></p>
-<p>Ad un occhio inesperto potrebbe sembrare che l’hostname di questo URL sia <code>ccn.example.com</code> ma non è così perché quella stringa si trova prima del carattere ‘@’, che quindi identifica le informazione dell’utente. In realtà l’hostname è <code>10.0.0.1</code> . Utenti malintenzionati potrebbero sfruttare questa cosa per illudere le persone di star connettendosi a siti conosciuti quando in realtà stanno andando si un sito completamente diverso</p>
-<h2 id="creare-documenti-web">Creare documenti web</h2>
+<p>Ad un occhio inesperto potrebbe sembrare che l’hostname di questo URL sia <code>ccn.example.com</code> ma non è così perché quella stringa si trova prima del carattere <code>@</code>, che quindi identifica le informazione dell’utente. In realtà l’hostname è <code>10.0.0.1</code>. Utenti malintenzionati potrebbero sfruttare questa cosa per illudere le persone di star connettendosi a siti conosciuti quando in realtà stanno andando si un sito completamente diverso.</p>
+<h2 id="html">HTML</h2>
 <p>Per creare le pagine web e collegarle tra loro si usa un linguaggio particolare, <strong>HTML</strong> (<em>HyperText Markup Language</em>) che permette di arricchire il testo utilizzando particolari tag che vengono interpretati dal browser.</p>
 <p>Tutto ciò che nella pagina fa riferimento a qualcosa di esterno (immagini, video, altri documenti…) utilizza degli URL.</p>
 <p>Per migliorare l’esperienza e le funzionalità, ad HTML si affiancano altri linguaggi:</p>
 <ul>
-<li>CSS: per migliorare l’estetica della pagina</li>
-<li>JavaScript: per rendere la pagina interattiva</li>
+<li>CSS: per migliorare l’estetica delle pagine</li>
+<li>JavaScript: per rendere le pagine più interattive</li>
 </ul>
-<p>Per rendere le <strong>pagine web dinamiche</strong>, cioè che il contenuto cambi in base ad un input utente, in base a delle azioni precedentemente fatte dall’utente o in base a chi è l’utente, si aggiunge del codice lato server scritto in un altro linguaggio, ad esempio PHP. Questo codice verrà eseguito nel server e produrrà la pagina HTML specifica in base alla richiesta dell’utente.</p>
+<p>Per rendere le <strong>pagine web dinamiche</strong>, cioè in cui il contenuto cambia in base ad esempio ad un input utente, in base a delle azioni precedentemente fatte dall’utente o in base a chi è l’utente, si aggiunge del codice lato server scritto in un altro linguaggio, ad esempio PHP. In questo caso un URL non punto ad un file .html, ma ad un file scritto in questo linguaggio. Questo codice verrà eseguito nel server e produrrà la pagina HTML specifica in base alla richiesta dell’utente.</p>
 <p>Solitamente le pagine dinamiche vengono popolate tramite dati presenti in qualche database di cui il server ha accesso.</p>
 <h2 id="http-1">HTTP</h2>
 <p><strong>HTTP</strong> (<em>HyperText Transfer Protocol</em>) è un protocollo testuale a livello applicativo che gestisce la comunicazione tra client e server web tramite un sistema di richieste e risposte.</p>
-<p>HTTP esegue sopra TCP sulla porta 80.</p>
+<p>HTTP sfrutta il protocollo TCP sulla porta 80.</p>
 <h3 id="richieste-http">Richieste HTTP</h3>
 <p>Ogni <strong>richiesta HTTP</strong> è composta da tre parti:</p>
 <ol>
@@ -108,17 +108,17 @@
 <p>un <strong>metodo</strong>: Indica il tipo di richiesta, l’URI e la versione del protocollo HTTP utilizzata dal client.</p>
 <p>I metodi più comuni sono:</p>
 <ul>
-<li><code>GET</code>: Utilizzato per recuperare un documento da un server. È seguito dal percorso dell’URI del documento richiesto e dalla versione di HTTP utilizzata dal client.</li>
+<li><code>GET</code>: Utilizzato per recuperare un documento da un server specificandone l’URL.</li>
 <li><code>HEAD</code><strong>:</strong> Consente di recuperare le righe di intestazione per un determinato URI senza recuperare l’intero documento.</li>
-<li><code>POST</code><strong>:</strong> Utilizzato da un client per inviare un documento a un server allegandolo alla richiesta HTTP.</li>
+<li><code>POST</code><strong>:</strong> Utilizzato da un client per inviare un documento a un server allegandolo alla richiesta come documento MIME.</li>
 </ul>
 </li>
 <li>
 <p>un <strong>header</strong>: Utilizzata dal client per specificare parametri opzionali per la richiesta.</p>
 <p>Alcuni campi nell’header sono:</p>
 <ul>
-<li><strong>User-Agent:</strong> contiene informazioni sul browser in esecuzione sul client.</li>
-<li><strong>Referrer:</strong> Il sito web precedente visitato da questo client.</li>
+<li><strong>User-Agent:</strong> contiene informazioni sul browser del client.</li>
+<li><strong>Referrer:</strong> Il sito web precedente visitato dal client.</li>
 <li><strong>Host:</strong> Il dominio richiesto dal client, necessario nel caso in cui sullo stesso server ci sia più di un dominio, con lo stesso percorso interno.</li>
 </ul>
 </li>
@@ -130,13 +130,13 @@
 <p>Ogni <strong>risposta HTTP</strong> è composta da tre parti:</p>
 <ol>
 <li>
-<p><strong>una riga di stato:</strong> Indica se la richiesta è andata a buon fine o no tramite uno specifico codice di stato a tre cifre.</p>
+<p><strong>una riga di stato:</strong> Indica se la richiesta è andata a buon fine tramite uno specifico codice di stato a tre cifre e un commento testuale.</p>
 <p>I codici di stato sono organizzati in questo modo:</p>
 <ul>
 <li><code>2xx</code>: Risposta valida.</li>
 <li><code>3xx</code>: Il documento non è più disponibile sul server.</li>
 <li><code>4xx</code>: Il server ha rilevato un errore nella richiesta HTTP inviata dal client.</li>
-<li><code>5xx</code>: indicano un errore sul server</li>
+<li><code>5xx</code>: Errore sul server</li>
 </ul>
 </li>
 <li>
@@ -149,30 +149,30 @@
 </ul>
 </li>
 <li>
-<p><strong>un Documento MIME:</strong> rappresenta i dati utili trasmessi al client come parte della risposta con un formato particolare</p>
+<p><strong>un Documento MIME:</strong> rappresenta i dati utili trasmessi al client come parte della risposta con un formato particolare (es. <code>application/json</code>, <code>multipart/form-data</code>, …)</p>
 </li>
 </ol>
 <h2 id="connessione-persistente">Connessione persistente</h2>
-<p>Inizialmente per ogni richiesta HTTP veniva stabilita una nuova connessione TCP (con quindi pacchetti di apertura e chiusura della connessione) il che andava bene per le pagine semplici.</p>
-<p>Oggi abbiamo pagine HTML composte da centinaia di parti (immagini, icone, CSS…) e ognuna richiederebbe di aprire una nuova connessione TCP.</p>
+<p>Inizialmente per ogni richiesta HTTP veniva stabilita una nuova connessione TCP (con quindi pacchetti di apertura e chiusura della connessione), che era accettabile per pagine semplici.</p>
+<p>Oggi abbiamo pagine HTML composte da centinaia di parti (immagini, script, icone, CSS…) e ognuna richiederebbe di aprire una nuova connessione TCP.</p>
 <p>Per consentire l’invio di più richieste su un’unica connessione TCP è stato aggiunto un header <code>Connection: Keep Alive</code><strong>.</strong> Il client invia questo header e il server risponde con la lo stesso header specificando quante richieste possono essere utilizzate nel resto della connessione e per quanto tempo deve rimanere aperta la connessione.</p>
-<p><img src="https://i.ibb.co/yFLr0bt/image.png" alt="https://i.ibb.co/yFLr0bt/image.png"></p>
+<p><img src="https://i.ibb.co/yFLr0bt/image.png" alt=""></p>
 <h2 id="cookie">Cookie</h2>
-<p>È importante sapere che HTTP è <em>stateless</em>, cioè ogni richiesta HTTP (che sia nella stessa connessione o meno) è indipendente dalle precedenti infatti Il protocollo HTTP non mantiene uno stato tra una richiesta e l’altra.</p>
+<p>È importante sapere che HTTP è <em>stateless</em>, cioè ogni richiesta HTTP (che sia nella stessa connessione o meno) è indipendente dalle precedenti, infatti il protocollo HTTP non mantiene uno stato tra una richiesta e l’altra.</p>
 <p>Per mantenere uno stato tra le richieste vengono utilizzati i <strong>cookie.</strong></p>
-<p><strong>Un cookie</strong> è un’informazione (una stringa) generata dal server e inviata al client per identificarlo. Il client dovrà inserire il cookie a ogni richiesta, per dimostrare di essere lo stesso che ha ricevuto il cookie inizialmente.</p>
-<p>HTTP offre due header, <code>Set-Cookie</code> e <code>Cookie</code>, che possono essere utilizzate per mandare i cookie tra il server e il client.</p>
+<p>Un <strong>cookie</strong> è un’informazione (una stringa) generata dal server e inviata al client per identificarlo. Il client dovrà inserire il cookie a ogni richiesta, per dimostrare di essere lo stesso che ha ricevuto il cookie inizialmente.</p>
+<p>HTTP offre due header, <code>Set-Cookie</code> e <code>Cookie</code>, che possono essere utilizzati per mandare i cookie tra il server e il client.</p>
 <p>Esistono diversi tipi di cookie:</p>
 <ul>
-<li><strong>Gestione delle sessioni:</strong> ad esempio per identificare gli utenti al loro accesso.</li>
+<li><strong>Gestione delle sessioni:</strong> ad esempio per identificare gli utenti quando hanno fatto un login.</li>
 <li><strong>Personalizzazione:</strong> ad esempio per impostare lingua o posizione geografica.</li>
 <li><strong>Tracciamento:</strong> ad esempio profilazione delle attività degli utenti per scopi pubblicitari.</li>
 </ul>
 <h2 id="proxy">Proxy</h2>
-<p>Oggi abbiamo pagine HTML composte da centinaia di parti: immagini, icone, CSS, script tutte provenienti da server diversi, recuperare tutte queste parti (soprattutto se sono in server sparsi nel mondo) può richiedere molto tempo, i <strong>server proxy</strong> possono migliorare questo aspetto</p>
-<p>I <strong><em>server</em> <em>proxy</em></strong> sono essenzialmente delle cache che memorizzano le pagine web visitate per un certo periodo di tempo. Risiedono solitamente nella rete dell’utente e possono intercettare le richieste HTTP del browser, indirizzandole al proxy anziché al server web di destinazione.</p>
-<p>Il proxy, quando riceve la richiesta, recupera il contenuto dal server originale e lo salva localmente, se il browser richiede nuovamente la stessa pagina, il proxy la fornirà direttamente dalla sua cache.</p>
-<p><img src="https://i.ibb.co/94qPrRZ/image.png" alt="https://i.ibb.co/94qPrRZ/image.png"></p>
+<p>Oggi abbiamo pagine HTML composte da centinaia di parti: immagini, icone, CSS, script tutte provenienti da server diversi, recuperare tutte queste parti (soprattutto se sono in server sparsi nel mondo) può richiedere molto tempo, i <strong>server proxy</strong> possono migliorare questo aspetto.</p>
+<p>I <strong><em>server</em> <em>proxy</em></strong> sono essenzialmente delle <em>cache</em> che memorizzano le pagine web visitate per un certo periodo di tempo. Risiedono solitamente nella rete dell’utente e i browser vanno configurati per connettersi al proxy anziché direttamente ai server di destinazione.</p>
+<p>Il proxy, quando riceve la richiesta, recupera il contenuto dal server originale e lo salva localmente per un po’ di tempo, se il browser richiede nuovamente la stessa pagina, il proxy la fornirà direttamente dalla sua cache.</p>
+<p><img src="https://i.ibb.co/94qPrRZ/image.png" alt=""></p>
 <p>Degli header utili per i proxy sono:</p>
 <ul>
 <li><strong>Cache-Control</strong>: Utilizzata dal server per indicare se la pagina può essere memorizzata nella cache e per quanto tempo. Ad esempio:
@@ -184,18 +184,18 @@
 </li>
 <li><strong>If-Modified-Since</strong>: Inviata dal client per richiedere una pagina solo se è stata modificata dopo una certa data. Se la pagina non è stata modificata, il server non la invia.</li>
 </ul>
-<p>Esiste un altro tipo di proxy chiamato <strong>reverse proxy</strong>, questi sono posizionati sul lato server, e nascondono il server reale ai client. Il loro scopo principale è ridurre il carico sui server, ottimizzando le query ai database e l’utilizzo della CPU.</p>
-<p><img src="https://i.ibb.co/5ngnKt5/image.png" alt="https://i.ibb.co/5ngnKt5/image.png"></p>
+<p>Esiste un altro tipo di proxy chiamato <strong>reverse proxy</strong>, questi sono posizionati sul lato server, e nascondono i server reali ai client. Il loro scopo principale è ridurre il carico sui server, ottimizzando le query ai database e l’utilizzo della CPU.</p>
+<p><img src="https://i.ibb.co/5ngnKt5/image.png" alt=""></p>
 <h2 id="http-2.0">HTTP 2.0</h2>
 <p>HTTP 2.0 introduce significative modifiche rispetto alle versioni precedenti tra cui:</p>
 <ul>
 <li><strong>Protocollo binario</strong>: utilizza un formato binario per codificare richieste e risposte e non più testuale. Questo rende il protocollo più compatto e veloce da elaborare, riducendo i tempi di trasferimento.</li>
-<li><strong>Stream paralleli</strong>: Il contenuto di una pagina web viene suddiviso in frame, che possono essere inviati in parallelo dal server al client tramite stream multipli. Questo accelerando il caricamento della pagina.
+<li><strong>Stream paralleli</strong>: Il contenuto di una pagina web viene suddiviso in frame, che possono essere inviati in parallelo dal server al client tramite stream multipli. Questo accelera il caricamento della pagina.
 <ul>
 <li><strong>Eliminazione del blocco HoL (Head-of-Line Blocking)</strong>: Il blocco HoL si verifica quando un elemento di grandi dimensioni, come un’immagine, blocca il download di altri elementi più piccoli. HTTP 2.0 garantisce che elementi più piccoli vengano visualizzati prima.</li>
 </ul>
 </li>
-<li><strong>Meccanismo push</strong>: HTTP 2.0 consente al server di inviare al client contenuti non esplicitamente richiesti. Questo permette di anticipare le richieste del client, inviando in anticipo elementi che il server sa essere necessari.</li>
+<li><strong>Meccanismo push</strong>: HTTP 2.0 consente al server di inviare al client contenuti non esplicitamente richiesti. Questo permette di anticipare le richieste del client, inviando elementi che il server sa essere necessari prima che il client li richieda.</li>
 </ul>
 
     </div>

@@ -32,13 +32,12 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="ipv4">IPv4</h1>
-<p>Il livello di rete fornisce la consegna non affidabile dei pacchetti utilizzando i servizi del livello di collegamento. I tipi di livello di collegamento sono principalmente di due tipi: collegamenti punto a punto (<strong>PPP</strong>, <em>Point-to-Point Protocol</em>) che coinvolge solo due dispositivi che comunicano direttamente e <strong>LAN</strong> (<em>Local Area Network</em>) in cui vari dispositivi connessi tra loro tramite un particolare dispositivo come uno <em>switch</em> comunicano tra loro*.*</p>
+<p>Il livello di rete fornisce la consegna non affidabile dei pacchetti utilizzando i servizi forniti dal livello di collegamento. Le tipologie di livello di collegamento sono principalmente due: collegamenti punto a punto (<strong>PPP</strong>, <em>Point-to-Point Protocol</em>) che coinvolge solo due dispositivi che comunicano direttamente e <strong>LAN</strong> (<em>Local Area Network</em>) in cui vari dispositivi sono connessi tra loro tramite un particolare dispositivo (uno <em>switch).</em></p>
 <h2 id="ipv4-1">IPv4</h2>
 <p>Il protocollo di rete più utilizzato è IPv4 (<em>Internet Protocol version 4</em>).</p>
-<p>Questo protocollo assegna un indirizzo IP agli host di una rete.</p>
-<p>Gli indirizzi IPv4 sono composti da 32 bit, rappresentati come quattro numeri decimali da 0 a 255 separati da punti (es: <code>192.168.1.1</code> = <code>11000000 10101000 00000001 00000001</code>).</p>
+<p>Questo protocollo assegna un indirizzo IP agli host di una rete. Questi indirizzi sono composti da 32 bit, rappresentati come quattro numeri decimali da 0 a 255 separati da punti (es: <code>192.168.1.1</code> = <code>11000000 10101000 00000001 00000001</code>).</p>
 <h2 id="subnet">Subnet</h2>
-<p>Le reti sono organizzate in <strong>sottoreti</strong> (<em><strong>subnet</strong></em>), interconnesse da dispositivi chiamati <strong>router</strong>. Una sottorete è identificata da un gruppo di indirizzi nel formato <code>x.y.z.w/N</code>, dove <code>N</code> (chiamata <em><strong>netmask</strong></em>) rappresenta il numero di bit dell’indirizzo dedicati alla rete, mentre <code>32-N</code> identifica il numero di bit dedicati agli host di quella sottorete.</p>
+<p>Le reti sono organizzate in <strong>sottoreti</strong> (<em><strong>subnet</strong></em>), interconnesse da dispositivi chiamati <strong>router</strong>. Una sottorete è identificata da un gruppo di indirizzi nel formato <code>x.y.z.w/N</code>, dove <code>N</code> (chiamata <em><strong>netmask</strong></em>) rappresenta il numero di bit dell’indirizzo dedicati alla rete, mentre <code>32-N</code> indica il numero di bit dedicati agli host di quella sottorete.</p>
 <p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mi>N</mi></msup></mrow><annotation encoding="application/x-tex">2^N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.841331em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.841331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></span> = numero di sottoreti creabili</p>
 <p><span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mrow><mn>32</mn><mo>−</mo><mi>N</mi></mrow></msup></mrow><annotation encoding="application/x-tex">2^{32-N}</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.841331em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.841331em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span><span class="mbin mtight">−</span><span class="mord mathnormal mtight" style="margin-right: 0.10903em;">N</span></span></span></span></span></span></span></span></span></span></span></span></span> numero di host che ogni sottorete ha a disposizione</p>
 <p>Esempi:</p>
@@ -81,16 +80,17 @@
 <p><code>169.254.0.0/16</code><strong>:</strong> detto “<strong>Link-local</strong>”, viene assegnato automaticamente a un dispositivo quando non riesce a ottenere un indirizzo IP dal router, permette la comunicazione locale con altri dispositivi nella stessa sottorete.</p>
 </li>
 </ul>
-<p>Nota: solitamente in ogni sottorete è presente un router, e <strong>anch’esso ha bisogno di un indirizzo IP</strong> sulla sua interfaccia. Quindi con una subnet /24 si hanno 254 indirizzi assegnabili agli host e tra questi, uno va assegnato al router (se presente).</p>
+<p>Nota: solitamente in ogni sottorete è presente un router, e <strong>anch’esso ha bisogno di un indirizzo IP</strong> sulla sua interfaccia in modo che gli host possano riconoscerlo.</p>
+<p>Quindi con una subnet <code>/24</code> si hanno 256 indirizzi totali, ma solamente 254 sono assegnabili agli host perché dobbiamo considerare l’indirizzo di rete e di broadcast, se è presente anche un router bisogna considerare anche un indirizzo per la sua interfaccia.</p>
 <h2 id="router">Router</h2>
 <p>La comunicazione all’interno di una sottorete è possibile tra tutti gli host (assumiamo che ciò avvenga grazie ad uno switch). Tuttavia, per comunicare con host in altre sottoreti, è necessario un <strong>router</strong>.</p>
-<p>I router possiedono più interfacce di rete, ciascuna con un indirizzo IP, e sono in grado di instradare i pacchetti tra reti diverse. Ogni host ha un <strong>router predefinito</strong> (<em>gateway</em>) a cui inviare pacchetti destinati a reti diverse dalla propria.</p>
-<p><img src="https://i.ibb.co/NjNH6Ym/image.png" alt="https://i.ibb.co/NjNH6Ym/image.png"></p>
+<p>I router possiedono più interfacce di rete, ciascuna con un indirizzo IP, e sono in grado di instradare i pacchetti tra reti diverse. Ogni host ha un <strong>router predefinito</strong> (chiamato <em>gateway</em>) a cui inviare pacchetti destinati a reti diverse dalla propria.</p>
+<p><img src="https://i.ibb.co/NjNH6Ym/image.png" alt=""></p>
 <p>Quando un host vuole comunicare con un altro host della stessa rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo privato) e il relativo indirizzo MAC, lo switch a cui sono collegati gli host instraderà il pacchetto all’host in base all’indirizzo MAC specificato (l’indirizzo IP in questo caso serve nel caso non si disponga dell’indirizzo MAC, tramite l’IP si può usare il protocollo ARP per ottenere il MAC di un certo indirizzo IP).</p>
-<p>Se invece un host vuole comunicare al di fuori della propria rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo pubblico) e l’indirizzo MAC del router di default (<em>default gateway</em>), lo switch a cui sono collegati gli host instraderà il pacchetto in base all’indirizzo MAC specificato, in questo caso verso il router, il quale instraderà il pacchetto in base all’indirizzo IP.</p>
+<p>Se invece un host vuole comunicare al di fuori della propria rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo pubblico) e l’indirizzo MAC del router, lo switch a cui sono collegati gli host instraderà il pacchetto in base all’indirizzo MAC specificato, in questo caso verso il router, il quale instraderà il pacchetto in base all’indirizzo IP.</p>
 <h2 id="header-ipv4">Header IPv4</h2>
-<p><img src="https://i.ibb.co/dBPVhSg/image.png" alt="https://i.ibb.co/dBPVhSg/image.png"></p>
-<p>L’header è composto da un parte fissa (raffigurata nell’immagine) e opzioni aggiuntive facoltative che non vengono molto utilizzate.</p>
+<p><img src="https://i.ibb.co/dBPVhSg/image.png" alt=""></p>
+<p>L’header è composto da un parte fissa (raffigurata nell’immagine) e opzioni aggiuntive facoltative.</p>
 <ul>
 <li>
 <p><strong>Version:</strong> Indica la versione del protocollo IP, 4 o 6</p>
@@ -137,15 +137,15 @@
 <p>Quando un pacchetto supera l’MTU, viene frammentato in <strong>pacchetti più piccoli indipendenti</strong>, ognuno con un proprio header IPv4. La frammentazione può avvenire in qualsiasi router lungo il percorso dalla sorgente alla destinazione. Il destinatario avrà poi il compito di riassemblare tutti i frammenti.</p>
 <p>Ogni frammento contiene le seguenti informazioni:</p>
 <ul>
-<li>Lo stesso campo <code>identification</code> nell’header: Permette al destinatario di associare i frammenti allo stesso pacchetto originale.</li>
+<li>Lo stesso campo <code>identification</code> nell’header: Permette al destinatario di associare i frammenti al pacchetto relativo.</li>
 <li>Campo <code>total length</code>: Impostato alla lunghezza del frammento specifico.</li>
 <li>Campo <code>fragment offset</code><strong>:</strong> Indica la posizione del frammento rispetto al pacchetto originale, espresso in multipli di 8 byte.</li>
 <li>Il flag <code>More Fragments</code>: Impostato a 1 per tutti i frammenti tranne l’ultimo, che indica la fine del pacchetto originale.</li>
 </ul>
 <h3 id="esempi-di-frammentazione"><strong>Esempi di frammentazione:</strong></h3>
 <p>Con un pacchetto lungo 250byte e un MTU di 120byte:</p>
-<p><img src="https://i.ibb.co/j6T63WT/image.png" alt="https://i.ibb.co/j6T63WT/image.png"></p>
-<p>Ricorda che ogni frammento ha anche il proprio header IP di 20 byte da far rientrare nei 120byte.</p>
+<p><img src="https://i.ibb.co/j6T63WT/image.png" alt=""></p>
+<p>Ricorda che ogni frammento ha anche il proprio header IP di 20 byte da far rientrare all’interno dei 120byte.</p>
 <p>Un altro esempio con un pacchetto IP di 3500 byte e un MTU di 1500 byte.</p>
 <p>Verrà suddiviso in tre frammenti:</p>
 <ul>
@@ -155,9 +155,9 @@
 </ul>
 <p><strong>I frammenti viaggiano come pacchetti indipendenti e possono seguire percorsi diversi per raggiungere la destinazione.</strong> Solo quando arrivano a destinazione vengono riassemblati nell’ordine corretto utilizzando il campo <code>Identification</code> e <code>fragment offset</code>.</p>
 <h2 id="nat">NAT</h2>
-<p>Con il crescere esponenziale del numero di dispositivi connessi a Internet, il numero limitato di indirizzi IPv4 (pari a circa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>32</mn></msup><mo>=</mo><mn>4.3</mn></mrow><annotation encoding="application/x-tex">2^{32}=4.3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4.3</span></span></span></span></span> miliardi) si è rivelato insufficiente.  Questa carenza ha spinto alla ricerca di soluzioni a breve e lungo termine.</p>
+<p>Con il crescere esponenziale del numero di dispositivi connessi a Internet, il numero limitato di indirizzi IPv4 (pari a circa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>2</mn><mn>32</mn></msup><mo>=</mo><mn>4.3</mn></mrow><annotation encoding="application/x-tex">2^{32}=4.3</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.814108em; vertical-align: 0em;"></span><span class="mord"><span class="mord">2</span><span class="msupsub"><span class="vlist-t"><span class="vlist-r"><span class="vlist" style="height: 0.814108em;"><span class="" style="top: -3.063em; margin-right: 0.05em;"><span class="pstrut" style="height: 2.7em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">32</span></span></span></span></span></span></span></span></span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">4.3</span></span></span></span></span> miliardi) si è rivelato insufficiente. Questa carenza ha spinto alla ricerca di soluzioni a breve e lungo termine.</p>
 <p>A lungo termine, la soluzione è stata introdurre IPv6, che utilizza indirizzi a 128 bit**.** Questa soluzione, seppur ideale, richiede tempo per essere implementata su larga scala a causa della necessità di aggiornare hardware e software.</p>
-<p>Una soluzione a breve termine è stata l’introduzione del Network Address Translation (NAT)<strong>.</strong> Il NAT è una tecnica che consente di mappare un indirizzo IP pubblico a uno privato, permettendo a più dispositivi in una rete locale (LAN) di condividere un singolo indirizzo IP pubblico per accedere a Internet.</p>
+<p>Una soluzione a breve termine è stata l’introduzione del Network Address Translation (NAT). Il NAT è una tecnica che consente di mappare indirizzi IP privati su uno o più indirizzi IP pubblici, permettendo a più dispositivi all’interno di una rete locale (LAN) di accedere a Internet utilizzando lo stesso indirizzo IP pubblico.</p>
 <h3 id="indirizzi-ip-privati">Indirizzi IP privati</h3>
 <p>Per implementare il NAT, sono state riservate tre classi di indirizzi IP privati:</p>
 <ul>
@@ -168,6 +168,7 @@
 <p>Questi indirizzi possono essere <strong>utilizzati liberamente</strong> per i dispositivi nelle <strong>LAN</strong>.</p>
 <p>Nella LAN solo il router connesso ad internet possiede un indirizzo IP pubblico, esso si occupa di tradurre gli indirizzi privati in indirizzi pubblici e viceversa per far accedere ad internet i dispositivi nella sua rete usando il proprio indirizzo pubblico.</p>
 <p>I router connessi a Internet <strong>non</strong> devono <strong>instradare</strong> pacchetti <strong>da/verso indirizzi IP privati</strong>.</p>
+<p><img src="https://i.ibb.co/SDKjRGTq/image.png" alt=""></p>
 <h3 id="funzionamento-del-nat">Funzionamento del NAT</h3>
 <p>Un router NAT mantiene una tabella che mappa i flussi di traffico in entrata e in uscita. Ogni flusso è identificato da 5 elementi:</p>
 <ul>
@@ -178,46 +179,46 @@
 <li><strong>dPort (Destination Port):</strong> Porta del destinatario</li>
 </ul>
 <p>Una tabella di questo tipo riesce ad associare i pacchetti in arrivo dalla LAN con i pacchetti mandati su internet e vice versa.</p>
-<p><img src="https://i.ibb.co/MDN0xHv/image.png" alt="https://i.ibb.co/MDN0xHv/image.png"></p>
-<p>Quando un pacchetto proveniente da un dispositivo della LAN (con indirizzo IP privato) arriva al router NAT, il router sostituisce l’indirizzo IP privato con il suo indirizzo IP pubblico e invia il pacchetto al server di destinazione.</p>
-<p>Quando il server risponde, il router NAT utilizza la tabella per identificare il dispositivo della LAN a cui inoltrare il pacchetto, sostituendo l’indirizzo IP pubblico con l’indirizzo IP privato originale.</p>
-<p><img src="https://i.ibb.co/44rwnbk/image.png" alt="https://i.ibb.co/44rwnbk/image.png"></p>
+<p><img src="https://i.ibb.co/MDN0xHv/image.png" alt=""></p>
+<p>Quando un pacchetto proveniente da un dispositivo della LAN (con indirizzo IP privato) arriva al router, il router sostituisce l’indirizzo IP privato con il suo indirizzo IP pubblico e invia il pacchetto al server di destinazione.</p>
+<p>Quando il server risponde, il router utilizza la tabella per identificare il dispositivo della LAN a cui inoltrare il pacchetto, sostituendo l’indirizzo IP pubblico con l’indirizzo IP privato originale.</p>
+<p><img src="https://i.ibb.co/44rwnbk/image.png" alt=""></p>
 <p>Quello che potrebbe succedere sulla tabella del NAT è che due host diversi decidano inviare dei pacchetti allo stesso IP di destinazione, usando lo stesso protocollo, con la stessa porta destinazione e scelgano casualmente la stessa porta sorgente. questo genererebbe nella parte destra della tabella due righe completamente uguali e quando arriva la risposta dal server il router non saprebbe a chi inoltrare la risposta.</p>
 <p>Per evitare questa situazione quello che fa il NAT al momento dell’invio di nuovi pacchetti verso internet è incrementare la porta sorgente nel caso in cui la nuova riga da aggiungere sia uguale ad una riga già presente:</p>
-<p><img src="https://i.ibb.co/HYGLws6/image.png" alt="https://i.ibb.co/HYGLws6/image.png"></p>
+<p><img src="https://i.ibb.co/HYGLws6/image.png" alt=""></p>
 <h3 id="note">Note:</h3>
 <ul>
 <li>due host possono avere lo stesso indirizzo privato se sono in LAN differenti</li>
 <li>due host nella stessa LAN non possono avere lo stesso indirizzo privato</li>
 <li>due host su internet non possono avere lo stesso indirizzo pubblico</li>
-<li>un host privato dietro al NAT non può ricevere nuove connessioni, ma le può solo mandare *</li>
+<li>un host privato dietro al NAT non può ricevere nuove connessioni, ma le può solo mandare *****</li>
 <li>un server che vuole ricevere connessioni deve avere un indirizzo pubblico</li>
 </ul>
 <h3 id="vantaggi-e-svantaggi-del-nat">Vantaggi e svantaggi del NAT</h3>
 <p><strong>Vantaggi:</strong></p>
 <ul>
 <li>Permette a più dispositivi di condividere un singolo indirizzo IP pubblico, riducendo la domanda di indirizzi IPv4.</li>
-<li>I dispositivi con indirizzi IP privati sono invisibili a Internet, rendendo più difficile per gli aggressori esterni di raggiungerli non potendo aprire connessioni dall’esterno verso i singoli host. *</li>
+<li>I dispositivi con indirizzi IP privati sono invisibili a Internet, rendendo più difficile per gli aggressori esterni raggiungerli, non potendo aprire connessioni dall’esterno. *****</li>
 </ul>
 <p><strong>Svantaggi:</strong></p>
 <ul>
 <li>
-<p>Introduce complessità nell’architettura di rete e richiede la gestione di una tabella sul router NAT (solitamente il NAT è implementato nei firewall).</p>
+<p>Introduce complessità nell’architettura di rete e richiede la gestione di una tabella NAT sul router (solitamente il NAT è implementato nei firewall).</p>
 </li>
 <li>
 <p><strong>Problemi di prestazioni:</strong> Può causare problemi di prestazioni, soprattutto con un elevato numero di connessioni simultanee.</p>
-<p>Inoltre le connessioni TCP possono essere interrotte improvvisamente allo stesso modo il traffico UDP non posso sapere quando finisce, quindi il NAT deve mantenere dei timer per eliminare delle righe che assume non siano più valide.</p>
+<p>Inoltre le connessioni TCP possono essere interrotte improvvisamente, e allo stesso modo il traffico UDP non si può sapere quando termina, quindi il NAT deve mantenere dei timer per eliminare delle righe che assume non siano più valide.</p>
 </li>
 <li>
-<p>Il NAT ha anche il compito di <strong>riassemblare i pacchetti</strong>, questo perché la porta (usata per sapere a chi inoltrare i pacchetti) è presente nell’header TCP che è presente solo nel primo frammento del pacchetto. Quindi il NAT deve bufferizzare i frammenti (gran uso di memoria)</p>
+<p>Il NAT ha anche il compito di <strong>riassemblare i pacchetti</strong>, questo perché la porta (usata per sapere a chi inoltrare i pacchetti) è presente nell’header TCP che è presente solo nel primo frammento del pacchetto. Quindi il NAT deve bufferizzare i frammenti (comportando un gran uso di memoria)</p>
 </li>
 <li>
-<p>Il NAT essendo molto dipendente dal livello di trasporto rende l’aggiornamento e la creazione dei protocolli di trasporto molto difficile *</p>
+<p>Il NAT essendo molto dipendente dal livello di trasporto rende l’aggiornamento e la creazione dei protocolli di trasporto molto difficile</p>
 </li>
 </ul>
-<p>*ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.</p>
+<p>*****ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.</p>
 <h2 id="forwarding-table">Forwarding table</h2>
-<p>La <em>forwarding table</em> di un router mappa indirizzi di rete su un certa interfaccia di rete in uscita, in modo da capire su quale interfaccia mandare il pacchetto in base al suo ip di destinazione.</p>
+<p>La <em>forwarding table</em> di un router mappa indirizzi di rete su un certa interfaccia in uscita, in modo da capire su quale interfaccia mandare il pacchetto in base al suo ip di destinazione.</p>
 <p>Possiamo vederla in questo modo:</p>
 
 <table>
@@ -260,8 +261,8 @@
 <td>4</td>
 </tr>
 </tbody>
-</table><p>Dove <code>0.0.0.0/0</code> è l’interfaccia di default dove vengono instradati i pacchetti nel caso non ci sia una rete corrispondente nella tabella.</p>
-<p>Quando arriva un pacchetto viene scelta l’interfaccia corrispondente all’indirizzo con il netid più lungo uguale al netid dell’indirizzo nel pacchetto.</p>
+</table><p><code>0.0.0.0/0</code> è l’interfaccia di default dove vengono instradati i pacchetti nel caso non ci sia una rete corrispondente nella tabella.</p>
+<p>Quando arriva un pacchetto viene scelta l’interfaccia corrispondente alla rete con il netid più lungo uguale al netid dell’indirizzo nel pacchetto.</p>
 <p>Esempi:</p>
 <ul>
 <li>
@@ -270,7 +271,7 @@
 </li>
 <li>
 <p><code>124.156.13.2 == 01111100.10011100.00001101.00000010</code></p>
-<p>match con <code>0.0.0.0/0</code> e <code>124.156.13.0/24</code>  quindi interfaccia 0</p>
+<p>match con <code>0.0.0.0/0</code> e <code>124.156.13.0/24</code> quindi interfaccia 0</p>
 </li>
 <li>
 <p><code>124.156.13.129 == 01111100.10011100.00001101.10000001</code></p>
@@ -292,7 +293,7 @@
 <h2 id="icmp">ICMP</h2>
 <p><strong>ICMP</strong> (<em>Internet Control Message Protocol</em>) è un protocollo di rete di segnalazione che trasmette messaggi di errore e messaggi relativi al funzionamento e allo stato della rete. ICMP non utilizza protocolli a livello di trasporto, viene direttamente incapsulato in un pacchetto IP.</p>
 <h3 id="header-icmp">Header ICMP</h3>
-<p><img src="https://i.ibb.co/rcFNMVC/image.png" alt="https://i.ibb.co/rcFNMVC/image.png"></p>
+<p><img src="https://i.ibb.co/rcFNMVC/image.png" alt=""></p>
 <p>Quando un pacchetto produce un evento anomalo, viene generato un pacchetto ICMP. Il pacchetto ICMP contiene un header in cui grazie ai campi <em>Type</em> e <em>Code</em> si identifica l’evento.</p>
 <p>Alcuni eventi riconosciuti da ICMP sono:</p>
 <ul>

@@ -32,10 +32,10 @@
     <div class="stackedit__html">
       <h1 id="livello-di-collegamento">Livello di collegamento</h1>
 <p>Il livello di collegamento (<em>data link layer</em>) ha il compito di dividere i dati in <em><strong>frame</strong></em>, possiamo definire un frame come una sequenza di bit che hanno una particolare struttura e una lunghezza limitata, rappresenta l’unità base di informazione che si scambiano due host.</p>
-<p>Le limitazioni del livello fisico (desincronizzazione e disturbo) obbliano il livello di collegamento a codificare i frame in modo da gli errori di comunicazione.</p>
+<p>Le limitazioni del livello fisico (desincronizzazione e disturbo) obbligano il livello di collegamento a codificare i frame in modo da riconoscere gli errori di comunicazione.</p>
 <h2 id="bit-stuffing">Bit stuffing</h2>
 <p>Un problema, ad esempio, è far capire al ricevitore quando inizia e quando finisce il frame.</p>
-<p>Quello che possiamo fare è usare delle stringhe di bit particolare per delimitare l’inizio e la fine del frame, ad esempio la stringa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>01111110</mn></mrow><annotation encoding="application/x-tex">01111110</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">01111110</span></span></span></span></span>, che possiamo chiamare <em>frame boundary maker</em>.</p>
+<p>Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>01111110</mn></mrow><annotation encoding="application/x-tex">01111110</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">01111110</span></span></span></span></span>, che possiamo chiamare <em>frame boundary maker</em>.</p>
 <p>Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma verrebbe interpretata come la fine del frame.</p>
 <p>Il <strong>bit stuffing</strong> è una codifica che si occupa di evitare che ciò accada con i seguenti passaggi:</p>
 <ol>
@@ -58,12 +58,12 @@
 01111110 \longrightarrow 01111110\,\,011111\textbf{0}10\,\,01111110
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.65544em; vertical-align: -0.011em;"></span><span class="mord">01111110</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">⟶</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">01111110</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">011111</span><span class="mord text"><span class="mord textbf">0</span></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord">01111110</span></span></span></span></span></span></p>
 <p>Questa codifica però provoca un <strong>protocol overhead</strong>: cioè dati extra trasmessi per rendere la comunicazione possibile, riducendo così il bit-rate disponibile calcolato con Shannon e Nyquist.</p>
-<p>In particolare abbiamo 16 bit per i marker e con stringhe formate da molti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> vanno inseriti molti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> per evitare che vengano interpretati come fine frame.</p>
+<p>In particolare abbiamo 16 bit per i marker e con stringhe formate da molti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> vengono aggiunti molti <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn></mrow><annotation encoding="application/x-tex">0</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0</span></span></span></span></span> per evitare che siano interpretati come fine frame.</p>
 <p>D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i bit stuffed, per compensare bisognerebbe aumentare la grandezza dei frame per evitare di avere più bit di overhead che bit utili.</p>
 <p>Tutti questi bit aggiunti vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui <em>bit stuffed</em> provocando gravi errori nella decodifica.</p>
-<p>Definiamo <strong>BER</strong> (<em>Bit Error Rate</em>) come la probabilità che un singolo bit sia decodificato in modo errato</p>
+<p>Definiamo <strong>BER</strong> (<em>Bit Error Rate</em>) come la probabilità che un singolo bit sia decodificato in modo errato.</p>
 <p>Nelle reti moderne la tecnica del <em>bit stuffing</em> non è utilizzata, si utilizza piuttosto un <em>frame preamble</em>, cioè un header che marca l’inizio del frame e che contiene varie informazioni tra cui quanto è lungo il frame stesso, così da non avere un marker di fine frame e di conseguenza non si ha bisogno del <em>bit stuffing</em>.</p>
-<p><img src="https://i.ibb.co/4Fcsdqq/image.png" alt="https://i.ibb.co/4Fcsdqq/image.png"></p>
+<p><img src="https://i.ibb.co/4Fcsdqq/image.png" alt=""></p>
 <p>Nell’immagine si vede come i livelli interagiscono:</p>
 <ul>
 <li>Un livello superiore fa una chiamata API (<code>DATA.req(1…1)</code>) al livello data link richiedendo di inviare una sequenza di bit</li>
@@ -88,10 +88,10 @@
 <li>la <code>D</code> sta per “Data” e indica l’invio o la ricezione dei dati</li>
 <li>la <code>C</code> sta per “Control” e indica l’invio o la ricezione di messaggi di <em>acknowledgment</em></li>
 </ul>
-<p><img src="https://i.ibb.co/vjHgFWw/image.png" alt="https://i.ibb.co/vjHgFWw/image.png"></p>
+<p><img src="https://i.ibb.co/vjHgFWw/image.png" alt=""></p>
 <h2 id="macchina-a-stati">Macchina a stati</h2>
 <p>Possiamo rappresentare il data link layer come una macchina a stati finiti, composta da 2 stati per il mittente e 2 stati per il ricevitore</p>
-<p><img src="https://i.ibb.co/b1z2Kvs/image.png" alt="https://i.ibb.co/b1z2Kvs/image.png"></p>
+<p><img src="https://i.ibb.co/b1z2Kvs/image.png" alt=""></p>
 <ul>
 <li>I cerchi rappresentano gli stati</li>
 <li>gli archi rappresentano il cambio di stato</li>
@@ -103,7 +103,7 @@
 </li>
 </ul>
 <h2 id="riconoscimento-degli-errori">Riconoscimento degli errori</h2>
-<p>Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in più</p>
+<p>Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso</p>
 <p>Vediamo innanzitutto come <strong>riconoscere gli errori</strong> (<em>error detection</em>)</p>
 <h2 id="bit-di-parità">Bit di parità</h2>
 <p>Questo semplice meccanismo aggiunge un bit finale al frame, detto <strong>bit di parità</strong>, questo bit viene aggiunto in modo da rendere il numero totale di <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn></mrow><annotation encoding="application/x-tex">1</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span></span></span></span></span> nel frame pari (oppure dispari).</p>
@@ -178,7 +178,7 @@
 1001 \rightarrow 1\textbf{1}01
 </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1110</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord text"><span class="mord textbf">0</span></span><span class="mord">10</span></span><span class="mspace newline"></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1001</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">→</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord text"><span class="mord textbf">1</span></span><span class="mord">01</span></span></span></span></span></span></p>
 <p>verrebbe calcolato la stessa identica checksum, non riconoscendo l’errore.</p>
-<p><strong>Performance</strong>: la checksum viene fatta tantissime volte al secondo dai router, quindi deve essere un calcolo molto veloce. La somma è vantaggioso per due ragioni:</p>
+<p><strong>Performance</strong>: la checksum viene fatta tantissime volte al secondo dai router, quindi deve essere un calcolo molto veloce. La somma è vantaggiosa per due ragioni:</p>
 <ol>
 <li>si può computare la somma man mano che arrivano le parole di 16 bit, non serve aspettare che arrivino tutti i dati prima di cominciare</li>
 <li>dato che la somma è una operazione associativa, l’ordine in cui si sommano i bit delle parole non importa</li>

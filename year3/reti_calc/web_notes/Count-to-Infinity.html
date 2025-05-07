@@ -31,23 +31,23 @@
 <h2 id="problema-del-count-to-infinity">Problema del Count-to-infinity</h2>
 <p>Fino ad ora abbiamo assunto che i pacchetti contenenti di distance vector (DV) venissero sempre consegnati con successo, ma questo non è sempre vero.</p>
 <p>Vediamo cosa accade con un fallimento di un link seguito dalla mancanza di arrivo di un pacchetto DV.</p>
-<p><img src="https://i.ibb.co/qRHWrZP/image.png" alt="https://i.ibb.co/qRHWrZP/image.png"></p>
+<p><img src="https://i.ibb.co/qRHWrZP/image.png" alt=""></p>
 <p>In questo caso il link D-E si è rotto, di conseguenza D imposta il costo delle route verso E, B, C a infinito.</p>
 <p>In questo caso D dovrebbe mandare il proprio DV ad A ma supponiamo che ciò non accada in tempo, e che sia A ad inviare il suo DV a D.</p>
-<p><img src="https://i.ibb.co/9rGcVxt/image.png" alt="https://i.ibb.co/9rGcVxt/image.png"></p>
-<p>In questo modo D ottiene dei costi migliori di quelli a infinito e aggiorna la sua tabella, inconsapevole del fatto che quei percorsi dovranno passare per forza verso il link rotto D-E.</p>
+<p><img src="https://i.ibb.co/9rGcVxt/image.png" alt=""></p>
+<p>In questo modo D ottiene dei costi migliori di quelli attuali (che sono a infinito) e aggiorna la sua tabella, inconsapevole del fatto che quei percorsi dovranno passare per forza verso il link rotto D-E.</p>
 <p>A questo punto D manda il suo DV ad A, e questo porta ad aumentare i costi sulla tabella di A in quanto sono aumentati i costi del percorso già ritenuto essere il migliore (l’interfaccia south di A)</p>
-<p><img src="https://i.ibb.co/DG5ZbYq/image.png" alt="https://i.ibb.co/DG5ZbYq/image.png"></p>
+<p><img src="https://i.ibb.co/DG5ZbYq/image.png" alt=""></p>
 <p>Il continuo invio di DV tra A e D porterà ad un continuo aumento dei costi fino a infinito, questo problema è chiamato <strong>Count-to-Infinity</strong>.</p>
 <h2 id="prima-soluzione">Prima soluzione</h2>
 <p>Un primo approccio è quello di generare i DV solo quando si verifica un fail su un link o un cambiamento ai costi dei percorsi.</p>
 <p>Questa non risolve del tutto il problema per due ragioni:</p>
 <ol>
-<li>c’è comunque la possibilità di D riceva un DV dopo aver rilevato il fallimento di un link ma prima di inviare il suo DV.</li>
+<li>c’è comunque la possibilità che D riceva un DV dopo aver rilevato il fallimento di un link ma prima di inviare il suo DV.</li>
 <li>c’è la possibilità che il DV venga perso</li>
 </ol>
 <p>in entrambi i casi si verifica il comportamento sopra mostrato.</p>
-<p>Possiamo quindi dire che il Count-to-Infinity è possibile a seguito di alcuni eventi tra cui:</p>
+<p>Possiamo quindi dire che il Count-to-Infinity è possibile se sono presenti le seguenti condizioni:</p>
 <ul>
 <li>La presenza di un loop, nota che un singolo cavo full-duplex crea già un loop in quanto viene usato sia per trasmettere che per ricevere</li>
 <li>Ci deve essere un cambiamento alla topologia della rete (ad esempio un link failure)</li>
@@ -67,18 +67,18 @@
 		            v<span class="token punctuation">.</span>add<span class="token punctuation">(</span>Pair<span class="token punctuation">(</span>d<span class="token punctuation">,</span> infinity<span class="token punctuation">)</span><span class="token punctuation">)</span>
         send<span class="token punctuation">(</span>v<span class="token punctuation">,</span> ifc<span class="token punctuation">)</span>
 </code></pre>
-<p>Con <em>split-horizon</em> si intende che ogni router vicino avrà un distance vector leggermente diverso dagli altri.</p>
-<p>con <em>poison</em> si intende che viene detto ai propri vicini che non si possiedono dei percorsi che passano esattamente per quel vicino.</p>
+<p>Con <em>split-horizon</em> si intende che ogni distance vector sarà leggermente diverso in base a chi viene mandato.</p>
+<p>con <em>poison</em> si intende che ad ogni vicino viene detto che non si possiedono dei percorsi che passano per quel vicino.</p>
 <p>Vediamo il funzionamento nella situazione di prima, Quindi il link D-E si rompe, D non manda in tempo il DV ad A, e quindi A manda il suo DV a D:</p>
-<p><img src="https://i.ibb.co/9wyCz0F/image.png" alt="https://i.ibb.co/9wyCz0F/image.png"></p>
+<p><img src="https://i.ibb.co/9wyCz0F/image.png" alt=""></p>
 <p>Vediamo come A imposta ad infinito le destinazioni B, C, E dato che per raggiungerli passano per l’interfaccia South, cioè per D al quale stiamo mandando il DV.</p>
 <p>Quando D manderà il suo DV ad A, anche lui avrà la tabella aggiornata correttamente.</p>
 <p>In questo modo il problema del count-to-infinity può essere risolto, ma solamente in presenza di loop composti da 2 router. Con loop più grandi il <strong>problema esiste ancora</strong>.</p>
 <p>Vediamo un esempio in cui si ripresenta il cout-to-infinity.</p>
 <p>Il link A-B si rompe, B manda i propri DV a C ed E, ma C non lo riceve:</p>
-<p><img src="https://i.ibb.co/z7Kc1y1/image.png" alt="https://i.ibb.co/z7Kc1y1/image.png"></p>
+<p><img src="https://i.ibb.co/z7Kc1y1/image.png" alt=""></p>
 <p>Supponiamo che C mandi il proprio DV a B ed E:</p>
-<p><img src="https://i.ibb.co/hV6mWT6/image.png" alt="https://i.ibb.co/hV6mWT6/image.png"></p>
+<p><img src="https://i.ibb.co/hV6mWT6/image.png" alt=""></p>
 <p>Per il poison reverse, B non cambia la sua tabella, mentre E aggiorna il costo verso A.</p>
 <p>Così facendo quando E manderà il proprio DV a B verrà aggiornato il costo verso A con 4, poi si aggiornerà il costo di A nella tabella di C e si verifica il cout-to-infinity.</p>
 <h2 id="timer-management">Timer management</h2>

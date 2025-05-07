@@ -30,14 +30,12 @@ Due esempi di *network stack* sono **TCP/IP** e **ISO-OSI**:
 
 Ogni livello offre delle **interfacce (API)** per gli strati adiacenti.
 
-Durante una comunicazione possiamo immaginare che mittente e destinatario abbiano un *network stack*, si parte dall’*Application layer* del mittente, scendendo nello stack ogni livello aggiunge dei dati all’informazione di partenza (operazione che si chiama **incapsulamento**). Quando il pacchetto finale arriva al destinatario viene percorsa la pila dal basso e si spacchetta fino al livello applicazione.
+Durante una comunicazione possiamo immaginare che mittente e destinatario abbiano un *network stack*, si parte dall’*Application layer* del mittente, scendendo nello stack, ogni livello aggiunge dei dati all’informazione di partenza (operazione che si chiama **incapsulamento**). Quando il pacchetto finale arriva al destinatario viene percorsa la pila dal basso e si spacchetta fino al livello applicazione.
 
-![https://i.ibb.co/hcwb5xk/image.png](https://i.ibb.co/hcwb5xk/image.png)
+![](https://i.ibb.co/hcwb5xk/image.png)
 
 Generalmente ci si riferisce all’informazione con il termine “pacchetto” ma ad ogni layer l’informazione prodotta assume un nome particolare:
 
 - A livello di trasporto si parla di **segmenti**
 - A livello IP si parla di **pacchetti**
 - A livello collegamento si parla di **frame**
-
-

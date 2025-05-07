@@ -37,28 +37,28 @@
 <p>Affrontiamo adesso dei protocolli di livello applicativo.</p>
 <p>Il livello applicativo è il più vicino all’utente e implementa protocolli come HTTP, FTP, SMTP, DNS, ecc., che forniscono servizi agli utenti finali o ad altre applicazioni.</p>
 <p>Il livello applicativo comunica con il livello di trasporto, che si occupa di garantire <strong>l’affidabilità</strong> (se si utilizza un protocollo come TCP) e di effettuare il <strong>multiplexing</strong>, distinguendo le applicazioni tramite numeri di porta.</p>
-<p>Quando due applicazioni su due sistemi diversi comunicano, il flusso di dati generato è identificato da principalmente da quattro numeri:</p>
+<p>Quando due applicazioni su due sistemi diversi comunicano, il flusso di dati generato è identificato da principalmente da quattro valori:</p>
 <ul>
 <li>Indirizzo IP sorgente</li>
-<li>porta sorgente</li>
+<li>numero di porta sorgente</li>
 <li>indirizzo IP destinatario</li>
-<li>porta destinataria</li>
+<li>numero di porta destinatario</li>
 </ul>
 <h2 id="indirizzi-ip">Indirizzi IP</h2>
-<p>Ogni host di una rete, per poter comunicare deve disporre di un indirizzo che lo identifica nelle rete, tale indirizzo è chiamato <strong>indirizzo IP</strong>.</p>
+<p>Ogni host di una rete, per poter comunicare, deve disporre di un indirizzo che lo identifica nelle rete, tale indirizzo è chiamato <strong>indirizzo IP</strong>.</p>
 <p>Gli indirizzi IP sono implementati nel <strong>livello di rete</strong> in due versioni:</p>
 <ul>
 <li><strong>IPv4</strong> che usa indirizzi di lunghezza 32 bit</li>
 <li><strong>IPv6</strong> che utilizza indirizzi di lunghezza 128bit</li>
 </ul>
 <p>Lavoreremo principalmente, per semplicità, con indirizzi IPv4.</p>
-<p>Tali indirizzi sono formati da quattro numeri separati da un punto <code>.</code> ogni numero può variare da 0 a 255 (cioè 8bit) ad esempio <code>127.0.0.1</code>, <code>192.168.0.0</code>, <code>172.31.255.255</code></p>
+<p>Tali indirizzi sono formati da quattro numeri separati da un punto <code>.</code>, dove ogni numero può variare da 0 a 255 (cioè 8bit). Ad esempio <code>127.0.0.1</code>, <code>192.168.0.0</code>, <code>172.31.255.255</code></p>
 <h2 id="dns-1">DNS</h2>
-<p>Anche i server sono riconosciuti da un indirizzo IP e i servizi che offrono sono identificati da un numero di porta, ma sarebbe molto scomodo per gli utenti ricordarsi gli indirizzi IP dei server che offrono il servizio ad un determinato numero di porta quando navigano su internet.</p>
-<p>Per quanto riguarda il numero di porta se si vuole navigare su internet si utilizza un browser e un browser è in grado di connettersi ad un insieme di porte standard.</p>
+<p>Anche i server sono riconosciuti da un indirizzo IP e i servizi che essi offrono sono identificati da un numero di porta. Sarebbe però molto scomodo per gli utenti ricordarsi gli indirizzi IP dei server che offrono il servizio ad un determinato numero di porta.</p>
+<p>Per quanto riguarda il numero di porta se si vuole navigare su internet si utilizza un browser e un browser è in grado di connettersi ad un insieme di porte standard (ad esempio 80 e 443).</p>
 <p>Abbiamo quindi bisogno di un servizio che ci permetta di <strong>mappare gli indirizzi IP a dei nomi significativi</strong>, un protocollo di livello applicativo che si occupa di questo è il <strong>DNS (Domain name system)</strong>.</p>
 <h2 id="nomi-di-dominio">Nomi di dominio</h2>
-<p>Possiamo vedere il DNS come un registro universale (un database distribuito), con una struttura gerarchica, che archivia i nomi mnemonici di dominio e la loro associazione ai relativi indirizzi IP specifici.</p>
+<p>Possiamo vedere il DNS come un registro universale (un database distribuito) con una struttura gerarchica, che archivia nomi di dominio e la loro associazione ai relativi indirizzi IP.</p>
 <p>Un nome di dominio è una stringa con una struttura gerarchia in cui le componenti sono separate da punti <code>.</code> , a sinistra si ha il livello più basso della gerarchia mentre a destra si ha il livello più alto (chiamato <strong>TLD</strong> <em>Top Level Domain</em>).</p>
 <p>L’organizzazione responsabile di assegnare nomi di dominio è ICANN (<em>Internet Corporation for Assigned Names and Numbers</em>), la quale delega la gestione dei TLD a specifiche organizzazioni. Tali organizzazioni, a loro volta, possono delegare la registrazione dei nomi di dominio a entità chiamate <strong>domain name registrar</strong>.</p>
 <p>Ad esempio, in <code>www.example.com</code>:</p>
@@ -68,7 +68,7 @@
 <li><code>.com</code> è il TLD (livello più alto)</li>
 </ul>
 <p>La gerarchia dei nomi segue la struttura ad albero potenzialmente infinita in cui ogni nodo gestisce a chi delegare i nodi figli.</p>
-<p><img src="https://i.ibb.co/khz8njT/image.png" alt="https://i.ibb.co/khz8njT/image.png"></p>
+<p><img src="https://i.ibb.co/khz8njT/image.png" alt=""></p>
 <p>Note importanti:</p>
 <ol>
 <li>I nomi di dominio vengono usati solo a livello applicativo</li>
@@ -77,40 +77,39 @@
 <li>I root server possiedono una lista completa di indirizzi dei server DNS autoritativi per tutti i TLD, cioè sa a chi inoltrare le richieste in base al TLD scritto nel dominio.</li>
 </ol>
 <h2 id="registrazione-di-un-nome-di-dominio">Registrazione di un nome di dominio</h2>
-<p>Nonostante sia possibile acquistare un TLD, ciò accade raramente a causa dei costi elevati. Solitamente, ci si rivolge a registrar per registrare un nome di dominio di secondo livello associato a un TLD disponibile.</p>
-<p>Una volta registrato il dominio, questo deve essere associato all’indirizzo IP del server che offre il servizio. Il registrar gestisce solitamente un server DNS, dove aggiunge una nuova entry che mappa il nome di dominio all’indirizzo IP specificato.</p>
+<p>Nonostante sia possibile acquistare un TLD, ciò accade raramente a causa dei costi elevati. Solitamente, ci si rivolge a dei <em>registrar</em> per registrare un nome di dominio di secondo livello associato a un TLD disponibile.</p>
+<p>Una volta registrato il dominio, questo deve essere associato all’indirizzo IP del server che offre il servizio. Il <em>registrar</em> gestisce un server DNS, dove aggiunge una nuova entry che mappa il nome di dominio all’indirizzo IP specificato.</p>
 <p>Successivamente, il registrar comunica al server DNS del TLD di essere responsabile della risoluzione del nuovo dominio. Da questo momento, il server DNS del registrar diventa <strong>autoritativo</strong> per il dominio, gestendo le richieste di risoluzione del nome in indirizzo IP.</p>
 <h2 id="accedere-ad-un-nome-di-dominio">Accedere ad un nome di dominio</h2>
 <p>Mettiamoci nei panni di un browser che vuole visitare <code>www.example.com</code> e deve ottenere il relativo indirizzo IP.</p>
 <p>Nota: <code>www</code> è una parte del dominio come qualunque altra (<code>main</code>, <code>mail</code>, <code>ciao</code>, <code>chat</code>,…), non ha nessuna particolarità, viene usato come convenzione storica per indicare indirizzi web.</p>
-<p>Innanzitutto nella rete locale si possiede l’indirizzo di un server DNS (solitamente fornito dall’ISP o configurato manualmente, come i server DNS di Google) a cui delegare il compito di risoluzione dei nomi di dominio.</p>
-<p><img src="https://i.ibb.co/pJXHvxq/image.png" alt="https://i.ibb.co/pJXHvxq/image.png"></p>
+<p>Innanzitutto nella rete locale si possiede l’indirizzo di un server DNS (solitamente fornito dall’ISP o configurato manualmente) a cui delegare il compito di risoluzione dei nomi di dominio.</p>
+<p><img src="https://i.ibb.co/pJXHvxq/image.png" alt=""></p>
 <ol>
-<li>Il browser di alice interroga il server DNS locale chiedendo chi è <code>www.example.com</code> con una <strong>richiesta ricorsiva</strong>.</li>
+<li>Il browser di Alice interroga il server DNS locale chiedendo chi è <code>www.example.com</code> con una <strong>richiesta ricorsiva</strong>.</li>
 <li>Il server DNS locale non sa la risposta, quindi inizia a fare delle <strong>richieste iterative</strong>, partendo da uno dei root server conosciuti.</li>
 <li>Il root server non sa la risposta ma risponde che il server DNS con indirizzo <code>1.2.3.3</code> è autoritativo per <code>.com</code></li>
 <li>Il server DNS locale chiede quindi a <code>1.2.3.3</code> chi sia <code>www.example.com</code></li>
 <li><code>1.2.3.3</code> non sa la risposta ma risponde che il server DNS con indirizzo <code>1.2.3.4</code> è autoritativo per <code>example.com</code></li>
 <li>Il server DNS locale chiede quindi a <code>1.2.3.4</code> chi sia <code>www.example.com</code></li>
-<li>Il server <code>1.2.3.4</code> conosce chi è <code>www.example.com</code> e risponde con il rispettivo indirizzo IP. Inoltre conferma di essere autoritativo per <code>example.com</code>quindi ogni richiesta ad un qualunque sotto-dominio di <code>example.com</code> verrà fatto direttamente al server <code>1.2.3.4</code>)</li>
-<li>Il server DNS locale manda l’indirizzo IP che aveva richiesto in modo che possa stabilire una connessione con esso.</li>
+<li>Il server <code>1.2.3.4</code> conosce chi è <code>www.example.com</code> e risponde con il rispettivo indirizzo IP. Inoltre conferma di essere autoritativo per <code>example.com</code> quindi ogni richiesta ad un qualunque sotto-dominio di <code>example.com</code> verrà fatto direttamente al server <code>1.2.3.4</code>)</li>
+<li>Il server DNS locale manda l’indirizzo IP che aveva richiesto Alice in modo che possa stabilire una connessione con esso.</li>
 </ol>
 <p>Chiariamo il concetto di richiesta ricorsiva e iterativa:</p>
 <ul>
 <li>Una richiesta <strong>ricorsiva</strong> implica che il server DNS a cui è stata fatta la richiesta si occupi completamente di trovare una risposta definitiva interagendo con altri server DNS.</li>
 <li>Una richiesta <strong>iterativa</strong> comporta che il server DNS risponda al client con la migliore informazione disponibile al momento, senza eseguire ulteriori richieste.</li>
 </ul>
-<p>Per ridurre il rischio di sovraccarichi Generalmente le query ricorsive sono permesse solo agli host locali con il server DNS</p>
+<p>Per ridurre il rischio di sovraccarichi le query ricorsive sono permesse solo agli host locali con il server DNS</p>
 <h2 id="dns-caching">DNS caching</h2>
-<p>Il server DNS locale può fungere anche da memoria cache per le richieste DNS risolte di recente:</p>
-<p>se un altro utente della rete fa una richiesta che è stata fatta poco fa da un altro host, il server locale risponderà direttamente senza inoltrare la richiesta ad altri server.</p>
+<p>Il server DNS locale può fungere anche da memoria cache per le richieste DNS risolte di recente: se un altro utente della rete fa una richiesta che è stata fatta poco fa da un altro host, il server locale risponderà direttamente senza inoltrare la richiesta ad altri server.</p>
 <p>Se sei una organizzazione grande e disponi di tante macchine, per fare load balancing puoi rispondere con indirizzi diversi a richieste uguali provenienti da host diversi.</p>
 <h2 id="protocollo-dns">Protocollo DNS</h2>
-<p>Per quanto si ovvio sensato pensare che DNS debba implementare dei servizi di sicurezza e di avere una comunicazione affidabile (risoluzioni sbagliate potrebbero portare a siti diversi da quelli voluti), in realtà DNS si basa sul protocollo di trasporto UDP (delle particolari versioni di DNS utilizzano invece TCP), non garantendo l’affidabilità dei dati.</p>
+<p>Per quanto sia ovvio sensato pensare che DNS debba implementare dei servizi di sicurezza e di avere una comunicazione affidabile (risoluzioni sbagliate potrebbero portare a siti diversi da quelli voluti), in realtà DNS si basa sul protocollo di trasporto UDP (delle particolari versioni di DNS utilizzano invece TCP), non garantendo l’affidabilità dei dati.</p>
 <p>Il formato semplificato di un messaggio DNS è il seguente:</p>
-<p><img src="https://i.ibb.co/9s7LTkD/image.png" alt="https://i.ibb.co/9s7LTkD/image.png"></p>
+<p><img src="https://i.ibb.co/9s7LTkD/image.png" alt=""></p>
 <p>In particolare il campo <code>header</code> è composto come segue:</p>
-<p><img src="https://i.ibb.co/bvjR4bm/image.png" alt="https://i.ibb.co/bvjR4bm/image.png"></p>
+<p><img src="https://i.ibb.co/bvjR4bm/image.png" alt=""></p>
 <ul>
 <li>ID è un numero identificativo (random) della richiesta, il server lo includerà nella risposta in modo da distinguere più risposte se vengono fatte più richieste in parallelo.</li>
 <li>QR: (query type) indica se si tratta di una richiesta o una risposta</li>
@@ -129,9 +128,9 @@
 </ul>
 <p>Questi ultimi quattro elementi sono chiamati <strong>Resource Record (RR)</strong>.<br>
 Ogni record ha un formato specifico che include vari campi:</p>
-<p><img src="https://i.ibb.co/hRJn5DV/image.png" alt="https://i.ibb.co/hRJn5DV/image.png"></p>
+<p><img src="https://i.ibb.co/hRJn5DV/image.png" alt=""></p>
 <ul>
-<li>NAME: è il nome del dominio a cui si riferisce il record</li>
+<li>NAME: è il nome del dominio da risolvere a cui si riferisce il record</li>
 <li>TYPE: specifica il tipo di record DNS e quindi il tipo di dato contenuto nel campo <strong>RDATA:</strong>
 <ul>
 <li><code>A</code>: Indirizzo IPv4.</li>
@@ -153,7 +152,7 @@ Ogni record ha un formato specifico che include vari campi:</p>
 <p>Quando un host vuole sapere il nome di dominio associato all’indirizzo <code>1.2.3.5</code> fa una richiesta DNS per il nome di dominio <code>5.3.2.1.in-addr.arpa</code> la risoluzione avverrà esattamente come i nomi di domini classici in cui <code>in-addr.arpa</code> è il TLD</p>
 <p>Gli indirizzi IP vengono <strong>invertiti</strong> per adattarsi alla struttura gerarchica del DNS, che ordina i livelli dalla gerarchia maggiore (a destra) alla minore (a sinistra). Gli indirizzi IP, infatti, hanno una gerarchia opposta, dove la parte più generale (reti) è a sinistra e quella più specifica (host) è a destra. Invertendo gli indirizzi IP nel reverse DNS, possiamo rappresentarli coerentemente con la logica gerarchica del DNS.</p>
 <h2 id="ridondanza">Ridondanza</h2>
-<p>Spesso i DNS server sono ridondati, quindi è possibile che delle risoluzioni dello stesso nome di dominio a breve distanza temporale dia indirizzi ip diversi.</p>
+<p>Spesso i DNS server sono ridondati, quindi è possibile che delle risoluzioni dello stesso nome di dominio a breve distanza temporale diano indirizzi IP diversi, questo perché alcuni servizi vengono forniti da più di un server (per fare <em>load balancing</em>).</p>
 <h2 id="tool-linux">Tool linux</h2>
 <h3 id="dig">Dig</h3>
 <p>Utilizzando il tool da linea di comando <code>dig</code> possiamo fare delle richieste DNS.</p>
