@@ -13,6 +13,7 @@
     <div class="stackedit__toc">
       
 <ul>
+<li><a href="#l’amministratore-di-sistema">L’amministratore di sistema</a></li>
 <li><a href="#hardware-e-raid">Hardware e raid</a>
 <ul>
 <li><a href="#memorie">Memorie</a></li>
@@ -20,7 +21,6 @@
 <li><a href="#raid">RAID</a></li>
 </ul>
 </li>
-<li><a href="#l’amministratore-di-sistema">L’amministratore di sistema</a></li>
 <li><a href="#la-sala-server">La sala server</a>
 <ul>
 <li><a href="#server">Server</a></li>
@@ -176,90 +176,9 @@
   </div>
   <div class="stackedit__right">
     <div class="stackedit__html">
-      <h1 id="hardware-e-raid">Hardware e raid</h1>
-<p>Possiamo rappresentare l’architettura dei computer con la <strong>macchina di Von Neuman</strong></p>
-<p><img src="https://i.ibb.co/rYvtSdq/image.png" alt="https://i.ibb.co/rYvtSdq/image.png"></p>
-<p>Una scheda madre (<em>motherboard</em>) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.</p>
-<p>Nella scheda madre possiamo installare CPU, memoria RAM, collegare memorie di massa e altre schede di espansione (video, rete, ecc…)</p>
-<h2 id="memorie">Memorie</h2>
-<p>In particolare le memorie possono essere categorizzate in:</p>
-<ul>
-<li>
-<p><strong>Memorie di massa:</strong></p>
-<p>Hanno lo scopo di <strong>conservare i programmi e i dati in modo permanente</strong>.</p>
-<p>Queste memorie possono essere collocate all’interno del case (memorie interne) oppure possono essere collegate esternamente al computer (memorie esterne).</p>
-<p>Appartengono a questa categoria: dvd, cd, chiavette USB, HDD, SSD, floppy disk.</p>
-</li>
-<li>
-<p><strong>Memorie principali:</strong></p>
-<ul>
-<li>memoria RAM: è la memoria che contiene i dati e i programmi in corso di esecuzione. È volatile, cioè perde il suo contenuto quando il computer viene spento</li>
-<li>memoria ROM: è una memoria di sola lettura. Contiene un programma che permette di accendere il computer</li>
-<li>memoria cache: svolge un compito di memorizzazione temporanea dei dati presi di recente dalla RAM in modo da velocizzare i successivi accessi.</li>
-</ul>
-</li>
-</ul>
-<p>La loro capacità si misura in multipli di Byte, tipicamente in GigaByte o TeraByte.</p>
-<h2 id="cpu">CPU</h2>
-<p>Non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.<br>
-È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati<br>
-attraverso il bus alla periferica desiderata.</p>
-<h2 id="raid">RAID</h2>
-<p>il RAID (<em>Redundant Arrays of Inexpensive Disks</em>) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.</p>
-<p>L’idea di base è quella di combinare più dischi indipendenti per ottenere o <strong>velocità, o sicurezza o capacità superiori</strong> a quelle ottenibili con un qualunque disco SLED (<em>Single Large Expensive Drive</em>)</p>
-<ul>
-<li>Velocità: Aumenta le performance distribuendo i dati sui vari dischi (<em>Striping</em>) permettendo l’accesso in parallelo ai dati (in lettura)</li>
-<li>Sicurezza: permette di avere dischi rindondati (<em>Mirroring</em>) o controlli di parità sui dati.</li>
-<li>Capacità: “sommando” più dischi ne ottengo uno di capacità maggiore.</li>
-</ul>
-<p>Il RAID può essere:</p>
-<ul>
-<li><strong>hardware</strong>, con un controller dei dischi che si occupa di creazione, cancellazione, ricostruzione del RAID</li>
-<li><strong>software</strong>, gestito dal sistema operativo (sconsigliato)</li>
-</ul>
-<p>Vediamo diverse tipologie di RAID, è importante sottolineare che nessun RAID sostituisce un sistema di backup dei dati (il RAID non permette il recupero da malware o disastri naturali, il backup invece sì).</p>
-<h3 id="raid-0">RAID 0</h3>
-<p>I <strong>dati vengono distribuiti tra più dischi</strong> (operazione detta <em><strong>striping</strong></em>). ha il principale scopo di aumentare lo storage e mediante la parallelizzazione delle operazione ottiene più performance in scrittura e lettura.</p>
-<p>Necessita di almeno 2 dischi.</p>
-<p>Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.</p>
-<p><img src="https://i.ibb.co/mrbYx18S/image.png" alt="https://i.ibb.co/mrbYx18S/image.png"></p>
-<h3 id="raid-1">RAID 1</h3>
-<p>Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta <em><strong>mirroring</strong></em>), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).</p>
-<p>Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.</p>
-<p><img src="https://i.ibb.co/9mD4XmRJ/image.png" alt="https://i.ibb.co/9mD4XmRJ/image.png"></p>
-<h3 id="raid-3-e-4">RAID 3 e 4</h3>
-<p>Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di <em>xor</em> tra i dischi rimanenti.</p>
-<p>Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.</p>
-<p>Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.</p>
-<p><img src="https://i.ibb.co/DH1MC60w/image.png" alt="https://i.ibb.co/DH1MC60w/image.png"></p>
-<h3 id="raid-5">RAID 5</h3>
-<p><strong>Raid 5</strong>: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.</p>
-<p>La capacità totale è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">((n-1)\cdot C)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mclose">)</span></span></span></span></span> dove <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> è il numero di dischi e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span></span></span></span></span> la loro capacità, ad esempio 3 dischi da 500GB: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mn>3</mn><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mn>500</mn><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mi>T</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">((3-1)\cdot 500) = 1TB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">500</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right: 0.05017em;">TB</span></span></span></span></span></p>
-<p>Al massimo si può rompere un disco.</p>
-<p><img src="https://i.ibb.co/67tgyVqC/image.png" alt="https://i.ibb.co/67tgyVqC/image.png"></p>
-<h3 id="raid-6">RAID 6</h3>
-<p>Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondanza, questo permette di essere un metodo estremamente affidabile. Questa doppia ridondanza causa però una scrittura abbastanza lenta.</p>
-<p>Al massimo si possono rompere due dischi.</p>
-<p><img src="https://i.ibb.co/bgQsfxYH/image.png" alt="https://i.ibb.co/bgQsfxYH/image.png"></p>
-<h3 id="raid-10">RAID 1+0</h3>
-<p>Necessita di un numero pari di dischi, e devono essere almeno 4.</p>
-<p>È una combinazione del raid 0 con il raid 1.</p>
-<p>In grado di rigenerare i dati anche in presenza di rotture di più dischi mantenendo buone prestazioni.</p>
-<p>Non vengono gestite le informazioni di parità.</p>
-<p>la capacità complessiva dei dischi viene dimezzata</p>
-<pre><code>                    RAID 0
-                      │
-      ┌———————-———————┼————-——————————┐
-      │               │               │
-    RAID 1          RAID 1          RAID 1
-   ┌—-—┴———┐      ┌—-—┴———┐       ┌—-—┴———┐
-   │       │      │       │       │       │
- 120GB   120GB  120GB   120GB   120GB   120GB
-</code></pre>
-<p>nota che è diverso dal RAID 0+1, in cui si inverte l’uso dei RAID</p>
-<h1 id="l’amministratore-di-sistema">L’amministratore di sistema</h1>
+      <h1 id="l’amministratore-di-sistema">L’amministratore di sistema</h1>
 <p>Un <strong>amministratore di sistema</strong> (SysAdmin, SA) si occupa di vari compiti, tra cui la gestione, la messa in opera, la manutenzione, l’aggiornamento di un sistema.</p>
-<p>Con <strong>sistema</strong> si intende un insieme di elementi (dispositivi come PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati per cui  il sistema è stato definito.</p>
+<p>Con <strong>sistema</strong> si intende un insieme di elementi (PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati prestabiliti.</p>
 <p>Una regola fondamentale nel campo dell’amministrazione di un sistema è che <strong>se un sistema funziona (ciò svolge il suo compito) allora non si modifica ma si mantiene</strong>.</p>
 <p>Un sistema si cambia solamente quando:</p>
 <ul>
@@ -285,6 +204,87 @@ attraverso il bus alla periferica desiderata.</p>
 <li>problem solving</li>
 <li>saper creare e mantenere la documentazione del sistema</li>
 </ul>
+<h1 id="hardware-e-raid">Hardware e raid</h1>
+<p>Possiamo rappresentare l’architettura dei computer con la <strong>macchina di Von Neuman</strong></p>
+<p><img src="https://i.ibb.co/rYvtSdq/image.png" alt=""></p>
+<p>Una scheda madre (<em>motherboard</em>) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.</p>
+<p>Nella scheda madre possiamo installare CPU, memoria RAM, collegare memorie di massa e altre schede di espansione (video, rete, ecc…)</p>
+<h2 id="memorie">Memorie</h2>
+<p>In particolare le memorie possono essere categorizzate in:</p>
+<ul>
+<li>
+<p><strong>Memorie di massa:</strong></p>
+<p>Hanno lo scopo di <strong>conservare i programmi e i dati in modo permanente</strong>.</p>
+<p>Queste memorie possono essere collocate all’interno del case (memorie interne) oppure possono essere collegate esternamente al computer (memorie esterne).</p>
+<p>Appartengono a questa categoria: dvd, cd, chiavette USB, HDD, SSD, floppy disk.</p>
+</li>
+<li>
+<p><strong>Memorie principali:</strong></p>
+<ul>
+<li>memoria RAM: è la memoria che contiene i dati e i programmi in corso di esecuzione. È volatile, cioè perde il suo contenuto quando il computer viene spento</li>
+<li>memoria ROM: è una memoria di sola lettura. Contiene un programma che permette di accendere il computer</li>
+<li>memoria cache: svolge un compito di memorizzazione temporanea dei dati presi di recente dalla RAM in modo da velocizzare i successivi accessi.</li>
+</ul>
+</li>
+</ul>
+<p>La loro capacità si misurano in multipli di Byte, tipicamente in GigaByte o TeraByte.</p>
+<h2 id="cpu">CPU</h2>
+<p>La CPU non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.<br>
+È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati<br>
+attraverso il bus alla periferica desiderata.</p>
+<h2 id="raid">RAID</h2>
+<p>Il RAID (<em>Redundant Arrays of Inexpensive Disks</em>) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa, indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.</p>
+<p>L’idea di base è quella di combinare più dischi indipendenti per ottenere o <strong>velocità, o sicurezza o capacità superiori</strong> a quelle ottenibili con un qualunque disco SLED (<em>Single Large Expensive Drive</em>)</p>
+<ul>
+<li>Velocità: Aumenta le performance distribuendo i dati sui vari dischi (<em>Striping</em>) permettendo l’accesso in parallelo ai dati (in lettura)</li>
+<li>Sicurezza: permette di avere dischi rindondati (<em>Mirroring</em>) o controlli di parità sui dati.</li>
+<li>Capacità: “sommando” più dischi ne ottengo uno di capacità maggiore.</li>
+</ul>
+<p>Il RAID può essere:</p>
+<ul>
+<li><strong>hardware</strong>, con un controller dei dischi che si occupa di creazione, cancellazione, ricostruzione del RAID</li>
+<li><strong>software</strong>, gestito dal sistema operativo (sconsigliato)</li>
+</ul>
+<p>Vediamo diverse tipologie di RAID, è importante sottolineare che nessun RAID sostituisce un sistema di backup dei dati (il RAID non permette il recupero da malware o disastri naturali, il backup invece sì).</p>
+<h3 id="raid-0">RAID 0</h3>
+<p>I <strong>dati vengono distribuiti tra più dischi</strong> (operazione detta <em><strong>striping</strong></em>). ha il principale scopo di aumentare lo storage e mediante la parallelizzazione delle operazione ottiene più performance in scrittura e lettura.</p>
+<p>Necessita di almeno 2 dischi.</p>
+<p>Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.</p>
+<p><img src="https://i.ibb.co/mrbYx18S/image.png" alt=""></p>
+<h3 id="raid-1">RAID 1</h3>
+<p>Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta <em><strong>mirroring</strong></em>), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).</p>
+<p>Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.</p>
+<p><img src="https://i.ibb.co/9mD4XmRJ/image.png" alt=""></p>
+<h3 id="raid-3-e-4">RAID 3 e 4</h3>
+<p>Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di <em>xor</em> tra i dischi rimanenti.</p>
+<p>Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.</p>
+<p>Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.</p>
+<p><img src="https://i.ibb.co/DH1MC60w/image.png" alt=""></p>
+<h3 id="raid-5">RAID 5</h3>
+<p><strong>Raid 5</strong>: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.</p>
+<p>La capacità totale è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">((n-1)\cdot C)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mclose">)</span></span></span></span></span> dove <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> è il numero di dischi e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span></span></span></span></span> la loro capacità, ad esempio 3 dischi da 500GB: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mn>3</mn><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mn>500</mn><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mi>T</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">((3-1)\cdot 500) = 1TB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">500</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right: 0.05017em;">TB</span></span></span></span></span></p>
+<p>Al massimo si può rompere un disco.</p>
+<p><img src="https://i.ibb.co/67tgyVqC/image.png" alt=""></p>
+<h3 id="raid-6">RAID 6</h3>
+<p>Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondanza, questo permette di essere un metodo estremamente affidabile. Questa doppia ridondanza causa però una scrittura abbastanza lenta.</p>
+<p>Al massimo si possono rompere due dischi.</p>
+<p><img src="https://i.ibb.co/bgQsfxYH/image.png" alt=""></p>
+<h3 id="raid-10">RAID 1+0</h3>
+<p>Necessita di un numero pari di dischi, e devono essere almeno 4.</p>
+<p>È una combinazione del raid 0 con il raid 1.</p>
+<p>In grado di rigenerare i dati anche in presenza di rotture di più dischi mantenendo buone prestazioni.</p>
+<p>Non vengono gestite le informazioni di parità.</p>
+<p>la capacità complessiva dei dischi viene dimezzata</p>
+<pre><code>                    RAID 0
+                      │
+      ┌———————-———————┼————-——————————┐
+      │               │               │
+    RAID 1          RAID 1          RAID 1
+   ┌———┴———┐      ┌———┴———┐       ┌———┴———┐
+   │       │      │       │       │       │
+ 120GB   120GB  120GB   120GB   120GB   120GB
+</code></pre>
+<p>nota che è diverso dal RAID 0+1, in cui si inverte l’uso dei RAID</p>
 <h1 id="la-sala-server">La sala server</h1>
 <h2 id="server">Server</h2>
 <p>L’architettura di un server non è molto differente da un PC casalingo.</p>
@@ -304,31 +304,31 @@ attraverso il bus alla periferica desiderata.</p>
 <p>Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.</p>
 </li>
 <li>
-<p>numero molto alto di interfacce di rete</p>
+<p>Numero molto alto di interfacce di rete</p>
 </li>
 <li>
-<p>presenza di <strong>iLO</strong> (<em>Integrated Light-Out</em>), Fisicamente è una porta Ethernet, la quale<br>
+<p>Presenza di <strong>iLO</strong> (<em>Integrated Light-Out</em>), Fisicamente è una porta Ethernet, la quale<br>
 semplifica le operazioni di gestione e monitoraggio remoto.</p>
 </li>
 <li>
-<p>un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)</p>
+<p>Un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)</p>
 </li>
 </ul>
 <p>I server possono essere:</p>
 <ul>
 <li>
 <p><strong>server rack</strong>: sono dei moduli (degli effettivi computer) inseriti in un armadio armadio rack con dei carrelli a scorrimento impilati uno sopra l’altro.</p>
-<p>ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.</p>
+<p>Ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.</p>
 </li>
 <li>
-<p><strong>server blade</strong>: Sono dei moduli più compatti (computer minimali, solo CPU e ram), inseriti in uno <em>chassis</em> condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.</p>
+<p><strong>server blade</strong>: Sono dei moduli più compatti (computer minimali, solo CPU e RAM), inseriti in uno <em>chassis</em> condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.</p>
 </li>
 </ul>
 <h3 id="rack-unit">Rack unit</h3>
 <p>Una rack unit, abbreviata in <strong>U</strong> (oppure RU, HU, height unit) è un’unità di misura usata per indicare l’altezza dei componenti installati in un rack. Un apparato alto un’unità rack è spesso indicato come<br>
 <code>1U</code>, e per altezze maggiori <code>2U</code>, <code>4U</code> e così via.</p>
 <p>Per comodità una unità equivale a 3 buchi nelle lastre metalliche dove si infilano i server</p>
-<p><img src="https://i.ibb.co/JjPSNKkV/image.png" alt="https://i.ibb.co/JjPSNKkV/image.png"></p>
+<p><img src="https://i.ibb.co/JjPSNKkV/image.png" alt=""></p>
 <h2 id="sala-server">Sala server</h2>
 <p>Una sala server è una stanza contenente vari server ospitati in armadi rack.</p>
 <p>È una stanza delimitata da grosse pareti, possibilmente <strong>insonorizzate e isolate termicamente</strong>. L’accesso ad essa dovrebbe essere consentito solo attraverso una o più porte di sicurezza.</p>
@@ -336,21 +336,20 @@ semplifica le operazioni di gestione e monitoraggio remoto.</p>
 <ul>
 <li>
 <p><strong>di condizionamento</strong>:</p>
-<p>I server scaldano molto, serve quindi un adeguato sistema di raffreddamento, anche i condizioni devono essere ridondati per gestire il guasto di un condizionatore</p>
+<p>I server scaldano molto, serve quindi un adeguato sistema di raffreddamento, anche i condizioni devono essere ridondati per gestire il guasto di un condizionatore.</p>
 </li>
 <li>
 <p><strong>elettrico</strong>:</p>
 <p>I server consumano molta corrente elettrica, servono quindi molti alimentatori e molto grandi.</p>
 <p>Dovrebbe esserci un <strong>UPS</strong> e un sistema di <strong>gruppi elettrogeni</strong></p>
 <ul>
-<li><strong>UPS</strong> (<em>Uninterruptible Power Supply</em>) è un dispositivo in grado di erogare energia, con l’ausilio<br>
-di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le variazioni di tensione.</li>
-<li><strong>gruppo elettrogeno</strong>: un motore diesel che in mancanza di corrente aziona una specie di turbina che genera elettricità (sta a monte dell’UPS perché il suo avvio può produrre pericolosi picchi di tensione che vengono tagliati dall’UPS).</li>
+<li><strong>UPS</strong> (<em>Uninterruptible Power Supply</em>) è un dispositivo in grado di erogare energia, con l’ausilio di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le variazioni di tensione.</li>
+<li><strong>gruppo elettrogeno</strong>: un motore diesel che, in mancanza di corrente, aziona una specie di turbina che genera elettricità (sta a monte dell’UPS perché il suo avvio può produrre pericolosi picchi di tensione che vengono tagliati dall’UPS).</li>
 </ul>
 </li>
 <li>
 <p><strong>anti-incendio</strong>:</p>
-<p>a causa del calore generato e dai tanti dispositivi elettronici presenti nella sala, è necessario un sistema in caso di incendio <strong>a secco</strong>, cioè con gas che rimuovono l’ossigeno dall’aria estinguendo così le fiamme, senza impattare sui componenti</p>
+<p>a causa del calore generato e dai tanti dispositivi elettronici presenti nella sala, è necessario un sistema in caso di incendio <strong>a secco</strong>, cioè con gas che rimuovono l’ossigeno dall’aria estinguendo così le fiamme, senza impattare sui componenti.</p>
 </li>
 <li>
 <p><strong>di rete</strong>:</p>
@@ -381,17 +380,15 @@ di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le
 </ul>
 <p>Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.</p>
 <h3 id="cavo-di-rete-doppino-telefonico">Cavo di rete (doppino telefonico)</h3>
-<p>Costituito da almeno due fino ad un massimo di 8 sottili fili<br>
-di rame intrecciati. La categoria del cavo (5/5a/6a/7…) definisce la banda<br>
-massima garantita e la qualità di isolamento per le interferenze.</p>
+<p>Costituito da almeno due fino ad un massimo di 8 sottili fili di rame intrecciati. La categoria del cavo (5/5a/6a/7…) definisce la banda massima garantita e la qualità di isolamento per le interferenze.</p>
 <h3 id="fibra">Fibra</h3>
 <p>Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, del mezzo di trasmissione e di un ricevitore; la sorgente luminosa converte segnali elettrici in impulsi per poi riconvertirli in segnali elettrici alla fine del tragitto.</p>
 <h3 id="wi-fi">Wi-Fi</h3>
-<p>Le reti wifi usano l’etere (l’aria come mezzo di propagazione i fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.</p>
+<p>Le reti wifi usano l’etere (l’aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.</p>
 <p>Si utilizza un <strong>access point</strong>, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.</p>
 <p>Ha bisogno di sistemi di sicurezza e autenticazione elevati perché chiunque può agganciarsi alla rete</p>
 <h3 id="li-fi">Li-Fi</h3>
-<p>Li-Fi (<em>Light Fidelity</em>) è il corrispondente ottico del Wi-Fi (che usa trasmissioni radio). La differenza sta nel fatto che le frequenze occupate appartengono allo spettro della luce visibile.</p>
+<p>Li-Fi (<em>Light Fidelity</em>) è il corrispondente ottico del Wi-Fi (che usa invece trasmissioni radio). La differenza sta nel fatto che le frequenze occupate da Li-Fi appartengono allo spettro della luce visibile.</p>
 <p>Si basa sull’invio di dati attraverso la luce alterando la frequenza della luce come se fossero lampadine a LED che lampeggiano e trasmettono dati, in modo che un foto-ricevitore possa stabilire una connessione wireless.</p>
 <p>È una connessione ottica a corto raggio, tipicamente a meno di 4 metri di distanza</p>
 <h2 id="networking-1">Networking</h2>
@@ -403,16 +400,17 @@ massima garantita e la qualità di isolamento per le interferenze.</p>
 </ul>
 <h2 id="tcpip">TCP/IP</h2>
 <p>Tutte le moderne reti si basano sullo stack <strong>TCP/IP</strong> che altro non è che un insieme di <strong>protocolli</strong>, cioè delle regole che delineano il formato dei messaggi che deve essere utilizzato nella comunicazione tra due sistemi.</p>
-<p>Lo stack TCP/IP è costruito su un <strong>modello a strati o livelli</strong>, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.</p>
-<p>In una rete TCP/IP ogni host è identificato da un <strong>indirizzo IP univoco</strong> all’interno di essa.</p>
+<p>Lo stack TCP/IP è costruito su un <strong>modello a livelli</strong>, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.</p>
+<p>All’interno di una rete TCP/IP ogni host è identificato da un <strong>indirizzo IP univoco</strong>.</p>
+<p><img src="https://i.ibb.co/ycGPBL3m/image.png" alt=""></p>
 <h2 id="dispositivi-di-networking">Dispositivi di networking</h2>
 <p>Vediamo i principali dispositivi nel mondo del networking:</p>
 <ul>
-<li><strong>scheda di rete</strong>: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato <em>MAC address</em></li>
+<li><strong>scheda di rete</strong>: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato <em>MAC address.</em></li>
 <li><strong>hub</strong>: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.</li>
 <li><strong>switch</strong>: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima</li>
-<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
-<li><strong>access point</strong>: permette accesso alla rete tramite connessione Wi-Fi</li>
+<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
+<li><strong>access point</strong>: permette accesso alla rete tramite connessione Wi-Fi.</li>
 </ul>
 <h2 id="mac-address">MAC address</h2>
 <p><strong>MAC address</strong> (<em>Media Access Control</em>), è un codice di <strong>48 bit</strong> (6 byte) che viene assegnato in modo <strong>univoco</strong> dal produttore ad ogni <strong>scheda di rete</strong> ethernet o wireless prodotta al <strong>mondo</strong>.</p>
@@ -471,13 +469,13 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Esistono diversi indirizzi particolari che sono riservati a scopi specifici e non possono essere assegnati agli host:</p>
 <ul>
 <li><code>0.0.0.0</code> (<strong>default route</strong>): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.</li>
-<li><strong>indirizzo di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 0, è l’indirizzo che identifica la rete.</li>
-<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete specificata nell’indirizzo.</li>
-<li><strong>indirizzo di broadcast di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host e la rete hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete.</li>
+<li><strong>indirizzo di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. <code>192.168.1.0/24</code></li>
+<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. <code>192.168.1.255</code></li>
+<li><strong>indirizzo di broadcast di rete</strong>: è l’indirizzo in cui tutti i bit dell’host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. <code>255.255.255.255</code></li>
 <li><strong>Loopback</strong>: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (<em>localhost</em>), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo <code>127.0.0.1</code></li>
 </ul>
 <h3 id="indirizzi-privati">Indirizzi privati</h3>
-<p>Ci sono dei range di indirizzi (chiamati <strong>indirizzi privati</strong>), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host su internet.</p>
+<p>Ci sono dei range di indirizzi (chiamati <strong>indirizzi privati</strong>), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host pubblici su internet.</p>
 
 <table>
 <thead>
@@ -525,9 +523,9 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Nota: anche il NAS andrebbe ridondato e andrebbe fatto un backup dei dati al suo interno.</p>
 <h2 id="san">SAN</h2>
 <p>Una SAN (Storage Area Network) può essere vista come una rete LAN secondaria dedicata a dispositivi per lo storage che viene affiancata alla LAN dove sono collegati tutti gli altri dispositivi.</p>
-<p>Un sistema senza SAN abbiamo i dispositivi di storage attaccati direttamente ai server che condividono informazioni sulla LAN, questo porta un rapido degrado delle performance in quanto le richieste provenienti dalla rete che riguardano un grande trasferimento di dati potrebbero saturare la banda.</p>
+<p>In un sistema senza SAN abbiamo i dispositivi di storage attaccati direttamente ai server che condividono informazioni sulla LAN, questo porta un rapido degrado delle performance in quanto le richieste provenienti dalla rete che riguardano un grande trasferimento di dati potrebbero saturare la banda.</p>
 <p>Realizzare una rete separata per i dispositivi di storage permette una grande scalabilità in termini di storage e di connettività, infatti tutta la potenza di calcolo dei server è utilizzata per le applicazioni, in quanto i dati non risiedono in questi, ma sulla rete SAN appunto.</p>
-<p>Ci possono essere casi in cui si vuole accedere ad una SAN da diversi posti geografici, in tali casi si può usare un canale in fibra se la distanza non è molta oppure di sono dei protocolli di <em>storage over IP:</em></p>
+<p>Ci possono essere casi in cui si vuole accedere ad una SAN da diversi posti geografici, in tali casi si può usare un canale in fibra se la distanza non è molta, oppure di sono dei protocolli di <em>storage over IP:</em></p>
 <ul>
 <li>ISCSI</li>
 <li>IFCP</li>
@@ -546,7 +544,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 </ul>
 <p>Vantaggi:</p>
 <ul>
-<li>costI molto ridotti</li>
+<li>costi molto ridotti</li>
 <li>downtime del sistema ridotto</li>
 <li>aumento della produttività e dell’efficienza</li>
 <li>fornitura più rapida dei servizi</li>
@@ -557,7 +555,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Tramite la virtualizzazione dei server è possibile eseguire <strong>più sistemi operativi sotto forma di macchine virtuali</strong> all’interno di un server fisico. In questo modo in un unica macchina si hanno degli ambienti isolati che si occupano della propria specifica funzione.</p>
 <p>Es. al posto di avere un server per la posta e un web server, mantengo un server con due macchine virtuali.</p>
 <h2 id="virtualizzazione-del-desktop">Virtualizzazione del desktop</h2>
-<p>Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo ma che si agganciano ad una macchina virtuale offerta da un server.</p>
+<p>Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo e che si agganciano ad una macchina virtuale offerta da un server.</p>
 <p>I tre tipi principali di virtualizzazione del desktop sono:</p>
 <ul>
 <li><strong>VDI</strong> (<em>Virtual Desktop Infrastructure</em>): l’utente interagisce con un sistema operativo di macchina virtuale che gira su un server della propria infrastruttura</li>
@@ -590,7 +588,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 </ul>
 <p>Mentre per i datacenter si utilizzano sistemi operativi progettati apposta per la virtualizzazione, per i dispostivi casalinghi che hanno OS più general purpose i software di virtualizzazione sono meno ottimizzati, per questo motivo eseguendo una VM sul proprio computer di casa si percepisce una netta differenza di prestazioni rispetto all’ambiente host.</p>
 <h1 id="il-cloud">Il cloud</h1>
-<p>Possiamo definire <strong>il cloud</strong> come una distribuzione di servizi di calcolo accessibili tramite internet.</p>
+<p>Possiamo definire <strong>il cloud computing</strong> come una distribuzione di servizi di calcolo accessibili tramite internet.</p>
 <p>Con <strong>servizi di calcolo</strong> possiamo intendere server, database, software, reti, ecc… che in generale possono permettere agli utenti di:</p>
 <ul>
 <li>creare applicazioni</li>
@@ -661,7 +659,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>I file si distinguono anche per le <strong>estensioni</strong> come exe, jpg, gif, mov, mkv ecc…</p>
 <p>In Windows, un file speciale è quello di Swap, presente ora anche in quasi tutte le distribuzioni Linux, il cui scopo è riservare una piccola porzione del disco fisso come memoria aggiuntiva alla RAM.</p>
 <h2 id="directory">Directory</h2>
-<p>Una <strong>directory è un elenco di nomi di file</strong> (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una <strong>struttura gerarchica al filesystem</strong> (ad albero), con una radice indicata da <code>/</code> in Linux e <code>c:\</code> in Windows.</p>
+<p>Una <strong>directory è un elenco di nomi di file</strong> (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una <strong>struttura gerarchica al filesystem</strong> (ad albero), con una radice indicata da <code>/</code> in Linux e <code>C:\</code> in Windows.</p>
 <p>Sulle directory si possono effettuare operazioni come creazione, cancellazione, collegamenti e ridenominazione.</p>
 <h2 id="struttura-del-file-system-in-linux">Struttura del File system in Linux</h2>
 <p>La struttura del filesystem in Linux/Unix presenta diverse directory con un ruolo specifico:</p>
@@ -709,7 +707,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p><strong>HFS+</strong> è una versione journaled del vecchio HFS, utilizzato da macOS. Sebbene sia stabile e affidabile, le sue prestazioni possono essere limitate. Apple ha sviluppato <strong>APFS</strong> come alternativa a HFS+, ottimizzato per memorie flash e SSD, implementando un meccanismo di copy-on-write. <strong>Copy-on-write</strong> è una tecnica per ridurre la duplicazione delle risorse di sistema.</p>
 <h1 id="boot-e-partizionamento">Boot e partizionamento</h1>
 <h2 id="bios">BIOS</h2>
-<p>All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, chiamato BIOS. Il <strong>BIOS</strong> (<em>Basic Input-Output System</em>) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:</p>
+<p>All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, contenente il BIOS. Il <strong>BIOS</strong> (<em>Basic Input-Output System</em>) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:</p>
 <ul>
 <li>effettua controlli hardware del sistema</li>
 <li>cerca e controlla le periferiche</li>
@@ -727,7 +725,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 </ul>
 <h2 id="fase-di-avvio-di-linux">Fase di avvio di Linux</h2>
 <p>Il vecchio BIOS è più semplice, per cui ci baseremo su quello.</p>
-<p>Una volta finiti i check HW il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.</p>
+<p>Una volta finiti i check HW, il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.</p>
 <p>MBR cerca la prima <strong>partizione attiva</strong> del disco (cioè quella flaggata come <em>bootable)</em>, una volta trovata, legge il suo contenuto che contiene informazioni su come caricare il boot loader. Una volta caricato il boot loader, quest’ultimo si occuperà di avviare il sistema operativo.</p>
 <h3 id="windows">Windows</h3>
 <p>Su Windows il compito del boot loader veniva svolto dal file <code>NTLDR.exe</code> che permetteva di selezionare il sistema operativo con le informazioni contenuto del file <code>boot.ini</code>, un file di testo nascosto e in sola lettura.</p>
@@ -752,7 +750,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 </code></pre>
 <p>Una volta lanciato il processo init, esso diventa il padre di tutti i successivi processi.</p>
 <h3 id="systemd-e-upstart">Systemd e Upstart</h3>
-<p>Nelle moderni distribuzioni di Linux init è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:</p>
+<p>Nelle moderni distribuzioni di Linux, il processo <strong>init</strong> è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:</p>
 <ul>
 <li>Upstart</li>
 <li>Systemd (il più diffuso)</li>
@@ -762,7 +760,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Questa fase consiste nel suddividere le unità di storage in partizioni, cioè in porzioni di disco.</p>
 <p>Per PC da casa il partizionamento di default va già bene, al massimo si può decidere di posizionare <code>/home</code> in una partiziona separata da <code>/</code>.</p>
 <h3 id="swap">Swap</h3>
-<p>Nel partizionamento spesso viene menzionata la <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
+<p>Nel partizionamento spesso viene menzionata la partizione <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
 <p>Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.</p>
 <p>Ci sono due approcci per gestire la Swap:</p>
 <ul>
@@ -895,7 +893,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 </ul>
 <p>Soluzione Swap 3:</p>
 <ul>
-<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.25</mn><mo>=</mo><mn>384</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.25 = 384GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.25</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">384</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.75</mn><mo>=</mo><mn>384</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.75 = 384GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.75</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">384</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
 </ul>
 <p>in tutti i casi possiamo ospitare circa 100 utenti</p>
 <h2 id="ssh">SSH</h2>
@@ -908,7 +906,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <pre class=" language-bash"><code class="prism  language-bash">ssh-keygen -t rsa -b 2048
 </code></pre>
 <p>normalmente le chiavi generate vengono salvate in <code>~/.ssh/</code></p>
-<p>L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite ssh-agent per mettere in cache la passphrase per la durata della sessione</p>
+<p>L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite <code>ssh-agent</code> per mettere in cache la passphrase per la durata della sessione</p>
 <pre class=" language-bash"><code class="prism  language-bash">ssh-add ~/.ssh/id_rsa
 </code></pre>
 <p>quando ci si è connessi poi bisogna copiare la chiave pubblica nel server, nel file <code>~/.ssh/authorized_keys</code>. Si può anche usare lo script ssh-copy-id per copiarla in modo automatizzato:</p>
@@ -940,7 +938,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <li><code>groups</code>: mostra di quali gruppi fa parte l’utente</li>
 </ul>
 <p>Esiste un utente speciale che prende il nome di <strong>root</strong>, che possiede UID 0, e che può fare praticamente qualsiasi cosa nel sistema.</p>
-<p>Un utente può diventare può diventare temporaneamente root con i comandi <code>su</code> (per aprire una nuova shell come root) e <code>sudo</code> (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)</p>
+<p>Un utente può diventare temporaneamente root con i comandi <code>su</code> (per aprire una nuova shell come root) e <code>sudo</code> (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)</p>
 <p>È possibile aggiungere un utente al gruppo sudo tramite</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">usermod</span> -aG <span class="token function">sudo</span> <span class="token operator">&lt;</span>username<span class="token operator">&gt;</span>
 </code></pre>
@@ -965,11 +963,13 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <ul>
 <li>
 <p><code>setuid</code></p>
-<p>viene impostato nei file per permettere al file di essere eseguito con i permessi dell’utente proprietario</p>
+<p>viene utilizzato per fare in modo che un file venga eseguito con i privilegi del suo proprietario, anziché con quelli dell’utente che lo esegue. Tuttavia, l’utente deve già disporre del permesso di esecuzione.</p>
+<p>Il setuid è rappresentato da una <code>s</code> al posto della <code>x</code> nella sezione relativa al proprietario.</p>
 </li>
 <li>
 <p><code>setgid</code></p>
-<p>viene impostato nei file per permettere al file di essere eseguito con i permessi del gruppo proprietario</p>
+<p>Il bit setgid viene utilizzato per fare in modo che un file venga eseguito con i privilegi del gruppo proprietario, anziché con quelli del gruppo dell’utente che lo esegue. L’utente deve già disporre del permesso di esecuzione.</p>
+<p>Il setgid è rappresentato da una <code>s</code> al posto della <code>x</code> nella sezione relativa al gruppo.</p>
 </li>
 <li>
 <p><code>sticky bit</code></p>
@@ -977,7 +977,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Questo permesso viene spesso impostato sulle directory come <code>/tmp</code> per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.</p>
 </li>
 </ul>
-<p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permesse sul file si usa il comando <code>chmod</code>.</p>
+<p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permessi sul file si usa il comando <code>chmod</code>.</p>
 <p>È possibile assegnare agli utenti o ai gruppi una quantità massimo di spazio su disco occupabile, detto <strong>quota</strong>, gestibile con i comandi <code>quota</code> e <code>edquota</code>.</p>
 <h2 id="processi">Processi</h2>
 <p>Ogni programma in esecuzione è rappresentato da almeno un processo, ogni processo possiede un utente e un gruppo proprietario che sono corrispondenti a chi ha lanciato il processo (a meno che non siano presenti i modificatori <code>setuid</code> o <code>setgid</code>), inoltre ogni processo è identificato da un <strong>PID</strong> (<em>Process ID</em>)</p>
@@ -1005,7 +1005,9 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <li>Bourne Again Shell (<strong>bash</strong>): la shell attualmente di default su Linux, compatibile con sh</li>
 <li><strong>Zsh</strong>: estensione di bash con caratteristiche prese da altre shell, usata di default su Mac OS</li>
 </ul>
-<p>Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire <code>less /etc/shells</code></p>
+<p>Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire il comando:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">less</span> /etc/shells
+</code></pre>
 <p>Su Windows abbiamo:</p>
 <ul>
 <li><strong>Prompt dei comandi</strong> (cmd): è un porting della shell usata in Microsoft DOS, permette sia l’esecuzione di comandi che la creazione di script batch e l’esecuzione di VBscript.</li>
@@ -1040,7 +1042,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <ul>
 <li><code>;</code> permette di separare più comandi sulla stessa riga.</li>
 <li><code>&amp;</code> esegue il comando che lo precede in background, permettendo alla shell di accettare nuovi comandi senza attendere il completamento del precedente.</li>
-<li><code>()</code> creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. i comandi all’interno non influenzano l’ambiente della shell principale. Ad esempio, <code>(cd /tmp; ls)</code> non modifica la directory corrente della shell principale.</li>
+<li><code>()</code> creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. I comandi all’interno non influenzano l’ambiente della shell principale. Ad esempio, <code>(cd /tmp; ls)</code> non modifica la directory corrente della shell principale.</li>
 <li><code>{}</code> raggruppano comandi da eseguire nel contesto della shell corrente. A differenza delle parentesi tonde, i comandi all’interno influenzano l’ambiente della shell principale. È importante notare che <code>{</code> e <code>}</code> devono essere separati dai comandi da spazi e che il blocco deve terminare con un punto e virgola o una nuova riga prima della parentesi chiusa.</li>
 <li><code>|</code> (pipe) prende l’output del comando a sinistra e lo passa come input al comando a destra.</li>
 <li><code>&lt;&gt; &amp;</code> reindirizzamento dell’input e dell’output</li>
@@ -1255,7 +1257,7 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
 <span class="token keyword">done</span>
 </code></pre>
 <h3 id="select">Select</h3>
-<p>Il comando <strong><code>select</code></strong> è usato per creare menu interattivi a scelta multipla.</p>
+<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla.</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 
 <span class="token keyword">echo</span> <span class="token string">"Scegli un'opzione:"</span>
@@ -1280,7 +1282,7 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
 <h3 id="ifs">IFS</h3>
 <p>IFS (<em>Internal Field Separator</em>) è una variabile speciale che determina i caratteri usati per separare i campi quando si lavora con stringhe o input.</p>
 <p>Di default, IFS contiene spazio, tabulazione e newline (<code>" \t\n"</code>)</p>
-<p>Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perchè potrebbe contenere caratteri non stampabili:</p>
+<p>Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perché potrebbe contenere caratteri non stampabili.</p>
 <p>Esempio: elencare i file e le directory presenti nella directory corrente e calcolare il loro dimensione su disco. Modifichiamo IFS in modo che Bash non utilizzi gli spazi come delimitatori, ma solo le tabulazioni e i ritorni a capo</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 OLDIFS<span class="token operator">=</span><span class="token string">"<span class="token variable">$IFS</span>"</span><span class="token punctuation">;</span> 
@@ -1349,7 +1351,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 </code></pre>
 </li>
 <li>
-<p>I commenti si fanno con <code>‘</code></p>
+<p>I commenti si fanno con <code>'</code></p>
 <pre class=" language-visual"><code class="prism -basic language-visual">Option Explicit
 Dim a,b
 Dim c(3) 'array
@@ -1470,8 +1472,8 @@ Loop
 <p>È generalmente preferibile bloccare tutto in ****<code>/etc/hosts.deny</code> e aprire solo i servizi desiderati in ****<code>/etc/hosts.allow</code>.</p>
 <h2 id="ntp">NTP</h2>
 <p><strong>NTP (Network Time Protocol)</strong> è un protocollo che permette ai client di sincronizzarsi con dei server, chiamati <strong>Time Server</strong>, al fine di mantenere data e ora sincronizzati all’interno di un sistema distribuito.</p>
-<p>Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici o ponti radio, stazioni di misurazione, o altri server NTP.</p>
-<p>I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti <strong>strato 0</strong>. I server NTP direttamente collegati a essi sono <strong>server allo strato 1 (primari)</strong>. I dispositivi che ottengono l’ora da server allo strato n sono allo strato n+1.</p>
+<p>Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici, ponti radio, stazioni di misurazione o altri server NTP.</p>
+<p>I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti <strong>strato 0</strong>. I server NTP direttamente collegati a essi sono <strong>server allo strato 1 (primari)</strong>. I dispositivi che ottengono l’ora da server allo strato <strong>n</strong> sono allo strato <strong>n+1</strong>.</p>
 <p>Su sistemi Debian/Ubuntu, è possibile <strong>installare il pacchetto ntp</strong></p>
 <pre class=" language-bash"><code class="prism  language-bash">apt <span class="token function">install</span> ntp
 </code></pre>
@@ -1483,7 +1485,7 @@ Loop
 <p><strong>Chrony</strong> può sincronizzare l’orologio di sistema con server NTP, orologi di riferimento (come ricevitori GPS) e input manuale. Può anche funzionare come server NTPv4 per altri computer nella rete.</p>
 <p>È progettato per funzionare bene anche in condizioni di rete difficili e offre una precisione tipica di pochi millisecondi su Internet e di decine di microsecondi su una LAN.</p>
 <h2 id="dhcp">DHCP</h2>
-<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> è un protocollo sche permette la <strong>configurazione automatica dei parametri di rete</strong> al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.</p>
+<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> è un protocollo che permette la <strong>configurazione automatica dei parametri di rete</strong> al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.</p>
 <p><strong>Funzionalità principali</strong>:</p>
 <ul>
 <li>
@@ -1497,7 +1499,7 @@ Loop
 <p><strong>Come funziona:</strong></p>
 <ol>
 <li><strong>DHCPDISCOVER</strong>: All’avvio della configurazione di rete, il client invia un pacchetto <strong>DHCPDISCOVER in broadcast</strong> (all’indirizzo 255.255.255.255) per cercare un server DHCP.</li>
-<li><strong>DHCPOFFER</strong>: Se un server DHCP è presente nella rete, riceve la richiesta, verifica (eventualmente) l’indirizzo MAC del client e invia un <strong>indirizzo IP al client tramite un pacchetto DHCPOFFER</strong>.</li>
+<li><strong>DHCPOFFER</strong>: Se un server DHCP è presente nella rete, riceve la richiesta, verifica, eventualmente, l’indirizzo MAC del client e comunica un <strong>indirizzo IP al client tramite un pacchetto DHCPOFFER</strong>.</li>
 <li><strong>DHCPREQUEST</strong>: Se il client accetta la configurazione offerta, invia un pacchetto di <strong>DHCPREQUEST</strong> al server.</li>
 <li><strong>DHCPACK</strong>: Il server risponde al client con un pacchetto di <strong>DHCPACK</strong> contenente l’indirizzo IP assegnato e le altre informazioni sulla configurazione di rete.</li>
 </ol>
@@ -1510,14 +1512,14 @@ Loop
 <p>Il <strong>Domain Name System (DNS)</strong> è un sistema usato per <strong>tradurre gli indirizzi IP in nomi simbolici e viceversa</strong>.</p>
 <p>Il DNS gestisce una <strong>tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)</strong>.</p>
 <p>Il DNS è fondamentalmente un <strong>database distribuito</strong> basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.</p>
-<p>Il DNS possiede:</p>
+<p>Il DNS possiede due gerarchie:</p>
 <ol>
 <li>
 <p><strong>una gerarchia dei nomi di dominio</strong>: La posizione più alta è occupata dai <strong>Top Level Domain (TLD)</strong> come <code>.com</code>, <code>.it</code>, <code>.uk</code>, <code>.edu</code>, ecc. Al di sotto si trovano altri domini come <code>amazon.it</code>, <code>google.it</code>, ecc…</p>
 <p><img src="https://i.ibb.co/BVjGj0fN/image.png" alt=""></p>
 </li>
 <li>
-<p><strong>una gerarchia dei server che forniscono i dati</strong>: Le informazioni sono suddivise in <strong>zone</strong>, cioè una porzione di nomi di dominio sotto una gestione amministrativa. La gerarchia dei name server parte dai <strong>root name server</strong> e si realizza tramite <strong>deleghe sulle zone</strong>, aventi come radice la zona “.”.</p>
+<p><strong>una gerarchia dei server che forniscono i dati</strong>: Le informazioni sono suddivise in <strong>zone</strong>, cioè una porzione di nomi di dominio è sotto una gestione amministrativa. La gerarchia dei name server parte dai <strong>root name server</strong> e si realizza tramite <strong>deleghe sulle zone</strong>.</p>
 <p>La gestione di una zona è <strong>delegata dalla zona superiore tramite dei record di tipo NS</strong> (Name Server). Per garantire ridondanza, ogni zona è <strong>replicata su più server</strong>.</p>
 <p><img src="https://i.ibb.co/fGPMkfZL/image.png" alt=""></p>
 </li>
@@ -1561,7 +1563,7 @@ Loop
 </li>
 </ol>
 <h1 id="autenticazione">Autenticazione</h1>
-<p>Con <strong>autenticazione</strong> si intente una serie di problemi e operazioni tra cui:</p>
+<p>Con <strong>autenticazione</strong> si intente una serie di operazioni che includono:</p>
 <ul>
 <li><strong>identificazione e autenticazione</strong>: indicare in maniera univoca un utente di un sistema e dimostrare che un utente è realmente la persona che dichiara di essere</li>
 <li><strong>autorizzazione</strong>: stabilire cosa l’utente può fare e cosa no</li>
@@ -1580,7 +1582,7 @@ Loop
 <p>Per superare queste limitazioni, nel tempo sono nati sistemi che permettono di aggiungere diversi meccanismi di autenticazione e gestione delle informazioni sugli utenti senza dover modificare i programmi che ne fanno uso, ad esempio NSS e PAM.</p>
 <h3 id="nss">NSS</h3>
 <p><strong>NSS (Name Service Switch)</strong> è un sistema per la gestione delle informazioni sugli utenti.</p>
-<p>In Linux, NSS è parte delle librerie C del progetto GNU e fornisce i dati dei system database (tra cui <code>/etc/passwd</code>, <code>/etc/roup</code> e <code>/etc/hosts</code>) alle applicazioni. Come fonti di dati possono essere usate anche altri tipi di fonti, come dei database.</p>
+<p>In Linux, NSS è parte delle librerie C del progetto GNU e fornisce delle funzioni che fanno da interfaccia tra le applicazioni e i sistemi di autenticazione per la gestione delle informazioni utente (tra cui <code>/etc/passwd</code>, <code>/etc/group</code>). Possono essere usati anche altre fonti per i dati, come dei database.</p>
 <p>La configurazione di NSS avviane principalmente tramite il file <code>/etc/nsswitch.conf</code></p>
 <p><img src="https://i.ibb.co/TB42bGXS/image.png" alt=""></p>
 <h3 id="pam">PAM</h3>
@@ -1608,11 +1610,11 @@ Loop
 <p>L’implementazione più nota di un server LDAP su Linux è OpenLDAP.</p>
 <p>Su Windows LDAP viene spesso utilizzato con il protocollo Kerberos in un sistema che prende il nome di <strong>Active Directory</strong>.</p>
 <p><strong>Kerberos</strong> è un protocollo di rete per l’autenticazione in cui gli utenti si autenticano tramite tecniche crittografiche.</p>
-<p>Il protocollo Kerberos coinvolge un <strong>client</strong>, un <strong>application serve</strong>r e un <em>Key Distribution Center</em> (<strong>KDC</strong>), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.</p>
+<p>Il protocollo Kerberos coinvolge un <strong>client</strong>, un <strong>application server</strong> e un <em>Key Distribution Center</em> (<strong>KDC</strong>), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.</p>
 <p><img src="https://i.ibb.co/5hvSmDrF/image.png" alt=""></p>
 <p>Il processo di autenticazione prevede diversi passaggi:</p>
 <ol>
-<li><code>AS_REQ</code>: La richiesta iniziale del client in chiaro verso l’Authentication Server</li>
+<li><code>AS_REQ</code>: La richiesta iniziale del client in chiaro verso l’Authentication Server (una componente del KDC)</li>
 <li><code>AS_REP</code>: la risposta dell’Authentication Server contenente la chiave di sessione</li>
 <li><code>TGS_REQ</code>: la richiesta di un ticket di servizio</li>
 <li><code>TGS_REP</code>: la risposta del Ticket Granting Server contenente il ticket di servizio (TS),</li>
@@ -1625,8 +1627,8 @@ Loop
 <p>Un <strong>Dominio</strong> è un insieme di computer che condividono risorse di rete e che vengono amministrati con regole e permessi (<em>policy</em>).</p>
 <p>AD è strutturato come un <strong>contenitore di oggetti</strong> (utenti, gruppi, computer, server, stampanti) <strong>organizzati in una gerarchia ad albero</strong>. Per la gestione degli accessi, utilizza il protocollo Kerberos.</p>
 <h1 id="posta-elettronica">Posta elettronica</h1>
-<p>La posta elettronica è un sistema di comunicazione su larga scala.</p>
-<p>È composto da vari attori:</p>
+<p>La posta elettronica è un sistema di comunicazione digitale che sfrutta la rete internet per lo scambio di messaggi.</p>
+<p>Questo sistema è composto da vari attori:</p>
 <ul>
 <li>Il <strong>Mail User Agent (MUA)</strong> o client di posta (come Thunderbird, Outlook) è un programma utilizzato da un utente per inviare e consultare i messaggi. Può anche essere un’applicazione web (webmail).</li>
 <li>Il <strong>Mail Submission Agent (MSA)</strong> riceve i messaggi da un MUA e li invia a un MTA.</li>
@@ -1639,26 +1641,21 @@ Loop
 <h2 id="flusso">Flusso</h2>
 <p><img src="https://i.ibb.co/39Yp9XdB/image.png" alt=""></p>
 <ol>
-<li>
-<p>Il mittente scrive una email usando un MUA.</p>
-</li>
-<li>
-<p>MUA invia la mail a un MSA/MTA.</p>
-</li>
-<li>
-<p>L’MTA controlla l’indirizzo di destinazione (<code>utente@dominio</code>).</p>
+<li>Il mittente scrive una email usando un MUA.</li>
+<li>MUA invia la mail a un MSA/MTA.</li>
+<li>L’MTA controlla l’indirizzo di destinazione (<code>utente@dominio</code>).
 <ul>
 <li>Se il dominio rientra tra quelli gestiti dall’MTA (e quindi è un indirizzo locale) e l’utente è valido, l’email viene inoltrata all’LDA, che la consegna nella casella di posta associata, terminando il processo.</li>
 <li>Se l’indirizzo non è locale e l’MTA accetta di inoltrare il messaggio (<em>relay</em>), l’MTA inserisce il messaggio in una coda.</li>
 </ul>
 </li>
-<li>
-<p>Dopo aver estratto il messaggio dalla coda, l’MTA controlla il record <code>DNS MX</code> associato al dominio del destinatario e contatta l’MTA che risponde a quell’host, cercando di inviargli il messaggio.</p>
-</li>
-<li>
-<p>Se l’invio avviene correttamente, il messaggio viene gestito dall’MTA di destinazione, che procede dal punto 3.</p>
-<p>Se l’MTA contattato non risponde, il messaggio torna in coda.</p>
-<p>Se l’MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all’indirizzo del mittente, e il procedimento termina.</p>
+<li>Dopo aver estratto il messaggio dalla coda, l’MTA controlla il record <code>DNS MX</code> associato al dominio del destinatario e contatta l’MTA che risponde a quell’host, cercando di inviargli il messaggio.</li>
+<li>Da questo punto possiamo avere tre situazioni:
+<ul>
+<li>Se l’invio avviene correttamente, il messaggio viene gestito dall’MTA di destinazione, che procede dal punto 3.</li>
+<li>Se l’MTA contattato non risponde, il messaggio torna in coda.</li>
+<li>Se l’MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all’indirizzo del mittente, e il procedimento termina.</li>
+</ul>
 </li>
 </ol>
 <h3 id="relay">Relay</h3>
@@ -1669,8 +1666,8 @@ Loop
 <p>Il protocollo utilizzato tra MUA e MTA e tra MTA e MTA si chiama <strong>Simple Mail Transfer Protocol (SMTP)</strong> o <strong>Extended SMTP (ESMTP)</strong> che fa una sorta di handshake per stabilire la connessione prima di inviare dati. La comunicazione tra MTA e LDA può avvenire internamente (scambio diretto di file) o tramite il <strong>Local Mail Transfer Protocol (LMPT)</strong>.</p>
 <p>La comunicazione tra il MAA e il MUA (tramite l’MRA) avviene tramite il <strong>Post Office Protocol versione 3 (POP3)</strong> o l’<strong>Internet Message Access Protocol versione 4 (IMAP4)</strong>.</p>
 <ul>
-<li><strong>IMAP</strong> mantiene le email sul server, consentendo la gestione da diversi dispositivi conservando una copia centralizzata.</li>
-<li><strong>POP</strong>, invece, scarica le email sul dispositivo utilizzato per la consultazione, e la connessione è necessaria solo per inviare e ricevere.</li>
+<li><strong>IMAP</strong> conserva i messaggi sul server, permettendo di accedere e gestire la posta da più dispositivi, mantenendo sempre una copia centralizzata e sincronizzata.</li>
+<li><strong>POP</strong>, invece, scarica le email sul dispositivo locale, spesso eliminandole dal server. Dopo il download, i messaggi sono consultabili anche offline, e la connessione è necessaria solo per inviare o ricevere messaggi.</li>
 </ul>
 <p><strong>IMAP è generalmente preferibile per prestazioni ottimali</strong>, specialmente su reti lente, mentre POP può essere utile in caso di connessioni non persistenti.</p>
 <p><img src="https://i.ibb.co/mFFLG7nQ/protocolli.png" alt=""></p>
@@ -1694,7 +1691,7 @@ Loop
 </li>
 </ul>
 <h2 id="spam">Spam</h2>
-<p>Lo <strong>SPAM</strong> è definito come <strong>uno o più messaggi non richiesti, facenti parte di un più insieme di messaggi, tutti aventi contenuto sostanzialmente identico</strong>. Le email indesiderate possono essere collocate in <strong>cinque diverse categorie</strong>:</p>
+<p>Con <strong>SPAM</strong> si intende <strong>uno o più messaggi indesiderati, facenti parte di un più grande insieme di messaggi, tutti aventi contenuto sostanzialmente identico</strong>. Le email indesiderate possono essere collocate in cinque diverse categorie:</p>
 <ul>
 <li><strong>Hoax:</strong> Bufale e catene di Sant’Antonio.</li>
 <li><strong>Worm:</strong> Email mandate da virus.</li>
@@ -1707,23 +1704,23 @@ Loop
 <ul>
 <li>
 <p><strong>Greylisting:</strong></p>
-<p>questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo</p>
+<p>questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo:</p>
 <ol>
-<li>Un’email proveniente da un dominio sconosciuto viene <strong>temporaneamente rifiutata</strong> con un errore di “temporaneamente non disponibile: 450 <em>try again later</em>” per un numero preimpostato di volte.</li>
+<li>Un’email proveniente da un dominio sconosciuto viene <strong>temporaneamente rifiutata</strong> con un errore “450 <em>try again later</em>” per un numero preimpostato di volte N.</li>
 <li>Ad ogni rifiuto, l’MTA mittente rimette la mail in coda e, dopo un certo periodo di tempo, tenta il reinvio.</li>
 <li>Al tentativo N, la mail viene accettata dall’MTA ricevente, e l’MTA mittente viene inserito in una <strong>whitelist</strong>, in modo che tutte le email successive vengano accettate direttamente.</li>
 </ol>
-<p><strong>Problematiche:</strong> Alla lunga, questa tecnica <strong>perde di efficacia</strong> poiché i bot di spam implementano algoritmi che ritentano l’invio. Possono anche verificarsi <strong>lievi ritardi nella consegna</strong> delle email.</p>
+<p><strong>Problematiche:</strong> Alla lunga, questa tecnica <strong>perde di efficacia</strong> poiché i bot di spam implementano algoritmi che ritentano l’invio. Possono inoltre verificarsi <strong>lievi ritardi nella consegna</strong> delle email.</p>
 <p><strong>Vantaggi:</strong> <strong>Nessuna email lecita viene scartata</strong>, poiché i mail server legittimi re-inviano la mail. Si ha comunque un <strong>buon filtraggio di base</strong>.</p>
 </li>
 <li>
 <p><strong>RBL</strong> (<em>Real-time Blackhole List</em>):</p>
 <p>Sono liste contenenti <strong>IP non “autorizzati” ad inviare e-mail</strong>.</p>
-<p><strong>Problematiche:</strong> È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.</p>
+<p><strong>Problematiche:</strong> È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri per selezionare IP sospetti sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.</p>
 </li>
 <li>
 <p><strong>SPF</strong> (<em>Sender Policy Framework</em>):</p>
-<p>È uno standard che, tramite un <strong>record TXT nel DNS</strong>, dichiara quali <strong>IP o nomi possono inviare mail per un determinato dominio</strong>. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.</p>
+<p>È uno standard che, tramite un <strong>record TXT nel DNS</strong>, dichiara quali <strong>IP o nomi di dominio possono inviare mail per un determinato dominio</strong>. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.</p>
 <p><strong>Problematiche: Non tutti i domini implementano il record TXT</strong>. L’implementazione può essere difficoltosa.</p>
 </li>
 <li>
@@ -1744,19 +1741,19 @@ Loop
 </li>
 <li>
 <p><strong>AMAVIS:</strong></p>
-<p>È un <strong>demone</strong> che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica e interfacciandosi con altri sistemi di filtraggio spam e virus come quelli che abbiamo visto precedentemente.</p>
+<p>È un <strong>demone</strong> che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica delle email interfacciandosi con altri sistemi di filtraggio come quelli che abbiamo visto precedentemente.</p>
 <p>Permette di rilevare virus, spam, contenuti vietati; bloccare, etichettare, reindirizzare email; mettere in quarantena o rilasciare messaggi; eliminare virus tramite antivirus esterni.</p>
 </li>
 </ul>
 <h1 id="file-system-distribuiti">File system distribuiti</h1>
-<p>Un <strong>Filesystem Distribuito (DFS)</strong> è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell’utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.</p>
-<p>Un <strong>File Server</strong> è un host che ospita un DFS. Sui client è installata un’interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.</p>
+<p>Un <strong>Filesystem Distribuito (DFS)</strong> è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell’utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.<br>
+Un <strong>File Server</strong> è un host che ospita un DFS. Sui client è installata un’interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.</p>
 <h2 id="caratteristiche-dfs"><strong>Caratteristiche DFS</strong></h2>
 <p>Le caratteristiche principali di un DFS includono:</p>
 <ul>
 <li>
 <p><strong>Trasparenza:</strong></p>
-<p>La trasparenza ideale fa sì che un DFS appaia all’utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L’interfaccia utente non dovrebbe distinguere tra file locali e remoti.</p>
+<p>La trasparenza fa sì che un DFS appaia all’utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L’interfaccia utente non dovrebbe distinguere tra file locali e remoti.</p>
 </li>
 <li>
 <p><strong>Prestazioni:</strong><br>
@@ -1772,14 +1769,14 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <h2 id="implementazioni">Implementazioni</h2>
 <p>Vediamo varie implementazioni di DFS.</p>
 <h3 id="nfs-network-file-system"><strong>NFS (Network File System)</strong>:</h3>
-<p>Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il <strong>primo DFS ad essere sviluppato</strong> ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull’idea che ogni host fornisce una vista unificata del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.</p>
-<p>NFS utilizza un <em><strong>remote access model</strong></em> in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file.</p>
+<p>Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il <strong>primo DFS ad essere sviluppato</strong> ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull’idea che ogni host espone alla rete parte del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.</p>
+<p>NFS utilizza un <em><strong>remote access model</strong></em> in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file del server. Si differenzia dal <strong>modello upload/download</strong> dove i client scaricano il file in locale, lo modificano e lo ricaricano sul server, il quale mantiene lo storico delle versioni.</p>
 <p>Dalla versione 4:</p>
 <ul>
 <li>supporta server <em>stateful</em>, mantenendo lo stato delle operazioni, a differenza delle versioni precedenti dove era il client a doverlo fare.</li>
 <li>introdotto le <em><strong>Compound Operations</strong></em> (CP), che consistono in inserire più operazioni in una singola chiamata, migliorando così l’efficienza. La chiamata però non viene trattata come una transazione: se una operazione interna fallisce, le successive non vengono eseguite e viene ritornato un messaggio di errore senza che venga fatto un rollback.</li>
 <li>Utilizza il protocollo TCP (in precedenza UDP).</li>
-<li>Per il riconoscimento dell’utente, dalla versione 4 si usa una stringa arbitraria, come un username (prima era solo tramite indirizzo IP)</li>
+<li>Per il riconoscimento dell’utente, dalla versione 4 si usa una stringa arbitraria, come un username, oppure anche utilizzando sistemi esterni (prima era solo tramite indirizzo IP)</li>
 </ul>
 <p>La sua configurazione avviene nel file <code>/etc/exports</code> e usa la seguente sintassi:</p>
 <pre class=" language-bash"><code class="prism  language-bash">/percorso/cartella/condivisa     indirizzo_ip<span class="token punctuation">(</span>opzioni<span class="token punctuation">)</span>
@@ -1796,7 +1793,7 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <li>Usare <strong>automount</strong></li>
 </ol>
 <p><strong>Automount</strong> è un meccanismo implementato da vari sistemi UNIX per gestire il montaggio di filesystem remoti in modo dinamico, cioè montandolo solamente quando serve e smontandolo quando non serve più.</p>
-<p>Il problema che automount mira a risolvere è che <strong>non è consigliabile mantenere un file system remoto montato permanentemente su un sistema</strong>. in caso di disconnessione il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può svorareil limite massimo di mount.</p>
+<p>Il problema che automount mira a risolvere è che <strong>non è consigliabile mantenere un file system remoto montato permanentemente su un sistema</strong>. in caso di disconnessione con l’host remoto, il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può superare il limite massimo di mount.</p>
 <p><strong>Funzionamento:</strong></p>
 <ul>
 <li>Quando un processo accede ad un file all’interno di un certo percorso gestito da un DFS, questo viene <strong>montato all’istante</strong>.</li>
@@ -1808,7 +1805,7 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <p>In generale, in un dominio <strong>Active Directory</strong> di Windows, esistono due tipologie di cartelle condivise  legate agli utenti del sistema:</p>
 <ul>
 <li>
-<p><strong>Profili utente:</strong> Possono risiedere solo sulla macchina locale (client), oppure sul server come <em>Roaming Profiles</em>. Con i <em>Roaming Profiles</em>, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l’utente si collega.</p>
+<p><strong>Profili utente:</strong> Possono risiedere direttamente sulla macchina locale (client), oppure sul server come <em>Roaming Profiles</em>. Con i <em>Roaming Profiles</em>, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l’utente si collega.</p>
 <p>I profili vengono scaricati/caricati dal server a ogni login/logout.</p>
 </li>
 <li>
@@ -1883,19 +1880,19 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <p>Il <strong>World Wide Web</strong> (WWW, anche abbreviato in <em>web</em>) è un sistema che consente la condivisione di documenti ipertestuali (collegati da dei link) multimediali attraverso l’infrastruttura WAN della rete Internet.</p>
 <p>Il Web si basa sul protocollo <strong>HTTP (HyperText Transfer Protocol)</strong> e poggia su un’architettura <strong>Client/Server</strong>.</p>
 <h3 id="http">HTTP</h3>
-<p>La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta per una risorsa al server alla volta.</p>
+<p>La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta alla volta al server per una risorsa.</p>
 <p>La versione HTTP 1.1 ha introdotto:</p>
 <ul>
 <li>la possibilità di effettuare più richieste per connessione</li>
 <li>connessioni permanenti</li>
 <li>richieste/risposte asincrone all’interno di queste connessioni.</li>
-<li>obbliga i client a specificare l’hostname desiderato nella richiesta, consentendo l’implementazione del <strong>virtual hosting</strong>, dove un server può ospitare più siti internet con nomi diversi ma lo stesso indirizzo IP.</li>
+<li>obbliga i client a specificare l’hostname desiderato nella richiesta, consentendo l’implementazione del <strong>virtual hosting</strong>, dove un server può ospitare più siti internet con nomi diversi ma allo stesso indirizzo IP.</li>
 </ul>
 <p>Attualmente, si utilizzano <strong>HTTP 2</strong> (per oltre il 50%) e <strong>HTTP 3</strong> (usato nel 20%) che aggiungono varie migliorie.</p>
 <h2 id="web-server">Web server</h2>
-<p>Un <strong>WEB Server</strong> è un’applicazione software che gira su un computer, capace di gestisce le richieste di trasferimento di pagine web verso un client.</p>
+<p>Un <strong>WEB Server</strong> è un’applicazione che gira su un host, capace di gestisce le richieste di trasferimento di pagine web verso un client.</p>
 <p>La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).</p>
-<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.</p>
+<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.</p>
 <p>Tra i vari web server è interessante approfondire:</p>
 <ul>
 <li><strong>Apache HTTP Server:</strong> che fino a poco tempo fa era l’unico in grado di gestire applicazioni di vario tipo (php, python, java, ecc.) grazie alla sua tecnologia modulare.</li>
@@ -1954,21 +1951,21 @@ http {
 </code></pre>
 <h3 id="virtual-hosting">Virtual hosting</h3>
 <p>Il concetto di <strong>server block</strong> in Nginx è molto simile al <strong>virtual hosting di Apache</strong>. Questo significa che puoi ospitare più siti web sullo stesso server Nginx.</p>
-<p>Un modo per farlo è definire <strong>più server blocks all’interno dello stesso file <code>nginx.conf</code></strong>. Ad esempio, avere un blocco per <code>sito1.com</code> e un altro per <code>sitoN.com</code>, ognuno con la sua radice dei documenti, i suoi log, ecc…</p>
+<p>Un modo per farlo è definire <strong>più server blocks all’interno dello stesso file</strong> <code>nginx.conf</code>. Ad esempio, avere un blocco per <code>sito1.com</code> e un altro per <code>sitoN.com</code>, ognuno con la sua radice dei documenti, i suoi log, ecc…</p>
 <p>Un approccio più pulito è quello di <strong>creare dei file separati</strong> per ogni sito nella directory <code>/etc/nginx/sites-available/</code>, e poi <strong>abilitarli</strong> creando dei <strong>link simbolici</strong> a questi file all’interno della directory <code>/etc/nginx/sites-enable/</code>.</p>
 <h3 id="reverse-proxy">Reverse proxy</h3>
-<p>Una delle funzionalità più sfruttate di Nginx è quella di <strong>reverse proxy</strong>. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al visitatore.</p>
+<p>Una delle funzionalità più sfruttate di Nginx è quella di <strong>reverse proxy</strong>. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al client.</p>
 <p>Questo è utile in diverse situazioni:</p>
 <ul>
 <li>quando le risorse di un sito sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;</li>
 <li>come <strong>load balancer</strong>, per distribuire il traffico tra più server che offrono lo stesso servizio;</li>
 <li>per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il <strong>supporto a HTTPS</strong> per applicazioni che non lo gestiscono nativamente.</li>
 </ul>
-<p>Il bilanciamento del carico serve a <strong>distribuire il traffico</strong> su più server per sfruttare al meglio le risorse, aumentare la velocità del tuo sito, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta <strong>tre modalità principali</strong> di bilanciamento del carico:</p>
+<p>Il bilanciamento del carico serve a <strong>distribuire il traffico</strong> su più server per sfruttare al meglio le risorse, aumentare la velocità del servizio web, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta <strong>tre modalità principali</strong> di bilanciamento del carico:</p>
 <ul>
 <li><strong>Round-robin</strong>: le richieste vengono distribuite ai server in sequenza, uno dopo l’altro. Non garantisce la persistenza delle sessioni</li>
 <li><strong>Least-connected</strong>: ogni nuova richiesta viene inviata al server che in quel momento ha il minor numero di connessioni attive. Non garantisce la persistenza delle sessioni</li>
-<li><strong>Ip-hash</strong>: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. Questo garantisce che le richieste provenienti dallo stesso utente vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.</li>
+<li><strong>Ip-hash</strong>: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. In questo modo le richieste provenienti dallo stesso client vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.</li>
 </ul>
 <p>Infine, Nginx ha anche un sistema di <strong>monitoraggio passivo</strong> dei server. Se un server non risponde correttamente, viene temporaneamente escluso dal bilanciamento del carico.</p>
 <h2 id="ssltls">SSL/TLS</h2>
@@ -2025,7 +2022,7 @@ http {
 <p>Da scegliere: in ambienti Windows con applicazioni di terze parti che lo richiedono esplicitamente.</p>
 <h1 id="server-di-stampa">Server di stampa</h1>
 <p>Un <strong>server di stampa</strong> permette la <strong>gestione centralizzata di una o più stampanti di rete e non</strong>.</p>
-<p>Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Ogni <strong>stampante di rete</strong> moderna può essere considerata un <strong>print server per sé stessa</strong>, in quanto offre il proprio servizio di stampa tramite diverse modalità di accesso come:</p>
+<p>Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Le <strong>stampanti di rete</strong> moderne possono essere già considerate delle <strong>print server per se stesse</strong>, in quanto offrono il proprio servizio di stampa tramite diverse modalità di accesso come:</p>
 <ul>
 <li><strong>Web Printing</strong>: permette di inviare documenti alla stampante tramite un’interfaccia web.</li>
 <li><strong>IPP (Internet Printing Protocol)</strong>: protocollo che consente la stampa su rete e anche via Internet, con supporto per autenticazione e gestione code.</li>
@@ -2033,7 +2030,7 @@ http {
 <li><strong>NetBIOS</strong>: usato principalmente nei sistemi Windows per condividere risorse (tra cui stampanti) all’interno di reti locali.</li>
 </ul>
 <p>Tuttavia, quando si hanno più stampanti di rete, è consigliabile la gestione tramite un host dedicato chiamato <strong>printer server</strong>. Il printer server può essere collegato alle stampanti <strong>direttamente</strong> (tramite USB/Parallela/Seriale, quando la stampante è molto vicina al server) oppure <strong>via rete</strong> (se la stampante è dotata di un modulo di rete e si trova in una zona più distante, come un’altra stanza, piano o edificio).</p>
-<p>Diversi sistemi operativi offrono funzionalità di print server integrata:</p>
+<p>Diversi sistemi operativi offrono funzionalità integrate di print server:</p>
 <ul>
 <li><strong>Linux/OS X</strong>: il server di stampa è gestito interamente dal sistema <strong>CUPS (Common UNIX Printing System)</strong>, successore di LPD e pienamente compatibile con esso. Viene configurato nel file  <code>/etc/cups/cupsd.conf</code> o tramite interfaccia web all’indirizzo <code>http://localhost:631/admin</code></li>
 <li><strong>Windows</strong>: il sistema di <strong>condivisione file e stampanti</strong> permette una gestione semplice di una o più stampanti condivise.</li>
@@ -2091,7 +2088,7 @@ http {
 <li><strong>PREROUTING</strong>: lavora sui pacchetti in entrata <em>prima</em> che vengano instradati (nel sistema locale o altrove).</li>
 <li><strong>POSTROUTING</strong>: lavora sui pacchetti in uscita <em>dopo</em> che è stato deciso il loro instradamento.</li>
 </ul>
-<p>Ogni catena appartiene a una <strong>tabella</strong>. Le tabelle principali citate sono:</p>
+<p>Ogni catena appartiene a una <strong>tabella</strong>. Le tabelle principali sono:</p>
 <ul>
 <li><strong>Filter</strong>: contiene le regole per il <strong>filtraggio</strong> dei pacchetti. Le catene associate sono INPUT, OUTPUT, FORWARD.</li>
 <li><strong>Nat</strong>: contiene le regole per l’<strong>instradamento</strong> dei pacchetti, specificamente per manipolare gli indirizzi (NAT). Le catene associate sono OUTPUT, PREROUTING, POSTROUTING.</li>
@@ -2164,13 +2161,13 @@ http {
 <p>Una <strong>VPN</strong> (<em>Virtual Private Network</em>), letteralmente <strong>Rete Privata Virtuale</strong>, è pensata per permettere ai dipendenti delle aziende di <strong>accedere in modo sicuro alle risorse all’interno dell’azienda</strong> pur trovandosi al di fuori della rete aziendale.</p>
 <p>Il suo funzionamento si basa sulla creazione di un <strong>tunnel virtuale cifrato</strong> tra un host esterno e un server di proprietà del fornitore del servizio VPN. Tutto il traffico transita in modo <strong>criptato dal computer client al server VPN</strong>. Da lì, il traffico può uscire “normalmente” attraverso la rete aziendale.</p>
 <h1 id="docker">Docker</h1>
-<p>Docker è un software opensource nato con l’obiettivo di automatizzare e semplificare la distribuzione delle applicazioni grazie al meccanismo dei <strong>container e delle immagini</strong>.</p>
+<p>Docker è un software open source nato con l’obiettivo di automatizzare e semplificare la distribuzione delle applicazioni grazie al meccanismo dei <strong>container e delle immagini</strong>.</p>
 <ul>
-<li>Una i<strong>mmagine</strong>: Una sorta di file system minimale strutturato a <em>layer</em> contenente l’eseguibile, le dipendenze e librerie che necessita l’applicazione per funzionare.</li>
-<li>Un <strong>container</strong> può essere visto come un processo (o insieme di processi) eseguiti in isolamento sul nostro sistema che rappresenta una istanza dell’immagine.</li>
+<li>Una <strong>immagine</strong>: Una sorta di file system minimale strutturato a <em>layer</em> contenente l’eseguibile, le dipendenze e librerie che necessita l’applicazione per funzionare.</li>
+<li>Un <strong>container</strong> può essere considerato come uno o più processi isolati dal sistema che rappresentano una immagine in esecuzione.</li>
 </ul>
 <p>Usando un’analogia OOP, possiamo pensare all’immagine come a una classe contenente tutti i dati necessari all’applicazione. Mentre il Container è l’istanza di quella immagine che eseguirà l’applicazione.</p>
-<p>Ogni container avviato è identificato da un <strong>ID alfanumerico unico</strong> e da un nome (assegnato automaticamente o manualmente). Per interagire con un container, si fa riferimento al suo ID o nome.  L’ID e il nome (se assegnato automaticamente) cambiano a ogni riavvio del container, quindi assegnare un nome manualmente garantisce di avere un riferimento stabile.</p>
+<p>Ogni container avviato è identificato da un <strong>ID alfanumerico</strong> e da un nome (assegnato automaticamente o manualmente). Per interagire con un container, si fa riferimento al suo ID o nome.  L’ID e il nome (se assegnato automaticamente) cambiano a ogni riavvio del container, quindi assegnare un nome manualmente garantisce di avere un riferimento stabile.</p>
 <h2 id="proprietà">Proprietà</h2>
 <p>I container:</p>
 <ul>
@@ -2178,15 +2175,16 @@ http {
 <li>Sono <strong>portabili</strong> perché sono distribuiti in un formato standard che può essere letto ed eseguito da qualsiasi server Docker.</li>
 <li>Sono <strong>leggeri</strong> perché, a differenza delle macchine virtuali (VM) che richiedono un kernel virtualizzato, sfruttano i servizi direttamente dal kernel del sistema operativo ospitante. Questo consente di ospitare un gran numero di container sulla stessa macchina fisica e offre ottime prestazioni.</li>
 </ul>
-<p>In un ambiente containerizzato, il <strong>kernel del sistema operativo ospitante</strong> si occupa della gestione delle risorse e dell’isolamento, funzioni che nelle VM sono a carico dell’Hypervisor (un ulteriore strato software), mentre su Docker sono gestite dai <strong>Control Groups (cgroups)</strong> e dai <strong>Namespaces</strong>.</p>
+<p>In un ambiente containerizzato, il <strong>kernel del sistema operativo ospitante</strong> si occupa della gestione delle risorse e dell’isolamento, funzioni che nelle VM sono a carico dell’Hypervisor (un ulteriore strato software).</p>
+<p>In particolare Docker sfrutta due funzionalità del kernel Linux: <strong>Control Groups (cgroups)</strong> e <strong>Namespaces</strong>.</p>
 <h3 id="control-groups">Control Groups</h3>
-<p>I <strong>Control Groups</strong> sono lo strumento del kernel Linux che gestisce l’utilizzo delle <strong>risorse</strong> da parte di gruppi di processi. Grazie a questo strumento è possibile limitare la quantità di risorse utilizzate da specifici processi, come ad esempio la memoria RAM massima allocabile. Docker sfrutta i <em>cgroups</em> per implementare i limiti di risorse configurati per i container.</p>
+<p>I <strong>Control Groups</strong> sono lo strumento del kernel Linux che gestisce l’utilizzo delle <strong>risorse</strong> da parte di gruppi di processi. Grazie a questo strumento è possibile limitare la quantità di risorse utilizzate da specifici processi, come ad esempio la memoria RAM massima allocabile. Docker sfrutta questo strumento per implementare i limiti di risorse configurabili per i container.</p>
 <h3 id="namespaces">Namespaces</h3>
 <p>I <strong>Namespaces</strong> sono lo strumento del kernel Linux che implementano l’<strong>isolamento</strong>. I processi che fanno parte di un certo <em>namespace</em> possono accedere solo alle risorse presenti in quel <em>namespace</em>.</p>
 <p>Per ciascun container, Docker crea un gruppo di <em>namespace</em> dedicati, associando i processi del container a quel gruppo. Questo impedisce ai processi del container di accedere direttamente alle risorse della macchina ospitante o di altri container.</p>
 <h2 id="immagini">Immagini</h2>
-<p>Le immagini sono spesso disponibili in <strong>repository</strong>, che contengono varie versioni di immagini per una determinata applicazione, le diverse versioni sono identificate da un <strong>tag</strong>. per riferirsi a un’immagine specifica si usa la sintassi <code>repository:tag</code>, se il tag non viene specificato viene usato di default il tag <code>latest</code>.</p>
-<p>Se un’immagine non è presente localmente quando si cerca di avviare un container da essa, Docker la scarica automaticamente dal repository predefinito.</p>
+<p>Le immagini sono spesso disponibili in <strong>repository</strong>, che contengono varie versioni di una stessa immagine, le diverse versioni sono identificate da un <strong>tag</strong>. per riferirsi a un’immagine specifica si usa la sintassi <code>repository:tag</code>, se il tag non viene specificato viene usato di default il tag <code>latest</code>.</p>
+<p>Quando si cerca di avviare un container, se l’immagine relativa non è presente localmente, Docker la scarica automaticamente dal repository predefinito.</p>
 <p>Una caratteristica particolare delle immagini è la loro <strong>stratificazione in layer</strong>. Ogni layer contribuisce alla definizione del filesystem del container. Questi layer sono <strong>immutabili</strong> (in sola lettura), il che  permette a diverse immagini di <strong>condividere layer comuni</strong>, risparmiando spazio su disco.</p>
 <p>Quando Docker crea un container da un’immagine, viene creato un ulteriore <strong>layer scrivibile</strong> in cima a tutti gli altri, chiamato <em>layer container</em>. Tutte le modifiche fatte all’interno del container (come la creazione di file) vengono memorizzate in questo layer, che viene distrutto quando il container viene spento.</p>
 <h2 id="isolamento-dei-container">Isolamento dei container</h2>
@@ -2197,7 +2195,7 @@ http {
 <li><strong>Rete:</strong> Anche la rete è (quasi del tutto) isolata. Per rendere accessibile un servizio dall’esterno, è necessario mappare una porta della macchina ospitante alla porta su cui il servizio è in ascolto all’interno del container. L’indirizzo IP a cui collegarsi dall’esterno sarà l’indirizzo IP dell’host.</li>
 </ul>
 <h2 id="dockerfile">Dockerfile</h2>
-<p>Un <strong>Dockerfile</strong> è un file di testo che serve a descrivere le personalizzazioni da apportare alle immagini base per creare un’immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all’engine Docker, che lo <strong>valida e genera una nuova immagine</strong>.</p>
+<p>Un <strong>Dockerfile</strong> è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all’engine Docker, che lo <strong>valida e genera una nuova immagine</strong>.</p>
 <p>All’interno di un Dockerfile, troviamo diverse istruzioni, tra le più importanti ci sono:</p>
 <ul>
 <li>
@@ -2221,7 +2219,7 @@ http {
 <p>es. <code>COPY *.txt /docs</code></p>
 </li>
 <li>
-<p><code>ENTRYPOINT</code>: Definisce il comando che viene eseguito non appena il container si avvia. Si differenzia da <code>RUN</code> perché agisce sul container e non crea un nuovo layer.</p>
+<p><code>ENTRYPOINT</code>: Definisce il comando che viene eseguito non appena il container si avvia. Si differenzia da <code>RUN</code> perché agisce sul container durante l’esecuzione e non crea un nuovo layer.</p>
 <p>es. <code>ENTRYPOINT vsftpd</code></p>
 </li>
 <li>
@@ -2244,7 +2242,7 @@ http {
 <p>es. <code>LABEL VERSION=”1.0.0” MAINTAINER=”gg76”</code></p>
 </li>
 <li>
-<p><code>EXPOSE</code>: Dichiara su quali porte il container resterà in ascolto. Indica a Docker che, in fase di avvio del container, potrebbe essere necessario effettuare il <em>port forwarding</em>.</p>
+<p><code>EXPOSE</code>: Dichiara su quali porte il container resterà in ascolto. Indica a Docker che, in fase di avvio del container, sarà necessario effettuare il <em>port forwarding</em>.</p>
 <p>es. <code>EXPOSE 80 443</code></p>
 </li>
 <li>
@@ -2252,11 +2250,11 @@ http {
 <p>es. <code>VOLUME ["/var/www"]</code></p>
 </li>
 </ul>
-<p>Per creare un’immagine da un Dockerfile, si usa il comando <code>docker build [opzioni] &lt;build context&gt;</code>. Il <code>&lt;build context&gt;</code> indica all’engine la directory di riferimento, pesso è indicato con la directory corrente (<code>.</code>). Il build context è fondamentale per risolvere i path relativi usati in istruzioni come <code>COPY</code> o <code>ADD</code>.</p>
+<p>Per creare un’immagine da un Dockerfile, si usa il comando <code>docker build [opzioni] &lt;build context&gt;</code>. Il <code>&lt;build context&gt;</code> indica all’engine la directory di riferimento, spesso è indicato con la directory corrente (<code>.</code>). Il build context è fondamentale per risolvere i path relativi usati in istruzioni come <code>COPY</code> o <code>ADD</code>.</p>
 <h2 id="docker-compose">Docker compose</h2>
-<p>Quando un’applicazione è composta da <strong>più container</strong>, può risultare utile utilizzare <strong>Docker Compose</strong>.</p>
+<p>Quando un’applicazione è composta da <strong>più container</strong> (ad esempio una applicazione full stack), può risultare utile utilizzare <strong>Docker Compose</strong>.</p>
 <p>Docker Compose è uno strumento progettato per la definizione e l’esecuzione di applicazioni Docker multi-container.</p>
-<p>Si utilizza un <strong>file YAML</strong> (spesso chiamato <code>docker-compose.yml</code>) per configurare le immagini, i volumi e tutte le altre configurazioni che compongono l’applicazione.</p>
+<p>Si utilizza un <strong>file YAML</strong> (spesso chiamato <code>docker-compose.yml</code>) per specificare le immagini, i volumi e tutte le altre configurazioni che compongono l’applicazione.</p>
 <p>esempio di <code>docker-compose.yml</code>:</p>
 <pre class=" language-yaml"><code class="prism  language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3.8"</span>
 <span class="token key atrule">services</span><span class="token punctuation">:</span>
@@ -2274,15 +2272,16 @@ http {
 <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
 	 <span class="token key atrule">logvolume01</span><span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
 </code></pre>
-<p>definisce due immagini, di cui la prima viene definita in un dockerfile presente nella stessa direcotry e la seconda è Redis.</p>
+<p>definisce due immagini, di cui la prima viene definita in un dockerfile presente nella stessa directory (lo si nota dal comando <code>build</code>) e la seconda è Redis.</p>
+<p>Grazie a questo file, con un singolo comando si può eseguire l’intero stack dell’applicazione senza dover avviare manualmente tutti i container che compongono l’applicazione.</p>
 <h2 id="gestire-i-container">Gestire i container</h2>
-<p>I repository che contengono le immagini con le loro versioni sono disponibili in dei registri online come Docker Hub o Github container registry.</p>
-<p>Per impostazione predefinita, Docker si collega a <strong>Docker Hub</strong>, un registro centralizzato gestito dalla società Docker, da cui è possibile scaricare la maggior parte delle immagini necessarie, e in cui  chiunque può ospitare le proprie immagini.</p>
+<p>I repository che contengono le immagini con le loro versioni sono disponibili in dei registri online come Docker Hub o Github Container Registry.</p>
+<p>Per impostazione predefinita, Docker si collega a <strong>Docker Hub</strong>, un registro centralizzato gestito dalla società Docker, da cui è possibile scaricare la maggior parte delle immagini, e in cui chiunque può caricare le proprie immagini.</p>
 <p>È possibile cercare le immagini disponibili su Docker Hub utilizzando il comando <code>docker search &lt;nome_immagine&gt;</code>. L’output di questo comando mostra diverse immagini con varie informazioni. Se si desidera scaricare esplicitamente un’immagine, si usa il comando <code>docker pull &lt;nome_immagine&gt;</code>.</p>
 <p>Per gestire container e immagini, si utilizzano diversi comandi. La sintassi generale è</p>
 <pre class=" language-bash"><code class="prism  language-bash">docker <span class="token punctuation">[</span>opzioni<span class="token punctuation">]</span> <span class="token punctuation">[</span>comando<span class="token punctuation">]</span> <span class="token punctuation">[</span>argomenti<span class="token punctuation">]</span>
 </code></pre>
-<p>Ad esempio, per avviare un container da un’immagine si usa <code>docker run &lt;immagine&gt;</code>, con opzioni come <code>-it</code> per la modalità interattiva, <code>-d</code> per la modalità <em>detached</em> (in background), o <code>--name</code> per assegnare un nome al container. Si possono elencare le immagini scaricate con <code>docker images</code> e i container (in esecuzione) con <code>docker ps</code>. È anche possibile avviare (<code>docker start</code>), fermare (<code>docker stop</code>) o rimuovere (<code>docker rm</code>) i container usando il loro ID o nome.</p>
+<p>Ad esempio, per avviare un container da un’immagine si usa <code>docker run &lt;immagine&gt;</code>, con opzioni come <code>-it</code> per la modalità interattiva, <code>-d</code> per la modalità <em>detached</em> (cioè eseguito in background), o <code>--name</code> per assegnare un nome al container. Si possono elencare le immagini scaricate con <code>docker images</code> e i container (in esecuzione) con <code>docker ps</code>. È anche possibile avviare (<code>docker start</code>), fermare (<code>docker stop</code>) o rimuovere (<code>docker rm</code>) i container specificando il loro ID o nome.</p>
 <h2 id="portainer">Portainer</h2>
 <p>Per facilitare la gestione di Docker, esiste uno strumento open source con interfaccia grafica chiamato <strong>Portainer</strong>. Portainer permette di amministrare container, immagini, network e volumi tramite una dashboard visuale.</p>
 

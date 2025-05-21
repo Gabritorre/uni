@@ -32,7 +32,7 @@
     <div class="stackedit__html">
       <h1 id="boot-e-partizionamento">Boot e partizionamento</h1>
 <h2 id="bios">BIOS</h2>
-<p>All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, chiamato BIOS. Il <strong>BIOS</strong> (<em>Basic Input-Output System</em>) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:</p>
+<p>All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, contenente il BIOS. Il <strong>BIOS</strong> (<em>Basic Input-Output System</em>) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:</p>
 <ul>
 <li>effettua controlli hardware del sistema</li>
 <li>cerca e controlla le periferiche</li>
@@ -50,7 +50,7 @@
 </ul>
 <h2 id="fase-di-avvio-di-linux">Fase di avvio di Linux</h2>
 <p>Il vecchio BIOS è più semplice, per cui ci baseremo su quello.</p>
-<p>Una volta finiti i check HW il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.</p>
+<p>Una volta finiti i check HW, il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.</p>
 <p>MBR cerca la prima <strong>partizione attiva</strong> del disco (cioè quella flaggata come <em>bootable)</em>, una volta trovata, legge il suo contenuto che contiene informazioni su come caricare il boot loader. Una volta caricato il boot loader, quest’ultimo si occuperà di avviare il sistema operativo.</p>
 <h3 id="windows">Windows</h3>
 <p>Su Windows il compito del boot loader veniva svolto dal file <code>NTLDR.exe</code> che permetteva di selezionare il sistema operativo con le informazioni contenuto del file <code>boot.ini</code>, un file di testo nascosto e in sola lettura.</p>
@@ -75,7 +75,7 @@
 </code></pre>
 <p>Una volta lanciato il processo init, esso diventa il padre di tutti i successivi processi.</p>
 <h3 id="systemd-e-upstart">Systemd e Upstart</h3>
-<p>Nelle moderni distribuzioni di Linux init è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:</p>
+<p>Nelle moderni distribuzioni di Linux, il processo <strong>init</strong> è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:</p>
 <ul>
 <li>Upstart</li>
 <li>Systemd (il più diffuso)</li>
@@ -85,7 +85,7 @@
 <p>Questa fase consiste nel suddividere le unità di storage in partizioni, cioè in porzioni di disco.</p>
 <p>Per PC da casa il partizionamento di default va già bene, al massimo si può decidere di posizionare <code>/home</code> in una partiziona separata da <code>/</code>.</p>
 <h3 id="swap">Swap</h3>
-<p>Nel partizionamento spesso viene menzionata la <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
+<p>Nel partizionamento spesso viene menzionata la partizione <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
 <p>Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.</p>
 <p>Ci sono due approcci per gestire la Swap:</p>
 <ul>
@@ -218,7 +218,7 @@
 </ul>
 <p>Soluzione Swap 3:</p>
 <ul>
-<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.25</mn><mo>=</mo><mn>384</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.25 = 384GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.25</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">384</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
+<li><code>Swap</code> <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>512</mn><mo>⋅</mo><mn>0.75</mn><mo>=</mo><mn>384</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">512 \cdot 0.75 = 384GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">512</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">0.75</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">384</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
 </ul>
 <p>in tutti i casi possiamo ospitare circa 100 utenti</p>
 <h2 id="ssh">SSH</h2>
@@ -231,7 +231,7 @@
 <pre class=" language-bash"><code class="prism  language-bash">ssh-keygen -t rsa -b 2048
 </code></pre>
 <p>normalmente le chiavi generate vengono salvate in <code>~/.ssh/</code></p>
-<p>L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite ssh-agent per mettere in cache la passphrase per la durata della sessione</p>
+<p>L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite <code>ssh-agent</code> per mettere in cache la passphrase per la durata della sessione</p>
 <pre class=" language-bash"><code class="prism  language-bash">ssh-add ~/.ssh/id_rsa
 </code></pre>
 <p>quando ci si è connessi poi bisogna copiare la chiave pubblica nel server, nel file <code>~/.ssh/authorized_keys</code>. Si può anche usare lo script ssh-copy-id per copiarla in modo automatizzato:</p>

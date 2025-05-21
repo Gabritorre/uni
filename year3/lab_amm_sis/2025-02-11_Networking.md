@@ -27,9 +27,7 @@ Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono
 
 ### Cavo di rete (doppino telefonico)
 
-Costituito da almeno due fino ad un massimo di 8 sottili fili
-di rame intrecciati. La categoria del cavo (5/5a/6a/7..) definisce la banda
-massima garantita e la qualità di isolamento per le interferenze.
+Costituito da almeno due fino ad un massimo di 8 sottili fili di rame intrecciati. La categoria del cavo (5/5a/6a/7..) definisce la banda massima garantita e la qualità di isolamento per le interferenze.
 
 ### Fibra
 
@@ -37,7 +35,7 @@ Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, de
 
 ### Wi-Fi
 
-Le reti wifi usano l’etere (l'aria come mezzo di propagazione i fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
+Le reti wifi usano l’etere (l'aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
 
 Si utilizza un **access point**, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.
 
@@ -45,7 +43,7 @@ Ha bisogno di sistemi di sicurezza e autenticazione elevati perché chiunque pu�
 
 ### Li-Fi
 
-Li-Fi (*Light Fidelity*) è il corrispondente ottico del Wi-Fi (che usa trasmissioni radio). La differenza sta nel fatto che le frequenze occupate appartengono allo spettro della luce visibile.
+Li-Fi (*Light Fidelity*) è il corrispondente ottico del Wi-Fi (che usa invece trasmissioni radio). La differenza sta nel fatto che le frequenze occupate da Li-Fi appartengono allo spettro della luce visibile.
 
 Si basa sull’invio di dati attraverso la luce alterando la frequenza della luce come se fossero lampadine a LED che lampeggiano e trasmettono dati, in modo che un foto-ricevitore possa stabilire una connessione wireless.
 
@@ -63,19 +61,21 @@ Le reti possono essere classificate in tre categorie a seconda della loro estens
 
 Tutte le moderne reti si basano sullo stack **TCP/IP** che altro non è che un insieme di **protocolli**, cioè delle regole che delineano il formato dei messaggi che deve essere utilizzato nella comunicazione tra due sistemi.
 
-Lo stack TCP/IP è costruito su un **modello a strati o livelli**, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.
+Lo stack TCP/IP è costruito su un **modello a livelli**, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.
 
-In una rete TCP/IP ogni host è identificato da un **indirizzo IP univoco** all’interno di essa.
+All’interno di una rete TCP/IP ogni host è identificato da un **indirizzo IP univoco**.
+
+![](https://i.ibb.co/ycGPBL3m/image.png)
 
 ## Dispositivi di networking
 
 Vediamo i principali dispositivi nel mondo del networking:
 
-- **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address*
+- **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address.*
 - **hub**: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.
 - **switch**: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima
-- **router**: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
-- **access point**: permette accesso alla rete tramite connessione Wi-Fi
+- **router**: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
+- **access point**: permette accesso alla rete tramite connessione Wi-Fi.
 
 ## MAC address
 
@@ -122,14 +122,14 @@ Gli indirizzi IP sono suddivisi in **cinque classi:**
 Esistono diversi indirizzi particolari che sono riservati a scopi specifici e non possono essere assegnati agli host:
 
 - `0.0.0.0` (**default route**): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.
-- **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.
-- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete specificata nell’indirizzo.
-- **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host e la rete hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete.
+- **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. `192.168.1.0/24`
+- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. `192.168.1.255`
+- **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit dell'host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. `255.255.255.255`
 - **Loopback**: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (*localhost*), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo `127.0.0.1`
 
 ### Indirizzi privati
 
-Ci sono dei range di indirizzi (chiamati **indirizzi privati**), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host su internet.
+Ci sono dei range di indirizzi (chiamati **indirizzi privati**), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host pubblici su internet.
 
 | Classe | Range indirizzi privati |
 | --- | --- |

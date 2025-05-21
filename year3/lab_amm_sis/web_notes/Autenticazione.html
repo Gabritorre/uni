@@ -27,7 +27,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="autenticazione">Autenticazione</h1>
-<p>Con <strong>autenticazione</strong> si intente una serie di problemi e operazioni tra cui:</p>
+<p>Con <strong>autenticazione</strong> si intente una serie di operazioni che includono:</p>
 <ul>
 <li><strong>identificazione e autenticazione</strong>: indicare in maniera univoca un utente di un sistema e dimostrare che un utente è realmente la persona che dichiara di essere</li>
 <li><strong>autorizzazione</strong>: stabilire cosa l’utente può fare e cosa no</li>
@@ -46,7 +46,7 @@
 <p>Per superare queste limitazioni, nel tempo sono nati sistemi che permettono di aggiungere diversi meccanismi di autenticazione e gestione delle informazioni sugli utenti senza dover modificare i programmi che ne fanno uso, ad esempio NSS e PAM.</p>
 <h3 id="nss">NSS</h3>
 <p><strong>NSS (Name Service Switch)</strong> è un sistema per la gestione delle informazioni sugli utenti.</p>
-<p>In Linux, NSS è parte delle librerie C del progetto GNU e fornisce i dati dei system database (tra cui <code>/etc/passwd</code>, <code>/etc/roup</code> e <code>/etc/hosts</code>) alle applicazioni. Come fonti di dati possono essere usate anche altri tipi di fonti, come dei database.</p>
+<p>In Linux, NSS è parte delle librerie C del progetto GNU e fornisce delle funzioni che fanno da interfaccia tra le applicazioni e i sistemi di autenticazione per la gestione delle informazioni utente (tra cui <code>/etc/passwd</code>, <code>/etc/group</code>). Possono essere usati anche altre fonti per i dati, come dei database.</p>
 <p>La configurazione di NSS avviane principalmente tramite il file <code>/etc/nsswitch.conf</code></p>
 <p><img src="https://i.ibb.co/TB42bGXS/image.png" alt=""></p>
 <h3 id="pam">PAM</h3>
@@ -74,11 +74,11 @@
 <p>L’implementazione più nota di un server LDAP su Linux è OpenLDAP.</p>
 <p>Su Windows LDAP viene spesso utilizzato con il protocollo Kerberos in un sistema che prende il nome di <strong>Active Directory</strong>.</p>
 <p><strong>Kerberos</strong> è un protocollo di rete per l’autenticazione in cui gli utenti si autenticano tramite tecniche crittografiche.</p>
-<p>Il protocollo Kerberos coinvolge un <strong>client</strong>, un <strong>application serve</strong>r e un <em>Key Distribution Center</em> (<strong>KDC</strong>), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.</p>
+<p>Il protocollo Kerberos coinvolge un <strong>client</strong>, un <strong>application server</strong> e un <em>Key Distribution Center</em> (<strong>KDC</strong>), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.</p>
 <p><img src="https://i.ibb.co/5hvSmDrF/image.png" alt=""></p>
 <p>Il processo di autenticazione prevede diversi passaggi:</p>
 <ol>
-<li><code>AS_REQ</code>: La richiesta iniziale del client in chiaro verso l’Authentication Server</li>
+<li><code>AS_REQ</code>: La richiesta iniziale del client in chiaro verso l’Authentication Server (una componente del KDC)</li>
 <li><code>AS_REP</code>: la risposta dell’Authentication Server contenente la chiave di sessione</li>
 <li><code>TGS_REQ</code>: la richiesta di un ticket di servizio</li>
 <li><code>TGS_REP</code>: la risposta del Ticket Granting Server contenente il ticket di servizio (TS),</li>

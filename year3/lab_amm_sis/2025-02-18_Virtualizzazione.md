@@ -13,7 +13,7 @@ Si utilizza il software per simulare l'esistenza dell'hardware.
 
 Vantaggi:
 
-- costI molto ridotti
+- costi molto ridotti
 - downtime del sistema ridotto
 - aumento della produttività e dell’efficienza
 - fornitura più rapida dei servizi
@@ -28,7 +28,7 @@ Es. al posto di avere un server per la posta e un web server, mantengo un server
 
 ## Virtualizzazione del desktop
 
-Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo ma che si agganciano ad una macchina virtuale offerta da un server.
+Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo e che si agganciano ad una macchina virtuale offerta da un server.
 
 I tre tipi principali di virtualizzazione del desktop sono:
 

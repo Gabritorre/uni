@@ -86,8 +86,8 @@
 <p>È generalmente preferibile bloccare tutto in ****<code>/etc/hosts.deny</code> e aprire solo i servizi desiderati in ****<code>/etc/hosts.allow</code>.</p>
 <h2 id="ntp">NTP</h2>
 <p><strong>NTP (Network Time Protocol)</strong> è un protocollo che permette ai client di sincronizzarsi con dei server, chiamati <strong>Time Server</strong>, al fine di mantenere data e ora sincronizzati all’interno di un sistema distribuito.</p>
-<p>Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici o ponti radio, stazioni di misurazione, o altri server NTP.</p>
-<p>I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti <strong>strato 0</strong>. I server NTP direttamente collegati a essi sono <strong>server allo strato 1 (primari)</strong>. I dispositivi che ottengono l’ora da server allo strato n sono allo strato n+1.</p>
+<p>Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici, ponti radio, stazioni di misurazione o altri server NTP.</p>
+<p>I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti <strong>strato 0</strong>. I server NTP direttamente collegati a essi sono <strong>server allo strato 1 (primari)</strong>. I dispositivi che ottengono l’ora da server allo strato <strong>n</strong> sono allo strato <strong>n+1</strong>.</p>
 <p>Su sistemi Debian/Ubuntu, è possibile <strong>installare il pacchetto ntp</strong></p>
 <pre class=" language-bash"><code class="prism  language-bash">apt <span class="token function">install</span> ntp
 </code></pre>
@@ -99,7 +99,7 @@
 <p><strong>Chrony</strong> può sincronizzare l’orologio di sistema con server NTP, orologi di riferimento (come ricevitori GPS) e input manuale. Può anche funzionare come server NTPv4 per altri computer nella rete.</p>
 <p>È progettato per funzionare bene anche in condizioni di rete difficili e offre una precisione tipica di pochi millisecondi su Internet e di decine di microsecondi su una LAN.</p>
 <h2 id="dhcp">DHCP</h2>
-<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> è un protocollo sche permette la <strong>configurazione automatica dei parametri di rete</strong> al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.</p>
+<p><strong>DHCP (Dynamic Host Configuration Protocol)</strong> è un protocollo che permette la <strong>configurazione automatica dei parametri di rete</strong> al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.</p>
 <p><strong>Funzionalità principali</strong>:</p>
 <ul>
 <li>
@@ -113,7 +113,7 @@
 <p><strong>Come funziona:</strong></p>
 <ol>
 <li><strong>DHCPDISCOVER</strong>: All’avvio della configurazione di rete, il client invia un pacchetto <strong>DHCPDISCOVER in broadcast</strong> (all’indirizzo 255.255.255.255) per cercare un server DHCP.</li>
-<li><strong>DHCPOFFER</strong>: Se un server DHCP è presente nella rete, riceve la richiesta, verifica (eventualmente) l’indirizzo MAC del client e invia un <strong>indirizzo IP al client tramite un pacchetto DHCPOFFER</strong>.</li>
+<li><strong>DHCPOFFER</strong>: Se un server DHCP è presente nella rete, riceve la richiesta, verifica, eventualmente, l’indirizzo MAC del client e comunica un <strong>indirizzo IP al client tramite un pacchetto DHCPOFFER</strong>.</li>
 <li><strong>DHCPREQUEST</strong>: Se il client accetta la configurazione offerta, invia un pacchetto di <strong>DHCPREQUEST</strong> al server.</li>
 <li><strong>DHCPACK</strong>: Il server risponde al client con un pacchetto di <strong>DHCPACK</strong> contenente l’indirizzo IP assegnato e le altre informazioni sulla configurazione di rete.</li>
 </ol>
@@ -126,14 +126,14 @@
 <p>Il <strong>Domain Name System (DNS)</strong> è un sistema usato per <strong>tradurre gli indirizzi IP in nomi simbolici e viceversa</strong>.</p>
 <p>Il DNS gestisce una <strong>tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)</strong>.</p>
 <p>Il DNS è fondamentalmente un <strong>database distribuito</strong> basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.</p>
-<p>Il DNS possiede:</p>
+<p>Il DNS possiede due gerarchie:</p>
 <ol>
 <li>
 <p><strong>una gerarchia dei nomi di dominio</strong>: La posizione più alta è occupata dai <strong>Top Level Domain (TLD)</strong> come <code>.com</code>, <code>.it</code>, <code>.uk</code>, <code>.edu</code>, ecc. Al di sotto si trovano altri domini come <code>amazon.it</code>, <code>google.it</code>, ecc…</p>
 <p><img src="https://i.ibb.co/BVjGj0fN/image.png" alt=""></p>
 </li>
 <li>
-<p><strong>una gerarchia dei server che forniscono i dati</strong>: Le informazioni sono suddivise in <strong>zone</strong>, cioè una porzione di nomi di dominio sotto una gestione amministrativa. La gerarchia dei name server parte dai <strong>root name server</strong> e si realizza tramite <strong>deleghe sulle zone</strong>, aventi come radice la zona “.”.</p>
+<p><strong>una gerarchia dei server che forniscono i dati</strong>: Le informazioni sono suddivise in <strong>zone</strong>, cioè una porzione di nomi di dominio è sotto una gestione amministrativa. La gerarchia dei name server parte dai <strong>root name server</strong> e si realizza tramite <strong>deleghe sulle zone</strong>.</p>
 <p>La gestione di una zona è <strong>delegata dalla zona superiore tramite dei record di tipo NS</strong> (Name Server). Per garantire ridondanza, ogni zona è <strong>replicata su più server</strong>.</p>
 <p><img src="https://i.ibb.co/fGPMkfZL/image.png" alt=""></p>
 </li>

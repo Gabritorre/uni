@@ -44,7 +44,7 @@ In Windows, un file speciale è quello di Swap, presente ora anche in quasi tutt
 
 ## Directory
 
-Una **directory è un elenco di nomi di file** (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una **struttura gerarchica al filesystem** (ad albero), con una radice indicata da `/` in Linux e `c:\` in Windows.
+Una **directory è un elenco di nomi di file** (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una **struttura gerarchica al filesystem** (ad albero), con una radice indicata da `/` in Linux e `C:\` in Windows.
 
 Sulle directory si possono effettuare operazioni come creazione, cancellazione, collegamenti e ridenominazione.
 

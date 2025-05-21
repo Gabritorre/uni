@@ -27,14 +27,14 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="file-system-distribuiti">File system distribuiti</h1>
-<p>Un <strong>Filesystem Distribuito (DFS)</strong> è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell’utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.</p>
-<p>Un <strong>File Server</strong> è un host che ospita un DFS. Sui client è installata un’interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.</p>
+<p>Un <strong>Filesystem Distribuito (DFS)</strong> è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell’utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.<br>
+Un <strong>File Server</strong> è un host che ospita un DFS. Sui client è installata un’interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.</p>
 <h2 id="caratteristiche-dfs"><strong>Caratteristiche DFS</strong></h2>
 <p>Le caratteristiche principali di un DFS includono:</p>
 <ul>
 <li>
 <p><strong>Trasparenza:</strong></p>
-<p>La trasparenza ideale fa sì che un DFS appaia all’utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L’interfaccia utente non dovrebbe distinguere tra file locali e remoti.</p>
+<p>La trasparenza fa sì che un DFS appaia all’utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L’interfaccia utente non dovrebbe distinguere tra file locali e remoti.</p>
 </li>
 <li>
 <p><strong>Prestazioni:</strong><br>
@@ -50,14 +50,14 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <h2 id="implementazioni">Implementazioni</h2>
 <p>Vediamo varie implementazioni di DFS.</p>
 <h3 id="nfs-network-file-system"><strong>NFS (Network File System)</strong>:</h3>
-<p>Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il <strong>primo DFS ad essere sviluppato</strong> ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull’idea che ogni host fornisce una vista unificata del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.</p>
-<p>NFS utilizza un <em><strong>remote access model</strong></em> in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file.</p>
+<p>Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il <strong>primo DFS ad essere sviluppato</strong> ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull’idea che ogni host espone alla rete parte del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.</p>
+<p>NFS utilizza un <em><strong>remote access model</strong></em> in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file del server. Si differenzia dal <strong>modello upload/download</strong> dove i client scaricano il file in locale, lo modificano e lo ricaricano sul server, il quale mantiene lo storico delle versioni.</p>
 <p>Dalla versione 4:</p>
 <ul>
 <li>supporta server <em>stateful</em>, mantenendo lo stato delle operazioni, a differenza delle versioni precedenti dove era il client a doverlo fare.</li>
 <li>introdotto le <em><strong>Compound Operations</strong></em> (CP), che consistono in inserire più operazioni in una singola chiamata, migliorando così l’efficienza. La chiamata però non viene trattata come una transazione: se una operazione interna fallisce, le successive non vengono eseguite e viene ritornato un messaggio di errore senza che venga fatto un rollback.</li>
 <li>Utilizza il protocollo TCP (in precedenza UDP).</li>
-<li>Per il riconoscimento dell’utente, dalla versione 4 si usa una stringa arbitraria, come un username (prima era solo tramite indirizzo IP)</li>
+<li>Per il riconoscimento dell’utente, dalla versione 4 si usa una stringa arbitraria, come un username, oppure anche utilizzando sistemi esterni (prima era solo tramite indirizzo IP)</li>
 </ul>
 <p>La sua configurazione avviene nel file <code>/etc/exports</code> e usa la seguente sintassi:</p>
 <pre class=" language-bash"><code class="prism  language-bash">/percorso/cartella/condivisa     indirizzo_ip<span class="token punctuation">(</span>opzioni<span class="token punctuation">)</span>
@@ -74,7 +74,7 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <li>Usare <strong>automount</strong></li>
 </ol>
 <p><strong>Automount</strong> è un meccanismo implementato da vari sistemi UNIX per gestire il montaggio di filesystem remoti in modo dinamico, cioè montandolo solamente quando serve e smontandolo quando non serve più.</p>
-<p>Il problema che automount mira a risolvere è che <strong>non è consigliabile mantenere un file system remoto montato permanentemente su un sistema</strong>. in caso di disconnessione il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può svorareil limite massimo di mount.</p>
+<p>Il problema che automount mira a risolvere è che <strong>non è consigliabile mantenere un file system remoto montato permanentemente su un sistema</strong>. in caso di disconnessione con l’host remoto, il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può superare il limite massimo di mount.</p>
 <p><strong>Funzionamento:</strong></p>
 <ul>
 <li>Quando un processo accede ad un file all’interno di un certo percorso gestito da un DFS, questo viene <strong>montato all’istante</strong>.</li>
@@ -86,7 +86,7 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <p>In generale, in un dominio <strong>Active Directory</strong> di Windows, esistono due tipologie di cartelle condivise  legate agli utenti del sistema:</p>
 <ul>
 <li>
-<p><strong>Profili utente:</strong> Possono risiedere solo sulla macchina locale (client), oppure sul server come <em>Roaming Profiles</em>. Con i <em>Roaming Profiles</em>, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l’utente si collega.</p>
+<p><strong>Profili utente:</strong> Possono risiedere direttamente sulla macchina locale (client), oppure sul server come <em>Roaming Profiles</em>. Con i <em>Roaming Profiles</em>, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l’utente si collega.</p>
 <p>I profili vengono scaricati/caricati dal server a ogni login/logout.</p>
 </li>
 <li>

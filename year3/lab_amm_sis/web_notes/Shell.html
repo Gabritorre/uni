@@ -35,7 +35,9 @@
 <li>Bourne Again Shell (<strong>bash</strong>): la shell attualmente di default su Linux, compatibile con sh</li>
 <li><strong>Zsh</strong>: estensione di bash con caratteristiche prese da altre shell, usata di default su Mac OS</li>
 </ul>
-<p>Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire <code>less /etc/shells</code></p>
+<p>Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire il comando:</p>
+<pre class=" language-bash"><code class="prism  language-bash"><span class="token function">less</span> /etc/shells
+</code></pre>
 <p>Su Windows abbiamo:</p>
 <ul>
 <li><strong>Prompt dei comandi</strong> (cmd): è un porting della shell usata in Microsoft DOS, permette sia l’esecuzione di comandi che la creazione di script batch e l’esecuzione di VBscript.</li>
@@ -70,7 +72,7 @@
 <ul>
 <li><code>;</code> permette di separare più comandi sulla stessa riga.</li>
 <li><code>&amp;</code> esegue il comando che lo precede in background, permettendo alla shell di accettare nuovi comandi senza attendere il completamento del precedente.</li>
-<li><code>()</code> creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. i comandi all’interno non influenzano l’ambiente della shell principale. Ad esempio, <code>(cd /tmp; ls)</code> non modifica la directory corrente della shell principale.</li>
+<li><code>()</code> creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. I comandi all’interno non influenzano l’ambiente della shell principale. Ad esempio, <code>(cd /tmp; ls)</code> non modifica la directory corrente della shell principale.</li>
 <li><code>{}</code> raggruppano comandi da eseguire nel contesto della shell corrente. A differenza delle parentesi tonde, i comandi all’interno influenzano l’ambiente della shell principale. È importante notare che <code>{</code> e <code>}</code> devono essere separati dai comandi da spazi e che il blocco deve terminare con un punto e virgola o una nuova riga prima della parentesi chiusa.</li>
 <li><code>|</code> (pipe) prende l’output del comando a sinistra e lo passa come input al comando a destra.</li>
 <li><code>&lt;&gt; &amp;</code> reindirizzamento dell’input e dell’output</li>
@@ -285,7 +287,7 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
 <span class="token keyword">done</span>
 </code></pre>
 <h3 id="select">Select</h3>
-<p>Il comando <strong><code>select</code></strong> è usato per creare menu interattivi a scelta multipla.</p>
+<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla.</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 
 <span class="token keyword">echo</span> <span class="token string">"Scegli un'opzione:"</span>
@@ -310,7 +312,7 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
 <h3 id="ifs">IFS</h3>
 <p>IFS (<em>Internal Field Separator</em>) è una variabile speciale che determina i caratteri usati per separare i campi quando si lavora con stringhe o input.</p>
 <p>Di default, IFS contiene spazio, tabulazione e newline (<code>" \t\n"</code>)</p>
-<p>Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perchè potrebbe contenere caratteri non stampabili:</p>
+<p>Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perché potrebbe contenere caratteri non stampabili.</p>
 <p>Esempio: elencare i file e le directory presenti nella directory corrente e calcolare il loro dimensione su disco. Modifichiamo IFS in modo che Bash non utilizzi gli spazi come delimitatori, ma solo le tabulazioni e i ritorni a capo</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 OLDIFS<span class="token operator">=</span><span class="token string">"<span class="token variable">$IFS</span>"</span><span class="token punctuation">;</span> 
@@ -379,7 +381,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 </code></pre>
 </li>
 <li>
-<p>I commenti si fanno con <code>‘</code></p>
+<p>I commenti si fanno con <code>'</code></p>
 <pre class=" language-visual"><code class="prism -basic language-visual">Option Explicit
 Dim a,b
 Dim c(3) 'array

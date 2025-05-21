@@ -22,7 +22,7 @@
     <div class="stackedit__html">
       <h1 id="server-di-stampa">Server di stampa</h1>
 <p>Un <strong>server di stampa</strong> permette la <strong>gestione centralizzata di una o più stampanti di rete e non</strong>.</p>
-<p>Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Ogni <strong>stampante di rete</strong> moderna può essere considerata un <strong>print server per sé stessa</strong>, in quanto offre il proprio servizio di stampa tramite diverse modalità di accesso come:</p>
+<p>Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Le <strong>stampanti di rete</strong> moderne possono essere già considerate delle <strong>print server per se stesse</strong>, in quanto offrono il proprio servizio di stampa tramite diverse modalità di accesso come:</p>
 <ul>
 <li><strong>Web Printing</strong>: permette di inviare documenti alla stampante tramite un’interfaccia web.</li>
 <li><strong>IPP (Internet Printing Protocol)</strong>: protocollo che consente la stampa su rete e anche via Internet, con supporto per autenticazione e gestione code.</li>
@@ -30,7 +30,7 @@
 <li><strong>NetBIOS</strong>: usato principalmente nei sistemi Windows per condividere risorse (tra cui stampanti) all’interno di reti locali.</li>
 </ul>
 <p>Tuttavia, quando si hanno più stampanti di rete, è consigliabile la gestione tramite un host dedicato chiamato <strong>printer server</strong>. Il printer server può essere collegato alle stampanti <strong>direttamente</strong> (tramite USB/Parallela/Seriale, quando la stampante è molto vicina al server) oppure <strong>via rete</strong> (se la stampante è dotata di un modulo di rete e si trova in una zona più distante, come un’altra stanza, piano o edificio).</p>
-<p>Diversi sistemi operativi offrono funzionalità di print server integrata:</p>
+<p>Diversi sistemi operativi offrono funzionalità integrate di print server:</p>
 <ul>
 <li><strong>Linux/OS X</strong>: il server di stampa è gestito interamente dal sistema <strong>CUPS (Common UNIX Printing System)</strong>, successore di LPD e pienamente compatibile con esso. Viene configurato nel file  <code>/etc/cups/cupsd.conf</code> o tramite interfaccia web all’indirizzo <code>http://localhost:631/admin</code></li>
 <li><strong>Windows</strong>: il sistema di <strong>condivisione file e stampanti</strong> permette una gestione semplice di una o più stampanti condivise.</li>

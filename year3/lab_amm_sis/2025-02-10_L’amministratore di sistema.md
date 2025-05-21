@@ -2,7 +2,7 @@
 
 Un **amministratore di sistema** (SysAdmin, SA) si occupa di vari compiti, tra cui la gestione, la messa in opera, la manutenzione, l’aggiornamento di un sistema.
 
-Con **sistema** si intende un insieme di elementi (dispositivi come PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati per cui  il sistema è stato definito.
+Con **sistema** si intende un insieme di elementi (PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati prestabiliti.
 
 Una regola fondamentale nel campo dell’amministrazione di un sistema è che **se un sistema funziona (ciò svolge il suo compito) allora non si modifica ma si mantiene**.
 

@@ -1,6 +1,6 @@
 ﻿# Autenticazione
 
-Con **autenticazione** si intente una serie di problemi e operazioni tra cui:
+Con **autenticazione** si intente una serie di operazioni che includono:
 
 - **identificazione e autenticazione**: indicare in maniera univoca un utente di un sistema e dimostrare che un utente è realmente la persona che dichiara di essere
 - **autorizzazione**: stabilire cosa l’utente può fare e cosa no
@@ -33,7 +33,7 @@ Per superare queste limitazioni, nel tempo sono nati sistemi che permettono di a
 
 **NSS (Name Service Switch)** è un sistema per la gestione delle informazioni sugli utenti.
 
-In Linux, NSS è parte delle librerie C del progetto GNU e fornisce i dati dei system database (tra cui `/etc/passwd`, `/etc/roup` e `/etc/hosts`) alle applicazioni. Come fonti di dati possono essere usate anche altri tipi di fonti, come dei database.
+In Linux, NSS è parte delle librerie C del progetto GNU e fornisce delle funzioni che fanno da interfaccia tra le applicazioni e i sistemi di autenticazione per la gestione delle informazioni utente (tra cui `/etc/passwd`, `/etc/group`). Possono essere usati anche altre fonti per i dati, come dei database.
 
 La configurazione di NSS avviane principalmente tramite il file `/etc/nsswitch.conf`
 
@@ -82,13 +82,13 @@ Su Windows LDAP viene spesso utilizzato con il protocollo Kerberos in un sistema
 
 **Kerberos** è un protocollo di rete per l’autenticazione in cui gli utenti si autenticano tramite tecniche crittografiche.
 
-Il protocollo Kerberos coinvolge un **client**, un **application serve**r e un *Key Distribution Center* (**KDC**), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.
+Il protocollo Kerberos coinvolge un **client**, un **application server** e un *Key Distribution Center* (**KDC**), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.
 
 ![](https://i.ibb.co/5hvSmDrF/image.png)
 
 Il processo di autenticazione prevede diversi passaggi:
 
-1. `AS_REQ`: La richiesta iniziale del client in chiaro verso l’Authentication Server
+1. `AS_REQ`: La richiesta iniziale del client in chiaro verso l’Authentication Server (una componente del KDC)
 2. `AS_REP`: la risposta dell'Authentication Server contenente la chiave di sessione
 3. `TGS_REQ`: la richiesta di un ticket di servizio
 4. `TGS_REP`: la risposta del Ticket Granting Server contenente il ticket di servizio (TS), 

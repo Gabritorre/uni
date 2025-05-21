@@ -8,24 +8,24 @@ Il Web si basa sul protocollo **HTTP (HyperText Transfer Protocol)** e poggia su
 
 ### HTTP
 
-La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta per una risorsa al server alla volta.
+La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta alla volta al server per una risorsa.
 
 La versione HTTP 1.1 ha introdotto:
 
 - la possibilità di effettuare più richieste per connessione
 - connessioni permanenti
 - richieste/risposte asincrone all'interno di queste connessioni.
-- obbliga i client a specificare l'hostname desiderato nella richiesta, consentendo l'implementazione del **virtual hosting**, dove un server può ospitare più siti internet con nomi diversi ma lo stesso indirizzo IP.
+- obbliga i client a specificare l'hostname desiderato nella richiesta, consentendo l'implementazione del **virtual hosting**, dove un server può ospitare più siti internet con nomi diversi ma allo stesso indirizzo IP.
 
 Attualmente, si utilizzano **HTTP 2** (per oltre il 50%) e **HTTP 3** (usato nel 20%) che aggiungono varie migliorie.
 
 ## Web server
 
-Un **WEB Server** è un'applicazione software che gira su un computer, capace di gestisce le richieste di trasferimento di pagine web verso un client.
+Un **WEB Server** è un'applicazione che gira su un host, capace di gestisce le richieste di trasferimento di pagine web verso un client.
 
 La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).
 
-Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.
+Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.
 
 Tra i vari web server è interessante approfondire:
 
@@ -108,13 +108,13 @@ http {
 
 Il concetto di **server block** in Nginx è molto simile al **virtual hosting di Apache**. Questo significa che puoi ospitare più siti web sullo stesso server Nginx.
 
-Un modo per farlo è definire **più server blocks all'interno dello stesso file `nginx.conf`**. Ad esempio, avere un blocco per `sito1.com` e un altro per `sitoN.com`, ognuno con la sua radice dei documenti, i suoi log, ecc...
+Un modo per farlo è definire **più server blocks all'interno dello stesso file** `nginx.conf`. Ad esempio, avere un blocco per `sito1.com` e un altro per `sitoN.com`, ognuno con la sua radice dei documenti, i suoi log, ecc...
 
 Un approccio più pulito è quello di **creare dei file separati** per ogni sito nella directory `/etc/nginx/sites-available/`, e poi **abilitarli** creando dei **link simbolici** a questi file all'interno della directory `/etc/nginx/sites-enable/`.
 
 ### Reverse proxy
 
-Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al visitatore.
+Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al client.
 
 Questo è utile in diverse situazioni:
 
@@ -122,11 +122,11 @@ Questo è utile in diverse situazioni:
 - come **load balancer**, per distribuire il traffico tra più server che offrono lo stesso servizio;
 - per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il **supporto a HTTPS** per applicazioni che non lo gestiscono nativamente.
 
-Il bilanciamento del carico serve a **distribuire il traffico** su più server per sfruttare al meglio le risorse, aumentare la velocità del tuo sito, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta **tre modalità principali** di bilanciamento del carico:
+Il bilanciamento del carico serve a **distribuire il traffico** su più server per sfruttare al meglio le risorse, aumentare la velocità del servizio web, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta **tre modalità principali** di bilanciamento del carico:
 
 - **Round-robin**: le richieste vengono distribuite ai server in sequenza, uno dopo l'altro. Non garantisce la persistenza delle sessioni
 - **Least-connected**: ogni nuova richiesta viene inviata al server che in quel momento ha il minor numero di connessioni attive. Non garantisce la persistenza delle sessioni
-- **Ip-hash**: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. Questo garantisce che le richieste provenienti dallo stesso utente vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.
+- **Ip-hash**: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. In questo modo le richieste provenienti dallo stesso client vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.
 
 Infine, Nginx ha anche un sistema di **monitoraggio passivo** dei server. Se un server non risponde correttamente, viene temporaneamente escluso dal bilanciamento del carico.
 

@@ -28,7 +28,7 @@
     <div class="stackedit__html">
       <h1 id="hardware-e-raid">Hardware e raid</h1>
 <p>Possiamo rappresentare l’architettura dei computer con la <strong>macchina di Von Neuman</strong></p>
-<p><img src="https://i.ibb.co/rYvtSdq/image.png" alt="https://i.ibb.co/rYvtSdq/image.png"></p>
+<p><img src="https://i.ibb.co/rYvtSdq/image.png" alt=""></p>
 <p>Una scheda madre (<em>motherboard</em>) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.</p>
 <p>Nella scheda madre possiamo installare CPU, memoria RAM, collegare memorie di massa e altre schede di espansione (video, rete, ecc…)</p>
 <h2 id="memorie">Memorie</h2>
@@ -49,13 +49,13 @@
 </ul>
 </li>
 </ul>
-<p>La loro capacità si misura in multipli di Byte, tipicamente in GigaByte o TeraByte.</p>
+<p>La loro capacità si misurano in multipli di Byte, tipicamente in GigaByte o TeraByte.</p>
 <h2 id="cpu">CPU</h2>
-<p>Non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.<br>
+<p>La CPU non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.<br>
 È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati<br>
 attraverso il bus alla periferica desiderata.</p>
 <h2 id="raid">RAID</h2>
-<p>il RAID (<em>Redundant Arrays of Inexpensive Disks</em>) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.</p>
+<p>Il RAID (<em>Redundant Arrays of Inexpensive Disks</em>) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa, indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.</p>
 <p>L’idea di base è quella di combinare più dischi indipendenti per ottenere o <strong>velocità, o sicurezza o capacità superiori</strong> a quelle ottenibili con un qualunque disco SLED (<em>Single Large Expensive Drive</em>)</p>
 <ul>
 <li>Velocità: Aumenta le performance distribuendo i dati sui vari dischi (<em>Striping</em>) permettendo l’accesso in parallelo ai dati (in lettura)</li>
@@ -72,25 +72,25 @@ attraverso il bus alla periferica desiderata.</p>
 <p>I <strong>dati vengono distribuiti tra più dischi</strong> (operazione detta <em><strong>striping</strong></em>). ha il principale scopo di aumentare lo storage e mediante la parallelizzazione delle operazione ottiene più performance in scrittura e lettura.</p>
 <p>Necessita di almeno 2 dischi.</p>
 <p>Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.</p>
-<p><img src="https://i.ibb.co/mrbYx18S/image.png" alt="https://i.ibb.co/mrbYx18S/image.png"></p>
+<p><img src="https://i.ibb.co/mrbYx18S/image.png" alt=""></p>
 <h3 id="raid-1">RAID 1</h3>
 <p>Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta <em><strong>mirroring</strong></em>), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).</p>
 <p>Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.</p>
-<p><img src="https://i.ibb.co/9mD4XmRJ/image.png" alt="https://i.ibb.co/9mD4XmRJ/image.png"></p>
+<p><img src="https://i.ibb.co/9mD4XmRJ/image.png" alt=""></p>
 <h3 id="raid-3-e-4">RAID 3 e 4</h3>
 <p>Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di <em>xor</em> tra i dischi rimanenti.</p>
 <p>Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.</p>
 <p>Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.</p>
-<p><img src="https://i.ibb.co/DH1MC60w/image.png" alt="https://i.ibb.co/DH1MC60w/image.png"></p>
+<p><img src="https://i.ibb.co/DH1MC60w/image.png" alt=""></p>
 <h3 id="raid-5">RAID 5</h3>
 <p><strong>Raid 5</strong>: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.</p>
 <p>La capacità totale è <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mi>C</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">((n-1)\cdot C)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord mathnormal">n</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mclose">)</span></span></span></span></span> dove <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi></mrow><annotation encoding="application/x-tex">n</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.43056em; vertical-align: 0em;"></span><span class="mord mathnormal">n</span></span></span></span></span> è il numero di dischi e <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi></mrow><annotation encoding="application/x-tex">C</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span></span></span></span></span> la loro capacità, ad esempio 3 dischi da 500GB: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false">(</mo><mo stretchy="false">(</mo><mn>3</mn><mo>−</mo><mn>1</mn><mo stretchy="false">)</mo><mo>⋅</mo><mn>500</mn><mo stretchy="false">)</mo><mo>=</mo><mn>1</mn><mi>T</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">((3-1)\cdot 500) = 1TB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">((</span><span class="mord">3</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">−</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">1</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mord">500</span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">1</span><span class="mord mathnormal" style="margin-right: 0.05017em;">TB</span></span></span></span></span></p>
 <p>Al massimo si può rompere un disco.</p>
-<p><img src="https://i.ibb.co/67tgyVqC/image.png" alt="https://i.ibb.co/67tgyVqC/image.png"></p>
+<p><img src="https://i.ibb.co/67tgyVqC/image.png" alt=""></p>
 <h3 id="raid-6">RAID 6</h3>
 <p>Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondanza, questo permette di essere un metodo estremamente affidabile. Questa doppia ridondanza causa però una scrittura abbastanza lenta.</p>
 <p>Al massimo si possono rompere due dischi.</p>
-<p><img src="https://i.ibb.co/bgQsfxYH/image.png" alt="https://i.ibb.co/bgQsfxYH/image.png"></p>
+<p><img src="https://i.ibb.co/bgQsfxYH/image.png" alt=""></p>
 <h3 id="raid-10">RAID 1+0</h3>
 <p>Necessita di un numero pari di dischi, e devono essere almeno 4.</p>
 <p>È una combinazione del raid 0 con il raid 1.</p>
@@ -102,7 +102,7 @@ attraverso il bus alla periferica desiderata.</p>
       ┌———————-———————┼————-——————————┐
       │               │               │
     RAID 1          RAID 1          RAID 1
-   ┌—-—┴———┐      ┌—-—┴———┐       ┌—-—┴———┐
+   ┌———┴———┐      ┌———┴———┐       ┌———┴———┐
    │       │      │       │       │       │
  120GB   120GB  120GB   120GB   120GB   120GB
 </code></pre>

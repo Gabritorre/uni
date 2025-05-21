@@ -27,8 +27,8 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="posta-elettronica">Posta elettronica</h1>
-<p>La posta elettronica è un sistema di comunicazione su larga scala.</p>
-<p>È composto da vari attori:</p>
+<p>La posta elettronica è un sistema di comunicazione digitale che sfrutta la rete internet per lo scambio di messaggi.</p>
+<p>Questo sistema è composto da vari attori:</p>
 <ul>
 <li>Il <strong>Mail User Agent (MUA)</strong> o client di posta (come Thunderbird, Outlook) è un programma utilizzato da un utente per inviare e consultare i messaggi. Può anche essere un’applicazione web (webmail).</li>
 <li>Il <strong>Mail Submission Agent (MSA)</strong> riceve i messaggi da un MUA e li invia a un MTA.</li>
@@ -41,26 +41,21 @@
 <h2 id="flusso">Flusso</h2>
 <p><img src="https://i.ibb.co/39Yp9XdB/image.png" alt=""></p>
 <ol>
-<li>
-<p>Il mittente scrive una email usando un MUA.</p>
-</li>
-<li>
-<p>MUA invia la mail a un MSA/MTA.</p>
-</li>
-<li>
-<p>L’MTA controlla l’indirizzo di destinazione (<code>utente@dominio</code>).</p>
+<li>Il mittente scrive una email usando un MUA.</li>
+<li>MUA invia la mail a un MSA/MTA.</li>
+<li>L’MTA controlla l’indirizzo di destinazione (<code>utente@dominio</code>).
 <ul>
 <li>Se il dominio rientra tra quelli gestiti dall’MTA (e quindi è un indirizzo locale) e l’utente è valido, l’email viene inoltrata all’LDA, che la consegna nella casella di posta associata, terminando il processo.</li>
 <li>Se l’indirizzo non è locale e l’MTA accetta di inoltrare il messaggio (<em>relay</em>), l’MTA inserisce il messaggio in una coda.</li>
 </ul>
 </li>
-<li>
-<p>Dopo aver estratto il messaggio dalla coda, l’MTA controlla il record <code>DNS MX</code> associato al dominio del destinatario e contatta l’MTA che risponde a quell’host, cercando di inviargli il messaggio.</p>
-</li>
-<li>
-<p>Se l’invio avviene correttamente, il messaggio viene gestito dall’MTA di destinazione, che procede dal punto 3.</p>
-<p>Se l’MTA contattato non risponde, il messaggio torna in coda.</p>
-<p>Se l’MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all’indirizzo del mittente, e il procedimento termina.</p>
+<li>Dopo aver estratto il messaggio dalla coda, l’MTA controlla il record <code>DNS MX</code> associato al dominio del destinatario e contatta l’MTA che risponde a quell’host, cercando di inviargli il messaggio.</li>
+<li>Da questo punto possiamo avere tre situazioni:
+<ul>
+<li>Se l’invio avviene correttamente, il messaggio viene gestito dall’MTA di destinazione, che procede dal punto 3.</li>
+<li>Se l’MTA contattato non risponde, il messaggio torna in coda.</li>
+<li>Se l’MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all’indirizzo del mittente, e il procedimento termina.</li>
+</ul>
 </li>
 </ol>
 <h3 id="relay">Relay</h3>
@@ -71,8 +66,8 @@
 <p>Il protocollo utilizzato tra MUA e MTA e tra MTA e MTA si chiama <strong>Simple Mail Transfer Protocol (SMTP)</strong> o <strong>Extended SMTP (ESMTP)</strong> che fa una sorta di handshake per stabilire la connessione prima di inviare dati. La comunicazione tra MTA e LDA può avvenire internamente (scambio diretto di file) o tramite il <strong>Local Mail Transfer Protocol (LMPT)</strong>.</p>
 <p>La comunicazione tra il MAA e il MUA (tramite l’MRA) avviene tramite il <strong>Post Office Protocol versione 3 (POP3)</strong> o l’<strong>Internet Message Access Protocol versione 4 (IMAP4)</strong>.</p>
 <ul>
-<li><strong>IMAP</strong> mantiene le email sul server, consentendo la gestione da diversi dispositivi conservando una copia centralizzata.</li>
-<li><strong>POP</strong>, invece, scarica le email sul dispositivo utilizzato per la consultazione, e la connessione è necessaria solo per inviare e ricevere.</li>
+<li><strong>IMAP</strong> conserva i messaggi sul server, permettendo di accedere e gestire la posta da più dispositivi, mantenendo sempre una copia centralizzata e sincronizzata.</li>
+<li><strong>POP</strong>, invece, scarica le email sul dispositivo locale, spesso eliminandole dal server. Dopo il download, i messaggi sono consultabili anche offline, e la connessione è necessaria solo per inviare o ricevere messaggi.</li>
 </ul>
 <p><strong>IMAP è generalmente preferibile per prestazioni ottimali</strong>, specialmente su reti lente, mentre POP può essere utile in caso di connessioni non persistenti.</p>
 <p><img src="https://i.ibb.co/mFFLG7nQ/protocolli.png" alt=""></p>
@@ -96,7 +91,7 @@
 </li>
 </ul>
 <h2 id="spam">Spam</h2>
-<p>Lo <strong>SPAM</strong> è definito come <strong>uno o più messaggi non richiesti, facenti parte di un più insieme di messaggi, tutti aventi contenuto sostanzialmente identico</strong>. Le email indesiderate possono essere collocate in <strong>cinque diverse categorie</strong>:</p>
+<p>Con <strong>SPAM</strong> si intende <strong>uno o più messaggi indesiderati, facenti parte di un più grande insieme di messaggi, tutti aventi contenuto sostanzialmente identico</strong>. Le email indesiderate possono essere collocate in cinque diverse categorie:</p>
 <ul>
 <li><strong>Hoax:</strong> Bufale e catene di Sant’Antonio.</li>
 <li><strong>Worm:</strong> Email mandate da virus.</li>
@@ -109,23 +104,23 @@
 <ul>
 <li>
 <p><strong>Greylisting:</strong></p>
-<p>questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo</p>
+<p>questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo:</p>
 <ol>
-<li>Un’email proveniente da un dominio sconosciuto viene <strong>temporaneamente rifiutata</strong> con un errore di “temporaneamente non disponibile: 450 <em>try again later</em>” per un numero preimpostato di volte.</li>
+<li>Un’email proveniente da un dominio sconosciuto viene <strong>temporaneamente rifiutata</strong> con un errore “450 <em>try again later</em>” per un numero preimpostato di volte N.</li>
 <li>Ad ogni rifiuto, l’MTA mittente rimette la mail in coda e, dopo un certo periodo di tempo, tenta il reinvio.</li>
 <li>Al tentativo N, la mail viene accettata dall’MTA ricevente, e l’MTA mittente viene inserito in una <strong>whitelist</strong>, in modo che tutte le email successive vengano accettate direttamente.</li>
 </ol>
-<p><strong>Problematiche:</strong> Alla lunga, questa tecnica <strong>perde di efficacia</strong> poiché i bot di spam implementano algoritmi che ritentano l’invio. Possono anche verificarsi <strong>lievi ritardi nella consegna</strong> delle email.</p>
+<p><strong>Problematiche:</strong> Alla lunga, questa tecnica <strong>perde di efficacia</strong> poiché i bot di spam implementano algoritmi che ritentano l’invio. Possono inoltre verificarsi <strong>lievi ritardi nella consegna</strong> delle email.</p>
 <p><strong>Vantaggi:</strong> <strong>Nessuna email lecita viene scartata</strong>, poiché i mail server legittimi re-inviano la mail. Si ha comunque un <strong>buon filtraggio di base</strong>.</p>
 </li>
 <li>
 <p><strong>RBL</strong> (<em>Real-time Blackhole List</em>):</p>
 <p>Sono liste contenenti <strong>IP non “autorizzati” ad inviare e-mail</strong>.</p>
-<p><strong>Problematiche:</strong> È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.</p>
+<p><strong>Problematiche:</strong> È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri per selezionare IP sospetti sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.</p>
 </li>
 <li>
 <p><strong>SPF</strong> (<em>Sender Policy Framework</em>):</p>
-<p>È uno standard che, tramite un <strong>record TXT nel DNS</strong>, dichiara quali <strong>IP o nomi possono inviare mail per un determinato dominio</strong>. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.</p>
+<p>È uno standard che, tramite un <strong>record TXT nel DNS</strong>, dichiara quali <strong>IP o nomi di dominio possono inviare mail per un determinato dominio</strong>. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.</p>
 <p><strong>Problematiche: Non tutti i domini implementano il record TXT</strong>. L’implementazione può essere difficoltosa.</p>
 </li>
 <li>
@@ -146,7 +141,7 @@
 </li>
 <li>
 <p><strong>AMAVIS:</strong></p>
-<p>È un <strong>demone</strong> che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica e interfacciandosi con altri sistemi di filtraggio spam e virus come quelli che abbiamo visto precedentemente.</p>
+<p>È un <strong>demone</strong> che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica delle email interfacciandosi con altri sistemi di filtraggio come quelli che abbiamo visto precedentemente.</p>
 <p>Permette di rilevare virus, spam, contenuti vietati; bloccare, etichettare, reindirizzare email; mettere in quarantena o rilasciare messaggi; eliminare virus tramite antivirus esterni.</p>
 </li>
 </ul>

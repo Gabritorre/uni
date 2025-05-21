@@ -67,9 +67,9 @@ Spesso, l'uso di **inetd** è abbinato a **tcpd**, il quale si occupa di **regis
 
 **NTP (Network Time Protocol)** è un protocollo che permette ai client di sincronizzarsi con dei server, chiamati **Time Server**, al fine di mantenere data e ora sincronizzati all'interno di un sistema distribuito.
 
-Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici o ponti radio, stazioni di misurazione, o altri server NTP.
+Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici, ponti radio, stazioni di misurazione o altri server NTP.
 
-I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti **strato 0**. I server NTP direttamente collegati a essi sono **server allo strato 1 (primari)**. I dispositivi che ottengono l'ora da server allo strato n sono allo strato n+1.
+I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti **strato 0**. I server NTP direttamente collegati a essi sono **server allo strato 1 (primari)**. I dispositivi che ottengono l'ora da server allo strato **n** sono allo strato **n+1**.
 
 Su sistemi Debian/Ubuntu, è possibile **installare il pacchetto ntp**
 
@@ -93,7 +93,7 @@ server <ntp_server_name / address>
 
 ## DHCP
 
-**DHCP (Dynamic Host Configuration Protocol)** è un protocollo sche permette la **configurazione automatica dei parametri di rete** al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.
+**DHCP (Dynamic Host Configuration Protocol)** è un protocollo che permette la **configurazione automatica dei parametri di rete** al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.
 
 **Funzionalità principali**:
 
@@ -106,7 +106,7 @@ server <ntp_server_name / address>
 **Come funziona:**
 
 1. **DHCPDISCOVER**: All'avvio della configurazione di rete, il client invia un pacchetto **DHCPDISCOVER in broadcast** (all'indirizzo 255.255.255.255) per cercare un server DHCP.
-2. **DHCPOFFER**: Se un server DHCP è presente nella rete, riceve la richiesta, verifica (eventualmente) l'indirizzo MAC del client e invia un **indirizzo IP al client tramite un pacchetto DHCPOFFER**.
+2. **DHCPOFFER**: Se un server DHCP è presente nella rete, riceve la richiesta, verifica, eventualmente, l'indirizzo MAC del client e comunica un **indirizzo IP al client tramite un pacchetto DHCPOFFER**.
 3. **DHCPREQUEST**: Se il client accetta la configurazione offerta, invia un pacchetto di **DHCPREQUEST** al server.
 4. **DHCPACK**: Il server risponde al client con un pacchetto di **DHCPACK** contenente l'indirizzo IP assegnato e le altre informazioni sulla configurazione di rete.
 
@@ -128,13 +128,13 @@ Il **Domain Name System (DNS)** è un sistema usato per **tradurre gli indirizzi
 
 Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.
 
-Il DNS possiede:
+Il DNS possiede due gerarchie:
 
 1. **una gerarchia dei nomi di dominio**: La posizione più alta è occupata dai **Top Level Domain (TLD)** come `.com`, `.it`, `.uk`, `.edu`, ecc. Al di sotto si trovano altri domini come `amazon.it`, `google.it`, ecc..
     
     ![](https://i.ibb.co/BVjGj0fN/image.png)
     
-2. **una gerarchia dei server che forniscono i dati**: Le informazioni sono suddivise in **zone**, cioè una porzione di nomi di dominio sotto una gestione amministrativa. La gerarchia dei name server parte dai **root name server** e si realizza tramite **deleghe sulle zone**, aventi come radice la zona ".".
+2. **una gerarchia dei server che forniscono i dati**: Le informazioni sono suddivise in **zone**, cioè una porzione di nomi di dominio è sotto una gestione amministrativa. La gerarchia dei name server parte dai **root name server** e si realizza tramite **deleghe sulle zone**.
     
     La gestione di una zona è **delegata dalla zona superiore tramite dei record di tipo NS** (Name Server). Per garantire ridondanza, ogni zona è **replicata su più server**.
     

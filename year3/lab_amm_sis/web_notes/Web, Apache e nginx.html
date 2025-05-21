@@ -33,19 +33,19 @@
 <p>Il <strong>World Wide Web</strong> (WWW, anche abbreviato in <em>web</em>) è un sistema che consente la condivisione di documenti ipertestuali (collegati da dei link) multimediali attraverso l’infrastruttura WAN della rete Internet.</p>
 <p>Il Web si basa sul protocollo <strong>HTTP (HyperText Transfer Protocol)</strong> e poggia su un’architettura <strong>Client/Server</strong>.</p>
 <h3 id="http">HTTP</h3>
-<p>La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta per una risorsa al server alla volta.</p>
+<p>La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta alla volta al server per una risorsa.</p>
 <p>La versione HTTP 1.1 ha introdotto:</p>
 <ul>
 <li>la possibilità di effettuare più richieste per connessione</li>
 <li>connessioni permanenti</li>
 <li>richieste/risposte asincrone all’interno di queste connessioni.</li>
-<li>obbliga i client a specificare l’hostname desiderato nella richiesta, consentendo l’implementazione del <strong>virtual hosting</strong>, dove un server può ospitare più siti internet con nomi diversi ma lo stesso indirizzo IP.</li>
+<li>obbliga i client a specificare l’hostname desiderato nella richiesta, consentendo l’implementazione del <strong>virtual hosting</strong>, dove un server può ospitare più siti internet con nomi diversi ma allo stesso indirizzo IP.</li>
 </ul>
 <p>Attualmente, si utilizzano <strong>HTTP 2</strong> (per oltre il 50%) e <strong>HTTP 3</strong> (usato nel 20%) che aggiungono varie migliorie.</p>
 <h2 id="web-server">Web server</h2>
-<p>Un <strong>WEB Server</strong> è un’applicazione software che gira su un computer, capace di gestisce le richieste di trasferimento di pagine web verso un client.</p>
+<p>Un <strong>WEB Server</strong> è un’applicazione che gira su un host, capace di gestisce le richieste di trasferimento di pagine web verso un client.</p>
 <p>La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).</p>
-<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.</p>
+<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.</p>
 <p>Tra i vari web server è interessante approfondire:</p>
 <ul>
 <li><strong>Apache HTTP Server:</strong> che fino a poco tempo fa era l’unico in grado di gestire applicazioni di vario tipo (php, python, java, ecc.) grazie alla sua tecnologia modulare.</li>
@@ -104,21 +104,21 @@ http {
 </code></pre>
 <h3 id="virtual-hosting">Virtual hosting</h3>
 <p>Il concetto di <strong>server block</strong> in Nginx è molto simile al <strong>virtual hosting di Apache</strong>. Questo significa che puoi ospitare più siti web sullo stesso server Nginx.</p>
-<p>Un modo per farlo è definire <strong>più server blocks all’interno dello stesso file <code>nginx.conf</code></strong>. Ad esempio, avere un blocco per <code>sito1.com</code> e un altro per <code>sitoN.com</code>, ognuno con la sua radice dei documenti, i suoi log, ecc…</p>
+<p>Un modo per farlo è definire <strong>più server blocks all’interno dello stesso file</strong> <code>nginx.conf</code>. Ad esempio, avere un blocco per <code>sito1.com</code> e un altro per <code>sitoN.com</code>, ognuno con la sua radice dei documenti, i suoi log, ecc…</p>
 <p>Un approccio più pulito è quello di <strong>creare dei file separati</strong> per ogni sito nella directory <code>/etc/nginx/sites-available/</code>, e poi <strong>abilitarli</strong> creando dei <strong>link simbolici</strong> a questi file all’interno della directory <code>/etc/nginx/sites-enable/</code>.</p>
 <h3 id="reverse-proxy">Reverse proxy</h3>
-<p>Una delle funzionalità più sfruttate di Nginx è quella di <strong>reverse proxy</strong>. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al visitatore.</p>
+<p>Una delle funzionalità più sfruttate di Nginx è quella di <strong>reverse proxy</strong>. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al client.</p>
 <p>Questo è utile in diverse situazioni:</p>
 <ul>
 <li>quando le risorse di un sito sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;</li>
 <li>come <strong>load balancer</strong>, per distribuire il traffico tra più server che offrono lo stesso servizio;</li>
 <li>per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il <strong>supporto a HTTPS</strong> per applicazioni che non lo gestiscono nativamente.</li>
 </ul>
-<p>Il bilanciamento del carico serve a <strong>distribuire il traffico</strong> su più server per sfruttare al meglio le risorse, aumentare la velocità del tuo sito, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta <strong>tre modalità principali</strong> di bilanciamento del carico:</p>
+<p>Il bilanciamento del carico serve a <strong>distribuire il traffico</strong> su più server per sfruttare al meglio le risorse, aumentare la velocità del servizio web, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta <strong>tre modalità principali</strong> di bilanciamento del carico:</p>
 <ul>
 <li><strong>Round-robin</strong>: le richieste vengono distribuite ai server in sequenza, uno dopo l’altro. Non garantisce la persistenza delle sessioni</li>
 <li><strong>Least-connected</strong>: ogni nuova richiesta viene inviata al server che in quel momento ha il minor numero di connessioni attive. Non garantisce la persistenza delle sessioni</li>
-<li><strong>Ip-hash</strong>: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. Questo garantisce che le richieste provenienti dallo stesso utente vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.</li>
+<li><strong>Ip-hash</strong>: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. In questo modo le richieste provenienti dallo stesso client vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.</li>
 </ul>
 <p>Infine, Nginx ha anche un sistema di <strong>monitoraggio passivo</strong> dei server. Se un server non risponde correttamente, viene temporaneamente escluso dal bilanciamento del carico.</p>
 <h2 id="ssltls">SSL/TLS</h2>

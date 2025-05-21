@@ -1,133 +1,8 @@
-﻿# Hardware e raid
-
-Possiamo rappresentare l’architettura dei computer con la **macchina di Von Neuman**
-
-![https://i.ibb.co/rYvtSdq/image.png](https://i.ibb.co/rYvtSdq/image.png)
-
-Una scheda madre (*motherboard*) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.
-
-Nella scheda madre possiamo installare CPU, memoria RAM, collegare memorie di massa e altre schede di espansione (video, rete, ecc…)
-
-## Memorie
-
-In particolare le memorie possono essere categorizzate in:
-
-- **Memorie di massa:**
-    
-    Hanno lo scopo di **conservare i programmi e i dati in modo permanente**.
-    
-    Queste memorie possono essere collocate all’interno del case (memorie interne) oppure possono essere collegate esternamente al computer (memorie esterne).
-    
-    Appartengono a questa categoria: dvd, cd, chiavette USB, HDD, SSD, floppy disk.
-    
-- **Memorie principali:**
-    - memoria RAM: è la memoria che contiene i dati e i programmi in corso di esecuzione. È volatile, cioè perde il suo contenuto quando il computer viene spento
-    - memoria ROM: è una memoria di sola lettura. Contiene un programma che permette di accendere il computer
-    - memoria cache: svolge un compito di memorizzazione temporanea dei dati presi di recente dalla RAM in modo da velocizzare i successivi accessi.
-
-La loro capacità si misura in multipli di Byte, tipicamente in GigaByte o TeraByte.
-
-## CPU
-
-Non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.
-È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati
-attraverso il bus alla periferica desiderata.
-
-## RAID
-
-il RAID (*Redundant Arrays of Inexpensive Disks*) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.
-
-L’idea di base è quella di combinare più dischi indipendenti per ottenere o **velocità, o sicurezza o capacità superiori** a quelle ottenibili con un qualunque disco SLED (*Single Large Expensive Drive*)
-
-- Velocità: Aumenta le performance distribuendo i dati sui vari dischi (*Striping*) permettendo l’accesso in parallelo ai dati (in lettura)
-- Sicurezza: permette di avere dischi rindondati (*Mirroring*) o controlli di parità sui dati.
-- Capacità: “sommando” più dischi ne ottengo uno di capacità maggiore.
-
-Il RAID può essere:
-
-- **hardware**, con un controller dei dischi che si occupa di creazione, cancellazione, ricostruzione del RAID
-- **software**, gestito dal sistema operativo (sconsigliato)
-
-Vediamo diverse tipologie di RAID, è importante sottolineare che nessun RAID sostituisce un sistema di backup dei dati (il RAID non permette il recupero da malware o disastri naturali, il backup invece sì).
-
-### RAID 0
-
-I **dati vengono distribuiti tra più dischi** (operazione detta ***striping***). ha il principale scopo di aumentare lo storage e mediante la parallelizzazione delle operazione ottiene più performance in scrittura e lettura.
-
-Necessita di almeno 2 dischi.
-
-Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.
-
-![https://i.ibb.co/mrbYx18S/image.png](https://i.ibb.co/mrbYx18S/image.png)
-
-### RAID 1
-
-Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta ***mirroring***), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).
-
-Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.
-
-![https://i.ibb.co/9mD4XmRJ/image.png](https://i.ibb.co/9mD4XmRJ/image.png)
-
-### RAID 3 e 4
-
-Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di *xor* tra i dischi rimanenti.
-
-Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.
-
-Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.
-
-![https://i.ibb.co/DH1MC60w/image.png](https://i.ibb.co/DH1MC60w/image.png)
-
-### RAID 5
-
-**Raid 5**: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.
-
-La capacità totale è $((n-1)\cdot C)$ dove $n$ è il numero di dischi e $C$ la loro capacità, ad esempio 3 dischi da 500GB: $((3-1)\cdot 500) = 1TB$
-
-Al massimo si può rompere un disco.
-
-![https://i.ibb.co/67tgyVqC/image.png](https://i.ibb.co/67tgyVqC/image.png)
-
-### RAID 6
-
-Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondanza, questo permette di essere un metodo estremamente affidabile. Questa doppia ridondanza causa però una scrittura abbastanza lenta.
-
-Al massimo si possono rompere due dischi.
-
-![https://i.ibb.co/bgQsfxYH/image.png](https://i.ibb.co/bgQsfxYH/image.png)
-
-### RAID 1+0
-
-Necessita di un numero pari di dischi, e devono essere almeno 4.
-
-È una combinazione del raid 0 con il raid 1.
-
-In grado di rigenerare i dati anche in presenza di rotture di più dischi mantenendo buone prestazioni.
-
-Non vengono gestite le informazioni di parità.
-
-la capacità complessiva dei dischi viene dimezzata
-
-```
-                    RAID 0
-                      │
-      ┌———————-———————┼————-——————————┐
-      │               │               │
-    RAID 1          RAID 1          RAID 1
-   ┌—-—┴———┐      ┌—-—┴———┐       ┌—-—┴———┐
-   │       │      │       │       │       │
- 120GB   120GB  120GB   120GB   120GB   120GB
-```
-
-nota che è diverso dal RAID 0+1, in cui si inverte l’uso dei RAID
-
-
-
-# L’amministratore di sistema
+﻿# L’amministratore di sistema
 
 Un **amministratore di sistema** (SysAdmin, SA) si occupa di vari compiti, tra cui la gestione, la messa in opera, la manutenzione, l’aggiornamento di un sistema.
 
-Con **sistema** si intende un insieme di elementi (dispositivi come PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati per cui  il sistema è stato definito.
+Con **sistema** si intende un insieme di elementi (PC, smartphone, stampanti, server, …) che interagiscono tra loro in modo coordinato per poter raggiungere i risultati prestabiliti.
 
 Una regola fondamentale nel campo dell’amministrazione di un sistema è che **se un sistema funziona (ciò svolge il suo compito) allora non si modifica ma si mantiene**.
 
@@ -157,6 +32,129 @@ Mentre tra le **competenze** richieste possiamo individuare:
 - saper creare e mantenere la documentazione del sistema
 
 
+# Hardware e raid
+
+Possiamo rappresentare l’architettura dei computer con la **macchina di Von Neuman**
+
+![](https://i.ibb.co/rYvtSdq/image.png)
+
+Una scheda madre (*motherboard*) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.
+
+Nella scheda madre possiamo installare CPU, memoria RAM, collegare memorie di massa e altre schede di espansione (video, rete, ecc…)
+
+## Memorie
+
+In particolare le memorie possono essere categorizzate in:
+
+- **Memorie di massa:**
+    
+    Hanno lo scopo di **conservare i programmi e i dati in modo permanente**.
+    
+    Queste memorie possono essere collocate all’interno del case (memorie interne) oppure possono essere collegate esternamente al computer (memorie esterne).
+    
+    Appartengono a questa categoria: dvd, cd, chiavette USB, HDD, SSD, floppy disk.
+    
+- **Memorie principali:**
+    - memoria RAM: è la memoria che contiene i dati e i programmi in corso di esecuzione. È volatile, cioè perde il suo contenuto quando il computer viene spento
+    - memoria ROM: è una memoria di sola lettura. Contiene un programma che permette di accendere il computer
+    - memoria cache: svolge un compito di memorizzazione temporanea dei dati presi di recente dalla RAM in modo da velocizzare i successivi accessi.
+
+La loro capacità si misurano in multipli di Byte, tipicamente in GigaByte o TeraByte.
+
+## CPU
+
+La CPU non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.
+È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati
+attraverso il bus alla periferica desiderata.
+
+## RAID
+
+Il RAID (*Redundant Arrays of Inexpensive Disks*) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa, indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.
+
+L’idea di base è quella di combinare più dischi indipendenti per ottenere o **velocità, o sicurezza o capacità superiori** a quelle ottenibili con un qualunque disco SLED (*Single Large Expensive Drive*)
+
+- Velocità: Aumenta le performance distribuendo i dati sui vari dischi (*Striping*) permettendo l’accesso in parallelo ai dati (in lettura)
+- Sicurezza: permette di avere dischi rindondati (*Mirroring*) o controlli di parità sui dati.
+- Capacità: “sommando” più dischi ne ottengo uno di capacità maggiore.
+
+Il RAID può essere:
+
+- **hardware**, con un controller dei dischi che si occupa di creazione, cancellazione, ricostruzione del RAID
+- **software**, gestito dal sistema operativo (sconsigliato)
+
+Vediamo diverse tipologie di RAID, è importante sottolineare che nessun RAID sostituisce un sistema di backup dei dati (il RAID non permette il recupero da malware o disastri naturali, il backup invece sì).
+
+### RAID 0
+
+I **dati vengono distribuiti tra più dischi** (operazione detta ***striping***). ha il principale scopo di aumentare lo storage e mediante la parallelizzazione delle operazione ottiene più performance in scrittura e lettura.
+
+Necessita di almeno 2 dischi.
+
+Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.
+
+![](https://i.ibb.co/mrbYx18S/image.png)
+
+### RAID 1
+
+Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione detta ***mirroring***), creando così una ridondanza dei dati, velocità di scrittura ridotta perché il dato deve essere scritto almeno 2 volte, la lettura invece è quella del disco più veloce (dato che la lettura avviene contemporaneamente su più dischi).
+
+Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.
+
+![](https://i.ibb.co/9mD4XmRJ/image.png)
+
+### RAID 3 e 4
+
+Necessita di almeno 3 dischi in cui un disco serve per la parità dei dati. Il dato viene spartito su tutti i dischi (tranne quello di parità), questo permette una buona ridondanza dei dati: se un disco viene danneggiato i dati al suo interno possono essere recuperati attraverso un’operazione di *xor* tra i dischi rimanenti.
+
+Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel disco di parità) e un leggero miglioramento in lettura dato dalla parallelizzazione.
+
+Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.
+
+![](https://i.ibb.co/DH1MC60w/image.png)
+
+### RAID 5
+
+**Raid 5**: questo raid è una versione migliorata del raid 4: non è più presente un disco dedicato alla sola parità dei dati, ma la parità viene distribuita alternativamente in tutti i dischi.
+
+La capacità totale è $((n-1)\cdot C)$ dove $n$ è il numero di dischi e $C$ la loro capacità, ad esempio 3 dischi da 500GB: $((3-1)\cdot 500) = 1TB$
+
+Al massimo si può rompere un disco.
+
+![](https://i.ibb.co/67tgyVqC/image.png)
+
+### RAID 6
+
+Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondanza, questo permette di essere un metodo estremamente affidabile. Questa doppia ridondanza causa però una scrittura abbastanza lenta.
+
+Al massimo si possono rompere due dischi.
+
+![](https://i.ibb.co/bgQsfxYH/image.png)
+
+### RAID 1+0
+
+Necessita di un numero pari di dischi, e devono essere almeno 4.
+
+È una combinazione del raid 0 con il raid 1.
+
+In grado di rigenerare i dati anche in presenza di rotture di più dischi mantenendo buone prestazioni.
+
+Non vengono gestite le informazioni di parità.
+
+la capacità complessiva dei dischi viene dimezzata
+
+```
+                    RAID 0
+                      │
+      ┌———————-———————┼————-——————————┐
+      │               │               │
+    RAID 1          RAID 1          RAID 1
+   ┌———┴———┐      ┌———┴———┐       ┌———┴———┐
+   │       │      │       │       │       │
+ 120GB   120GB  120GB   120GB   120GB   120GB
+```
+
+nota che è diverso dal RAID 0+1, in cui si inverte l’uso dei RAID
+
 
 # La sala server
 
@@ -173,18 +171,18 @@ Differenze rispetto ai PC casalinghi:
     
     Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.
     
-- numero molto alto di interfacce di rete
-- presenza di **iLO** (*Integrated Light-Out*), Fisicamente è una porta Ethernet, la quale
+- Numero molto alto di interfacce di rete
+- Presenza di **iLO** (*Integrated Light-Out*), Fisicamente è una porta Ethernet, la quale
 semplifica le operazioni di gestione e monitoraggio remoto.
-- un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)
+- Un numero sovradimensionato di ventole di raffreddamento (non si usa ancora il raffreddamento a liquido)
 
 I server possono essere:
 
 - **server rack**: sono dei moduli (degli effettivi computer) inseriti in un armadio armadio rack con dei carrelli a scorrimento impilati uno sopra l’altro.
     
-    ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.
+    Ogni modulo ha la propria alimentazione, il proprio collegamento alla rete e il proprio sistema di raffreddamento.
     
-- **server blade**: Sono dei moduli più compatti (computer minimali, solo CPU e ram), inseriti in uno *chassis* condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.
+- **server blade**: Sono dei moduli più compatti (computer minimali, solo CPU e RAM), inseriti in uno *chassis* condiviso che fornisce alimentazione, raffreddamento e connettività di rete ad ogni blade.
 
 ### Rack unit
 
@@ -193,7 +191,7 @@ Una rack unit, abbreviata in **U** (oppure RU, HU, height unit) è un'unità di 
 
 Per comodità una unità equivale a 3 buchi nelle lastre metalliche dove si infilano i server
 
-![https://i.ibb.co/JjPSNKkV/image.png](https://i.ibb.co/JjPSNKkV/image.png)
+![](https://i.ibb.co/JjPSNKkV/image.png)
 
 ## Sala server
 
@@ -205,7 +203,7 @@ Devono esserci 4 tipi di **impianti**:
 
 - **di condizionamento**:
     
-    I server scaldano molto, serve quindi un adeguato sistema di raffreddamento, anche i condizioni devono essere ridondati per gestire il guasto di un condizionatore
+    I server scaldano molto, serve quindi un adeguato sistema di raffreddamento, anche i condizioni devono essere ridondati per gestire il guasto di un condizionatore.
     
 - **elettrico**:
     
@@ -213,13 +211,11 @@ Devono esserci 4 tipi di **impianti**:
     
     Dovrebbe esserci un **UPS** e un sistema di **gruppi elettrogeni**
     
-    - **UPS** (*Uninterruptible Power Supply*) è un dispositivo in grado di erogare energia, con l'ausilio
-    di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le variazioni di tensione.
-    - **gruppo elettrogeno**: un motore diesel che in mancanza di corrente aziona una specie di turbina che genera elettricità (sta a monte dell’UPS perché il suo avvio può produrre pericolosi picchi di tensione che vengono tagliati dall’UPS).
-    
+    - **UPS** (*Uninterruptible Power Supply*) è un dispositivo in grado di erogare energia, con l'ausilio di batterie, in caso di blackout. È anche in grado di eliminare i disturbi e le variazioni di tensione.
+    - **gruppo elettrogeno**: un motore diesel che, in mancanza di corrente, aziona una specie di turbina che genera elettricità (sta a monte dell’UPS perché il suo avvio può produrre pericolosi picchi di tensione che vengono tagliati dall’UPS).
 - **anti-incendio**:
     
-    a causa del calore generato e dai tanti dispositivi elettronici presenti nella sala, è necessario un sistema in caso di incendio **a secco**, cioè con gas che rimuovono l’ossigeno dall’aria estinguendo così le fiamme, senza impattare sui componenti
+    a causa del calore generato e dai tanti dispositivi elettronici presenti nella sala, è necessario un sistema in caso di incendio **a secco**, cioè con gas che rimuovono l’ossigeno dall’aria estinguendo così le fiamme, senza impattare sui componenti.
     
 - **di rete**:
     
@@ -256,9 +252,7 @@ Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono
 
 ### Cavo di rete (doppino telefonico)
 
-Costituito da almeno due fino ad un massimo di 8 sottili fili
-di rame intrecciati. La categoria del cavo (5/5a/6a/7..) definisce la banda
-massima garantita e la qualità di isolamento per le interferenze.
+Costituito da almeno due fino ad un massimo di 8 sottili fili di rame intrecciati. La categoria del cavo (5/5a/6a/7..) definisce la banda massima garantita e la qualità di isolamento per le interferenze.
 
 ### Fibra
 
@@ -266,7 +260,7 @@ Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, de
 
 ### Wi-Fi
 
-Le reti wifi usano l’etere (l'aria come mezzo di propagazione i fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
+Le reti wifi usano l’etere (l'aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
 
 Si utilizza un **access point**, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.
 
@@ -274,7 +268,7 @@ Ha bisogno di sistemi di sicurezza e autenticazione elevati perché chiunque pu�
 
 ### Li-Fi
 
-Li-Fi (*Light Fidelity*) è il corrispondente ottico del Wi-Fi (che usa trasmissioni radio). La differenza sta nel fatto che le frequenze occupate appartengono allo spettro della luce visibile.
+Li-Fi (*Light Fidelity*) è il corrispondente ottico del Wi-Fi (che usa invece trasmissioni radio). La differenza sta nel fatto che le frequenze occupate da Li-Fi appartengono allo spettro della luce visibile.
 
 Si basa sull’invio di dati attraverso la luce alterando la frequenza della luce come se fossero lampadine a LED che lampeggiano e trasmettono dati, in modo che un foto-ricevitore possa stabilire una connessione wireless.
 
@@ -292,19 +286,21 @@ Le reti possono essere classificate in tre categorie a seconda della loro estens
 
 Tutte le moderne reti si basano sullo stack **TCP/IP** che altro non è che un insieme di **protocolli**, cioè delle regole che delineano il formato dei messaggi che deve essere utilizzato nella comunicazione tra due sistemi.
 
-Lo stack TCP/IP è costruito su un **modello a strati o livelli**, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.
+Lo stack TCP/IP è costruito su un **modello a livelli**, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.
 
-In una rete TCP/IP ogni host è identificato da un **indirizzo IP univoco** all’interno di essa.
+All’interno di una rete TCP/IP ogni host è identificato da un **indirizzo IP univoco**.
+
+![](https://i.ibb.co/ycGPBL3m/image.png)
 
 ## Dispositivi di networking
 
 Vediamo i principali dispositivi nel mondo del networking:
 
-- **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address*
+- **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address.*
 - **hub**: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.
 - **switch**: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima
-- **router**: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
-- **access point**: permette accesso alla rete tramite connessione Wi-Fi
+- **router**: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
+- **access point**: permette accesso alla rete tramite connessione Wi-Fi.
 
 ## MAC address
 
@@ -351,14 +347,14 @@ Gli indirizzi IP sono suddivisi in **cinque classi:**
 Esistono diversi indirizzi particolari che sono riservati a scopi specifici e non possono essere assegnati agli host:
 
 - `0.0.0.0` (**default route**): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.
-- **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.
-- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete specificata nell’indirizzo.
-- **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host e la rete hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete.
+- **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. `192.168.1.0/24`
+- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. `192.168.1.255`
+- **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit dell'host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. `255.255.255.255`
 - **Loopback**: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (*localhost*), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo `127.0.0.1`
 
 ### Indirizzi privati
 
-Ci sono dei range di indirizzi (chiamati **indirizzi privati**), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host su internet.
+Ci sono dei range di indirizzi (chiamati **indirizzi privati**), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host pubblici su internet.
 
 | Classe | Range indirizzi privati |
 | --- | --- |
@@ -409,11 +405,11 @@ Nota: anche il NAS andrebbe ridondato e andrebbe fatto un backup dei dati al suo
 
 Una SAN (Storage Area Network) può essere vista come una rete LAN secondaria dedicata a dispositivi per lo storage che viene affiancata alla LAN dove sono collegati tutti gli altri dispositivi.
 
-Un sistema senza SAN abbiamo i dispositivi di storage attaccati direttamente ai server che condividono informazioni sulla LAN, questo porta un rapido degrado delle performance in quanto le richieste provenienti dalla rete che riguardano un grande trasferimento di dati potrebbero saturare la banda.
+In un sistema senza SAN abbiamo i dispositivi di storage attaccati direttamente ai server che condividono informazioni sulla LAN, questo porta un rapido degrado delle performance in quanto le richieste provenienti dalla rete che riguardano un grande trasferimento di dati potrebbero saturare la banda.
 
 Realizzare una rete separata per i dispositivi di storage permette una grande scalabilità in termini di storage e di connettività, infatti tutta la potenza di calcolo dei server è utilizzata per le applicazioni, in quanto i dati non risiedono in questi, ma sulla rete SAN appunto.
 
-Ci possono essere casi in cui si vuole accedere ad una SAN da diversi posti geografici, in tali casi si può usare un canale in fibra se la distanza non è molta oppure di sono dei protocolli di *storage over IP:*
+Ci possono essere casi in cui si vuole accedere ad una SAN da diversi posti geografici, in tali casi si può usare un canale in fibra se la distanza non è molta, oppure di sono dei protocolli di *storage over IP:*
 
 - ISCSI
 - IFCP
@@ -438,7 +434,7 @@ Si utilizza il software per simulare l'esistenza dell'hardware.
 
 Vantaggi:
 
-- costI molto ridotti
+- costi molto ridotti
 - downtime del sistema ridotto
 - aumento della produttività e dell’efficienza
 - fornitura più rapida dei servizi
@@ -453,7 +449,7 @@ Es. al posto di avere un server per la posta e un web server, mantengo un server
 
 ## Virtualizzazione del desktop
 
-Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo ma che si agganciano ad una macchina virtuale offerta da un server.
+Si hanno dei computer poco potenti che avviano una versione minimale del sistema operativo e che si agganciano ad una macchina virtuale offerta da un server.
 
 I tre tipi principali di virtualizzazione del desktop sono:
 
@@ -501,7 +497,7 @@ Mentre per i datacenter si utilizzano sistemi operativi progettati apposta per l
 
 # Il cloud
 
-Possiamo definire **il cloud** come una distribuzione di servizi di calcolo accessibili tramite internet.
+Possiamo definire **il cloud computing** come una distribuzione di servizi di calcolo accessibili tramite internet.
 
 Con **servizi di calcolo** possiamo intendere server, database, software, reti, ecc… che in generale possono permettere agli utenti di:
 
@@ -589,7 +585,7 @@ In Windows, un file speciale è quello di Swap, presente ora anche in quasi tutt
 
 ## Directory
 
-Una **directory è un elenco di nomi di file** (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una **struttura gerarchica al filesystem** (ad albero), con una radice indicata da `/` in Linux e `c:\` in Windows.
+Una **directory è un elenco di nomi di file** (e/o altre directory). Le directory hanno il fondamentale ruolo di dare una **struttura gerarchica al filesystem** (ad albero), con una radice indicata da `/` in Linux e `C:\` in Windows.
 
 Sulle directory si possono effettuare operazioni come creazione, cancellazione, collegamenti e ridenominazione.
 
@@ -660,7 +656,7 @@ Non supporta file più grandi di 4 GB.
 
 ## BIOS
 
-All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, chiamato BIOS. Il **BIOS** (*Basic Input-Output System*) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:
+All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, contenente il BIOS. Il **BIOS** (*Basic Input-Output System*) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:
 
 - effettua controlli hardware del sistema
 - cerca e controlla le periferiche
@@ -681,7 +677,7 @@ Il sistema UEFI presenta alcuni **vantaggi** rispetto al vecchio sistema BIOS:
 
 Il vecchio BIOS è più semplice, per cui ci baseremo su quello.
 
-Una volta finiti i check HW il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.
+Una volta finiti i check HW, il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.
 
 MBR cerca la prima **partizione attiva** del disco (cioè quella flaggata come *bootable)*, una volta trovata, legge il suo contenuto che contiene informazioni su come caricare il boot loader. Una volta caricato il boot loader, quest’ultimo si occuperà di avviare il sistema operativo.
 
@@ -720,7 +716,7 @@ Una volta lanciato il processo init, esso diventa il padre di tutti i successivi
 
 ### Systemd e Upstart
 
-Nelle moderni distribuzioni di Linux init è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:
+Nelle moderni distribuzioni di Linux, il processo **init** è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:
 
 - Upstart
 - Systemd (il più diffuso)
@@ -735,7 +731,7 @@ Per PC da casa il partizionamento di default va già bene, al massimo si può de
 
 ### Swap
 
-Nel partizionamento spesso viene menzionata la **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
+Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
 
 Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.
 
@@ -853,7 +849,7 @@ Soluzione Swap 2:
 
 Soluzione Swap 3:
 
-- `Swap` $512 \cdot 0.25 = 384GB$
+- `Swap` $512 \cdot 0.75 = 384GB$
 
 in tutti i casi possiamo ospitare circa 100 utenti
 
@@ -877,15 +873,13 @@ ssh-keygen -t rsa -b 2048
 
 normalmente le chiavi generate vengono salvate in `~/.ssh/`
 
-L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite ssh-agent per mettere in cache la passphrase per la durata della sessione
+L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite `ssh-agent` per mettere in cache la passphrase per la durata della sessione
 
 ```bash
 ssh-add ~/.ssh/id_rsa
 ```
 
 quando ci si è connessi poi bisogna copiare la chiave pubblica nel server, nel file `~/.ssh/authorized_keys`. Si può anche usare lo script ssh-copy-id per copiarla in modo automatizzato:
-
- 
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_rsa.pub utente@server
@@ -929,7 +923,7 @@ Vediamo alcuni comandi utili:
 
 Esiste un utente speciale che prende il nome di **root**, che possiede UID 0, e che può fare praticamente qualsiasi cosa nel sistema.
 
-Un utente può diventare può diventare temporaneamente root con i comandi `su` (per aprire una nuova shell come root) e `sudo` (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)
+Un utente può diventare temporaneamente root con i comandi `su` (per aprire una nuova shell come root) e `sudo` (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)
 
 È possibile aggiungere un utente al gruppo sudo tramite
 
@@ -963,11 +957,15 @@ I modificatori aggiuntivi sono:
 
 - `setuid`
     
-    viene impostato nei file per permettere al file di essere eseguito con i permessi dell’utente proprietario
+    viene utilizzato per fare in modo che un file venga eseguito con i privilegi del suo proprietario, anziché con quelli dell’utente che lo esegue. Tuttavia, l’utente deve già disporre del permesso di esecuzione.
+    
+    Il setuid è rappresentato da una `s` al posto della `x` nella sezione relativa al proprietario.
     
 - `setgid`
     
-    viene impostato nei file per permettere al file di essere eseguito con i permessi del gruppo proprietario
+    Il bit setgid viene utilizzato per fare in modo che un file venga eseguito con i privilegi del gruppo proprietario, anziché con quelli del gruppo dell’utente che lo esegue. L’utente deve già disporre del permesso di esecuzione.
+    
+    Il setgid è rappresentato da una `s` al posto della `x` nella sezione relativa al gruppo.
     
 - `sticky bit`
     
@@ -976,7 +974,7 @@ I modificatori aggiuntivi sono:
     Questo permesso viene spesso impostato sulle directory come `/tmp` per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.
     
 
-Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permesse sul file si usa il comando `chmod`.
+Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permessi sul file si usa il comando `chmod`.
 
 È possibile assegnare agli utenti o ai gruppi una quantità massimo di spazio su disco occupabile, detto **quota**, gestibile con i comandi `quota` e `edquota`.
 
@@ -1019,7 +1017,11 @@ Su Linux le principali shell che possiamo trovare sono:
 - Bourne Again Shell (**bash**): la shell attualmente di default su Linux, compatibile con sh
 - **Zsh**: estensione di bash con caratteristiche prese da altre shell, usata di default su Mac OS
 
-Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire `less /etc/shells`
+Ne esistono molte altre, per vedere quali sono installate nel proprio sistema eseguire il comando:
+
+```bash
+less /etc/shells
+```
 
 Su Windows abbiamo:
 
@@ -1059,7 +1061,7 @@ Come ogni interprete anche bash ha la propria sintassi, partiamo dai caratteri s
 
 - `;` permette di separare più comandi sulla stessa riga.
 - `&` esegue il comando che lo precede in background, permettendo alla shell di accettare nuovi comandi senza attendere il completamento del precedente.
-- `()` creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. i comandi all'interno non influenzano l'ambiente della shell principale. Ad esempio, `(cd /tmp; ls)` non modifica la directory corrente della shell principale.
+- `()` creano un sottoprocesso in cui vengono eseguiti i comandi racchiusi. I comandi all'interno non influenzano l'ambiente della shell principale. Ad esempio, `(cd /tmp; ls)` non modifica la directory corrente della shell principale.
 - `{}` raggruppano comandi da eseguire nel contesto della shell corrente. A differenza delle parentesi tonde, i comandi all’interno influenzano l'ambiente della shell principale. È importante notare che `{` e `}` devono essere separati dai comandi da spazi e che il blocco deve terminare con un punto e virgola o una nuova riga prima della parentesi chiusa.
 - `|` (pipe) prende l'output del comando a sinistra e lo passa come input al comando a destra.
 - `<> &` reindirizzamento dell’input e dell’output
@@ -1188,7 +1190,7 @@ done
 
 ### Select
 
-Il comando **`select`** è usato per creare menu interattivi a scelta multipla.
+Il comando `select` è usato per creare menu interattivi a scelta multipla.
 
 ```bash
 #!/bin/bash
@@ -1219,7 +1221,7 @@ IFS (*Internal Field Separator*) è una variabile speciale che determina i carat
 
 Di default, IFS contiene spazio, tabulazione e newline (`" \t\n"`)
 
-Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perchè potrebbe contenere caratteri non stampabili:
+Quando si modifica è raccomandato salvarsi un copia del valore originale e poi ripristinarla alla fine dello script, inoltre è raccomandato racchiudere il valore tra virgolette perché potrebbe contenere caratteri non stampabili.
 
 Esempio: elencare i file e le directory presenti nella directory corrente e calcolare il loro dimensione su disco. Modifichiamo IFS in modo che Bash non utilizzi gli spazi come delimitatori, ma solo le tabulazioni e i ritorni a capo
 
@@ -1301,7 +1303,7 @@ All’interno di un file batch si possono trovare solamente i comandi usabili di
     WScript.Echo "hello"
     ```
     
-- I commenti si fanno con `‘`
+- I commenti si fanno con `'`
     
     ```visual-basic
     Option Explicit
@@ -1442,9 +1444,9 @@ Spesso, l'uso di **inetd** è abbinato a **tcpd**, il quale si occupa di **regis
 
 **NTP (Network Time Protocol)** è un protocollo che permette ai client di sincronizzarsi con dei server, chiamati **Time Server**, al fine di mantenere data e ora sincronizzati all'interno di un sistema distribuito.
 
-Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici o ponti radio, stazioni di misurazione, o altri server NTP.
+Questi Time Server possono essere collegati a diverse fonti di misurazione del tempo, come orologi atomici, ponti radio, stazioni di misurazione o altri server NTP.
 
-I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti **strato 0**. I server NTP direttamente collegati a essi sono **server allo strato 1 (primari)**. I dispositivi che ottengono l'ora da server allo strato n sono allo strato n+1.
+I dispositivi di misurazione diretta del tempo (come gli orologi atomici) sono detti **strato 0**. I server NTP direttamente collegati a essi sono **server allo strato 1 (primari)**. I dispositivi che ottengono l'ora da server allo strato **n** sono allo strato **n+1**.
 
 Su sistemi Debian/Ubuntu, è possibile **installare il pacchetto ntp**
 
@@ -1468,7 +1470,7 @@ server <ntp_server_name / address>
 
 ## DHCP
 
-**DHCP (Dynamic Host Configuration Protocol)** è un protocollo sche permette la **configurazione automatica dei parametri di rete** al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.
+**DHCP (Dynamic Host Configuration Protocol)** è un protocollo che permette la **configurazione automatica dei parametri di rete** al fine di velocizzare il lavoro degli amministratori di sistema e semplificare la gestione della rete per gli utenti.
 
 **Funzionalità principali**:
 
@@ -1481,7 +1483,7 @@ server <ntp_server_name / address>
 **Come funziona:**
 
 1. **DHCPDISCOVER**: All'avvio della configurazione di rete, il client invia un pacchetto **DHCPDISCOVER in broadcast** (all'indirizzo 255.255.255.255) per cercare un server DHCP.
-2. **DHCPOFFER**: Se un server DHCP è presente nella rete, riceve la richiesta, verifica (eventualmente) l'indirizzo MAC del client e invia un **indirizzo IP al client tramite un pacchetto DHCPOFFER**.
+2. **DHCPOFFER**: Se un server DHCP è presente nella rete, riceve la richiesta, verifica, eventualmente, l'indirizzo MAC del client e comunica un **indirizzo IP al client tramite un pacchetto DHCPOFFER**.
 3. **DHCPREQUEST**: Se il client accetta la configurazione offerta, invia un pacchetto di **DHCPREQUEST** al server.
 4. **DHCPACK**: Il server risponde al client con un pacchetto di **DHCPACK** contenente l'indirizzo IP assegnato e le altre informazioni sulla configurazione di rete.
 
@@ -1503,13 +1505,13 @@ Il **Domain Name System (DNS)** è un sistema usato per **tradurre gli indirizzi
 
 Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.
 
-Il DNS possiede:
+Il DNS possiede due gerarchie:
 
 1. **una gerarchia dei nomi di dominio**: La posizione più alta è occupata dai **Top Level Domain (TLD)** come `.com`, `.it`, `.uk`, `.edu`, ecc. Al di sotto si trovano altri domini come `amazon.it`, `google.it`, ecc..
     
     ![](https://i.ibb.co/BVjGj0fN/image.png)
     
-2. **una gerarchia dei server che forniscono i dati**: Le informazioni sono suddivise in **zone**, cioè una porzione di nomi di dominio sotto una gestione amministrativa. La gerarchia dei name server parte dai **root name server** e si realizza tramite **deleghe sulle zone**, aventi come radice la zona ".".
+2. **una gerarchia dei server che forniscono i dati**: Le informazioni sono suddivise in **zone**, cioè una porzione di nomi di dominio è sotto una gestione amministrativa. La gerarchia dei name server parte dai **root name server** e si realizza tramite **deleghe sulle zone**.
     
     La gestione di una zona è **delegata dalla zona superiore tramite dei record di tipo NS** (Name Server). Per garantire ridondanza, ogni zona è **replicata su più server**.
     
@@ -1558,7 +1560,7 @@ Nei sistemi Unix/Linux, un sistema DNS può essere realizzato principalmente in 
 
 # Autenticazione
 
-Con **autenticazione** si intente una serie di problemi e operazioni tra cui:
+Con **autenticazione** si intente una serie di operazioni che includono:
 
 - **identificazione e autenticazione**: indicare in maniera univoca un utente di un sistema e dimostrare che un utente è realmente la persona che dichiara di essere
 - **autorizzazione**: stabilire cosa l’utente può fare e cosa no
@@ -1591,7 +1593,7 @@ Per superare queste limitazioni, nel tempo sono nati sistemi che permettono di a
 
 **NSS (Name Service Switch)** è un sistema per la gestione delle informazioni sugli utenti.
 
-In Linux, NSS è parte delle librerie C del progetto GNU e fornisce i dati dei system database (tra cui `/etc/passwd`, `/etc/roup` e `/etc/hosts`) alle applicazioni. Come fonti di dati possono essere usate anche altri tipi di fonti, come dei database.
+In Linux, NSS è parte delle librerie C del progetto GNU e fornisce delle funzioni che fanno da interfaccia tra le applicazioni e i sistemi di autenticazione per la gestione delle informazioni utente (tra cui `/etc/passwd`, `/etc/group`). Possono essere usati anche altre fonti per i dati, come dei database.
 
 La configurazione di NSS avviane principalmente tramite il file `/etc/nsswitch.conf`
 
@@ -1640,13 +1642,13 @@ Su Windows LDAP viene spesso utilizzato con il protocollo Kerberos in un sistema
 
 **Kerberos** è un protocollo di rete per l’autenticazione in cui gli utenti si autenticano tramite tecniche crittografiche.
 
-Il protocollo Kerberos coinvolge un **client**, un **application serve**r e un *Key Distribution Center* (**KDC**), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.
+Il protocollo Kerberos coinvolge un **client**, un **application server** e un *Key Distribution Center* (**KDC**), che si occupa del processo di autenticazione e la gestione delle chiavi segrete.
 
 ![](https://i.ibb.co/5hvSmDrF/image.png)
 
 Il processo di autenticazione prevede diversi passaggi:
 
-1. `AS_REQ`: La richiesta iniziale del client in chiaro verso l’Authentication Server
+1. `AS_REQ`: La richiesta iniziale del client in chiaro verso l’Authentication Server (una componente del KDC)
 2. `AS_REP`: la risposta dell'Authentication Server contenente la chiave di sessione
 3. `TGS_REQ`: la richiesta di un ticket di servizio
 4. `TGS_REP`: la risposta del Ticket Granting Server contenente il ticket di servizio (TS), 
@@ -1667,9 +1669,9 @@ AD è strutturato come un **contenitore di oggetti** (utenti, gruppi, computer, 
 
 # Posta elettronica
 
-La posta elettronica è un sistema di comunicazione su larga scala.
+La posta elettronica è un sistema di comunicazione digitale che sfrutta la rete internet per lo scambio di messaggi.
 
-È composto da vari attori:
+Questo sistema è composto da vari attori:
 
 - Il **Mail User Agent (MUA)** o client di posta (come Thunderbird, Outlook) è un programma utilizzato da un utente per inviare e consultare i messaggi. Può anche essere un'applicazione web (webmail).
 - Il **Mail Submission Agent (MSA)** riceve i messaggi da un MUA e li invia a un MTA.
@@ -1690,12 +1692,10 @@ Tutte le comunicazioni tra i vari agenti, ad eccezione delle interazioni tra MRA
     - Se il dominio rientra tra quelli gestiti dall'MTA (e quindi è un indirizzo locale) e l'utente è valido, l'email viene inoltrata all'LDA, che la consegna nella casella di posta associata, terminando il processo.
     - Se l'indirizzo non è locale e l'MTA accetta di inoltrare il messaggio (*relay*), l'MTA inserisce il messaggio in una coda.
 4. Dopo aver estratto il messaggio dalla coda, l'MTA controlla il record `DNS MX` associato al dominio del destinatario e contatta l'MTA che risponde a quell'host, cercando di inviargli il messaggio.
-5. Se l'invio avviene correttamente, il messaggio viene gestito dall'MTA di destinazione, che procede dal punto 3.
-    
-    Se l'MTA contattato non risponde, il messaggio torna in coda.
-    
-    Se l'MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all'indirizzo del mittente, e il procedimento termina.
-    
+5. Da questo punto possiamo avere tre situazioni:
+    - Se l'invio avviene correttamente, il messaggio viene gestito dall'MTA di destinazione, che procede dal punto 3.
+    - Se l'MTA contattato non risponde, il messaggio torna in coda.
+    - Se l'MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all'indirizzo del mittente, e il procedimento termina.
 
 ### Relay
 
@@ -1711,8 +1711,8 @@ Il protocollo utilizzato tra MUA e MTA e tra MTA e MTA si chiama **Simple Mail T
 
 La comunicazione tra il MAA e il MUA (tramite l'MRA) avviene tramite il **Post Office Protocol versione 3 (POP3)** o l'**Internet Message Access Protocol versione 4 (IMAP4)**.
 
-- **IMAP** mantiene le email sul server, consentendo la gestione da diversi dispositivi conservando una copia centralizzata.
-- **POP**, invece, scarica le email sul dispositivo utilizzato per la consultazione, e la connessione è necessaria solo per inviare e ricevere.
+- **IMAP** conserva i messaggi sul server, permettendo di accedere e gestire la posta da più dispositivi, mantenendo sempre una copia centralizzata e sincronizzata.
+- **POP**, invece, scarica le email sul dispositivo locale, spesso eliminandole dal server. Dopo il download, i messaggi sono consultabili anche offline, e la connessione è necessaria solo per inviare o ricevere messaggi.
 
 **IMAP è generalmente preferibile per prestazioni ottimali**, specialmente su reti lente, mentre POP può essere utile in caso di connessioni non persistenti.
 
@@ -1737,7 +1737,7 @@ La comunicazione tra il MAA e il MUA (tramite l'MRA) avviene tramite il **Post O
 
 ## Spam
 
-Lo **SPAM** è definito come **uno o più messaggi non richiesti, facenti parte di un più insieme di messaggi, tutti aventi contenuto sostanzialmente identico**. Le email indesiderate possono essere collocate in **cinque diverse categorie**:
+Con **SPAM** si intende **uno o più messaggi indesiderati, facenti parte di un più grande insieme di messaggi, tutti aventi contenuto sostanzialmente identico**. Le email indesiderate possono essere collocate in cinque diverse categorie:
 
 - **Hoax:** Bufale e catene di Sant’Antonio.
 - **Worm:** Email mandate da virus.
@@ -1751,13 +1751,13 @@ Non è possibile arginare completamente il problema dello spam con una policy st
 
 - **Greylisting:**
     
-    questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo
+    questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo:
     
-    1. Un'email proveniente da un dominio sconosciuto viene **temporaneamente rifiutata** con un errore di "temporaneamente non disponibile: 450 *try again later*" per un numero preimpostato di volte.
+    1. Un'email proveniente da un dominio sconosciuto viene **temporaneamente rifiutata** con un errore "450 *try again later*" per un numero preimpostato di volte N.
     2. Ad ogni rifiuto, l'MTA mittente rimette la mail in coda e, dopo un certo periodo di tempo, tenta il reinvio.
     3. Al tentativo N, la mail viene accettata dall'MTA ricevente, e l'MTA mittente viene inserito in una **whitelist**, in modo che tutte le email successive vengano accettate direttamente.
     
-    **Problematiche:** Alla lunga, questa tecnica **perde di efficacia** poiché i bot di spam implementano algoritmi che ritentano l'invio. Possono anche verificarsi **lievi ritardi nella consegna** delle email.
+    **Problematiche:** Alla lunga, questa tecnica **perde di efficacia** poiché i bot di spam implementano algoritmi che ritentano l'invio. Possono inoltre verificarsi **lievi ritardi nella consegna** delle email.
     
     **Vantaggi:** **Nessuna email lecita viene scartata**, poiché i mail server legittimi re-inviano la mail. Si ha comunque un **buon filtraggio di base**.
     
@@ -1765,11 +1765,11 @@ Non è possibile arginare completamente il problema dello spam con una policy st
     
     Sono liste contenenti **IP non "autorizzati" ad inviare e-mail**.
     
-    **Problematiche:** È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.
+    **Problematiche:** È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri per selezionare IP sospetti sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.
     
 - **SPF** (*Sender Policy Framework*):
     
-    È uno standard che, tramite un **record TXT nel DNS**, dichiara quali **IP o nomi possono inviare mail per un determinato dominio**. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.
+    È uno standard che, tramite un **record TXT nel DNS**, dichiara quali **IP o nomi di dominio possono inviare mail per un determinato dominio**. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.
     
     **Problematiche: Non tutti i domini implementano il record TXT**. L'implementazione può essere difficoltosa.
     
@@ -1792,7 +1792,7 @@ Non è possibile arginare completamente il problema dello spam con una policy st
     - `smtpd_recipient_restrictions`: Effettua controlli sul destinatario.
 - **AMAVIS:**
     
-    È un **demone** che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica e interfacciandosi con altri sistemi di filtraggio spam e virus come quelli che abbiamo visto precedentemente.
+    È un **demone** che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica delle email interfacciandosi con altri sistemi di filtraggio come quelli che abbiamo visto precedentemente.
     
     Permette di rilevare virus, spam, contenuti vietati; bloccare, etichettare, reindirizzare email; mettere in quarantena o rilasciare messaggi; eliminare virus tramite antivirus esterni.
 
@@ -1801,7 +1801,6 @@ Non è possibile arginare completamente il problema dello spam con una policy st
 # File system distribuiti
 
 Un **Filesystem Distribuito (DFS)** è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell'utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.
-
 Un **File Server** è un host che ospita un DFS. Sui client è installata un'interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.
 
 ## **Caratteristiche DFS**
@@ -1810,7 +1809,7 @@ Le caratteristiche principali di un DFS includono:
 
 - **Trasparenza:**
     
-    La trasparenza ideale fa sì che un DFS appaia all'utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L'interfaccia utente non dovrebbe distinguere tra file locali e remoti.
+    La trasparenza fa sì che un DFS appaia all'utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L'interfaccia utente non dovrebbe distinguere tra file locali e remoti.
     
 - **Prestazioni:**
 Il modo più conveniente per misurare le prestazioni di un DFS è quantificare il tempo impiegato per soddisfare una richiesta. Nei sistemi convenzionali (non distribuiti), questo tempo è dato principalmente dall'accesso al disco locale e da una piccola quantità di elaborazione della CPU.
@@ -1828,16 +1827,16 @@ Vediamo varie implementazioni di DFS.
 
 ### **NFS (Network File System)**:
 
-Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il **primo DFS ad essere sviluppato** ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull'idea che ogni host fornisce una vista unificata del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.
+Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il **primo DFS ad essere sviluppato** ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull'idea che ogni host espone alla rete parte del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.
 
-NFS utilizza un ***remote access model*** in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file.
+NFS utilizza un ***remote access model*** in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file del server. Si differenzia dal **modello upload/download** dove i client scaricano il file in locale, lo modificano e lo ricaricano sul server, il quale mantiene lo storico delle versioni.
 
 Dalla versione 4:
 
 - supporta server *stateful*, mantenendo lo stato delle operazioni, a differenza delle versioni precedenti dove era il client a doverlo fare.
 - introdotto le ***Compound Operations*** (CP), che consistono in inserire più operazioni in una singola chiamata, migliorando così l’efficienza. La chiamata però non viene trattata come una transazione: se una operazione interna fallisce, le successive non vengono eseguite e viene ritornato un messaggio di errore senza che venga fatto un rollback.
 - Utilizza il protocollo TCP (in precedenza UDP).
-- Per il riconoscimento dell'utente, dalla versione 4 si usa una stringa arbitraria, come un username (prima era solo tramite indirizzo IP)
+- Per il riconoscimento dell'utente, dalla versione 4 si usa una stringa arbitraria, come un username, oppure anche utilizzando sistemi esterni (prima era solo tramite indirizzo IP)
 
 La sua configurazione avviene nel file `/etc/exports` e usa la seguente sintassi:
 
@@ -1858,7 +1857,7 @@ Per utilizzare un’area condivisa vi sono tre modalità:
 
 **Automount** è un meccanismo implementato da vari sistemi UNIX per gestire il montaggio di filesystem remoti in modo dinamico, cioè montandolo solamente quando serve e smontandolo quando non serve più.
 
-Il problema che automount mira a risolvere è che **non è consigliabile mantenere un file system remoto montato permanentemente su un sistema**. in caso di disconnessione il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può svorareil limite massimo di mount.
+Il problema che automount mira a risolvere è che **non è consigliabile mantenere un file system remoto montato permanentemente su un sistema**. in caso di disconnessione con l’host remoto, il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può superare il limite massimo di mount.
 
 **Funzionamento:**
 
@@ -1871,7 +1870,7 @@ Il problema che automount mira a risolvere è che **non è consigliabile mantene
 
 In generale, in un dominio **Active Directory** di Windows, esistono due tipologie di cartelle condivise  legate agli utenti del sistema:
 
-- **Profili utente:** Possono risiedere solo sulla macchina locale (client), oppure sul server come *Roaming Profiles*. Con i *Roaming Profiles*, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l'utente si collega.
+- **Profili utente:** Possono risiedere direttamente sulla macchina locale (client), oppure sul server come *Roaming Profiles*. Con i *Roaming Profiles*, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l'utente si collega.
     
     I profili vengono scaricati/caricati dal server a ogni login/logout.
     
@@ -1978,24 +1977,24 @@ Il Web si basa sul protocollo **HTTP (HyperText Transfer Protocol)** e poggia su
 
 ### HTTP
 
-La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta per una risorsa al server alla volta.
+La prima versione di HTTP (1.0) prevedeva che il client facesse una singola richiesta alla volta al server per una risorsa.
 
 La versione HTTP 1.1 ha introdotto:
 
 - la possibilità di effettuare più richieste per connessione
 - connessioni permanenti
 - richieste/risposte asincrone all'interno di queste connessioni.
-- obbliga i client a specificare l'hostname desiderato nella richiesta, consentendo l'implementazione del **virtual hosting**, dove un server può ospitare più siti internet con nomi diversi ma lo stesso indirizzo IP.
+- obbliga i client a specificare l'hostname desiderato nella richiesta, consentendo l'implementazione del **virtual hosting**, dove un server può ospitare più siti internet con nomi diversi ma allo stesso indirizzo IP.
 
 Attualmente, si utilizzano **HTTP 2** (per oltre il 50%) e **HTTP 3** (usato nel 20%) che aggiungono varie migliorie.
 
 ## Web server
 
-Un **WEB Server** è un'applicazione software che gira su un computer, capace di gestisce le richieste di trasferimento di pagine web verso un client.
+Un **WEB Server** è un'applicazione che gira su un host, capace di gestisce le richieste di trasferimento di pagine web verso un client.
 
 La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).
 
-Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.
+Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.
 
 Tra i vari web server è interessante approfondire:
 
@@ -2078,13 +2077,13 @@ http {
 
 Il concetto di **server block** in Nginx è molto simile al **virtual hosting di Apache**. Questo significa che puoi ospitare più siti web sullo stesso server Nginx.
 
-Un modo per farlo è definire **più server blocks all'interno dello stesso file `nginx.conf`**. Ad esempio, avere un blocco per `sito1.com` e un altro per `sitoN.com`, ognuno con la sua radice dei documenti, i suoi log, ecc...
+Un modo per farlo è definire **più server blocks all'interno dello stesso file** `nginx.conf`. Ad esempio, avere un blocco per `sito1.com` e un altro per `sitoN.com`, ognuno con la sua radice dei documenti, i suoi log, ecc...
 
 Un approccio più pulito è quello di **creare dei file separati** per ogni sito nella directory `/etc/nginx/sites-available/`, e poi **abilitarli** creando dei **link simbolici** a questi file all'interno della directory `/etc/nginx/sites-enable/`.
 
 ### Reverse proxy
 
-Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al visitatore.
+Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al client.
 
 Questo è utile in diverse situazioni:
 
@@ -2092,11 +2091,11 @@ Questo è utile in diverse situazioni:
 - come **load balancer**, per distribuire il traffico tra più server che offrono lo stesso servizio;
 - per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il **supporto a HTTPS** per applicazioni che non lo gestiscono nativamente.
 
-Il bilanciamento del carico serve a **distribuire il traffico** su più server per sfruttare al meglio le risorse, aumentare la velocità del tuo sito, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta **tre modalità principali** di bilanciamento del carico:
+Il bilanciamento del carico serve a **distribuire il traffico** su più server per sfruttare al meglio le risorse, aumentare la velocità del servizio web, ridurre i tempi di attesa e renderlo più resistente ai guasti. Nginx supporta **tre modalità principali** di bilanciamento del carico:
 
 - **Round-robin**: le richieste vengono distribuite ai server in sequenza, uno dopo l'altro. Non garantisce la persistenza delle sessioni
 - **Least-connected**: ogni nuova richiesta viene inviata al server che in quel momento ha il minor numero di connessioni attive. Non garantisce la persistenza delle sessioni
-- **Ip-hash**: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. Questo garantisce che le richieste provenienti dallo stesso utente vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.
+- **Ip-hash**: viene utilizzata una funzione hash che mappa IP del client con l’id del server per decidere quale server dovrà gestire la sua richiesta. In questo modo le richieste provenienti dallo stesso client vengano sempre indirizzate allo stesso server, garantendo le persistenza delle sessioni.
 
 Infine, Nginx ha anche un sistema di **monitoraggio passivo** dei server. Se un server non risponde correttamente, viene temporaneamente escluso dal bilanciamento del carico.
 
@@ -2176,7 +2175,7 @@ Da scegliere: in ambienti Windows con applicazioni di terze parti che lo richied
 
 Un **server di stampa** permette la **gestione centralizzata di una o più stampanti di rete e non**.
 
-Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Ogni **stampante di rete** moderna può essere considerata un **print server per sé stessa**, in quanto offre il proprio servizio di stampa tramite diverse modalità di accesso come:
+Un server di stampa è un host che gestisce le code di stampa di una o più stampanti ad esso collegate. Le **stampanti di rete** moderne possono essere già considerate delle **print server per se stesse**, in quanto offrono il proprio servizio di stampa tramite diverse modalità di accesso come:
 
 - **Web Printing**: permette di inviare documenti alla stampante tramite un'interfaccia web.
 - **IPP (Internet Printing Protocol)**: protocollo che consente la stampa su rete e anche via Internet, con supporto per autenticazione e gestione code.
@@ -2185,7 +2184,7 @@ Un server di stampa è un host che gestisce le code di stampa di una o più stam
 
 Tuttavia, quando si hanno più stampanti di rete, è consigliabile la gestione tramite un host dedicato chiamato **printer server**. Il printer server può essere collegato alle stampanti **direttamente** (tramite USB/Parallela/Seriale, quando la stampante è molto vicina al server) oppure **via rete** (se la stampante è dotata di un modulo di rete e si trova in una zona più distante, come un'altra stanza, piano o edificio).
 
-Diversi sistemi operativi offrono funzionalità di print server integrata:
+Diversi sistemi operativi offrono funzionalità integrate di print server:
 
 - **Linux/OS X**: il server di stampa è gestito interamente dal sistema **CUPS (Common UNIX Printing System)**, successore di LPD e pienamente compatibile con esso. Viene configurato nel file  `/etc/cups/cupsd.conf` o tramite interfaccia web all’indirizzo `http://localhost:631/admin`
 - **Windows**: il sistema di **condivisione file e stampanti** permette una gestione semplice di una o più stampanti condivise.
@@ -2246,7 +2245,7 @@ La sua struttura si basa su un meccanismo di **regole** organizzate in **catene*
 - **PREROUTING**: lavora sui pacchetti in entrata *prima* che vengano instradati (nel sistema locale o altrove).
 - **POSTROUTING**: lavora sui pacchetti in uscita *dopo* che è stato deciso il loro instradamento.
 
-Ogni catena appartiene a una **tabella**. Le tabelle principali citate sono:
+Ogni catena appartiene a una **tabella**. Le tabelle principali sono:
 
 - **Filter**: contiene le regole per il **filtraggio** dei pacchetti. Le catene associate sono INPUT, OUTPUT, FORWARD.
 - **Nat**: contiene le regole per l'**instradamento** dei pacchetti, specificamente per manipolare gli indirizzi (NAT). Le catene associate sono OUTPUT, PREROUTING, POSTROUTING.
@@ -2320,14 +2319,14 @@ Il suo funzionamento si basa sulla creazione di un **tunnel virtuale cifrato** t
 
 # Docker
 
-Docker è un software opensource nato con l'obiettivo di automatizzare e semplificare la distribuzione delle applicazioni grazie al meccanismo dei **container e delle immagini**. 
+Docker è un software open source nato con l'obiettivo di automatizzare e semplificare la distribuzione delle applicazioni grazie al meccanismo dei **container e delle immagini**. 
 
-- Una i**mmagine**: Una sorta di file system minimale strutturato a *layer* contenente l’eseguibile, le dipendenze e librerie che necessita l’applicazione per funzionare.
-- Un **container** può essere visto come un processo (o insieme di processi) eseguiti in isolamento sul nostro sistema che rappresenta una istanza dell’immagine.
+- Una **immagine**: Una sorta di file system minimale strutturato a *layer* contenente l’eseguibile, le dipendenze e librerie che necessita l’applicazione per funzionare.
+- Un **container** può essere considerato come uno o più processi isolati dal sistema che rappresentano una immagine in esecuzione.
 
 Usando un'analogia OOP, possiamo pensare all'immagine come a una classe contenente tutti i dati necessari all'applicazione. Mentre il Container è l'istanza di quella immagine che eseguirà l'applicazione.
 
-Ogni container avviato è identificato da un **ID alfanumerico unico** e da un nome (assegnato automaticamente o manualmente). Per interagire con un container, si fa riferimento al suo ID o nome.  L'ID e il nome (se assegnato automaticamente) cambiano a ogni riavvio del container, quindi assegnare un nome manualmente garantisce di avere un riferimento stabile.
+Ogni container avviato è identificato da un **ID alfanumerico** e da un nome (assegnato automaticamente o manualmente). Per interagire con un container, si fa riferimento al suo ID o nome.  L'ID e il nome (se assegnato automaticamente) cambiano a ogni riavvio del container, quindi assegnare un nome manualmente garantisce di avere un riferimento stabile.
 
 ## Proprietà
 
@@ -2337,11 +2336,13 @@ I container:
 - Sono **portabili** perché sono distribuiti in un formato standard che può essere letto ed eseguito da qualsiasi server Docker.
 - Sono **leggeri** perché, a differenza delle macchine virtuali (VM) che richiedono un kernel virtualizzato, sfruttano i servizi direttamente dal kernel del sistema operativo ospitante. Questo consente di ospitare un gran numero di container sulla stessa macchina fisica e offre ottime prestazioni.
 
-In un ambiente containerizzato, il **kernel del sistema operativo ospitante** si occupa della gestione delle risorse e dell'isolamento, funzioni che nelle VM sono a carico dell'Hypervisor (un ulteriore strato software), mentre su Docker sono gestite dai **Control Groups (cgroups)** e dai **Namespaces**.
+In un ambiente containerizzato, il **kernel del sistema operativo ospitante** si occupa della gestione delle risorse e dell'isolamento, funzioni che nelle VM sono a carico dell'Hypervisor (un ulteriore strato software).
+
+In particolare Docker sfrutta due funzionalità del kernel Linux: **Control Groups (cgroups)** e **Namespaces**.
 
 ### Control Groups
 
-I **Control Groups** sono lo strumento del kernel Linux che gestisce l'utilizzo delle **risorse** da parte di gruppi di processi. Grazie a questo strumento è possibile limitare la quantità di risorse utilizzate da specifici processi, come ad esempio la memoria RAM massima allocabile. Docker sfrutta i *cgroups* per implementare i limiti di risorse configurati per i container.
+I **Control Groups** sono lo strumento del kernel Linux che gestisce l'utilizzo delle **risorse** da parte di gruppi di processi. Grazie a questo strumento è possibile limitare la quantità di risorse utilizzate da specifici processi, come ad esempio la memoria RAM massima allocabile. Docker sfrutta questo strumento per implementare i limiti di risorse configurabili per i container.
 
 ### Namespaces
 
@@ -2351,9 +2352,9 @@ Per ciascun container, Docker crea un gruppo di *namespace* dedicati, associando
 
 ## Immagini
 
-Le immagini sono spesso disponibili in **repository**, che contengono varie versioni di immagini per una determinata applicazione, le diverse versioni sono identificate da un **tag**. per riferirsi a un'immagine specifica si usa la sintassi `repository:tag`, se il tag non viene specificato viene usato di default il tag `latest`.
+Le immagini sono spesso disponibili in **repository**, che contengono varie versioni di una stessa immagine, le diverse versioni sono identificate da un **tag**. per riferirsi a un'immagine specifica si usa la sintassi `repository:tag`, se il tag non viene specificato viene usato di default il tag `latest`.
 
-Se un'immagine non è presente localmente quando si cerca di avviare un container da essa, Docker la scarica automaticamente dal repository predefinito.
+Quando si cerca di avviare un container, se l'immagine relativa non è presente localmente, Docker la scarica automaticamente dal repository predefinito.
 
 Una caratteristica particolare delle immagini è la loro **stratificazione in layer**. Ogni layer contribuisce alla definizione del filesystem del container. Questi layer sono **immutabili** (in sola lettura), il che  permette a diverse immagini di **condividere layer comuni**, risparmiando spazio su disco.
 
@@ -2369,7 +2370,7 @@ L'**isolamento** dei container si manifesta a diversi livelli:
 
 ## Dockerfile
 
-Un **Dockerfile** è un file di testo che serve a descrivere le personalizzazioni da apportare alle immagini base per creare un'immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all'engine Docker, che lo **valida e genera una nuova immagine**.
+Un **Dockerfile** è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all'engine Docker, che lo **valida e genera una nuova immagine**.
 
 All'interno di un Dockerfile, troviamo diverse istruzioni, tra le più importanti ci sono:
 
@@ -2395,7 +2396,7 @@ All'interno di un Dockerfile, troviamo diverse istruzioni, tra le più important
     
     es. `COPY *.txt /docs`
     
-- `ENTRYPOINT`: Definisce il comando che viene eseguito non appena il container si avvia. Si differenzia da `RUN` perché agisce sul container e non crea un nuovo layer.
+- `ENTRYPOINT`: Definisce il comando che viene eseguito non appena il container si avvia. Si differenzia da `RUN` perché agisce sul container durante l’esecuzione e non crea un nuovo layer.
     
     es. `ENTRYPOINT vsftpd`
     
@@ -2418,7 +2419,7 @@ All'interno di un Dockerfile, troviamo diverse istruzioni, tra le più important
     
     es. `LABEL VERSION=”1.0.0” MAINTAINER=”gg76”`
     
-- `EXPOSE`: Dichiara su quali porte il container resterà in ascolto. Indica a Docker che, in fase di avvio del container, potrebbe essere necessario effettuare il *port forwarding*.
+- `EXPOSE`: Dichiara su quali porte il container resterà in ascolto. Indica a Docker che, in fase di avvio del container, sarà necessario effettuare il *port forwarding*.
     
     es. `EXPOSE 80 443`
     
@@ -2427,15 +2428,15 @@ All'interno di un Dockerfile, troviamo diverse istruzioni, tra le più important
     es. `VOLUME ["/var/www"]`
     
 
-Per creare un'immagine da un Dockerfile, si usa il comando `docker build [opzioni] <build context>`. Il `<build context>` indica all'engine la directory di riferimento, pesso è indicato con la directory corrente (`.`). Il build context è fondamentale per risolvere i path relativi usati in istruzioni come `COPY` o `ADD`.
+Per creare un'immagine da un Dockerfile, si usa il comando `docker build [opzioni] <build context>`. Il `<build context>` indica all'engine la directory di riferimento, spesso è indicato con la directory corrente (`.`). Il build context è fondamentale per risolvere i path relativi usati in istruzioni come `COPY` o `ADD`.
 
 ## Docker compose
 
-Quando un'applicazione è composta da **più container**, può risultare utile utilizzare **Docker Compose**.
+Quando un'applicazione è composta da **più container** (ad esempio una applicazione full stack), può risultare utile utilizzare **Docker Compose**.
 
 Docker Compose è uno strumento progettato per la definizione e l'esecuzione di applicazioni Docker multi-container.
 
-Si utilizza un **file YAML** (spesso chiamato `docker-compose.yml`) per configurare le immagini, i volumi e tutte le altre configurazioni che compongono l'applicazione.
+Si utilizza un **file YAML** (spesso chiamato `docker-compose.yml`) per specificare le immagini, i volumi e tutte le altre configurazioni che compongono l'applicazione.
 
 esempio di `docker-compose.yml`:
 
@@ -2457,13 +2458,15 @@ volumes:
 	 logvolume01: {}
 ```
 
-definisce due immagini, di cui la prima viene definita in un dockerfile presente nella stessa direcotry e la seconda è Redis.
+definisce due immagini, di cui la prima viene definita in un dockerfile presente nella stessa directory (lo si nota dal comando `build`) e la seconda è Redis.
+
+Grazie a questo file, con un singolo comando si può eseguire l’intero stack dell’applicazione senza dover avviare manualmente tutti i container che compongono l’applicazione.
 
 ## Gestire i container
 
-I repository che contengono le immagini con le loro versioni sono disponibili in dei registri online come Docker Hub o Github container registry.
+I repository che contengono le immagini con le loro versioni sono disponibili in dei registri online come Docker Hub o Github Container Registry.
 
-Per impostazione predefinita, Docker si collega a **Docker Hub**, un registro centralizzato gestito dalla società Docker, da cui è possibile scaricare la maggior parte delle immagini necessarie, e in cui  chiunque può ospitare le proprie immagini.
+Per impostazione predefinita, Docker si collega a **Docker Hub**, un registro centralizzato gestito dalla società Docker, da cui è possibile scaricare la maggior parte delle immagini, e in cui chiunque può caricare le proprie immagini.
 
 È possibile cercare le immagini disponibili su Docker Hub utilizzando il comando `docker search <nome_immagine>`. L'output di questo comando mostra diverse immagini con varie informazioni. Se si desidera scaricare esplicitamente un'immagine, si usa il comando `docker pull <nome_immagine>`.
 
@@ -2473,7 +2476,7 @@ Per gestire container e immagini, si utilizzano diversi comandi. La sintassi gen
 docker [opzioni] [comando] [argomenti]
 ```
 
-Ad esempio, per avviare un container da un'immagine si usa `docker run <immagine>`, con opzioni come `-it` per la modalità interattiva, `-d` per la modalità *detached* (in background), o `--name` per assegnare un nome al container. Si possono elencare le immagini scaricate con `docker images` e i container (in esecuzione) con `docker ps`. È anche possibile avviare (`docker start`), fermare (`docker stop`) o rimuovere (`docker rm`) i container usando il loro ID o nome.
+Ad esempio, per avviare un container da un'immagine si usa `docker run <immagine>`, con opzioni come `-it` per la modalità interattiva, `-d` per la modalità *detached* (cioè eseguito in background), o `--name` per assegnare un nome al container. Si possono elencare le immagini scaricate con `docker images` e i container (in esecuzione) con `docker ps`. È anche possibile avviare (`docker start`), fermare (`docker stop`) o rimuovere (`docker rm`) i container specificando il loro ID o nome.
 
 ## Portainer
 

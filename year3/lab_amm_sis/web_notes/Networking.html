@@ -54,17 +54,15 @@
 </ul>
 <p>Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.</p>
 <h3 id="cavo-di-rete-doppino-telefonico">Cavo di rete (doppino telefonico)</h3>
-<p>Costituito da almeno due fino ad un massimo di 8 sottili fili<br>
-di rame intrecciati. La categoria del cavo (5/5a/6a/7…) definisce la banda<br>
-massima garantita e la qualità di isolamento per le interferenze.</p>
+<p>Costituito da almeno due fino ad un massimo di 8 sottili fili di rame intrecciati. La categoria del cavo (5/5a/6a/7…) definisce la banda massima garantita e la qualità di isolamento per le interferenze.</p>
 <h3 id="fibra">Fibra</h3>
 <p>Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, del mezzo di trasmissione e di un ricevitore; la sorgente luminosa converte segnali elettrici in impulsi per poi riconvertirli in segnali elettrici alla fine del tragitto.</p>
 <h3 id="wi-fi">Wi-Fi</h3>
-<p>Le reti wifi usano l’etere (l’aria come mezzo di propagazione i fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.</p>
+<p>Le reti wifi usano l’etere (l’aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.</p>
 <p>Si utilizza un <strong>access point</strong>, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.</p>
 <p>Ha bisogno di sistemi di sicurezza e autenticazione elevati perché chiunque può agganciarsi alla rete</p>
 <h3 id="li-fi">Li-Fi</h3>
-<p>Li-Fi (<em>Light Fidelity</em>) è il corrispondente ottico del Wi-Fi (che usa trasmissioni radio). La differenza sta nel fatto che le frequenze occupate appartengono allo spettro della luce visibile.</p>
+<p>Li-Fi (<em>Light Fidelity</em>) è il corrispondente ottico del Wi-Fi (che usa invece trasmissioni radio). La differenza sta nel fatto che le frequenze occupate da Li-Fi appartengono allo spettro della luce visibile.</p>
 <p>Si basa sull’invio di dati attraverso la luce alterando la frequenza della luce come se fossero lampadine a LED che lampeggiano e trasmettono dati, in modo che un foto-ricevitore possa stabilire una connessione wireless.</p>
 <p>È una connessione ottica a corto raggio, tipicamente a meno di 4 metri di distanza</p>
 <h2 id="networking-1">Networking</h2>
@@ -76,16 +74,17 @@ massima garantita e la qualità di isolamento per le interferenze.</p>
 </ul>
 <h2 id="tcpip">TCP/IP</h2>
 <p>Tutte le moderne reti si basano sullo stack <strong>TCP/IP</strong> che altro non è che un insieme di <strong>protocolli</strong>, cioè delle regole che delineano il formato dei messaggi che deve essere utilizzato nella comunicazione tra due sistemi.</p>
-<p>Lo stack TCP/IP è costruito su un <strong>modello a strati o livelli</strong>, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.</p>
-<p>In una rete TCP/IP ogni host è identificato da un <strong>indirizzo IP univoco</strong> all’interno di essa.</p>
+<p>Lo stack TCP/IP è costruito su un <strong>modello a livelli</strong>, in cui le informazioni si fanno strada da un’applicazione su un host ad un’applicazione su un altro host attraverso incapsulamenti trasparenti all’applicazione.</p>
+<p>All’interno di una rete TCP/IP ogni host è identificato da un <strong>indirizzo IP univoco</strong>.</p>
+<p><img src="https://i.ibb.co/ycGPBL3m/image.png" alt=""></p>
 <h2 id="dispositivi-di-networking">Dispositivi di networking</h2>
 <p>Vediamo i principali dispositivi nel mondo del networking:</p>
 <ul>
-<li><strong>scheda di rete</strong>: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato <em>MAC address</em></li>
+<li><strong>scheda di rete</strong>: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato <em>MAC address.</em></li>
 <li><strong>hub</strong>: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.</li>
 <li><strong>switch</strong>: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima</li>
-<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
-<li><strong>access point</strong>: permette accesso alla rete tramite connessione Wi-Fi</li>
+<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
+<li><strong>access point</strong>: permette accesso alla rete tramite connessione Wi-Fi.</li>
 </ul>
 <h2 id="mac-address">MAC address</h2>
 <p><strong>MAC address</strong> (<em>Media Access Control</em>), è un codice di <strong>48 bit</strong> (6 byte) che viene assegnato in modo <strong>univoco</strong> dal produttore ad ogni <strong>scheda di rete</strong> ethernet o wireless prodotta al <strong>mondo</strong>.</p>
@@ -144,13 +143,13 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Esistono diversi indirizzi particolari che sono riservati a scopi specifici e non possono essere assegnati agli host:</p>
 <ul>
 <li><code>0.0.0.0</code> (<strong>default route</strong>): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.</li>
-<li><strong>indirizzo di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 0, è l’indirizzo che identifica la rete.</li>
-<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete specificata nell’indirizzo.</li>
-<li><strong>indirizzo di broadcast di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host e la rete hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete.</li>
+<li><strong>indirizzo di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. <code>192.168.1.0/24</code></li>
+<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. <code>192.168.1.255</code></li>
+<li><strong>indirizzo di broadcast di rete</strong>: è l’indirizzo in cui tutti i bit dell’host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. <code>255.255.255.255</code></li>
 <li><strong>Loopback</strong>: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (<em>localhost</em>), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo <code>127.0.0.1</code></li>
 </ul>
 <h3 id="indirizzi-privati">Indirizzi privati</h3>
-<p>Ci sono dei range di indirizzi (chiamati <strong>indirizzi privati</strong>), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host su internet.</p>
+<p>Ci sono dei range di indirizzi (chiamati <strong>indirizzi privati</strong>), che sono utilizzati nelle reti private, questi indirizzi non possono essere usati per identificare host pubblici su internet.</p>
 
 <table>
 <thead>

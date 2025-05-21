@@ -1,8 +1,8 @@
 ﻿# Posta elettronica
 
-La posta elettronica è un sistema di comunicazione su larga scala.
+La posta elettronica è un sistema di comunicazione digitale che sfrutta la rete internet per lo scambio di messaggi.
 
-È composto da vari attori:
+Questo sistema è composto da vari attori:
 
 - Il **Mail User Agent (MUA)** o client di posta (come Thunderbird, Outlook) è un programma utilizzato da un utente per inviare e consultare i messaggi. Può anche essere un'applicazione web (webmail).
 - Il **Mail Submission Agent (MSA)** riceve i messaggi da un MUA e li invia a un MTA.
@@ -23,12 +23,10 @@ Tutte le comunicazioni tra i vari agenti, ad eccezione delle interazioni tra MRA
     - Se il dominio rientra tra quelli gestiti dall'MTA (e quindi è un indirizzo locale) e l'utente è valido, l'email viene inoltrata all'LDA, che la consegna nella casella di posta associata, terminando il processo.
     - Se l'indirizzo non è locale e l'MTA accetta di inoltrare il messaggio (*relay*), l'MTA inserisce il messaggio in una coda.
 4. Dopo aver estratto il messaggio dalla coda, l'MTA controlla il record `DNS MX` associato al dominio del destinatario e contatta l'MTA che risponde a quell'host, cercando di inviargli il messaggio.
-5. Se l'invio avviene correttamente, il messaggio viene gestito dall'MTA di destinazione, che procede dal punto 3.
-    
-    Se l'MTA contattato non risponde, il messaggio torna in coda.
-    
-    Se l'MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all'indirizzo del mittente, e il procedimento termina.
-    
+5. Da questo punto possiamo avere tre situazioni:
+    - Se l'invio avviene correttamente, il messaggio viene gestito dall'MTA di destinazione, che procede dal punto 3.
+    - Se l'MTA contattato non risponde, il messaggio torna in coda.
+    - Se l'MTA contattato rifiuta il messaggio, oppure se il messaggio è rimasto troppo tempo in coda, viene inviata una notifica di mancata consegna all'indirizzo del mittente, e il procedimento termina.
 
 ### Relay
 
@@ -44,8 +42,8 @@ Il protocollo utilizzato tra MUA e MTA e tra MTA e MTA si chiama **Simple Mail T
 
 La comunicazione tra il MAA e il MUA (tramite l'MRA) avviene tramite il **Post Office Protocol versione 3 (POP3)** o l'**Internet Message Access Protocol versione 4 (IMAP4)**.
 
-- **IMAP** mantiene le email sul server, consentendo la gestione da diversi dispositivi conservando una copia centralizzata.
-- **POP**, invece, scarica le email sul dispositivo utilizzato per la consultazione, e la connessione è necessaria solo per inviare e ricevere.
+- **IMAP** conserva i messaggi sul server, permettendo di accedere e gestire la posta da più dispositivi, mantenendo sempre una copia centralizzata e sincronizzata.
+- **POP**, invece, scarica le email sul dispositivo locale, spesso eliminandole dal server. Dopo il download, i messaggi sono consultabili anche offline, e la connessione è necessaria solo per inviare o ricevere messaggi.
 
 **IMAP è generalmente preferibile per prestazioni ottimali**, specialmente su reti lente, mentre POP può essere utile in caso di connessioni non persistenti.
 
@@ -70,7 +68,7 @@ La comunicazione tra il MAA e il MUA (tramite l'MRA) avviene tramite il **Post O
 
 ## Spam
 
-Lo **SPAM** è definito come **uno o più messaggi non richiesti, facenti parte di un più insieme di messaggi, tutti aventi contenuto sostanzialmente identico**. Le email indesiderate possono essere collocate in **cinque diverse categorie**:
+Con **SPAM** si intende **uno o più messaggi indesiderati, facenti parte di un più grande insieme di messaggi, tutti aventi contenuto sostanzialmente identico**. Le email indesiderate possono essere collocate in cinque diverse categorie:
 
 - **Hoax:** Bufale e catene di Sant’Antonio.
 - **Worm:** Email mandate da virus.
@@ -84,13 +82,13 @@ Non è possibile arginare completamente il problema dello spam con una policy st
 
 - **Greylisting:**
     
-    questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo
+    questa tecnica si basa sul fatto che tipicamente uno spammer non spreca tempo a reinviare una email se la precedente è stata temporaneamente rifiutata. Funziona in questo modo:
     
-    1. Un'email proveniente da un dominio sconosciuto viene **temporaneamente rifiutata** con un errore di "temporaneamente non disponibile: 450 *try again later*" per un numero preimpostato di volte.
+    1. Un'email proveniente da un dominio sconosciuto viene **temporaneamente rifiutata** con un errore "450 *try again later*" per un numero preimpostato di volte N.
     2. Ad ogni rifiuto, l'MTA mittente rimette la mail in coda e, dopo un certo periodo di tempo, tenta il reinvio.
     3. Al tentativo N, la mail viene accettata dall'MTA ricevente, e l'MTA mittente viene inserito in una **whitelist**, in modo che tutte le email successive vengano accettate direttamente.
     
-    **Problematiche:** Alla lunga, questa tecnica **perde di efficacia** poiché i bot di spam implementano algoritmi che ritentano l'invio. Possono anche verificarsi **lievi ritardi nella consegna** delle email.
+    **Problematiche:** Alla lunga, questa tecnica **perde di efficacia** poiché i bot di spam implementano algoritmi che ritentano l'invio. Possono inoltre verificarsi **lievi ritardi nella consegna** delle email.
     
     **Vantaggi:** **Nessuna email lecita viene scartata**, poiché i mail server legittimi re-inviano la mail. Si ha comunque un **buon filtraggio di base**.
     
@@ -98,11 +96,11 @@ Non è possibile arginare completamente il problema dello spam con una policy st
     
     Sono liste contenenti **IP non "autorizzati" ad inviare e-mail**.
     
-    **Problematiche:** È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.
+    **Problematiche:** È difficile distinguere gli IP validi da quelli non validi, con il rischio di scartare email legittime e far passare spam. Alcuni criteri per selezionare IP sospetti sono: IP assegnati dinamicamente dai provider, IP che inviano email senza passare da un mail server ufficiale, IP segnalati come spammer dagli utenti.
     
 - **SPF** (*Sender Policy Framework*):
     
-    È uno standard che, tramite un **record TXT nel DNS**, dichiara quali **IP o nomi possono inviare mail per un determinato dominio**. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.
+    È uno standard che, tramite un **record TXT nel DNS**, dichiara quali **IP o nomi di dominio possono inviare mail per un determinato dominio**. Il mail server ricevente può verificare se il server mittente è autorizzato ad inviare mail.
     
     **Problematiche: Non tutti i domini implementano il record TXT**. L'implementazione può essere difficoltosa.
     
@@ -125,6 +123,6 @@ Non è possibile arginare completamente il problema dello spam con una policy st
     - `smtpd_recipient_restrictions`: Effettua controlli sul destinatario.
 - **AMAVIS:**
     
-    È un **demone** che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica e interfacciandosi con altri sistemi di filtraggio spam e virus come quelli che abbiamo visto precedentemente.
+    È un **demone** che filtra i contenuti delle mail, gestendo trasferimento, elaborazione, codifica delle email interfacciandosi con altri sistemi di filtraggio come quelli che abbiamo visto precedentemente.
     
     Permette di rilevare virus, spam, contenuti vietati; bloccare, etichettare, reindirizzare email; mettere in quarantena o rilasciare messaggi; eliminare virus tramite antivirus esterni.

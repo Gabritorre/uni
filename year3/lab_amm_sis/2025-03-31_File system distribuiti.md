@@ -1,7 +1,6 @@
 ﻿# File system distribuiti
 
 Un **Filesystem Distribuito (DFS)** è un particolare tipo di file system che permette di memorizzare file su dispositivi di archiviazione distribuiti in una rete. Tramite un sistema client/server, i dati sono memorizzati su dispositivi remoti collegati in modo trasparente alla gerarchia dei file dell'utente. Un DFS deve gestire i file in modo concorrente e trasparente e può essere dotato di autenticazione e crittazione.
-
 Un **File Server** è un host che ospita un DFS. Sui client è installata un'interfaccia che permette di interagire con il file server. Il file server controlla un insieme di dispositivi di archiviazione e agisce su di essi in base alle richieste dei client.
 
 ## **Caratteristiche DFS**
@@ -10,7 +9,7 @@ Le caratteristiche principali di un DFS includono:
 
 - **Trasparenza:**
     
-    La trasparenza ideale fa sì che un DFS appaia all'utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L'interfaccia utente non dovrebbe distinguere tra file locali e remoti.
+    La trasparenza fa sì che un DFS appaia all'utente come un normale filesystem centralizzato, nascondendo la complessità e la dispersione dei server e dei dispositivi sottostanti. L'interfaccia utente non dovrebbe distinguere tra file locali e remoti.
     
 - **Prestazioni:**
 Il modo più conveniente per misurare le prestazioni di un DFS è quantificare il tempo impiegato per soddisfare una richiesta. Nei sistemi convenzionali (non distribuiti), questo tempo è dato principalmente dall'accesso al disco locale e da una piccola quantità di elaborazione della CPU.
@@ -28,16 +27,16 @@ Vediamo varie implementazioni di DFS.
 
 ### **NFS (Network File System)**:
 
-Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il **primo DFS ad essere sviluppato** ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull'idea che ogni host fornisce una vista unificata del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.
+Presentato nella versione 2 nel 1985, è ora alla versione 4. È stato il **primo DFS ad essere sviluppato** ed è molto diffuso. NFS è un modello per integrare filesystem locali differenti, basato sull'idea che ogni host espone alla rete parte del suo filesystem locale. Può essere usato su gruppi eterogenei di computer, con OS diversi e hardware diversi.
 
-NFS utilizza un ***remote access model*** in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file.
+NFS utilizza un ***remote access model*** in cui i client non sanno realmente dove si trovano i file, e i server mettono a disposizione una serie di operazioni che i client possono fare direttamente sui file del server. Si differenzia dal **modello upload/download** dove i client scaricano il file in locale, lo modificano e lo ricaricano sul server, il quale mantiene lo storico delle versioni.
 
 Dalla versione 4:
 
 - supporta server *stateful*, mantenendo lo stato delle operazioni, a differenza delle versioni precedenti dove era il client a doverlo fare.
 - introdotto le ***Compound Operations*** (CP), che consistono in inserire più operazioni in una singola chiamata, migliorando così l’efficienza. La chiamata però non viene trattata come una transazione: se una operazione interna fallisce, le successive non vengono eseguite e viene ritornato un messaggio di errore senza che venga fatto un rollback.
 - Utilizza il protocollo TCP (in precedenza UDP).
-- Per il riconoscimento dell'utente, dalla versione 4 si usa una stringa arbitraria, come un username (prima era solo tramite indirizzo IP)
+- Per il riconoscimento dell'utente, dalla versione 4 si usa una stringa arbitraria, come un username, oppure anche utilizzando sistemi esterni (prima era solo tramite indirizzo IP)
 
 La sua configurazione avviene nel file `/etc/exports` e usa la seguente sintassi:
 
@@ -58,7 +57,7 @@ Per utilizzare un’area condivisa vi sono tre modalità:
 
 **Automount** è un meccanismo implementato da vari sistemi UNIX per gestire il montaggio di filesystem remoti in modo dinamico, cioè montandolo solamente quando serve e smontandolo quando non serve più.
 
-Il problema che automount mira a risolvere è che **non è consigliabile mantenere un file system remoto montato permanentemente su un sistema**. in caso di disconnessione il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può svorareil limite massimo di mount.
+Il problema che automount mira a risolvere è che **non è consigliabile mantenere un file system remoto montato permanentemente su un sistema**. in caso di disconnessione con l’host remoto, il sistema si potrebbe bloccare mentre cerca di accedere a risorse non più raggiungibili, oppure in alcuni sistemi si può superare il limite massimo di mount.
 
 **Funzionamento:**
 
@@ -71,7 +70,7 @@ Il problema che automount mira a risolvere è che **non è consigliabile mantene
 
 In generale, in un dominio **Active Directory** di Windows, esistono due tipologie di cartelle condivise  legate agli utenti del sistema:
 
-- **Profili utente:** Possono risiedere solo sulla macchina locale (client), oppure sul server come *Roaming Profiles*. Con i *Roaming Profiles*, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l'utente si collega.
+- **Profili utente:** Possono risiedere direttamente sulla macchina locale (client), oppure sul server come *Roaming Profiles*. Con i *Roaming Profiles*, le impostazioni utente, i dati delle applicazioni, il desktop e i documenti vengono scaricati su tutti i client a cui l'utente si collega.
     
     I profili vengono scaricati/caricati dal server a ogni login/logout.
     

@@ -2,7 +2,7 @@
 
 Possiamo rappresentare l’architettura dei computer con la **macchina di Von Neuman**
 
-![https://i.ibb.co/rYvtSdq/image.png](https://i.ibb.co/rYvtSdq/image.png)
+![](https://i.ibb.co/rYvtSdq/image.png)
 
 Una scheda madre (*motherboard*) è una scheda elettronica che permette a tutte le componenti di comunicare tra loro.
 
@@ -25,17 +25,17 @@ In particolare le memorie possono essere categorizzate in:
     - memoria ROM: è una memoria di sola lettura. Contiene un programma che permette di accendere il computer
     - memoria cache: svolge un compito di memorizzazione temporanea dei dati presi di recente dalla RAM in modo da velocizzare i successivi accessi.
 
-La loro capacità si misura in multipli di Byte, tipicamente in GigaByte o TeraByte.
+La loro capacità si misurano in multipli di Byte, tipicamente in GigaByte o TeraByte.
 
 ## CPU
 
-Non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.
+La CPU non fa altro che eseguire le istruzioni di un programma. Un programma è formato da istruzioni scritte attraverso un linguaggio apposito, tale programma viene poi tradotto in un linguaggio che la CPU capisce, cioè in binario.
 È in grado di eseguire milioni di istruzioni al secondo e, in base al tipo di istruzione, può incaricare altri dispositivi di eseguire alcuni compiti, ad esempio se viene dato un comando di stampa, la CPU incarica la periferica di eseguire la stampa, quindi i dati vengono letti dalla memoria e inviati
 attraverso il bus alla periferica desiderata.
 
 ## RAID
 
-il RAID (*Redundant Arrays of Inexpensive Disks*) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.
+Il RAID (*Redundant Arrays of Inexpensive Disks*) È una astrazione che, dato un gruppo di dischi di solito omogenei tra loro (stessa dimensione e velocità), costruisce una unità di storage logica, che viene vista dal sistema operativo come un’unica memoria di massa, indipendentemente dal tipo di RAID che viene usato e dai dischi che lo compongono.
 
 L’idea di base è quella di combinare più dischi indipendenti per ottenere o **velocità, o sicurezza o capacità superiori** a quelle ottenibili con un qualunque disco SLED (*Single Large Expensive Drive*)
 
@@ -58,7 +58,7 @@ Necessita di almeno 2 dischi.
 
 Non è molto affidabile in quanto non tiene nessun dato di parità o ridondanza, se un disco si rompe tutti i dati vengono persi.
 
-![https://i.ibb.co/mrbYx18S/image.png](https://i.ibb.co/mrbYx18S/image.png)
+![](https://i.ibb.co/mrbYx18S/image.png)
 
 ### RAID 1
 
@@ -66,7 +66,7 @@ Utilizza almeno 2 dischi in cui ognuno è la copia dell’altro (operazione dett
 
 Un aspetto molto negativo è lo spazio totale: se hai 2 dischi da 10 terabyte e quindi un totale di 20 terabyte, un disco viene adibito alla copia quindi di spazio effettivo rimangono solamente 10 terabyte.
 
-![https://i.ibb.co/9mD4XmRJ/image.png](https://i.ibb.co/9mD4XmRJ/image.png)
+![](https://i.ibb.co/9mD4XmRJ/image.png)
 
 ### RAID 3 e 4
 
@@ -76,7 +76,7 @@ Presenta un leggero peggioramento alla scrittura (causata dalla scrittura nel di
 
 Nel RAID 3 la suddivisione dei dati avviene a livello di singoli byte, mentre nel RAID 4 avviene a livello di blocchi di dati.
 
-![https://i.ibb.co/DH1MC60w/image.png](https://i.ibb.co/DH1MC60w/image.png)
+![](https://i.ibb.co/DH1MC60w/image.png)
 
 ### RAID 5
 
@@ -86,7 +86,7 @@ La capacità totale è $((n-1)\cdot C)$ dove $n$ è il numero di dischi e $C$ la
 
 Al massimo si può rompere un disco.
 
-![https://i.ibb.co/67tgyVqC/image.png](https://i.ibb.co/67tgyVqC/image.png)
+![](https://i.ibb.co/67tgyVqC/image.png)
 
 ### RAID 6
 
@@ -94,7 +94,7 @@ Necessita di almeno 4 dischi e ha la caratteristica di avere una doppia ridondan
 
 Al massimo si possono rompere due dischi.
 
-![https://i.ibb.co/bgQsfxYH/image.png](https://i.ibb.co/bgQsfxYH/image.png)
+![](https://i.ibb.co/bgQsfxYH/image.png)
 
 ### RAID 1+0
 
@@ -114,7 +114,7 @@ la capacità complessiva dei dischi viene dimezzata
       ┌———————-———————┼————-——————————┐
       │               │               │
     RAID 1          RAID 1          RAID 1
-   ┌—-—┴———┐      ┌—-—┴———┐       ┌—-—┴———┐
+   ┌———┴———┐      ┌———┴———┐       ┌———┴———┐
    │       │      │       │       │       │
  120GB   120GB  120GB   120GB   120GB   120GB
 ```

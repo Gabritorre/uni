@@ -2,7 +2,7 @@
 
 ## BIOS
 
-All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, chiamato BIOS. Il **BIOS** (*Basic Input-Output System*) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:
+All’accensione del sistema, la CPU legge le istruzioni da un chip presente sulla scheda madre, contenente il BIOS. Il **BIOS** (*Basic Input-Output System*) è un programma scritto in una particolare memoria (originariamente in ROM e poi divenuta EEPROM) che controlla la prima fase di avvio:
 
 - effettua controlli hardware del sistema
 - cerca e controlla le periferiche
@@ -23,7 +23,7 @@ Il sistema UEFI presenta alcuni **vantaggi** rispetto al vecchio sistema BIOS:
 
 Il vecchio BIOS è più semplice, per cui ci baseremo su quello.
 
-Una volta finiti i check HW il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.
+Una volta finiti i check HW, il BIOS cerca un MBR solitamente memorizzato nel primo settore del disco, ne carica il contenuto in memoria RAM e gli passa il controllo.
 
 MBR cerca la prima **partizione attiva** del disco (cioè quella flaggata come *bootable)*, una volta trovata, legge il suo contenuto che contiene informazioni su come caricare il boot loader. Una volta caricato il boot loader, quest’ultimo si occuperà di avviare il sistema operativo.
 
@@ -62,7 +62,7 @@ Una volta lanciato il processo init, esso diventa il padre di tutti i successivi
 
 ### Systemd e Upstart
 
-Nelle moderni distribuzioni di Linux init è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:
+Nelle moderni distribuzioni di Linux, il processo **init** è stato sostituito da altri sistemi che sono più flessibili, performanti e con interazioni più semplici. I due sistemi più famosi sono:
 
 - Upstart
 - Systemd (il più diffuso)
@@ -77,7 +77,7 @@ Per PC da casa il partizionamento di default va già bene, al massimo si può de
 
 ### Swap
 
-Nel partizionamento spesso viene menzionata la **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
+Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
 
 Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.
 
@@ -195,7 +195,7 @@ Soluzione Swap 2:
 
 Soluzione Swap 3:
 
-- `Swap` $512 \cdot 0.25 = 384GB$
+- `Swap` $512 \cdot 0.75 = 384GB$
 
 in tutti i casi possiamo ospitare circa 100 utenti
 
@@ -219,15 +219,13 @@ ssh-keygen -t rsa -b 2048
 
 normalmente le chiavi generate vengono salvate in `~/.ssh/`
 
-L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite ssh-agent per mettere in cache la passphrase per la durata della sessione
+L’inserimento di una passphrase ad ogni connessione può risultare frustrante, si può però migliorare la situazione tramite `ssh-agent` per mettere in cache la passphrase per la durata della sessione
 
 ```bash
 ssh-add ~/.ssh/id_rsa
 ```
 
 quando ci si è connessi poi bisogna copiare la chiave pubblica nel server, nel file `~/.ssh/authorized_keys`. Si può anche usare lo script ssh-copy-id per copiarla in modo automatizzato:
-
- 
 
 ```bash
 ssh-copy-id -i ~/.ssh/id_rsa.pub utente@server

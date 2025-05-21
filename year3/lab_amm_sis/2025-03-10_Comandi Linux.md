@@ -34,7 +34,7 @@ Vediamo alcuni comandi utili:
 
 Esiste un utente speciale che prende il nome di **root**, che possiede UID 0, e che può fare praticamente qualsiasi cosa nel sistema.
 
-Un utente può diventare può diventare temporaneamente root con i comandi `su` (per aprire una nuova shell come root) e `sudo` (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)
+Un utente può diventare temporaneamente root con i comandi `su` (per aprire una nuova shell come root) e `sudo` (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)
 
 È possibile aggiungere un utente al gruppo sudo tramite
 
@@ -68,11 +68,15 @@ I modificatori aggiuntivi sono:
 
 - `setuid`
     
-    viene impostato nei file per permettere al file di essere eseguito con i permessi dell’utente proprietario
+    viene utilizzato per fare in modo che un file venga eseguito con i privilegi del suo proprietario, anziché con quelli dell’utente che lo esegue. Tuttavia, l’utente deve già disporre del permesso di esecuzione.
+    
+    Il setuid è rappresentato da una `s` al posto della `x` nella sezione relativa al proprietario.
     
 - `setgid`
     
-    viene impostato nei file per permettere al file di essere eseguito con i permessi del gruppo proprietario
+    Il bit setgid viene utilizzato per fare in modo che un file venga eseguito con i privilegi del gruppo proprietario, anziché con quelli del gruppo dell’utente che lo esegue. L’utente deve già disporre del permesso di esecuzione.
+    
+    Il setgid è rappresentato da una `s` al posto della `x` nella sezione relativa al gruppo.
     
 - `sticky bit`
     
@@ -81,7 +85,7 @@ I modificatori aggiuntivi sono:
     Questo permesso viene spesso impostato sulle directory come `/tmp` per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.
     
 
-Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permesse sul file si usa il comando `chmod`.
+Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permessi sul file si usa il comando `chmod`.
 
 È possibile assegnare agli utenti o ai gruppi una quantità massimo di spazio su disco occupabile, detto **quota**, gestibile con i comandi `quota` e `edquota`.
 

@@ -54,7 +54,7 @@
 <li><code>groups</code>: mostra di quali gruppi fa parte l’utente</li>
 </ul>
 <p>Esiste un utente speciale che prende il nome di <strong>root</strong>, che possiede UID 0, e che può fare praticamente qualsiasi cosa nel sistema.</p>
-<p>Un utente può diventare può diventare temporaneamente root con i comandi <code>su</code> (per aprire una nuova shell come root) e <code>sudo</code> (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)</p>
+<p>Un utente può diventare temporaneamente root con i comandi <code>su</code> (per aprire una nuova shell come root) e <code>sudo</code> (per eseguire un comando come root), per poter fare quest’ultimo comando l’utente deve appartenere ad un gruppo speciale (admin, sudo, sudoers, …)</p>
 <p>È possibile aggiungere un utente al gruppo sudo tramite</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token function">usermod</span> -aG <span class="token function">sudo</span> <span class="token operator">&lt;</span>username<span class="token operator">&gt;</span>
 </code></pre>
@@ -79,11 +79,13 @@
 <ul>
 <li>
 <p><code>setuid</code></p>
-<p>viene impostato nei file per permettere al file di essere eseguito con i permessi dell’utente proprietario</p>
+<p>viene utilizzato per fare in modo che un file venga eseguito con i privilegi del suo proprietario, anziché con quelli dell’utente che lo esegue. Tuttavia, l’utente deve già disporre del permesso di esecuzione.</p>
+<p>Il setuid è rappresentato da una <code>s</code> al posto della <code>x</code> nella sezione relativa al proprietario.</p>
 </li>
 <li>
 <p><code>setgid</code></p>
-<p>viene impostato nei file per permettere al file di essere eseguito con i permessi del gruppo proprietario</p>
+<p>Il bit setgid viene utilizzato per fare in modo che un file venga eseguito con i privilegi del gruppo proprietario, anziché con quelli del gruppo dell’utente che lo esegue. L’utente deve già disporre del permesso di esecuzione.</p>
+<p>Il setgid è rappresentato da una <code>s</code> al posto della <code>x</code> nella sezione relativa al gruppo.</p>
 </li>
 <li>
 <p><code>sticky bit</code></p>
@@ -91,7 +93,7 @@
 <p>Questo permesso viene spesso impostato sulle directory come <code>/tmp</code> per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.</p>
 </li>
 </ul>
-<p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permesse sul file si usa il comando <code>chmod</code>.</p>
+<p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permessi sul file si usa il comando <code>chmod</code>.</p>
 <p>È possibile assegnare agli utenti o ai gruppi una quantità massimo di spazio su disco occupabile, detto <strong>quota</strong>, gestibile con i comandi <code>quota</code> e <code>edquota</code>.</p>
 <h2 id="processi">Processi</h2>
 <p>Ogni programma in esecuzione è rappresentato da almeno un processo, ogni processo possiede un utente e un gruppo proprietario che sono corrispondenti a chi ha lanciato il processo (a meno che non siano presenti i modificatori <code>setuid</code> o <code>setgid</code>), inoltre ogni processo è identificato da un <strong>PID</strong> (<em>Process ID</em>)</p>
