@@ -126,7 +126,7 @@ Il **Domain Name System (DNS)** è un sistema usato per **tradurre gli indirizzi
 
  Il DNS gestisce una **tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)**.
 
-Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.
+Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo IP e viceversa.
 
 Il DNS possiede due gerarchie:
 
@@ -143,7 +143,7 @@ Il DNS possiede due gerarchie:
 
 ### Risoluzione di un nome di domino e risoluzione inversa
 
-Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogarlo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.
+Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogare quest’ultimo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.
 
 I server DNS, provvedono anche alla **risoluzione inversa**: da indirizzi IP a nomi. Quest'ultima avviene tramite la gerarchia di zone `in-addr.arpa` per IPv4 (`ip6.arpa` per IPv6).
 

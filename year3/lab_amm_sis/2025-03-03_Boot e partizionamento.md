@@ -77,7 +77,7 @@ Per PC da casa il partizionamento di default va già bene, al massimo si può de
 
 ### Swap
 
-Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
+Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM quando viene saturata: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro) vengono salvati sul disco per lasciare spazio ad altri dati.
 
 Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.
 
@@ -135,7 +135,7 @@ Useremo 10 GB per ogni utente con 50 utenti
 
 - `/`  almeno 50 GB
 - `/home` calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
-- `/var` almeno 50 GB se c’è un database
+- `/var` almeno 50 GB
 - `/var/log` almeno 10 GB
 - `Swap`: $64 \cdot 1.5 = 96 GB \approx 100 GB$
     - oppure $64 * 50\% = 32 \approx 40GB$
@@ -146,7 +146,6 @@ Useremo 10 GB per ogni utente con 50 utenti
 Useremo 10 GB per database con 50 database
 
 - `/`  almeno 50 GB
-- `/home` calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
 - `/var` generalmente almeno 100 GB, calcolato come lo spazio per un database moltiplicato per il numero di database + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
 - `/var/log` almeno 10 GB
 - `Swap`: $64 \cdot 1.5 = 96 GB \approx 100 GB$

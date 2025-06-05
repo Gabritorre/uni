@@ -50,6 +50,11 @@ Ogni file e directory sono associati ad un utente e un gruppo che sono i proprie
 
 ```bash
 drwxrwxrwx 1 <user> <group>    ...  <filename>
+-___^^^___
+  |  |  |
+  |  |  |---> altri utenti
+  |  |---> gruppo proprietario
+  |---> proprietario
 ```
 
 Le tipologie di permessi sono:
@@ -83,6 +88,8 @@ I modificatori aggiuntivi sono:
     viene impostato nelle directory quando si vuole che il loro contenuto possa essere cancellato o rinominato solamente dal proprietario o da root.
     
     Questo permesso viene spesso impostato sulle directory come `/tmp` per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.
+    
+    lo sticky bit è rappresentato da una `t` al posto della `x` nella sezione relativa agli altri.
     
 
 Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permessi sul file si usa il comando `chmod`.

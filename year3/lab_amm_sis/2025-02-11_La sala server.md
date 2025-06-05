@@ -8,7 +8,7 @@ Differenze rispetto ai PC casalinghi:
 
 - La più importante è che i server hanno più **ridondanza di componenti** (più alimentatori, più CPU, più dischi) per garantire più resistenza ai guasti.
 - Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.
-- Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.
+- Ci sono memorie RAM dedicate più performanti e con meccanismi di protezione alla corruzione.
 - I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in **RAID**
     
     Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.

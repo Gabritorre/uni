@@ -25,7 +25,7 @@ Un **WEB Server** è un'applicazione che gira su un host, capace di gestisce le 
 
 La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).
 
-Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.
+Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.
 
 Tra i vari web server è interessante approfondire:
 
@@ -118,7 +118,7 @@ Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. 
 
 Questo è utile in diverse situazioni:
 
-- quando le risorse di un sito sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;
+- quando le risorse di un sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;
 - come **load balancer**, per distribuire il traffico tra più server che offrono lo stesso servizio;
 - per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il **supporto a HTTPS** per applicazioni che non lo gestiscono nativamente.
 

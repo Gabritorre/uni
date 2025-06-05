@@ -62,6 +62,11 @@
 <p>Tramite i permessi è possibile negare l’accesso a parti del file system.</p>
 <p>Ogni file e directory sono associati ad un utente e un gruppo che sono i proprietari, poi vengono usati 9 bit per rappresentare i permessi su quel file, infine ci sono tre modificatori aggiuntivi.</p>
 <pre class=" language-bash"><code class="prism  language-bash">drwxrwxrwx 1 <span class="token operator">&lt;</span>user<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>group<span class="token operator">&gt;</span>    <span class="token punctuation">..</span>.  <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+-___^^^___
+  <span class="token operator">|</span>  <span class="token operator">|</span>  <span class="token operator">|</span>
+  <span class="token operator">|</span>  <span class="token operator">|</span>  <span class="token operator">|</span>---<span class="token operator">&gt;</span> altri utenti
+  <span class="token operator">|</span>  <span class="token operator">|</span>---<span class="token operator">&gt;</span> gruppo proprietario
+  <span class="token operator">|</span>---<span class="token operator">&gt;</span> proprietario
 </code></pre>
 <p>Le tipologie di permessi sono:</p>
 <ul>
@@ -91,6 +96,7 @@
 <p><code>sticky bit</code></p>
 <p>viene impostato nelle directory quando si vuole che il loro contenuto possa essere cancellato o rinominato solamente dal proprietario o da root.</p>
 <p>Questo permesso viene spesso impostato sulle directory come <code>/tmp</code> per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.</p>
+<p>lo sticky bit è rappresentato da una <code>t</code> al posto della <code>x</code> nella sezione relativa agli altri.</p>
 </li>
 </ul>
 <p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permessi sul file si usa il comando <code>chmod</code>.</p>

@@ -297,7 +297,7 @@ attraverso il bus alla periferica desiderata.</p>
 <p>Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.</p>
 </li>
 <li>
-<p>Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.</p>
+<p>Ci sono memorie RAM dedicate più performanti e con meccanismi di protezione alla corruzione.</p>
 </li>
 <li>
 <p>I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in <strong>RAID</strong></p>
@@ -357,8 +357,7 @@ semplifica le operazioni di gestione e monitoraggio remoto.</p>
 </li>
 </ul>
 <h1 id="networking">Networking</h1>
-<p>Un <strong>canale trasmissivo</strong> è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.</p>
-<p>Su un mezzo trasmissivo vi possono essere simultaneamente più canali e un canale può usare più mezzi trasmissivi.</p>
+<p>Un <strong>canale o mezzo trasmissivo</strong> è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.</p>
 <ul>
 <li>cavo di rete (doppino telefonico).</li>
 <li>Cavo coassiale.</li>
@@ -378,13 +377,13 @@ semplifica le operazioni di gestione e monitoraggio remoto.</p>
 <li>velocità di trasmissione: la quantità di bit trasmessi al secondo</li>
 <li>larghezza di banda: indica la massima capacità del mezzo</li>
 </ul>
-<p>Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.</p>
+<p>Su un mezzo trasmissivo possono essere realizzati più canali di comunicazione che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.</p>
 <h3 id="cavo-di-rete-doppino-telefonico">Cavo di rete (doppino telefonico)</h3>
 <p>Costituito da almeno due fino ad un massimo di 8 sottili fili di rame intrecciati. La categoria del cavo (5/5a/6a/7…) definisce la banda massima garantita e la qualità di isolamento per le interferenze.</p>
 <h3 id="fibra">Fibra</h3>
 <p>Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, del mezzo di trasmissione e di un ricevitore; la sorgente luminosa converte segnali elettrici in impulsi per poi riconvertirli in segnali elettrici alla fine del tragitto.</p>
 <h3 id="wi-fi">Wi-Fi</h3>
-<p>Le reti wifi usano l’etere (l’aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.</p>
+<p>Le reti wifi usano l’etere (l’aria) come mezzo di propagazione di fenomeni elettromagnetici per permettere di creare una rete senza utilizzo di cavi.</p>
 <p>Si utilizza un <strong>access point</strong>, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.</p>
 <p>Ha bisogno di sistemi di sicurezza e autenticazione elevati perché chiunque può agganciarsi alla rete</p>
 <h3 id="li-fi">Li-Fi</h3>
@@ -409,11 +408,11 @@ semplifica le operazioni di gestione e monitoraggio remoto.</p>
 <li><strong>scheda di rete</strong>: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato <em>MAC address.</em></li>
 <li><strong>hub</strong>: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.</li>
 <li><strong>switch</strong>: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima</li>
-<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
+<li><strong>router</strong>: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato <em>gateway</em> per questo motivo.</li>
 <li><strong>access point</strong>: permette accesso alla rete tramite connessione Wi-Fi.</li>
 </ul>
 <h2 id="mac-address">MAC address</h2>
-<p><strong>MAC address</strong> (<em>Media Access Control</em>), è un codice di <strong>48 bit</strong> (6 byte) che viene assegnato in modo <strong>univoco</strong> dal produttore ad ogni <strong>scheda di rete</strong> ethernet o wireless prodotta al <strong>mondo</strong>.</p>
+<p><strong>MAC address</strong> (<em>Media Access Control</em>), è un codice di <strong>48 bit</strong> (6 byte) che viene assegnato in modo <strong>univoco</strong> dal produttore ad ogni <strong>scheda di rete</strong> ethernet o wireless prodotta al mondo.</p>
 <p>È modificabile a livello software.</p>
 <p>I 48 bit sono suddivisi in 12 cifre esadecimali nel formato <code>XX:XX:XX:XX:XX:XX</code></p>
 <ul>
@@ -470,7 +469,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <ul>
 <li><code>0.0.0.0</code> (<strong>default route</strong>): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.</li>
 <li><strong>indirizzo di rete</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. <code>192.168.1.0/24</code></li>
-<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. <code>192.168.1.255</code></li>
+<li><strong>indirizzo di broadcast</strong>: è l’indirizzo in cui tutti i bit rappresentano l’host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella sottorete. Es. <code>192.168.1.255</code></li>
 <li><strong>indirizzo di broadcast di rete</strong>: è l’indirizzo in cui tutti i bit dell’host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. <code>255.255.255.255</code></li>
 <li><strong>Loopback</strong>: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (<em>localhost</em>), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo <code>127.0.0.1</code></li>
 </ul>
@@ -760,7 +759,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Questa fase consiste nel suddividere le unità di storage in partizioni, cioè in porzioni di disco.</p>
 <p>Per PC da casa il partizionamento di default va già bene, al massimo si può decidere di posizionare <code>/home</code> in una partiziona separata da <code>/</code>.</p>
 <h3 id="swap">Swap</h3>
-<p>Nel partizionamento spesso viene menzionata la partizione <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.</p>
+<p>Nel partizionamento spesso viene menzionata la partizione <strong>Swap</strong>, il suo scopo è quello di liberare memoria RAM quando viene saturata: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro) vengono salvati sul disco per lasciare spazio ad altri dati.</p>
 <p>Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.</p>
 <p>Ci sono due approcci per gestire la Swap:</p>
 <ul>
@@ -830,7 +829,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <ul>
 <li><code>/</code>  almeno 50 GB</li>
 <li><code>/home</code> calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
-<li><code>/var</code> almeno 50 GB se c’è un database</li>
+<li><code>/var</code> almeno 50 GB</li>
 <li><code>/var/log</code> almeno 10 GB</li>
 <li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span>
 <ul>
@@ -843,7 +842,6 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Useremo 10 GB per database con 50 database</p>
 <ul>
 <li><code>/</code>  almeno 50 GB</li>
-<li><code>/home</code> calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
 <li><code>/var</code> generalmente almeno 100 GB, calcolato come lo spazio per un database moltiplicato per il numero di database + un 10% del risultato: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>10</mn><mo>⋅</mo><mn>50</mn><mo>+</mo><mo stretchy="false">(</mo><mn>500</mn><mo>⋅</mo><mfrac><mn>10</mn><mn>100</mn></mfrac><mo stretchy="false">)</mo><mo>=</mo><mn>550</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">10</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.72777em; vertical-align: -0.08333em;"></span><span class="mord">50</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">+</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1em; vertical-align: -0.25em;"></span><span class="mopen">(</span><span class="mord">500</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 1.19011em; vertical-align: -0.345em;"></span><span class="mord"><span class="mopen nulldelimiter"></span><span class="mfrac"><span class="vlist-t vlist-t2"><span class="vlist-r"><span class="vlist" style="height: 0.845108em;"><span class="" style="top: -2.655em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">100</span></span></span></span><span class="" style="top: -3.23em;"><span class="pstrut" style="height: 3em;"></span><span class="frac-line" style="border-bottom-width: 0.04em;"></span></span><span class="" style="top: -3.394em;"><span class="pstrut" style="height: 3em;"></span><span class="sizing reset-size6 size3 mtight"><span class="mord mtight"><span class="mord mtight">10</span></span></span></span></span><span class="vlist-s">​</span></span><span class="vlist-r"><span class="vlist" style="height: 0.345em;"><span class=""></span></span></span></span></span><span class="mclose nulldelimiter"></span></span><span class="mclose">)</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">550</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span></li>
 <li><code>/var/log</code> almeno 10 GB</li>
 <li><code>Swap</code>: <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>64</mn><mo>⋅</mo><mn>1.5</mn><mo>=</mo><mn>96</mn><mi>G</mi><mi>B</mi><mo>≈</mo><mn>100</mn><mi>G</mi><mi>B</mi></mrow><annotation encoding="application/x-tex">64 \cdot 1.5 = 96 GB \approx 100 GB</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">64</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.64444em; vertical-align: 0em;"></span><span class="mord">1.5</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">96</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">≈</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord">100</span><span class="mord mathnormal" style="margin-right: 0.05017em;">GB</span></span></span></span></span>
@@ -946,6 +944,11 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p>Tramite i permessi è possibile negare l’accesso a parti del file system.</p>
 <p>Ogni file e directory sono associati ad un utente e un gruppo che sono i proprietari, poi vengono usati 9 bit per rappresentare i permessi su quel file, infine ci sono tre modificatori aggiuntivi.</p>
 <pre class=" language-bash"><code class="prism  language-bash">drwxrwxrwx 1 <span class="token operator">&lt;</span>user<span class="token operator">&gt;</span> <span class="token operator">&lt;</span>group<span class="token operator">&gt;</span>    <span class="token punctuation">..</span>.  <span class="token operator">&lt;</span>filename<span class="token operator">&gt;</span>
+-___^^^___
+  <span class="token operator">|</span>  <span class="token operator">|</span>  <span class="token operator">|</span>
+  <span class="token operator">|</span>  <span class="token operator">|</span>  <span class="token operator">|</span>---<span class="token operator">&gt;</span> altri utenti
+  <span class="token operator">|</span>  <span class="token operator">|</span>---<span class="token operator">&gt;</span> gruppo proprietario
+  <span class="token operator">|</span>---<span class="token operator">&gt;</span> proprietario
 </code></pre>
 <p>Le tipologie di permessi sono:</p>
 <ul>
@@ -975,6 +978,7 @@ sua netmask: <code>157.138.22.21 AND 255.255.255.0 = 157.138.22.0</code></p>
 <p><code>sticky bit</code></p>
 <p>viene impostato nelle directory quando si vuole che il loro contenuto possa essere cancellato o rinominato solamente dal proprietario o da root.</p>
 <p>Questo permesso viene spesso impostato sulle directory come <code>/tmp</code> per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.</p>
+<p>lo sticky bit è rappresentato da una <code>t</code> al posto della <code>x</code> nella sezione relativa agli altri.</p>
 </li>
 </ul>
 <p>Per cambiare l’utente proprietario si usa il comando <code>chown</code>, per cambiare il gruppo proprietario si usa il comando <code>chgrp</code>, e per modificare i permessi sul file si usa il comando <code>chmod</code>.</p>
@@ -1256,8 +1260,8 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
     <span class="token comment"># Comandi da eseguire</span>
 <span class="token keyword">done</span>
 </code></pre>
-<h3 id="select">Select</h3>
-<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla.</p>
+<h3 id="select-e-case">Select e case</h3>
+<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla. Spesso usato assieme al comando <code>case</code>, che corrisponde ad uno switch.</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 
 <span class="token keyword">echo</span> <span class="token string">"Scegli un'opzione:"</span>
@@ -1290,7 +1294,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> -1<span class="token variable">)</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> 
 	<span class="token function">du</span> -hs <span class="token variable">$i</span><span class="token punctuation">;</span> 
 <span class="token keyword">done</span><span class="token punctuation">;</span>
-<span class="token variable">$IFS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$OLDIFS</span>"</span>
+IFS<span class="token operator">=</span><span class="token string">"<span class="token variable">$OLDIFS</span>"</span>
 </code></pre>
 <h2 id="batch">Batch</h2>
 <p>L’approccio più vecchio per scrivere script su Windows era tramite <strong>file batch</strong> (con estensione <code>.bat</code>), l’approccio moderno è tramite <strong>VBscript</strong>.</p>
@@ -1342,7 +1346,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 <p>è un sottoinsieme di Visual Basic usato come linguaggio per fare scripting come sostituto per i file batch</p>
 <ul>
 <li>
-<p>le variabili vengono dichiarata con il costrutto <code>Dim</code> e poi assegnate con l’uguaglianza.</p>
+<p>le variabili vengono dichiarate con il costrutto <code>Dim</code> e poi assegnate con l’uguaglianza.</p>
 <p>mettere in testa al file <code>Option Explicit</code> obbliga a dichiarare sempre le variabili prima di usarle.</p>
 </li>
 <li>
@@ -1511,7 +1515,7 @@ Loop
 <h2 id="dns">DNS</h2>
 <p>Il <strong>Domain Name System (DNS)</strong> è un sistema usato per <strong>tradurre gli indirizzi IP in nomi simbolici e viceversa</strong>.</p>
 <p>Il DNS gestisce una <strong>tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)</strong>.</p>
-<p>Il DNS è fondamentalmente un <strong>database distribuito</strong> basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.</p>
+<p>Il DNS è fondamentalmente un <strong>database distribuito</strong> basato su un modello client-server che traduce il nome di una macchina in un indirizzo IP e viceversa.</p>
 <p>Il DNS possiede due gerarchie:</p>
 <ol>
 <li>
@@ -1525,7 +1529,7 @@ Loop
 </li>
 </ol>
 <h3 id="risoluzione-di-un-nome-di-domino-e-risoluzione-inversa">Risoluzione di un nome di domino e risoluzione inversa</h3>
-<p>Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogarlo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.</p>
+<p>Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogare quest’ultimo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.</p>
 <p>I server DNS, provvedono anche alla <strong>risoluzione inversa</strong>: da indirizzi IP a nomi. Quest’ultima avviene tramite la gerarchia di zone <code>in-addr.arpa</code> per IPv4 (<code>ip6.arpa</code> per IPv6).</p>
 <p>Le zone DNS contengono diversi tipi di informazioni, memorizzate in <strong>record</strong>. Ogni record contiene una specifica tipologia di informazione:</p>
 <ul>
@@ -1892,7 +1896,7 @@ Un filesystem distribuito deve gestire anche la modifica dei file. È fondamenta
 <h2 id="web-server">Web server</h2>
 <p>Un <strong>WEB Server</strong> è un’applicazione che gira su un host, capace di gestisce le richieste di trasferimento di pagine web verso un client.</p>
 <p>La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).</p>
-<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.</p>
+<p>Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.</p>
 <p>Tra i vari web server è interessante approfondire:</p>
 <ul>
 <li><strong>Apache HTTP Server:</strong> che fino a poco tempo fa era l’unico in grado di gestire applicazioni di vario tipo (php, python, java, ecc.) grazie alla sua tecnologia modulare.</li>
@@ -1957,7 +1961,7 @@ http {
 <p>Una delle funzionalità più sfruttate di Nginx è quella di <strong>reverse proxy</strong>. Un reverse proxy è un server che si frappone tra i client e i server interni. I client inviano richieste al reverse proxy che a sua volta si occupa di inoltrarle al server giusto, recupera la risposta e la rimanda indietro al client.</p>
 <p>Questo è utile in diverse situazioni:</p>
 <ul>
-<li>quando le risorse di un sito sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;</li>
+<li>quando le risorse di un sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;</li>
 <li>come <strong>load balancer</strong>, per distribuire il traffico tra più server che offrono lo stesso servizio;</li>
 <li>per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il <strong>supporto a HTTPS</strong> per applicazioni che non lo gestiscono nativamente.</li>
 </ul>
@@ -2195,7 +2199,7 @@ http {
 <li><strong>Rete:</strong> Anche la rete è (quasi del tutto) isolata. Per rendere accessibile un servizio dall’esterno, è necessario mappare una porta della macchina ospitante alla porta su cui il servizio è in ascolto all’interno del container. L’indirizzo IP a cui collegarsi dall’esterno sarà l’indirizzo IP dell’host.</li>
 </ul>
 <h2 id="dockerfile">Dockerfile</h2>
-<p>Un <strong>Dockerfile</strong> è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all’engine Docker, che lo <strong>valida e genera una nuova immagine</strong>.</p>
+<p>Un <strong>Dockerfile</strong> è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Il Dockerfile viene dato in pasto all’engine Docker, che lo <strong>valida e genera una nuova immagine</strong>.</p>
 <p>All’interno di un Dockerfile, troviamo diverse istruzioni, tra le più importanti ci sono:</p>
 <ul>
 <li>

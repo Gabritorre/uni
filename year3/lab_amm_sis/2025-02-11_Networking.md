@@ -1,8 +1,6 @@
 ﻿# Networking
 
-Un **canale trasmissivo** è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.
-
-Su un mezzo trasmissivo vi possono essere simultaneamente più canali e un canale può usare più mezzi trasmissivi.
+Un **canale o mezzo trasmissivo** è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.
 
 - cavo di rete (doppino telefonico).
 - Cavo coassiale.
@@ -23,7 +21,7 @@ I parametri che vengono tenuti in considerazione riguardo i canali trasmissivi s
 - velocità di trasmissione: la quantità di bit trasmessi al secondo
 - larghezza di banda: indica la massima capacità del mezzo
 
-Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.
+Su un mezzo trasmissivo possono essere realizzati più canali di comunicazione che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.
 
 ### Cavo di rete (doppino telefonico)
 
@@ -35,7 +33,7 @@ Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, de
 
 ### Wi-Fi
 
-Le reti wifi usano l’etere (l'aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
+Le reti wifi usano l’etere (l'aria) come mezzo di propagazione di fenomeni elettromagnetici per permettere di creare una rete senza utilizzo di cavi.
 
 Si utilizza un **access point**, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.
 
@@ -74,12 +72,12 @@ Vediamo i principali dispositivi nel mondo del networking:
 - **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address.*
 - **hub**: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.
 - **switch**: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima
-- **router**: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
+- **router**: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
 - **access point**: permette accesso alla rete tramite connessione Wi-Fi.
 
 ## MAC address
 
-**MAC address** (*Media Access Control*), è un codice di **48 bit** (6 byte) che viene assegnato in modo **univoco** dal produttore ad ogni **scheda di rete** ethernet o wireless prodotta al **mondo**.
+**MAC address** (*Media Access Control*), è un codice di **48 bit** (6 byte) che viene assegnato in modo **univoco** dal produttore ad ogni **scheda di rete** ethernet o wireless prodotta al mondo.
 
 È modificabile a livello software.
 
@@ -123,7 +121,7 @@ Esistono diversi indirizzi particolari che sono riservati a scopi specifici e no
 
 - `0.0.0.0` (**default route**): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.
 - **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. `192.168.1.0/24`
-- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. `192.168.1.255`
+- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella sottorete. Es. `192.168.1.255`
 - **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit dell'host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. `255.255.255.255`
 - **Loopback**: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (*localhost*), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo `127.0.0.1`
 

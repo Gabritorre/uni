@@ -156,6 +156,9 @@ la capacità complessiva dei dischi viene dimezzata
 nota che è diverso dal RAID 0+1, in cui si inverte l’uso dei RAID
 
 
+
+
+
 # La sala server
 
 ## Server
@@ -166,7 +169,7 @@ Differenze rispetto ai PC casalinghi:
 
 - La più importante è che i server hanno più **ridondanza di componenti** (più alimentatori, più CPU, più dischi) per garantire più resistenza ai guasti.
 - Ci sono CPU dedicate all’uso server, che tendenzialmente hanno più core, più cache.
-- Ci sono memoria RAM dedicate più performanti e con meccanismi di protezione alla corruzione.
+- Ci sono memorie RAM dedicate più performanti e con meccanismi di protezione alla corruzione.
 - I dischi sono più performanti, con più cache e più resistenti, pensati per essere disposti in **RAID**
     
     Nota: si usano maggiormente ancora dischi magnetici classici (HDD) a causa del costo nettamente maggiore degli SSD in ambito server.
@@ -225,9 +228,7 @@ Devono esserci 4 tipi di **impianti**:
 
 # Networking
 
-Un **canale trasmissivo** è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.
-
-Su un mezzo trasmissivo vi possono essere simultaneamente più canali e un canale può usare più mezzi trasmissivi.
+Un **canale o mezzo trasmissivo** è il supporto fisico tramite il quale un segnale si propaga da un punto ad un altro di una rete.
 
 - cavo di rete (doppino telefonico).
 - Cavo coassiale.
@@ -248,7 +249,7 @@ I parametri che vengono tenuti in considerazione riguardo i canali trasmissivi s
 - velocità di trasmissione: la quantità di bit trasmessi al secondo
 - larghezza di banda: indica la massima capacità del mezzo
 
-Su un mezzo trasmissivo possono essere realizzati più canali che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.
+Su un mezzo trasmissivo possono essere realizzati più canali di comunicazione che si “dividono” la banda, ciascun canale avrà una ridotta velocità di trasmissione.
 
 ### Cavo di rete (doppino telefonico)
 
@@ -260,7 +261,7 @@ Un sistema di trasmissione su fibra ottica consiste di una sorgente luminosa, de
 
 ### Wi-Fi
 
-Le reti wifi usano l’etere (l'aria come mezzo di propagazione di fenomeni elettromagnetici) come mezzo trasmissivo per permettere di creare una rete senza utilizzo di cavi.
+Le reti wifi usano l’etere (l'aria) come mezzo di propagazione di fenomeni elettromagnetici per permettere di creare una rete senza utilizzo di cavi.
 
 Si utilizza un **access point**, collegato fisicamente alla rete via cavo, che comunica con gli utenti attraverso segnali radio.
 
@@ -299,12 +300,12 @@ Vediamo i principali dispositivi nel mondo del networking:
 - **scheda di rete**: è l’interfaccia che permette di collegare un host alla rete. Ogni scheda è dotata di un identificativo chiamato *MAC address.*
 - **hub**: inoltra i pacchetti su tutte le porte, la velocità viene condivisa e si presentano collisioni.
 - **switch**: mantiene una tabella di corrispondenza tra porte e MAC address delle schede di rete ad  esse collegate. In tal modo instrada i pacchetti direttamente alla scheda di rete corretta, evitando collisioni e garantendo sempre la velocità massima
-- **router**: si occupa di instradare i pacchetti in entrata e in us.cita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
+- **router**: si occupa di instradare i pacchetti in entrata e in uscita rispetto alla LAN. Viene spesso chiamato *gateway* per questo motivo.
 - **access point**: permette accesso alla rete tramite connessione Wi-Fi.
 
 ## MAC address
 
-**MAC address** (*Media Access Control*), è un codice di **48 bit** (6 byte) che viene assegnato in modo **univoco** dal produttore ad ogni **scheda di rete** ethernet o wireless prodotta al **mondo**.
+**MAC address** (*Media Access Control*), è un codice di **48 bit** (6 byte) che viene assegnato in modo **univoco** dal produttore ad ogni **scheda di rete** ethernet o wireless prodotta al mondo.
 
 È modificabile a livello software.
 
@@ -348,7 +349,7 @@ Esistono diversi indirizzi particolari che sono riservati a scopi specifici e no
 
 - `0.0.0.0` (**default route**): definisce la regola di inoltro dei pacchetti da utilizzare quando non è specificato il percorso per l’indirizzo IP di destinazione.
 - **indirizzo di rete**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 0, è l’indirizzo che identifica la rete.  Es. `192.168.1.0/24`
-- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella rete. Es. `192.168.1.255`
+- **indirizzo di broadcast**: è l’indirizzo in cui tutti i bit rappresentano l'host hanno tutti valore 1, è l’indirizzo che rappresenta tutti gli host nella sottorete. Es. `192.168.1.255`
 - **indirizzo di broadcast di rete**: è l’indirizzo in cui tutti i bit dell'host e della rete hanno valore 1, è l’indirizzo che rappresenta tutti gli host nella attuale rete. Es. `255.255.255.255`
 - **Loopback**: è l’indirizzo utilizzato in contesti di testing e rappresentata la macchina stessa (*localhost*), quindi non genera traffico nella rete, ma rimane all’interno della stessa macchina che lo ha generato, solitamente si utilizza l’indirizzo `127.0.0.1`
 
@@ -731,7 +732,7 @@ Per PC da casa il partizionamento di default va già bene, al massimo si può de
 
 ### Swap
 
-Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro)  vengono salvati sul disco per lasciare spazio ad altri dati.
+Nel partizionamento spesso viene menzionata la partizione **Swap**, il suo scopo è quello di liberare memoria RAM quando viene saturata: una porzione di dati in RAM (quelli che hanno meno probabilità di essere richiesti in futuro) vengono salvati sul disco per lasciare spazio ad altri dati.
 
 Questa pratica, seppur liberi spazio in memoria principale e quindi possa prevenire una interruzione del sistema, porta un calo drastico di performance in quanto le scritture su memoria di massa sono nettamente più lente delle scritture in RAM.
 
@@ -789,7 +790,7 @@ Useremo 10 GB per ogni utente con 50 utenti
 
 - `/`  almeno 50 GB
 - `/home` calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
-- `/var` almeno 50 GB se c’è un database
+- `/var` almeno 50 GB
 - `/var/log` almeno 10 GB
 - `Swap`: $64 \cdot 1.5 = 96 GB \approx 100 GB$
     - oppure $64 * 50\% = 32 \approx 40GB$
@@ -800,7 +801,6 @@ Useremo 10 GB per ogni utente con 50 utenti
 Useremo 10 GB per database con 50 database
 
 - `/`  almeno 50 GB
-- `/home` calcolato come lo spazio per un utente moltiplicato per il numero di utenti + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
 - `/var` generalmente almeno 100 GB, calcolato come lo spazio per un database moltiplicato per il numero di database + un 10% del risultato: $10 \cdot 50 + (500 \cdot \frac{10}{100}) = 550 GB$
 - `/var/log` almeno 10 GB
 - `Swap`: $64 \cdot 1.5 = 96 GB \approx 100 GB$
@@ -939,6 +939,11 @@ Ogni file e directory sono associati ad un utente e un gruppo che sono i proprie
 
 ```bash
 drwxrwxrwx 1 <user> <group>    ...  <filename>
+-___^^^___
+  |  |  |
+  |  |  |---> altri utenti
+  |  |---> gruppo proprietario
+  |---> proprietario
 ```
 
 Le tipologie di permessi sono:
@@ -972,6 +977,8 @@ I modificatori aggiuntivi sono:
     viene impostato nelle directory quando si vuole che il loro contenuto possa essere cancellato o rinominato solamente dal proprietario o da root.
     
     Questo permesso viene spesso impostato sulle directory come `/tmp` per evitare che utenti ordinari cancellino o spostino i file temporanei appartenenti agli altri utenti, pur consentendo a chiunque di creare nuovi file e directory.
+    
+    lo sticky bit è rappresentato da una `t` al posto della `x` nella sezione relativa agli altri.
     
 
 Per cambiare l’utente proprietario si usa il comando `chown`, per cambiare il gruppo proprietario si usa il comando `chgrp`, e per modificare i permessi sul file si usa il comando `chmod`.
@@ -1188,9 +1195,9 @@ while [ condizione ]; do
 done
 ```
 
-### Select
+### Select e case
 
-Il comando `select` è usato per creare menu interattivi a scelta multipla.
+Il comando `select` è usato per creare menu interattivi a scelta multipla. Spesso usato assieme al comando `case`, che corrisponde ad uno switch.
 
 ```bash
 #!/bin/bash
@@ -1232,7 +1239,7 @@ IFS=$'\t\n';      # default IFS=$' \t\n'
 for i in $(ls -1); do 
 	du -hs $i; 
 done;
-$IFS="$OLDIFS"
+IFS="$OLDIFS"
 ```
 
 ## Batch
@@ -1293,7 +1300,7 @@ All’interno di un file batch si possono trovare solamente i comandi usabili di
 
 è un sottoinsieme di Visual Basic usato come linguaggio per fare scripting come sostituto per i file batch
 
-- le variabili vengono dichiarata con il costrutto `Dim` e poi assegnate con l’uguaglianza.
+- le variabili vengono dichiarate con il costrutto `Dim` e poi assegnate con l’uguaglianza.
     
     mettere in testa al file `Option Explicit` obbliga a dichiarare sempre le variabili prima di usarle.
     
@@ -1503,7 +1510,7 @@ Il **Domain Name System (DNS)** è un sistema usato per **tradurre gli indirizzi
 
  Il DNS gestisce una **tabella di corrispondenza da nome a indirizzo IP (diretta) e da indirizzo IP a nome (inversa)**.
 
-Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo internet (IP) e viceversa.
+Il DNS è fondamentalmente un **database distribuito** basato su un modello client-server che traduce il nome di una macchina in un indirizzo IP e viceversa.
 
 Il DNS possiede due gerarchie:
 
@@ -1520,7 +1527,7 @@ Il DNS possiede due gerarchie:
 
 ### Risoluzione di un nome di domino e risoluzione inversa
 
-Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogarlo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.
+Per ottenere la risoluzione di un nome di dominio, è necessario interrogare un root server riguardo il dominio di primo livello, ottenere il server che lo gestisce, interrogare quest’ultimo riguardo il dominio di secondo livello e così via fino a raggiungere il server autorevole per il nome desiderato.
 
 I server DNS, provvedono anche alla **risoluzione inversa**: da indirizzi IP a nomi. Quest'ultima avviene tramite la gerarchia di zone `in-addr.arpa` per IPv4 (`ip6.arpa` per IPv6).
 
@@ -1994,7 +2001,7 @@ Un **WEB Server** è un'applicazione che gira su un host, capace di gestisce le 
 
 La comunicazione tra server e client avviene tramite il protocollo HTTP (porta TCP 80) o la versione più sicura, HTTPS (porta TCP 443).
 
-Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretarle per renderizzare le pagine web.
+Esistono molti programmi che fungono da Web Server, e tutti sono in grado di fornire pagine web sotto forma di stream di caratteri, che il browser sarà poi in grado di interpretare per renderizzare le pagine web.
 
 Tra i vari web server è interessante approfondire:
 
@@ -2087,7 +2094,7 @@ Una delle funzionalità più sfruttate di Nginx è quella di **reverse proxy**. 
 
 Questo è utile in diverse situazioni:
 
-- quando le risorse di un sito sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;
+- quando le risorse di un sito sono distribuite su più server ma vuoi che gli utenti accedano tramite un unico indirizzo web;
 - come **load balancer**, per distribuire il traffico tra più server che offrono lo stesso servizio;
 - per aggiungere funzionalità a delle applicazioni esistenti, come ad esempio il **supporto a HTTPS** per applicazioni che non lo gestiscono nativamente.
 
@@ -2370,7 +2377,7 @@ L'**isolamento** dei container si manifesta a diversi livelli:
 
 ## Dockerfile
 
-Un **Dockerfile** è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Possiamo pensare che sia il codice sorgente di una immagine. Il Dockerfile viene dato in pasto all'engine Docker, che lo **valida e genera una nuova immagine**.
+Un **Dockerfile** è un file di testo che serve a descrivere le personalizzazioni da apportare a immagini base per creare una nuova immagine adatta allo scopo desiderato. Il Dockerfile viene dato in pasto all'engine Docker, che lo **valida e genera una nuova immagine**.
 
 All'interno di un Dockerfile, troviamo diverse istruzioni, tra le più importanti ci sono:
 

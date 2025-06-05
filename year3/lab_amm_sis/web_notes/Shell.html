@@ -286,8 +286,8 @@ B<span class="token operator">=</span><span class="token punctuation">(</span>1 
     <span class="token comment"># Comandi da eseguire</span>
 <span class="token keyword">done</span>
 </code></pre>
-<h3 id="select">Select</h3>
-<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla.</p>
+<h3 id="select-e-case">Select e case</h3>
+<p>Il comando <code>select</code> è usato per creare menu interattivi a scelta multipla. Spesso usato assieme al comando <code>case</code>, che corrisponde ad uno switch.</p>
 <pre class=" language-bash"><code class="prism  language-bash"><span class="token shebang important">#!/bin/bash</span>
 
 <span class="token keyword">echo</span> <span class="token string">"Scegli un'opzione:"</span>
@@ -320,7 +320,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token variable"><span class="token variable">$(</span><span class="token function">ls</span> -1<span class="token variable">)</span></span><span class="token punctuation">;</span> <span class="token keyword">do</span> 
 	<span class="token function">du</span> -hs <span class="token variable">$i</span><span class="token punctuation">;</span> 
 <span class="token keyword">done</span><span class="token punctuation">;</span>
-<span class="token variable">$IFS</span><span class="token operator">=</span><span class="token string">"<span class="token variable">$OLDIFS</span>"</span>
+IFS<span class="token operator">=</span><span class="token string">"<span class="token variable">$OLDIFS</span>"</span>
 </code></pre>
 <h2 id="batch">Batch</h2>
 <p>L’approccio più vecchio per scrivere script su Windows era tramite <strong>file batch</strong> (con estensione <code>.bat</code>), l’approccio moderno è tramite <strong>VBscript</strong>.</p>
@@ -372,7 +372,7 @@ IFS<span class="token operator">=</span>$<span class="token string">'\t\n'</span
 <p>è un sottoinsieme di Visual Basic usato come linguaggio per fare scripting come sostituto per i file batch</p>
 <ul>
 <li>
-<p>le variabili vengono dichiarata con il costrutto <code>Dim</code> e poi assegnate con l’uguaglianza.</p>
+<p>le variabili vengono dichiarate con il costrutto <code>Dim</code> e poi assegnate con l’uguaglianza.</p>
 <p>mettere in testa al file <code>Option Explicit</code> obbliga a dichiarare sempre le variabili prima di usarle.</p>
 </li>
 <li>
