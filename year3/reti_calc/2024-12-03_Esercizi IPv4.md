@@ -1,8 +1,6 @@
 ﻿# Esercizi IPv4
 
-## Esercizi indirizzi IP
-
-### Es 1
+## Es 1
 
 **Domanda 1:** Data una subnet `1.2.1.0/24`, è possibile assegnare a uno degli host l'indirizzo `1.2.1.255`?
 
@@ -38,7 +36,7 @@ L’organizzazione è strutturata come segue:
 
 - Quale è il valore minimo della subnet mask di cui l’organizzazione ha bisogno?
     
-    Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 30 indirizzi assegnabili.
+    Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 32 indirizzi di cui 30 assegnabili.
     
     siccome si vuole partizionare la rete in due sottoreti, si avranno quindi 2 indirizzi non utilizzabili nella rete A e due indirizzi non utilizzabili nella rete B, in realtà ho bisogno di 34 indirizzi totali, quindi serve una /26.
     

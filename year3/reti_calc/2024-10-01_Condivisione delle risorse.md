@@ -27,7 +27,7 @@ Vediamo varia topologie di rete:
 - **Rete ad albero**:
     - Si ha una struttura ad albero in cui i nodi sono delle LAN (una rete a stella)
     - molto scalabile
-    - non resistente ai fallimenti, se un link che connette due nodi la rete si disconnette
+    - non resistente ai fallimenti, se un link che connette due nodi si rompe la rete si disconnette
 - Reti Data center e Fat tree
     - sono reti utilizzate in ambito server che si basano sulla topologia ad albero ma hanno una forte ridondanza
 
@@ -47,17 +47,17 @@ Nelle topologie ad albero bisogna avere link con maggiore capacità vicino alla 
 
 ## Reti wireless
 
-Le reti wireless sono organizzate come rete a stella (gli host non parlano direttamente tra di loro) ma fisicamente funzionano come una rete bus, dove al posto di avere un cavo coassiale condiviso per tutti, si ha un segnale radio.
+Le reti wireless sono organizzate come reti a stella (gli host non parlano direttamente tra di loro) ma fisicamente funzionano come una rete bus, dove al posto di avere un cavo coassiale condiviso per tutti, si ha un segnale radio.
 
-Dato che il range di frequenza è limitato, un compito del data link layer è quello di schedulare l’accesso al mezzo fisico per evitare collisioni quando più host comunicano contemporaneamente con il ricevitore (*l’access point*).
+Dato che il range di frequenze è limitato, un compito del data link layer è quello di schedulare l’accesso al mezzo fisico per evitare collisioni quando più host comunicano contemporaneamente con il ricevitore (*l’access point*).
 
 Vediamo vari metodi per ottenere questo scheduling, spesso usati insieme.
 
 ## FDMA (Frequency-Division Multiple Access)
 
-In questo approccio si evitano le collisioni usando frequenze differenti per ogni comunicazione, in questo modo comunicazione contemporanee su frequenze diverse non creano collisioni.
+In questo approccio si evitano le collisioni usando frequenze differenti per ogni comunicazione, in questo modo comunicazioni contemporanee su frequenze diverse non creano collisioni.
 
-Le reti wifi possono operare su varie frequenze, chiamate **canali**. Quando si accende l’access point per la prima volta si metterà a cercare i canali usati dalle altre reti wifi nelle vicinanze in modo da usare quelle libere.
+Le reti wifi possono operare su varie frequenze, chiamate **canali**. Quando si accende, l’access point si metterà a cercare i canali usati dalle altre reti wifi nelle vicinanze in modo da usare quelle libere.
 
 Un Access point, però, può utilizzare solo una frequenza alla volta, quindi gli host connessi a tale access point devono usare tutti la stessa frequenza. Non abbiamo quindi interferenza tra reti diverse ma abbiamo interferenza tra host della stessa rete, è quindi necessario un meccanismo di scheduling dei messaggi.
 
@@ -67,43 +67,41 @@ Un modo per schedulare i messaggi nella stessa rete è il **Time-division multip
 
 ![](https://i.ibb.co/mH69KpQ/image.png)
 
-È molto importante che i terminali siano sincronizzati per evitare che iniziano a trasmettere troppo presto o troppo tardi rispetto al proprio slot, c’è quindi una tempo di tolleranza tra la fine di uno slot e l’inizio del successivo (sprecando del tempo).
+È molto importante che i terminali siano sincronizzati per evitare che iniziano a trasmettere troppo presto o troppo tardi rispetto al proprio slot, c’è quindi un tempo di tolleranza tra la fine di uno slot e l’inizio del successivo (sprecando del tempo).
 
 Definiamo **l’efficienza del livello data link** come la frazione del tempo in cui il datalink è utilizzato per comunicare dati utili.
 
 Se tutti i terminali hanno qualcosa da trasmettere, avremo che ogni slot è occupato e non ci sono collisioni, in tal caso il meccanismo TDMA è alla sua **massima efficienza**.
 
-Contrariamente se un solo terminale vuole comunicare si avrà una **efficienza molto bassa** in quanto il terminale dovrà aspettare un intero ciclo di $m$ slot che non fanno niente per continuare a trasmettere.
+Contrariamente, se un solo terminale vuole comunicare, si avrà una **efficienza molto bassa** in quanto il terminale dovrà aspettare un intero ciclo di $m$ slot che non fanno niente per continuare a trasmettere.
 
 ![](https://i.ibb.co/X2BkKm4/image.png)
 
 Abbiamo quindi che la rete funziona al meglio quando è congestionata, generalmente però quando una rete è congestionata significa che i terminali vogliono mandare più dati che quelli che gli stai permettendo di mandare.
 
-Nelle reti cellulari può essere utile in quanto una porzione di risorse vengono concesse a tutti anche sotto congestione.
+Nelle reti cellulari questo approccio è ideale in quanto una porzione di risorse vengono concesse a tutti anche sotto congestione.
 
 ## Accesso casuale (ALOHA)
 
-Un’altra tecnica è quella di accedere al media in modo casuale: i terminale cercano di trasmettere, se c’è collisione il frame viene inviato di nuovo.
+Un’altra tecnica è quella di accedere al media in modo casuale: i terminale cercano di trasmettere, se si verifica una collisione il frame viene inviato di nuovo.
 
 Una implementazione di questo tipo è **ALOHA**, e rappresenta l’antenato del sistema in utilizzo oggi nelle reti wifi, il CSMA/CA.
 
-Vediamo la versione **ALOHA-slotted (S-ALOHA)**, in cui i terminale devono essere sincronizzati e il tempo viene diviso in slot.
+Vediamo la versione **ALOHA-slotted (S-ALOHA)**, in cui i terminali devono essere sincronizzati e il tempo viene diviso in slot.
 
-La differenza fondamentale rispetto a TDMA è che ogni terminale non ha uno slot assegnato ma prova a trasmettere all’inizio del prossimo slot.
+La differenza fondamentale rispetto a TDMA è che ogni terminale non ha uno slot assegnato ma appena ha necessità prova a trasmettere all’inizio del prossimo slot.
 
 **Funzionamento**:
 
 Abbiamo $m$ host sincronizzati (cioè conoscono l’inizio di ogni slot), quando più host trasmettono contemporaneamente avviene una collisione (assumiamo che gli host sappiano immediatamente che la collisione è avvenuta).
 
-Quando il livello superiore manda un SDU da trasmettere, l’host attende l’inizio del prossimo slot per trasmettere.
-
-Se un altro host trasmette in contemporanea entrambi gli host entrano in uno stato chiamato ***backlogged***.
+Quando avviene una collisione, gli host coinvolti entrano in uno stato chiamato ***backlogged***.
 
 Ogni host in questo stato tenta di ritrasmettere al prossimo slot con una certa **probabilità**.
 
 Quando la trasmissione avviene con successo l’host esce da questo stato.
 
-Se il terminale *backlogged* riceve un altro SDU da mandare, viene scartato.
+Se il terminale *backlogged* riceve un altro frame da mandare, esso viene scartato.
 
 Esempio:
 
@@ -113,7 +111,7 @@ Esempio:
 
 Definiamo $G$ come il **carico del sistema**, quindi il numero di frame medio che deve essere trasmesso per slot da tutti i terminali.
 
-La probabilità di trasmettere con successo un frame, $P_S$ è data dalla probabilità di trasmettere un solo frame per slot (cioè quando non ci sono collisioni)
+La probabilità di trasmettere con successo un frame, $P_S$, è data dalla probabilità di trasmettere un solo frame per slot (cioè quando non ci sono collisioni)
 
 $$
 P_S = Ge^{-G}

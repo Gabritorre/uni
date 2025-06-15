@@ -3,7 +3,7 @@
 Internet e più in generale le reti sono una struttura:
 
 - **decentralizzata**: non c’è un coordinatore globale, si può quindi espandere liberamente
-- **robusta:** in caso di fallimento di una strada per la comunicazione riesce comunque a trovare una via alternativa
+- **robusta:** in caso di fallimento di un percorso verso la destinazione, riesce comunque a trovare una via alternativa
 - **inter-operativa:** utilizza varie tecnologie che riescono a comunicare tra loro (cavo in rame, wireless, fibra, …)
 - **versatile**: trasporta vari tipi di informazione (testo, video, audio, …)
 
@@ -16,10 +16,10 @@ Due esempi di *network stack* sono **TCP/IP** e **ISO-OSI**:
 
 - TCP/IP è il modello che viene utilizzato su internet, formato dai seguenti livelli:
     - *Application layer*: descrive il comportamento dell’applicazione ad alto livello
-    - *Transport layer*: si occupano dell’affidabilità delle connessioni
+    - *Transport layer*: si occupa dell’affidabilità delle connessioni
     - *Internet/IP layer*: fornisce funzioni di interoperabilità tra veri medium fisici e instradamento
     - *Link layer*: descrive la comunicazione fisica
-- ISO-OSI è più dettagliato ma è utile a livello teorico/accademico ed è formato dai seguenti livelli:
+- ISO-OSI è più dettagliato e quindi utile a livello teorico/accademico ed è formato dai seguenti livelli:
     - *Application layer*
     - *Presentation layer*: descrive come visualizzare i dati
     - *session layer*: descrive come mantenere la sessione utente

@@ -30,7 +30,7 @@
   <div class="stackedit__right">
     <div class="stackedit__html">
       <h1 id="ipv6">IPv6</h1>
-<p>Il numero di indirizzi IPv4 è praticamente esaurito. Il NAT sarebbe dovuta essere una soluzione temporanea, ma la soluzione definitiva è IPv6, la cui diffusione sta pian piano aumentando.</p>
+<p>Il numero di indirizzi IPv4 è praticamente esaurito. Il NAT sarebbe dovuta essere una soluzione temporanea, la soluzione definitiva è IPv6, la cui diffusione sta pian piano aumentando.</p>
 <p>IPv6 non è retrocompatibile con IPv4 quindi o si usa un protocollo oppure l’altro. Poiché ci sono ISP che non forniscono IPv6 ai propri clienti, IPv4 è ancora necessario.</p>
 <h3 id="caratteristiche">Caratteristiche</h3>
 <p>Durante la definizione della nuova versione di IP si è cercato di risolvere i problemi più evidenti di IPv4, come la loro quantità, la mancanza di crittografia, e la frammentazione.</p>
@@ -40,19 +40,19 @@
 <li>Indirizzi IP più lunghi e con un nuovo formato</li>
 <li>Nessuna frammentazione dei pacchetti da parte dei router</li>
 <li>Una sostituzione del DHCP con il protocollo SLAAC</li>
-<li>Supporto obbligatorio per la crittografia</li>
+<li>Supporto obbligatorio per la crittografia (solo il supporto, non si è obbligati ad utilizzarla)</li>
 </ul>
 <h2 id="header-ipv6">Header IPv6</h2>
-<p>Il l’header per IPv6 è stato semplificato:</p>
+<p>Il l’header per IPv6 è stato semplificato rispetto a quello di IPv4:</p>
 <p><img src="https://i.ibb.co/F5Z277N/image.png" alt=""></p>
 <ul>
-<li><em>Version</em>: indica la versione del protocollo, permettendo nuove versioni in futuro</li>
-<li><em>Payload length</em>: lunghezza del pyload espressa in byte (fino a 65535 byte)</li>
+<li><em>Version</em>: indica la versione del protocollo, permettendo nuove versioni in futuro retrocompatibili</li>
+<li><em>Payload length</em>: lunghezza del payload espressa in byte (fino a 65535 byte)</li>
 <li><em>Next Header</em>: indica il tipo di header che segue quello di IPv6, può essere usato sia per le opzioni facoltative di IPv6 sia per indicare il protocollo di trasporto utilizzato (rimpiazza il field “protocol” nell’header IPv4)</li>
 <li><em>Hop limit</em>: indica il numero di router che possono inoltrare il pacchetto (sostituisce il TTL)</li>
 </ul>
 <p>Possiamo notare da questo header che non è presente una checksum e non c’è il supporto per la frammentazione.</p>
-<p>La motivazione della mancanza della checksum è dovuta principalmente perché i livelli di datalink e i e di trasporto includono già una checksum. Aggiungere un checksum nell’header IPv6 avrebbe costretto ogni router a ricalcolare la checksum di tutti i pacchetti, offrendo un beneficio limitato nel rilevamento degli errori considerando l’affidabilità delle memorie attuali e il costo del calcolo del checksum su ogni router.</p>
+<p>La motivazione della mancanza della checksum è dovuta principalmente al fatto che i livelli datalink e di trasporto includono già una checksum. Aggiungere un checksum nell’header IPv6 avrebbe costretto ogni router a ricalcolare la checksum di tutti i pacchetti, offrendo un beneficio limitato nel rilevamento degli errori considerando l’affidabilità delle memorie attuali e il costo del calcolo del checksum su ogni router.</p>
 <h2 id="formato-indirizzi-ipv6">Formato indirizzi IPv6</h2>
 <p>Un indirizzo IPv6 è composto da <strong>128 bit</strong> ed è scritto in 8 blocchi in formato esadecimale separati dal carattere <code>:</code>. Ogni blocco è formato da 4 caratteri esadecimali.</p>
 <p>Esempio di indirizzo IPv6:  <code>abcd:ef01:2345:6789:abcd:ef01:2345:6789</code></p>
@@ -71,7 +71,7 @@
 <tbody>
 <tr>
 <td>Prefisso di routing globale</td>
-<td>assegnato all’Internet Service Provider (ISP) che possiede il blocco di indirizzi.</td>
+<td>identifica l’Internet Service Provider (ISP) che possiede il blocco di indirizzi.</td>
 <td>N bit</td>
 </tr>
 <tr>
@@ -95,21 +95,21 @@
 <p>Considerando questi numeri, non è più necessario ottimizzare l’assegnazione delle sottoreti.</p>
 <h3 id="indirizzi-speciali">Indirizzi speciali</h3>
 <ul>
-<li><strong>fc00::/7:</strong> <em>Unique Local Unicast</em>. Sono paragonabili gli IP privati in IPv4. Questa classe può essere usata per creare reti locali di testing</li>
+<li><strong>fc00::/7:</strong> <em>Unique Local Unicast</em>. Sono paragonabili gli IP privati in IPv4. Questa classe può essere usata per creare reti locali di testing (con IPv6 non è più necessario dividere gli indirizzi in pubblici e privati).</li>
 <li><strong>0:0:0:0:0:0:0:1:</strong> <em>loopback interface</em>, identifica l’host corrente.</li>
 <li><strong>ff::/8:</strong> indirizzi multicast</li>
 <li><strong>fe80::/10:</strong> <em>Link Local Unicast</em> (LLU).</li>
 </ul>
 <h3 id="indirizzi-llu-link-local-unicast">Indirizzi LLU (Link-Local Unicast)</h3>
-<p>Gli indirizzi link-local (come per IPv4) possono essere utilizzati quando gli host collegati alla stessa rete locale (o direttamente tra loro) devono scambiarsi pacchetti anche se non hanno ricevuto un indirizzo ip.</p>
+<p>Gli indirizzi link-local (come per IPv4) possono essere utilizzati quando gli host collegati alla stessa rete locale (o direttamente tra loro) devono scambiarsi pacchetti anche se non hanno ricevuto un indirizzo IP dal router.</p>
 <p>Ogni host può calcolare il proprio indirizzo link-local concatenando il prefisso <code>fe80::/64</code> con il proprio indirizzo MAC estendendolo a 64 bit.</p>
 <p>Recentemente, è stato introdotto un modo per creare l’ID randomico utilizzando funzioni hash, in modo da non rivelare l’indirizzo MAC.</p>
 <h2 id="slaac">SLAAC</h2>
-<p>Un host dovrebbe ricevere un IP pubblico dalla rete a cui è collegato. L’host-id della rete sarà l’indirizzo MAC del router, mentre per scoprire la rimanente parte dell’indirizzo si usa un protocollo particolare, chiamato SLAAC.</p>
+<p>Un host dovrebbe ricevere un IP pubblico dalla rete a cui è collegato. L’host-id dell’indirizzo sarà il suo MAC address, mentre per scoprire la rimanente parte dell’indirizzo si usa un protocollo particolare, chiamato SLAAC.</p>
 <p><strong>SLAAC (Stateless Address Autoconfiguration):</strong> In questo protocollo il router di rete trasmette periodicamente nella rete un pacchetto SLAAC che contiene diversi parametri, tra cui il prefisso di rete. Gli host riceveranno il pacchetto SLAAC, comporranno il netid con il proprio MAC formando così il loro indirizzo.</p>
 <h2 id="ipsec">IPSec</h2>
 <p>IPSec è un insieme di standard che implementano la crittografia e l’autenticazione sui pacchetti IP.</p>
-<p>Con IPv6, il supporto per IPSec è obbligatorio (con IPv4 era facoltativo). Questo non significa che ogni router lo utilizzi, significa solo che ogni router deve supportarlo.</p>
+<p>Con IPv6, il supporto per IPSec è obbligatorio (con IPv4 era facoltativo). Questo non significa che ogni router lo debba utilizzare, significa solo che ogni router deve supportarlo.</p>
 <h2 id="frammentazione">Frammentazione</h2>
 <p>La frammentazione nel percorso di un pacchetto è un problema, perché costringe i router a utilizzare memoria e capacità di calcolo.</p>
 <p>IPv6 ha <strong>rimosso la frammentazione nel percorso</strong>. Il mittente può ancora frammentare in pacchetti più piccoli. Il destinatario si occuperà poi di riordinare i pacchetti.</p>

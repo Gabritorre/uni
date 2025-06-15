@@ -40,13 +40,13 @@ Per garantire al più possibile l’availability è necessario avere un buon des
 
 Significa che i dati scambiati rimangono riservati ai soli partecipanti dello scambio.
 
-Per garantire questo aspetto sono necessari meccanismi di crittografia
+Per garantire questo aspetto sono necessari meccanismi di crittografia.
 
 ### Integrity
 
 Significa che i dati devono raggiungere la destinazione senza subire modifiche nel tragitto.
 
-Per garantire questo aspetto sono necessari meccanismi di hashing
+Per garantire questo aspetto sono necessari meccanismi di hashing.
 
 ### Authentication
 
@@ -67,9 +67,9 @@ Per garantire questo aspetto sono necessari meccanismi di firma digitale.
 
 L’accesso deve essere permesso solamente a chi è autorizzato ad accedere.
 
-Non garantire il controllo può permettere situazione in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.
+Non garantire questo servizio può permettere situazioni in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.
 
-Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione
+Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione.
 
 ### Non repudiation
 
@@ -118,7 +118,7 @@ Si tratta sempre di un **trade-off tra sicurezza e usabilità.**
 
 ## Crittografia
 
-La crittografia è la scienza che studio come rendere segrete delle informazioni.
+La crittografia è la scienza che studia come rendere segrete delle informazioni.
 
 La crittografia permette di avere:
 
@@ -146,7 +146,7 @@ Per minimizzare il rischio di falle di sicurezza è importante cercare di seguir
 
 ## Funzioni hash
 
-Una **funzione hash** è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le collisioni.
+Una **funzione hash** è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le probabilità di collisioni.
 
 Le funzioni hash vengono usate per garantire **l’integrità dei dati**: infatti inviando oltre che al messaggio anche il digest, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.
 
@@ -161,7 +161,7 @@ Funzioni hash sono ad esempio MD5, SHA 1, SHA 256, …
 3. calcolare la funzione hash di un input deve essere computazionalmente efficiente
 4. Dato che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle **collisioni** (input diversi generano lo stesso output)
 5. possedendo l’output, trovare l’input che ha generato un tale output deve essere computazionalmente impossibile
-6. dato un input trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.
+6. dato un input, trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.
     
     input simili non devono generare un output simile, l’output deve essere impredicibile.
     
@@ -171,4 +171,4 @@ Nota: con **computazionalmente impossibile** si intende che ad oggi non si conos
 
 Dato che la dimensione dell’output è fissa, se abbiamo un input grande sicuramente delle informazione vengono perse durante l’hashing.
 
-Inoltre a data la presenza di collisioni se un attaccante che possiede un output, trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.
+Inoltre, data la presenza di collisioni, se un attaccante che possiede un output, trova un input che genera lo stesso output, non saprà se l’input è il messaggio originale o solo una collisione.

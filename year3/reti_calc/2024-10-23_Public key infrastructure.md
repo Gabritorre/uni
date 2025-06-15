@@ -4,19 +4,19 @@ Vediamo ora come risolvere il problema di scambiarsi le chiavi con RSA in modo a
 
 Innanzitutto una chiave è un **file binario** codificato in caratteri ASCII con l’aggiunta di eventuali metadati come nome e indirizzo e-mail.
 
-I metadati ovviamente non garantiscono una prova affidabile su chi ha generato effettivamente la chiave.
+I metadati ovviamente possono essere manipolati e quindi non garantiscono una prova affidabile su chi ha generato effettivamente la chiave.
 
 Vediamo alcuni metodi informali per associare una chiave ad una identità:
 
-1. **Key fingerprint**: Alice quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando Bob riceve la chiave **controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
-2. **Key server**: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo non garantisce che chi carica la chiave non si spacci per qualcun altro.
+1. **Key fingerprint**: Alice, quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando Bob riceve la chiave **controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
+2. **Key server**: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo però non garantisce che chi carica la chiave sia effettivamente chi dice di essere.
 
 ## Web of trust
 
 Un terzo metodo è il **Web of trust**: è una rete di contatti in cui i partecipanti certificano l’identità degli altri. Ad esempio Alice e Bob si fidano di Carl, questo significa che:
 
 - possiedono la sua chiave pubblica
-- se lui certifica qualcosa Alice e Bob si fidano che sia vero
+- se lui certifica qualcosa, Alice e Bob si fidano che sia vero
 
 Carl può quindi certificare che la chiave pubblica di Alice appartenga veramente ad Alice e lo stesso per la chiave pubblica di Bob.
 
@@ -31,12 +31,12 @@ Vediamo come funziona:
     
     Cioè Carl cifra, usando la sua chiave privata, la chiave pubblica di alice con la sua identità (il suo nome). Chiunque in possesso della chiave pubblica di Carl può decifrare $S$ e quindi, fidandosi di Carl, verificano la chiave pubblica di Alice.
     
-3. Alice manda a Bob la propria chiave pubblica e $S$, dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e si verifica l’appartenenza della chiave pubblica di Alice
+3. Alice manda a Bob la propria chiave pubblica assieme a $S$, dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e verifica l’appartenenza della chiave pubblica di Alice
     
     ![](https://i.ibb.co/HHT5ZhQ/image.png)
     
 
-Notiamo come una volta che Alice riceve la propria *key signature* da Carl, esso non è più necessario ai fine della comunicazione, Alice può usare la *key signature* con chiunque si fidi di Carl.
+Notiamo come, una volta che Alice riceve la propria *key signature* da Carl, Carl non è più necessario ai fine della comunicazione, Alice può usare la *key signature* con chiunque si fidi di Carl.
 
 Il sistema può scalare tramite delle catene di fiducia:
 
@@ -52,13 +52,13 @@ In questo modo Bob sarà certo della chiave pubblica di alice.
 
 L’approccio del **Web of trust** viene utilizzato in contesti specifici, e si avvicina al metodo utilizzato oggi per certificare le identità delle chiavi, tra gli aspetti importanti abbiamo:
 
-- le ***key signature***: il fatto ci firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave
+- le ***key signature***: il fatto di firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave
 - la ***trust delegation***: il fatto che se A e B si fidano di C allora C fa da certificatore intermedio
 - La **fiducia è asimmetrica**: Quando B ottiene la chiave di A, non è detto che A riesca ad ottenere la chiave di B.
 
 ## PKI
 
-Una **PKI** (*Public Key Infrastructure*) è insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
+Una **PKI** (*Public Key Infrastructure*) è un insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
 
 La ***Certification Authority*** (CA) è una entità specifica della PKI di cui tutti gli attori nella comunicazione si fidano, è quella che in passato abbiamo definito essere la *trusted third party.*
 
@@ -69,7 +69,7 @@ Le CA firmano digitalmente le chiavi pubbliche generando così dei certificati p
     2. possiedono la sua chiave pubblica
 2. Alice chiede alla CA di firmare la sua chiave pubblica, producendo così un **certificato**
 3. Bob quando riceve la chiave pubblica di Alice controlla se è stata firmata dalla CA
-4. se è così allora Bob si fida che tale chiave pubblica appartiene ad Alice
+4. se così fosse allora Bob si fida che tale chiave pubblica appartiene ad Alice
 
 ## Ottenere il certificato
 
@@ -108,6 +108,7 @@ Note:
 - Una volta ottenuto il certificato, la CA non è più necessaria ai fini della comunicazione
 - La CA non viene mai a conoscenza delle chiavi private degli attori che certifica
 - Per questioni di performance (dato che il certificato contiene molte cose) la CA firma un hash del certificato (dall’hash è esclusa la firma stessa).
+- il proprietario del certificato nella realtà può essere una persona fisica, una rete o un dominio per un sito web.
 
 ## Verificare il certificato
 
@@ -120,13 +121,11 @@ Quando Bob riceve un certificato da Alice:
 5. Computa per conto suo l’hash del certificato (escludendo il campo della firma della CA)
 6. Se l’hash computato è uguale all’hash ottenuto dalla decifratura allora il certificato è valido
 
-In questo contesto possiamo pensare ad Alice nella realtà come una persona fisica, una rete wifi o un dominio per un sito web. Il caso in cui questo sistema viene più utilizzato è verificare un dominio sul web.
-
 ## Fiducia con le CA
 
-Quando Bob deve decidere di quali CA fidarsi si ha una **gerarchia di CA** in cui una CA certifica le sottostanti, Bob **si fida solamente di alcune CA** tendenzialmente in alto sulla gerarchia.
+Quando Bob deve decidere di quali CA fidarsi si ha una **gerarchia** in cui una CA certifica le sottostanti, Bob **si fida solamente di alcune CA,** tendenzialmente quelle in alto sulla gerarchia.
 
-Se una CA è certificata da una CA di cui Bob si fida allora Bob si fida anche di quella.
+Se una CA è certificata da una CA di cui Bob si fida, allora Bob si fida anche di quella.
 
 ![](https://i.ibb.co/N6LM0Kp/image.png)
 
@@ -134,11 +133,11 @@ La **Root CA** è una *certification authority* di cui tutti si devono fidare. A
 
 Le root CA si firmano i certificati per conto proprio.
 
-Quando Bob visita `www.alice.com`, il server di alice deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
+Quando Bob visita `www.alice.com`, il server deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
 
 Se una qualsiasi CA nel cammino non è valida o scade, Bob riceverà un avviso e potrà proseguire a proprio rischio.
 
-In questo caso il browser dell’utente riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso di autenticazione è necessario un altro mezzo che generalmente è **l’autenticazione tramite username e password**.
+In questo caso il browser dell’utente riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso di autenticazione è necessario un altro mezzo,s che generalmente è **l’autenticazione tramite username e password**.
 
 ## Certificate Revocation Lists
 

@@ -9,15 +9,15 @@ Le e-mail non viaggiano direttamente da un computer all'altro, ma coinvolgono di
 - client di posta elettronica del mittente
 - server di posta elettronica del mittente
 - server di posta elettronica del destinatario
-- e client di posta elettronica del destinatario.
+- client di posta elettronica del destinatario.
 
 I client di posta elettronica vengono chiamati **MUA** (*Mail User Agent*), i server che si occupano della trasmissione sono chiamati **MTA** (*Mail Transfer Agents*)
 
-La catena di server può essere più lunga di due.
+La catena di server (MTA) può essere più lunga di due.
 
 Diversi protocolli sono coinvolti nel processo di invio e ricezione delle e-mail:
 
-- *Internet Message Format* (IMF) e *Multipurpose Internet Mail Extensions (MIME)* specificano come vengono formattati i messaggi e-mail.
+- *Internet Message Format* (IMF) e *Multipurpose Internet Mail Extensions (MIME)* specificano come vengono formattati i messaggi.
 - *Simple Mail Transfer Protocol* (**SMTP**) specifica il protocollo necessario per recapitare il messaggio dal client di Alice al server di Bob.
 - *Post Office Protocol* (**POP**) e *Internet Message Access Protocol* (**IMAP**) specificano come Bob può recuperare le e-mail dal suo server.
 
@@ -25,12 +25,10 @@ Diversi protocolli sono coinvolti nel processo di invio e ricezione delle e-mail
 
 ## Formato delle e-mail
 
-I messaggi e-mail sono composti da due parti:
+Le e-mail sono composti da due parti:
 
-- un header contenente i metadati come il mittente, destinatario, l’oggetto, CC, la data.
+- Un header contenente i metadati come il mittente, destinatario, l’oggetto, CC, la data.
 - Il corpo del messaggio
-
-I messaggi e-mail sono messaggi di testo, inizialmente formattati in testo ASCII, successivamente la codifica è stata estesa.
 
 Esempio di una mail:
 
@@ -55,7 +53,7 @@ Oltre ai campi standard nell’header, ci sono altre intestazioni rilevanti come
 
 Nel corpo del messaggio, oltre a scrivere del testo ASCII, abbiamo bisogno di inviare file binari e allegati. Con l'introduzione di **MIME (Multipurpose Internet Mail Extensions)**, è diventato possibile inviare diversi tipi di contenuto, inclusi file binari, immagini e audio.
 
-MIME utilizza header specifici come "`Content-Type`" (che indica il tipo di contenuto nel messaggio) e "`Content-Transfer-Encoding`" (che indica come è codificato il contenuto del messaggio) per definire il formato e la codifica del contenuto.
+MIME utilizza header specifici come "`Content-Type`" (che indica il tipo di contenuto nel messaggio) e "`Content-Transfer-Encoding`" (che indica come è codificato il contenuto del messaggio).
 
 Ad esempio questa email:
 
@@ -85,14 +83,13 @@ X-Attachment-Id: f_lnvvfaz20
 
 R0lGODlhAQABAIAAAP///////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAAQABAAACAkQBADs=
 --00000000000061c37d0607fec679--
-
 ```
 
 ## SMTP
 
-SMTP (Simple Mail Transfer Protocol) è un protocollo testuale utilizzato per inviare messaggi e-mail dal client al server mail e tra server mail. È  basato su TCP e opera sulla porta 25.
+SMTP (Simple Mail Transfer Protocol) è un protocollo testuale utilizzato per inviare messaggi e-mail da client a server mail e tra server mail. È basato su TCP e opera sulla porta 25.
 
-La comunicazione in SMTP avviene tramite **comandi e codici di risposta numerici**. Il client invia comandi al server, e il server risponde con un codice a tre cifre che indica l'esito dell'operazione e un commento opzionale.
+La comunicazione in SMTP avviene tramite **comandi e codici di risposta numerici**. Il client invia comandi al server, e il server risponde con un codice a tre cifre che indica l'esito dell'operazione con un commento opzionale.
 
 I comandi più utilizzati sono:
 
@@ -127,7 +124,7 @@ Oggi viene usato il **protocollo TLS** che aggiunge crittografia.
 
 Quando il server SMTP del mittente riceve il messaggio dal client deve conoscere l’indirizzo del successivo server SMTP a cui inoltrare la richiesta.
 
-Per fare ciò si usa il protocollo DNS per ottenere l’indirizzo.
+Per fare ciò si usa il protocollo DNS, facendo una query per il record MX per ottenere l’indirizzo IP.
 
 A questo punto il server SMTP del mittente si connette al server SMTP del destinatario. Tuttavia, se il server SMTP del mittente non è autenticato, il server SMTP del destinatario non consentirà il *relaying*.
 
@@ -137,7 +134,7 @@ Si introduce il concetto di *Mail Submission Agent* (MSA), un MTA che richiede l
 
 ## POP
 
-Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può ottenere la posta nel server.
+Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può recuperare la posta dal server.
 
 Il protocollo POP (Post Office Protocol), attualmente nella versione 3 (POP3), è uno dei protocolli utilizzati per consegnare la posta elettronica alla MUA del destinatario.
 
@@ -160,4 +157,4 @@ Una sessione POP si compone di tre parti: una fase di **autorizzazione**, una fa
 La principale differenza tra i protocollo POP e IMAP riguarda il modo in cui rimangono salvate le e-mail:
 
 - **POP**: Scarica le email dal server sul dispositivo del client e, generalmente, le elimina dal server (a meno che non venga configurato diversamente).
-- **IMAP**: Le email restano sul server e vengono sincronizzate tra tutti i dispositivi connessi. Il client visualizza una copia dei messaggi, che rimangono accessibili da più dispositivi.
+- **IMAP**: Le email restano sul server. Il client visualizza una copia dei messaggi, che rimangono accessibili nel server da più dispositivi.

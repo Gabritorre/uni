@@ -40,21 +40,21 @@
 <h3 id="controllo-fqdn">Controllo FQDN</h3>
 <p>Un tecnica è il <strong>Controllo FQDN (Fully Qualified Domain Name)</strong>: si basa sull’uso di nomi di dominio completamente qualificati (cioè dall’host fino al TLD) per verificare l’identità del server mittente tramite query DNS e di reverse DNS.</p>
 <p>Viene quindi verificata la veridicità del nome di dominio e dell’indirizzo IP inseriti nel comando HELO.</p>
-<p>Questa tecnica richiede agli MTA di avere un IP pubblico, un nome di dominio e un nome di dominio inverso, rendendo più difficile per gli spammer crearne uno.</p>
+<p>Questa tecnica richiede agli MTA di avere un IP pubblico, un nome di dominio e un nome di dominio inverso, rendendo più difficile per gli spammer crearne uno fasullo.</p>
 <h3 id="blacklist">Blacklist</h3>
 <p>Una ulteriore tecnica è quella di usare delle <strong>Blacklist IP</strong>: cioè delle liste di indirizzi IP noti per generare spam, in modo da bloccare le email provenienti da tali indirizzi.</p>
 <p>Gli MTA utilizzano un protocollo chiamato DNSBL (DNS Block List) per verificare se un IP è presente in una blacklist prima di inoltrare l’email.</p>
-<p><strong>Spamhaus</strong> è una organizzazione la cui attività principale è quella di compilare e tenere aggiornate le blacklist</p>
+<p><strong>Spamhaus</strong> è una organizzazione la cui attività principale è quella di compilare e tenere aggiornate le blacklist.</p>
 <h3 id="graylist">Graylist</h3>
-<p>Un altro fattore importante è che gli MTA legittimi aderiscono allo <strong>standard SMTP</strong>, mentre gli spammer spesso no. Gli MTA riceventi possono ritardare le risposte o restituire errori temporanei.</p>
-<p>Una particolare si utilizza una tecnica chiamata <strong>Graylisting</strong>: gli MTA che utilizzano il graylisting rispondono con un errore <code>4xx</code> alla prima connessione da un IP sconosciuto. Gli MTA mittenti legittimi riproveranno dopo un po’ di tempo, mentre gli spammer tendenzialmente no.</p>
+<p>Un altro fattore importante è che gli MTA legittimi aderiscono allo <strong>standard SMTP</strong>, mentre gli spammer spesso no, per evitare di rallentare la loro attività. Per cercare comunque di rallentare possibili spammer gli MTA riceventi possono ritardare le risposte o restituire errori temporanei.</p>
+<p>Una particolare si utilizza una tecnica chiamata <strong>Graylisting</strong>: gli MTA rispondono con un errore <code>4xx</code> alla prima connessione da un IP sconosciuto. Gli MTA mittenti legittimi riproveranno dopo un po’ di tempo, mentre gli spammer tendenzialmente no.</p>
 <p>È da notare che questa tecnica introduce un ritardo nella ricezione della prima email (anche se legittima) proveniente da un nuovo MTA.</p>
 <p>Se un MTA viene whitelistato ma non manda e-mail per un po’ verrà di nuovo ritenuto sconosciuto alla successiva mail.</p>
 <h2 id="sender-spoofing">Sender spoofing</h2>
 <p>Approfondiamo alcuni comandi di SMTP utili per comprendere le successive tecniche anti-spam:</p>
 <ul>
 <li><code>HELO</code>: viene utilizzato dal client MTA per identificarsi al server MTA. Il comando HELO è seguito dal nome di dominio del client MTA.</li>
-<li><code>MAIL FROM</code>: specifica l’indirizzo mail a cui verranno inviati eventuali errori di consegna. (non è necessariamente l’e-mail del mittente)</li>
+<li><code>MAIL FROM</code>: specifica l’indirizzo mail a cui verranno inviati eventuali errori di consegna (non è necessariamente l’e-mail del mittente).</li>
 <li><code>FROM</code>: specifica l’indirizzo email del mittente della mail. Questo è anche l’indirizzo email utilizzato dal destinatario per rispondere all’email.</li>
 </ul>
 <p>Non è possibile fare assunzioni sulla legittimità dei domini inseriti in questi campi.</p>
@@ -62,7 +62,7 @@
 <p>Vediamo delle tecniche per verificare l’autorevolezza dei campi <code>HELO, MAIL FROM, FROM</code>.</p>
 <h2 id="spf">SPF</h2>
 <p>Il Sender Policy Framework (<strong>SPF</strong>) è un protocollo che cerca di contrastare gli spammer impedendogli di utilizzare i comandi <code>HELO</code> e <code>MAIL FROM</code> (senza però limitare il <code>FROM</code>) con un dominio che non possiedono.</p>
-<p>Un record SPF è un record testuale (TXT) messo nel server DNS associato al nome di dominio di un’organizzazione, che specifica gli indirizzi IP autorizzati a inviare email per quel dominio.</p>
+<p>Un record SPF è un record testuale (di tipo <code>TXT</code>) messo nel server DNS associato al nome di dominio di un’organizzazione, in questo record sono specificati gli indirizzi IP autorizzati a inviare email per conto di quel dominio.</p>
 <p>Un esempio di record SPF è il seguente:</p>
 <pre><code>mydomain.it. 86400 IN TXT “v=spf1 ip4:17.18.7.120 -all”
 </code></pre>
@@ -71,15 +71,15 @@
 <li><code>ip4:17.18.7.120</code>: specifica che l’indirizzo IP 17.18.7.120 è autorizzato a inviare email</li>
 <li><code>-all</code>: indica che tutti gli altri indirizzi IP non possono inviare email</li>
 </ul>
-<p>Quindi quando un MTA riceve una connessione da un altro MTA:</p>
+<p>Quindi quando un MTA riceve una connessione da un altro MTA, farà le seguenti operazioni:</p>
 <ul>
 <li>fa la risoluzione DNS per il dominio specificato in HELO e MAIL FROM</li>
 <li>verifica che esista un record SPF per quei domini</li>
-<li>controlla se l’indirizzo IP della connessione è uno degli indirizzi specificati dal record SPF</li>
+<li>controlla se l’indirizzo IP della connessione sia uno degli indirizzi specificati dal record SPF</li>
 <li>prende delle decisioni in base al risultato</li>
 </ul>
 <p>Oltre ad usare indirizzi IPv4 si possono usare indirizzi IPv6 e anche nomi di dominio.</p>
-<p>Inoltre è possibile includere dei record SPF aggiuntivi di altri domini con la direttiva <code>include:</code> ad esempio <code>include:_spf.google.com</code> per indicare che che Google è autorizzato a inviare email per conto del dominio.</p>
+<p>Inoltre è possibile includere dei record SPF aggiuntivi di altri domini con la direttiva <code>include:</code> ad esempio <code>include:_spf.google.com</code> per indicare che Google è autorizzato a inviare email per conto del dominio.</p>
 <p>Nella sintassi dei record SPF ci sono dei <strong>qualificatori</strong> che specificano l’azione da intraprendere per ogni indirizzo IP:</p>
 <ul>
 <li><code>+</code>: <strong>Pass</strong> (default), Indica che l’indirizzo è autorizzato a inviare e-mail per quel dominio.</li>
@@ -92,14 +92,14 @@
 <h2 id="dkim">DKIM</h2>
 <p>Abbiamo visto che il protocollo SPF non garantisce nulla sul campo <code>FROM</code>.</p>
 <p>DKIM risolve questo problema verificando anche il campo <code>FROM</code>.</p>
-<p><strong>DomainKeys Identified Mail (DKIM)</strong> è un protocollo  consente di verificare l’autenticità del mittente di un messaggio e l’integrità del suo contenuto. DKIM è simile a SPF ma utilizza la crittografia a chiave pubblica per firmare digitalmente le email, garantendo che il messaggio non sia stato manomesso durante il trasporto.</p>
+<p><strong>DomainKeys Identified Mail (DKIM)</strong> è un protocollo consente di verificare l’autenticità del mittente e l’integrità del suo contenuto. DKIM è simile a SPF ma utilizza la crittografia a chiave pubblica per firmare digitalmente le email, garantendo che il messaggio non sia stato manomesso durante il trasporto.</p>
 <p>MSA è l’entità che si occupa dell’autenticazione dell’utente, ed è l’unica entità che può controllare il campo <code>FROM</code> e firmare l’intera email.</p>
 <p>Funzionamento di DKIM:</p>
 <ol>
 <li><strong>Generazione delle chiavi</strong>: L’amministratore del MSA genera una coppia di chiavi pubblica e privata.</li>
 <li><strong>Pubblicazione della chiave pubblica</strong>: La chiave pubblica viene pubblicata in un record TXT del DNS.</li>
-<li><strong>Firma del messaggio</strong>: Quando un MUA (Mail User Agent) invia un’email al suo server SMTP, l’MSA del server fa l’autenticazione del client (verifica anche che l’indirizzo del <code>FROM</code> sia un indirizzo autorizzato) e seleziona alcuni campi dell’email dell’header, e il corpo del messaggio, e genera un hash di questi elementi. Il MSA firma quindi l’hash utilizzando la sua chiave privata e include la firma digitale nell’intestazione della mail.</li>
-<li><strong>Verifica della firma</strong>: Quando un MTA riceve un’email con una firma DKIM, recupera la chiave pubblica del mittente con una risoluzione DNS. L’MTA utilizza quindi la chiave pubblica per verificare la firma digitale e controllare l’integrità del messaggio.</li>
+<li><strong>Firma del messaggio</strong>: Quando un MUA (Mail User Agent) invia un’email al suo server SMTP, l’MSA del server fa l’autenticazione del client (verifica anche che l’indirizzo del <code>FROM</code> sia un indirizzo autorizzato) e genera un hash considerando alcuni campi dell’header e il corpo della mail. Firma quindi l’hash utilizzando la sua chiave privata e include la firma digitale nell’header della mail.</li>
+<li><strong>Verifica della firma</strong>: Quando un MTA riceve un’email con una firma DKIM, recupera la chiave pubblica del mittente con una risoluzione DNS. Utilizza quindi la chiave pubblica per verificare la firma digitale e controllare l’integrità del messaggio.</li>
 </ol>
 <p>L’intestazione DKIM contiene diversi campi che forniscono informazioni sulla firma e sul processo di verifica. Alcuni di questi sono:</p>
 <ul>
@@ -115,33 +115,35 @@
 </code></pre>
 <h2 id="dmarc">DMARC</h2>
 <p>Il protocollo <strong>Domain-based Message Authentication, Reporting, and Conformance (DMARC)</strong> aggiunge un ulteriore livello di controllo verificando l’<strong>allineamento</strong> tra i domini utilizzati nei diversi protocolli di autenticazione.</p>
-<p>DMARC verifica che il dominio nell’intestazione “From” corrisponda al dominio utilizzato o in SPF (quindi con HELO o MAIL FROM) o in DKIM (nel campo <code>d</code> dell’header). In caso di mancato allineamento, il server MTA può applicare diverse politiche decise dal proprietario del dominio:</p>
+<p>DMARC verifica che il dominio nell’intestazione “<code>From</code>” corrisponda al dominio utilizzato o in SPF (quindi con <code>HELO</code> o <code>MAIL FROM</code>) o in DKIM (nel campo <code>d</code> dell’header). In caso di mancato allineamento, il server MTA può applicare diverse politiche decise dal proprietario del dominio:</p>
 <ul>
 <li><code>none</code>: non fare nulla, lascia passare</li>
 <li><code>quarantine</code>: marca l’email come possibile spam</li>
 <li><code>reject</code>: rifiuta</li>
 </ul>
 <p>È importante che le politiche siano <strong>consistenti</strong> tra tutti i MTA (non vogliamo che una e-mail venga accettata da alcuni MTA e da altri no)</p>
-<p>Il protocollo DMARC permette al proprietario del dominio mittente di impostare la policy che tutti gli MTA devono rispettare. Le policy vengono anch’esse configurate nel DNS con un campo TXT e sono accessibili con una query al dominio <code>_dmarc.&lt;dominio&gt;</code></p>
+<p>Il protocollo DMARC permette al proprietario del dominio mittente di impostare la policy che tutti gli MTA devono rispettare. Le policy vengono anch’esse configurate nel DNS con un campo <code>TXT</code> e sono accessibili con una query al dominio <code>_dmarc.&lt;dominio&gt;</code></p>
 <h2 id="funzionamento-completo">Funzionamento completo</h2>
 <p>Combinando tutte le tecniche che abbiamo visto:</p>
-<p><strong>1. Verifica FQDN:</strong> Il primo passo è la verifica del FQDN del MTA che invia l’email.</p>
-<p><strong>2. Verifica SPF:</strong> Successivamente, il server MTA controlla il record ****SPF del dominio mittente che elenca gli indirizzi IP autorizzati a inviare email per quel dominio.</p>
-<p><strong>3. Verifica DKIM:</strong> Il server MTA verifica la firma DKIM dell’email garantendo che il messaggio non sia stato manomesso e che provenga effettivamente dal dominio dichiarato nell’intestazione <code>FROM</code></p>
-<p><strong>4. Allineamento DMAR</strong>C: In caso di mancato allineamento tra i domini, vengono applicate politiche di sicurezza definite dal proprietario del dominio mittente.</p>
+<ol>
+<li><strong>Verifica FQDN:</strong> Il primo passo è la verifica del FQDN del MTA che invia l’email.</li>
+<li><strong>Verifica SPF:</strong> Successivamente, il server MTA controlla il record ****SPF del dominio mittente che elenca gli indirizzi IP autorizzati a inviare email per quel dominio.</li>
+<li><strong>Verifica DKIM:</strong> Il server MTA verifica la firma DKIM dell’email garantendo che il messaggio non sia stato manomesso e che provenga effettivamente dal dominio dichiarato nell’intestazione <code>FROM</code></li>
+<li><strong>Allineamento DMAR</strong>C: In caso di mancato allineamento tra i domini, vengono applicate politiche di sicurezza definite dal proprietario del dominio mittente.</li>
+</ol>
 <p>Possiamo riassumere tutti i passaggi con il seguente schema:</p>
 <p><img src="https://i.ibb.co/3mpjwwC/image.png" alt=""></p>
 <ol>
 <li><strong>Alice invia l’email:</strong> Alice, utilizzando il suo client di posta elettronica (MUA), invia un’email dal suo indirizzo <code>alice@a.com</code> a <code>bob@b.com</code>.</li>
 <li><strong>Autenticazione con MSA:</strong> l’MSA di Alice la autentica, verificando che sia effettivamente autorizzata a inviare email.</li>
-<li><strong>Preparazione dell’email per l’invio:</strong> Il MTA di <code>a.com</code>, ricevendo l’email da Alice, imposta i campi <code>HELO</code>, <code>Mail From</code>, <code>From</code> e aggiungendo la firma DKIM. L’indirizzo IP del MTA è <code>1.2.3.4</code>.</li>
-<li><strong>Controllo blacklist DNSBL:</strong> Prima di recapitare l’email, l’MTA di <code>b.com</code> controlla l’indirizzo IP <code>1.2.3.4</code> non sia in una blacklist tramite una query DNS ad un servizio come <em>spamhaus</em>.</li>
+<li><strong>Preparazione dell’email per l’invio:</strong> Il MTA di <code>a.com</code>, ricevendo l’email da Alice, imposta i campi <code>HELO</code>, <code>Mail From</code>, <code>From</code> e aggiunge la firma DKIM. L’indirizzo IP del MTA è <code>1.2.3.4</code>.</li>
+<li><strong>Controllo blacklist DNSBL:</strong> Prima di recapitare l’email, l’MTA di <code>b.com</code> controlla che l’indirizzo IP <code>1.2.3.4</code> non sia in una blacklist tramite una query DNS ad un servizio come <em>spamhaus</em>.</li>
 <li><strong>Risoluzione DNS inversa:</strong> Il server MTA di <code>b.com</code> effettua una risoluzione DNS inversa sull’indirizzo IP <code>1.2.3.4</code> per ottenere il FQDN del MTA mittente.</li>
 <li><strong>Verifica corrispondenza FQDN:</strong> Il server MTA di <code>b.com</code> confronta il FQDN ottenuto dalla risoluzione DNS inversa con il dominio dichiarato nel comando <code>HELO</code>.</li>
 <li><strong>Controllo SPF:</strong> Il server MTA di <code>b.com</code> consulta il record SPF di <code>a.com</code> per verificare se l’indirizzo IP <code>1.2.3.4</code> è autorizzato a inviare email per conto di <code>a.com</code>.</li>
 <li><strong>Verifica DKIM:</strong> Il server MTA di <code>b.com</code> verifica la firma DKIM dell’email utilizzando la chiave pubblica di <code>a.com</code>, ottenuta da una query TXT al DNS. Questo garantisce che l’email provenga effettivamente da <code>a.com</code> e non sia stata alterata durante la trasmissione.</li>
 <li><strong>Controllo DMARC:</strong> Il server MTA di <code>b.com</code> consulta il record DMARC di <code>a.com</code> per conoscere quali sono le politiche da rispettare, configurate dal proprietario del dominio.</li>
-<li><strong>Accettazione o rifiuto dell’email:</strong> Se tutti i controlli sono superati (FQDN, SPF, DKIM, allineamento DMARC) e le politiche DMARC sono rispettate, l’email viene accettata. In caso contrario, a seconda della politica DMARC, l’email potrebbe essere gestita in altro modo.</li>
+<li><strong>Accettazione o rifiuto dell’email:</strong> Se tutti i controlli sono superati (FQDN, SPF, DKIM, allineamento DMARC), l’email viene accettata. In caso contrario, a seconda della politica DMARC, l’email potrebbe essere gestita in altro modo.</li>
 </ol>
 <h3 id="sicurezza-del-server-dns">Sicurezza del server DNS</h3>
 <p>Tutti i metodi che abbiamo visto funzionano fintanto che l’attaccante non riesce modificare la configurazione del server DNS dell’organizzazione vittima.</p>

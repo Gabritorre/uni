@@ -20,8 +20,8 @@ Possono essere mappati anche un insieme di indirizzi su stessa interfaccia.
 
 Nella realizzazione di una *forwarding table* possono accadere due errori:
 
-- **buchi neri** (*black holes*): situazione in cui un router che deve instradare un pacchetto non ha una entry valida nella propria forwarding table. Il pacchetto verrà scartato
-- **Cicli** (rounting loops): Un pacchetto attraversa in modo ciclico gli stessi router senza raggiungere la destinazione
+- **buchi neri** (*black holes*): situazione in cui un router che deve instradare un pacchetto non ha una entry valida nella propria forwarding table. Il pacchetto verrà scartato.
+- **Cicli** (rounting loops): Un pacchetto attraversa in modo ciclico gli stessi router senza raggiungere la destinazione.
 
 Una buona forwarding table oltre ad evitare questi due problemi deve anche assicurarsi che da ogni host si possa raggiungere ogni altro host.
 
@@ -38,8 +38,8 @@ Per far funzionare questi algoritmi i router devono inviarsi dei pacchetti parti
 
 Abbiamo due modi per strutturare le forwarding table:
 
-- **Indirizzamento piatto**: la forwarding table contiene le informazioni per raggiungere ogni destinazione. Ogni nodo ha un indirizzo unico. Non è scalabile, le tabelle diventano enormi
-- **indirizzamento gerarchico**: gli indirizzi sono raggruppati in blocchi, un blocco contiene anche milioni di indirizzi. Nella tabella ci sono gli indirizzi blocchi quindi la sua dimensione è notevolmente ridotta rispetto all’indirizzamento piatto.
+- **Indirizzamento piatto**: la forwarding table contiene le informazioni per raggiungere ogni destinazione. Ogni nodo ha un indirizzo unico. Non è scalabile, le tabelle diventano enormi.
+- **indirizzamento gerarchico**: gli indirizzi sono raggruppati in blocchi, un blocco contiene anche milioni di indirizzi. Nella tabella ci sono gli indirizzi a blocchi, quindi la sua dimensione è notevolmente ridotta rispetto all’indirizzamento piatto.
 
 ## Eterogeneità del livello collegamento
 
@@ -55,17 +55,17 @@ Bisogna quindi implementare un sistema per gestire le diverse dimensioni massime
 
 ## Algoritmi di routing
 
-Un primo approccio per popolare la forwarding table (chiamato hot-potato) è quello di sfruttare i pacchetti di dati degli host: Inizialmente le tabella saranno vuote e man mano che gli host inviano i pacchetti, i router mandano dei messaggi in *broadcast* per trovare il percorso per raggiungere la destinazione e aggiornare la propria tabella di conseguenza.
+Un primo approccio per popolare la forwarding table (chiamato **hot-potato**) è quello di sfruttare i pacchetti di dati degli host. Inizialmente le tabella saranno vuote e man mano che gli host inviano i pacchetti, i router mandano dei messaggi in *broadcast* per trovare il percorso per raggiungere la destinazione e aggiornare la propria tabella di conseguenza.
 
 Su reti più complesse è necessario utilizzare meccanismi dedicati alla popolazione delle tabelle.
 
 Definiamo:
 
 - Algoritmo: Una sequenza finita di istruzioni non ambigue che risolvono un determinato problema (distributed Bellman-Ford).
-- Protocollo di routing: è un insieme di specifiche usate per implementare un algoritmo nei router. Se ogni produttore segue i protocolli allora indipendentemente dal software i router interagiranno senza problemi (RIP, Routing Information Protocol).
+- Protocollo di routing: è un insieme di specifiche usate per implementare un algoritmo nei router. Se ogni produttore segue i protocolli allora indipendentemente dal software, i router interagiranno senza problemi (RIP, Routing Information Protocol).
 - Demone: è un software in esecuzione sul router che implementa un protocollo (Bird software).
 
-Un compito del control plane è quello di gestire le **routing table**, un struttura dati più generale rispetto alle forwarding table, che per ogni indirizzo di destinazione `d` contiene varie informazioni (che dipendono dal protocollo utilizzato):
+Un compito del control plane è quello di gestire le **routing table**, un struttura dati più generale rispetto alle forwarding table, che per ogni indirizzo di destinazione `d` contiene varie informazioni (che dipendono dal protocollo utilizzato) come:
 
 - `R[d].link` l’interfaccia di uscita verso cui inoltrare il pacchetto
 - `R[d].cost` La somma delle metriche che compongono il percorso minimo per raggiungere la destinazione
@@ -81,17 +81,15 @@ Inizialmente ogni router avrà nella propria tabella di routing la distanza vers
 
 ![](https://i.ibb.co/WFrwLmK/image.png)
 
-Periodicamente i router inviano il proprio distance vector (la tabella di routing) ai propri vicini, possiamo immaginare che ciò avvenga attraverso il seguente pseudo-codice:
+Periodicamente i router inviano il proprio distance vector (la tabella di routing) ai propri vicini, possiamo immaginare che ciò avvenga come descritto dal seguente pseudo-codice:
 
 ```python
 Every N seconds:
-    v = Vector()
-    for d in R[]:
-        # add destination d to vector
-        v.add(Pair(d, R[d].cost))
-    for i in interfaces
-        # send vector v on this interface
-        send(v, i)
+  v = Vector()
+  for d in R[]:               # for each destination in the routing table
+    v.add(Pair(d, R[d].cost)) # add destination d to vector
+  for i in interfaces         # send vector v to all the interfaces
+    send(v, i)
 ```
 
 Ogni router che riceve il distance vector si comporterà come descritto dal seguente pseudo-codice:
@@ -100,25 +98,23 @@ Ogni router che riceve il distance vector si comporterà come descritto dal segu
 # V : received Vector
 # l : link over which vector is received
 def received(V, l):
-    # received vector from link l
-    for d in V[]
-        if not (d in R[]):
-            # new route
-            R[d].cost = V[d].cost + l.cost
-            R[d].link = l
-            R[d].time = now()
-        else:
-            # existing route, is the new better?
-            if ((V[d].cost + l.cost) < R[d].cost) or (R[d].link == l):
-                # Better route or the current route is changed and still the best
-                R[d].cost = V[d].cost + l.cost
-                R[d].link = l
-                R[d].time = now()
+  for d in V[]  # for each destination in the received Vector
+    if not (d in R[]):    #if is a new route
+      R[d].cost = V[d].cost + l.cost
+      R[d].link = l
+      R[d].time = now()
+    else:
+      # existing route, is the new one better?
+      if ((V[d].cost + l.cost) < R[d].cost) or (R[d].link == l):
+        # Better route OR the current route is changed and still the best
+        R[d].cost = V[d].cost + l.cost
+        R[d].link = l
+        R[d].time = now()
 ```
 
 Il router che riceve il DV, itera attraverso tutti gli indirizzi inclusi nel DV, se contiene un indirizzo che il router non conosce lo inserisce nella propria tabella.
 
-Se invece un indirizzo è già conosciuto ma ha un costo migliore oppure se quell’indirizzo è già ritenuto essere sul percorso migliore vengono semplicemente aggiornati i campi
+Se invece un indirizzo è già conosciuto ma ha un costo migliore oppure se quell’indirizzo è già ritenuto essere sul percorso migliore vengono semplicemente aggiornati i campi.
 
 Vediamo un esempio ci popolazione:
 
@@ -134,9 +130,9 @@ Note:
 
 ## Recupero dei fallimenti
 
-Dato che ogni router invia ad intervalli regolari i proprio DV, ogni router controlla regolarmente i timestamp dei percorsi nella propria tabella di routing, se passa troppo tempo senza ricevere un aggiornamento per quel percorso allora viene ignorato (assumendo che ci sia stato un fallimento su tale percorso).
+Dato che ogni router invia ad intervalli regolari i proprio DV, ogni router controlla regolarmente i timestamp dei percorsi nella propria tabella di routing, se passa troppo tempo senza ricevere un aggiornamento per quel percorso, allora esso viene ignorato (assumendo che ci sia stato un fallimento su tale percorso).
 
-In particolare se i router inviano la propria tabella ogni $N$ secondi, se passa più di  $3\times N$ secondi (scelta in base al protocollo) allora il costo di quel percorso viene impostato a $\infty$. Inoltre vengono informati i router vicini e magari c’è la possibilità che venga scoperto un nuovo percorso con costo migliore di $\infty$. Se ciò non accade dopo ulteriori $3 \times N$ secondi, il percorso viene rimosso dalla tabella.
+In particolare se i router inviano la propria tabella ogni $N$ secondi, se passano più di  $3\times N$ secondi (scelta arbitraria in base al protocollo) allora il costo di quel percorso viene impostato a $\infty$. Inoltre vengono informati i router vicini e magari c’è la possibilità che venga scoperto un nuovo percorso con costo migliore di $\infty$. Se ciò non accade dopo ulteriori $3 \times N$ secondi, il percorso viene rimosso dalla tabella.
 
 Vediamo un esempio:
 

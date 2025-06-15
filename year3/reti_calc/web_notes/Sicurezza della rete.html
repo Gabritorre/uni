@@ -67,10 +67,10 @@
 <p>Per garantire al più possibile l’availability è necessario avere un buon design della rete e minimizzare il danno da un possibile attacco DoS.</p>
 <h3 id="confidentiality">Confidentiality</h3>
 <p>Significa che i dati scambiati rimangono riservati ai soli partecipanti dello scambio.</p>
-<p>Per garantire questo aspetto sono necessari meccanismi di crittografia</p>
+<p>Per garantire questo aspetto sono necessari meccanismi di crittografia.</p>
 <h3 id="integrity">Integrity</h3>
 <p>Significa che i dati devono raggiungere la destinazione senza subire modifiche nel tragitto.</p>
-<p>Per garantire questo aspetto sono necessari meccanismi di hashing</p>
+<p>Per garantire questo aspetto sono necessari meccanismi di hashing.</p>
 <h3 id="authentication">Authentication</h3>
 <p>Si divide in:</p>
 <ul>
@@ -86,8 +86,8 @@
 <p>Per garantire questo aspetto sono necessari meccanismi di firma digitale.</p>
 <h3 id="access-control">Access control</h3>
 <p>L’accesso deve essere permesso solamente a chi è autorizzato ad accedere.</p>
-<p>Non garantire il controllo può permettere situazione in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.</p>
-<p>Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione</p>
+<p>Non garantire questo servizio può permettere situazioni in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.</p>
+<p>Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione.</p>
 <h3 id="non-repudiation">Non repudiation</h3>
 <p>Il non ripudio previene che un mittente neghi di essere stato lui ad inviare un messaggio, oppure che chi riceve il messaggio neghi di averlo ricevuto.</p>
 <p>Per garantire questo aspetto sono necessari meccanismi firma digitale</p>
@@ -116,7 +116,7 @@
 </ul>
 <p>Si tratta sempre di un <strong>trade-off tra sicurezza e usabilità.</strong></p>
 <h2 id="crittografia">Crittografia</h2>
-<p>La crittografia è la scienza che studio come rendere segrete delle informazioni.</p>
+<p>La crittografia è la scienza che studia come rendere segrete delle informazioni.</p>
 <p>La crittografia permette di avere:</p>
 <ul>
 <li>integrità (tramite <strong>funzioni hash</strong>)</li>
@@ -142,7 +142,7 @@
 <li>Restringere il servizio solo ad utenti che supportano la versione più recente dei protocolli</li>
 </ul>
 <h2 id="funzioni-hash">Funzioni hash</h2>
-<p>Una <strong>funzione hash</strong> è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un <strong>digest</strong>, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le collisioni.</p>
+<p>Una <strong>funzione hash</strong> è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un <strong>digest</strong>, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le probabilità di collisioni.</p>
 <p>Le funzioni hash vengono usate per garantire <strong>l’integrità dei dati</strong>: infatti inviando oltre che al messaggio anche il digest, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.</p>
 <p><img src="https://i.ibb.co/VNpWJ4W/image.png" alt=""></p>
 <p>Funzioni hash sono ad esempio MD5, SHA 1, SHA 256, …</p>
@@ -164,7 +164,7 @@
 <p>possedendo l’output, trovare l’input che ha generato un tale output deve essere computazionalmente impossibile</p>
 </li>
 <li>
-<p>dato un input trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.</p>
+<p>dato un input, trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.</p>
 <p>input simili non devono generare un output simile, l’output deve essere impredicibile.</p>
 </li>
 <li>
@@ -173,7 +173,7 @@
 </ol>
 <p>Nota: con <strong>computazionalmente impossibile</strong> si intende che ad oggi non si conosce un algoritmo di complessità polinomiale in grado di risolvere il problema.</p>
 <p>Dato che la dimensione dell’output è fissa, se abbiamo un input grande sicuramente delle informazione vengono perse durante l’hashing.</p>
-<p>Inoltre a data la presenza di collisioni se un attaccante che possiede un output, trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.</p>
+<p>Inoltre, data la presenza di collisioni, se un attaccante che possiede un output, trova un input che genera lo stesso output, non saprà se l’input è il messaggio originale o solo una collisione.</p>
 
     </div>
   </div>

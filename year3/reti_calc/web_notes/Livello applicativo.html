@@ -33,12 +33,12 @@
 <h2 id="nomi-e-indirizzi">Nomi e indirizzi</h2>
 <p>Abbiamo visto come gli host vengano riconosciuti tramite indirizzi di rete e come, attraverso l’uso di numeri di porta, sia possibile identificare le applicazioni all’interno di un host.</p>
 <p>A livello applicativo, è presente l’interazione con l’utente, e per quest’ultimo può essere difficile ricordare lunghe sequenze di numeri; è quindi preferibile associare agli indirizzi dei <strong>nomi significativi</strong>.</p>
-<p>I <strong>nomi di dominio</strong> sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete.</p>
-<p>I nomi di dominio hanno questa forma <code>www.example.com</code>, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: <code>com</code> è il <strong>Top Level Domain</strong> (TLD) cioè il punto più generico</p>
+<p>I <strong>nomi di dominio</strong> sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete ad un determinato indirizzo.</p>
+<p>I nomi di dominio hanno questa forma <code>www.example.com</code>, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: <code>com</code> è il <strong>Top Level Domain</strong> (TLD) cioè il punto più generico.</p>
 <p>Possiamo vedere la gerarchia dei domini in questo modo:</p>
 <p><img src="https://i.ibb.co/RNdcykz/image.png" alt=""></p>
 <p>Ovviamente è presente molta ridondanza nei nodi e nei root server, questi ultimi hanno un indirizzo fisso e conosciuto.</p>
-<p>Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini</p>
+<p>Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini.</p>
 <p>L’uso dei nomi di dominio risolve degli importanti problemi come:</p>
 <ol>
 <li><strong>Trasparenza nei cambiamenti di indirizzo</strong>: Quando il server cambia indirizzo IP (ad esempio per essere spostato su un nuovo server fisico), è sufficiente aggiornare il record del nome di dominio, senza bisogno di avvisare manualmente i client. I client continueranno a utilizzare lo stesso nome di dominio senza doversi preoccupare del nuovo indirizzo IP.</li>

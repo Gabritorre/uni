@@ -40,12 +40,12 @@
 <li>Se i messaggi HELLO non arrivano più dopo <span class="katex--inline"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>⋅</mo><mi>N</mi></mrow><annotation encoding="application/x-tex">k\cdot N</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.69444em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.03148em;">k</span><span class="mspace" style="margin-right: 0.222222em;"></span><span class="mbin">⋅</span><span class="mspace" style="margin-right: 0.222222em;"></span></span><span class="base"><span class="strut" style="height: 0.68333em; vertical-align: 0em;"></span><span class="mord mathnormal" style="margin-right: 0.10903em;">N</span></span></span></span></span> secondi allora il relativo link viene marcato come rotto</li>
 </ul>
 <h3 id="lsp">LSP</h3>
-<p>Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i propri link locali a tutta la rete.</p>
+<p>Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i link dei suoi vicini a tutta la rete.</p>
 <p>Ogni router costruisce un <em>link-state packet</em> (LSP) contenente:</p>
 <ul>
 <li><code>LSP.Router</code>: il suo indirizzo identificativo</li>
 <li><code>LSP.age</code>: il tempo di vita rimanente del pacchetto</li>
-<li><code>LSP.seq</code>: numero di sequenza che incrementa ad ogni pacchetto (identifica il pacchetto)</li>
+<li><code>LSP.seq</code>: numero di sequenza che incrementa ad ogni pacchetto LSP (identifica il pacchetto)</li>
 <li><code>LSP.Links[]</code>: lista di vicini composta da:
 <ul>
 <li><code>LSP.Links[i].Id</code>: l’identificativo del vicino</li>
@@ -56,14 +56,14 @@
 <p>Per la distribuzione di questi pacchetti viene utilizzato un <strong>algoritmo di Flooding</strong>, in cui ogni router mantiene un database (LSDB) contenente per ogni router della rete, l’LSP più recente.</p>
 <p>Se un router che riceve un LSP che ha già all’interno del suo LSDB con lo stesso numero di sequenza allora non lo inoltra. Altrimenti viene inoltrato a tutte le interfacce tranne quella da cui è arrivato.</p>
 <p>Algoritmo:</p>
-<pre class=" language-python"><code class="prism  language-python"><span class="token comment"># links is the set of all links on the router</span>
-<span class="token comment"># Router R LSP arrival on link l</span>
+<pre class=" language-python"><code class="prism  language-python"><span class="token comment"># links: is the set of all links on the router</span>
+<span class="token comment"># Router LSP arrival on link l</span>
 <span class="token keyword">if</span> newer<span class="token punctuation">(</span>LSP<span class="token punctuation">,</span> LSDB<span class="token punctuation">(</span>LSP<span class="token punctuation">.</span>Router<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token comment"># get last LSP from the DB, compare with current</span>
-		LSDB<span class="token punctuation">.</span>add<span class="token punctuation">(</span>LSP<span class="token punctuation">)</span> <span class="token comment"># implicitly removes older LSP from same router</span>
-		<span class="token keyword">for</span> i <span class="token keyword">in</span> links<span class="token punctuation">:</span>
-				<span class="token keyword">if</span> i <span class="token operator">!=</span> l<span class="token punctuation">:</span>
+		LSDB<span class="token punctuation">.</span>add<span class="token punctuation">(</span>LSP<span class="token punctuation">)</span>    <span class="token comment"># implicitly removes older LSP from same router</span>
+		<span class="token keyword">for</span> i <span class="token keyword">in</span> links<span class="token punctuation">:</span>  <span class="token comment"># flood the new LSP to the neighbors</span>
+				<span class="token keyword">if</span> i <span class="token operator">!=</span> l<span class="token punctuation">:</span>   <span class="token comment"># except the sender</span>
 				  send<span class="token punctuation">(</span>LSP<span class="token punctuation">,</span> i<span class="token punctuation">)</span>
-<span class="token comment"># else , LSP has already been flooded</span>
+<span class="token comment"># else, LSP has already been flooded</span>
 </code></pre>
 <p>Stato di partenza:</p>
 <p><img src="https://i.ibb.co/TMRbYzT/image.png" alt=""></p>
@@ -86,6 +86,9 @@
 </tbody>
 </table><p>Quando un link si rompe, i router connessi a tale link generano un nuovo LSP e lo inoltrano alla rete.</p>
 <p>Quindi se si rompe il link B-E, il router E manderà un nuovo LSP a D e C che lo inoltreranno a loro volta ai router vicini. Il router B farà lo stesso.</p>
+<p>Ad esempio il primo passo della propagazione è il seguente:</p>
+<p><img src="https://i.ibb.co/9Qyn35S/image.png" alt=""></p>
+<p>il nodo E manda un LSP con un numero di sequenza incrementato che andrà a sostituire i precedenti negli altri nodi della rete.</p>
 <h3 id="note">Note</h3>
 <ul>
 <li>è possibile che un router riceva più copie dello stesso LSP.</li>

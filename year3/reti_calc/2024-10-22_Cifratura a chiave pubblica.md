@@ -15,7 +15,7 @@ Ci sono vari algoritmi che implementano la cifratura a chiave pubblica, tra cui:
 
 ### Intrattabilità dei problemi
 
-Gli algoritmi crittografici spesso si basano operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione.
+Gli algoritmi crittografici spesso si basano su operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione.
 
 - La **fattorizzazione in fattori primi** di un numero è un esempio di operazione matematica per cui non esiste un algoritmo efficiente.
     
@@ -44,9 +44,9 @@ Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
 
 ![](https://i.ibb.co/RcYwpXy/image.png)
 
-- Alice sceglie un numero primo grande $n$, un numero random $a$ (che deve rimanere **segreto**) e una radice primitiva (o generatore) $g$ per $n$.
+- Alice sceglie un numero primo abbastanza grande $n$, un numero random $a$ (che deve rimanere **segreto**) e una radice primitiva (o generatore) $g$ per $n$.
     
-    La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio $n = 7, g = 3$:
+    La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio con $n = 7, g = 3$:
     
     - $1 = 3^6 \mod 7$
     - $2 = 3^2 \mod 7$
@@ -71,13 +71,13 @@ Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
     
     - $K = r^a \mod n = (g^b)^a \mod n = g^{ab} \mod n$
 
-Questo sistema garantisce che, anche se un **attaccante dovesse intercettare il traffico** e ottenere $m,g,n,r$, non sarebbe comunque in grado di risalire ad $a$$ e $b$ (e quindi alla chiave), grazie alla complessità computazionale del logaritmo discreto.
+Questo sistema garantisce che, anche se un **attaccante dovesse intercettare il traffico** e ottenere $m,g,n,r$, non sarebbe comunque in grado di risalire ad $a$ e $b$ (e quindi alla chiave), grazie alla complessità computazionale del logaritmo discreto.
 
 ### Problema
 
 Se però l’attaccante fosse in grado di **modificare il traffico**, nascerebbero dei problemi (essendo in un canale insicuro, questo non è da escludere)
 
-L’attaccante, Eve, potrebbe far fallire lo scambio ma nel caso peggiore potrebbe fingere di essere Bob per Alice e fingere di essere Alice per Bob.
+L’attaccante (Eve) potrebbe far semplicemente fallire lo scambio, ma nel caso peggiore potrebbe fingere di essere Bob per Alice e fingere di essere Alice per Bob.
 
 ![](https://i.ibb.co/6NjV6z3/image.png)
 
@@ -105,10 +105,10 @@ L’algoritmo più famoso che implementa questo sistema è **RSA** (dal nome dei
 
 Il processo semplificato per la **creazione delle chiavi** è il seguente:
 
-- Scegliere due numeri primi grandi $p, q$
+- Scegliere due numeri primi abbastanza grandi $p, q$ da tenere segreti
 - Calcolare $n = p\cdot q$ e calcolare la funzione toziente $\phi(n) = (p-1)(q-1)$
     
-    La **funzione toziente** (o funzione di Eulero) è una funzione che prende in input un intero $n$ e restituisce il numero di interi compresi tra $1$ e $n$ che sono **coprimi** (non hanno divisori comuni oltre a $1$) con $n$.
+    La **funzione toziente** (o funzione di Eulero) è una funzione che prende in input un intero $n$ e restituisce il numero di interi compresi tra $1$ e $n$ che sono **coprimi** con $n$ (non hanno divisori comuni oltre a $1$).
     
     Esempio  $n = 3 \cdot 5 = 15$, $\phi(15) = (3-1)(5-1) = 8$ infatti i numeri coprimi con $15$ compresi tra $1$ e $15$ sono: $1, 2, 4, 7, 8, 11, 13, 14$
     
@@ -143,7 +143,7 @@ Scegliamo $p = 7, q = 11$ e calcoliamo:
 
 Scegliamo $e = 13$ in modo che non abbia divisori comuni con $60$
 
-per trovare $d$ nella realtà si usa l’algoritmo esteso di Euclide, ma con numeri piccoli si può andare a tentativi per ottenere $d = 37$.
+per trovare $d$ nella realtà si usa l’algoritmo esteso di Euclide, ma con numeri piccoli si può andare a tentativi per ottenere $d = 37$. Infatti $37\cdot 13 \mod 60 = 1$
 
 Assumiamo che il messaggio da inviare sia $M = 00010100_2 = 20_{10}$
 
@@ -183,15 +183,13 @@ Un attaccante può fare la stessa cosa che poteva fare con Diffie-hellman, cioè
 
 ![](https://i.ibb.co/0QJ9V0P/image.png)
 
-Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono quindi essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono pubbliche quindi **non abbiamo bisogno di segretezza**.
-
-(Ricordiamo invece che la cifratura a chiave simmetrica richiede un canale autentico, integro e segreto per lo scambio)
+Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono già pubbliche quindi **non abbiamo bisogno di segretezza**. Ricordiamo invece che la cifratura a chiave simmetrica richiede un canale autenticato, integro e segreto per lo scambio.
 
 ## Firma digitale
 
 Invertendo il ruolo delle chiavi è possibile implementare il concetto di **firma digitale.**
 
-Se Alice cifra un messaggio con la propria chiave privata, allora chiunque può decifrarla usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura. Al contempo Alice non può negare di essere stata lei ad inviare il messaggio. 
+Se Alice **cifra** un messaggio con la **propria chiave privata**, allora **chiunque può decifrarla** usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura. Allo stesso modo Alice non può negare di essere stata lei ad inviare il messaggio.
 
 In questo modo si può usare RSA per garantire **autenticazione** e il **non ripudio** (e usando entrambe le tecniche garantisce anche segretezza).
 

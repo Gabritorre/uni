@@ -1,8 +1,9 @@
-﻿# Count-to-Infinity
+﻿
+# 2024-10-08_Count-to-Infinity
 
 ## Problema del Count-to-infinity
 
-Fino ad ora abbiamo assunto che i pacchetti contenenti di distance vector (DV) venissero sempre consegnati con successo, ma questo non è sempre vero.
+Fino ad ora abbiamo assunto che i pacchetti contenenti i distance vector (DV) venissero sempre consegnati con successo, ma questo non è sempre vero.
 
 Vediamo cosa accade con un fallimento di un link seguito dalla mancanza di arrivo di un pacchetto DV.
 
@@ -10,7 +11,7 @@ Vediamo cosa accade con un fallimento di un link seguito dalla mancanza di arriv
 
 In questo caso il link D-E si è rotto, di conseguenza D imposta il costo delle route verso E, B, C a infinito.
 
-In questo caso D dovrebbe mandare il proprio DV ad A ma supponiamo che ciò non accada in tempo, e che sia A ad inviare il suo DV a D.
+In questo caso D dovrebbe mandare il proprio DV ad A ma supponiamo che ciò non accada (pacchetto perso), e che sia A ad inviare il suo DV a D.
 
 ![](https://i.ibb.co/9rGcVxt/image.png)
 
@@ -22,6 +23,8 @@ A questo punto D manda il suo DV ad A, e questo porta ad aumentare i costi sulla
 
 Il continuo invio di DV tra A e D porterà ad un continuo aumento dei costi fino a infinito, questo problema è chiamato **Count-to-Infinity**.
 
+Possiamo definire il Count-to-infinity in questo modo: è un malfunzionamento in cui due router continuano ad aumentare indefinitamente la distanza verso una destinazione non più raggiungibile, a causa della perdita di pacchetti DV.
+
 ## Prima soluzione
 
 Un primo approccio è quello di generare i DV solo quando si verifica un fail su un link o un cambiamento ai costi dei percorsi.
@@ -29,40 +32,38 @@ Un primo approccio è quello di generare i DV solo quando si verifica un fail su
 Questa non risolve del tutto il problema per due ragioni:
 
 1. c’è comunque la possibilità che D riceva un DV dopo aver rilevato il fallimento di un link ma prima di inviare il suo DV.
-2. c’è la possibilità che il DV venga perso
+2. c’è la possibilità che il DV venga perso.
 
-in entrambi i casi si verifica il comportamento sopra mostrato.
+in entrambi i casi si verifica il problema sopra mostrato.
 
 Possiamo quindi dire che il Count-to-Infinity è possibile se sono presenti le seguenti condizioni:
 
 - La presenza di un loop, nota che un singolo cavo full-duplex crea già un loop in quanto viene usato sia per trasmettere che per ricevere
-- Ci deve essere un cambiamento alla topologia della rete (ad esempio un link failure)
+- Ci deve essere un cambiamento alla topologia della rete (ad esempio la rottura di un link)
 - Perdita di pacchetti contenenti DV
 
 ## Seconda soluzione, Split-Horizon with Poison Reserve
 
-Il problema per cui si verifica il count-to-infinity è perché chi riceve il DV non sa che è il next hop usato dai vicini, e quando il next hop è proprio se stesso allora si verifica il count-to-infinity.
+Il problema per cui si verifica il count-to-infinity è perché chi riceve il DV non sa chi è il next hop usato dai vicini, e quando il next hop è proprio se stesso allora si verifica il count-to-infinity.
 
-Vediamo una variate della tecnica con i DV, in cui il pseudo codice per generare i DV è il seguente:
-
- 
+Vediamo una variate dello pseudo-codice per generare i DV usando **Split-horizon con poison reverse**:
 
 ```python
 Every N seconds:
-    for ifc in interfaces:
-    # one vector for each interface
-        v = Vector()
-        for d in R[]:
-            if (R[d].link != ifc):
-                v.add(Pair(d, R[d].cost))
-            else:
-		            v.add(Pair(d, infinity))
-        send(v, ifc)
+  for ifc in interfaces:
+  # one vector for each interface
+    v = Vector()
+    for d in R[]:   # for each destination in the routing table
+      if (R[d].link != ifc): # if destination doesn't pass through this interface
+        v.add(Pair(d, R[d].cost))
+      else:                  # if destination pass through this interface
+        v.add(Pair(d, infinity))
+    send(v, ifc)
 ```
 
 Con *split-horizon* si intende che ogni distance vector sarà leggermente diverso in base a chi viene mandato.
 
-con *poison* si intende che ad ogni vicino viene detto che non si possiedono dei percorsi che passano per quel vicino.
+Con *poison reverse* si intende che ad ogni vicino viene detto che non si possiedono dei percorsi che passano per quel vicino. Cioè se per raggiungere una destinazione si deve passare attraverso un quel vicino, allora gli comunico una distanza infinita per quella destinazione. Questo serve a evitare che il vicino pensi erroneamente che esista un percorso alternativo attraverso di noi.
 
 Vediamo il funzionamento nella situazione di prima, Quindi il link D-E si rompe, D non manda in tempo il DV ad A, e quindi A manda il suo DV a D:
 
@@ -70,7 +71,7 @@ Vediamo il funzionamento nella situazione di prima, Quindi il link D-E si rompe,
 
 Vediamo come A imposta ad infinito le destinazioni B, C, E dato che per raggiungerli passano per l’interfaccia South, cioè per D al quale stiamo mandando il DV.
 
-Quando D manderà il suo DV ad A, anche lui avrà la tabella aggiornata correttamente.
+Quando D manderà il suo DV ad A, anche A avrà la tabella aggiornata correttamente.
 
 In questo modo il problema del count-to-infinity può essere risolto, ma solamente in presenza di loop composti da 2 router. Con loop più grandi il **problema esiste ancora**.
 
@@ -90,7 +91,7 @@ Così facendo quando E manderà il proprio DV a B verrà aggiornato il costo ver
 
 ## Timer management
 
-un modo per evitare il count-to-update è che quando il costo di un percorso viene impostato a infinito, il router per un certo tempo non accetta modifiche su tale percorso.
+Un modo per evitare il count-to-infinity è che quando il costo di un percorso viene impostato a infinito, il router per un certo tempo non accetta modifiche su tale percorso.
 
 Questo ovviamente rallenta il processo di convergenza della rete.
 

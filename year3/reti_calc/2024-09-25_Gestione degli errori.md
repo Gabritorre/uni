@@ -12,11 +12,11 @@ Possiamo schematizzare la comunicazione in questo modo:
 
 ![](https://i.ibb.co/XD7LsDP/image.png)
 
-Quando l’host A manda dei dati fa partire un **timer**, se arriva un ACK prima che termini il timer allora il timer viene cancellato e si prosegue. Se invece il timer scade prima che arrivi l’ACK, allora viene rimandato il dato.
+Quando l’host A manda dei dati, fa partire un **timer**, se arriva un ACK prima che termini il timer allora il timer viene cancellato e si prosegue. Se invece il timer scade prima che arrivi l’ACK, allora viene rimandato il dato.
 
 Questo timer deve essere lungo almeno quanto il *round trip time* (RTT), cioè il tempo che un dato impiega a raggiungere la destinazione e a tornare indietro al mittente
 
-Un’altra situazione che può accadere è quella in cui l’host B riceve il dato ma il messaggio di ACK non arriva ad A, in questo caso A non ricevendo l’ACK pensa che il dato non sia arrivato e lo rimanda. Così facendo B si ritrova una copia del dato precedente (non sapendo che si tratta di una copia).
+Un’altra situazione che può accadere è quella in cui l’host B riceve il dato ma il messaggio di ACK non arriva ad A. In questo caso A, non ricevendo l’ACK, pensa che il dato non sia arrivato e lo rimanda. Così facendo B si ritrova una copia del dato precedente (non sapendo che si tratta di una copia).
 
 ![](https://i.ibb.co/f0Xrb5P/image.png)
 
@@ -37,7 +37,7 @@ Vediamo come si aggiornano le macchine a stati del trasmettitore e del ricevitor
 
 Le due macchine a stati lavorano correttamente finché sono sincronizzate: se il ricevitore è nello stato in cui si aspetta un dato con bit di sequenza $1$ e il trasmettitore per qualche motivo si riavviasse, allora il trasmettitore continuerebbe a mandare dati con bit di sequenza $0$, portando quindi ad una **de-sincronizzazione**.
 
-Vediamo con con il bit di sequenza si riconoscono frame duplicati
+Vediamo come con il bit di sequenza si riconoscono frame duplicati
 
 ![](https://i.ibb.co/HnsTMpQ/image.png)
 
@@ -69,19 +69,28 @@ Vediamo un esempio di comunicazione con questo sistema:
 
 ![](https://i.ibb.co/NLVQtJv/image.png)
 
-**Nota importante**: la grandezza della finestra non può essere grande quanto la quantità di numeri di sequenza, **deve sempre esserci almeno un numero di sequenza fuori dalla finestra.**
+**Nota importante**: la grandezza della finestra non può essere grande quanto la quantità di numeri di sequenza, **deve sempre esserci almeno un numero di sequenza fuori dalla finestra.** Se così non fosse potrebbe verificarsi un problema di questo tipo:
 
-Dobbiamo però capire come comportarci nel caso dei frame vengono persi.
+1. il mittente invia i frame usando tutti i numeri di sequenza
+2. il destinatario li riceve, fa l’ACK di tutti ma vanno tutti persi
+3. il mittente, non ricevendo gli ACK decide di ritrasmetterli tutti
+4. il destinatario vedendo che i numeri di sequenza combaciano con quelli attesi per dei nuovi dati li considera senza rendersi conto che sono dati duplicati
+
+quindi, lasciando almeno un numero di sequenza libero, il destinatario è in grado di distinguere un nuovo frame e da uno ripetuto.
+
+Dobbiamo però capire come comportarci nel caso in cui dei frame vengano persi.
 
 ## Go-back-n
 
 Go-back-n è una policy per gestire i frame persi.
 
-Il ricevitore accetta solo frame che arrivano in sequenza, viene mandato un ACK contenente il numero di sequenza dell’ultimo frame della sequenza ricevuto.
+Il ricevitore accetta solo frame che arrivano in sequenza, viene mandato un ACK contenente il numero di sequenza dell’ultimo frame della sequenza ricevuto in ordine.
 
-Questo viene chiamato **ACK cumulativo** in quanto viene fatto un ACK di uno specifico frame indicando che tutti i frame con numero di sequenza inferiore sono stati ricevuti.
+Questo viene chiamato **ACK cumulativo** in quanto viene fatto un ACK di uno specifico frame indicando che quello e tutti i frame con numero di sequenza inferiore sono stati ricevuti.
 
-Ad esempio se il ricevitore riceve $1$ poi $2$ poi $3$ farà gli ACK di $1$ poi $2$ poi $3$. Se invece riceve $2$ poi $1$ poi $3$ farà solo l’ACK di $1$.
+Ad esempio se il ricevitore riceve $1$ poi $2$ poi $3$ farà gli ACK di $1$ poi $2$ poi $3$, Se sfortunatamente ACK 1 e 2 vengono persi, l’ACK 3 riesce a confermare l’invio anche di 1 e 2.
+
+Se invece riceve $2$ poi $1$ poi $3$ (fuori ordine) farà solo l’ACK di $1$.
 
 Il ricevitore non ha bisogno di buffer, ma mantiene due variabili e una costante
 
@@ -97,7 +106,7 @@ I frame vengono inviati in ordine di sequenza fino a riempire il buffer.
 
 Utilizza un singolo timer che parte dal momento in cui viene inviato il primo frame.
 
-Quando il trasmettitore riceve un ACK rimuove tutti i frame notificati e fa partire da capo il timer se ci sono ancora frame non notificati nel buffer. Se il timer scade vengono rimandati.
+Quando il trasmettitore riceve un ACK, rimuove tutti i frame notificati e fa partire da capo il timer se ci sono ancora frame non notificati nel buffer. Se il timer scade vengono rimandati.
 
 Il trasmettitore oltre al buffer, utilizza tre variabili e due costanti:
 
@@ -121,7 +130,7 @@ Dal punto di vista del buffer possiamo fare questa rappresentazione riferita all
 
 ![](https://i.ibb.co/zsn5Pfk/esempio-buffer.png)
 
-**Limiti**: il problema principale è che il ricevitore non accetta frame fuori sequenza, quindi In caso di tanti frame persi le performance calano perché anche frame ricevuti correttamente vengono scartati e ritrasmessi solo perché sono stati ricevuti fuori ordine.
+**Limiti**: il problema principale è che il ricevitore non accetta frame fuori sequenza, quindi in caso di tanti frame persi le performance calano perché anche frame ricevuti correttamente vengono scartati e ritrasmessi solo perché sono stati ricevuti fuori ordine.
 
 Un altro problema è che gli ACK possono arrivare in modo non ordinato, ad esempio se viene mandato prima l’ACK di 0 e poi l’ACK di 1 ma durante il viaggio arriva prima l’ACK di 1 e poi quello di 0, accade che la variabile `unack` viene settata erroneamente.
 
@@ -141,7 +150,7 @@ Esempio di comunicazione:
 
 ![](https://i.ibb.co/mXMqLsX/image.png)
 
-Non necessariamente le dimensioni delle finestre devono essere le stesse tra trasmettitore e ricevitore, inoltra possono cambiare di dimensioni in base alle condizioni della rete.
+Non necessariamente le dimensioni delle finestre devono essere le stesse tra trasmettitore e ricevitore, inoltre possono cambiare di dimensioni in base alle condizioni della rete.
 
 ## Piggybacking
 
@@ -149,4 +158,4 @@ In situazioni reali la comunicazione è bidirezionale, non c’è mai un trasmet
 
 È quindi conveniente aggiungere un frame di ACK all’interno di un frame di dati, così da evitare di mandare un intero frame solo per fare un ACK (operazione chiamata *Piggybacking*)
 
-Possiamo quindi avere situazione in cui l’invio di un ACK attende perché si aspetta che venga generato un frame di dati in modo da inviarli assieme.
+Possiamo quindi avere situazione in cui l’invio di un ACK ritarda perché si aspetta che venga generato un frame di dati in modo da inviarli assieme.

@@ -16,9 +16,9 @@ Abbiamo visto come gli host vengano riconosciuti tramite indirizzi di rete e com
 
 A livello applicativo, è presente l'interazione con l'utente, e per quest'ultimo può essere difficile ricordare lunghe sequenze di numeri; è quindi preferibile associare agli indirizzi dei **nomi significativi**.
 
-I **nomi di dominio** sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete.
+I **nomi di dominio** sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete ad un determinato indirizzo.
 
-I nomi di dominio hanno questa forma `www.example.com`, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: `com` è il **Top Level Domain** (TLD) cioè il punto più generico
+I nomi di dominio hanno questa forma `www.example.com`, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: `com` è il **Top Level Domain** (TLD) cioè il punto più generico.
 
 Possiamo vedere la gerarchia dei domini in questo modo:
 
@@ -26,7 +26,7 @@ Possiamo vedere la gerarchia dei domini in questo modo:
 
 Ovviamente è presente molta ridondanza nei nodi e nei root server, questi ultimi hanno un indirizzo fisso e conosciuto.
 
-Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini
+Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini.
 
 L'uso dei nomi di dominio risolve degli importanti problemi come:
 

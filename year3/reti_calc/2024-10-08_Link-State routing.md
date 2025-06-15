@@ -21,13 +21,13 @@ Ogni link ha un **peso**, più grande è peggiore è.
 
 ### LSP
 
-Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i propri link locali a tutta la rete.
+Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i link dei suoi vicini a tutta la rete.
 
 Ogni router costruisce un *link-state packet* (LSP) contenente:
 
 - `LSP.Router`: il suo indirizzo identificativo
 - `LSP.age`: il tempo di vita rimanente del pacchetto
-- `LSP.seq`: numero di sequenza che incrementa ad ogni pacchetto (identifica il pacchetto)
+- `LSP.seq`: numero di sequenza che incrementa ad ogni pacchetto LSP (identifica il pacchetto)
 - `LSP.Links[]`: lista di vicini composta da:
     - `LSP.Links[i].Id`: l’identificativo del vicino
     - `LSP.Links[i].cost`: il costo del link
@@ -39,14 +39,14 @@ Se un router che riceve un LSP che ha già all’interno del suo LSDB con lo ste
 Algoritmo:
 
 ```python
-# links is the set of all links on the router
-# Router R LSP arrival on link l
+# links: is the set of all links on the router
+# Router LSP arrival on link l
 if newer(LSP, LSDB(LSP.Router)): # get last LSP from the DB, compare with current
-		LSDB.add(LSP) # implicitly removes older LSP from same router
-		for i in links:
-				if i != l:
+		LSDB.add(LSP)    # implicitly removes older LSP from same router
+		for i in links:  # flood the new LSP to the neighbors
+				if i != l:   # except the sender
 				  send(LSP, i)
-# else , LSP has already been flooded
+# else, LSP has already been flooded
 ```
 
 Stato di partenza:
@@ -66,6 +66,12 @@ Legenda:
 Quando un link si rompe, i router connessi a tale link generano un nuovo LSP e lo inoltrano alla rete.
 
 Quindi se si rompe il link B-E, il router E manderà un nuovo LSP a D e C che lo inoltreranno a loro volta ai router vicini. Il router B farà lo stesso.
+
+Ad esempio il primo passo della propagazione è il seguente:
+
+![](https://i.ibb.co/9Qyn35S/image.png)
+
+il nodo E manda un LSP con un numero di sequenza incrementato che andrà a sostituire i precedenti negli altri nodi della rete.
 
 ### Note
 

@@ -8,13 +8,13 @@ Un modo per raggirare questo problema è utilizzare **due canali separati per il
 
 Una soluzione al precedente problema senza utilizzare due canali separati è quello di utilizzare un HMAC.
 
-L'**HMAC** (*Hashed Message Authentication Code*) è un meccanismo di autenticazione dei messaggi che utilizza una funzione hash che prende in input il messaggio e una chiave segreta per generare il digest.
+L'**HMAC** (*Hashed Message Authentication Code*) è un meccanismo di autenticazione dei messaggi che utilizza una funzione hash che prende in input il **messaggio** e una **chiave segreta** per generare il digest.
 
 Quindi Alice e Bob devono accordarsi sulla chiave e sulla funzione hash da usare, in questo modo solo loro possono verificare l’integrità del messaggio.
 
 ![](https://i.ibb.co/943vXb6/image.png)
 
-In questo caso se Eve intercetta il messaggio non riesce a calcolare l’hash del messaggio modificato dato che non conosce la chiave, quindi Bob si accorgerebbe che il messaggio non è valido.
+In questo caso se Eve intercetta il messaggio, anche se modificasse il messaggio non riuscirebbe a calcolare il nuovo hash dato che non conosce la chiave, infatti Bob si accorgerebbe che il messaggio non è valido.
 
 Vantaggi:
 
@@ -31,13 +31,13 @@ Spesso i protocolli hanno bisogno di un canale sicuro per poter funzionare, un c
 
 Nel precedente esempio abbiamo bisogno di un canale sicuro per accordarsi sulla chiave.
 
-Il canale dove si scambiano messaggio può essere insicuro, ma viene garantita la segretezza tramite la crittografia ottenuta grazie al precedente scambio di chiavi.
+Il canale dove si scambiano i successivi messaggi può essere insicuro, ma viene garantita la segretezza tramite la crittografia ottenuta grazie al precedente scambio di chiavi.
 
 ### Generazione delle chiavi
 
-Alice e Bob non devono perdere o dimenticarsi la chiave, altrimenti non possono più comunicare, tenteranno quindi di usare una chiave troppo semplice. A questo punto Eve potrebbe fare brute force e indovinare la chiave.
+La generazione della chiave deve essere fatta in modo che Eve non la possa indovinare tramite brute force.
 
-Quello che si può fare è di sfruttare la randomicità delle funzioni hash per generare una chiave di caratteri senza significato partendo da una password facile da ricordare tanto quanto difficile da indovinare.
+Quello che si può fare è di sfruttare la randomicità delle funzioni hash per generare una chiave di caratteri senza significato partendo da una password.
 
 Alice e Bob usano un canale sicuro per accordarsi su una password forte, la chiave sarà ottenuta da una fuzione hash su tale password.
 
@@ -47,11 +47,11 @@ Eve può aspettarsi che venga usata questa tecnica e da qui nasce l’importanza
 
 CRAM-MD5 è un protocollo che permette di avere un servizio di autenticazione dell’utente basato sull’uso dell’HMAC.
 
-Il sistema funziona tramite un  meccanismo di *challenge-response*, immaginiamo che **un client si voglia autenticare al server**, **i**l protocollo funziona in questo modo:
+Il sistema funziona tramite un meccanismo di *challenge-response.* Immaginiamo che **un client si voglia autenticare al server**, il protocollo funziona in questo modo:
 
 - il server crea una challenge $C$ in questo formato “timestamp@dominio” e la manda al client
-- Il client ha la chiave segreta condivisa $K$ e computa $D=\text{HMAC}(C, K)$ rispondendo al server con il proprio username e $D$
-- Il server cerca l’username nel suo database, se presente, ottiene la rispettiva chiave e computa a sua volta $D’ = \text{HMAC}(C, K)$, se $D=D’$ allora l’autenticazione ha successo
+- Il client ha la chiave segreta condivisa $K$, computa $D=\text{HMAC}(C, K)$ e manda $D$ al server assieme ad un username.
+- Il server cerca l’username nel suo database, se presente, ottiene la rispettiva chiave $K$ e computa a sua volta $D’ = \text{HMAC}(C, K)$. Se $D=D’$ allora l’autenticazione ha successo
 
 ![](https://i.ibb.co/WB4RP2J/image.png)
 
@@ -60,11 +60,11 @@ Questo protocollo è deprecato per problemi di sicurezza:
 - la funzione hash che si utilizzava è MD5 che ad oggi non è ritenuta sicura
 - Il client non autentica il server, non sa quindi se è veramente chi dice di essere
 - La chiave viene mantenuta in chiaro nel server
-- Possibili attacchi brute force offline: l’attaccante può intercettare la challenge e l’HMAC, può quindi fare brute force sulla chiave fino a che non ottiene l’HMAC corretto
+- Possibili attacchi brute force offline: l’attaccante può intercettare la challenge $C$ e l’HMAC $D$, può quindi fare brute force sulla chiave $K$ fino a che non ottiene $D$
 
 ## Cifratura a chiave simmetrica
 
-Gli elementi fondamentali di un sistema cifratura sono:
+Gli elementi di un sistema cifratura sono:
 
 - cifrario (algoritmo)
 - chiave (informazione)
@@ -73,7 +73,7 @@ Gli elementi fondamentali di un sistema cifratura sono:
 
 **La segretezza deve stare nella chiave e non nell’algoritmo usato.**
 
-Il funzionamento è simile a quello dell’HMAC: Alice e Bob usano un canale sicuro per accordarsi su una chiave condivisa e sul cifrario da usare (un cifrario ritenuto sicuro oggi è AES).
+Il funzionamento della cifratura a chiave simmetrica è simile a quello dell’HMAC: Alice e Bob usano un canale sicuro per accordarsi su una chiave condivisa e sul cifrario da usare (un cifrario ritenuto sicuro oggi è AES).
 
 - Quando Alice vuole inviare un messaggio, utilizza AES usando come input il messaggio e la chiave, verrà così generato un messaggio criptato
 - Quando Bob riceve il messaggio criptato, utilizza AES usando come input il messaggio criptato e la chiave, recuperando così il messaggio originale
@@ -86,7 +86,7 @@ Ad esempio un cifrario che utilizza solo sostituzioni è il **cifrario di Cesare
 
 ![](https://i.ibb.co/BZPDnHR/image.png)
 
-Un cifrario funziona se non c’è una correlazione statistica (ad esempio la frequenza di lettere) tra il testo in chiaro e il testo cifrato.
+Questo algoritmo è altamente insicuro: un cifrario funziona bene se non c’è una correlazione statistica (ad esempio la frequenza di lettere) tra il testo in chiaro e il testo cifrato. 
 
 Un algoritmo teoricamente perfetto esiste e si chiama One-time-pad (**OTP**) o cifrario di Vernam. È l’unico algoritmo la cui affidabilità è stata dimostrata matematicamente.
 
@@ -94,10 +94,10 @@ Un algoritmo teoricamente perfetto esiste e si chiama One-time-pad (**OTP**) o c
 
 - Alice genera un stringa random $K$ di $n$ bit. Trasmette questa stringa a Bob su un **canale sicuro**
 - Per cifrare un messaggio lungo $m$ bit, con $m < n$, Alice prende una porzione $K’$ della chiave $K$ lunga esattamente quanto il messaggio (quindi $m$ bit) e calcola $C = M\oplus K’$ dove $\oplus$ è l’operazione di XOR binario
-- la porzione di chiave presa non deve essere riutilizzata in futuro.
-- Bob per recuperare il messaggio esegue semplicemente lo XOR tra il messaggio cifrato e la chiave
+- la porzione di chiave $K’$ non deve essere riutilizzata in futuro.
+- Bob per recuperare il messaggio esegue semplicemente lo XOR tra il messaggio cifrato e la porzione di chiave
 
-Questo sistema è ritenuto perfetto perché se immaginiamo di avere un messaggio di 3 bit e quindi anche una chiave di 3 bit, a causa dell’operazione di XOR fare un attacco di brute force equivale a ottenere tutte le possibili stringhe composte da 3 bit.
+Questo sistema è ritenuto perfetto perché se immaginiamo di avere un messaggio di 3 bit e quindi anche una chiave di 3 bit, a causa dell’operazione di XOR, fare un attacco di brute force equivale a ottenere tutte le possibili stringhe composte da 3 bit.
 
 Quindi facendo brute force sulla chiave si ottengono messaggi diversi che possono essere perfettamente validi e plausibili
 
@@ -111,7 +111,7 @@ Nonostante la sua sicurezza dimostrata, non è utilizzato nella realtà per moti
 
 - ha bisogno di numeri veramente random e non pseudorandom
 - mittente e il destinatario devono scambiarsi in modo sicuro una chiave segreta condivisa, lunga **almeno quanto il messaggio** da cifrare, tanto vale allora usare il canale sicuro per inviare direttamente il messaggio.
-- le chiavi possiedono un solo utilizzo (da cui deriva il “One-time”)
+- le chiavi possiedono un solo utilizzo (da cui deriva il “One-time”). Riutilizzare porzioni della stessa chiave porterebbe a correlazioni statistiche tra testo in chiaro e testo cifrato.
 
 ## Approccio degli algoritmi moderni
 
@@ -122,19 +122,19 @@ Gli algoritmi moderni usano **combinazioni ripetute di sostituzioni e trasposizi
 
 ## Comunicazione finale
 
-Una volta che Alice e Bob hanno concordato una chiave condivisa in modo sicuro, allora possiamo garantire **integrità, Segretezza e autenticazione**, usando HMAC e cifratura.
+Una volta che Alice e Bob hanno concordato una chiave condivisa in modo sicuro, possiamo garantire **integrità, Segretezza e autenticazione**, usando HMAC e cifratura.
 
 ![](https://i.ibb.co/1fMSBkb/image.png)
 
-1. Alice usa la cifratura a chiave simmetrica per cifrare il messaggio
+1. Alice usa la cifratura a chiave simmetrica (AES) per cifrare il messaggio
 2. Il messaggio cifrato assieme alla chiave vengono dati alla funzione hash dell’HMAC, che produce un digest
 3. il digest e il messaggio cifrato vengono concatenati e mandati al canale di comunicazione
 4. Bob riceve i dati e separa il digest dal messaggio cifrato
 5. manda il messaggio cifrato assieme alla chiave alla funzione hash dell’HMAC per ottenere un digest candidato
-6. il digest generato viene confrontato con il digest ricevuto:
+6. il digest candidato viene confrontato con il digest ricevuto:
     1. se sono uguali allora il messaggio non è stato manomesso e il processo continua
     2. se sono diversi allora il messaggio è stato manomesso e il processo si ferma
-7. Bob decifra il messaggio cifrato usando la chiave
+7. Bob decifra il messaggio cifrato usando la chiave condivisa
 8. Bob ha recuperato il messaggio originale, sapendo che è integro, la comunicazione è stata segreta e il mittente è sicuramente Alice (in quanto è l’unica altra persona a conoscere la chiave condivisa)
 
 Questo metodo è sufficientemente sicuro fintanto che:

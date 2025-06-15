@@ -8,17 +8,17 @@ Le limitazioni del livello fisico (desincronizzazione e disturbo) obbligano il l
 
 Un problema, ad esempio, è far capire al ricevitore quando inizia e quando finisce il frame.
 
-Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary maker*.
+Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary marker*.
 
-Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma verrebbe interpretata come la fine del frame.
+problema: Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma così facendo verrebbe interpretata come la fine del frame.
 
 Il **bit stuffing** è una codifica che si occupa di evitare che ciò accada con i seguenti passaggi:
 
 1. Viene trasmesso il marker di inizio frame $01111110$
-2. Trasmette i bit del frame aggiungendo uno $0$ dopo ogni sequenza di cinque $1$ consecutivi
+2. Trasmette i bit del frame aggiungendo uno $0$ (*bit stuffed*) dopo ogni sequenza di cinque $1$ consecutivi
 3. Viene trasmesso il marker di fine frame $01111110$
 
-Il ricevitore decodificherà di conseguenza nel seguente modo:
+Il ricevitore decodificherà nel seguente modo:
 
 1. Riconosce l’inizio del frame tramite il marker $01111110$
 2. Processa i bit del frame:
@@ -33,11 +33,11 @@ $$
 
 Questa codifica però provoca un **protocol overhead**: cioè dati extra trasmessi per rendere la comunicazione possibile, riducendo così il bit-rate disponibile calcolato con Shannon e Nyquist.
 
-In particolare abbiamo 16 bit per i marker e con stringhe formate da molti $1$ vengono aggiunti molti $0$ per evitare che siano interpretati come fine frame.
+In particolare abbiamo 16 bit per i marker e, con stringhe formate da molti $1$, vengono aggiunti molti $0$ per evitare che siano interpretati come fine frame.
 
-D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i bit stuffed, per compensare bisognerebbe aumentare la grandezza dei frame per evitare di avere più bit di overhead che bit utili.
+D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i *bit stuffed.* Per compensare bisognerebbe aumentare la grandezza totale dei frame per evitare di avere più bit di overhead che bit utili.
 
-Tutti questi bit aggiunti vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui *bit stuffed* provocando gravi errori nella decodifica.
+Tutti questi bit aggiuntivi vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui *bit stuffed* provocando errori nella decodifica.
 
 Definiamo **BER** (*Bit Error Rate*) come la probabilità che un singolo bit sia decodificato in modo errato.
 
@@ -91,7 +91,7 @@ Possiamo rappresentare il data link layer come una macchina a stati finiti, comp
 
 ## Riconoscimento degli errori
 
-Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso
+Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso.
 
 Vediamo innanzitutto come **riconoscere gli errori** (*error detection*)
 
@@ -106,7 +106,7 @@ $$
 0100011 \longrightarrow 0100011\textbf{1}
 $$
 
-a livello computazionale il bit di parità (con numero di $1$ pari) è dato dalla somma dei bit in modulo 2
+a livello computazionale il valore del bit di parità (con numero di $1$ pari) è dato dalla somma dei bit in modulo 2
 
 $$
 \text{Parity bit} = (0 + 1 + 0 + 0 + 0 + 1 + 1) \mod{2}=\\
@@ -129,7 +129,7 @@ Nel data link layer viene usato un altro sistema di riconoscimento degli errori 
 
 Data la sua complicatezza vediamo un altro sistema basato sulla checksum che viene usato a livello IP dello stack protocollare, ma sarà utile per capire il concetto di **checksum**.
 
-Con **checksum** si intende la somma aritmetica di tutti i bit di cui il frame è composto.
+**Checksum** è una tecnica utilizzata per verificare l'integrità dei dati trasmessi all'interno di un pacchetto.
 
 l’**IP checksum** (o *internet checksum*) è un campo di 16bit ottenuto dal complemento a 1 della somma in complemento a 1 di tutte le parole di 16bit
 
@@ -151,7 +151,7 @@ $$
 
 Se il riporto si ripresenta anche dopo averlo risommato, bisogna continuare a sommarlo fino a che non rimane nessun riporto.
 
-Vediamo un esempi di calcolo della checksum con parole di lunghezza 4 bit
+Vediamo un esempio di calcolo della checksum con parole di lunghezza 4 bit
 
 Stringa: $1100\,0011\,1010\,1110\,1001$
 

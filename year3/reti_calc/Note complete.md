@@ -3,7 +3,7 @@
 Internet e più in generale le reti sono una struttura:
 
 - **decentralizzata**: non c’è un coordinatore globale, si può quindi espandere liberamente
-- **robusta:** in caso di fallimento di una strada per la comunicazione riesce comunque a trovare una via alternativa
+- **robusta:** in caso di fallimento di un percorso verso la destinazione, riesce comunque a trovare una via alternativa
 - **inter-operativa:** utilizza varie tecnologie che riescono a comunicare tra loro (cavo in rame, wireless, fibra, …)
 - **versatile**: trasporta vari tipi di informazione (testo, video, audio, …)
 
@@ -16,10 +16,10 @@ Due esempi di *network stack* sono **TCP/IP** e **ISO-OSI**:
 
 - TCP/IP è il modello che viene utilizzato su internet, formato dai seguenti livelli:
     - *Application layer*: descrive il comportamento dell’applicazione ad alto livello
-    - *Transport layer*: si occupano dell’affidabilità delle connessioni
+    - *Transport layer*: si occupa dell’affidabilità delle connessioni
     - *Internet/IP layer*: fornisce funzioni di interoperabilità tra veri medium fisici e instradamento
     - *Link layer*: descrive la comunicazione fisica
-- ISO-OSI è più dettagliato ma è utile a livello teorico/accademico ed è formato dai seguenti livelli:
+- ISO-OSI è più dettagliato e quindi utile a livello teorico/accademico ed è formato dai seguenti livelli:
     - *Application layer*
     - *Presentation layer*: descrive come visualizzare i dati
     - *session layer*: descrive come mantenere la sessione utente
@@ -73,21 +73,21 @@ Possiamo quindi dire che si misura con il rapporto J/s (Joule per secondo) che c
 
 Gli elettroni sono particelle con carica negativa che, in alcuni materiali, possono muoversi liberamente all'interno della struttura.
 
-Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati **conduttori**, mentre quelli in cui il movimento degli elettroni è fortemente limitato o impedito sono chiamati **isolanti**.
+Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati **conduttori**, mentre quelli in cui il movimento degli elettroni è fortemente limitato sono chiamati **isolanti**.
 
-La **corrente elettrica** è una misura del flusso di carica per unità di tempo, espressa in Coulomb al secondo (C/s), un'unità che prende il nome di **Ampere**.
+La **corrente elettrica** è la misura del flusso di carica per unità di tempo, espressa in Coulomb al secondo (C/s), un'unità che prende il nome di **Ampere**.
 
 Un generatore di corrente, pensiamo alla batteria, “spinge” gli elettroni in un filo conduttore facendo passare gli elettroni da una velocità quasi nulla ad una certa velocità e in una certa direzione. Per accelerare degli elettroni per un tempo $t$ il generatore **consuma potenza.**
 
 ## Resistenza
 
-Quando gli elettroni si muovono rimbalzano nella struttura del materiale, perdendo così dell’energia (che viene trasferita al materiale stesso sotto forma di calore).
+Quando gli elettroni si muovono, rimbalzano nella struttura del materiale, perdendo così dell’energia (che viene trasferita al materiale stesso sotto forma di calore).
 
 Questo è importante perché nelle telecomunicazioni questa perdita di energia si traduce in una attenuazione del segnale rispetto a quello di partenza.
 
-La **resistenza** è un componente che serve a regolare la quantità di corrente che circola in un circuito, dissipandola in calore in modo da evitare una quantità esagerata di corrente sui componenti.
+La **resistenza** serve a regolare la quantità di corrente che circola in un circuito, dissipandola in calore in modo da evitare che una quantità esagerata di corrente attraversi i componenti.
 
-Nelle telecomunicazioni la resistenza può essere un ricevitore (una radio) che riceve una corrente.
+Nelle telecomunicazioni la resistenza può essere un ricevitore radio.
 
 Si definisce **sensibilità** la quantità minima di potenza necessaria affinché il sensore del ricevitore riesca a rilevare la presenza di corrente
 
@@ -106,13 +106,13 @@ Accendere e spegnere l’interruttore periodicamente, permette di generare degli
 
 ## Attenuazione
 
-Come accettato sulla parte della resistenza il cavo di per sé è una resistenza, quindi un po’ di potenza si disperde sotto forma di calore nel cavo.
+Come accennato precedentemente, il cavo di per sé è una resistenza, quindi un po’ di potenza si disperde sotto forma di calore nel cavo.
 
 Questa perdita di potenza si traduce in una **attenuazione del segnale** durante il percorso.
 
 L’attenuazione dipende principalmente dal tipo di materiale, dalla sua grandezza e dalla sua lunghezza.
 
-In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante in quanto l’ampiezza del segnale ricevuto è minore rispetto all’ampiezza del messaggio trasmesso.
+In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante in quanto l’ampiezza del segnale ricevuto è minore rispetto all’ampiezza di quanto è stato trasmesso.
 
 ![](https://i.ibb.co/VJVZcJs/image.png)
 
@@ -122,7 +122,7 @@ Gli elettroni (o qualsiasi altro mezzo di comunicazione) hanno una velocità fin
 
 Indichiamo con **Delay (ritardo / latenza)** il tempo che passa dal momento dell’invio del segnale al momento in cui il segnale inizia ad essere ricevuto.
 
-Più distante è il ricevitore più questo ritardo sarà grande
+Più distante è il ricevitore più questo ritardo sarà grande.
 
 In questo contesto è importante la **sincronizzazione** tra il trasmittente e il ricevitore, cioè si devono accordare per stabilire quando un simbolo inizia e quando un simbolo finisce (e quindi la sua durata).
 
@@ -142,7 +142,7 @@ $$
 \text{SNR} = \frac{S}{N} = \frac{\text{Potenza del segnale ricevuto}}{\text{Stima di potenza del Rumore}}
 $$
 
-Mi dice quanto della potenza che ho ricevuto fa parte del segnale vero e quanto è invece rumore.
+Mi dice quanto della potenza che ho ricevuto fa parte del segnale vero e quanto invece è rumore.
 
 La potenza del rumore è una stima che si può ottenere quando nessuno trasmette, in quanto si ottiene solo rumore.
 
@@ -159,7 +159,7 @@ La modulazione è un insieme di tecniche per trasmettere informazioni, è compos
 - Il **segnale portante** (*carrier signal*): una sinusoide con una certa frequenza $f_c$ costante
 - Il **segnale modulante** (*modulating signal*): il segnale che vogliamo trasmettere contenente l’informazione
 
-L’idea è quello di andare a influenzare il segnale portante sull’**ampiezza** o sulla **frequenza** in modo da produrre un nuovo segnale (il **segnale modulato**) che codifica una informazione contenuta nel segnale modulante.
+L’idea è quella di andare a influenzare il segnale portante sull’**ampiezza (AM)** o sulla **frequenza (FM)** in modo da produrre un nuovo segnale (il **segnale modulato**) che codifica l’informazione contenuta nel segnale modulante.
 
 ![](https://upload.wikimedia.org/wikipedia/commons/a/a4/Amfm3-en-de.gif)
 
@@ -167,7 +167,7 @@ L’idea è quello di andare a influenzare il segnale portante sull’**ampiezza
 
 ![](https://i.ibb.co/TcSVWPQ/image.png)
 
-In questa tecnica di modulazione il segnale viene codificato modificando la frequenza del segnale portante. Possiamo, ad esempio, codificare 1 quando abbiamo una alta frequenza e 0 altrimenti.
+In questa tecnica di modulazione il segnale viene codificato **modificando la frequenza** del segnale portante. Possiamo, ad esempio, codificare 1 quando abbiamo una alta frequenza e 0 altrimenti.
 
 Abbiamo una portante $p(t) = A\cos(2\pi f_p t)$ e un segnale digitale $m(t)$ da trasmettere (dato che è digitale trasporterà 0 e 1).
 
@@ -212,7 +212,7 @@ $t = \frac{1}{2}$, $f_p = \frac{3}{2}$ abbiamo $A\cdot \cos(2\pi\frac{3}{2}\frac
 
 abbiamo fatto tre quarti di onda in mezzo secondo.
 
-Se abbiamo una frequenza $f_p = 4$ e supponiamo che un bit sia determinato da 4 oscillazioni, stiamo mandando un simbolo ogni secondo **boud-rate (1 Bd/s)**.
+Se abbiamo una frequenza $f_p = 4$ e supponiamo che un bit sia determinato da 4 oscillazioni, stiamo mandando un simbolo ogni secondo, **boud-rate (1 Bd/s)**.
 
 In questo specifico caso un simbolo corrisponde ad un singolo bit, quindi il **bit-rate è 1 b/s.**
 
@@ -228,38 +228,42 @@ si avrebbe quindi $2 \cdot 1 = 2$ b/s
 
 Per aumentare il bit-rate si può
 
-1. diminuire il numero di oscillazioni richieste per simbolo (aumentare il boud-rate)
+1. diminuire il numero di oscillazioni richieste per simbolo (aumentare il boud-rate).
+    
+    Bisogna stare attenti perché si sta diminuendo il tempo in cui si ha alta frequenza e dobbiamo tenere in considerazione che c’è sempre del rumore che dobbiamo riuscire a distinguere dal segnale reale (risulta quindi più difficile distinguere i simboli)
+    
 2. aumentare il numero di bit per simbolo
-
-Per il primo bisogna stare attenti perché si sta diminuendo il tempo in cui si ha alta frequenza e dobbiamo tenere in considerazione che c’è sempre del rumore che dobbiamo riuscire a distinguere dal segnale reale (risulta quindi più difficile distinguere i simboli)
-
-per il punto 2, aumentare il numero di bit significa aumentare il numero di frequenze diverse in modo da riconoscere tutti i possibili bit.
+    
+    aumentare il numero di bit significa aumentare il numero di frequenze diverse che sono associate alle possibili combinazioni di bit. In questo modo però diventa anche più difficile distinguere le varie frequenze.
+    
 
 ### Bandwidth
 
-***Bandwidth* o larghezza di banda** è l’intervallo tra la frequenza più bassa e quella più alta che si usa per comunicare.
+***Bandwidth* o larghezza di banda** è l’intervallo tra la frequenza più alta e quella più bassa che si usa per comunicare.
 
 $$
 \text{Bandwith} = f_{\max} - f_{\min}
 $$
 
-Se si vuole aumentare il bit-rate è necessario aumentare la larghezza di banda.
+Se si vuole aumentare il bit-rate si può anche optare per aumentare la larghezza di banda.
 
 Nell’esempio precedente con un simbolo uguale ad un bit la larghezza di banda andava da $f_p$ a $f_p (1 + \Delta)$
 
-Nelle reti wireless utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore nei loro segnali.
+Nelle reti wireless, utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore nei loro segnali.
 
 Per questo motivo segnali 4G, segnali televisivi, segnali wifi lavorano su bande diverse. 
 
 ## Teorema di Nyquist
 
-Il teorema dice che se la tua comunicazione usa una larghezza di banda $B$ e si usano $M$ livelli discreti di frequenza (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è:
+Il teorema dice che se la comunicazione usa una larghezza di banda $B$ e si usano $M$ livelli discreti di frequenza (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è:
 
 $$
 C_N = 2B\log_2(M)
 $$
 
 $M$ solitamente è una potenza di 2.
+
+Si tratta di un limite teorico in quanto **non viene considerato il rumore**
 
 ### Esercizio
 
@@ -273,13 +277,11 @@ $B = 2.441.000.000 - 2.401.000.000 = 40.000.000$
 
 $C = 2\cdot 40.000.000 \log_2(4) = 80.000.000 \cdot 2 = 160.000.000 = 160$ Mb/s
 
-Si tratta di un limite teorico in quanto non viene considerato il **rumore**
-
 ## Teorema di Shannon
 
-Il teorema di Shannon introduce un limite più stretto alla capacità considerando il rumore
+Il teorema di Shannon introduce un limite più stretto alla capacità considerando il rumore.
 
-Il teorema dice che la capacità del canale massima in bit/s con banda $B$ con aggiunta di una gaussiana di rumore bianco è data da:
+Il teorema dice che la capacità massima del canale in bit/s data una larghezza di banda $B$ con l’aggiunta di una gaussiana di rumore bianco è data da:
 
 $$
 C_S = B\log_2\left(1+ \frac{S}{N}\right)
@@ -289,11 +291,11 @@ $\frac{S}{N}$ è il rapporto segnale rumore SNR
 
 ## Nyquist vs Shannon
 
-Nyquist opera su una situazione ideale senza rumore. Shannon è più restrittivo considerando il rumore, non puoi raggiungere $C$ anche se Nyquist te lo permetterebbe.
+Nyquist opera su una situazione ideale senza rumore. Shannon è più restrittivo considerando il rumore, non è quindi possibile raggiungere la capacità di Shannon, anche se Nyquist lo permetterebbe.
 
 Se il rapporto segnale rumore è basso sarà più difficile distinguere il rumore dal segnale, in altre parole il rapporto segnale rumore determina il massimo valore di $M$ (il numero di simboli).
 
-$B, S, N$ sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione)
+$B, S, N$ sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione).
 
 ### Esempio
 
@@ -330,17 +332,17 @@ Le limitazioni del livello fisico (desincronizzazione e disturbo) obbligano il l
 
 Un problema, ad esempio, è far capire al ricevitore quando inizia e quando finisce il frame.
 
-Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary maker*.
+Quello che possiamo fare è usare delle stringhe di bit particolari per delimitare l’inizio e la fine del frame, ad esempio la stringa $01111110$, che possiamo chiamare *frame boundary marker*.
 
-Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma verrebbe interpretata come la fine del frame.
+problema: Il mittente potrebbe però voler inserire tale stringa all’interno del proprio messaggio, ma così facendo verrebbe interpretata come la fine del frame.
 
 Il **bit stuffing** è una codifica che si occupa di evitare che ciò accada con i seguenti passaggi:
 
 1. Viene trasmesso il marker di inizio frame $01111110$
-2. Trasmette i bit del frame aggiungendo uno $0$ dopo ogni sequenza di cinque $1$ consecutivi
+2. Trasmette i bit del frame aggiungendo uno $0$ (*bit stuffed*) dopo ogni sequenza di cinque $1$ consecutivi
 3. Viene trasmesso il marker di fine frame $01111110$
 
-Il ricevitore decodificherà di conseguenza nel seguente modo:
+Il ricevitore decodificherà nel seguente modo:
 
 1. Riconosce l’inizio del frame tramite il marker $01111110$
 2. Processa i bit del frame:
@@ -355,11 +357,11 @@ $$
 
 Questa codifica però provoca un **protocol overhead**: cioè dati extra trasmessi per rendere la comunicazione possibile, riducendo così il bit-rate disponibile calcolato con Shannon e Nyquist.
 
-In particolare abbiamo 16 bit per i marker e con stringhe formate da molti $1$ vengono aggiunti molti $0$ per evitare che siano interpretati come fine frame.
+In particolare abbiamo 16 bit per i marker e, con stringhe formate da molti $1$, vengono aggiunti molti $0$ per evitare che siano interpretati come fine frame.
 
-D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i bit stuffed, per compensare bisognerebbe aumentare la grandezza dei frame per evitare di avere più bit di overhead che bit utili.
+D’altra parte più lunghi sono i marker, più è grande l’overhead fisso ma meno saranno i *bit stuffed.* Per compensare bisognerebbe aumentare la grandezza totale dei frame per evitare di avere più bit di overhead che bit utili.
 
-Tutti questi bit aggiunti vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui *bit stuffed* provocando gravi errori nella decodifica.
+Tutti questi bit aggiuntivi vanno poi scartati dal ricevitore. Inoltre gli errori del livello fisico possono accadere proprio sui marker o sui *bit stuffed* provocando errori nella decodifica.
 
 Definiamo **BER** (*Bit Error Rate*) come la probabilità che un singolo bit sia decodificato in modo errato.
 
@@ -413,7 +415,7 @@ Possiamo rappresentare il data link layer come una macchina a stati finiti, comp
 
 ## Riconoscimento degli errori
 
-Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso
+Il precedente sistema funziona correttamente sotto l’assunzione che non ci possano essere errori sui frame, ma il layer fisico può subire alterazione del tipo: bit invertiti, bit mancanti o bit in eccesso.
 
 Vediamo innanzitutto come **riconoscere gli errori** (*error detection*)
 
@@ -428,7 +430,7 @@ $$
 0100011 \longrightarrow 0100011\textbf{1}
 $$
 
-a livello computazionale il bit di parità (con numero di $1$ pari) è dato dalla somma dei bit in modulo 2
+a livello computazionale il valore del bit di parità (con numero di $1$ pari) è dato dalla somma dei bit in modulo 2
 
 $$
 \text{Parity bit} = (0 + 1 + 0 + 0 + 0 + 1 + 1) \mod{2}=\\
@@ -451,7 +453,7 @@ Nel data link layer viene usato un altro sistema di riconoscimento degli errori 
 
 Data la sua complicatezza vediamo un altro sistema basato sulla checksum che viene usato a livello IP dello stack protocollare, ma sarà utile per capire il concetto di **checksum**.
 
-Con **checksum** si intende la somma aritmetica di tutti i bit di cui il frame è composto.
+**Checksum** è una tecnica utilizzata per verificare l'integrità dei dati trasmessi all'interno di un pacchetto.
 
 l’**IP checksum** (o *internet checksum*) è un campo di 16bit ottenuto dal complemento a 1 della somma in complemento a 1 di tutte le parole di 16bit
 
@@ -473,7 +475,7 @@ $$
 
 Se il riporto si ripresenta anche dopo averlo risommato, bisogna continuare a sommarlo fino a che non rimane nessun riporto.
 
-Vediamo un esempi di calcolo della checksum con parole di lunghezza 4 bit
+Vediamo un esempio di calcolo della checksum con parole di lunghezza 4 bit
 
 Stringa: $1100\,0011\,1010\,1110\,1001$
 
@@ -551,11 +553,11 @@ Possiamo schematizzare la comunicazione in questo modo:
 
 ![](https://i.ibb.co/XD7LsDP/image.png)
 
-Quando l’host A manda dei dati fa partire un **timer**, se arriva un ACK prima che termini il timer allora il timer viene cancellato e si prosegue. Se invece il timer scade prima che arrivi l’ACK, allora viene rimandato il dato.
+Quando l’host A manda dei dati, fa partire un **timer**, se arriva un ACK prima che termini il timer allora il timer viene cancellato e si prosegue. Se invece il timer scade prima che arrivi l’ACK, allora viene rimandato il dato.
 
 Questo timer deve essere lungo almeno quanto il *round trip time* (RTT), cioè il tempo che un dato impiega a raggiungere la destinazione e a tornare indietro al mittente
 
-Un’altra situazione che può accadere è quella in cui l’host B riceve il dato ma il messaggio di ACK non arriva ad A, in questo caso A non ricevendo l’ACK pensa che il dato non sia arrivato e lo rimanda. Così facendo B si ritrova una copia del dato precedente (non sapendo che si tratta di una copia).
+Un’altra situazione che può accadere è quella in cui l’host B riceve il dato ma il messaggio di ACK non arriva ad A. In questo caso A, non ricevendo l’ACK, pensa che il dato non sia arrivato e lo rimanda. Così facendo B si ritrova una copia del dato precedente (non sapendo che si tratta di una copia).
 
 ![](https://i.ibb.co/f0Xrb5P/image.png)
 
@@ -576,7 +578,7 @@ Vediamo come si aggiornano le macchine a stati del trasmettitore e del ricevitor
 
 Le due macchine a stati lavorano correttamente finché sono sincronizzate: se il ricevitore è nello stato in cui si aspetta un dato con bit di sequenza $1$ e il trasmettitore per qualche motivo si riavviasse, allora il trasmettitore continuerebbe a mandare dati con bit di sequenza $0$, portando quindi ad una **de-sincronizzazione**.
 
-Vediamo con con il bit di sequenza si riconoscono frame duplicati
+Vediamo come con il bit di sequenza si riconoscono frame duplicati
 
 ![](https://i.ibb.co/HnsTMpQ/image.png)
 
@@ -608,19 +610,28 @@ Vediamo un esempio di comunicazione con questo sistema:
 
 ![](https://i.ibb.co/NLVQtJv/image.png)
 
-**Nota importante**: la grandezza della finestra non può essere grande quanto la quantità di numeri di sequenza, **deve sempre esserci almeno un numero di sequenza fuori dalla finestra.**
+**Nota importante**: la grandezza della finestra non può essere grande quanto la quantità di numeri di sequenza, **deve sempre esserci almeno un numero di sequenza fuori dalla finestra.** Se così non fosse potrebbe verificarsi un problema di questo tipo:
 
-Dobbiamo però capire come comportarci nel caso dei frame vengono persi.
+1. il mittente invia i frame usando tutti i numeri di sequenza
+2. il destinatario li riceve, fa l’ACK di tutti ma vanno tutti persi
+3. il mittente, non ricevendo gli ACK decide di ritrasmetterli tutti
+4. il destinatario vedendo che i numeri di sequenza combaciano con quelli attesi per dei nuovi dati li considera senza rendersi conto che sono dati duplicati
+
+quindi, lasciando almeno un numero di sequenza libero, il destinatario è in grado di distinguere un nuovo frame e da uno ripetuto.
+
+Dobbiamo però capire come comportarci nel caso in cui dei frame vengano persi.
 
 ## Go-back-n
 
 Go-back-n è una policy per gestire i frame persi.
 
-Il ricevitore accetta solo frame che arrivano in sequenza, viene mandato un ACK contenente il numero di sequenza dell’ultimo frame della sequenza ricevuto.
+Il ricevitore accetta solo frame che arrivano in sequenza, viene mandato un ACK contenente il numero di sequenza dell’ultimo frame della sequenza ricevuto in ordine.
 
-Questo viene chiamato **ACK cumulativo** in quanto viene fatto un ACK di uno specifico frame indicando che tutti i frame con numero di sequenza inferiore sono stati ricevuti.
+Questo viene chiamato **ACK cumulativo** in quanto viene fatto un ACK di uno specifico frame indicando che quello e tutti i frame con numero di sequenza inferiore sono stati ricevuti.
 
-Ad esempio se il ricevitore riceve $1$ poi $2$ poi $3$ farà gli ACK di $1$ poi $2$ poi $3$. Se invece riceve $2$ poi $1$ poi $3$ farà solo l’ACK di $1$.
+Ad esempio se il ricevitore riceve $1$ poi $2$ poi $3$ farà gli ACK di $1$ poi $2$ poi $3$, Se sfortunatamente ACK 1 e 2 vengono persi, l’ACK 3 riesce a confermare l’invio anche di 1 e 2.
+
+Se invece riceve $2$ poi $1$ poi $3$ (fuori ordine) farà solo l’ACK di $1$.
 
 Il ricevitore non ha bisogno di buffer, ma mantiene due variabili e una costante
 
@@ -636,7 +647,7 @@ I frame vengono inviati in ordine di sequenza fino a riempire il buffer.
 
 Utilizza un singolo timer che parte dal momento in cui viene inviato il primo frame.
 
-Quando il trasmettitore riceve un ACK rimuove tutti i frame notificati e fa partire da capo il timer se ci sono ancora frame non notificati nel buffer. Se il timer scade vengono rimandati.
+Quando il trasmettitore riceve un ACK, rimuove tutti i frame notificati e fa partire da capo il timer se ci sono ancora frame non notificati nel buffer. Se il timer scade vengono rimandati.
 
 Il trasmettitore oltre al buffer, utilizza tre variabili e due costanti:
 
@@ -660,7 +671,7 @@ Dal punto di vista del buffer possiamo fare questa rappresentazione riferita all
 
 ![](https://i.ibb.co/zsn5Pfk/esempio-buffer.png)
 
-**Limiti**: il problema principale è che il ricevitore non accetta frame fuori sequenza, quindi In caso di tanti frame persi le performance calano perché anche frame ricevuti correttamente vengono scartati e ritrasmessi solo perché sono stati ricevuti fuori ordine.
+**Limiti**: il problema principale è che il ricevitore non accetta frame fuori sequenza, quindi in caso di tanti frame persi le performance calano perché anche frame ricevuti correttamente vengono scartati e ritrasmessi solo perché sono stati ricevuti fuori ordine.
 
 Un altro problema è che gli ACK possono arrivare in modo non ordinato, ad esempio se viene mandato prima l’ACK di 0 e poi l’ACK di 1 ma durante il viaggio arriva prima l’ACK di 1 e poi quello di 0, accade che la variabile `unack` viene settata erroneamente.
 
@@ -680,7 +691,7 @@ Esempio di comunicazione:
 
 ![](https://i.ibb.co/mXMqLsX/image.png)
 
-Non necessariamente le dimensioni delle finestre devono essere le stesse tra trasmettitore e ricevitore, inoltra possono cambiare di dimensioni in base alle condizioni della rete.
+Non necessariamente le dimensioni delle finestre devono essere le stesse tra trasmettitore e ricevitore, inoltre possono cambiare di dimensioni in base alle condizioni della rete.
 
 ## Piggybacking
 
@@ -688,7 +699,7 @@ In situazioni reali la comunicazione è bidirezionale, non c’è mai un trasmet
 
 È quindi conveniente aggiungere un frame di ACK all’interno di un frame di dati, così da evitare di mandare un intero frame solo per fare un ACK (operazione chiamata *Piggybacking*)
 
-Possiamo quindi avere situazione in cui l’invio di un ACK attende perché si aspetta che venga generato un frame di dati in modo da inviarli assieme.
+Possiamo quindi avere situazione in cui l’invio di un ACK ritarda perché si aspetta che venga generato un frame di dati in modo da inviarli assieme.
 
 
 
@@ -721,7 +732,7 @@ Vediamo varia topologie di rete:
 - **Rete ad albero**:
     - Si ha una struttura ad albero in cui i nodi sono delle LAN (una rete a stella)
     - molto scalabile
-    - non resistente ai fallimenti, se un link che connette due nodi la rete si disconnette
+    - non resistente ai fallimenti, se un link che connette due nodi si rompe la rete si disconnette
 - Reti Data center e Fat tree
     - sono reti utilizzate in ambito server che si basano sulla topologia ad albero ma hanno una forte ridondanza
 
@@ -741,17 +752,17 @@ Nelle topologie ad albero bisogna avere link con maggiore capacità vicino alla 
 
 ## Reti wireless
 
-Le reti wireless sono organizzate come rete a stella (gli host non parlano direttamente tra di loro) ma fisicamente funzionano come una rete bus, dove al posto di avere un cavo coassiale condiviso per tutti, si ha un segnale radio.
+Le reti wireless sono organizzate come reti a stella (gli host non parlano direttamente tra di loro) ma fisicamente funzionano come una rete bus, dove al posto di avere un cavo coassiale condiviso per tutti, si ha un segnale radio.
 
-Dato che il range di frequenza è limitato, un compito del data link layer è quello di schedulare l’accesso al mezzo fisico per evitare collisioni quando più host comunicano contemporaneamente con il ricevitore (*l’access point*).
+Dato che il range di frequenze è limitato, un compito del data link layer è quello di schedulare l’accesso al mezzo fisico per evitare collisioni quando più host comunicano contemporaneamente con il ricevitore (*l’access point*).
 
 Vediamo vari metodi per ottenere questo scheduling, spesso usati insieme.
 
 ## FDMA (Frequency-Division Multiple Access)
 
-In questo approccio si evitano le collisioni usando frequenze differenti per ogni comunicazione, in questo modo comunicazione contemporanee su frequenze diverse non creano collisioni.
+In questo approccio si evitano le collisioni usando frequenze differenti per ogni comunicazione, in questo modo comunicazioni contemporanee su frequenze diverse non creano collisioni.
 
-Le reti wifi possono operare su varie frequenze, chiamate **canali**. Quando si accende l’access point per la prima volta si metterà a cercare i canali usati dalle altre reti wifi nelle vicinanze in modo da usare quelle libere.
+Le reti wifi possono operare su varie frequenze, chiamate **canali**. Quando si accende, l’access point si metterà a cercare i canali usati dalle altre reti wifi nelle vicinanze in modo da usare quelle libere.
 
 Un Access point, però, può utilizzare solo una frequenza alla volta, quindi gli host connessi a tale access point devono usare tutti la stessa frequenza. Non abbiamo quindi interferenza tra reti diverse ma abbiamo interferenza tra host della stessa rete, è quindi necessario un meccanismo di scheduling dei messaggi.
 
@@ -761,43 +772,41 @@ Un modo per schedulare i messaggi nella stessa rete è il **Time-division multip
 
 ![](https://i.ibb.co/mH69KpQ/image.png)
 
-È molto importante che i terminali siano sincronizzati per evitare che iniziano a trasmettere troppo presto o troppo tardi rispetto al proprio slot, c’è quindi una tempo di tolleranza tra la fine di uno slot e l’inizio del successivo (sprecando del tempo).
+È molto importante che i terminali siano sincronizzati per evitare che iniziano a trasmettere troppo presto o troppo tardi rispetto al proprio slot, c’è quindi un tempo di tolleranza tra la fine di uno slot e l’inizio del successivo (sprecando del tempo).
 
 Definiamo **l’efficienza del livello data link** come la frazione del tempo in cui il datalink è utilizzato per comunicare dati utili.
 
 Se tutti i terminali hanno qualcosa da trasmettere, avremo che ogni slot è occupato e non ci sono collisioni, in tal caso il meccanismo TDMA è alla sua **massima efficienza**.
 
-Contrariamente se un solo terminale vuole comunicare si avrà una **efficienza molto bassa** in quanto il terminale dovrà aspettare un intero ciclo di $m$ slot che non fanno niente per continuare a trasmettere.
+Contrariamente, se un solo terminale vuole comunicare, si avrà una **efficienza molto bassa** in quanto il terminale dovrà aspettare un intero ciclo di $m$ slot che non fanno niente per continuare a trasmettere.
 
 ![](https://i.ibb.co/X2BkKm4/image.png)
 
 Abbiamo quindi che la rete funziona al meglio quando è congestionata, generalmente però quando una rete è congestionata significa che i terminali vogliono mandare più dati che quelli che gli stai permettendo di mandare.
 
-Nelle reti cellulari può essere utile in quanto una porzione di risorse vengono concesse a tutti anche sotto congestione.
+Nelle reti cellulari questo approccio è ideale in quanto una porzione di risorse vengono concesse a tutti anche sotto congestione.
 
 ## Accesso casuale (ALOHA)
 
-Un’altra tecnica è quella di accedere al media in modo casuale: i terminale cercano di trasmettere, se c’è collisione il frame viene inviato di nuovo.
+Un’altra tecnica è quella di accedere al media in modo casuale: i terminale cercano di trasmettere, se si verifica una collisione il frame viene inviato di nuovo.
 
 Una implementazione di questo tipo è **ALOHA**, e rappresenta l’antenato del sistema in utilizzo oggi nelle reti wifi, il CSMA/CA.
 
-Vediamo la versione **ALOHA-slotted (S-ALOHA)**, in cui i terminale devono essere sincronizzati e il tempo viene diviso in slot.
+Vediamo la versione **ALOHA-slotted (S-ALOHA)**, in cui i terminali devono essere sincronizzati e il tempo viene diviso in slot.
 
-La differenza fondamentale rispetto a TDMA è che ogni terminale non ha uno slot assegnato ma prova a trasmettere all’inizio del prossimo slot.
+La differenza fondamentale rispetto a TDMA è che ogni terminale non ha uno slot assegnato ma appena ha necessità prova a trasmettere all’inizio del prossimo slot.
 
 **Funzionamento**:
 
 Abbiamo $m$ host sincronizzati (cioè conoscono l’inizio di ogni slot), quando più host trasmettono contemporaneamente avviene una collisione (assumiamo che gli host sappiano immediatamente che la collisione è avvenuta).
 
-Quando il livello superiore manda un SDU da trasmettere, l’host attende l’inizio del prossimo slot per trasmettere.
-
-Se un altro host trasmette in contemporanea entrambi gli host entrano in uno stato chiamato ***backlogged***.
+Quando avviene una collisione, gli host coinvolti entrano in uno stato chiamato ***backlogged***.
 
 Ogni host in questo stato tenta di ritrasmettere al prossimo slot con una certa **probabilità**.
 
 Quando la trasmissione avviene con successo l’host esce da questo stato.
 
-Se il terminale *backlogged* riceve un altro SDU da mandare, viene scartato.
+Se il terminale *backlogged* riceve un altro frame da mandare, esso viene scartato.
 
 Esempio:
 
@@ -807,7 +816,7 @@ Esempio:
 
 Definiamo $G$ come il **carico del sistema**, quindi il numero di frame medio che deve essere trasmesso per slot da tutti i terminali.
 
-La probabilità di trasmettere con successo un frame, $P_S$ è data dalla probabilità di trasmettere un solo frame per slot (cioè quando non ci sono collisioni)
+La probabilità di trasmettere con successo un frame, $P_S$, è data dalla probabilità di trasmettere un solo frame per slot (cioè quando non ci sono collisioni)
 
 $$
 P_S = Ge^{-G}
@@ -845,8 +854,8 @@ Possono essere mappati anche un insieme di indirizzi su stessa interfaccia.
 
 Nella realizzazione di una *forwarding table* possono accadere due errori:
 
-- **buchi neri** (*black holes*): situazione in cui un router che deve instradare un pacchetto non ha una entry valida nella propria forwarding table. Il pacchetto verrà scartato
-- **Cicli** (rounting loops): Un pacchetto attraversa in modo ciclico gli stessi router senza raggiungere la destinazione
+- **buchi neri** (*black holes*): situazione in cui un router che deve instradare un pacchetto non ha una entry valida nella propria forwarding table. Il pacchetto verrà scartato.
+- **Cicli** (rounting loops): Un pacchetto attraversa in modo ciclico gli stessi router senza raggiungere la destinazione.
 
 Una buona forwarding table oltre ad evitare questi due problemi deve anche assicurarsi che da ogni host si possa raggiungere ogni altro host.
 
@@ -863,8 +872,8 @@ Per far funzionare questi algoritmi i router devono inviarsi dei pacchetti parti
 
 Abbiamo due modi per strutturare le forwarding table:
 
-- **Indirizzamento piatto**: la forwarding table contiene le informazioni per raggiungere ogni destinazione. Ogni nodo ha un indirizzo unico. Non è scalabile, le tabelle diventano enormi
-- **indirizzamento gerarchico**: gli indirizzi sono raggruppati in blocchi, un blocco contiene anche milioni di indirizzi. Nella tabella ci sono gli indirizzi blocchi quindi la sua dimensione è notevolmente ridotta rispetto all’indirizzamento piatto.
+- **Indirizzamento piatto**: la forwarding table contiene le informazioni per raggiungere ogni destinazione. Ogni nodo ha un indirizzo unico. Non è scalabile, le tabelle diventano enormi.
+- **indirizzamento gerarchico**: gli indirizzi sono raggruppati in blocchi, un blocco contiene anche milioni di indirizzi. Nella tabella ci sono gli indirizzi a blocchi, quindi la sua dimensione è notevolmente ridotta rispetto all’indirizzamento piatto.
 
 ## Eterogeneità del livello collegamento
 
@@ -880,17 +889,17 @@ Bisogna quindi implementare un sistema per gestire le diverse dimensioni massime
 
 ## Algoritmi di routing
 
-Un primo approccio per popolare la forwarding table (chiamato hot-potato) è quello di sfruttare i pacchetti di dati degli host: Inizialmente le tabella saranno vuote e man mano che gli host inviano i pacchetti, i router mandano dei messaggi in *broadcast* per trovare il percorso per raggiungere la destinazione e aggiornare la propria tabella di conseguenza.
+Un primo approccio per popolare la forwarding table (chiamato **hot-potato**) è quello di sfruttare i pacchetti di dati degli host. Inizialmente le tabella saranno vuote e man mano che gli host inviano i pacchetti, i router mandano dei messaggi in *broadcast* per trovare il percorso per raggiungere la destinazione e aggiornare la propria tabella di conseguenza.
 
 Su reti più complesse è necessario utilizzare meccanismi dedicati alla popolazione delle tabelle.
 
 Definiamo:
 
 - Algoritmo: Una sequenza finita di istruzioni non ambigue che risolvono un determinato problema (distributed Bellman-Ford).
-- Protocollo di routing: è un insieme di specifiche usate per implementare un algoritmo nei router. Se ogni produttore segue i protocolli allora indipendentemente dal software i router interagiranno senza problemi (RIP, Routing Information Protocol).
+- Protocollo di routing: è un insieme di specifiche usate per implementare un algoritmo nei router. Se ogni produttore segue i protocolli allora indipendentemente dal software, i router interagiranno senza problemi (RIP, Routing Information Protocol).
 - Demone: è un software in esecuzione sul router che implementa un protocollo (Bird software).
 
-Un compito del control plane è quello di gestire le **routing table**, un struttura dati più generale rispetto alle forwarding table, che per ogni indirizzo di destinazione `d` contiene varie informazioni (che dipendono dal protocollo utilizzato):
+Un compito del control plane è quello di gestire le **routing table**, un struttura dati più generale rispetto alle forwarding table, che per ogni indirizzo di destinazione `d` contiene varie informazioni (che dipendono dal protocollo utilizzato) come:
 
 - `R[d].link` l’interfaccia di uscita verso cui inoltrare il pacchetto
 - `R[d].cost` La somma delle metriche che compongono il percorso minimo per raggiungere la destinazione
@@ -906,17 +915,15 @@ Inizialmente ogni router avrà nella propria tabella di routing la distanza vers
 
 ![](https://i.ibb.co/WFrwLmK/image.png)
 
-Periodicamente i router inviano il proprio distance vector (la tabella di routing) ai propri vicini, possiamo immaginare che ciò avvenga attraverso il seguente pseudo-codice:
+Periodicamente i router inviano il proprio distance vector (la tabella di routing) ai propri vicini, possiamo immaginare che ciò avvenga come descritto dal seguente pseudo-codice:
 
 ```python
 Every N seconds:
-    v = Vector()
-    for d in R[]:
-        # add destination d to vector
-        v.add(Pair(d, R[d].cost))
-    for i in interfaces
-        # send vector v on this interface
-        send(v, i)
+  v = Vector()
+  for d in R[]:               # for each destination in the routing table
+    v.add(Pair(d, R[d].cost)) # add destination d to vector
+  for i in interfaces         # send vector v to all the interfaces
+    send(v, i)
 ```
 
 Ogni router che riceve il distance vector si comporterà come descritto dal seguente pseudo-codice:
@@ -925,25 +932,23 @@ Ogni router che riceve il distance vector si comporterà come descritto dal segu
 # V : received Vector
 # l : link over which vector is received
 def received(V, l):
-    # received vector from link l
-    for d in V[]
-        if not (d in R[]):
-            # new route
-            R[d].cost = V[d].cost + l.cost
-            R[d].link = l
-            R[d].time = now()
-        else:
-            # existing route, is the new better?
-            if ((V[d].cost + l.cost) < R[d].cost) or (R[d].link == l):
-                # Better route or the current route is changed and still the best
-                R[d].cost = V[d].cost + l.cost
-                R[d].link = l
-                R[d].time = now()
+  for d in V[]  # for each destination in the received Vector
+    if not (d in R[]):    #if is a new route
+      R[d].cost = V[d].cost + l.cost
+      R[d].link = l
+      R[d].time = now()
+    else:
+      # existing route, is the new one better?
+      if ((V[d].cost + l.cost) < R[d].cost) or (R[d].link == l):
+        # Better route OR the current route is changed and still the best
+        R[d].cost = V[d].cost + l.cost
+        R[d].link = l
+        R[d].time = now()
 ```
 
 Il router che riceve il DV, itera attraverso tutti gli indirizzi inclusi nel DV, se contiene un indirizzo che il router non conosce lo inserisce nella propria tabella.
 
-Se invece un indirizzo è già conosciuto ma ha un costo migliore oppure se quell’indirizzo è già ritenuto essere sul percorso migliore vengono semplicemente aggiornati i campi
+Se invece un indirizzo è già conosciuto ma ha un costo migliore oppure se quell’indirizzo è già ritenuto essere sul percorso migliore vengono semplicemente aggiornati i campi.
 
 Vediamo un esempio ci popolazione:
 
@@ -959,9 +964,9 @@ Note:
 
 ## Recupero dei fallimenti
 
-Dato che ogni router invia ad intervalli regolari i proprio DV, ogni router controlla regolarmente i timestamp dei percorsi nella propria tabella di routing, se passa troppo tempo senza ricevere un aggiornamento per quel percorso allora viene ignorato (assumendo che ci sia stato un fallimento su tale percorso).
+Dato che ogni router invia ad intervalli regolari i proprio DV, ogni router controlla regolarmente i timestamp dei percorsi nella propria tabella di routing, se passa troppo tempo senza ricevere un aggiornamento per quel percorso, allora esso viene ignorato (assumendo che ci sia stato un fallimento su tale percorso).
 
-In particolare se i router inviano la propria tabella ogni $N$ secondi, se passa più di  $3\times N$ secondi (scelta in base al protocollo) allora il costo di quel percorso viene impostato a $\infty$. Inoltre vengono informati i router vicini e magari c’è la possibilità che venga scoperto un nuovo percorso con costo migliore di $\infty$. Se ciò non accade dopo ulteriori $3 \times N$ secondi, il percorso viene rimosso dalla tabella.
+In particolare se i router inviano la propria tabella ogni $N$ secondi, se passano più di  $3\times N$ secondi (scelta arbitraria in base al protocollo) allora il costo di quel percorso viene impostato a $\infty$. Inoltre vengono informati i router vicini e magari c’è la possibilità che venga scoperto un nuovo percorso con costo migliore di $\infty$. Se ciò non accade dopo ulteriori $3 \times N$ secondi, il percorso viene rimosso dalla tabella.
 
 Vediamo un esempio:
 
@@ -969,11 +974,12 @@ Vediamo un esempio:
 
 
 
-# Count-to-Infinity
+
+# 2024-10-08_Count-to-Infinity
 
 ## Problema del Count-to-infinity
 
-Fino ad ora abbiamo assunto che i pacchetti contenenti di distance vector (DV) venissero sempre consegnati con successo, ma questo non è sempre vero.
+Fino ad ora abbiamo assunto che i pacchetti contenenti i distance vector (DV) venissero sempre consegnati con successo, ma questo non è sempre vero.
 
 Vediamo cosa accade con un fallimento di un link seguito dalla mancanza di arrivo di un pacchetto DV.
 
@@ -981,7 +987,7 @@ Vediamo cosa accade con un fallimento di un link seguito dalla mancanza di arriv
 
 In questo caso il link D-E si è rotto, di conseguenza D imposta il costo delle route verso E, B, C a infinito.
 
-In questo caso D dovrebbe mandare il proprio DV ad A ma supponiamo che ciò non accada in tempo, e che sia A ad inviare il suo DV a D.
+In questo caso D dovrebbe mandare il proprio DV ad A ma supponiamo che ciò non accada (pacchetto perso), e che sia A ad inviare il suo DV a D.
 
 ![](https://i.ibb.co/9rGcVxt/image.png)
 
@@ -993,6 +999,8 @@ A questo punto D manda il suo DV ad A, e questo porta ad aumentare i costi sulla
 
 Il continuo invio di DV tra A e D porterà ad un continuo aumento dei costi fino a infinito, questo problema è chiamato **Count-to-Infinity**.
 
+Possiamo definire il Count-to-infinity in questo modo: è un malfunzionamento in cui due router continuano ad aumentare indefinitamente la distanza verso una destinazione non più raggiungibile, a causa della perdita di pacchetti DV.
+
 ## Prima soluzione
 
 Un primo approccio è quello di generare i DV solo quando si verifica un fail su un link o un cambiamento ai costi dei percorsi.
@@ -1000,40 +1008,38 @@ Un primo approccio è quello di generare i DV solo quando si verifica un fail su
 Questa non risolve del tutto il problema per due ragioni:
 
 1. c’è comunque la possibilità che D riceva un DV dopo aver rilevato il fallimento di un link ma prima di inviare il suo DV.
-2. c’è la possibilità che il DV venga perso
+2. c’è la possibilità che il DV venga perso.
 
-in entrambi i casi si verifica il comportamento sopra mostrato.
+in entrambi i casi si verifica il problema sopra mostrato.
 
 Possiamo quindi dire che il Count-to-Infinity è possibile se sono presenti le seguenti condizioni:
 
 - La presenza di un loop, nota che un singolo cavo full-duplex crea già un loop in quanto viene usato sia per trasmettere che per ricevere
-- Ci deve essere un cambiamento alla topologia della rete (ad esempio un link failure)
+- Ci deve essere un cambiamento alla topologia della rete (ad esempio la rottura di un link)
 - Perdita di pacchetti contenenti DV
 
 ## Seconda soluzione, Split-Horizon with Poison Reserve
 
-Il problema per cui si verifica il count-to-infinity è perché chi riceve il DV non sa che è il next hop usato dai vicini, e quando il next hop è proprio se stesso allora si verifica il count-to-infinity.
+Il problema per cui si verifica il count-to-infinity è perché chi riceve il DV non sa chi è il next hop usato dai vicini, e quando il next hop è proprio se stesso allora si verifica il count-to-infinity.
 
-Vediamo una variate della tecnica con i DV, in cui il pseudo codice per generare i DV è il seguente:
-
- 
+Vediamo una variate dello pseudo-codice per generare i DV usando **Split-horizon con poison reverse**:
 
 ```python
 Every N seconds:
-    for ifc in interfaces:
-    # one vector for each interface
-        v = Vector()
-        for d in R[]:
-            if (R[d].link != ifc):
-                v.add(Pair(d, R[d].cost))
-            else:
-		            v.add(Pair(d, infinity))
-        send(v, ifc)
+  for ifc in interfaces:
+  # one vector for each interface
+    v = Vector()
+    for d in R[]:   # for each destination in the routing table
+      if (R[d].link != ifc): # if destination doesn't pass through this interface
+        v.add(Pair(d, R[d].cost))
+      else:                  # if destination pass through this interface
+        v.add(Pair(d, infinity))
+    send(v, ifc)
 ```
 
 Con *split-horizon* si intende che ogni distance vector sarà leggermente diverso in base a chi viene mandato.
 
-con *poison* si intende che ad ogni vicino viene detto che non si possiedono dei percorsi che passano per quel vicino.
+Con *poison reverse* si intende che ad ogni vicino viene detto che non si possiedono dei percorsi che passano per quel vicino. Cioè se per raggiungere una destinazione si deve passare attraverso un quel vicino, allora gli comunico una distanza infinita per quella destinazione. Questo serve a evitare che il vicino pensi erroneamente che esista un percorso alternativo attraverso di noi.
 
 Vediamo il funzionamento nella situazione di prima, Quindi il link D-E si rompe, D non manda in tempo il DV ad A, e quindi A manda il suo DV a D:
 
@@ -1041,7 +1047,7 @@ Vediamo il funzionamento nella situazione di prima, Quindi il link D-E si rompe,
 
 Vediamo come A imposta ad infinito le destinazioni B, C, E dato che per raggiungerli passano per l’interfaccia South, cioè per D al quale stiamo mandando il DV.
 
-Quando D manderà il suo DV ad A, anche lui avrà la tabella aggiornata correttamente.
+Quando D manderà il suo DV ad A, anche A avrà la tabella aggiornata correttamente.
 
 In questo modo il problema del count-to-infinity può essere risolto, ma solamente in presenza di loop composti da 2 router. Con loop più grandi il **problema esiste ancora**.
 
@@ -1061,7 +1067,7 @@ Così facendo quando E manderà il proprio DV a B verrà aggiornato il costo ver
 
 ## Timer management
 
-un modo per evitare il count-to-update è che quando il costo di un percorso viene impostato a infinito, il router per un certo tempo non accetta modifiche su tale percorso.
+Un modo per evitare il count-to-infinity è che quando il costo di un percorso viene impostato a infinito, il router per un certo tempo non accetta modifiche su tale percorso.
 
 Questo ovviamente rallenta il processo di convergenza della rete.
 
@@ -1092,13 +1098,13 @@ Ogni link ha un **peso**, più grande è peggiore è.
 
 ### LSP
 
-Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i propri link locali a tutta la rete.
+Quando i router hanno scoperto i propri vicini, devono distribuire in modo affidabile i link dei suoi vicini a tutta la rete.
 
 Ogni router costruisce un *link-state packet* (LSP) contenente:
 
 - `LSP.Router`: il suo indirizzo identificativo
 - `LSP.age`: il tempo di vita rimanente del pacchetto
-- `LSP.seq`: numero di sequenza che incrementa ad ogni pacchetto (identifica il pacchetto)
+- `LSP.seq`: numero di sequenza che incrementa ad ogni pacchetto LSP (identifica il pacchetto)
 - `LSP.Links[]`: lista di vicini composta da:
     - `LSP.Links[i].Id`: l’identificativo del vicino
     - `LSP.Links[i].cost`: il costo del link
@@ -1110,14 +1116,14 @@ Se un router che riceve un LSP che ha già all’interno del suo LSDB con lo ste
 Algoritmo:
 
 ```python
-# links is the set of all links on the router
-# Router R LSP arrival on link l
+# links: is the set of all links on the router
+# Router LSP arrival on link l
 if newer(LSP, LSDB(LSP.Router)): # get last LSP from the DB, compare with current
-		LSDB.add(LSP) # implicitly removes older LSP from same router
-		for i in links:
-				if i != l:
+		LSDB.add(LSP)    # implicitly removes older LSP from same router
+		for i in links:  # flood the new LSP to the neighbors
+				if i != l:   # except the sender
 				  send(LSP, i)
-# else , LSP has already been flooded
+# else, LSP has already been flooded
 ```
 
 Stato di partenza:
@@ -1137,6 +1143,12 @@ Legenda:
 Quando un link si rompe, i router connessi a tale link generano un nuovo LSP e lo inoltrano alla rete.
 
 Quindi se si rompe il link B-E, il router E manderà un nuovo LSP a D e C che lo inoltreranno a loro volta ai router vicini. Il router B farà lo stesso.
+
+Ad esempio il primo passo della propagazione è il seguente:
+
+![](https://i.ibb.co/9Qyn35S/image.png)
+
+il nodo E manda un LSP con un numero di sequenza incrementato che andrà a sostituire i precedenti negli altri nodi della rete.
 
 ### Note
 
@@ -1161,7 +1173,7 @@ A livello di rete quindi i pacchetti possono essere persi, corrotti, duplicati e
 
 # Livello di trasporto
 
-Per introdurre il livello di trasporto assumiamo che il livello di rete non sia **reliable**, e quindi che i pacchetti sono di grandezza limitata, possono essere persi, corrotti, duplicati e arrivare in modo disordinato.
+Per introdurre il livello di trasporto assumiamo che il livello di rete non sia **affidabile**, e quindi che i pacchetti sono di grandezza limitata, possono essere persi, corrotti, duplicati e arrivare in modo disordinato.
 
 Il livello applicazione richiede la consegna dei dati sia affidabile, cioè che:
 
@@ -1169,7 +1181,7 @@ Il livello applicazione richiede la consegna dei dati sia affidabile, cioè che:
 - i dati possano essere riordinati dal ricevitore
 - i dati duplicati siano rilevati
 
-Il livello di trasporto deve anche implementare il **multiplexing**: cioè l’utilizzo di un singolo canale per trasmettere dati di applicazioni diverse.
+Il livello di trasporto deve anche implementare il **multiplexing**: cioè l’utilizzo di un **singolo canale** per trasmettere dati di **applicazioni diverse**.
 
 Il nome attribuito all’unità di dati a livello di trasporto è **segmento**. 
 
@@ -1189,19 +1201,19 @@ Solitamente è *stateless*: ogni segmento viaggia indipendentemente dai preceden
 
 Solitamente garantisce almeno *l’error detection* con una *checksum*.
 
-Questo servizio è usato per applicazioni che accettano la perdita di alcuni dati e non si è interessati a ritrasmetterli (es. video streaming, online gaming).
+Questo servizio è usato per applicazioni che tollerano la perdita di alcuni dati e non si è interessati a ritrasmetterli (es. video streaming, online gaming).
 
-È importante anche citare l’utilizzo del **numero di porta**: cioè un numero presente sull’header dei segmenti che identifica una determinata applicazione.
+Il multiplexing è realizzato tramite l’utilizzo del **numero di porta**: cioè un numero presente sull’header dei segmenti che identifica una determinata applicazione.
 
 Alla **richiesta** del client viene inserita la **porta sorgente** che identifica l’applicazione del client e la **porta destinazione** che identifica l’applicazione sul server.
 
 Alla **risposta** saranno invertite.
 
-Grazie al numero di porta si riesce ad implementare il multiplexing, e quindi ad identificare a che applicazione appartiene il traffico.
+Grazie al numero di porta si riesce a identificare a che applicazione appartiene il traffico.
 
 ## Connection-oriented service
 
-Questo servizio crea una **connessione** tra due entità (ad esempio un client e un server) che possiede uno **stato**: cioè delle variabili vengono usate per tracciare l’evoluzione della connessione.
+Questo servizio crea una **connessione** tra due entità (ad esempio un client e un server) che possiede uno **stato**: cioè delle variabili che vengono usate per tracciare l’evoluzione della connessione.
 
 Abbiamo quindi una **connessione stateful** che ha bisogno di essere **impostata** prima di inviare dati e **distrutta** quando non ci sono più dati da mandare.
 
@@ -1213,7 +1225,7 @@ Potremmo pensare che basti lo scambio di due pacchetti per iniziare una connessi
 
 ### Duplicazione dei pacchetti
 
-I **pacchetti** si possono **duplicare**, e questo può essere causato da dei loop temporanei. Definiamo quindi un **MSL** (Maximum Segment Life): il massimo tempo che un pacchetto e il suo ACK possono persistere nella rete.
+I **pacchetti** si possono **duplicare**, e questo può essere causato da dei loop temporanei che si creano tra i router. Definiamo quindi un **MSL** (Maximum Segment Life): il massimo tempo che un pacchetto e il suo ACK possono persistere nella rete.
 
 Per internet assumiamo che MSL< 120 secondi.
 
@@ -1225,7 +1237,7 @@ Il destinatario ritornerà quel numero nella sua risposta (che indichiamo con **
 
 Infine il mittente, controllando che il numero ricevuto sia uguale a quello che aveva mandato lui,  manderà un ACK per confermare la connessione.
 
-Questa operazione di tre passaggi per stabilire una connessione viene chiamata **three way handshake**. 
+Questa operazione di tre passaggi per stabilire una connessione viene chiamata **three way handshake**.
 
 ### Relazione tra ISN e MSL
 
@@ -1235,15 +1247,15 @@ Consideriamo il seguente scenario:
 
 1. il client apre una connessione con ISN = $x$
 2. successivamente la connessione termina improvvisamente
-3. il client apre una nuova connessione verso lo stesso server con ISN = $x + \Delta$ che però deve essere calcolata in modulo $n$ per poter non andare all’infinito, supponiamo che accada: ISN = $(x + \Delta)\%n = x$ (cioè si ottiene lo stesso ISN della vecchia connessione)
-4. il client riceve un ACK per il ISN $x$ ma si riferisce alla nuova connessione oppure è una copia di un vecchio ACK?
+3. il client apre una nuova connessione verso lo stesso server con ISN = $x + \Delta$ che però deve essere calcolata in modulo $n$ per evitare di crescere all’infinito, supponiamo che accada: ISN = $(x + \Delta)\%n = x$ (cioè si ottiene lo stesso ISN della vecchia connessione)
+4. il client riceve un ACK per il ISN $x$, ma si riferisce alla nuova connessione oppure è una copia di un vecchio ACK?
     
-    Se il tempo necessario per ricominciare con i numeri di sequenza è paragonabile all’MSL non potremmo determinarlo.
+    Se il tempo necessario per ricominciare con i numeri di sequenza è paragonabile all’MSL non potremmo determinarlo. Se invece MSL è molto più piccolo allora sicuramente è riferito alla nuova connessione.
     
 
 ## Three way handshake
 
-In generale vogliamo una connessione bidirezionale, abbiamo quindi bisogno di due numeri di sequenza, uno per ogni direzione della comunicazione.
+In generale vogliamo una **connessione bidirezionale**, abbiamo quindi bisogno di due numeri di sequenza, uno per ogni direzione della comunicazione.
 
 In questo modo entrambi gli host possono ricostruire il proprio flusso di segmenti.
 
@@ -1251,13 +1263,13 @@ In questo modo entrambi gli host possono ricostruire il proprio flusso di segmen
 
 Vediamo passo passo cosa accade:
 
-1. L’host A fa una richiesta con il numero di sequenza x
-2. L’host B riceve la richiesta e crea un nuovo stato per la connessione. A questo punto non sa ancora se si tratta di una nuova connessione o un pacchetto duplicato
-3. L’host B manda un ACK per il numero di sequenza x e manda il proprio numero di sequenza y
-4. L’host A riceve l’ACK, questo conferma che l’host B ha ricevuto correttamente la richiesta iniziale
-5. A questo punto per l’host A la connessione è stabilita e i numeri di sequenza dei segmenti di dati inviati da A inizieranno da x.
-6. L’host A deve confermare di aver ricevuto l’ACK mandando a sua volta un ACK per il numero di sequenza y
-7. L’host B riceve l’ACK e adesso è sicuro che non si tratti di un duplicato e anche per lui la connessione è stabilita. I numeri di sequenza dei segmenti di dati inviati da B inizieranno da y.
+1. L’host `A` fa una richiesta con il numero di sequenza `x`
+2. L’host `B` riceve la richiesta e crea un nuovo stato per la connessione. A questo punto non sa ancora se si tratta di una nuova connessione o un pacchetto duplicato
+3. L’host `B` manda un ACK per il numero di sequenza `x` e manda il proprio numero di sequenza `y`
+4. L’host `A` riceve l’ACK, questo conferma che l’host `B` ha ricevuto correttamente la richiesta iniziale
+5. A questo punto per l’host `A` la connessione è stabilita e i numeri di sequenza dei segmenti di dati inviati da `A` inizieranno da `x`.
+6. L’host `A` deve confermare di aver ricevuto l’ACK mandando a sua volta un ACK per il numero di sequenza `y`
+7. L’host `B` riceve l’ACK e adesso è sicuro che non si tratti di un duplicato e anche per lui la connessione è stabilita. I numeri di sequenza dei segmenti di dati inviati da `B` inizieranno da `y`.
 
 ## Trasferimento dei dati
 
@@ -1267,7 +1279,7 @@ Per assicurare un trasferimento affidabile non possiamo semplicemente riusare le
 
 In primo luogo il livello di trasporto riceve **stream di byte** e i numeri di sequenza sono riferiti alla posizione del byte nello stream.
 
-Il ricevitore deve quindi avere un **buffer** (anche implementato con un go-back-n) dato che la quantità di dati in arrivo non è conosciuta in anticipo.
+Il ricevitore deve quindi avere un **buffer** (anche implementato con go-back-n) dato che la quantità di dati in arrivo non è conosciuta in anticipo.
 
 Il ricevitore può continuare a ricevere dati mentre l’applicazione li processa, quindi il passaggio dei dati al livello applicativo **non è bloccante**.
 
@@ -1277,8 +1289,8 @@ Per implementare la comunicazione di rallentare l’invio dei dati, gli host pos
 
 Ogni host avrà quindi due variabili di stato: 
 
-- `swin`: la dimensione della finestra di chi invia (le celle vuote, e quindi disponibili)
-- `rwin`: la dimensione della finestra di chi riceve (le celle vuote, e quindi disponibili)
+- `swin`: la dimensione della finestra di chi invia (riferito alle celle vuote, e quindi disponibili)
+- `rwin`: la dimensione della finestra di chi riceve (riferito alle celle vuote, e quindi disponibili)
 
 Il numero di segmenti inviati e di cui non si è ancora ricevuto l’ACK deve essere al massimo `min(swin, rwin)`
 
@@ -1309,18 +1321,18 @@ Il problema è che con il riciclo degli stessi numeri di sequenza quando vengono
 
 Quello che accade è:
 
-1. A manda D(0, a) che viene ricevuto da B e viene fatto l’ACK
-2. A manda D(1, b) ma viene ritardato di molto
-3. A manda D(2, c) e D(3, d) ma B non ha ricevuto ancora D(1, b) quindi manda un ACK dell’ultimo ricevuto, cioè C(OK, 0)
-4. A rimanda D(1, b) che viene ricevuto da B e viene fatto l’ACK cumulativo di tutto lo stream ricevuto, cioè C(OK, 3)
-5. A manda nuovi dati, il numero di sequenza è ripartito e quindi manda D(0, e)
-6. B lo riceve e manda l’ACK
-7. A questo punto B si aspetta il numero di sequenza 1
-8. arriva D(1, b) che è una replica di un vecchio pacchetto ormai inutile (nota che questo deve accadere entro il tempo MSL). Dato che il numero di sequenza è valido il pacchetto viene accettato e lo stream di byte viene quindi corrotto
+1. `A` manda `D(0, a)` che viene ricevuto da `B` e viene fatto l’ACK
+2. `A` manda `D(1, b)` ma viene ritardato di molto
+3. `A` manda `D(2, c)` e `D(3, d)` ma `B` non ha ricevuto ancora `D(1, b)` quindi manda un ACK dell’ultimo ricevuto, cioè `C(OK, 0)`
+4. `A` rimanda `D(1, b)` che viene ricevuto da `B` e viene fatto l’ACK cumulativo di tutto lo stream ricevuto, cioè `C(OK, 3)`
+5. `A` manda nuovi dati, il numero di sequenza è ripartito e quindi manda `D(0, e)`
+6. `B` lo riceve e manda l’ACK
+7. A questo punto `B` si aspetta il numero di sequenza 1
+8. arriva `D(1, b)` che è una replica di un vecchio pacchetto ormai inutile (nota che questo deve accadere entro il tempo MSL). Dato che il numero di sequenza è valido il pacchetto viene accettato e lo stream di byte viene quindi corrotto
 
 Questo è un altro esempio sull’importanza di impostare la grandezza dei numeri di sequenza rispetto all’MSL.
 
-Con connessioni a capacità molto alta i numeri di sequenza potrebbero ricominciare molto prima dell’MSL. Un importante parametro da tenere in considerazione è $\text{capacity} \times \text{delay}$.
+Con connessioni a capacità molto alta, i numeri di sequenza potrebbero ricominciare molto prima dell’MSL. Un importante parametro da tenere in considerazione è $\text{capacity} \times \text{delay}$.
 
 Con capacità molto elevate normalmente i pacchetti viaggiano in reti locali, quindi il delay è molto piccolo. Quindi il MSL è molto più piccolo dei classici 120 secondi.
 
@@ -1362,9 +1374,9 @@ Abbiamo visto come gli host vengano riconosciuti tramite indirizzi di rete e com
 
 A livello applicativo, è presente l'interazione con l'utente, e per quest'ultimo può essere difficile ricordare lunghe sequenze di numeri; è quindi preferibile associare agli indirizzi dei **nomi significativi**.
 
-I **nomi di dominio** sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete.
+I **nomi di dominio** sono stringhe composte da lettere minuscole, trattini e punti, e rappresentano un sistema gerarchico per identificare una risorsa nella rete ad un determinato indirizzo.
 
-I nomi di dominio hanno questa forma `www.example.com`, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: `com` è il **Top Level Domain** (TLD) cioè il punto più generico
+I nomi di dominio hanno questa forma `www.example.com`, la gerarchia diventa più specifica andando verso sinistra, mentre sempre più generica andando verso destra: `com` è il **Top Level Domain** (TLD) cioè il punto più generico.
 
 Possiamo vedere la gerarchia dei domini in questo modo:
 
@@ -1372,7 +1384,7 @@ Possiamo vedere la gerarchia dei domini in questo modo:
 
 Ovviamente è presente molta ridondanza nei nodi e nei root server, questi ultimi hanno un indirizzo fisso e conosciuto.
 
-Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini
+Quando si vuole raggiungere un nome di dominio nella gerarchia, vengono consultati gerarchicamente il root server, il corretto TLD e poi i sottodomini.
 
 L'uso dei nomi di dominio risolve degli importanti problemi come:
 
@@ -1423,13 +1435,13 @@ Per garantire al più possibile l’availability è necessario avere un buon des
 
 Significa che i dati scambiati rimangono riservati ai soli partecipanti dello scambio.
 
-Per garantire questo aspetto sono necessari meccanismi di crittografia
+Per garantire questo aspetto sono necessari meccanismi di crittografia.
 
 ### Integrity
 
 Significa che i dati devono raggiungere la destinazione senza subire modifiche nel tragitto.
 
-Per garantire questo aspetto sono necessari meccanismi di hashing
+Per garantire questo aspetto sono necessari meccanismi di hashing.
 
 ### Authentication
 
@@ -1450,9 +1462,9 @@ Per garantire questo aspetto sono necessari meccanismi di firma digitale.
 
 L’accesso deve essere permesso solamente a chi è autorizzato ad accedere.
 
-Non garantire il controllo può permettere situazione in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.
+Non garantire questo servizio può permettere situazioni in cui il sistema viene sfruttato per attaccarne un altro a nostra insaputa. Potremmo quindi essere accusati di aver partecipato all’attacco anche se non è così.
 
-Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione
+Per garantire questo aspetto sono necessari meccanismi di autenticazione ed identificazione.
 
 ### Non repudiation
 
@@ -1501,7 +1513,7 @@ Si tratta sempre di un **trade-off tra sicurezza e usabilità.**
 
 ## Crittografia
 
-La crittografia è la scienza che studio come rendere segrete delle informazioni.
+La crittografia è la scienza che studia come rendere segrete delle informazioni.
 
 La crittografia permette di avere:
 
@@ -1529,7 +1541,7 @@ Per minimizzare il rischio di falle di sicurezza è importante cercare di seguir
 
 ## Funzioni hash
 
-Una **funzione hash** è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le collisioni.
+Una **funzione hash** è una funzione unidirezionale (non invertibile) che viene applicata su dei dati di dimensione variabile e genera un **digest**, cioè una stringa di grandezza fissa. Più grande è la dimensione della stringa in output minori saranno le probabilità di collisioni.
 
 Le funzioni hash vengono usate per garantire **l’integrità dei dati**: infatti inviando oltre che al messaggio anche il digest, il destinatario potrà ricalcolare la funzione hash sul messaggio e controllare che i due digest corrispondano.
 
@@ -1544,7 +1556,7 @@ Funzioni hash sono ad esempio MD5, SHA 1, SHA 256, …
 3. calcolare la funzione hash di un input deve essere computazionalmente efficiente
 4. Dato che il dominio della funzione hash (l’input) è molto più grande rispetto al codominio (l’output) è possibile che si verifichino delle **collisioni** (input diversi generano lo stesso output)
 5. possedendo l’output, trovare l’input che ha generato un tale output deve essere computazionalmente impossibile
-6. dato un input trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.
+6. dato un input, trovare un altro input che genera lo stesso output deve essere computazionalmente impossibile.
     
     input simili non devono generare un output simile, l’output deve essere impredicibile.
     
@@ -1554,7 +1566,7 @@ Nota: con **computazionalmente impossibile** si intende che ad oggi non si conos
 
 Dato che la dimensione dell’output è fissa, se abbiamo un input grande sicuramente delle informazione vengono perse durante l’hashing.
 
-Inoltre a data la presenza di collisioni se un attaccante che possiede un output, trova un input che genera tale output non saprà se l’input è il messaggio originale o solo una collisione.
+Inoltre, data la presenza di collisioni, se un attaccante che possiede un output, trova un input che genera lo stesso output, non saprà se l’input è il messaggio originale o solo una collisione.
 
 
 
@@ -1568,13 +1580,13 @@ Un modo per raggirare questo problema è utilizzare **due canali separati per il
 
 Una soluzione al precedente problema senza utilizzare due canali separati è quello di utilizzare un HMAC.
 
-L'**HMAC** (*Hashed Message Authentication Code*) è un meccanismo di autenticazione dei messaggi che utilizza una funzione hash che prende in input il messaggio e una chiave segreta per generare il digest.
+L'**HMAC** (*Hashed Message Authentication Code*) è un meccanismo di autenticazione dei messaggi che utilizza una funzione hash che prende in input il **messaggio** e una **chiave segreta** per generare il digest.
 
 Quindi Alice e Bob devono accordarsi sulla chiave e sulla funzione hash da usare, in questo modo solo loro possono verificare l’integrità del messaggio.
 
 ![](https://i.ibb.co/943vXb6/image.png)
 
-In questo caso se Eve intercetta il messaggio non riesce a calcolare l’hash del messaggio modificato dato che non conosce la chiave, quindi Bob si accorgerebbe che il messaggio non è valido.
+In questo caso se Eve intercetta il messaggio, anche se modificasse il messaggio non riuscirebbe a calcolare il nuovo hash dato che non conosce la chiave, infatti Bob si accorgerebbe che il messaggio non è valido.
 
 Vantaggi:
 
@@ -1591,13 +1603,13 @@ Spesso i protocolli hanno bisogno di un canale sicuro per poter funzionare, un c
 
 Nel precedente esempio abbiamo bisogno di un canale sicuro per accordarsi sulla chiave.
 
-Il canale dove si scambiano messaggio può essere insicuro, ma viene garantita la segretezza tramite la crittografia ottenuta grazie al precedente scambio di chiavi.
+Il canale dove si scambiano i successivi messaggi può essere insicuro, ma viene garantita la segretezza tramite la crittografia ottenuta grazie al precedente scambio di chiavi.
 
 ### Generazione delle chiavi
 
-Alice e Bob non devono perdere o dimenticarsi la chiave, altrimenti non possono più comunicare, tenteranno quindi di usare una chiave troppo semplice. A questo punto Eve potrebbe fare brute force e indovinare la chiave.
+La generazione della chiave deve essere fatta in modo che Eve non la possa indovinare tramite brute force.
 
-Quello che si può fare è di sfruttare la randomicità delle funzioni hash per generare una chiave di caratteri senza significato partendo da una password facile da ricordare tanto quanto difficile da indovinare.
+Quello che si può fare è di sfruttare la randomicità delle funzioni hash per generare una chiave di caratteri senza significato partendo da una password.
 
 Alice e Bob usano un canale sicuro per accordarsi su una password forte, la chiave sarà ottenuta da una fuzione hash su tale password.
 
@@ -1607,11 +1619,11 @@ Eve può aspettarsi che venga usata questa tecnica e da qui nasce l’importanza
 
 CRAM-MD5 è un protocollo che permette di avere un servizio di autenticazione dell’utente basato sull’uso dell’HMAC.
 
-Il sistema funziona tramite un  meccanismo di *challenge-response*, immaginiamo che **un client si voglia autenticare al server**, **i**l protocollo funziona in questo modo:
+Il sistema funziona tramite un meccanismo di *challenge-response.* Immaginiamo che **un client si voglia autenticare al server**, il protocollo funziona in questo modo:
 
 - il server crea una challenge $C$ in questo formato “timestamp@dominio” e la manda al client
-- Il client ha la chiave segreta condivisa $K$ e computa $D=\text{HMAC}(C, K)$ rispondendo al server con il proprio username e $D$
-- Il server cerca l’username nel suo database, se presente, ottiene la rispettiva chiave e computa a sua volta $D’ = \text{HMAC}(C, K)$, se $D=D’$ allora l’autenticazione ha successo
+- Il client ha la chiave segreta condivisa $K$, computa $D=\text{HMAC}(C, K)$ e manda $D$ al server assieme ad un username.
+- Il server cerca l’username nel suo database, se presente, ottiene la rispettiva chiave $K$ e computa a sua volta $D’ = \text{HMAC}(C, K)$. Se $D=D’$ allora l’autenticazione ha successo
 
 ![](https://i.ibb.co/WB4RP2J/image.png)
 
@@ -1620,11 +1632,11 @@ Questo protocollo è deprecato per problemi di sicurezza:
 - la funzione hash che si utilizzava è MD5 che ad oggi non è ritenuta sicura
 - Il client non autentica il server, non sa quindi se è veramente chi dice di essere
 - La chiave viene mantenuta in chiaro nel server
-- Possibili attacchi brute force offline: l’attaccante può intercettare la challenge e l’HMAC, può quindi fare brute force sulla chiave fino a che non ottiene l’HMAC corretto
+- Possibili attacchi brute force offline: l’attaccante può intercettare la challenge $C$ e l’HMAC $D$, può quindi fare brute force sulla chiave $K$ fino a che non ottiene $D$
 
 ## Cifratura a chiave simmetrica
 
-Gli elementi fondamentali di un sistema cifratura sono:
+Gli elementi di un sistema cifratura sono:
 
 - cifrario (algoritmo)
 - chiave (informazione)
@@ -1633,7 +1645,7 @@ Gli elementi fondamentali di un sistema cifratura sono:
 
 **La segretezza deve stare nella chiave e non nell’algoritmo usato.**
 
-Il funzionamento è simile a quello dell’HMAC: Alice e Bob usano un canale sicuro per accordarsi su una chiave condivisa e sul cifrario da usare (un cifrario ritenuto sicuro oggi è AES).
+Il funzionamento della cifratura a chiave simmetrica è simile a quello dell’HMAC: Alice e Bob usano un canale sicuro per accordarsi su una chiave condivisa e sul cifrario da usare (un cifrario ritenuto sicuro oggi è AES).
 
 - Quando Alice vuole inviare un messaggio, utilizza AES usando come input il messaggio e la chiave, verrà così generato un messaggio criptato
 - Quando Bob riceve il messaggio criptato, utilizza AES usando come input il messaggio criptato e la chiave, recuperando così il messaggio originale
@@ -1646,7 +1658,7 @@ Ad esempio un cifrario che utilizza solo sostituzioni è il **cifrario di Cesare
 
 ![](https://i.ibb.co/BZPDnHR/image.png)
 
-Un cifrario funziona se non c’è una correlazione statistica (ad esempio la frequenza di lettere) tra il testo in chiaro e il testo cifrato.
+Questo algoritmo è altamente insicuro: un cifrario funziona bene se non c’è una correlazione statistica (ad esempio la frequenza di lettere) tra il testo in chiaro e il testo cifrato. 
 
 Un algoritmo teoricamente perfetto esiste e si chiama One-time-pad (**OTP**) o cifrario di Vernam. È l’unico algoritmo la cui affidabilità è stata dimostrata matematicamente.
 
@@ -1654,10 +1666,10 @@ Un algoritmo teoricamente perfetto esiste e si chiama One-time-pad (**OTP**) o c
 
 - Alice genera un stringa random $K$ di $n$ bit. Trasmette questa stringa a Bob su un **canale sicuro**
 - Per cifrare un messaggio lungo $m$ bit, con $m < n$, Alice prende una porzione $K’$ della chiave $K$ lunga esattamente quanto il messaggio (quindi $m$ bit) e calcola $C = M\oplus K’$ dove $\oplus$ è l’operazione di XOR binario
-- la porzione di chiave presa non deve essere riutilizzata in futuro.
-- Bob per recuperare il messaggio esegue semplicemente lo XOR tra il messaggio cifrato e la chiave
+- la porzione di chiave $K’$ non deve essere riutilizzata in futuro.
+- Bob per recuperare il messaggio esegue semplicemente lo XOR tra il messaggio cifrato e la porzione di chiave
 
-Questo sistema è ritenuto perfetto perché se immaginiamo di avere un messaggio di 3 bit e quindi anche una chiave di 3 bit, a causa dell’operazione di XOR fare un attacco di brute force equivale a ottenere tutte le possibili stringhe composte da 3 bit.
+Questo sistema è ritenuto perfetto perché se immaginiamo di avere un messaggio di 3 bit e quindi anche una chiave di 3 bit, a causa dell’operazione di XOR, fare un attacco di brute force equivale a ottenere tutte le possibili stringhe composte da 3 bit.
 
 Quindi facendo brute force sulla chiave si ottengono messaggi diversi che possono essere perfettamente validi e plausibili
 
@@ -1671,7 +1683,7 @@ Nonostante la sua sicurezza dimostrata, non è utilizzato nella realtà per moti
 
 - ha bisogno di numeri veramente random e non pseudorandom
 - mittente e il destinatario devono scambiarsi in modo sicuro una chiave segreta condivisa, lunga **almeno quanto il messaggio** da cifrare, tanto vale allora usare il canale sicuro per inviare direttamente il messaggio.
-- le chiavi possiedono un solo utilizzo (da cui deriva il “One-time”)
+- le chiavi possiedono un solo utilizzo (da cui deriva il “One-time”). Riutilizzare porzioni della stessa chiave porterebbe a correlazioni statistiche tra testo in chiaro e testo cifrato.
 
 ## Approccio degli algoritmi moderni
 
@@ -1682,19 +1694,19 @@ Gli algoritmi moderni usano **combinazioni ripetute di sostituzioni e trasposizi
 
 ## Comunicazione finale
 
-Una volta che Alice e Bob hanno concordato una chiave condivisa in modo sicuro, allora possiamo garantire **integrità, Segretezza e autenticazione**, usando HMAC e cifratura.
+Una volta che Alice e Bob hanno concordato una chiave condivisa in modo sicuro, possiamo garantire **integrità, Segretezza e autenticazione**, usando HMAC e cifratura.
 
 ![](https://i.ibb.co/1fMSBkb/image.png)
 
-1. Alice usa la cifratura a chiave simmetrica per cifrare il messaggio
+1. Alice usa la cifratura a chiave simmetrica (AES) per cifrare il messaggio
 2. Il messaggio cifrato assieme alla chiave vengono dati alla funzione hash dell’HMAC, che produce un digest
 3. il digest e il messaggio cifrato vengono concatenati e mandati al canale di comunicazione
 4. Bob riceve i dati e separa il digest dal messaggio cifrato
 5. manda il messaggio cifrato assieme alla chiave alla funzione hash dell’HMAC per ottenere un digest candidato
-6. il digest generato viene confrontato con il digest ricevuto:
+6. il digest candidato viene confrontato con il digest ricevuto:
     1. se sono uguali allora il messaggio non è stato manomesso e il processo continua
     2. se sono diversi allora il messaggio è stato manomesso e il processo si ferma
-7. Bob decifra il messaggio cifrato usando la chiave
+7. Bob decifra il messaggio cifrato usando la chiave condivisa
 8. Bob ha recuperato il messaggio originale, sapendo che è integro, la comunicazione è stata segreta e il mittente è sicuramente Alice (in quanto è l’unica altra persona a conoscere la chiave condivisa)
 
 Questo metodo è sufficientemente sicuro fintanto che:
@@ -1736,7 +1748,7 @@ Ci sono vari algoritmi che implementano la cifratura a chiave pubblica, tra cui:
 
 ### Intrattabilità dei problemi
 
-Gli algoritmi crittografici spesso si basano operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione.
+Gli algoritmi crittografici spesso si basano su operazioni matematiche le quali non hanno un algoritmo efficiente (di tempo polinomiale) che li risolve. Quindi, ad esempio, aumentando la grandezza dei numeri su tali operazioni matematiche si riesce ad aumentare esponenzialmente il tempo richiesto dagli algoritmi per la risoluzione.
 
 - La **fattorizzazione in fattori primi** di un numero è un esempio di operazione matematica per cui non esiste un algoritmo efficiente.
     
@@ -1765,9 +1777,9 @@ Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
 
 ![](https://i.ibb.co/RcYwpXy/image.png)
 
-- Alice sceglie un numero primo grande $n$, un numero random $a$ (che deve rimanere **segreto**) e una radice primitiva (o generatore) $g$ per $n$.
+- Alice sceglie un numero primo abbastanza grande $n$, un numero random $a$ (che deve rimanere **segreto**) e una radice primitiva (o generatore) $g$ per $n$.
     
-    La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio $n = 7, g = 3$:
+    La radice primitiva di un numero primo $n$ è un intero $g$ tale che ogni intero da $1$ a $n-1$ può essere espresso come una potenza di $g$ modulo $n$, ad esempio con $n = 7, g = 3$:
     
     - $1 = 3^6 \mod 7$
     - $2 = 3^2 \mod 7$
@@ -1792,13 +1804,13 @@ Questo protocollo si basa sulla difficoltà di calcolare il logaritmo discreto.
     
     - $K = r^a \mod n = (g^b)^a \mod n = g^{ab} \mod n$
 
-Questo sistema garantisce che, anche se un **attaccante dovesse intercettare il traffico** e ottenere $m,g,n,r$, non sarebbe comunque in grado di risalire ad $a$$ e $b$ (e quindi alla chiave), grazie alla complessità computazionale del logaritmo discreto.
+Questo sistema garantisce che, anche se un **attaccante dovesse intercettare il traffico** e ottenere $m,g,n,r$, non sarebbe comunque in grado di risalire ad $a$ e $b$ (e quindi alla chiave), grazie alla complessità computazionale del logaritmo discreto.
 
 ### Problema
 
 Se però l’attaccante fosse in grado di **modificare il traffico**, nascerebbero dei problemi (essendo in un canale insicuro, questo non è da escludere)
 
-L’attaccante, Eve, potrebbe far fallire lo scambio ma nel caso peggiore potrebbe fingere di essere Bob per Alice e fingere di essere Alice per Bob.
+L’attaccante (Eve) potrebbe far semplicemente fallire lo scambio, ma nel caso peggiore potrebbe fingere di essere Bob per Alice e fingere di essere Alice per Bob.
 
 ![](https://i.ibb.co/6NjV6z3/image.png)
 
@@ -1826,10 +1838,10 @@ L’algoritmo più famoso che implementa questo sistema è **RSA** (dal nome dei
 
 Il processo semplificato per la **creazione delle chiavi** è il seguente:
 
-- Scegliere due numeri primi grandi $p, q$
+- Scegliere due numeri primi abbastanza grandi $p, q$ da tenere segreti
 - Calcolare $n = p\cdot q$ e calcolare la funzione toziente $\phi(n) = (p-1)(q-1)$
     
-    La **funzione toziente** (o funzione di Eulero) è una funzione che prende in input un intero $n$ e restituisce il numero di interi compresi tra $1$ e $n$ che sono **coprimi** (non hanno divisori comuni oltre a $1$) con $n$.
+    La **funzione toziente** (o funzione di Eulero) è una funzione che prende in input un intero $n$ e restituisce il numero di interi compresi tra $1$ e $n$ che sono **coprimi** con $n$ (non hanno divisori comuni oltre a $1$).
     
     Esempio  $n = 3 \cdot 5 = 15$, $\phi(15) = (3-1)(5-1) = 8$ infatti i numeri coprimi con $15$ compresi tra $1$ e $15$ sono: $1, 2, 4, 7, 8, 11, 13, 14$
     
@@ -1864,7 +1876,7 @@ Scegliamo $p = 7, q = 11$ e calcoliamo:
 
 Scegliamo $e = 13$ in modo che non abbia divisori comuni con $60$
 
-per trovare $d$ nella realtà si usa l’algoritmo esteso di Euclide, ma con numeri piccoli si può andare a tentativi per ottenere $d = 37$.
+per trovare $d$ nella realtà si usa l’algoritmo esteso di Euclide, ma con numeri piccoli si può andare a tentativi per ottenere $d = 37$. Infatti $37\cdot 13 \mod 60 = 1$
 
 Assumiamo che il messaggio da inviare sia $M = 00010100_2 = 20_{10}$
 
@@ -1904,15 +1916,13 @@ Un attaccante può fare la stessa cosa che poteva fare con Diffie-hellman, cioè
 
 ![](https://i.ibb.co/0QJ9V0P/image.png)
 
-Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono quindi essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono pubbliche quindi **non abbiamo bisogno di segretezza**.
-
-(Ricordiamo invece che la cifratura a chiave simmetrica richiede un canale autentico, integro e segreto per lo scambio)
+Quindi la cifratura a chiave pubblica necessita di un canale **autenticato e integro** per lo scambio delle chiavi, cioè Alice e Bob devono essere sicuri che le chiavi che ricevono appartengano effettivamente all’altra persona, ma tali chiavi sono già pubbliche quindi **non abbiamo bisogno di segretezza**. Ricordiamo invece che la cifratura a chiave simmetrica richiede un canale autenticato, integro e segreto per lo scambio.
 
 ## Firma digitale
 
 Invertendo il ruolo delle chiavi è possibile implementare il concetto di **firma digitale.**
 
-Se Alice cifra un messaggio con la propria chiave privata, allora chiunque può decifrarla usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura. Al contempo Alice non può negare di essere stata lei ad inviare il messaggio. 
+Se Alice **cifra** un messaggio con la **propria chiave privata**, allora **chiunque può decifrarla** usando la chiave pubblica di Alice, in questo modo si è certi che quel messaggio proviene da Alice, dato che è l’unica in possesso della chiave privata usata per la cifratura. Allo stesso modo Alice non può negare di essere stata lei ad inviare il messaggio.
 
 In questo modo si può usare RSA per garantire **autenticazione** e il **non ripudio** (e usando entrambe le tecniche garantisce anche segretezza).
 
@@ -1955,19 +1965,19 @@ Vediamo ora come risolvere il problema di scambiarsi le chiavi con RSA in modo a
 
 Innanzitutto una chiave è un **file binario** codificato in caratteri ASCII con l’aggiunta di eventuali metadati come nome e indirizzo e-mail.
 
-I metadati ovviamente non garantiscono una prova affidabile su chi ha generato effettivamente la chiave.
+I metadati ovviamente possono essere manipolati e quindi non garantiscono una prova affidabile su chi ha generato effettivamente la chiave.
 
 Vediamo alcuni metodi informali per associare una chiave ad una identità:
 
-1. **Key fingerprint**: Alice quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando Bob riceve la chiave **controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
-2. **Key server**: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo non garantisce che chi carica la chiave non si spacci per qualcun altro.
+1. **Key fingerprint**: Alice, quando genera la chiave, **pubblica l’hash** della chiave (*key fingerprint*) su internet ad esempio sul suo sito web o sul proprio profilo Linkedin. Quando Bob riceve la chiave **controlla che l’hash corrisponda** a quello distribuito da Alice. Questo metodo funziona bene in contesti piccoli e informali ma non scala bene per essere usato nel web.
+2. **Key server**: Ci sono server sincronizzati in cui è possibile caricare la propria chiave pubblica e cercare le chiavi di altre persone. Questo metodo però non garantisce che chi carica la chiave sia effettivamente chi dice di essere.
 
 ## Web of trust
 
 Un terzo metodo è il **Web of trust**: è una rete di contatti in cui i partecipanti certificano l’identità degli altri. Ad esempio Alice e Bob si fidano di Carl, questo significa che:
 
 - possiedono la sua chiave pubblica
-- se lui certifica qualcosa Alice e Bob si fidano che sia vero
+- se lui certifica qualcosa, Alice e Bob si fidano che sia vero
 
 Carl può quindi certificare che la chiave pubblica di Alice appartenga veramente ad Alice e lo stesso per la chiave pubblica di Bob.
 
@@ -1982,12 +1992,12 @@ Vediamo come funziona:
     
     Cioè Carl cifra, usando la sua chiave privata, la chiave pubblica di alice con la sua identità (il suo nome). Chiunque in possesso della chiave pubblica di Carl può decifrare $S$ e quindi, fidandosi di Carl, verificano la chiave pubblica di Alice.
     
-3. Alice manda a Bob la propria chiave pubblica e $S$, dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e si verifica l’appartenenza della chiave pubblica di Alice
+3. Alice manda a Bob la propria chiave pubblica assieme a $S$, dato che Bob si fida di Carl decifra $S$ con la chiave pubblica di Carl e verifica l’appartenenza della chiave pubblica di Alice
     
     ![](https://i.ibb.co/HHT5ZhQ/image.png)
     
 
-Notiamo come una volta che Alice riceve la propria *key signature* da Carl, esso non è più necessario ai fine della comunicazione, Alice può usare la *key signature* con chiunque si fidi di Carl.
+Notiamo come, una volta che Alice riceve la propria *key signature* da Carl, Carl non è più necessario ai fine della comunicazione, Alice può usare la *key signature* con chiunque si fidi di Carl.
 
 Il sistema può scalare tramite delle catene di fiducia:
 
@@ -2003,13 +2013,13 @@ In questo modo Bob sarà certo della chiave pubblica di alice.
 
 L’approccio del **Web of trust** viene utilizzato in contesti specifici, e si avvicina al metodo utilizzato oggi per certificare le identità delle chiavi, tra gli aspetti importanti abbiamo:
 
-- le ***key signature***: il fatto ci firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave
+- le ***key signature***: il fatto di firmare la chiave pubblica assieme all’identità per certificare l’appartenenza della chiave
 - la ***trust delegation***: il fatto che se A e B si fidano di C allora C fa da certificatore intermedio
 - La **fiducia è asimmetrica**: Quando B ottiene la chiave di A, non è detto che A riesca ad ottenere la chiave di B.
 
 ## PKI
 
-Una **PKI** (*Public Key Infrastructure*) è insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
+Una **PKI** (*Public Key Infrastructure*) è un insieme di tecnologie, standard, politiche e procedure che permette la gestione delle chiavi crittografiche e dei certificati digitali.
 
 La ***Certification Authority*** (CA) è una entità specifica della PKI di cui tutti gli attori nella comunicazione si fidano, è quella che in passato abbiamo definito essere la *trusted third party.*
 
@@ -2020,7 +2030,7 @@ Le CA firmano digitalmente le chiavi pubbliche generando così dei certificati p
     2. possiedono la sua chiave pubblica
 2. Alice chiede alla CA di firmare la sua chiave pubblica, producendo così un **certificato**
 3. Bob quando riceve la chiave pubblica di Alice controlla se è stata firmata dalla CA
-4. se è così allora Bob si fida che tale chiave pubblica appartiene ad Alice
+4. se così fosse allora Bob si fida che tale chiave pubblica appartiene ad Alice
 
 ## Ottenere il certificato
 
@@ -2059,6 +2069,7 @@ Note:
 - Una volta ottenuto il certificato, la CA non è più necessaria ai fini della comunicazione
 - La CA non viene mai a conoscenza delle chiavi private degli attori che certifica
 - Per questioni di performance (dato che il certificato contiene molte cose) la CA firma un hash del certificato (dall’hash è esclusa la firma stessa).
+- il proprietario del certificato nella realtà può essere una persona fisica, una rete o un dominio per un sito web.
 
 ## Verificare il certificato
 
@@ -2071,13 +2082,11 @@ Quando Bob riceve un certificato da Alice:
 5. Computa per conto suo l’hash del certificato (escludendo il campo della firma della CA)
 6. Se l’hash computato è uguale all’hash ottenuto dalla decifratura allora il certificato è valido
 
-In questo contesto possiamo pensare ad Alice nella realtà come una persona fisica, una rete wifi o un dominio per un sito web. Il caso in cui questo sistema viene più utilizzato è verificare un dominio sul web.
-
 ## Fiducia con le CA
 
-Quando Bob deve decidere di quali CA fidarsi si ha una **gerarchia di CA** in cui una CA certifica le sottostanti, Bob **si fida solamente di alcune CA** tendenzialmente in alto sulla gerarchia.
+Quando Bob deve decidere di quali CA fidarsi si ha una **gerarchia** in cui una CA certifica le sottostanti, Bob **si fida solamente di alcune CA,** tendenzialmente quelle in alto sulla gerarchia.
 
-Se una CA è certificata da una CA di cui Bob si fida allora Bob si fida anche di quella.
+Se una CA è certificata da una CA di cui Bob si fida, allora Bob si fida anche di quella.
 
 ![](https://i.ibb.co/N6LM0Kp/image.png)
 
@@ -2085,11 +2094,11 @@ La **Root CA** è una *certification authority* di cui tutti si devono fidare. A
 
 Le root CA si firmano i certificati per conto proprio.
 
-Quando Bob visita `www.alice.com`, il server di alice deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
+Quando Bob visita `www.alice.com`, il server deve fornire il proprio certificato e quello di tutto il cammino fino alla Root CA. Bob dovrà quindi **verificare la validità di tutte le CA nel cammino**.
 
 Se una qualsiasi CA nel cammino non è valida o scade, Bob riceverà un avviso e potrà proseguire a proprio rischio.
 
-In questo caso il browser dell’utente riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso di autenticazione è necessario un altro mezzo che generalmente è **l’autenticazione tramite username e password**.
+In questo caso il browser dell’utente riesce a verificare la validità del server ma il server non verifica chi siamo noi. Per implementare anche questo verso di autenticazione è necessario un altro mezzo,s che generalmente è **l’autenticazione tramite username e password**.
 
 ## Certificate Revocation Lists
 
@@ -2126,9 +2135,9 @@ Affrontiamo adesso dei protocolli di livello applicativo.
 
 Il livello applicativo è il più vicino all'utente e implementa protocolli come HTTP, FTP, SMTP, DNS, ecc., che forniscono servizi agli utenti finali o ad altre applicazioni.
 
-Il livello applicativo comunica con il livello di trasporto, che si occupa di garantire **l'affidabilità** (se si utilizza un protocollo come TCP) e di effettuare il **multiplexing**, distinguendo le applicazioni tramite numeri di porta.
+Il livello applicativo comunica con il livello di trasporto, che si occupa di garantire **l'affidabilità** (se si utilizza un protocollo *connection-oriented* come TCP) e di effettuare il **multiplexing**, distinguendo le applicazioni tramite numeri di porta.
 
-Quando due applicazioni su due sistemi diversi comunicano, il flusso di dati generato è identificato da principalmente da quattro valori:
+Quando due applicazioni su due sistemi diversi comunicano, il flusso di dati generato è identificato principalmente da quattro valori:
 
 - Indirizzo IP sorgente
 - numero di porta sorgente
@@ -2146,19 +2155,19 @@ Gli indirizzi IP sono implementati nel **livello di rete** in due versioni:
 
 Lavoreremo principalmente, per semplicità, con indirizzi IPv4.
 
-Tali indirizzi sono formati da quattro numeri separati da un punto `.`, dove ogni numero può variare da 0 a 255 (cioè 8bit). Ad esempio `127.0.0.1`, `192.168.0.0`, `172.31.255.255`
+Tali indirizzi sono formati da quattro numeri separati da un punto `.`, dove ogni numero può variare da 0 a 255 (cioè 8 bit). Ad esempio `127.0.0.1`, `192.168.0.0`, `172.31.255.255`
 
 ## DNS
 
 Anche i server sono riconosciuti da un indirizzo IP e i servizi che essi offrono sono identificati da un numero di porta. Sarebbe però molto scomodo per gli utenti ricordarsi gli indirizzi IP dei server che offrono il servizio ad un determinato numero di porta.
 
-Per quanto riguarda il numero di porta se si vuole navigare su internet si utilizza un browser e un browser è in grado di connettersi ad un insieme di porte standard (ad esempio 80 e 443).
+Per quanto riguarda il numero di porta, se si vuole navigare su internet si utilizza un browser e un browser è in grado di connettersi ad un insieme di porte standard (ad esempio 80 e 443).
 
-Abbiamo quindi bisogno di un servizio che ci permetta di **mappare gli indirizzi IP a dei nomi significativi**, un protocollo di livello applicativo che si occupa di questo è il **DNS (Domain name system)**.
+Abbiamo poi bisogno di un servizio che ci permetta di **mappare gli indirizzi IP a dei nomi significativi**, un protocollo di livello applicativo che si occupa di questo è il **DNS (Domain Name System)**.
 
 ## Nomi di dominio
 
-Possiamo vedere il DNS come un registro universale (un database distribuito) con una struttura gerarchica, che archivia nomi di dominio e la loro associazione ai relativi indirizzi IP.
+Possiamo vedere il DNS come un registro universale (un database distribuito) con una struttura gerarchica, che archivia **nomi di dominio e la loro associazione ai relativi indirizzi IP**.
 
 Un nome di dominio è una stringa con una struttura gerarchia in cui le componenti sono separate da punti `.` , a sinistra si ha il livello più basso della gerarchia mentre a destra si ha il livello più alto (chiamato **TLD** *Top Level Domain*).
 
@@ -2170,7 +2179,7 @@ Ad esempio, in `www.example.com`:
 - `.example` è il dominio di secondo livello
 - `.com` è il TLD (livello più alto)
 
-La gerarchia dei nomi segue la struttura ad albero potenzialmente infinita in cui ogni nodo gestisce a chi delegare i nodi figli.
+La gerarchia dei nomi segue la struttura ad albero potenzialmente infinita in cui ogni nodo è responsabile dei nodi figli.
 
 ![](https://i.ibb.co/khz8njT/image.png)
 
@@ -2187,7 +2196,7 @@ Nonostante sia possibile acquistare un TLD, ciò accade raramente a causa dei co
 
 Una volta registrato il dominio, questo deve essere associato all’indirizzo IP del server che offre il servizio. Il *registrar* gestisce un server DNS, dove aggiunge una nuova entry che mappa il nome di dominio all’indirizzo IP specificato.
 
-Successivamente, il registrar comunica al server DNS del TLD di essere responsabile della risoluzione del nuovo dominio. Da questo momento, il server DNS del registrar diventa **autoritativo** per il dominio, gestendo le richieste di risoluzione del nome in indirizzo IP.
+Successivamente, il *registrar* comunica al server DNS del TLD di essere responsabile della risoluzione del nuovo dominio. Da questo momento, il server DNS del registrar diventa **autoritativo** per il dominio, gestendo le richieste di risoluzione del nome in indirizzo IP.
 
 ## Accedere ad un nome di dominio
 
@@ -2205,7 +2214,7 @@ Innanzitutto nella rete locale si possiede l’indirizzo di un server DNS (solit
 4. Il server DNS locale chiede quindi a `1.2.3.3` chi sia `www.example.com`
 5. `1.2.3.3` non sa la risposta ma risponde che il server DNS con indirizzo `1.2.3.4` è autoritativo per `example.com` 
 6. Il server DNS locale chiede quindi a `1.2.3.4` chi sia `www.example.com`
-7. Il server `1.2.3.4` conosce chi è `www.example.com` e risponde con il rispettivo indirizzo IP. Inoltre conferma di essere autoritativo per `example.com` quindi ogni richiesta ad un qualunque sotto-dominio di `example.com` verrà fatto direttamente al server `1.2.3.4`)
+7. Il server `1.2.3.4` conosce chi è `www.example.com` e risponde con il rispettivo indirizzo IP. Inoltre conferma di essere autoritativo per `example.com` quindi ogni richiesta ad un qualunque sotto-dominio di `example.com` verrà fatto direttamente al server `1.2.3.4`
 8. Il server DNS locale manda l’indirizzo IP che aveva richiesto Alice in modo che possa stabilire una connessione con esso.
 
 Chiariamo il concetto di richiesta ricorsiva e iterativa:
@@ -2213,17 +2222,15 @@ Chiariamo il concetto di richiesta ricorsiva e iterativa:
 - Una richiesta **ricorsiva** implica che il server DNS a cui è stata fatta la richiesta si occupi completamente di trovare una risposta definitiva interagendo con altri server DNS.
 - Una richiesta **iterativa** comporta che il server DNS risponda al client con la migliore informazione disponibile al momento, senza eseguire ulteriori richieste.
 
-Per ridurre il rischio di sovraccarichi le query ricorsive sono permesse solo agli host locali con il server DNS
+Per ridurre il rischio di sovraccarichi le query ricorsive sono permesse solo agli host locali verso il proprio server DNS.
 
-## DNS caching
+### DNS caching
 
-Il server DNS locale può fungere anche da memoria cache per le richieste DNS risolte di recente: se un altro utente della rete fa una richiesta che è stata fatta poco fa da un altro host, il server locale risponderà direttamente senza inoltrare la richiesta ad altri server.
-
-Se sei una organizzazione grande e disponi di tante macchine, per fare load balancing puoi rispondere con indirizzi diversi a richieste uguali provenienti da host diversi.
+Il server DNS locale può fungere anche da memoria cache per le richieste DNS risolte di recente: se un altro utente della rete fa una richiesta che è stata risolta poco fa da un altro host, il server locale risponderà direttamente senza fare una risoluzione da capo.
 
 ## Protocollo DNS
 
-Per quanto sia ovvio sensato pensare che DNS debba implementare dei servizi di sicurezza e di avere una comunicazione affidabile (risoluzioni sbagliate potrebbero portare a siti diversi da quelli voluti), in realtà DNS si basa sul protocollo di trasporto UDP (delle particolari versioni di DNS utilizzano invece TCP), non garantendo l’affidabilità dei dati.
+Per quanto sia sensato pensare che DNS debba implementare dei servizi di sicurezza e di avere una comunicazione affidabile (risoluzioni sbagliate potrebbero portare a siti diversi da quelli voluti), in realtà DNS si basa sul protocollo di trasporto UDP, non garantendo l’affidabilità dei dati (delle versioni più recenti di DNS utilizzano invece TCP).
 
 Il formato semplificato di un messaggio DNS è il seguente:
 
@@ -2235,11 +2242,11 @@ In particolare il campo `header` è composto come segue:
 
 - ID è un numero identificativo (random) della richiesta, il server lo includerà nella risposta in modo da distinguere più risposte se vengono fatte più richieste in parallelo.
 - QR: (query type) indica se si tratta di una richiesta o una risposta
-- AA: se il server sta mandando la risposta è autoritativo per il dominio richiesto o no
+- AA: se il server che sta mandando la risposta è autoritativo per il dominio richiesto o no
 - RD: la richiesta è di tipo ricorsivo o no
 - RA: la risposta dice se il server accetta richieste ricorsive
 - RCODE: codice di risposta: OK oppure errori
-- Gli ultimi quattro cambi riguardano il numero di
+- Gli ultimi quattro campi riguardano il numero di
     - Question
     - Answer
     - Authority
@@ -2264,19 +2271,19 @@ Ogni record ha un formato specifico che include vari campi:
 
 ## Reverse DNS
 
-L’operazione di reverse DNS consiste nel ottenere un nome di dominio associato ad un indirizzo IP (cioè il comportamento inverso di una comune risoluzione DNS)
+L’operazione di reverse DNS consiste nell’ottenere un nome di dominio associato ad un indirizzo IP (cioè il comportamento inverso di una comune risoluzione DNS)
 
 Quando si registra un dominio è possibile (ma non è obbligatorio) anche registrare il dominio inverso per permettere di scoprire il nome di dominio associato ad un indirizzo IP.
 
-Il dominio inverso si specifica in una forma particolare del tipo: `<ipaddress>.in-addr.arpa`.
+Il dominio inverso viene specificato nel record PTR in una forma particolare del tipo: `<ipaddress_inverted>.in-addr.arpa`.
 
-Quando un host vuole sapere il nome di dominio associato all’indirizzo `1.2.3.5` fa una richiesta DNS per il nome di dominio `5.3.2.1.in-addr.arpa` la risoluzione avverrà esattamente come i nomi di domini classici in cui `in-addr.arpa` è il TLD
+Quando un host vuole sapere il nome di dominio associato all’indirizzo `1.2.3.5` fa una richiesta DNS per il nome di dominio `5.3.2.1.in-addr.arpa` la risoluzione avverrà esattamente come i nomi di domini classici, in cui `in-addr.arpa` è il TLD.
 
-Gli indirizzi IP vengono **invertiti** per adattarsi alla struttura gerarchica del DNS, che ordina i livelli dalla gerarchia maggiore (a destra) alla minore (a sinistra). Gli indirizzi IP, infatti, hanno una gerarchia opposta, dove la parte più generale (reti) è a sinistra e quella più specifica (host) è a destra. Invertendo gli indirizzi IP nel reverse DNS, possiamo rappresentarli coerentemente con la logica gerarchica del DNS.
+Gli indirizzi IP vengono **invertiti** per adattarsi alla struttura gerarchica del DNS, che ordina i livelli dalla gerarchia più generica (a destra) alla più specifica (a sinistra). Gli indirizzi IP, infatti, hanno una gerarchia opposta, dove la parte più generale (reti) è a sinistra e quella più specifica (host) è a destra. Invertendo gli indirizzi IP, possiamo rappresentarli coerentemente con la logica gerarchica del DNS.
 
 ## Ridondanza
 
-Spesso i DNS server sono ridondati, quindi è possibile che delle risoluzioni dello stesso nome di dominio a breve distanza temporale diano indirizzi IP diversi, questo perché alcuni servizi vengono forniti da più di un server (per fare *load balancing*).
+Spesso i DNS server sono ridondati in modo che se un server non risponda per qualche motivo, la richiesta viene ripetuta in round-robin agli altri. È possibile anche che delle risoluzioni dello stesso nome di dominio a breve distanza temporale diano indirizzi IP diversi, questo perché alcuni servizi vengono forniti da più di un server, che hanno IP diversi (per fare *load balancing*).
 
 ## Tool linux
 
@@ -2327,15 +2334,15 @@ Le e-mail non viaggiano direttamente da un computer all'altro, ma coinvolgono di
 - client di posta elettronica del mittente
 - server di posta elettronica del mittente
 - server di posta elettronica del destinatario
-- e client di posta elettronica del destinatario.
+- client di posta elettronica del destinatario.
 
 I client di posta elettronica vengono chiamati **MUA** (*Mail User Agent*), i server che si occupano della trasmissione sono chiamati **MTA** (*Mail Transfer Agents*)
 
-La catena di server può essere più lunga di due.
+La catena di server (MTA) può essere più lunga di due.
 
 Diversi protocolli sono coinvolti nel processo di invio e ricezione delle e-mail:
 
-- *Internet Message Format* (IMF) e *Multipurpose Internet Mail Extensions (MIME)* specificano come vengono formattati i messaggi e-mail.
+- *Internet Message Format* (IMF) e *Multipurpose Internet Mail Extensions (MIME)* specificano come vengono formattati i messaggi.
 - *Simple Mail Transfer Protocol* (**SMTP**) specifica il protocollo necessario per recapitare il messaggio dal client di Alice al server di Bob.
 - *Post Office Protocol* (**POP**) e *Internet Message Access Protocol* (**IMAP**) specificano come Bob può recuperare le e-mail dal suo server.
 
@@ -2343,12 +2350,10 @@ Diversi protocolli sono coinvolti nel processo di invio e ricezione delle e-mail
 
 ## Formato delle e-mail
 
-I messaggi e-mail sono composti da due parti:
+Le e-mail sono composti da due parti:
 
-- un header contenente i metadati come il mittente, destinatario, l’oggetto, CC, la data.
+- Un header contenente i metadati come il mittente, destinatario, l’oggetto, CC, la data.
 - Il corpo del messaggio
-
-I messaggi e-mail sono messaggi di testo, inizialmente formattati in testo ASCII, successivamente la codifica è stata estesa.
 
 Esempio di una mail:
 
@@ -2373,7 +2378,7 @@ Oltre ai campi standard nell’header, ci sono altre intestazioni rilevanti come
 
 Nel corpo del messaggio, oltre a scrivere del testo ASCII, abbiamo bisogno di inviare file binari e allegati. Con l'introduzione di **MIME (Multipurpose Internet Mail Extensions)**, è diventato possibile inviare diversi tipi di contenuto, inclusi file binari, immagini e audio.
 
-MIME utilizza header specifici come "`Content-Type`" (che indica il tipo di contenuto nel messaggio) e "`Content-Transfer-Encoding`" (che indica come è codificato il contenuto del messaggio) per definire il formato e la codifica del contenuto.
+MIME utilizza header specifici come "`Content-Type`" (che indica il tipo di contenuto nel messaggio) e "`Content-Transfer-Encoding`" (che indica come è codificato il contenuto del messaggio).
 
 Ad esempio questa email:
 
@@ -2403,14 +2408,13 @@ X-Attachment-Id: f_lnvvfaz20
 
 R0lGODlhAQABAIAAAP///////yH+EUNyZWF0ZWQgd2l0aCBHSU1QACwAAAAAAQABAAACAkQBADs=
 --00000000000061c37d0607fec679--
-
 ```
 
 ## SMTP
 
-SMTP (Simple Mail Transfer Protocol) è un protocollo testuale utilizzato per inviare messaggi e-mail dal client al server mail e tra server mail. È  basato su TCP e opera sulla porta 25.
+SMTP (Simple Mail Transfer Protocol) è un protocollo testuale utilizzato per inviare messaggi e-mail da client a server mail e tra server mail. È basato su TCP e opera sulla porta 25.
 
-La comunicazione in SMTP avviene tramite **comandi e codici di risposta numerici**. Il client invia comandi al server, e il server risponde con un codice a tre cifre che indica l'esito dell'operazione e un commento opzionale.
+La comunicazione in SMTP avviene tramite **comandi e codici di risposta numerici**. Il client invia comandi al server, e il server risponde con un codice a tre cifre che indica l'esito dell'operazione con un commento opzionale.
 
 I comandi più utilizzati sono:
 
@@ -2445,7 +2449,7 @@ Oggi viene usato il **protocollo TLS** che aggiunge crittografia.
 
 Quando il server SMTP del mittente riceve il messaggio dal client deve conoscere l’indirizzo del successivo server SMTP a cui inoltrare la richiesta.
 
-Per fare ciò si usa il protocollo DNS per ottenere l’indirizzo.
+Per fare ciò si usa il protocollo DNS, facendo una query per il record MX per ottenere l’indirizzo IP.
 
 A questo punto il server SMTP del mittente si connette al server SMTP del destinatario. Tuttavia, se il server SMTP del mittente non è autenticato, il server SMTP del destinatario non consentirà il *relaying*.
 
@@ -2455,7 +2459,7 @@ Si introduce il concetto di *Mail Submission Agent* (MSA), un MTA che richiede l
 
 ## POP
 
-Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può ottenere la posta nel server.
+Quando il messaggio arriva al server SMTP di destinazione, l’unica cosa che ci manca è stabilire come il client destinatario può recuperare la posta dal server.
 
 Il protocollo POP (Post Office Protocol), attualmente nella versione 3 (POP3), è uno dei protocolli utilizzati per consegnare la posta elettronica alla MUA del destinatario.
 
@@ -2478,7 +2482,7 @@ Una sessione POP si compone di tre parti: una fase di **autorizzazione**, una fa
 La principale differenza tra i protocollo POP e IMAP riguarda il modo in cui rimangono salvate le e-mail:
 
 - **POP**: Scarica le email dal server sul dispositivo del client e, generalmente, le elimina dal server (a meno che non venga configurato diversamente).
-- **IMAP**: Le email restano sul server e vengono sincronizzate tra tutti i dispositivi connessi. Il client visualizza una copia dei messaggi, che rimangono accessibili da più dispositivi.
+- **IMAP**: Le email restano sul server. Il client visualizza una copia dei messaggi, che rimangono accessibili nel server da più dispositivi.
 
 
 
@@ -2504,7 +2508,7 @@ Un tecnica è il **Controllo FQDN (Fully Qualified Domain Name)**: si basa sull'
 
 Viene quindi verificata la veridicità del nome di dominio e dell’indirizzo IP inseriti nel comando HELO.
 
-Questa tecnica richiede agli MTA di avere un IP pubblico, un nome di dominio e un nome di dominio inverso, rendendo più difficile per gli spammer crearne uno.
+Questa tecnica richiede agli MTA di avere un IP pubblico, un nome di dominio e un nome di dominio inverso, rendendo più difficile per gli spammer crearne uno fasullo.
 
 ### Blacklist
 
@@ -2512,13 +2516,13 @@ Una ulteriore tecnica è quella di usare delle **Blacklist IP**: cioè delle lis
 
 Gli MTA utilizzano un protocollo chiamato DNSBL (DNS Block List) per verificare se un IP è presente in una blacklist prima di inoltrare l’email.
 
-**Spamhaus** è una organizzazione la cui attività principale è quella di compilare e tenere aggiornate le blacklist
+**Spamhaus** è una organizzazione la cui attività principale è quella di compilare e tenere aggiornate le blacklist.
 
 ### Graylist
 
-Un altro fattore importante è che gli MTA legittimi aderiscono allo **standard SMTP**, mentre gli spammer spesso no. Gli MTA riceventi possono ritardare le risposte o restituire errori temporanei.
+Un altro fattore importante è che gli MTA legittimi aderiscono allo **standard SMTP**, mentre gli spammer spesso no, per evitare di rallentare la loro attività. Per cercare comunque di rallentare possibili spammer gli MTA riceventi possono ritardare le risposte o restituire errori temporanei.
 
-Una particolare si utilizza una tecnica chiamata **Graylisting**: gli MTA che utilizzano il graylisting rispondono con un errore `4xx` alla prima connessione da un IP sconosciuto. Gli MTA mittenti legittimi riproveranno dopo un po' di tempo, mentre gli spammer tendenzialmente no.
+Una particolare si utilizza una tecnica chiamata **Graylisting**: gli MTA rispondono con un errore `4xx` alla prima connessione da un IP sconosciuto. Gli MTA mittenti legittimi riproveranno dopo un po' di tempo, mentre gli spammer tendenzialmente no.
 
 È da notare che questa tecnica introduce un ritardo nella ricezione della prima email (anche se legittima) proveniente da un nuovo MTA.
 
@@ -2529,7 +2533,7 @@ Se un MTA viene whitelistato ma non manda e-mail per un po’ verrà di nuovo ri
 Approfondiamo alcuni comandi di SMTP utili per comprendere le successive tecniche anti-spam:
 
 - `HELO`: viene utilizzato dal client MTA per identificarsi al server MTA. Il comando HELO è seguito dal nome di dominio del client MTA.
-- `MAIL FROM`: specifica l'indirizzo mail a cui verranno inviati eventuali errori di consegna. (non è necessariamente l’e-mail del mittente)
+- `MAIL FROM`: specifica l'indirizzo mail a cui verranno inviati eventuali errori di consegna (non è necessariamente l’e-mail del mittente).
 - `FROM`: specifica l'indirizzo email del mittente della mail. Questo è anche l'indirizzo email utilizzato dal destinatario per rispondere all'email.
 
 Non è possibile fare assunzioni sulla legittimità dei domini inseriti in questi campi.
@@ -2542,7 +2546,7 @@ Vediamo delle tecniche per verificare l’autorevolezza dei campi `HELO, MAIL FR
 
 Il Sender Policy Framework (**SPF**) è un protocollo che cerca di contrastare gli spammer impedendogli di utilizzare i comandi `HELO` e `MAIL FROM` (senza però limitare il `FROM`) con un dominio che non possiedono.
 
-Un record SPF è un record testuale (TXT) messo nel server DNS associato al nome di dominio di un'organizzazione, che specifica gli indirizzi IP autorizzati a inviare email per quel dominio.
+Un record SPF è un record testuale (di tipo `TXT`) messo nel server DNS associato al nome di dominio di un'organizzazione, in questo record sono specificati gli indirizzi IP autorizzati a inviare email per conto di quel dominio.
 
 Un esempio di record SPF è il seguente:
 
@@ -2554,16 +2558,16 @@ mydomain.it. 86400 IN TXT “v=spf1 ip4:17.18.7.120 -all”
 - `ip4:17.18.7.120`: specifica che l'indirizzo IP 17.18.7.120 è autorizzato a inviare email
 - `-all`: indica che tutti gli altri indirizzi IP non possono inviare email
 
-Quindi quando un MTA riceve una connessione da un altro MTA:
+Quindi quando un MTA riceve una connessione da un altro MTA, farà le seguenti operazioni:
 
 - fa la risoluzione DNS per il dominio specificato in HELO e MAIL FROM
 - verifica che esista un record SPF per quei domini
-- controlla se l’indirizzo IP della connessione è uno degli indirizzi specificati dal record SPF
+- controlla se l’indirizzo IP della connessione sia uno degli indirizzi specificati dal record SPF
 - prende delle decisioni in base al risultato
 
 Oltre ad usare indirizzi IPv4 si possono usare indirizzi IPv6 e anche nomi di dominio.
 
-Inoltre è possibile includere dei record SPF aggiuntivi di altri domini con la direttiva `include:` ad esempio `include:_spf.google.com` per indicare che che Google è autorizzato a inviare email per conto del dominio.
+Inoltre è possibile includere dei record SPF aggiuntivi di altri domini con la direttiva `include:` ad esempio `include:_spf.google.com` per indicare che Google è autorizzato a inviare email per conto del dominio.
 
 Nella sintassi dei record SPF ci sono dei **qualificatori** che specificano l'azione da intraprendere per ogni indirizzo IP:
 
@@ -2582,7 +2586,7 @@ Abbiamo visto che il protocollo SPF non garantisce nulla sul campo `FROM`.
 
 DKIM risolve questo problema verificando anche il campo `FROM`.
 
-**DomainKeys Identified Mail (DKIM)** è un protocollo  consente di verificare l'autenticità del mittente di un messaggio e l'integrità del suo contenuto. DKIM è simile a SPF ma utilizza la crittografia a chiave pubblica per firmare digitalmente le email, garantendo che il messaggio non sia stato manomesso durante il trasporto.
+**DomainKeys Identified Mail (DKIM)** è un protocollo consente di verificare l'autenticità del mittente e l'integrità del suo contenuto. DKIM è simile a SPF ma utilizza la crittografia a chiave pubblica per firmare digitalmente le email, garantendo che il messaggio non sia stato manomesso durante il trasporto.
 
 MSA è l’entità che si occupa dell’autenticazione dell’utente, ed è l’unica entità che può controllare il campo `FROM` e firmare l’intera email.
 
@@ -2590,8 +2594,8 @@ Funzionamento di DKIM:
 
 1. **Generazione delle chiavi**: L'amministratore del MSA genera una coppia di chiavi pubblica e privata.
 2. **Pubblicazione della chiave pubblica**: La chiave pubblica viene pubblicata in un record TXT del DNS.
-3. **Firma del messaggio**: Quando un MUA (Mail User Agent) invia un'email al suo server SMTP, l’MSA del server fa l’autenticazione del client (verifica anche che l’indirizzo del `FROM` sia un indirizzo autorizzato) e seleziona alcuni campi dell'email dell’header, e il corpo del messaggio, e genera un hash di questi elementi. Il MSA firma quindi l'hash utilizzando la sua chiave privata e include la firma digitale nell'intestazione della mail.
-4. **Verifica della firma**: Quando un MTA riceve un'email con una firma DKIM, recupera la chiave pubblica del mittente con una risoluzione DNS. L'MTA utilizza quindi la chiave pubblica per verificare la firma digitale e controllare l'integrità del messaggio.
+3. **Firma del messaggio**: Quando un MUA (Mail User Agent) invia un'email al suo server SMTP, l’MSA del server fa l’autenticazione del client (verifica anche che l’indirizzo del `FROM` sia un indirizzo autorizzato) e genera un hash considerando alcuni campi dell’header e il corpo della mail. Firma quindi l'hash utilizzando la sua chiave privata e include la firma digitale nell'header della mail.
+4. **Verifica della firma**: Quando un MTA riceve un'email con una firma DKIM, recupera la chiave pubblica del mittente con una risoluzione DNS. Utilizza quindi la chiave pubblica per verificare la firma digitale e controllare l'integrità del messaggio.
 
 L'intestazione DKIM contiene diversi campi che forniscono informazioni sulla firma e sul processo di verifica. Alcuni di questi sono:
 
@@ -2612,7 +2616,7 @@ DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ietf.org; s=ietf1; t=1730
 
 Il protocollo **Domain-based Message Authentication, Reporting, and Conformance (DMARC)** aggiunge un ulteriore livello di controllo verificando l'**allineamento** tra i domini utilizzati nei diversi protocolli di autenticazione.
 
-DMARC verifica che il dominio nell'intestazione "From" corrisponda al dominio utilizzato o in SPF (quindi con HELO o MAIL FROM) o in DKIM (nel campo `d` dell’header). In caso di mancato allineamento, il server MTA può applicare diverse politiche decise dal proprietario del dominio:
+DMARC verifica che il dominio nell'intestazione "`From`" corrisponda al dominio utilizzato o in SPF (quindi con `HELO` o `MAIL FROM`) o in DKIM (nel campo `d` dell’header). In caso di mancato allineamento, il server MTA può applicare diverse politiche decise dal proprietario del dominio:
 
 - `none`: non fare nulla, lascia passare
 - `quarantine`: marca l’email come possibile spam
@@ -2620,19 +2624,16 @@ DMARC verifica che il dominio nell'intestazione "From" corrisponda al dominio ut
 
 È importante che le politiche siano **consistenti** tra tutti i MTA (non vogliamo che una e-mail venga accettata da alcuni MTA e da altri no)
 
-Il protocollo DMARC permette al proprietario del dominio mittente di impostare la policy che tutti gli MTA devono rispettare. Le policy vengono anch’esse configurate nel DNS con un campo TXT e sono accessibili con una query al dominio `_dmarc.<dominio>`
+Il protocollo DMARC permette al proprietario del dominio mittente di impostare la policy che tutti gli MTA devono rispettare. Le policy vengono anch’esse configurate nel DNS con un campo `TXT` e sono accessibili con una query al dominio `_dmarc.<dominio>`
 
 ## Funzionamento completo
 
 Combinando tutte le tecniche che abbiamo visto:
 
-**1. Verifica FQDN:** Il primo passo è la verifica del FQDN del MTA che invia l'email.
-
-**2. Verifica SPF:** Successivamente, il server MTA controlla il record ****SPF del dominio mittente che elenca gli indirizzi IP autorizzati a inviare email per quel dominio.
-
-**3. Verifica DKIM:** Il server MTA verifica la firma DKIM dell'email garantendo che il messaggio non sia stato manomesso e che provenga effettivamente dal dominio dichiarato nell'intestazione `FROM`
-
-**4. Allineamento DMAR**C: In caso di mancato allineamento tra i domini, vengono applicate politiche di sicurezza definite dal proprietario del dominio mittente.
+1. **Verifica FQDN:** Il primo passo è la verifica del FQDN del MTA che invia l'email.
+2. **Verifica SPF:** Successivamente, il server MTA controlla il record ****SPF del dominio mittente che elenca gli indirizzi IP autorizzati a inviare email per quel dominio.
+3. **Verifica DKIM:** Il server MTA verifica la firma DKIM dell'email garantendo che il messaggio non sia stato manomesso e che provenga effettivamente dal dominio dichiarato nell'intestazione `FROM`
+4. **Allineamento DMAR**C: In caso di mancato allineamento tra i domini, vengono applicate politiche di sicurezza definite dal proprietario del dominio mittente.
 
 Possiamo riassumere tutti i passaggi con il seguente schema:
 
@@ -2640,14 +2641,14 @@ Possiamo riassumere tutti i passaggi con il seguente schema:
 
 1. **Alice invia l'email:** Alice, utilizzando il suo client di posta elettronica (MUA), invia un'email dal suo indirizzo `alice@a.com` a `bob@b.com`.
 2. **Autenticazione con MSA:** l’MSA di Alice la autentica, verificando che sia effettivamente autorizzata a inviare email.
-3. **Preparazione dell'email per l'invio:** Il MTA di `a.com`, ricevendo l'email da Alice, imposta i campi `HELO`, `Mail From`, `From` e aggiungendo la firma DKIM. L'indirizzo IP del MTA è `1.2.3.4`.
-4. **Controllo blacklist DNSBL:** Prima di recapitare l'email, l’MTA di `b.com` controlla l'indirizzo IP `1.2.3.4` non sia in una blacklist tramite una query DNS ad un servizio come *spamhaus*.
+3. **Preparazione dell'email per l'invio:** Il MTA di `a.com`, ricevendo l'email da Alice, imposta i campi `HELO`, `Mail From`, `From` e aggiunge la firma DKIM. L'indirizzo IP del MTA è `1.2.3.4`.
+4. **Controllo blacklist DNSBL:** Prima di recapitare l'email, l’MTA di `b.com` controlla che l'indirizzo IP `1.2.3.4` non sia in una blacklist tramite una query DNS ad un servizio come *spamhaus*.
 5. **Risoluzione DNS inversa:** Il server MTA di `b.com` effettua una risoluzione DNS inversa sull'indirizzo IP `1.2.3.4` per ottenere il FQDN del MTA mittente.
 6. **Verifica corrispondenza FQDN:** Il server MTA di `b.com` confronta il FQDN ottenuto dalla risoluzione DNS inversa con il dominio dichiarato nel comando `HELO`.
 7. **Controllo SPF:** Il server MTA di `b.com` consulta il record SPF di `a.com` per verificare se l'indirizzo IP `1.2.3.4` è autorizzato a inviare email per conto di `a.com`.
 8. **Verifica DKIM:** Il server MTA di `b.com` verifica la firma DKIM dell'email utilizzando la chiave pubblica di `a.com`, ottenuta da una query TXT al DNS. Questo garantisce che l'email provenga effettivamente da `a.com` e non sia stata alterata durante la trasmissione.
 9. **Controllo DMARC:** Il server MTA di `b.com` consulta il record DMARC di `a.com` per conoscere quali sono le politiche da rispettare, configurate dal proprietario del dominio.
-10. **Accettazione o rifiuto dell'email:** Se tutti i controlli sono superati (FQDN, SPF, DKIM, allineamento DMARC) e le politiche DMARC sono rispettate, l'email viene accettata. In caso contrario, a seconda della politica DMARC, l'email potrebbe essere gestita in altro modo.
+10. **Accettazione o rifiuto dell'email:** Se tutti i controlli sono superati (FQDN, SPF, DKIM, allineamento DMARC), l'email viene accettata. In caso contrario, a seconda della politica DMARC, l'email potrebbe essere gestita in altro modo.
 
 ### Sicurezza del server DNS
 
@@ -2671,11 +2672,11 @@ Prima di analizzare i protocolli, vediamo come funziona ad alto livello la comun
 
 ![](https://i.ibb.co/6B016Zh/image.png)
 
-1. Il browser riceve un numero di porta dal livello TCP (ad esempio 12345), mentre il web server utilizza la porta 80.
+1. Al browser è assegnato un numero di porta dal livello TCP (ad esempio 12345), mentre il web server utilizza la porta 80.
 2. Il browser invia un comando HTTP, che viene incapsulato in un segmento a livello TCP.
 3. Questo segmento viene poi incapsulato in un segmento IP.
 4. Quando i dati arrivano al server, i livelli IP e TCP sul server lo scompongono.
-5. il comando viene ricevuto dal web server, che lo elabora e genera una risposta.
+5. il comando viene ricevuto dall’applicazione nel web server, che lo elabora e genera una risposta.
 
 ## URI
 
@@ -2691,11 +2692,11 @@ Un esempio di come è formato un URL è il seguente:
 ![](https://i.ibb.co/1R9PcBj/image.png)
 
 - **Scheme:** indica il significato dei campi successivi e spesso identifica il protocollo a livello di applicazione che il client deve utilizzare per recuperare il documento (es. http, https, ftp…)
-- **Hostname:** Include il nome di dominio o l'indirizzo IP del server da cui è possibile recuperare il documento. Può essere preceduto da informazioni sull'utente (**UserInfo**) che richiede le informazioni (es. username e password).
+- **Hostname o authority:** Include il nome di dominio o l'indirizzo IP del server da cui è possibile recuperare il documento. Può essere preceduto da informazioni sull'utente (**UserInfo**) che richiede le informazioni (es. username e password).
     
     Il simbolo `@` separa hostname e UserInfo.
     
-- **Port**: dopo l’hostname, separato da un simbolo `:` ci può essere il numero di porta utilizzato dal server in ascolto. Solitamente dal protocollo utilizzato si ricava implicitamente il numero di porta
+- **Port**: dopo l’hostname, separato da un simbolo `:`, ci può essere il numero di porta utilizzato dal server in ascolto. Solitamente in base al protocollo utilizzato si ricava implicitamente il numero di porta (HTTP —> 80, HTTPS —> 443).
 - **Path:** Indica il percorso del documento sul server, strutturato con una sintassi simile a quella di Unix. Se non è specificato un percorso, il server restituirà un documento predefinito.
 - **Query:** Serve per fornire parametri testuali al server, si separa dal path con il simbolo `?` ed è seguito da una lista di coppie chiave-valore, in cui ogni coppia è separata da un simbolo `&`.
 - **Fragment:** Indica una specifica sezione all’interno del documento richiesto.
@@ -2711,7 +2712,7 @@ Vediamo un esempio di URL potenzialmente fraudolento:
 
 `https://cnn.example.com&story=breaking_news@10.0.0.1/top_story.htm`
 
-Ad un occhio inesperto potrebbe sembrare che l’hostname di questo URL sia `ccn.example.com` ma non è così perché quella stringa si trova prima del carattere `@`, che quindi identifica le informazione dell’utente. In realtà l’hostname è `10.0.0.1`. Utenti malintenzionati potrebbero sfruttare questa cosa per illudere le persone di star connettendosi a siti conosciuti quando in realtà stanno andando si un sito completamente diverso.
+Ad un occhio inesperto potrebbe sembrare che l’hostname di questo URL sia `ccn.example.com` ma non è così perché quella stringa si trova prima del carattere `@`, che quindi identifica le informazione dell’utente. In realtà l’hostname è `10.0.0.1`. Utenti malintenzionati potrebbero sfruttare questa cosa per illudere le persone di star connettendosi a siti conosciuti quando in realtà stanno andando su un sito completamente diverso.
 
 ## HTML
 
@@ -2719,12 +2720,12 @@ Per creare le pagine web e collegarle tra loro si usa un linguaggio particolare,
 
 Tutto ciò che nella pagina fa riferimento a qualcosa di esterno (immagini, video, altri documenti…) utilizza degli URL.
 
-Per migliorare l’esperienza e le funzionalità, ad HTML si affiancano altri linguaggi:
+Per migliorare l’esperienza e le funzionalità delle pagine web, ad HTML si affiancano altri linguaggi:
 
 - CSS: per migliorare l’estetica delle pagine
 - JavaScript: per rendere le pagine più interattive
 
-Per rendere le **pagine web dinamiche**, cioè in cui il contenuto cambia in base ad esempio ad un input utente, in base a delle azioni precedentemente fatte dall’utente o in base a chi è l’utente, si aggiunge del codice lato server scritto in un altro linguaggio, ad esempio PHP. In questo caso un URL non punto ad un file .html, ma ad un file scritto in questo linguaggio. Questo codice verrà eseguito nel server e produrrà la pagina HTML specifica in base alla richiesta dell’utente.
+Per rendere le **pagine web dinamiche**, cioè in cui il contenuto cambia in base ad esempio ad un input utente, in base a delle azioni precedentemente fatte dall’utente o in base a chi è l’utente, si aggiunge del codice lato server scritto in un altro linguaggio, ad esempio PHP. In questo caso un URL non punta ad un file .html, ma ad un file scritto in questo linguaggio. Questo codice verrà eseguito nel server e produrrà la pagina HTML specifica in base alla richiesta dell’utente.
 
 Solitamente le pagine dinamiche vengono popolate tramite dati presenti in qualche database di cui il server ha accesso.
 
@@ -2745,7 +2746,7 @@ Ogni **richiesta HTTP** è composta da tre parti:
     - `GET`: Utilizzato per recuperare un documento da un server specificandone l’URL.
     - `HEAD`**:** Consente di recuperare le righe di intestazione per un determinato URI senza recuperare l'intero documento.
     - `POST`**:** Utilizzato da un client per inviare un documento a un server allegandolo alla richiesta come documento MIME.
-2. un **header**: Utilizzata dal client per specificare parametri opzionali per la richiesta.
+2. un **header**: Utilizzato dal client per specificare parametri opzionali nella richiesta.
     
     Alcuni campi nell’header sono:
     
@@ -2781,7 +2782,7 @@ Inizialmente per ogni richiesta HTTP veniva stabilita una nuova connessione TCP 
 
 Oggi abbiamo pagine HTML composte da centinaia di parti (immagini, script, icone, CSS...) e ognuna richiederebbe di aprire una nuova connessione TCP.
 
-Per consentire l'invio di più richieste su un'unica connessione TCP è stato aggiunto un header `Connection: Keep Alive`**.** Il client invia questo header e il server risponde con la lo stesso header specificando quante richieste possono essere utilizzate nel resto della connessione e per quanto tempo deve rimanere aperta la connessione.
+Per consentire l'invio di più richieste su un'unica connessione TCP è stato aggiunto un header `Connection: Keep Alive`**.** Il client invia questo header e il server risponde con la lo stesso header specificando quante richieste possono essere utilizzate nel resto della connessione e per quanto tempo rimane aperta la connessione.
 
 ![](https://i.ibb.co/yFLr0bt/image.png)
 
@@ -2803,7 +2804,7 @@ Esistono diversi tipi di cookie:
 
 ## Proxy
 
-Oggi abbiamo pagine HTML composte da centinaia di parti: immagini, icone, CSS, script tutte provenienti da server diversi, recuperare tutte queste parti (soprattutto se sono in server sparsi nel mondo) può richiedere molto tempo, i **server proxy** possono migliorare questo aspetto.
+Oggi abbiamo pagine HTML composte da centinaia di parti: immagini, icone, CSS e script tutte provenienti da server diversi. Recuperare tutte queste parti (soprattutto se sono in server sparsi nel mondo) può richiedere molto tempo, i **server proxy** possono migliorare questo aspetto.
 
 I ***server* *proxy*** sono essenzialmente delle *cache* che memorizzano le pagine web visitate per un certo periodo di tempo. Risiedono solitamente nella rete dell'utente e i browser vanno configurati per connettersi al proxy anziché direttamente ai server di destinazione.
 
@@ -2811,7 +2812,7 @@ Il proxy, quando riceve la richiesta, recupera il contenuto dal server originale
 
 ![](https://i.ibb.co/94qPrRZ/image.png)
 
-Degli header utili per i proxy sono:
+Degli header HTTP utili per i proxy sono:
 
 - **Cache-Control**: Utilizzata dal server per indicare se la pagina può essere memorizzata nella cache e per quanto tempo. Ad esempio:
     - `no-store` impedisce la memorizzazione
@@ -2819,7 +2820,7 @@ Degli header utili per i proxy sono:
     - `no-cache` consente la memorizzazione ma obbliga il client a verificare se la pagina è stata modificata tramite l’header `If-Modified-Since`.
 - **If-Modified-Since**: Inviata dal client per richiedere una pagina solo se è stata modificata dopo una certa data. Se la pagina non è stata modificata, il server non la invia.
 
-Esiste un altro tipo di proxy chiamato **reverse proxy**, questi sono posizionati sul lato server, e nascondono i server reali ai client. Il loro scopo principale è ridurre il carico sui server, ottimizzando le query ai database e l'utilizzo della CPU.
+Esiste un altro tipo di proxy chiamato **reverse proxy**, questi sono posizionati sul lato server, e nascondono i server reali ai client. Il loro scopo principale è ridurre il carico sui server, ottimizzando le query ai database e l'utilizzo della CPU distribuendo le richieste su più server.
 
 ![](https://i.ibb.co/5ngnKt5/image.png)
 
@@ -2842,17 +2843,19 @@ In TCP, si ha la grandezza della **finestra di invio** del mittente (`swnd`) e l
 
 Questo meccanismo di windowing è un compromesso tra la necessità avere buffer di grandi dimensioni e ma non troppo da sovraccaricare il ricevitore.
 
-L'algoritmo di Nagle fa sì che il mittente invii il maggior numero di segmenti di dimensione MSS consentita da `swnd`, al tempo `t0`. Supponendo una capacità di collegamento elevata, i segmenti vengono ricevuti al tempo `t0 + RTT/2` (RTT significa tempo di andata e ritorno, il tempo di sola andata è quindi circa la metà). Il ricevitore invia un ACK cumulativo e al tempo `t0 + RTT` il mittente lo riceve, svuotando il buffer di invio e ricominciando il processo.
+L'algoritmo di Nagle fa sì che il mittente invii il maggior numero di segmenti di dimensione MSS consentita da `swnd`, al tempo `t0`. Supponendo una capacità di collegamento elevata, i segmenti vengono ricevuti al tempo `t0 + RTT/2` (RTT significa tempo di andata e ritorno, il tempo di sola andata è quindi circa la metà). Il ricevitore invia un ACK cumulativo e al tempo `t0 + RTT`, il mittente lo riceve, svuota il buffer di invio e ricominciando il processo.
 
 Per ogni RTT vengono inviati al massimo dati grandi come la *window* (il minimo tra le due finestre), con un throughput massimo $\frac{\min(\text{rwind}, \text{swing})}{\text{RTT}}$.
 
-Se il ricevitore non è abbastanza veloce ad elaborare i dati ricevuti, invierà un ACK con una nuova dimensione della finestra di ricezione (`rwnd'`) minore di `rwnd`.  Il throughput diventerà quindi $\frac{\min(\text{rwind'}, \text{swing})}{\text{RTT}}$, a causa della *window* ridotta.
+Se il ricevitore non è abbastanza veloce ad elaborare i dati ricevuti, invierà un ACK con una nuova dimensione della finestra di ricezione (`rwnd'`) minore di `rwnd`. Il throughput diventerà quindi $\frac{\min(\text{rwind'}, \text{swing})}{\text{RTT}}$, a causa della *window* ridotta.
 
 ## Congestione di rete
 
-La **congestione di rete** si verifica quando i router lungo il percorso client-server droppano pacchetti a causa di un sovraccarico del traffico.
+La **congestione di rete** si verifica quando i **router lungo il percorso** client-server **droppano pacchetti** a causa di un sovraccarico del traffico.
 
-La congestione di rete viene rilevata dal mittente come una perdita di pacchetti. Se il mittente non rallenta l'invio, il router rimane congestionato e continua a droppare pacchetti. Per risolvere la congestione di rete, l'unica possibilità è ridurre la *window*, in modo che il mittente invii meno dati e sperare che la congestione si risolva.
+La congestione di rete viene rilevata dal mittente come una perdita di pacchetti. Se il mittente non rallenta l'invio, il router rimane congestionato e continua a droppare pacchetti. Il problema è che la congestione non sta nel ricevitore, il quale non notifica al mittente di rallentare.
+
+Per risolvere la congestione di rete, l'unica possibilità è riconoscere la congestione in qualche modo e ridurre la *window*, in modo che il mittente invii meno dati e sperare che la congestione si risolva.
 
 ## Rilevamento implicito della congestione
 
@@ -2864,19 +2867,19 @@ Il problema adesso diventa nel determinare in che modo aumentare la finestra nel
 
 Introduciamo una nuova finestra, la **finestra di congestione** (`cwnd`), inizializzata a un valore fisso, generalmente `cwnd0 = 10 * MSS`. In ogni istante il mittente invierà al massimo `min(cwnd, swnd, rwnd)` dati.
 
-Viene introdotto anche il parametro **slow-start threshold** (`sstrash`), inizializzato al valore di `swnd` e che rappresenta una stima dell’ultimo valore di `cwnd` che non ha causato una congestione
+Viene introdotto anche il parametro **slow-start threshold** (`sstrash`), inizializzato al valore di `swnd` e che rappresenta una stima dell’ultimo valore di `cwnd` che non ha causato una congestione.
 
 ### Algoritmo slow start
 
-L'algoritmo Slow Start, è un algoritmo di controllo della congestione. Ad ogni RTT, se tutti i segmenti sono riconosciuti con un ACK, `cwnd` aumenta in modo esponenziale fino al raggiungimento di `sstrash`, da quel punto in poi `cwnd` cresce più lentamente in modo lineare.
+L'algoritmo Slow Start, è un algoritmo di controllo della congestione. Ad ogni RTT, se tutti i segmenti sono riconosciuti con un ACK, `cwnd` aumenta in modo esponenziale fino al raggiungimento di `sstrash`, da quel punto in poi se si verifica un evento di congestione, `cwnd` viene settato ad un certo valore (in base al tipo di congestione) e cresce più lentamente in modo lineare.
 
 Possono poi verificarsi due tipi di congestioni:
 
-- **Congestione lieve** *(mild congestion):* si verifica quando si ricevono tre ACK per lo stesso numero di sequenza, si fa un *fast retrasmit* e si riceve l'ACK che conferma la ricezione.
+- **Congestione lieve** *(mild congestion):* si verifica quando si ricevono tre ACK per lo stesso numero di sequenza, si fa un *fast retransmit* e si riceve l'ACK che conferma la ricezione.
     
     In questo caso l’algoritmo aggiorna le sue variabili in questo modo:
     
-    - `cwnd' = cwnd`: si salve temporaneamente l’attuale valore di cwnd
+    - `cwnd' = cwnd`: si salva temporaneamente l’attuale valore di cwnd
     - `cwnd = sstrash`: cwnd viene reimpostato al valore di sstrash
     - `sstrash = cwnd' / 2`: sstrash viene reimpostato a metà del valore di cwnd prima dell'evento di congestione.
     
@@ -2913,9 +2916,9 @@ UDP offre il servizio di **multiplexing:** Grazie ai numeri di porta, diverse ap
 
 **L'header UDP** contiene solo le porte sorgente e destinazione (16 bit ciascuna), la lunghezza del segmento (16 bit) e il checksum (16 bit).
 
-I **numeri di porta,** codificati con 16bit e quindi sono 65535 numeri diversi, sono divisi in tre categorie:
+I **numeri di porta,** codificati con 16bit e quindi un totale di 65535 numeri diversi, sono divisi in tre categorie:
 
-- **porte well-known** (da 1 a 1023) riservati ai processi con privilegi di amministratore
+- **porte well-known** (da 1 a 1023) riservate ai processi con privilegi di amministratore
 - porte **registrate** (da 1024 a 49151) dovrebbero essere assegnate dall'IETF ai protocolli che ne fanno richiesta
 - porte **dinamiche** (da 49152 a 65535) possono essere utilizzate liberamente da chiunque
 
@@ -2947,13 +2950,16 @@ La **parte fissa** include:
     - **ACK**: segnala che il campo "numero di acknowledgement" è valido.
     - **PSH**: quando impostato, il ricevente è notificato a consegnare immediatamente i dati all'applicazione, senza attendere di riempire il buffer di ricezione.
     - **URG**: insieme al campo "Urgent Pointer", permette di segnalare al ricevente che dovrebbe consegnare questi dati all'applicazione con la massima priorità, senza seguire i numeri di sequenza. Tuttavia, sia il flag URG che il campo "Urgent Pointer" sono deprecati.
-- Window (16 bit): comunica la dimensione della finestra di ricezione del mittente (in byte).
+- Window (16 bit): comunica la dimensione della finestra di ricezione del mittente (espressa in byte). Quindi la finestra va da $0$ a  $2^{16}-1 = 65535$ Byte
 - **Checksum** (16 bit): garantisce l'integrità dei dati, calcolato sull'intero segmento TCP e su alcuni campi dell'header IP.
 
 Possono essere presenti **estensioni opzionali**, ad esempio:
 
 - **MSS (Maximum Segment Size)**: Questa opzione viene scambiata durante la fase di stabilimento della connessione e definisce la dimensione massima del segmento TCP che il ricevente è in grado di gestire. In genere, MSS viene impostato alla MTU (Maximum Transmission Unit) del livello di collegamento, per evitare la frammentazione dei pacchetti IP.
-- **Window Scale**: Il campo "window" nell'header TCP è limitato a 16 bit. Questa limitazione può influire negativamente sulle prestazioni. L'opzione **Window Scale**, introduce un fattore di moltiplicazione per la dimensione della finestra, consentendo finestre di ricezione più grandi.
+    
+    Tipicamente MSS = 1460 Byte, che aggiunti ai 20 + 20 Byte di header IP e TCP, si arriva a 1500 Byte, cioè la MTU (Maximum Transmission Unit) di un frame Ethernet.
+    
+- **Window Scale**: Il campo "window" nell'header TCP è limitato a 16 bit. Questa limitazione può influire negativamente sulle prestazioni. L'opzione **Window Scale**, introduce un fattore moltiplicativo che consentendo di avere finestre di ricezione più grandi.
 - **Timestamps**: Introdotta per risolvere problemi nella misurazione del RTT (Round Trip Time) e per disambiguare i numeri di sequenza in caso di riavvolgimento dei numeri.
 
 ## Stabilire e Chiudere Connessioni TCP
@@ -2965,18 +2971,18 @@ Serve quindi seguire un processo per stabilire una connessione, chiamato ***thre
 ![](https://i.ibb.co/WWJpgq2/image.png)
 
 1. **SYN**: Il client invia un segmento TCP con il flag SYN impostato, richiedendo di aprire una connessione. Il numero di sequenza del segmento è un valore casuale scelto dal client.
-2. **SYN+ACK**: Il server risponde con un segmento che ha i flag SYN e ACK impostati. Il numero di sequenza è anch'esso un valore casuale, mentre il numero di acknowledgement è il numero di sequenza ricevuto dal client incrementato di 1, questo in generale sta a significare che sono stati ricevuti i dati fino a `x` e si aspetta `x+1`.
+2. **SYN+ACK**: Il server risponde con un segmento che ha i flag SYN e ACK impostati. Il numero di sequenza è anch'esso un valore casuale, mentre il **numero di acknowledgement è il numero di sequenza ricevuto dal client incrementato di 1**, questo sta a significare che sono stati ricevuti i dati fino a `x` e si aspetta di ricevere `x+1`. Quest’ultimo aspetto è l’unica differenza tra il generico stabilimento di connessione che avevamo già visto e quello utilizzato da TCP.
 3. **ACK**: Il client, ricevuto il SYN+ACK, conferma la ricezione inviando un segmento con il flag ACK impostato.
 
 A questo punto, la connessione è stabilita e entrambe le parti possono iniziare a scambiarsi dati.
 
-Esiste la possibilità che **client e server inviino simultaneamente un segmento SYN**, ad esempio se utilizzano la stessa porta e agiscono entrambi come client e server.
+Esiste la possibilità che **client e server inviino simultaneamente un segmento SYN**, sulle stesse porte in quanto agiscono entrambi sia da client che da server.
 
-Vediamo una macchina a stati che riassume i passaggi:
+Vediamo una macchina a stati che riassume i passaggi, l’arco che collega SYN RCVD e SYN Sent evita uno stallo nel caso appena descritto.
 
 ![](https://i.ibb.co/Qk17Khp/image.png)
 
-Nota: `?` significa riceve, mentre `!` significa inviare.
+Nota: `?` significa “riceve”, mentre `!` significa “invia”.
 
 Un esempio di **rifiuto di connessione** avviene in questo modo, in cui il server risponde con **RST+ACK**:
 
@@ -2986,7 +2992,7 @@ Per motivi di sicurezza, un segmento RST deve sempre contenere un numero di ackn
 
 La **chiusura di una connessione TCP** può avvenire in due modi:
 
-- ***graceful release***: entrambe le parti terminano la trasmissione dati in modo sincronizzato dopo aver trasmesso tutti i dati.
+- ***graceful release***: entrambe le parti terminano la trasmissione in modo sincronizzato dopo aver trasmesso tutti i dati.
     1. La parte che desidera chiudere la connessione invia un segmento FIN con il numero di sequenza corrispondente all'ultimo byte di dati inviato.
     2. Il ricevente risponde con un segmento ACK, confermando la ricezione del FIN.
     3. La parte che ha inviato il FIN attende a sua volta un FIN dalla parte ricevente, a indicare che anche quest'ultima ha terminato la trasmissione dati.
@@ -3013,7 +3019,7 @@ Possiamo suddividere le informazioni contenute nel TCB in due categorie principa
 
 - **Indirizzi IP e porte (sia locali che remote)**: Questi parametri identificano univocamente la connessione.
 - **Buffer di invio**: memoria dedicata ai dati che l'applicazione desidera trasmettere. Questi dati rimarranno nel buffer fino a quando non saranno correttamente confermati dal ricevente.
-- **Buffer di ricezione**: buffer per contenere i dati ricevuti. questi dati rimangono nel buffer perché ricevuti fuori sequenza o perché l'applicazione è lenta ad elaborarli.
+- **Buffer di ricezione**: buffer per contenere i dati ricevuti. Questi dati rimangono nel buffer perché ricevuti fuori sequenza o perché l'applicazione è lenta ad elaborarli.
 
 **Informazioni dinamiche** (che possono cambiare durante la connessione):
 
@@ -3031,7 +3037,7 @@ Possiamo suddividere le informazioni contenute nel TCB in due categorie principa
 
 Quando un'applicazione desidera inviare dati attraverso una connessione TCP, il livello TCP esegue le seguenti operazioni:
 
-1. **Verifica lo spazio disponibile nella finestra di ricezione**: Il mittente controlla se la quantità di dati da inviare è inferiore o uguale alla dimensione della finestra di ricezione (`rcv.wnd`) comunicata dal ricevente.
+1. **Verifica lo spazio disponibile nella finestra di ricezione**: Il mittente controlla se la quantità di dati da inviare non superi la dimensione della finestra di ricezione (`rcv.wnd`) comunicata dal ricevente.
 2. **Crea un nuovo segmento TCP**: Il mittente assembla un segmento TCP includendo un'header e un payload. Il payload sarà grande fino a MSS byte.
 3. **Imposta il numero di sequenza del segmento**: Il numero di sequenza del segmento (`seq`) viene impostato al valore di `snd.nxt`. Dopo l'invio, `snd.nxt` viene incrementato della dimensione del payload.
 4. **Imposta il numero di acknowledgement**: Il numero di acknowledgement (`ack`) viene impostato al valore di `rcv.nxt`, che rappresenta il numero di sequenza del prossimo byte atteso.
@@ -3093,29 +3099,29 @@ else:
 
 1. Se la dimensione dei dati da inviare `len(data)` è maggiore o uguale alla MSS e la finestra di ricezione `rcv.wnd` è sufficientemente grande da accoglierli, invia un segmento di dimensione MSS.
 2. Altrimenti, se ci sono dati non ancora confermati, attendi la ricezione di un acknowledgement prima di inviare nuovi dati.
-3. Altrimenti, se non ci sono dati in attesa di acknowledgement, invia un segmento contenente una quantità di dati non superiore a `rcv.wnd`.
+3. Se invece non ci sono dati in attesa di acknowledgement, invia un segmento contenente una quantità di dati non superiore a `rcv.wnd`.
 
 L'algoritmo di Nagle favorisce l'invio di segmenti completi quando possibile, allo stesso tempo, limita l'invio di piccoli segmenti riempiendo il buffer mentre si attendono gli ACK
 
 ## Quando grande dovrebbe essere la window?
 
-La dimensione massima della finestra TCP è limitata a $2^{16} = 65536 \text{ byte}$ a causa del campo "window" a 16 bit. Questa limitazione risulta oggi inadatta per le reti ad alta velocità. Si è infatti limitati ad inviare dati grandi quanto la window per ogni RTT (tempo di andata del pacchetto e ritorno dell’ACK). Ad esempio con 1ms di RTT si è limitati a 524Mbps di throughput.
+La dimensione massima della finestra TCP è limitata a $2^{16} -1 = 65535 \text{ byte}$ a causa del campo "window" a 16 bit. Questa limitazione risulta oggi inadatta per le reti ad alta velocità. Si è infatti limitati ad inviare dati grandi quanto la window per ogni RTT (tempo di andata del pacchetto e ritorno dell’ACK). Ad esempio con 1ms di RTT si è limitati a $\frac{2^{16} \cdot 8}{1\cdot 1000}=524$ Mbps di throughput.
 
 Per superare la limitazione, è stata introdotta l'opzione **"Window Scale".**
 
 Questa opzione, negoziata durante la fase di handshake, indica un moltiplicatore per la dimensione della finestra.
 
-**Window Scale** contiene un valore $S$, compreso tra $0$ e $14$, che rappresenta lo spostamento a sinistra da applicare alla dimensione della finestra. In questo modo la dimensione effettiva della finestra di ricezione diventa `rcv.wnd` $\cdot 2^S$.
+**Window Scale** contiene un valore $S$, compreso tra $0$ e $14$, che rappresenta lo spostamento (shift) a sinistra da applicare ai bit della dimensione della finestra. In questo modo la dimensione effettiva della finestra di ricezione diventa `rcv.wnd` $\cdot 2^S$.
 
-Ad esempio con 1ms di RTT si arriva a 8590Gbps di throughput.
+Ad esempio con 1ms di RTT si arriva a $\frac{2^{16+14} \cdot 8}{1\cdot 1000}=8590$ Gbps di throughput.
 
 ## A quanto andrebbero impostati i timer di ritrasmissione?
 
-Il *Retrasmission Time-out* (RTO) determina il tempo che il mittente attende prima di ritrasmettere un segmento non ancora confermato. Se il timeout scade troppo presto, si potrebbero ritrasmettere segmenti già ricevuti correttamente. Al contrario, se il timeout scade troppo tardi, mittente rimane molto tempo inattivo.
+Il *Retrasmission Time-out* (RTO) determina il tempo che il mittente attende prima di ritrasmettere un segmento non ancora confermato. Se il timeout scade troppo presto, si potrebbero ritrasmettere segmenti già ricevuti correttamente. Al contrario, se il timeout scade troppo tardi, mittente rimane molto tempo in attesa.
 
 Un'impostazione accurata del RTO dipende da una stima precisa del RTT, ovvero il tempo impiegato da un segmento per raggiungere il destinatario e tornare al mittente con un ACK. 
 
-Misurare l'RTT semplicemente calcolando il tempo trascorso tra l'invio di un segmento dati e la ricezione del relativo acknowledge può essere influenzato dalle condizioni della rete ed è quindi in continuo cambiamento.
+Misurare l'RTT semplicemente calcolando il tempo trascorso tra l'invio di un segmento e la ricezione del relativo ACK può essere influenzato dalle condizioni momentanee della rete ed è quindi in continuo cambiamento.
 
 Le implementazioni TCP moderne utilizzano l'opzione **"timestamp"**. Questa opzione consente al mittente di inserire due timestamp a 32 bit in ogni segmento inviato:
 
@@ -3162,7 +3168,7 @@ Oltre all'algoritmo di Jacobson, esistono altre strategie avanzate per la gestio
 
 - *Exponential Backoff*:
     
-    In caso di ritrasmissioni multiple dello stesso segmento, l'RTO viene raddoppiato dopo ogni tentativo fallito, fino a raggiungere un valore massimo configurato (tipicamente 60 secondi).
+    In caso di ritrasmissioni multiple dello stesso segmento, l'RTO viene raddoppiato dopo ogni tentativo fallito, fino a raggiungere un valore massimo configurato (tipicamente 60 secondi). Dopo un tentativo riuscito l’RTO viene riportato al valore normale.
     
 - *Fast Retransmit*
     
@@ -3202,7 +3208,7 @@ Ricordiamo che per far funzionare la crittografia ci deve essere una *security a
 
 ### Cifrare il livello di rete?
 
-la crittografia dell'intestazione IP è problematica perché i router, necessari per l'instradamento, non fanno parte della *security association*. I router per instradare i pacchetti devono vedere le informazioni sull’header IP
+La crittografia dell'intestazione IP è problematica perché i router, necessari per l'instradamento, non fanno parte della *security association*. I router per instradare i pacchetti devono vedere le informazioni sull’header IP.
 
 Soluzioni come la crittografia a livello MAC o l'uso di una VPN (*Virtual Private Network*) offrono una crittografia limitata all'interno di una LAN o tra reti proprie, ma non sono soluzioni generali su Internet.
 
@@ -3214,8 +3220,8 @@ La crittografia dell'intestazione TCP presenta delle sfide a causa di servizi, c
 
 Questo risulta essere il compromesso migliore, infatti:
 
-- Più andiamo in basso nello stack di rete, maggiori sono le informazioni crittografate, ma le cose potrebbero non funzionare, questo perché alcune informazioni devono essere visibili per poter far funzionare la comunicazione.
-- Più andiamo in alto nello stack di rete, più facile è supportare nuove applicazioni, ma più informazioni non vengono cifrate.
+- Più andiamo in basso nello stack di rete, maggiori sono le informazioni cifrate, ma alcune operazioni potrebbero non funzionare, questo perché delle informazioni devono essere visibili per poter far funzionare la comunicazione.
+- Più andiamo in alto nello stack di rete, più facile è supportare nuove applicazioni, ma più informazioni vengono lasciate in chiaro.
 
 Se forniamo un servizio di crittografia sopra TCP, l’header TCP e IP rimangono visibili agli attaccanti (numero delle porte, il protocollo usato, gli indirizzi IP), ma il contenuto effettivo viene cifrato.
 
@@ -3247,7 +3253,7 @@ Nella versione TLS 1.2 sono presenti vari sotto-protocolli, tra cui un **protoco
 
 ## Protocollo di handshake
 
-Il protocollo handshake consente a server e client di autenticarsi a vicenda e di negoziare un determinato algoritmo di crittografia e delle chiavi crittografiche. Alcuni degli elementi che devono essere negoziati includono:
+Il protocollo di handshake consente a server e client di autenticarsi a vicenda e di negoziare un determinato algoritmo di crittografia e delle chiavi crittografiche. Alcuni degli elementi che devono essere negoziati includono:
 
 - le funzioni crittografiche (RSA, crittografia a curva ellittica)
 - le funzioni hash (SHA-256, SHA-384)
@@ -3257,15 +3263,17 @@ Vediamo i passaggi dell’handshake:
 
 ![](https://i.ibb.co/B2DwxSd/image.png)
 
-1. I primi due messaggi in blue sono quelli dell’handshake base di TCP, in particolare sono SYN e SYN+ACK.
-2. Il terzo messaggio `ClientHello` ha due funzioni: termina l’handshake di TCP e inizia l’handshake di TLS. In tale messaggio c’è la configurazione di TLS (con i vari algoritmi crittografici) che il client supporta
+1. I primi due messaggi in blu sono quelli dell’handshake base di TCP, in particolare sono SYN e SYN+ACK.
+2. Il terzo messaggio `ClientHello` ha due funzioni: termina l’handshake di TCP e inizia l’handshake di TLS. In tale messaggio c’è la configurazione di TLS che il client supporta (con i vari algoritmi crittografici) 
 3. il server risponde con un messaggio `ServerHello`, che include la configurazione più sicura di TLS supportata da entrambi.
     
     Il server manda anche la catena di certificati (dalla root CA fino al certificato del server).
     
 4. Il client invia un messaggio `ClientKeyExchange` che contiene le informazioni necessarie per completare lo scambio di chiavi in base all’algoritmo scelto.
-5. Sia il client che il server inviano un messaggio `ChangeCipherSpec` per segnalare che da questo punto in poi tutti i messaggi saranno crittografati e autenticati con le chiavi di sessione appena concordate.
+5. Sia il client che il server inviano un messaggio `ChangeCipherSpec` per segnalare che da questo punto in poi tutti i messaggi saranno cifrati e autenticati con le chiavi di sessione appena concordate.
 6. Sia il client che il server inviano un messaggio `Finished` che contiene un hash di tutti i messaggi scambiati durante l'handshake. Questo messaggio è il primo ad essere crittografato con le chiavi concordate e serve a confermare che l'handshake si è svolto correttamente e che nessun attacco Man-in-the-Middle ha modificato i messaggi, se i due `finished` non combaciano, l’handshake fallisce.
+
+Nota che questo handshake richiede 3 RTT.
 
 In questo protocollo l’**autenticazione è unidirezionale**, solo il server viene identificato attraverso la catena di certificati. Il client normalmente viene autenticato tramite un login.
 
@@ -3277,13 +3285,13 @@ Questo protocollo incapsula i dati applicativi in un processo di cinque fasi:
 
 - frammentazione
 - compressione (opzionale)
-- aggiunta di un MAC tramite funzioni hash
+- aggiunta di un MAC (Message Authentication Code) tramite funzioni hash
 - crittografia
 - aggiunta di un header del record TLS.
 
 ![](https://i.ibb.co/1stgppP/image.png)
 
-Questo protocollo garantisce quindi **segretezza** utilizzando la crittografia simmetrica per i dati e **integrità** utilizzando funzioni hash sicure.
+Questo protocollo garantisce quindi **segretezza,** utilizzando la crittografia simmetrica per i dati, e **integrità** utilizzando funzioni hash sicure.
 
 ## TLS 1.3
 
@@ -3291,12 +3299,12 @@ Negli anni il protocollo TLS 1.2 è stato arricchito di sotto-protocolli, algori
 
 TLS 1.3 cerca di ridurre la superficie di attacco riscrivendo il protocollo, rendendolo più semplice e rimuovendo le features meno utili della versione 1.2.
 
-tra le modifiche introdotte da TLS 1.3 abbiamo
+Tra le principali modifiche introdotte da TLS 1.3 abbiamo:
 
 - L'utilizzo di soli 5 algoritmi di crittografia/autenticazione
 - Un handshake iniziale semplificato che può funzionare in un solo RTT:
     
-    Questo è possibile perché il client può indovinare i parametri utilizzati dal server per lo scambio di chiavi Diffie-Hellman e avviare immediatamente lo scambio. Se il client non indovina, il server risponde con i parametri corretti e solo allora si perde un RTT.
+    Questo è possibile perché il client può indovinare i parametri utilizzati dal server per lo scambio di chiavi Diffie-Hellman e avviare immediatamente lo scambio. Se il client non indovina, il server risponde con i parametri corretti e solo in quel caso si utilizza un’ulteriore RTT.
     
 - Forward Secrecy obbligatorio**.**
 
@@ -3319,13 +3327,13 @@ Il funzionamento è riassumibile in questo modo:
 7. Sia il server che il client eliminano le chiavi effimere
 8. Ora il client utilizza un login per l'autenticazione
 
-Questo protocollo garantisce la *Forward Secrecy* perché la chiave di sessione K viene generata utilizzando chiavi effimere che vengono eliminate dopo l'handshake. Anche se un utente malintenzionato ottiene la chiave privata del server in un secondo momento, non sarà in grado di decifrare il traffico intercettato in precedenza perché non ha accesso alle chiavi effimere utilizzate per generare K.
+Questo protocollo garantisce la *Forward Secrecy* perché la chiave di sessione K viene generata utilizzando chiavi effimere che vengono eliminate dopo l'handshake (e non quindi la propria coppia di chiavi pubblica e privata). Anche se un utente malintenzionato ottiene la chiave privata del server in un secondo momento, non sarà in grado di decifrare il traffico intercettato in precedenza perché non ha accesso alle chiavi effimere utilizzate per generare K.
 
 
 
 # IPv4
 
-Il livello di rete fornisce la consegna non affidabile dei pacchetti utilizzando i servizi forniti dal livello di collegamento. Le tipologie di livello di collegamento sono principalmente due: collegamenti punto a punto (**PPP**, *Point-to-Point Protocol*) che coinvolge solo due dispositivi che comunicano direttamente e **LAN** (*Local Area Network*) in cui vari dispositivi sono connessi tra loro tramite un particolare dispositivo (uno *switch).*
+Il livello di rete fornisce la consegna non affidabile dei pacchetti utilizzando i servizi forniti dal livello di collegamento. Le tipologie di livello di collegamento sono principalmente due: collegamenti punto a punto (**PPP**, *Point-to-Point Protocol*) che coinvolge solo due dispositivi che comunicano direttamente e **LAN** (*Local Area Network*) in cui vari dispositivi sono connessi tra loro tramite un particolare dispositivo, uno *switch.*
 
 ## IPv4
 
@@ -3346,7 +3354,7 @@ Esempi:
 - `192.168.0.0/24`: 24 bit per identificare la rete, 8 bit per identificare l’host
 - `192.168.0.0/30`: 30 bit per identificare la rete, 2 bit per identificare l’host
 
-Ogni indirizzo IP può essere quindi diviso nella parte **netid** e **hostid**: gli indirizzi all’interno di una **stessa sottorete** avranno lo **stesso netid** ma **hostid diversi**. Indirizzi appartenenti a **sottoreti diverse** avranno **netid diversi** e **hostid arbitrari** (anche uguali perché tanto sono in sottoreti diverse)
+Ogni indirizzo IP può essere quindi diviso nella parte **netid** e **hostid**: gli indirizzi all’interno di una **stessa sottorete** avranno lo **stesso netid** ma **hostid diversi**. Indirizzi appartenenti a **sottoreti diverse** avranno **netid diversi** e **hostid arbitrari** (anche uguali perché tanto sono in sottoreti diverse).
 
 Siccome abbiamo in totale 32bit divisi in gruppi di 8bit, ci sono delle netmask più comuni che sono:
 
@@ -3363,23 +3371,21 @@ Ogni sottorete ha anche due indirizzi speciali riservati: l'**indirizzo di rete*
 
 Ad esempio con una subnet `192.168.0.0/24` abbiamo che
 
-- `192.168.0` (primi 3 byte) rappresentano il **netid**, mentre l’ultimo byte `0` rappresenta l’**hostid**
+- `192.168.0` (primi 3 byte) rappresentano il **netid**, mentre il restante byte `0` rappresenta l’**hostid**
 - `192.168.0.0` = … 00000000$_2$: indirizzo di rete
 - `192.168.0.255` = … 11111111$_2$: indirizzo di broadcast
 
 Oltre a questi, esistono altri indirizzi speciali:
 
-- `0.0.0.0/8`**:** Indirizzo con cui si presenta un host per chiedere al router un indirizzo IP valido.
-    
-    (viene utilizzato anche come route di default nelle tabelle di routing)
-    
+- `0.0.0.0/8`**:** Indirizzo con cui si presenta un host per chiedere al router un indirizzo IP valido. Viene utilizzato anche come route di default nelle tabelle di routing
+- `255.255.255.255`: *Limited Broadcast Address*, è l’indirizzo che viene usato dagli host per trasmettere in broadcast quando non gli è stato ancora assegnato un indirizzo IP.
 - `127.0.0.0/8`**:** Interfaccia di **loopback**. Utilizzata per le connessioni all'interno della stessa macchina.
 - `10.0.0.0/8`, `172.16.0.0/12`, `192.168.0.0/16`: Questi indirizzi sono riservati per l'uso in reti private e non vengono instradati su Internet.
-- `169.254.0.0/16`**:** detto “**Link-local**”, viene assegnato automaticamente a un dispositivo quando non riesce a ottenere un indirizzo IP dal router, permette la comunicazione locale con altri dispositivi nella stessa sottorete.
+- `169.254.0.0/16`**:** detto “**Link-local**”, viene assegnato automaticamente dal sistema operativo a un dispositivo quando non riesce a ottenere un indirizzo IP dal router, permette la comunicazione locale con altri dispositivi nella stessa sottorete.
 
 Nota: solitamente in ogni sottorete è presente un router, e **anch’esso ha bisogno di un indirizzo IP** sulla sua interfaccia in modo che gli host possano riconoscerlo.
 
-Quindi con una subnet `/24` si hanno 256 indirizzi totali, ma solamente 254 sono assegnabili agli host perché dobbiamo considerare l’indirizzo di rete e di broadcast, se è presente anche un router bisogna considerare anche un indirizzo per la sua interfaccia.
+Quindi con una subnet `/24` si hanno 256 indirizzi totali, ma solamente 254 sono assegnabili agli host perché dobbiamo considerare l’indirizzo di rete e di broadcast, se è presente anche un router bisogna considerare anche un indirizzo per la sua interfaccia, in tal caso ne rimangono 253 disponibili.
 
 ## Router
 
@@ -3389,7 +3395,7 @@ I router possiedono più interfacce di rete, ciascuna con un indirizzo IP, e son
 
 ![](https://i.ibb.co/NjNH6Ym/image.png)
 
-Quando un host vuole comunicare con un altro host della stessa rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo privato) e il relativo indirizzo MAC, lo switch a cui sono collegati gli host instraderà il pacchetto all’host in base all’indirizzo MAC specificato (l’indirizzo IP in questo caso serve nel caso non si disponga dell’indirizzo MAC, tramite l’IP si può usare il protocollo ARP per ottenere il MAC di un certo indirizzo IP).
+Quando un host vuole comunicare con un altro host della stessa rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo privato) e il relativo indirizzo MAC, lo switch a cui sono collegati gli host instraderà il pacchetto all’host in base all’indirizzo MAC specificato (l’indirizzo IP in questo caso serve nel caso non si disponga dell’indirizzo MAC, infatti tramite l’IP si può usare il protocollo ARP per ottenere il MAC di un certo indirizzo IP).
 
 Se invece un host vuole comunicare al di fuori della propria rete, invierà un pacchetto con l’indirizzo IP del destinatario (un indirizzo pubblico) e l’indirizzo MAC del router, lo switch a cui sono collegati gli host instraderà il pacchetto in base all’indirizzo MAC specificato, in questo caso verso il router, il quale instraderà il pacchetto in base all’indirizzo IP.
 
@@ -3400,18 +3406,18 @@ Se invece un host vuole comunicare al di fuori della propria rete, invierà un p
 L’header è composto da un parte fissa (raffigurata nell’immagine) e opzioni aggiuntive facoltative.
 
 - **Version:** Indica la versione del protocollo IP, 4 o 6
-- **Internet Header Length (IHL):** Specifica la lunghezza dell'header IPv4 in word a 32 bit. Il valore minimo è 5, che corrisponde a un header senza opzioni, e il valore massimo è 15.
+- **Internet Header Length (IHL):** Specifica la lunghezza dell'header IPv4 in word a 32 bit. Il valore minimo è 5 word, che corrisponde a un header senza opzioni, e il valore massimo è 15 word.
 - **Total length:** Indica la lunghezza totale del pacchetto IP in byte, inclusi header e payload. Il valore massimo è 65535 byte.
 - **Identification:** Utilizzato per identificare in modo univoco i vari frammenti in cui può essere stato spezzato un pacchetto IP, frammenti con lo stesso valore apparterranno allo stesso pacchetto.
 - **Flag:** Tre flag di un bit:
     - **Evil Bit:** Non utilizzato.
-    - **Don't Fragment:** Indica se il pacchetto può essere frammentato. Se settato a 1 indica che il pacchetto non deve essere frammentato; se tale pacchetto non può essere inoltrato da un host senza essere frammentato, viene semplicemente scartato.
+    - **Don't Fragment:** Indica se il pacchetto può essere frammentato (0) oppure no (1). Se tale pacchetto non può essere inoltrato senza essere frammentato, viene scartato.
     - **More Fragments:** Indica se ci sono altri frammenti del pacchetto originale. È impostato a 1 per tutti i frammenti tranne l'ultimo.
 - **Fragment offset:** Indica l'offset (misurato in blocchi di 8 byte) di un particolare frammento relativamente all'inizio del pacchetto IP originale, il primo frammento ha offset 0. Si riferisce solo ai dati, escluso l'header. Serve per riordinare i frammenti quando arrivano a destinazione.
     
-    si misura in blocchi di 8 byte perché la grandezza totale di un pacchetto IP (non frammentato) è $2^{16}$ = 65535 byte. Il fragment offset però ha arriva al massimo fino a $2^{13}$ = 8192 byte, dobbiamo quindi moltiplicare il suo valore per i byte mancanti $2^3$ = 8 byte
+    si misura in blocchi di 8 byte perché la grandezza totale di un pacchetto IP (non frammentato) è $2^{16}-1$ = 65535 byte. Il fragment offset però arriva al massimo fino a $2^{13}$ = 8192 byte, dobbiamo quindi moltiplicare il suo valore per i byte mancanti $2^3$ = 8 byte
     
-- **TTL (Time to Live):** Un contatore decrementato a ogni hop. Se il TTL raggiunge 0, il pacchetto viene scartato.
+- **TTL (Time to Live):** Un contatore che decrementa a ogni hop. Se il TTL raggiunge 0, il pacchetto viene scartato.
 - **Protocol:** Indica il protocollo di livello superiore incapsulato nel pacchetto IP (ad esempio, 1 per ICMP, 6 per TCP, 17 per UDP).
 - **header checksum:** Un checksum utilizzato per verificare l'integrità dell'header.
 - **Source address:** L'indirizzo IP del mittente del pacchetto.
@@ -3419,7 +3425,7 @@ L’header è composto da un parte fissa (raffigurata nell’immagine) e opzioni
 
 ## Frammentazione dei pacchetti
 
-La frammentazione dei pacchetti IP si verifica quando un pacchetto è più grande dell'MTU (Maximum Transmission Unit) che la rete supporta. L'MTU varia a seconda del tipo di mezzo fisico; ad esempio, Ethernet ha un MTU di 1500 byte, mentre Wi-Fi (802.11) ha un MTU di 2272 byte.
+La frammentazione dei pacchetti IP si verifica quando un pacchetto è più grande dell'MTU (Maximum Transmission Unit) che la rete supporta. L'MTU varia a seconda del tipo di mezzo fisico; ad esempio, Ethernet ha un MTU di 1500 byte, mentre Wi-Fi (802.11) di 2272 byte.
 
 Quando un pacchetto supera l'MTU, viene frammentato in **pacchetti più piccoli indipendenti**, ognuno con un proprio header IPv4. La frammentazione può avvenire in qualsiasi router lungo il percorso dalla sorgente alla destinazione. Il destinatario avrà poi il compito di riassemblare tutti i frammenti.
 
@@ -3450,7 +3456,7 @@ Verrà suddiviso in tre frammenti:
 
 ## NAT
 
-Con il crescere esponenziale del numero di dispositivi connessi a Internet, il numero limitato di indirizzi IPv4 (pari a circa $2^{32}=4.3$ miliardi) si è rivelato insufficiente. Questa carenza ha spinto alla ricerca di soluzioni a breve e lungo termine.
+Con il crescere esponenziale del numero di dispositivi connessi a Internet, il numero di indirizzi IPv4 (pari a circa $2^{32}=4.3$ miliardi) si è rivelato insufficiente. Questa carenza ha spinto alla ricerca di soluzioni a breve e lungo termine.
 
 A lungo termine, la soluzione è stata introdurre IPv6, che utilizza indirizzi a 128 bit**.** Questa soluzione, seppur ideale, richiede tempo per essere implementata su larga scala a causa della necessità di aggiornare hardware e software.
 
@@ -3466,7 +3472,7 @@ Per implementare il NAT, sono state riservate tre classi di indirizzi IP privati
 
 Questi indirizzi possono essere **utilizzati liberamente** per i dispositivi nelle **LAN**. 
 
-Nella LAN solo il router connesso ad internet possiede un indirizzo IP pubblico, esso si occupa di tradurre gli indirizzi privati in indirizzi pubblici e viceversa per far accedere ad internet i dispositivi nella sua rete usando il proprio indirizzo pubblico.
+Nella LAN solo il router connesso ad internet possiede un indirizzo IP pubblico, esso si occupa di tradurre gli indirizzi privati in un indirizzo pubblico e viceversa per far accedere ad internet i dispositivi nella sua rete usando il proprio indirizzo pubblico.
 
 I router connessi a Internet **non** devono **instradare** pacchetti **da/verso indirizzi IP privati**.
 
@@ -3482,13 +3488,13 @@ Un router NAT mantiene una tabella che mappa i flussi di traffico in entrata e i
 - **sPort (Source Port):** Porta del mittente
 - **dPort (Destination Port):** Porta del destinatario
 
-Una tabella di questo tipo riesce ad associare i pacchetti in arrivo dalla LAN con i pacchetti mandati su internet e vice versa.
+Una tabella di questo tipo riesce ad associare i pacchetti in arrivo dagli host della LAN con i pacchetti mandati su internet e vice versa.
 
 ![](https://i.ibb.co/MDN0xHv/image.png)
 
 Quando un pacchetto proveniente da un dispositivo della LAN (con indirizzo IP privato) arriva al router, il router sostituisce l'indirizzo IP privato con il suo indirizzo IP pubblico e invia il pacchetto al server di destinazione.
 
-Quando il server risponde, il router utilizza la tabella per identificare il dispositivo della LAN a cui inoltrare il pacchetto, sostituendo l'indirizzo IP pubblico con l'indirizzo IP privato originale.
+Quando il server risponde, il router utilizza la tabella per identificare l’host della LAN a cui inoltrare il pacchetto, sostituendo l'indirizzo IP pubblico con l'indirizzo IP privato originale.
 
 ![](https://i.ibb.co/44rwnbk/image.png)
 
@@ -3503,7 +3509,7 @@ Per evitare questa situazione quello che fa il NAT al momento dell’invio di nu
 - due host possono avere lo stesso indirizzo privato se sono in LAN differenti
 - due host nella stessa LAN non possono avere lo stesso indirizzo privato
 - due host su internet non possono avere lo stesso indirizzo pubblico
-- un host privato dietro al NAT non può ricevere nuove connessioni, ma le può solo mandare *****
+- un host privato dietro al NAT non può ricevere nuove connessioni, ma le può solo mandare *
 - un server che vuole ricevere connessioni deve avere un indirizzo pubblico
 
 ### Vantaggi e svantaggi del NAT
@@ -3511,19 +3517,19 @@ Per evitare questa situazione quello che fa il NAT al momento dell’invio di nu
 **Vantaggi:**
 
 - Permette a più dispositivi di condividere un singolo indirizzo IP pubblico, riducendo la domanda di indirizzi IPv4.
-- I dispositivi con indirizzi IP privati sono invisibili a Internet, rendendo più difficile per gli aggressori esterni raggiungerli, non potendo aprire connessioni dall’esterno. *****
+- I dispositivi con indirizzi IP privati sono invisibili a Internet, rendendo più difficile per gli aggressori esterni raggiungerli, non potendo aprire connessioni dall’esterno. *
 
 **Svantaggi:**
 
 - Introduce complessità nell'architettura di rete e richiede la gestione di una tabella NAT sul router (solitamente il NAT è implementato nei firewall).
 - **Problemi di prestazioni:** Può causare problemi di prestazioni, soprattutto con un elevato numero di connessioni simultanee.
     
-    Inoltre le connessioni TCP possono essere interrotte improvvisamente, e allo stesso modo il traffico UDP non si può sapere quando termina, quindi il NAT deve mantenere dei timer per eliminare delle righe che assume non siano più valide.
+    Inoltre le connessioni TCP possono essere interrotte improvvisamente, allo stesso modo il traffico UDP non si può sapere quando termina, quindi il NAT deve mantenere dei timer per eliminare delle righe che assume non siano più valide.
     
-- Il NAT ha anche il compito di **riassemblare i pacchetti**, questo perché la porta (usata per sapere a chi inoltrare i pacchetti) è presente nell’header TCP che è presente solo nel primo frammento del pacchetto. Quindi il NAT deve bufferizzare i frammenti (comportando un gran uso di memoria)
+- Il NAT ha anche il compito di **riassemblare i pacchetti**, questo perché la porta (usata per sapere a chi inoltrare i pacchetti) è nell’header TCP che è presente solo nel primo frammento del pacchetto. Quindi il NAT deve bufferizzare i frammenti (comportando un gran uso di memoria)
 - Il NAT essendo molto dipendente dal livello di trasporto rende l’aggiornamento e la creazione dei protocolli di trasporto molto difficile
 
-*****ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.
+*ci sono dei modi per aprire delle porte sul router e mettere degli host nella LAN in ascolto su tali porte in modo da permettere di aprire delle connessioni dall’esterno.
 
 ## Forwarding table
 
@@ -3542,7 +3548,7 @@ Possiamo vederla in questo modo:
 
 `0.0.0.0/0` è l’interfaccia di default dove vengono instradati i pacchetti nel caso non ci sia una rete corrispondente nella tabella.
 
-Quando arriva un pacchetto viene scelta l’interfaccia corrispondente alla rete con il netid più lungo uguale al netid dell’indirizzo nel pacchetto.
+Quando arriva un pacchetto viene scelta l’interfaccia corrispondente alla rete con il **netid più lungo uguale al netid dell’indirizzo nel pacchetto**.
 
 Esempi:
 
@@ -3573,13 +3579,13 @@ Esempi:
 
 ## ICMP
 
-**ICMP** (*Internet Control Message Protocol*) è un protocollo di rete di segnalazione che trasmette messaggi di errore e messaggi relativi al funzionamento e allo stato della rete. ICMP non utilizza protocolli a livello di trasporto, viene direttamente incapsulato in un pacchetto IP.
+**ICMP** (*Internet Control Message Protocol*) è un protocollo di segnalazione che trasmette messaggi di errore e messaggi relativi al funzionamento e allo stato della rete. ICMP non utilizza protocolli a livello di trasporto, viene direttamente incapsulato in un pacchetto IP.
 
 ### Header ICMP
 
 ![](https://i.ibb.co/rcFNMVC/image.png)
 
-Quando un pacchetto produce un evento anomalo, viene generato un pacchetto ICMP. Il pacchetto ICMP contiene un header in cui grazie ai campi *Type* e *Code* si identifica l’evento.
+Quando un pacchetto produce un evento anomalo, viene generato un pacchetto ICMP. Il pacchetto ICMP contiene un header in cui, grazie ai campi *Type* e *Code*, si identifica l’evento.
 
 Alcuni eventi riconosciuti da ICMP sono:
 
@@ -3588,7 +3594,7 @@ Alcuni eventi riconosciuti da ICMP sono:
 - Frammentazione necessaria (*Don’t fragment* è impostato a 1, ma MTU non è sufficiente).
 - TTL superato: il pacchetto è rimasto bloccato in un ciclo.
 
-Se un messaggio ICMP causa un errore, non viene inviato alcun ulteriore messaggio.
+Se un messaggio ICMP causa esso stesso un errore, non viene inviato alcun ulteriore messaggio.
 
 ### Utilizzi di ICMP
 
@@ -3603,9 +3609,7 @@ ICMP è utilizzato per la risoluzione dei problemi e il test delle reti, alcune 
 
 # Esercizi IPv4
 
-## Esercizi indirizzi IP
-
-### Es 1
+## Es 1
 
 **Domanda 1:** Data una subnet `1.2.1.0/24`, è possibile assegnare a uno degli host l'indirizzo `1.2.1.255`?
 
@@ -3641,7 +3645,7 @@ L’organizzazione è strutturata come segue:
 
 - Quale è il valore minimo della subnet mask di cui l’organizzazione ha bisogno?
     
-    Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 30 indirizzi assegnabili.
+    Avendo 14+16=30 host sembrerebbe sufficiente una /27 che fornisce 32 indirizzi di cui 30 assegnabili.
     
     siccome si vuole partizionare la rete in due sottoreti, si avranno quindi 2 indirizzi non utilizzabili nella rete A e due indirizzi non utilizzabili nella rete B, in realtà ho bisogno di 34 indirizzi totali, quindi serve una /26.
     
@@ -3679,7 +3683,7 @@ L’organizzazione è strutturata come segue:
 
 # IPv6
 
-Il numero di indirizzi IPv4 è praticamente esaurito. Il NAT sarebbe dovuta essere una soluzione temporanea, ma la soluzione definitiva è IPv6, la cui diffusione sta pian piano aumentando.
+Il numero di indirizzi IPv4 è praticamente esaurito. Il NAT sarebbe dovuta essere una soluzione temporanea, la soluzione definitiva è IPv6, la cui diffusione sta pian piano aumentando.
 
 IPv6 non è retrocompatibile con IPv4 quindi o si usa un protocollo oppure l’altro. Poiché ci sono ISP che non forniscono IPv6 ai propri clienti, IPv4 è ancora necessario.
 
@@ -3693,22 +3697,22 @@ IPv6 ha le seguenti caratteristiche:
 - Indirizzi IP più lunghi e con un nuovo formato
 - Nessuna frammentazione dei pacchetti da parte dei router
 - Una sostituzione del DHCP con il protocollo SLAAC
-- Supporto obbligatorio per la crittografia
+- Supporto obbligatorio per la crittografia (solo il supporto, non si è obbligati ad utilizzarla)
 
 ## Header IPv6
 
-Il l’header per IPv6 è stato semplificato:
+Il l’header per IPv6 è stato semplificato rispetto a quello di IPv4:
 
 ![](https://i.ibb.co/F5Z277N/image.png)
 
-- *Version*: indica la versione del protocollo, permettendo nuove versioni in futuro
-- *Payload length*: lunghezza del pyload espressa in byte (fino a 65535 byte)
+- *Version*: indica la versione del protocollo, permettendo nuove versioni in futuro retrocompatibili
+- *Payload length*: lunghezza del payload espressa in byte (fino a 65535 byte)
 - *Next Header*: indica il tipo di header che segue quello di IPv6, può essere usato sia per le opzioni facoltative di IPv6 sia per indicare il protocollo di trasporto utilizzato (rimpiazza il field “protocol” nell’header IPv4)
 - *Hop limit*: indica il numero di router che possono inoltrare il pacchetto (sostituisce il TTL)
 
 Possiamo notare da questo header che non è presente una checksum e non c’è il supporto per la frammentazione.
 
-La motivazione della mancanza della checksum è dovuta principalmente perché i livelli di datalink e i e di trasporto includono già una checksum. Aggiungere un checksum nell'header IPv6 avrebbe costretto ogni router a ricalcolare la checksum di tutti i pacchetti, offrendo un beneficio limitato nel rilevamento degli errori considerando l'affidabilità delle memorie attuali e il costo del calcolo del checksum su ogni router.
+La motivazione della mancanza della checksum è dovuta principalmente al fatto che i livelli datalink e di trasporto includono già una checksum. Aggiungere un checksum nell'header IPv6 avrebbe costretto ogni router a ricalcolare la checksum di tutti i pacchetti, offrendo un beneficio limitato nel rilevamento degli errori considerando l'affidabilità delle memorie attuali e il costo del calcolo del checksum su ogni router.
 
 ## Formato indirizzi IPv6
 
@@ -3724,7 +3728,7 @@ Un indirizzo IPv6 è composto da tre parti:
 
 | Parte dell'indirizzo | Descrizione | Lunghezza |
 | --- | --- | --- |
-| Prefisso di routing globale | assegnato all'Internet Service Provider (ISP) che possiede il blocco di indirizzi. | N bit |
+| Prefisso di routing globale | identifica l’Internet Service Provider (ISP) che possiede il blocco di indirizzi. | N bit |
 | Identificativo di sottorete (subnet ID) | identifica un cliente dell'ISP. | M bit |
 | Identificativo di interfaccia (host ID) | identifica una particolare interfaccia su un host (solitamente 64 bit) | 128 - N - M bit |
 
@@ -3739,14 +3743,14 @@ Considerando questi numeri, non è più necessario ottimizzare l'assegnazione de
 
 ### Indirizzi speciali
 
-- **fc00::/7:** *Unique Local Unicast*. Sono paragonabili gli IP privati in IPv4. Questa classe può essere usata per creare reti locali di testing
+- **fc00::/7:** *Unique Local Unicast*. Sono paragonabili gli IP privati in IPv4. Questa classe può essere usata per creare reti locali di testing (con IPv6 non è più necessario dividere gli indirizzi in pubblici e privati).
 - **0:0:0:0:0:0:0:1:** *loopback interface*, identifica l’host corrente.
 - **ff::/8:** indirizzi multicast
 - **fe80::/10:** *Link Local Unicast* (LLU).
 
 ### Indirizzi LLU (Link-Local Unicast)
 
-Gli indirizzi link-local (come per IPv4) possono essere utilizzati quando gli host collegati alla stessa rete locale (o direttamente tra loro) devono scambiarsi pacchetti anche se non hanno ricevuto un indirizzo ip.
+Gli indirizzi link-local (come per IPv4) possono essere utilizzati quando gli host collegati alla stessa rete locale (o direttamente tra loro) devono scambiarsi pacchetti anche se non hanno ricevuto un indirizzo IP dal router.
 
 Ogni host può calcolare il proprio indirizzo link-local concatenando il prefisso `fe80::/64` con il proprio indirizzo MAC estendendolo a 64 bit. 
 
@@ -3754,7 +3758,7 @@ Recentemente, è stato introdotto un modo per creare l'ID randomico utilizzando 
 
 ## SLAAC
 
-Un host dovrebbe ricevere un IP pubblico dalla rete a cui è collegato. L'host-id della rete sarà l'indirizzo MAC del router, mentre per scoprire la rimanente parte dell’indirizzo si usa un protocollo particolare, chiamato SLAAC.
+Un host dovrebbe ricevere un IP pubblico dalla rete a cui è collegato. L'host-id dell’indirizzo sarà il suo MAC address, mentre per scoprire la rimanente parte dell’indirizzo si usa un protocollo particolare, chiamato SLAAC.
 
 **SLAAC (Stateless Address Autoconfiguration):** In questo protocollo il router di rete trasmette periodicamente nella rete un pacchetto SLAAC che contiene diversi parametri, tra cui il prefisso di rete. Gli host riceveranno il pacchetto SLAAC, comporranno il netid con il proprio MAC formando così il loro indirizzo.
 
@@ -3762,7 +3766,7 @@ Un host dovrebbe ricevere un IP pubblico dalla rete a cui è collegato. L'host-i
 
 IPSec è un insieme di standard che implementano la crittografia e l'autenticazione sui pacchetti IP.
 
-Con IPv6, il supporto per IPSec è obbligatorio (con IPv4 era facoltativo). Questo non significa che ogni router lo utilizzi, significa solo che ogni router deve supportarlo.
+Con IPv6, il supporto per IPSec è obbligatorio (con IPv4 era facoltativo). Questo non significa che ogni router lo debba utilizzare, significa solo che ogni router deve supportarlo.
 
 ## Frammentazione
 
@@ -3784,20 +3788,20 @@ Per scoprire il massimo MTU che non porta ad una frammentazione si fanno vari te
 
 Internet è un'interconnessione di reti, spesso chiamate **domini**. Un dominio può essere una piccola impresa con pochi router in un singolo edificio, una grande azienda con centinaia di router in diverse sedi, oppure un grande ISP che gestisce migliaia di router.
 
-Per consentire a questi domini di scambiare informazioni di instradamento in modo efficiente, vengono utilizzate due classi di protocolli di instradamento:
+Per consentire a questi domini di scambiare informazioni di instradamento in modo efficiente, vengono utilizzate due classi di protocolli:
 
 - Protocolli di **instradamento dentro un dominio**.
     
     Questi protocolli hanno solitamente due obiettivi:
     
     - distribuire **informazioni di instradamento** corrispondenti al percorso più breve tra due router all'interno del dominio.
-    - devono consentire ai router di **recuperare rapidamente in caso di guasti**.
+    - consentire ai router di **recuperare rapidamente in caso di guasti**.
 - Protocolli di **instradamento tra domini**.
     
-    Questi protocolli hanno l'obiettivo è distribuire informazioni di instradamento tra domini diversi, considerando ogni dominio come una "scatola nera" senza quindi sapere come sono fatti e i protocolli utilizzati al loro interno.
+    Questi protocolli hanno l'obiettivo di distribuire informazioni di instradamento tra domini diversi, considerando ogni dominio come una "scatola nera" senza quindi sapere come sono fatti e i protocolli utilizzati al loro interno.
     
 
-Una differenza molto importante tra i due riguarda le **politiche di instradamento:** All'interno di un singolo dominio, tutti i router sono considerati uguali e, quando sono disponibili più percorsi per raggiungere la destinazione, il percorso migliore può essere il percorso con il minor ritardo, il minor numero di hop o con la larghezza di banda più alta.
+Una differenza molto importante tra i due riguarda le **politiche di instradamento:** All'interno di un singolo dominio, tutti i router sono considerati uguali e, quando sono disponibili più percorsi per raggiungere la destinazione, viene scelto il percorso migliore, che può essere il percorso con il minor ritardo, il minor numero di hop o con la larghezza di banda più alta.
 
 Quando si considera l'interconnessione di domini gestiti da organizzazioni diverse, questo non è più vero in quanto si vuole trovare il percorso **più economico** verso ciascuna destinazione in base a degli accordi economici fatti tra le organizzazioni.
 
@@ -3820,11 +3824,11 @@ Dato che un dominio ha in genere un numero limitato di sottoreti, l'overhead gen
 OSPF porta alcune modifiche rispetto al comune routing link-state:
 
 - Il concetto di Area
-- il supporto alle LAN
+- Il supporto alle LAN
 
 ### Aree
 
-la rete viene suddivisa in **aree.** Un'area è una parte fisicamente contigua della rete in cui sono presenti dei router, tale area è connessa ad altre aree tramite altri router.
+La rete viene suddivisa in **aree.** Un'area è una parte fisicamente contigua della rete in cui sono presenti dei router, tale area è connessa ad altre aree tramite altri router speciali.
 
 Esistono quindi due tipi di router OSPF:
 
@@ -3833,7 +3837,11 @@ Esistono quindi due tipi di router OSPF:
 
 Esiste una speciale area detta **area zero** o ***backbone area***, che raccoglie tutti i router di confine e i router che non fanno parte di nessuna altra area. All’interno di un dominio si ha un'**unica area zero**.
 
+I router di un’area possono raggiungere quelli di un’altra area solamente passando attraverso l’area 0.
+
 ![](https://i.ibb.co/fDKbXqD/image.png)
+
+Questa immagine rappresenta un dominio, in cui:
 
 - R1, R3, R5, R4 sono **router interni** all’area 1
 - R7, R8, R9, R10 sono **router interni** all’area 2
@@ -3842,10 +3850,10 @@ Esiste una speciale area detta **area zero** o ***backbone area***, che raccogli
 
 OSPF combina link-state e distance vector per ottimizzare le prestazioni e ridurre l’overhead:
 
-- **All'interno di un'area** (non l’area 0), i router utilizzano il **routing link-state**
+- **All'interno di un'area** (ma non l’area 0), i router utilizzano il **routing link-state**
 - **Tra le aree**, i router di confine utilizzano il **routing distance vector**
 
-In questo modo ogni router di un’area non conosce la topologia delle altre aree ma sa come arrivarci (passando per il proprio router di confine).
+In questo modo ogni router di un’area non conosce la topologia delle altre aree ma sa come arrivarci: passando per il proprio router di confine.
 
 ### Supporto per le LAN
 
@@ -3861,7 +3869,7 @@ Un modo in cui OSPF potrebbe rappresentare questa area (con il routing link stat
 
 Questa situazione però crea la falsa percezione di percorsi multipli tra i router di confine.
 
-in caso di **guasto dello switch**, tutti i link sarebbero rotti ma i router notando che il loro attuale percorso non funziona tenterebbero di usare altri percorsi che in realtà non esistono.
+in caso di **guasto dello switch**, tutti i link sarebbero rotti ma i router notando che il loro attuale percorso non funziona, tenterebbero di usare altri percorsi che in realtà non esistono.
 
 Per evitare ciò, OSPF permette di selezionare un **designated router**. Gli altri router esportano il proprio link state solamente al router designato e non a tutti i router.
 
@@ -3869,7 +3877,7 @@ Supponendo di nominare R1 a designated router, al posto di una full mesh si avre
 
 ![](https://i.ibb.co/gmqBZ8x/image.png)
 
-In questo modo si riduce il traffico generato dal link state e si velocizza il riconoscimento del fallimento dei link.
+In questo modo si riduce il traffico generato dal link state e si velocizza il riconoscimento di fallimenti dei link.
 
 
 
@@ -3887,46 +3895,51 @@ Ad ogni AS viene assegnata una quantità di indirizzi IP pubblici, che possono e
 
 Gli AS si dividono in due tipi principali:
 
-- **Stub AS**: ricevono e mandano traffico ma non instradano il traffico tra altri AS. Nel grafo di internet possiamo immaginarli come le foglie.
+- **Stub AS**: ricevono e mandano traffico ma non instradano il traffico di altri AS. Nel grafo di internet possiamo immaginarli come le foglie.
     
     Possono essere **single-homed** (connessi a un solo AS) o **multi-homed** (connessi a più AS).
     
-- **Transit AS**: instradano i dati tra AS.
+- **Transit AS**: instradano i dati tra AS diversi.
 
 ## Connessioni tra AS
 
-Gli AS devono connettersi per permettere agli host al loro interno di comunicare.
+AS diversi devono connettersi per permettere agli host al loro interno di comunicare.
 
 Diversamente dal routing interno, su internet non si cerca il percorso migliore da sorgente a destinazione, ma un percorso deciso in base a degli **accordi commerciali** fatti precedentemente.
 
 Esistono due modi per connettere gli AS:
 
-- **Private Peering**: Connessione diretta punto-punto tra due router di due AS diversi. I proprietari degli AS pagano solamente l’installazione dell'infrastruttura necessaria per la connessione mentre il transito del traffico tra loro è gratuito (non molto scalabile).
+- **Private Peering**: Connessione diretta punto-punto tra due router di due AS diversi. I proprietari degli AS pagano solamente l’installazione dell'infrastruttura necessaria per la connessione mentre il transito del traffico tra loro è gratuito (approccio non molto scalabile).
     
     ![](https://i.ibb.co/khCFPf7/image.png)
     
-- **Internet Exchange Points (IXP)**: Data center condiviso dove gli AS collocano i propri router e si connettono tra loro. Gli AS dovranno pagare il servizio offerto.
+- **Internet Exchange Points (IXP)**: Data center condiviso dove ogni AS colloca un proprio router e si connettono tra loro. Gli AS dovranno pagare il servizio offerto.
     
     ![](https://i.ibb.co/8gWbLrb/image.png)
     
 
-L’obiettivo di ogni AS è quello di pagare il meno possibile per le proprie transizioni di pacchetti, quindi di preferire l’instradamento verso un private peering quando possibile (anche se magari passando da un’altra strada sarebbe più veloce).
+L’obiettivo di ogni AS è quello di pagare il meno possibile per le proprie transizioni di pacchetti, quindi di preferire l’instradamento verso un private peering quando possibile (anche se magari prendendo un altro percorso sarebbe più veloce).
 
 ## BGP
 
-BGP (*Border Gateway Protocol*) è l’unico protocollo di routing utilizzato dagli AS.
+BGP (*Border Gateway Protocol*) è l’unico protocollo di routing utilizzato per far comunicare gli AS tra loro.
 
-Il principio del routing è che i router si scambiano i prefissi delle reti che essi possono raggiungere, in questo caso però, non tutti i prefissi raggiungibili vengono esposti a causa delle relazioni commerciali. 
+Il principio generale del routing è che i router si scambiano i prefissi delle reti che essi possono raggiungere, in questo caso però, non tutti i prefissi raggiungibili vengono esposti a causa delle relazioni commerciali che vengono fatte tra alcuni AS.
 
-Ad esempio nell’immagine precedente del private peering, B potrebbe far passare il traffico destinato a C attraverso A, quindi non pagando ma piuttosto facendo pagare A, questo non deve succedere.
+Ad esempio nell’immagine precedente del private peering, B potrebbe far passare il traffico destinato a C attraverso A, quindi non pagando ma piuttosto facendo pagare A al posto suo, questo non deve succedere.
 
 In generale:
 
-- il cliente rivela al provider i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider).
-- il provider rivela al cliente tutti i prefissi che conosce.
+- In una relazione a **pagamento cliente-provider**: il cliente rivela al provider i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider). Il provider rivela al cliente tutti i prefissi che conosce.
 - In una **relazione di peering**, un AS rivela all’altro solo i propri prefissi e quelli dei propri clienti (non rivela quelle conosciute attraverso altri provider).
 
 ![](https://i.ibb.co/vX3dpT4/image.png)
+
+Nota che quando un AS deve decidere quale route intraprendere per raggiungere una destinazione segue il seguente ordine di preferenze:
+
+1. usare la route appresa da un suo client: l’AS **guadagna soldi** dal traffico proveniente o destinato ai propri client.
+2. usare la route appresa da un private peering: **nessun pagamento** diretto tra AS.
+3. usare la route appresa da un provider: l’AS **paga** per inviare traffico ai provider.
 
 ## Funzionamento di BGP
 
@@ -3942,23 +3955,25 @@ La **tabella di forwarding** è una struttura dati che **mappa** ogni **indirizz
 
 Vediamo un esempio di una piccola rete Internet composta da diversi AS (ignoriamo per semplicità i possibili accordi commerciali).
 
-Vediamo come la rete `10.150.0.0/24` viene propagata su internet:
+Vediamo come la rete `10.150.0.0/24`, posseduta da AS150, viene propagata su internet:
 
 1. Il router A (all’interno di AS150) annuncia il suo prefisso `10.150.0.0/24` e il percorso per raggiungerlo (`150`) al router D (all’interno di AS11)
 2. Il router A (all’interno di AS150) annuncia il suo prefisso `10.150.0.0/24` e il percorso per raggiungerlo (`150`) al router B (all’interno di AS151)
 3. Il router B (all’interno di AS151) propaga il prefisso `10.150.0.0/24`, aggiungendo se stesso al percorso (`151→150`), al router D (all’interno di AS11)
 4. Il router D (all’interno di AS11) propaga il prefisso `10.150.0.0/24` aggiungendo se stesso al percorso per raggiungerlo (`11→150`) al router B (all’interno di AS151)
 
-Nota a questo punto come i router utilizzano **split horizon** (infatti non ad un router le rotte che ha scoperto proprio tramite quel router) per evitare loop sul singolo link.
+Nota a questo punto come i router utilizzano **split horizon** (infatti non vengono condivise ad un router le rotte che ha scoperto proprio tramite quel router) per evitare loop sul singolo link.
 
-Inoltre il fatto di includere il **percorso completo** permette ai router di evitare di mandare prefissi ad un router se quel router è già all’interno del percorso, questo previene che si creino loop più lunghi di un singolo link.
+Inoltre, il fatto di includere il **percorso completo** permette ai router di evitare di mandare prefissi ad un router se quel router è già all’interno del percorso, questo previene che si creino loop più lunghi di un singolo link.
 
 1. Nell’AS11 ci sono 3 router di bordo. Facendo parte dello stesso AS essi devono essere sincronizzati, per farlo si utilizza una piccola variazione di BGP, chiamata **IBGP** (Internal BGP).
     
-    In questo caso il router D annuncia ai router F ed E il prefisso `10.150.0.0/24` **senza aggiungere nulla al percorso** (rimarrà quindi `150`). Nota che in questo momento D ne ha due di percorsi per raggiungerlo, ma annuncerà solo il migliore che possiede.
+    In questo caso il router D annuncia ai router F ed E il prefisso `10.150.0.0/24` **senza aggiungere nulla al percorso** (rimarrà quindi `150`). Nota che in questo momento D ha due percorsi per raggiungere `10.150.0.0/24`, ma annuncerà solo il migliore che possiede.
     
 2. Il router F (all’interno di AS11) propaga prefisso `10.150.0.0/24` aggiungendo se stesso al percorso per raggiungerlo (`11→150`) al router G (all’interno di AS3)
 3. Il router E (all’interno di AS11) propaga prefisso `10.150.0.0/24` aggiungendo se stesso al percorso per raggiungerlo (`11→150`) al router C (all’interno di AS160)
+
+Alla fine del processo tutta internet sa come raggiungere la rete `10.150.0.0/24`.
 
 ### BGP (path vector) VS distance vector
 
@@ -3970,7 +3985,7 @@ BGP si basa sui principi del **routing distance vector**, ma con alcune differen
 
 ### Cambiamento alla rete
 
-Nel caso un AS non hosti più un certo prefisso, esso manderà un messaggio di **withdraw** (ritiro) ai propri vicini, essi propagheranno il messaggio su tutta la rete rendendo così irraggiungibile quel prefisso.
+Nel caso un AS non ospiti più un certo prefisso, esso manderà un messaggio di **withdraw** (ritiro) ai propri vicini, essi propagheranno il messaggio su tutta la rete rendendo così irraggiungibile quel prefisso.
 
 Nel caso un link tra due AS si rompa, supponiamo il link tra A e D nell’esempio precedente.
 
@@ -3979,7 +3994,7 @@ D potrà fare due cose:
 - mandare un messaggio di **withdraw** ai suoi vicini (B, E, F) dicendo di eliminare il percorso che passava attraverso di lui
 - mandare un **update** ai suoi vicini (E, F) in cui annuncia un percorso alternativo che passa per B.
 
-In questo caso D ha un percorso alternativo e quindi farà un update (a B non lo manderà perché il percorso alternativo comprende già B)
+In questo specifico caso D ha un percorso alternativo e quindi farà un update (a B non lo manderà perché il percorso alternativo comprende già B)
 
 ## Dettagli del protocollo
 
@@ -3994,13 +4009,13 @@ BGP utilizza **cinque tipi di messaggi** per comunicare con i suoi **peer** (il 
     
 - **Keepalive:** Verifica se i peer sono ancora raggiungibili.
 - **Notification:** Notifica gli errori ai peer.
-- **Route-refresh:** Richiedere di riannunciare dei prefissi.
+- **Route-refresh:** Richiedere di riannunciare alcuni prefissi.
 
 ## Path prepending
 
 Il **Path Prepending** è una tecnica utilizzata per influenzare il percorso del traffico.
 
-In sostanza, un AS può annunciare un prefisso di rete a un altro AS includendo più volte se stesso nel percorso in questo modo rende il percorso non voluto artificialmente più lungo, scoraggiando gli altri AS dal sceglierlo.
+In sostanza, un AS può annunciare un prefisso di rete a un altro AS includendo più volte se stesso nel percorso in modo da renderlo artificialmente più lungo, scoraggiando gli altri AS dal sceglierlo.
 
 Consideriamo una rete di questo tipo con 6 AS
 
@@ -4010,15 +4025,15 @@ Consideriamo una rete di questo tipo con 6 AS
 
 AS1 possiede due connessioni: una a 10Gb/s usata in condizioni normali e una di riserva a 1Gb/s.
 
-In condizioni normali, si desidera che il traffico utilizzi la connessione a 10Gb/s. 
+In condizioni normali, si desidera che il traffico utilizzi solo la connessione a 10Gb/s.
 
-Però AS2, AS4 utilizzerebbero quasi sicuramente il link a 1Gb/s dato che fanno meno salti (AS6 potrebbe utilizzare entrambi i link in modo alternato con una probabilità equa).
+Però AS2, AS4 utilizzerebbero quasi sicuramente il link a 1Gb/s dato che fanno meno salti, mentre AS6 potrebbe utilizzare entrambi i link in modo alternato.
 
-Per forzare ad usare il link più veloce, l'AS1 può annunciare il prefisso di rete alla connessione a 1Gb/s con un percorso "allungato" tramite il **prepending**. Gli altri AS, vedendo un percorso più lungo, preferiranno la connessione a 10Gb/s.
+Per forzare ad usare il link più veloce, AS1 può annunciare il prefisso di rete alla connessione a 1Gb/s con un percorso "allungato" tramite il **prepending**. Gli altri AS, vedendo un percorso più lungo, preferiranno la connessione a 10Gb/s.
 
 ![](https://i.ibb.co/q1PLscG/image.png)
 
-AS1 annuncia quindi ad AS2 che il percorso per raggiungerlo è lungo 6 hop (ripetendo se stesso 6 volte nel percorso)
+AS1 annuncia quindi ad AS2 che il percorso per raggiungerlo è lungo 6 hop (ripetendo se stesso 6 volte nel percorso).
 
 AS6 propaga ad AS4 il percorso migliore che ha, il quale li propagherà a sua volta a AS2 che otterrà quindi un percorso migliore (di 5 hop) rispetto a quello di 6 hop.
 
@@ -4042,11 +4057,11 @@ Entrambi AS1 e AS6 annunciano lo **stesso prefisso**. In questo modo gli altri A
 
 Nel caso un link si rompesse c’è quello di backup verso l’altro AS.
 
-Possono esserci situazioni di questo tipo:
+Tuttavia possono esserci situazioni di questo tipo:
 
 ![](https://i.ibb.co/W0Yh6BL/image.png)
 
-In questo caso AS7 ha AS1 e AS6 alla stessa distanza, potrebbe quindi mandare un pacchetto verso AS1 e il successivo verso AS6. Per questo motivo questo meccanismo non viene utilizzato per connessioni che mantengono uno stato (ad esempio connessioni TCP) ma con servizi dove ogni **richiesta è indipendente dalla precedente** (come DNS)
+In questo caso AS7 ha AS1 e AS6 alla stessa distanza, potrebbe quindi mandare un pacchetto verso AS1 e il successivo verso AS6. Per questo motivo questo meccanismo non viene utilizzato per connessioni che mantengono uno stato (ad esempio connessioni TCP) ma con servizi dove ogni **richiesta è indipendente dalla precedente** (come DNS).
 
 
 
@@ -4062,11 +4077,11 @@ I cavi in rame sono formati da quattro coppie di cavi in rame intrecciati insiem
 
 Gli standard Ethernet si sono evoluti nel corso degli anni per supportare velocità sempre più elevate.
 
-In particolare i cavi si dividono per categoria (Cat 5, 6, 7, …) con performance differenti.
+In particolare i cavi si dividono per categoria (Cat 5, 6, 7, …) in base alle performance.
 
 ## Indirizzo MAC
 
-L'**indirizzo MAC** (*Media Access Control*), che identifica una scheda di rete (NIC) a livello di datalink.
+L'**indirizzo MAC** (*Media Access Control*) identifica una scheda di rete (NIC) a livello di datalink.
 
 Un indirizzo MAC è composto da **48 bit**:
 
@@ -4078,7 +4093,7 @@ Un indirizzo MAC è composto da **48 bit**:
 
 Un indirizzo MAC dovrebbe quindi essere **globalmente univoco**.
 
-Nota tecnica: Ethernet codifica le stringhe (tra cui l’indirizzo) **invertendo l'ordine dei bit su ogni byte**: avendo quindi il bit meno significativo per primo.
+Nota tecnica: Ethernet codifica le stringhe (tra cui l’indirizzo) **invertendo l'ordine dei bit su ogni byte,** avendo quindi il bit meno significativo a sinistra.
 
 Ciò significa che l'indirizzo MAC `12-34-56-78-9A-BC` viene trasmesso come `01001000 00101100 01101010 00011110 01011001 00111101` (ogni coppia viene convertita in binario e invertita).
 
@@ -4092,15 +4107,16 @@ Gli indirizzi MAC possono essere estesi per diventare **EUI-64** (Extended Uniqu
 
 - **Indirizzo di destinazione (48 bit):** specifica l'indirizzo MAC della scheda di rete del destinatario
 - **Indirizzo di origine (48 bit):** specifica l'indirizzo MAC della scheda di rete del mittente
-- **Length/EtherType (16 bit):** specifica la lunghezza del payload del frame, ovvero i dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.
+- **Length/EtherType (16 bit):** specifica la lunghezza del payload del frame, ovvero dei dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.
 - **Payload e padding (46-1500 byte):** Contiene i dati che vengono trasportati dal frame. Se il payload è inferiore a 46 byte, viene aggiunto del padding per raggiungere la dimensione minima.
 - **CRC (32 bit):** Contiene una checksum che viene utilizzata per verificare l'integrità del frame.
 
-Inizialmente, l'header Ethernet includeva un campo chiamato **EtherType**, che specificava il protocollo di livello superiore. Ma questo è stato poi sostituito con il campo length.
+L’interpretazione del campo **Length/EtherType** cambia In base alla versione dello standard
 
-Per risolvere questa mancanza, è stato introdotto un nuovo livello: il **livello LLC (Logical Link Control)** il cui scopo era indicare il protocollo di livello superiore. Il livello datalink fu quindi suddiviso in due sottolivelli: il sottolivello MAC e il sottolivello LLC.
+- Una versione in cui il campo viene interpretato come la lunghezza del frame. In tal caso per identificare il protocollo di livello superiore si utilizza un nuovo sottolivello chiamato LLC (Logical Link Control)
+- Una versione in cui il campo viene interpretato come il protocollo di livello superiore utilizzato (EtherType). In questo caso la lunghezza del frame viene gestita dal livello fisico tramite determinati segnali.
 
-**Nella versione attuale di Ethernet quei 16bit vengono utilizzati per interpretare entrambe le cose** (length e EtherType). Di conseguenza, il livello LLC ha perso la maggior parte della sua utilità e viene raramente utilizzato per le reti ethernet.
+Oggi è largamente prevalente il formato in cui il campo è interpretato come EtherType. Questo ha reso il livello LLC quasi inutilizzato nelle reti Ethernet moderne.
 
 ## Switch Ethernet
 
@@ -4123,7 +4139,7 @@ Gli switch sono in grado di instradare il traffico sulla porta corretta.
         if dst in Table:
             forward_frame(F, Table[dst][0])
             return
-    # multicast or broadcast destination
+    # multicast, broadcast or unkown destination
     for o in Ports:
         if o != P:
             forward_frame(F, o)
@@ -4133,7 +4149,7 @@ Gli switch sono in grado di instradare il traffico sulla porta corretta.
     
     La tabella viene periodicamente pulita dagli indirizzi non utilizzati da un certo intervallo di tempo.
     
-- In reti più complesse, con più switch in cascata, viene implementato l'algoritmo **Spanning Tree** per evitare loop.
+- In reti più complesse, con più switch in cascata, viene implementato l'algoritmo **Spanning Tree Protocol** per evitare loop.
 
 ## Spanning Tree Protocol (STP)
 
@@ -4151,10 +4167,10 @@ Le porte dello switch possono essere in tre stati:
 - **designated**: porta che inoltra il traffico verso una determinata sottorete.
 - **blocked**: porta che non inoltra traffico per prevenire loop.
 
-Quando l’albero è formato si deve avere che:
+Quando l’albero è completamente formato (cioè **si è a convergenza**) si deve avere che:
 
-- lo switch radice ha tutte le porte in stato *designated*
-- tutti gli altri switch devono avere almeno una porta in stato *root* e le rimanenti in stato *designated* o *blocked*
+- lo switch radice ha **tutte le porte in stato *designated***
+- tutti gli altri switch devono avere **una e una sola porta in stato *root*** e le rimanenti in stato *designated* o *blocked*
 
 ### **Funzionamento**
 
@@ -4164,22 +4180,22 @@ Quando l’albero è formato si deve avere che:
     BPDU=<RootID, Cost, SenderID, p>
     $$
     
-    Il BPDU contiene informazioni come:
+    Il BPDU contiene:
     
     - `RootID` l'ID dello switch radice
-    - `Cost` il costo del percorso alla radice
+    - `Cost` il costo del percorso verso la radice
     - `SenderID` l'ID di chi ha generato il BPDU
     - `p` il numero della porta dello switch mittente da cui è uscito il BPDU
     
-    I BPDU vengono inviati solo agli switch adiacenti e non vengono inoltrati ulteriormente.
+    I BPDU vengono inviati solo agli switch adiacenti e **non vengono inoltrati ulteriormente**.
     
-    Inizialmente ogni switch utilizza il proprio ID come `RootID` impostando il costo a zero.
+    Inizialmente ogni switch utilizza il proprio ID come `RootID`, impostando il costo a zero.
     
     La costruzione dell’albero si basa sull’ordinare i BPDU in modo lessicografico:
     
     Si confrontano prima le `RootID`, se sono uguali si confrontano i `Cost`, se sono uguali si confrontano i `SenderID`, se sono uguali si confrontano le `p`.
     
-- Quando uno switch A riceve il BPDU dallo switch B, memorizza il *root priority vector* `Vq` per la porta su cui ha ricevuto il BPDU, il `Vq` è composto da:
+- Quando uno switch A riceve il BPDU dallo switch B, memorizza il ***root priority vector*** `Vq` per la porta su cui ha ricevuto il BPDU, il `Vq` è composto da:
     
     $$
     Vq=<RootID, c, SenderID, p, q>
@@ -4195,11 +4211,11 @@ Quando l’albero è formato si deve avere che:
     
 - A questo punto lo switch A compara in modo lessicografico `Vq` con il proprio BPDU, se `Vq` è minore allora:
     - lo switch A decide che B è la radice dell’albero e utilizzerà l’ID di B nel campo `RootID` nei BPDU che genera da ora in poi. Inoltre la porta `q` entra nello stato *root* (A diventa un nodo figlio di B)
-- Per determinare lo stato delle altre porte lo switch A compara anche in modo lessicografico il BPDU ricevuto con il BPDU proprio:
+- Per determinare lo stato delle altre porte lo switch, A compara anche in modo lessicografico il BPDU ricevuto con il BPDU proprio:
     - se il proprio BPDU è minore, la porta `q` entra nello stato *designated* (B diventa un nodo figlio di A)
-    - se il BPDU ricevuto è minore, la porta `q` entra nello stato *blocked* (B è un fratello si A e potrebbe esserci un loop)
+    - se il BPDU ricevuto è minore, la porta `q` entra nello stato *blocked* (B è un fratello di A e potrebbe esserci un loop)
 
-Si può riassumere l’utilizzo delle porte in base al loro stato in questa tabella
+Si può riassumere l’utilizzo delle porte in base al loro stato
 
 | Stato | Riceve BPDU? | invia BPDU? | Può inoltrare traffico dati? |
 | --- | --- | --- | --- |
@@ -4215,7 +4231,7 @@ Gli switch figli riceveranno a loro volta i BPDU sulle proprie porte *root* e co
 
 Il processo si **ripete costantemente**, aggiornando lo stato delle porte in base ai BPDU ricevuti.
 
-Se un switch non riceve più BPDU da un vicino, riavvia il protocollo STP per ricalcolare l'albero.
+Se un switch non riceve più BPDU da un vicino, significa che la topologia di rete è cambiata e quindi si riavvia il protocollo STP per ricalcolare l'albero da capo.
 
 ## Legame tra livello di rete e livello datalink
 
@@ -4240,7 +4256,7 @@ L'**Address Resolution Protocol (ARP)** è un protocollo che consente agli host 
 
 Quando un host desidera scoprire l'indirizzo MAC del destinatario, invia un messaggio ARP in broadcast contenete il proprio MAC, il proprio IP e l’IP di cui si vuole ottenere il MAC. L’host che possiede l'indirizzo IP specificato risponde con un **messaggio ARP unicast** diretto all'indirizzo MAC del mittente, fornendo il proprio indirizzo MAC. 
 
-Il mittente può quindi aggiornare la propria **tabella ARP.**
+Il mittente può quindi aggiornare la propria **tabella ARP** (anche il destinatario potrà aggiornarla dato che è venuto a conoscenza del MAC del mittente).
 
 ## Protocollo DHCP
 
@@ -4282,8 +4298,8 @@ Quando l’host `192.168.1.1` vuole comunicare con `1.2.3.4`:
 
 1. Si rende conto che `1.2.3.4` non fa parte della sua rete
 2. L’indirizzo MAC di destinazione deve quindi essere quello del gateway
-3. l’indirizzo IP del gateway che è conosciuto grazie a DHCP
-4. Se l’indirizzo MAC del gateway non è presente nella tabella ARP, allora viene fatta una risoluzione ARP per ottenere il MAC corrispondente all’IP del gataway
+3. l’indirizzo IP del gateway è conosciuto grazie a DHCP
+4. Se l’indirizzo MAC del gateway non è presente nella tabella ARP, allora viene fatta una risoluzione ARP per ottenere il MAC corrispondente all’IP del gateway
 5. una volta ottenuto il MAC del gateway, si manda il frame con il MAC del gateway e l’indirizzo ip `1.2.3.4`
 
 
@@ -4319,7 +4335,7 @@ Il Wi-Fi opera principalmente su frequenze libere (senza licenza), chiamate band
 
 Le bande di frequenza più utilizzate sono **2,4 GHz** (precisamente nel range `2,4 - 2,4835` GHz) e **5 GHz** (precisamente nel range `5,17 - 5,33` GHz; `5,49 - 5,71` GHz).
 
-Le bande ISM sono soggette a interferenze da altri dispositivi che operano sulle stesse frequenze.
+Le bande ISM non sono utilizzate solo da Wi-Fi, quindi sono soggette a interferenze da altri dispositivi che operano sulle stesse frequenze.
 
 ### **Canali**
 
@@ -4353,7 +4369,7 @@ Un **BSS** (*Basic Service Set*) è l'unità più piccola di una rete Wi-Fi, il 
 
 Un BSS è identificato da un **BSSID**, un numero di 48 bit che è l'indirizzo MAC dell'AP.
 
-Ogni AP può scegliere un **SSID (Service Set ID)**, un nome testuale per riconoscere il BSS che può essere configurato dall'amministratore di rete (è il nome che si legge quando ci vogliamo connettere alla rete Wi-Fi).
+Ogni AP può scegliere un **SSID (Service Set ID)**, un nome testuale per riconoscere il BSS che può essere configurato dall'amministratore di rete (è il nome che si legge quando ci vogliamo connettere a una rete Wi-Fi).
 
 Più BSS possono essere collegati tramite un **DS** (*Distribution Service*), un cavo di rete tra gli AP.
 
@@ -4381,6 +4397,8 @@ L’header di un frame di dati Wi-Fi è composto come segue
 - **Duration**: usato per la ritrasmissione del frame
 - **Tre indirizzi**: sono indirizzi MAC rispettivamente dell’AP, del terminale sorgente e del terminale di destinazione
 - **Sequence control**: identifica il frame
+- **Payload**: dati effettivi del frame
+- **CRC**: checksum
 
 Quando pacchetti IP vengono incapsulati in frame Wi-Fi viene utilizzato **l’header LLC** che indica quale tipo di pacchetto viene usato al livello di rete (IPv4, IPv6, …).
 
@@ -4388,17 +4406,17 @@ Quando pacchetti IP vengono incapsulati in frame Wi-Fi viene utilizzato **l’he
 
 Il livello datalink ha l’obiettivo di coordinare l’accesso al canale condiviso per evitare collisioni.
 
-Una **collisione** si verifica quando un **ricevitore** riceve due o più frame contemporaneamente, impedendo una corretta ricezione di questi. 
+Una **collisione** si verifica quando un **ricevitore** riceve due o più frame (segnali radio) contemporaneamente, impedendo una corretta ricezione di questi.
 
-Il mittente non è a conoscenza delle collisioni perché **avvengono sul lato del ricevitore**. Per confermare la consegna frame, il ricevitore invia un ACK. Se un mittente non riceve un ACK entro un certo tempo, presume che ci sia stata una collisione.
+Il mittente non è a conoscenza delle collisioni, perché **avvengono sul lato del ricevitore**. Per confermare la consegna frame, il ricevitore invia un ACK. Se un mittente non riceve un ACK entro un certo tempo, presume che ci sia stata una collisione.
 
 Per evitare le collisioni si usa il **Carrier Sensing**, cioè il terminale, prima di trasmettere, verifica se qualcun altro sta già trasmettendo. In particolare il Wi-Fi usa **CSMA/CA (Carrier Sensing Multiple Access / Collision Avoidance)**, cioè coordinare l’**accesso multiplo** alla stessa risorsa (il canale) basato sul *carrier sensing* e che cerca di evitare le collisioni.
 
 Il trasmettitore deve quindi essere in grado di capire qual è l’attuale **stato del canale**: *idle* (libero) oppure *busy* (occupato).
 
-L'obiettivo del livello MAC è di **massimizzare l’efficienza:** massimizzare il tempo in cui il canale è occupato rispetto a quando è libero.
+L'obiettivo del livello MAC è di **massimizzare l’efficienza:** cioè massimizzare il tempo in cui il canale è occupato rispetto a quando è libero.
 
-Esistono due modalità coordinare l’accesso: **PCF (Point Coordination Function)** e **DCF (Distributed Coordination Function)**:
+Esistono due modalità per coordinare l’accesso: **PCF (Point Coordination Function)** e **DCF (Distributed Coordination Function)**:
 
 - Il **PCF** è una modalità di coordinamento in cui l'AP assegna intervalli di tempo per la trasmissione a ciascun terminale. Questo approccio è simile al TDMA e non viene quasi mai utilizzato.
 - Il **DCF** implementa uno schema di accesso casuale simile ad ALOHA.
@@ -4419,7 +4437,7 @@ Il ricevitore, dopo aver ricevuto il frame e averne verificato il checksum, atte
 
 ![](https://i.ibb.co/NYNBY9d/image.png)
 
-Notare come dal momento della trasmissione si ha un **tempo di volo** (*flight time*) che serve ai dati per arrivare fisicamente al ricevitore.
+Notare come dal momento della trasmissione si ha un **tempo di volo** (*flight time*) che serve alle onde radio per arrivare fisicamente al ricevitore.
 
 Ogni frame include nell'header il campo `duration` che contiene il **NAV** (*Network Allocation Vector*) che specifica la durata della trasmissione del pacchetto e la ricezione dell'ACK. Tutti i terminali nel raggio di ricezione del frame, leggendo l'header, conoscono il valore di NAV e sanno che non potranno trasmettere per quel periodo di tempo.
 
@@ -4429,7 +4447,7 @@ Vediamo un esempio con **due trasmettitori**:
 
 In questa situazione i dati di T2 sono arrivati a T1 prima che esso finisca il suo DIFS, quindi T1 si mette in attesa che termini lo scambio dei dati.
 
-Se però i due terminali decidono di **trasmettere quasi contemporaneamente**, a **causa del tempo di volo**, i dati del primo che trasmette arrivano all’altro dopo che il suo DIFS è finito (cioè quando $\delta <$ *flight time*), causando una **collisione**.
+Se però i due terminali decidono di **trasmettere quasi contemporaneamente**, a **causa del tempo di volo**, i dati del primo che trasmette arrivano all’altro dopo che il suo DIFS è finito (cioè quando $\delta <$ *flight time*), causando una **collisione sul ricevitore**.
 
 ![](https://i.ibb.co/mywrp6v/image.png)
 
@@ -4458,7 +4476,7 @@ Vediamo come funziona nella seguente immagine:
 
 ![](https://i.ibb.co/SmQCQkM/image.png)
 
-In questo caso T2 trasmette, T1 e T3 ricevono in tempo il frame e attendono il tempo specificato in `duration` più un tempo random. T1 sceglie un tempo minore e quindi trasmette prima, T3 quando riceve il frame di T1 mette in pausa il suo timer e attende la `duration`, appena si libera il canale fa proseguire il suo timer e quando scade inizia a trasmettere.
+In questo caso T2 trasmette, T1 e T3 ricevono in tempo il frame e attendono il tempo specificato in `duration` più un **tempo random**. T1 sceglie un tempo minore e quindi trasmette prima, T3 quando riceve il frame di T1 mette in pausa il suo timer e attende la `duration`, appena si libera il canale fa proseguire il suo timer e quando scade inizia a trasmettere.
 
 In questo modo le **collisioni** sono ridotte ma sono **comunque possibili** (ad esempio se l’intervallo di tempo tra i timer casuali è minore del tempo di volo).
 
@@ -4466,13 +4484,15 @@ In generale i **timer casuali riducono le collisioni, ma sprecano anche risorse 
 
 ### Binary exponential backoff
 
+È evidente che più trasmettitori ci sono nella rete più sono probabili le collisioni.
+
 Con **tanti trasmettitori bisogna aumentare la finestra** `[0, CW]` su cui vengono scelti i tempi random in modo da ridurre la possibilità che due trasmettitori scelgano tempi vicini.
 
-Allo stesso modo con **pochi trasmettitori** si vuole avere una **finestra piccola** per evitare attese inutili.
+Allo stesso modo con **pochi trasmettitori** si vuole avere una **finestra piccola** per evitare attese inutili e migliorare l’efficienza.
 
 Per implementare questo meccanismo in modo dinamico si utilizza una strategia chiamata ***Binary exponential backoff.***
 
-Ogni volta che una trasmissione fallisce (non viene inviato l’ACK) il mittente cambia la propria grandezza della finestra, in particolare:
+Ogni volta che una trasmissione fallisce (non viene ricevuto l’ACK) il mittente cambia la propria grandezza della finestra, in particolare:
 
 $CW$ $CW$$CW_i = 2 \cdot CW_{i-1}$ fino a un massimo di $CW_{\max}$
 
@@ -4484,24 +4504,21 @@ Dopo una trasmissione riuscita, $CW$ viene resettato a $CW_{\min}$.
 
 ## **Il Meccanismo RTS/CTS**
 
-C’è una situazione particolare in cui Il meccanismo appena descritto non funziona, cioè il caso in cui i due terminali non ricevono i frame degli altri (a causa di un ostacolo fisico che non permette alle onde elettromagnetiche di passare) e quindi **non riescono a sapere quando il canale è occupato**.
+C’è una situazione particolare in cui Il meccanismo appena descritto non funziona, cioè il caso in cui i due terminali non ricevono i frame dell’altro (a causa di un ostacolo fisico che non permette alle onde elettromagnetiche di passare) e quindi **non riescono a sapere quando il canale è occupato**.
 
 ![](https://i.ibb.co/CmJmhCd/image.png)
 
 In questa situazione entrambi pensano che il canale sia libero e trasmettono, causando collisioni sul ricevitore.
 
-Per risolvere il problema DCF utilizza un meccanismo **RTS/CTS (Request to Send/Clear to Send)**:
+Per risolvere il problema, DCF utilizza un meccanismo **RTS/CTS (Request to Send/Clear to Send)**:
 
-Se A vuole trasmettere, invia prima un messaggio RTS. Se l’Access Point non sta comunicando con nessun altro allora invia un messaggio CTS in cui dà il permesso di trasmettere, e contemporaneamente comunica a tutti gli altri nodi della rete che per una certa durata NAV il canale sarà occupato.
-
- L'RTS infatti contiene un NAV che copre la durata dell'intera trasmissione dati (incluso l’ACK).
+Se A vuole trasmettere, invia prima un messaggio RTS. Se l’Access Point non sta comunicando con nessun altro allora invia un messaggio CTS in cui dà il permesso di trasmettere, e contemporaneamente comunica a tutti gli altri nodi della rete che per una certa durata NAV il canale sarà occupato. L'RTS infatti contiene un NAV che copre la durata dell'intera trasmissione dati (incluso l’ACK).
 
 Anche se non tutti i terminali ricevono l'RTS, tutti riceveranno invece il CTS dall'AP e quindi sapranno che il canale è occupato per il tempo specificato dal NAV.
 
 ![](https://i.ibb.co/XXgZwH1/image.png)
 
 RTS/CTS aumenta il tempo di attesa prima della trasmissione, riducendo il bit rate. Viene quindi utilizzato principalmente per l'invio di frame di grandi dimensioni.
-
 
 
 

@@ -29,21 +29,21 @@ Possiamo quindi dire che si misura con il rapporto J/s (Joule per secondo) che c
 
 Gli elettroni sono particelle con carica negativa che, in alcuni materiali, possono muoversi liberamente all'interno della struttura.
 
-Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati **conduttori**, mentre quelli in cui il movimento degli elettroni è fortemente limitato o impedito sono chiamati **isolanti**.
+Quando gli elettroni si muovono collettivamente, generano una **corrente elettrica**. I materiali in cui gli elettroni possono muoversi liberamente sono chiamati **conduttori**, mentre quelli in cui il movimento degli elettroni è fortemente limitato sono chiamati **isolanti**.
 
-La **corrente elettrica** è una misura del flusso di carica per unità di tempo, espressa in Coulomb al secondo (C/s), un'unità che prende il nome di **Ampere**.
+La **corrente elettrica** è la misura del flusso di carica per unità di tempo, espressa in Coulomb al secondo (C/s), un'unità che prende il nome di **Ampere**.
 
 Un generatore di corrente, pensiamo alla batteria, “spinge” gli elettroni in un filo conduttore facendo passare gli elettroni da una velocità quasi nulla ad una certa velocità e in una certa direzione. Per accelerare degli elettroni per un tempo $t$ il generatore **consuma potenza.**
 
 ## Resistenza
 
-Quando gli elettroni si muovono rimbalzano nella struttura del materiale, perdendo così dell’energia (che viene trasferita al materiale stesso sotto forma di calore).
+Quando gli elettroni si muovono, rimbalzano nella struttura del materiale, perdendo così dell’energia (che viene trasferita al materiale stesso sotto forma di calore).
 
 Questo è importante perché nelle telecomunicazioni questa perdita di energia si traduce in una attenuazione del segnale rispetto a quello di partenza.
 
-La **resistenza** è un componente che serve a regolare la quantità di corrente che circola in un circuito, dissipandola in calore in modo da evitare una quantità esagerata di corrente sui componenti.
+La **resistenza** serve a regolare la quantità di corrente che circola in un circuito, dissipandola in calore in modo da evitare che una quantità esagerata di corrente attraversi i componenti.
 
-Nelle telecomunicazioni la resistenza può essere un ricevitore (una radio) che riceve una corrente.
+Nelle telecomunicazioni la resistenza può essere un ricevitore radio.
 
 Si definisce **sensibilità** la quantità minima di potenza necessaria affinché il sensore del ricevitore riesca a rilevare la presenza di corrente
 
@@ -62,13 +62,13 @@ Accendere e spegnere l’interruttore periodicamente, permette di generare degli
 
 ## Attenuazione
 
-Come accettato sulla parte della resistenza il cavo di per sé è una resistenza, quindi un po’ di potenza si disperde sotto forma di calore nel cavo.
+Come accennato precedentemente, il cavo di per sé è una resistenza, quindi un po’ di potenza si disperde sotto forma di calore nel cavo.
 
 Questa perdita di potenza si traduce in una **attenuazione del segnale** durante il percorso.
 
 L’attenuazione dipende principalmente dal tipo di materiale, dalla sua grandezza e dalla sua lunghezza.
 
-In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante in quanto l’ampiezza del segnale ricevuto è minore rispetto all’ampiezza del messaggio trasmesso.
+In un sistema con forte attenuazione, la sensibilità del ricevitore è molto importante in quanto l’ampiezza del segnale ricevuto è minore rispetto all’ampiezza di quanto è stato trasmesso.
 
 ![](https://i.ibb.co/VJVZcJs/image.png)
 
@@ -78,7 +78,7 @@ Gli elettroni (o qualsiasi altro mezzo di comunicazione) hanno una velocità fin
 
 Indichiamo con **Delay (ritardo / latenza)** il tempo che passa dal momento dell’invio del segnale al momento in cui il segnale inizia ad essere ricevuto.
 
-Più distante è il ricevitore più questo ritardo sarà grande
+Più distante è il ricevitore più questo ritardo sarà grande.
 
 In questo contesto è importante la **sincronizzazione** tra il trasmittente e il ricevitore, cioè si devono accordare per stabilire quando un simbolo inizia e quando un simbolo finisce (e quindi la sua durata).
 
@@ -98,7 +98,7 @@ $$
 \text{SNR} = \frac{S}{N} = \frac{\text{Potenza del segnale ricevuto}}{\text{Stima di potenza del Rumore}}
 $$
 
-Mi dice quanto della potenza che ho ricevuto fa parte del segnale vero e quanto è invece rumore.
+Mi dice quanto della potenza che ho ricevuto fa parte del segnale vero e quanto invece è rumore.
 
 La potenza del rumore è una stima che si può ottenere quando nessuno trasmette, in quanto si ottiene solo rumore.
 
@@ -115,7 +115,7 @@ La modulazione è un insieme di tecniche per trasmettere informazioni, è compos
 - Il **segnale portante** (*carrier signal*): una sinusoide con una certa frequenza $f_c$ costante
 - Il **segnale modulante** (*modulating signal*): il segnale che vogliamo trasmettere contenente l’informazione
 
-L’idea è quello di andare a influenzare il segnale portante sull’**ampiezza** o sulla **frequenza** in modo da produrre un nuovo segnale (il **segnale modulato**) che codifica una informazione contenuta nel segnale modulante.
+L’idea è quella di andare a influenzare il segnale portante sull’**ampiezza (AM)** o sulla **frequenza (FM)** in modo da produrre un nuovo segnale (il **segnale modulato**) che codifica l’informazione contenuta nel segnale modulante.
 
 ![](https://upload.wikimedia.org/wikipedia/commons/a/a4/Amfm3-en-de.gif)
 
@@ -123,7 +123,7 @@ L’idea è quello di andare a influenzare il segnale portante sull’**ampiezza
 
 ![](https://i.ibb.co/TcSVWPQ/image.png)
 
-In questa tecnica di modulazione il segnale viene codificato modificando la frequenza del segnale portante. Possiamo, ad esempio, codificare 1 quando abbiamo una alta frequenza e 0 altrimenti.
+In questa tecnica di modulazione il segnale viene codificato **modificando la frequenza** del segnale portante. Possiamo, ad esempio, codificare 1 quando abbiamo una alta frequenza e 0 altrimenti.
 
 Abbiamo una portante $p(t) = A\cos(2\pi f_p t)$ e un segnale digitale $m(t)$ da trasmettere (dato che è digitale trasporterà 0 e 1).
 
@@ -168,7 +168,7 @@ $t = \frac{1}{2}$, $f_p = \frac{3}{2}$ abbiamo $A\cdot \cos(2\pi\frac{3}{2}\frac
 
 abbiamo fatto tre quarti di onda in mezzo secondo.
 
-Se abbiamo una frequenza $f_p = 4$ e supponiamo che un bit sia determinato da 4 oscillazioni, stiamo mandando un simbolo ogni secondo **boud-rate (1 Bd/s)**.
+Se abbiamo una frequenza $f_p = 4$ e supponiamo che un bit sia determinato da 4 oscillazioni, stiamo mandando un simbolo ogni secondo, **boud-rate (1 Bd/s)**.
 
 In questo specifico caso un simbolo corrisponde ad un singolo bit, quindi il **bit-rate è 1 b/s.**
 
@@ -184,38 +184,42 @@ si avrebbe quindi $2 \cdot 1 = 2$ b/s
 
 Per aumentare il bit-rate si può
 
-1. diminuire il numero di oscillazioni richieste per simbolo (aumentare il boud-rate)
+1. diminuire il numero di oscillazioni richieste per simbolo (aumentare il boud-rate).
+    
+    Bisogna stare attenti perché si sta diminuendo il tempo in cui si ha alta frequenza e dobbiamo tenere in considerazione che c’è sempre del rumore che dobbiamo riuscire a distinguere dal segnale reale (risulta quindi più difficile distinguere i simboli)
+    
 2. aumentare il numero di bit per simbolo
-
-Per il primo bisogna stare attenti perché si sta diminuendo il tempo in cui si ha alta frequenza e dobbiamo tenere in considerazione che c’è sempre del rumore che dobbiamo riuscire a distinguere dal segnale reale (risulta quindi più difficile distinguere i simboli)
-
-per il punto 2, aumentare il numero di bit significa aumentare il numero di frequenze diverse in modo da riconoscere tutti i possibili bit.
+    
+    aumentare il numero di bit significa aumentare il numero di frequenze diverse che sono associate alle possibili combinazioni di bit. In questo modo però diventa anche più difficile distinguere le varie frequenze.
+    
 
 ### Bandwidth
 
-***Bandwidth* o larghezza di banda** è l’intervallo tra la frequenza più bassa e quella più alta che si usa per comunicare.
+***Bandwidth* o larghezza di banda** è l’intervallo tra la frequenza più alta e quella più bassa che si usa per comunicare.
 
 $$
 \text{Bandwith} = f_{\max} - f_{\min}
 $$
 
-Se si vuole aumentare il bit-rate è necessario aumentare la larghezza di banda.
+Se si vuole aumentare il bit-rate si può anche optare per aumentare la larghezza di banda.
 
 Nell’esempio precedente con un simbolo uguale ad un bit la larghezza di banda andava da $f_p$ a $f_p (1 + \Delta)$
 
-Nelle reti wireless utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore nei loro segnali.
+Nelle reti wireless, utilizzare le stesse frequenze per comunicazioni diverse risulterà in delle interferenze in quanto i ricevitori avranno più rumore nei loro segnali.
 
 Per questo motivo segnali 4G, segnali televisivi, segnali wifi lavorano su bande diverse. 
 
 ## Teorema di Nyquist
 
-Il teorema dice che se la tua comunicazione usa una larghezza di banda $B$ e si usano $M$ livelli discreti di frequenza (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è:
+Il teorema dice che se la comunicazione usa una larghezza di banda $B$ e si usano $M$ livelli discreti di frequenza (**i simboli**), allora la capacità teorica massima di trasmissione in bit/s è:
 
 $$
 C_N = 2B\log_2(M)
 $$
 
 $M$ solitamente è una potenza di 2.
+
+Si tratta di un limite teorico in quanto **non viene considerato il rumore**
 
 ### Esercizio
 
@@ -229,13 +233,11 @@ $B = 2.441.000.000 - 2.401.000.000 = 40.000.000$
 
 $C = 2\cdot 40.000.000 \log_2(4) = 80.000.000 \cdot 2 = 160.000.000 = 160$ Mb/s
 
-Si tratta di un limite teorico in quanto non viene considerato il **rumore**
-
 ## Teorema di Shannon
 
-Il teorema di Shannon introduce un limite più stretto alla capacità considerando il rumore
+Il teorema di Shannon introduce un limite più stretto alla capacità considerando il rumore.
 
-Il teorema dice che la capacità del canale massima in bit/s con banda $B$ con aggiunta di una gaussiana di rumore bianco è data da:
+Il teorema dice che la capacità massima del canale in bit/s data una larghezza di banda $B$ con l’aggiunta di una gaussiana di rumore bianco è data da:
 
 $$
 C_S = B\log_2\left(1+ \frac{S}{N}\right)
@@ -245,11 +247,11 @@ $\frac{S}{N}$ è il rapporto segnale rumore SNR
 
 ## Nyquist vs Shannon
 
-Nyquist opera su una situazione ideale senza rumore. Shannon è più restrittivo considerando il rumore, non puoi raggiungere $C$ anche se Nyquist te lo permetterebbe.
+Nyquist opera su una situazione ideale senza rumore. Shannon è più restrittivo considerando il rumore, non è quindi possibile raggiungere la capacità di Shannon, anche se Nyquist lo permetterebbe.
 
 Se il rapporto segnale rumore è basso sarà più difficile distinguere il rumore dal segnale, in altre parole il rapporto segnale rumore determina il massimo valore di $M$ (il numero di simboli).
 
-$B, S, N$ sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione)
+$B, S, N$ sono dati dal canale di comunicazione mentre il trasmettitore può decidere $M$, va però deciso in modo che $C_{\text{Nyquist}} \leq C_{\text{Shannon}}$ (questo perché Shannon imposta un limite più realistico e superare il suo valore porterebbe sicuramente ad avere errori di comunicazione).
 
 ### Esempio
 

@@ -39,9 +39,9 @@
 <li>I cavi con una schermatura che racchiude tutte le coppie e delle schermature dedicate ad ogni coppia, sono chiamati STP (<em>Shielded Twisted Pair</em>).</li>
 </ul>
 <p>Gli standard Ethernet si sono evoluti nel corso degli anni per supportare velocità sempre più elevate.</p>
-<p>In particolare i cavi si dividono per categoria (Cat 5, 6, 7, …) con performance differenti.</p>
+<p>In particolare i cavi si dividono per categoria (Cat 5, 6, 7, …) in base alle performance.</p>
 <h2 id="indirizzo-mac">Indirizzo MAC</h2>
-<p>L’<strong>indirizzo MAC</strong> (<em>Media Access Control</em>), che identifica una scheda di rete (NIC) a livello di datalink.</p>
+<p>L’<strong>indirizzo MAC</strong> (<em>Media Access Control</em>) identifica una scheda di rete (NIC) a livello di datalink.</p>
 <p>Un indirizzo MAC è composto da <strong>48 bit</strong>:</p>
 <p><img src="https://i.ibb.co/KGpk5Br/image.png" alt=""></p>
 <ul>
@@ -53,7 +53,7 @@
 <li>24 bit univoci per la specifica NIC</li>
 </ul>
 <p>Un indirizzo MAC dovrebbe quindi essere <strong>globalmente univoco</strong>.</p>
-<p>Nota tecnica: Ethernet codifica le stringhe (tra cui l’indirizzo) <strong>invertendo l’ordine dei bit su ogni byte</strong>: avendo quindi il bit meno significativo per primo.</p>
+<p>Nota tecnica: Ethernet codifica le stringhe (tra cui l’indirizzo) <strong>invertendo l’ordine dei bit su ogni byte,</strong> avendo quindi il bit meno significativo a sinistra.</p>
 <p>Ciò significa che l’indirizzo MAC <code>12-34-56-78-9A-BC</code> viene trasmesso come <code>01001000 00101100 01101010 00011110 01011001 00111101</code> (ogni coppia viene convertita in binario e invertita).</p>
 <p>Un indirizzo MAC è unicast se il suo primo byte è pari, cioè la seconda cifra esadecimale della prima coppia è <code>0,2,4,6,8,A,C,E</code>.</p>
 <p>Gli indirizzi MAC possono essere estesi per diventare <strong>EUI-64</strong> (Extended Unique Identifier a 64 bit) e utilizzati come ID interfaccia in un indirizzo IPv6.</p>
@@ -62,13 +62,16 @@
 <ul>
 <li><strong>Indirizzo di destinazione (48 bit):</strong> specifica l’indirizzo MAC della scheda di rete del destinatario</li>
 <li><strong>Indirizzo di origine (48 bit):</strong> specifica l’indirizzo MAC della scheda di rete del mittente</li>
-<li><strong>Length/EtherType (16 bit):</strong> specifica la lunghezza del payload del frame, ovvero i dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.</li>
+<li><strong>Length/EtherType (16 bit):</strong> specifica la lunghezza del payload del frame, ovvero dei dati che vengono trasportati dal frame. Ma viene usato anche per indicare quale protocollo di livello superiore viene utilizzato.</li>
 <li><strong>Payload e padding (46-1500 byte):</strong> Contiene i dati che vengono trasportati dal frame. Se il payload è inferiore a 46 byte, viene aggiunto del padding per raggiungere la dimensione minima.</li>
 <li><strong>CRC (32 bit):</strong> Contiene una checksum che viene utilizzata per verificare l’integrità del frame.</li>
 </ul>
-<p>Inizialmente, l’header Ethernet includeva un campo chiamato <strong>EtherType</strong>, che specificava il protocollo di livello superiore. Ma questo è stato poi sostituito con il campo length.</p>
-<p>Per risolvere questa mancanza, è stato introdotto un nuovo livello: il <strong>livello LLC (Logical Link Control)</strong> il cui scopo era indicare il protocollo di livello superiore. Il livello datalink fu quindi suddiviso in due sottolivelli: il sottolivello MAC e il sottolivello LLC.</p>
-<p><strong>Nella versione attuale di Ethernet quei 16bit vengono utilizzati per interpretare entrambe le cose</strong> (length e EtherType). Di conseguenza, il livello LLC ha perso la maggior parte della sua utilità e viene raramente utilizzato per le reti ethernet.</p>
+<p>L’interpretazione del campo <strong>Length/EtherType</strong> cambia In base alla versione dello standard</p>
+<ul>
+<li>Una versione in cui il campo viene interpretato come la lunghezza del frame. In tal caso per identificare il protocollo di livello superiore si utilizza un nuovo sottolivello chiamato LLC (Logical Link Control)</li>
+<li>Una versione in cui il campo viene interpretato come il protocollo di livello superiore utilizzato (EtherType). In questo caso la lunghezza del frame viene gestita dal livello fisico tramite determinati segnali.</li>
+</ul>
+<p>Oggi è largamente prevalente il formato in cui il campo è interpretato come EtherType. Questo ha reso il livello LLC quasi inutilizzato nelle reti Ethernet moderne.</p>
 <h2 id="switch-ethernet">Switch Ethernet</h2>
 <p>Gli <strong>Switch Ethernet</strong> sono dispositivi che estendono una rete interconnettendo più terminali.</p>
 <p><img src="https://i.ibb.co/3TXW8Gz/image.png" alt=""></p>
@@ -86,7 +89,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
     <span class="token keyword">if</span> dst <span class="token keyword">in</span> Table<span class="token punctuation">:</span>
         forward_frame<span class="token punctuation">(</span>F<span class="token punctuation">,</span> Table<span class="token punctuation">[</span>dst<span class="token punctuation">]</span><span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
         <span class="token keyword">return</span>
-<span class="token comment"># multicast or broadcast destination</span>
+<span class="token comment"># multicast, broadcast or unkown destination</span>
 <span class="token keyword">for</span> o <span class="token keyword">in</span> Ports<span class="token punctuation">:</span>
     <span class="token keyword">if</span> o <span class="token operator">!=</span> P<span class="token punctuation">:</span>
         forward_frame<span class="token punctuation">(</span>F<span class="token punctuation">,</span> o<span class="token punctuation">)</span>
@@ -95,7 +98,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <p>La tabella viene periodicamente pulita dagli indirizzi non utilizzati da un certo intervallo di tempo.</p>
 </li>
 <li>
-<p>In reti più complesse, con più switch in cascata, viene implementato l’algoritmo <strong>Spanning Tree</strong> per evitare loop.</p>
+<p>In reti più complesse, con più switch in cascata, viene implementato l’algoritmo <strong>Spanning Tree Protocol</strong> per evitare loop.</p>
 </li>
 </ul>
 <h2 id="spanning-tree-protocol-stp">Spanning Tree Protocol (STP)</h2>
@@ -109,10 +112,10 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <li><strong>designated</strong>: porta che inoltra il traffico verso una determinata sottorete.</li>
 <li><strong>blocked</strong>: porta che non inoltra traffico per prevenire loop.</li>
 </ul>
-<p>Quando l’albero è formato si deve avere che:</p>
+<p>Quando l’albero è completamente formato (cioè <strong>si è a convergenza</strong>) si deve avere che:</p>
 <ul>
-<li>lo switch radice ha tutte le porte in stato <em>designated</em></li>
-<li>tutti gli altri switch devono avere almeno una porta in stato <em>root</em> e le rimanenti in stato <em>designated</em> o <em>blocked</em></li>
+<li>lo switch radice ha <strong>tutte le porte in stato <em>designated</em></strong></li>
+<li>tutti gli altri switch devono avere <strong>una e una sola porta in stato <em>root</em></strong> e le rimanenti in stato <em>designated</em> o <em>blocked</em></li>
 </ul>
 <h3 id="funzionamento"><strong>Funzionamento</strong></h3>
 <ul>
@@ -121,20 +124,20 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>B</mi><mi>P</mi><mi>D</mi><mi>U</mi><mo>=</mo><mo>&lt;</mo><mi>R</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>C</mi><mi>o</mi><mi>s</mi><mi>t</mi><mo separator="true">,</mo><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>p</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">
   BPDU=&lt;RootID, Cost, SenderID, p&gt;
   </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.72243em; vertical-align: -0.0391em;"></span><span class="mord mathnormal" style="margin-right: 0.13889em;">BP</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mord mathnormal" style="margin-right: 0.10903em;">U</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">oo</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.07153em;">C</span><span class="mord mathnormal">os</span><span class="mord mathnormal">t</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right: 0.02778em;">er</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">p</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span></span></span></span></span></span></p>
-<p>Il BPDU contiene informazioni come:</p>
+<p>Il BPDU contiene:</p>
 <ul>
 <li><code>RootID</code> l’ID dello switch radice</li>
-<li><code>Cost</code> il costo del percorso alla radice</li>
+<li><code>Cost</code> il costo del percorso verso la radice</li>
 <li><code>SenderID</code> l’ID di chi ha generato il BPDU</li>
 <li><code>p</code> il numero della porta dello switch mittente da cui è uscito il BPDU</li>
 </ul>
-<p>I BPDU vengono inviati solo agli switch adiacenti e non vengono inoltrati ulteriormente.</p>
-<p>Inizialmente ogni switch utilizza il proprio ID come <code>RootID</code> impostando il costo a zero.</p>
+<p>I BPDU vengono inviati solo agli switch adiacenti e <strong>non vengono inoltrati ulteriormente</strong>.</p>
+<p>Inizialmente ogni switch utilizza il proprio ID come <code>RootID</code>, impostando il costo a zero.</p>
 <p>La costruzione dell’albero si basa sull’ordinare i BPDU in modo lessicografico:</p>
 <p>Si confrontano prima le <code>RootID</code>, se sono uguali si confrontano i <code>Cost</code>, se sono uguali si confrontano i <code>SenderID</code>, se sono uguali si confrontano le <code>p</code>.</p>
 </li>
 <li>
-<p>Quando uno switch A riceve il BPDU dallo switch B, memorizza il <em>root priority vector</em> <code>Vq</code> per la porta su cui ha ricevuto il BPDU, il <code>Vq</code> è composto da:</p>
+<p>Quando uno switch A riceve il BPDU dallo switch B, memorizza il <em><strong>root priority vector</strong></em> <code>Vq</code> per la porta su cui ha ricevuto il BPDU, il <code>Vq</code> è composto da:</p>
 <p><span class="katex--display"><span class="katex-display"><span class="katex"><span class="katex-mathml"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block"><semantics><mrow><mi>V</mi><mi>q</mi><mo>=</mo><mo>&lt;</mo><mi>R</mi><mi>o</mi><mi>o</mi><mi>t</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>c</mi><mo separator="true">,</mo><mi>S</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mi>I</mi><mi>D</mi><mo separator="true">,</mo><mi>p</mi><mo separator="true">,</mo><mi>q</mi><mo>&gt;</mo></mrow><annotation encoding="application/x-tex">
   Vq=&lt;RootID, c, SenderID, p, q&gt;
   </annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height: 0.87777em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.22222em;">V</span><span class="mord mathnormal" style="margin-right: 0.03588em;">q</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">=&lt;</span><span class="mspace" style="margin-right: 0.277778em;"></span></span><span class="base"><span class="strut" style="height: 0.88888em; vertical-align: -0.19444em;"></span><span class="mord mathnormal" style="margin-right: 0.00773em;">R</span><span class="mord mathnormal">oo</span><span class="mord mathnormal">t</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">c</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.05764em;">S</span><span class="mord mathnormal">e</span><span class="mord mathnormal">n</span><span class="mord mathnormal">d</span><span class="mord mathnormal" style="margin-right: 0.02778em;">er</span><span class="mord mathnormal" style="margin-right: 0.07847em;">I</span><span class="mord mathnormal" style="margin-right: 0.02778em;">D</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal">p</span><span class="mpunct">,</span><span class="mspace" style="margin-right: 0.166667em;"></span><span class="mord mathnormal" style="margin-right: 0.03588em;">q</span><span class="mspace" style="margin-right: 0.277778em;"></span><span class="mrel">&gt;</span></span></span></span></span></span></p>
@@ -154,14 +157,14 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 </ul>
 </li>
 <li>
-<p>Per determinare lo stato delle altre porte lo switch A compara anche in modo lessicografico il BPDU ricevuto con il BPDU proprio:</p>
+<p>Per determinare lo stato delle altre porte lo switch, A compara anche in modo lessicografico il BPDU ricevuto con il BPDU proprio:</p>
 <ul>
 <li>se il proprio BPDU è minore, la porta <code>q</code> entra nello stato <em>designated</em> (B diventa un nodo figlio di A)</li>
-<li>se il BPDU ricevuto è minore, la porta <code>q</code> entra nello stato <em>blocked</em> (B è un fratello si A e potrebbe esserci un loop)</li>
+<li>se il BPDU ricevuto è minore, la porta <code>q</code> entra nello stato <em>blocked</em> (B è un fratello di A e potrebbe esserci un loop)</li>
 </ul>
 </li>
 </ul>
-<p>Si può riassumere l’utilizzo delle porte in base al loro stato in questa tabella</p>
+<p>Si può riassumere l’utilizzo delle porte in base al loro stato</p>
 
 <table>
 <thead>
@@ -196,7 +199,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <p>I BPDU verranno ricevuti dai switch figli nelle loro porte <em>root</em> i quali computeranno il proprio BPDU e lo invieranno dalle proprie porte <em>designated.</em></p>
 <p>Gli switch figli riceveranno a loro volta i BPDU sulle proprie porte <em>root</em> e così via…</p>
 <p>Il processo si <strong>ripete costantemente</strong>, aggiornando lo stato delle porte in base ai BPDU ricevuti.</p>
-<p>Se un switch non riceve più BPDU da un vicino, riavvia il protocollo STP per ricalcolare l’albero.</p>
+<p>Se un switch non riceve più BPDU da un vicino, significa che la topologia di rete è cambiata e quindi si riavvia il protocollo STP per ricalcolare l’albero da capo.</p>
 <h2 id="legame-tra-livello-di-rete-e-livello-datalink">Legame tra livello di rete e livello datalink</h2>
 <p>Vediamo come connettere il livello di rete e il livello datalink.</p>
 <p>Il traffico di rete è suddiviso in pacchetti IP, sia per la comunicazione all’interno della stessa rete sia tra reti diverse.</p>
@@ -211,7 +214,7 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <h2 id="protocollo-arp">Protocollo ARP</h2>
 <p>L’<strong>Address Resolution Protocol (ARP)</strong> è un protocollo che consente agli host di <strong>risolvere gli indirizzi IP in indirizzi MAC</strong> all’interno della stessa sottorete, ogni host mantiene una tabella ARP che le varie associazioni tra IP e MAC.</p>
 <p>Quando un host desidera scoprire l’indirizzo MAC del destinatario, invia un messaggio ARP in broadcast contenete il proprio MAC, il proprio IP e l’IP di cui si vuole ottenere il MAC. L’host che possiede l’indirizzo IP specificato risponde con un <strong>messaggio ARP unicast</strong> diretto all’indirizzo MAC del mittente, fornendo il proprio indirizzo MAC.</p>
-<p>Il mittente può quindi aggiornare la propria <strong>tabella ARP.</strong></p>
+<p>Il mittente può quindi aggiornare la propria <strong>tabella ARP</strong> (anche il destinatario potrà aggiornarla dato che è venuto a conoscenza del MAC del mittente).</p>
 <h2 id="protocollo-dhcp">Protocollo DHCP</h2>
 <p>Il <strong>Dynamic Host Configuration Protocol (DHCP)</strong> è un protocollo utilizzato per configurare automaticamente i parametri di rete degli host al loro avvio, tra cui:</p>
 <ul>
@@ -247,8 +250,8 @@ Table<span class="token punctuation">[</span>src<span class="token punctuation">
 <ol>
 <li>Si rende conto che <code>1.2.3.4</code> non fa parte della sua rete</li>
 <li>L’indirizzo MAC di destinazione deve quindi essere quello del gateway</li>
-<li>l’indirizzo IP del gateway che è conosciuto grazie a DHCP</li>
-<li>Se l’indirizzo MAC del gateway non è presente nella tabella ARP, allora viene fatta una risoluzione ARP per ottenere il MAC corrispondente all’IP del gataway</li>
+<li>l’indirizzo IP del gateway è conosciuto grazie a DHCP</li>
+<li>Se l’indirizzo MAC del gateway non è presente nella tabella ARP, allora viene fatta una risoluzione ARP per ottenere il MAC corrispondente all’IP del gateway</li>
 <li>una volta ottenuto il MAC del gateway, si manda il frame con il MAC del gateway e l’indirizzo ip <code>1.2.3.4</code></li>
 </ol>
 
